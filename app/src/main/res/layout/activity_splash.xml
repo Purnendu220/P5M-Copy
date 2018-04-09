@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/theme_bg_splash"
+    tools:context="www.gymhop.p5m.view.activity.Splash">
+
+    <ImageView
+        android:id="@+id/imageViewImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:padding="108dp"
+        android:layout_marginBottom="88dp"
+        android:src="@drawable/splash_logo" />
+</android.support.constraint.ConstraintLayout>

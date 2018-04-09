@@ -1,0 +1,177 @@
+<resources>
+    <string name="app_name">P5M</string>
+    <string name="no_internet">No internet connection</string>
+    <string name="please_try_later">Please try later</string>
+
+    <string name="info_screen_desc_1">Explore and join fitness classes around you with one plan.</string>
+    <string name="info_screen_desc_2">Discover new trainers and studios that cater to your fitness needs.</string>
+    <string name="info_screen_desc_3">Filter classes based on location, time and activity to find your perfect workout.</string>
+    <string name="info_screen_desc_4">"I don't know where to start" Is no longer an excuse.</string>
+
+    <string name="start_being_active">START BEING ACTIVE</string>
+
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="slide_1_title">Explore and join fitness classes around you with one plan.</string>
+
+
+    <string name="slide_2_title">Discover new trainers and studios that cater to your fitness needs.</string>
+
+
+    <string name="slide_3_title">Filter classes based on location, time and activity to find your perfect workout.</string>
+
+
+    <string name="slide_4_title">" I don't know where to start" Is no longer an excuse.</string>
+    <string name="slide_4_desc">Book tickets of any transportation and travel the world!</string>
+    <string name="please_wiat">Please Wait</string>
+    <string name="title_activity_registration_pager">RegistrationActivityPager</string>
+    <string name="terms_of_service">By login you are agree to our <u>terms of service</u> \n and <u>privacy policy</u>.</string>
+
+    <string name="whats_your_name">What\'s Your Name</string>
+    <string name="and_your_email">And,Your Email?</string>
+    <string name="next">NEXT</string>
+    <string name="enter_name">Enter your name</string>
+    <string name="create_a_password">Create a password</string>
+    <string name="create_your_password">Create your password</string>
+    <string name="confirm_your_password">Confirm your password</string>
+    <string name="gender_string">Gender</string>
+    <string name="male">MALE</string>
+    <string name="female">FEMALE</string>
+    <string name="google_android_map_api_key">AIzaSyDrh02wGKpo9v4531l5fwUs0jUcXP2bwLk</string>
+    <string name="address">ADDRESS:</string>
+    <string name="just_now">just now</string>
+    <string name="minute_ago">1 min ago</string>
+    <string name="minutes_ago">%d mins ago</string>
+    <string name="app_crash">App Crash</string>
+    <string name="unjoin">Unjoin</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+    <string name="unjoin_consent">Do you really want to unjoin <b>%s</b> class?</string>
+    <string name="remove_wishlist_consent">Do you really want to remove <b>%s</b> from wishlist?</string>
+    <string name="full_name">Full Name</string>
+    <string name="description_zoom_touch_close">Expanded image (touch to close)</string>
+    <string name="fuel_workout">Fuel Your Workout</string>
+
+    <string name="app_title">PROFIVE</string>
+    <string name="welcome_back">Welcome back!</string>
+    <string name="continue_as">CONTINUE AS</string>
+    <string name="switch_an_account">Switch an account</string>
+    <string name="register">REGISTER</string>
+    <string name="login_back">LOGIN</string>
+    <string name="donot_signup">Don\'t have an account?</string>
+    <string name="already_account">Already have an account? </string>
+    <string name="already_account_html">Already have an account? <u><b>Login!</b></u></string>
+
+    <string name="agree">By login you are agree to our <b>terms of service</b>\n and <b>privacy policy</b>.</string>
+    <string name="facebook_permission">Email permission is required to continue. Kindly login with facebook and grant the permission.</string>
+    <string name="ok">OK</string>
+    <string name="find_class">Find a class</string>
+    <string name="trainer">Trainer</string>
+    <string name="schedule">My Schedule</string>
+    <string name="notification">Notification</string>
+    <string name="profile">Profile</string>
+    <string name="search_title">Search..</string>
+    <string name="location">Location</string>
+    <string name="time">Time</string>
+    <string name="activity">Activity</string>
+    <string name="find_classes">FIND CLASSES</string>
+    <string name="early_morning">Early morning</string>
+    <string name="morning">Morning</string>
+    <string name="after_Noon">After Noon</string>
+    <string name="evening">Evening</string>
+    <string name="login_facebook">ENTER WITH FACEBOOK</string>
+    <string name="login">Log in</string>
+    <string name="login_gamil">ENTER WITH GOOGLE</string>
+    <string name="signup_email">SIGN UP WITH EMAIL</string>
+
+    <string name="email"><font size="10">E-mail</font></string>
+    <string name="password"><font size="5">Password</font></string>
+    <string name="reminders">REMINDERS:</string>
+    <string name="studio_instruction">STUDIO INSTRUCTION:</string>
+    <string name="special_note_by_trainer">SPECIAL NOTE BY THE TRAINER:</string>
+    <string name="reserve_class">RESERVE CLASS</string>
+    <string name="favourite">FAVOURITE</string>
+    <string name="favorited">FAVORITED</string>
+    <string name="favorite_trainer">Favourite Trainer</string>
+    <string name="finished">Finished</string>
+    <string name="join">JOIN</string>
+    <string name="full">FULL</string>
+    <string name="joined">JOINED</string>
+    <string name="gender">pls!select gender</string>
+    <string name="addInWishList">Added in your wish List</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="settings">Settings</string>
+    <string name="dob">Date of  birth</string>
+    <string name="nationality">Nationality</string>
+    <string name="gender_profile">Gender</string>
+    <string name="cuf">Choose your focus</string>
+    <string name="change_password">Change password</string>
+    <string name="current_pasword">Enter your current password</string>
+    <string name="new_pasword">Enter your new password</string>
+    <string name="incurrect_pass">Incorrect password!</string>
+    <string name="notifications">Notifications</string>
+    <string name="disp_activity">Display activity</string>
+    <string name="membership">Membership</string>
+    <string name="language">Language</string>
+    <string name="about_us">About Us</string>
+    <string name="log_out">Log out</string>
+    <string name="string_upload_fail"> Fail uploading</string>
+    <string name="string_upload_success">Sucessfully upload</string>
+
+    <string name="phone">Phone number</string>
+    <string name="view_allResult">View all result</string>
+    <string name="classes">Classes</string>
+    <string name="trainers">Trainers</string>
+    <string name="myProfile">My Profile</string>
+    <string name="gyms">GYMS</string>
+    <string name="gym">Gym</string>
+    <string name="kwd"> KWD total price</string>
+    <string name="valid">Valid for </string>
+    <string name="clean_filter">Clean All</string>
+    <string name="our_class">Our classes:</string>
+    <string name="empty_text">No data available</string>
+    <string name="facebook_app_id">496906260680338</string>
+    <string name="fb_login_protocol_scheme">fb[496906260680338]</string>
+    <string name="your_current_plan">YOUR CURRENT PLAN</string>
+    <string name="select">SELECT</string>
+    <string name="of"><b>of</b></string>
+    <string name="classes_remaining">classes remaining</string>
+    <string name="valid_till">Valid till</string>
+    <string name="coach_at">Coach at </string>
+    <string name="remaing_day"><b>days</b> remaining until your classes expire.</string>
+    <string name="fuel_your_workout">Fuel your workout.</string>
+    <string name="recharge">Recharge</string>
+    <string name="login_error">The email and password combination is incorrect.\n Please try again.</string>
+    <string name="password_error">The password you entered is incorrect. \n Please Try again</string>
+    <string name="password_error_text">Password must be 6 to 14 character long.</string>
+    <string name="email_error_text">Please provide a valid email.</string>
+
+    <string name="password_required_error">We need Password for login.</string>
+    <string name="email_required_error">We need email for login.</string>
+    <string name="name_required_error">Your name is required.</string>
+    <string name="gender_required">Your gender is required.</string>
+    <string name="email_required">Email is required.</string>
+
+    <string name="email_required_validate">The email you entered is incorrect.</string>
+    <string name="email_exist">Email already exist.Try with other email.</string>
+    <string name="something_went_wrong">Some thing went wrong please try again.</string>
+    <string name="no_classes">No classes are available.\n Try diffrent days to find your match. </string>
+    <string name="password_required">Password is required.</string>
+    <string name="confirm_password_required">Confirm password is required.</string>
+    <string name="confirm_password_not_matched">Password is not confirmed.Please try again.</string>
+
+
+    <string-array name="gender_type">
+        <item>Male</item>
+        <item>Female</item>
+
+    </string-array>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="upcoming_classes">Upcoming Classes</string>
+    <string name="today">Today</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="no_more_data">No more data</string>
+    <string name="loading">Loading</string>
+</resources>

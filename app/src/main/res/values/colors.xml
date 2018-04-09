@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#031d22</color>
+    <color name="colorPrimaryDark">#031d22</color>
+    <color name="colorAccent">#007fe7</color>
+
+    <color name="theme_bg_splash">#031D22</color>
+    <color name="theme_bg">#f1f0ee</color>
+    <color name="separator">#f1f0ee</color>
+    <color name="login_active">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="grey">#999999</color>
+    <color name="white">#FFFFFF</color>
+    <color name="highlight">#1A000000</color>
+    <color name="facebook_button">#485b92</color>
+    <color name="theme_medium_text">#979797</color>
+    <color name="theme_medium_dark_text">#AA031d22</color>
+    <color name="theme_light_text">#c7cfd4</color>
+    <color name="theme_dark_text">#031d22</color>
+    <color name="theme_error_text">#d50000</color>
+    <color name="theme_accent_text">#007fe7</color>
+    <color name="float_transparent">#00000000</color>
+
+    <drawable name="transparent">#00000000</drawable>
+    <drawable name="highlight">#1A000000</drawable>
+
+
+
+</resources>

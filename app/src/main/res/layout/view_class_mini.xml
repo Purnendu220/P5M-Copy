@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/theme_bg"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/cardViewProfile"
+                        style="@style/CardViewProfileSmall"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginBottom="12dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginTop="16dp">
+
+                        <ImageView
+                            android:id="@+id/imageViewProfile"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/colorPrimaryDark"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/info_screen_1" />
+                    </android.support.v7.widget.CardView>
+
+                    <LinearLayout
+                        android:id="@+id/layoutMiddle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/layoutOptions"
+                        android:layout_toRightOf="@+id/cardViewProfile"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingBottom="8dp"
+                        android:paddingTop="16dp">
+
+                        <TextView
+                            android:id="@+id/textViewTrainerName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center_vertical"
+                            android:letterSpacing="@dimen/text_title_letter_spacing"
+                            android:maxLines="2"
+                            android:text="Name of the Class"
+                            android:textColor="@color/theme_dark_text"
+                            android:textSize="@dimen/text_title" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingTop="4dp">
+
+                            <ImageView
+                                android:id="@+id/imageViewTrainerProfile"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginRight="8dp"
+                                android:src="@drawable/users" />
+
+                            <TextView
+                                android:id="@+id/textViewClassTrainer"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_toEndOf="@+id/imageViewClassCategory"
+                                android:fontFamily="sans-serif"
+                                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                                android:lineSpacingExtra="@dimen/line_spacing_extra"
+                                android:text="Varun John"
+                                android:textColor="@color/theme_dark_text"
+                                android:textSize="@dimen/text_medium" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutOptions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true">
+
+                        <ImageView
+                            android:id="@+id/imageViewOptions"
+                            style="@style/ToolBarIcon"
+                            android:layout_height="wrap_content"
+                            android:padding="15dp"
+                            android:src="@drawable/more_options" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="4dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageViewClassCategory"
+                        style="@style/ClassIconSmall"
+                        android:src="@drawable/class_icon" />
+
+                    <TextView
+                        android:id="@+id/textViewClassCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="@dimen/text_icon_gap"
+                        android:layout_toEndOf="@+id/imageViewClassCategory"
+                        android:fontFamily="sans-serif"
+                        android:letterSpacing="@dimen/text_medium_letter_spacing"
+                        android:lineSpacingExtra="@dimen/line_spacing_extra"
+                        android:text="Class A: Boxing, strength training and cardio"
+                        android:textColor="@color/theme_dark_text"
+                        android:textSize="@dimen/text_medium" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageViewClassDate"
+                        style="@style/ClassIconSmall"
+                        android:src="@drawable/calendar" />
+
+                    <TextView
+                        android:id="@+id/textViewClassDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="@dimen/text_icon_gap"
+                        android:layout_toEndOf="@+id/imageViewClassDate"
+                        android:fontFamily="sans-serif"
+                        android:letterSpacing="@dimen/text_medium_letter_spacing"
+                        android:lineSpacingExtra="@dimen/line_spacing_extra"
+                        android:text="January 11, 2018"
+                        android:textColor="@color/theme_dark_text"
+                        android:textSize="@dimen/text_medium" />
+
+                    <ImageView
+                        android:id="@+id/imageViewClassTime"
+                        style="@style/ClassIconSmall"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="40dp"
+                        android:layout_toEndOf="@+id/textViewClassDate"
+                        android:src="@drawable/time" />
+
+                    <TextView
+                        android:id="@+id/textViewClassTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="@dimen/text_icon_gap"
+                        android:layout_toEndOf="@+id/imageViewClassTime"
+                        android:fontFamily="sans-serif"
+                        android:letterSpacing="@dimen/text_medium_letter_spacing"
+                        android:lineSpacingExtra="@dimen/line_spacing_extra"
+                        android:text="7:00 - 8:00 PM"
+                        android:textColor="@color/theme_dark_text"
+                        android:textSize="@dimen/text_medium" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageViewLocation"
+                        style="@style/ClassIconSmall"
+                        android:src="@drawable/location" />
+
+                    <TextView
+                        android:id="@+id/textViewLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginLeft="@dimen/text_icon_gap"
+                        android:layout_toEndOf="@+id/imageViewLocation"
+                        android:layout_toStartOf="@+id/button"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif"
+                        android:letterSpacing="@dimen/text_medium_letter_spacing"
+                        android:lineSpacingExtra="@dimen/line_spacing_extra"
+                        android:maxLines="3"
+                        android:text="Fikra Edutech Logix Technova, Noida Sector 132"
+                        android:textColor="@color/theme_dark_text"
+                        android:textSize="@dimen/text_medium" />
+
+                    <Button
+                        android:id="@+id/button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@+id/imageViewClass"
+                        android:layout_gravity="right"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/join_rect"
+                        android:fontFamily="sans-serif-medium"
+                        android:letterSpacing="@dimen/button_letter_spacing"
+                        android:text="@string/join"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/button_text_medium" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@color/separator" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>
