@@ -10,6 +10,7 @@ import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.storage.preferences.MyPreferences;
 import www.gymhop.p5m.view.activity.LoginRegister.InfoScreen;
+import www.gymhop.p5m.view.activity.Main.Home;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
 public class Splash extends BaseActivity {
@@ -34,6 +35,7 @@ public class Splash extends BaseActivity {
         imageViewImage.animate().scaleXBy(0.3f).scaleYBy(0.3f).setDuration(1000).setInterpolator(new BounceInterpolator()).start();
 
         startTimerForGoToNextScreen();
+
     }
 
     private void startTimerForGoToNextScreen() {
@@ -41,9 +43,9 @@ public class Splash extends BaseActivity {
             @Override
             public void run() {
 
-                if(MyPreferences.getInstance(context).isLogin()) {
+                if(MyPreferences.getInstance().isLogin()) {
                     /////////// Home Screen ////////////
-
+                    Home.open(context);
 
                 } else {
                     /////////// Login Page ////////////

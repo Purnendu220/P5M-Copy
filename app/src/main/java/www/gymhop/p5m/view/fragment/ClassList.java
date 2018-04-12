@@ -3,7 +3,6 @@ package www.gymhop.p5m.view.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,23 +18,33 @@ import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.adapters.ClassListAdapter;
-import www.gymhop.p5m.adapters.loader.Loader;
-import www.gymhop.p5m.data.Class;
+import www.gymhop.p5m.data.CityLocality;
+import www.gymhop.p5m.data.ClassActivity;
+import www.gymhop.p5m.data.ClassesFilter;
+import www.gymhop.p5m.data.Filter;
+import www.gymhop.p5m.data.gym_class.ClassModel;
+import www.gymhop.p5m.data.request_model.ClassListRequest;
+import www.gymhop.p5m.restapi.NetworkCommunicator;
+import www.gymhop.p5m.restapi.ResponseModel;
+import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.view.activity.custom.MyRecyclerView;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class ClassList extends BaseFragment implements MyRecyclerView.LoaderCallbacks, AdapterCallbacks<Class> {
+public class ClassList extends BaseFragment implements ViewPagerFragmentSelection, MyRecyclerView.LoaderCallbacks, AdapterCallbacks<Object>, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.recyclerViewClass)
     public RecyclerView recyclerViewClass;
     @BindView(R.id.swipeRefreshLayout)
     public SwipeRefreshLayout swipeRefreshLayout;
 
+    private String date;
+    private int page;
+    private ClassListRequest classListRequest;
     private ClassListAdapter classListAdapter;
+
+    private int fragmentPositionInViewPager;
+    private boolean isShownFirstTime = true;
 
     public ClassList() {
     }
@@ -51,24 +60,60 @@ public class ClassList extends BaseFragment implements MyRecyclerView.LoaderCall
         super.onActivityCreated(savedInstanceState);
 
         ButterKnife.bind(this, getView());
-        int position = getArguments().getInt(AppConstants.DataKey.TAB_POSITION_INT);
+
+        swipeRefreshLayout.setOnRefreshListener(this);
+
+        fragmentPositionInViewPager = getArguments().getInt(AppConstants.DataKey.TAB_POSITION_INT);
+        date = getArguments().getString(AppConstants.DataKey.CLASS_DATE_STRING, null);
 
         recyclerViewClass.setLayoutManager(new LinearLayoutManager(activity));
         recyclerViewClass.setHasFixedSize(false);
 
-        classListAdapter = new ClassListAdapter(context, this);
+        classListAdapter = new ClassListAdapter(context, true, this);
         recyclerViewClass.setAdapter(classListAdapter);
 
-        List<Class> classes = new ArrayList<>();
-        for (int count = 0; count < 5; count++) {
-            classes.add(new Class());
+    }
+
+    private ClassListRequest generateRequest() {
+        List<ClassesFilter> filters = TempStorage.getFilters();
+
+        if (classListRequest == null) {
+            classListRequest = new ClassListRequest();
         }
 
-        classListAdapter.setData(classes);
-        classListAdapter.setLoader(true, true,
-                getString(R.string.loading), getString(R.string.no_more_data), new Loader.ClassLoader(), this);
-        classListAdapter.enableLoader();
+        classListRequest.setClassDate(date);
+        classListRequest.setPage(page);
+        classListRequest.setSize(AppConstants.Limit.PAGE_LIMIT_MAIN_CLASS_LIST);
+        classListRequest.setUserId(TempStorage.getUser().getId());
 
+        classListRequest.setActivityList(null);
+        classListRequest.setGenderList(null);
+        classListRequest.setTimingList(null);
+        classListRequest.setLocationList(null);
+
+        List<String> times = new ArrayList<>();
+        List<String> activities = new ArrayList<>();
+        List<String> genders = new ArrayList<>();
+        List<CityLocality> cityLocalities = new ArrayList<>();
+
+        for (ClassesFilter classesFilter : TempStorage.getFilters()) {
+            if (classesFilter.getObject() instanceof CityLocality) {
+                cityLocalities.add((CityLocality) classesFilter.getObject());
+            } else if (classesFilter.getObject() instanceof Filter.Time) {
+                times.add(((Filter.Time) classesFilter.getObject()).getId());
+            } else if (classesFilter.getObject() instanceof Filter.Gender) {
+                genders.add(((Filter.Gender) classesFilter.getObject()).getId());
+            } else if (classesFilter.getObject() instanceof ClassActivity) {
+                activities.add(String.valueOf(((ClassActivity) classesFilter.getObject()).getId()));
+            }
+        }
+
+        classListRequest.setActivityList(activities);
+        classListRequest.setGenderList(genders);
+        classListRequest.setTimingList(times);
+        classListRequest.setLocationList(cityLocalities);
+
+        return classListRequest;
     }
 
     @Override
@@ -77,17 +122,61 @@ public class ClassList extends BaseFragment implements MyRecyclerView.LoaderCall
     }
 
     @Override
-    public void onItemClick(View viewRoot, View view, Class model, int position) {
+    public void onAdapterItemClick(View viewRoot, View view, Object model, int position) {
         www.gymhop.p5m.view.activity.Main.TrainerProfile.open(context);
     }
 
     @Override
-    public void onItemLongClick(View viewRoot, View view, Class model, int position) {
-
+    public void onAdapterItemLongClick(View viewRoot, View view, Object model, int position) {
     }
 
     @Override
     public void onShowLastItem() {
+    }
 
+    @Override
+    public void onApiSuccess(Object response, int requestCode) {
+
+        switch (requestCode) {
+            case NetworkCommunicator.RequestCode.CLASS_LIST:
+                swipeRefreshLayout.setRefreshing(false);
+                List<ClassModel> classModels = ((ResponseModel<List<ClassModel>>) response).data;
+
+                if (!classModels.isEmpty()) {
+                    classListAdapter.addAllClass(classModels);
+                    classListAdapter.notifyDataSetChanged();
+                } else {
+                    checkListData();
+                }
+                break;
+        }
+    }
+
+    private void checkListData() {
+    }
+
+    @Override
+    public void onApiFailure(String errorMessage, int requestCode) {
+        switch (requestCode) {
+            case NetworkCommunicator.RequestCode.CLASS_LIST:
+
+                swipeRefreshLayout.setRefreshing(false);
+                break;
+        }
+    }
+
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        networkCommunicator.getClassList(generateRequest(), this, false);
+    }
+
+    @Override
+    public void onTabSelection(int position) {
+        if (fragmentPositionInViewPager == position && isShownFirstTime) {
+            isShownFirstTime = false;
+
+            onRefresh();
+        }
     }
 }

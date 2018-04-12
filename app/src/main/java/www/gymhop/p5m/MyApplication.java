@@ -8,21 +8,19 @@ import android.os.Bundle;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
-import com.shawnlin.preferencesmanager.PreferencesManager;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import www.gymhop.p5m.receivers.NetworkChangeReceiver;
 import www.gymhop.p5m.storage.TempStorage;
-import www.gymhop.p5m.utils.AppConstants;
+import www.gymhop.p5m.storage.preferences.MyPreferences;
 import www.gymhop.p5m.utils.LogUtils;
 
 public class MyApplication extends MultiDexApplication implements NetworkChangeReceiver.OnNetworkChangeListener, Application.ActivityLifecycleCallbacks {
 
     private Context context;
 
-    public final static ApiMode apiMode = ApiMode.TESTING_ALPHA;
+    public final static ApiMode apiMode = ApiMode.TESTING_BETA;
     public final static boolean SHOW_LOG = true;
     public final static boolean RETROFIT_SHOW_LOG = true;
     public final static boolean USE_CRASH_ANALYTICS = false;
@@ -46,7 +44,8 @@ public class MyApplication extends MultiDexApplication implements NetworkChangeR
         MultiDex.install(this);
 
         NetworkChangeReceiver.register(this);
-        new PreferencesManager(context).setName(AppConstants.Pref.NAME).init();
+
+        MyPreferences.initialize(context);
 
         String myVersionName = "not available";
         PackageManager packageManager = getPackageManager();

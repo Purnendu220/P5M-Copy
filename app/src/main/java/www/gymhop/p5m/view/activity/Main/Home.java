@@ -25,7 +25,7 @@ import www.gymhop.p5m.view.fragment.Trainers;
 public class Home extends BaseActivity implements BottomTapLayout.TabListener {
 
     public static void open(Context context) {
-        context.startActivity(new Intent(context, Home.class));
+        context.startActivity(new Intent(context, Home.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
 
     @BindView(R.id.layoutBottomTabs)
@@ -82,25 +82,25 @@ public class Home extends BaseActivity implements BottomTapLayout.TabListener {
             if (frag == null) {
                 frag = new FindClass();
             }
-            transaction.replace(R.id.layoutFragment, frag, "FindClass").commit();
+            transaction.replace(R.id.layoutFragment, frag, "FindClass").commitNow();
         } else if (tab.id == TAB_TRAINER) {
             Fragment frag = getSupportFragmentManager().findFragmentByTag("Trainers");
             if (frag == null) {
                 frag = new Trainers();
             }
-            transaction.replace(R.id.layoutFragment, frag, "Trainers").commit();
+            transaction.replace(R.id.layoutFragment, frag, "Trainers").commitNow();
         } else if (tab.id == TAB_SCHEDULE) {
             Fragment frag = getSupportFragmentManager().findFragmentByTag("MySchedule");
             if (frag == null) {
                 frag = new MySchedule();
             }
-            transaction.replace(R.id.layoutFragment, frag, "MySchedule").commit();
+            transaction.replace(R.id.layoutFragment, frag, "MySchedule").commitNow();
         } else if (tab.id == TAB_MY_PROFILE) {
             Fragment frag = getSupportFragmentManager().findFragmentByTag("MyProfile");
             if (frag == null) {
                 frag = new MyProfile();
             }
-            transaction.replace(R.id.layoutFragment, frag, "MyProfile").commit();
+            transaction.replace(R.id.layoutFragment, frag, "MyProfile").commitNow();
         }
     }
 

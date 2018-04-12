@@ -23,6 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.FindClassAdapter;
+import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.DateUtils;
 import www.gymhop.p5m.view.activity.Main.FilterActivity;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
@@ -68,11 +69,42 @@ public class FindClass extends BaseFragment implements View.OnClickListener {
         findClassAdapter = new FindClassAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_DATE_TABS);
         viewPager.setAdapter(findClassAdapter);
         findClassAdapter.setCalendarList(calendarList);
-        viewPager.setOffscreenPageLimit(0);
+        viewPager.setOffscreenPageLimit(TOTAL_DATE_TABS);
 
         tabLayout.setTabTextColors(ContextCompat.getColorStateList(context, R.color.date_tabs));
         tabLayout.setupWithViewPager(viewPager);
 
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                try {
+                    ((ViewPagerFragmentSelection) findClassAdapter.getFragments().get(position)).onTabSelection(position);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+
+        viewPager.setCurrentItem(0);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (TempStorage.getFilters().isEmpty()) {
+            textViewNotificationMessageCounter.setVisibility(View.INVISIBLE);
+        } else {
+            textViewNotificationMessageCounter.setVisibility(View.VISIBLE);
+            textViewNotificationMessageCounter.setText(String.valueOf(TempStorage.getFilters().size()));
+        }
     }
 
     private void generateTabs() {
@@ -135,8 +167,6 @@ public class FindClass extends BaseFragment implements View.OnClickListener {
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT));
         activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
-
-
     }
 
     @Override

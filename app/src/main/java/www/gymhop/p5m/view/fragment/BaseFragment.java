@@ -10,10 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import www.gymhop.p5m.restapi.NetworkCommunicator;
+
 public class BaseFragment extends Fragment {
 
     public Activity activity;
     public Context context;
+
+    public NetworkCommunicator networkCommunicator;
 
     public BaseFragment() {
     }
@@ -30,5 +34,9 @@ public class BaseFragment extends Fragment {
 
         activity = getActivity();
         context = getActivity();
+
+        networkCommunicator = NetworkCommunicator.getInstance(context);
+
     }
+
 }

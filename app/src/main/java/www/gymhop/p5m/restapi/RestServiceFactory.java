@@ -28,6 +28,7 @@ public class RestServiceFactory {
     private static <S> S createService(Class<S> serviceClass) {
         if (apiService == null) {
 
+
             if (MyApplication.RETROFIT_SHOW_LOG) {
                 HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
                 logging.setLevel(HttpLoggingInterceptor.Level.BODY);

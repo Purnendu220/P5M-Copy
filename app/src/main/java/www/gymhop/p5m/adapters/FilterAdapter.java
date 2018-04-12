@@ -27,9 +27,12 @@ public class FilterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private List<ClassesFilter> classesFilterList;
     private List<ClassesFilter> list;
 
+    private List<ClassesFilter> classesFiltersSelected;
+
     public FilterAdapter(Context context, AdapterCallbacks adapterCallbacks) {
         this.context = context;
         list = new ArrayList<>();
+        classesFiltersSelected = new ArrayList<>();
         this.adapterCallbacks = adapterCallbacks;
         dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
     }
@@ -48,9 +51,59 @@ public class FilterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         refreshList();
     }
 
+    public void addSelection(List<ClassesFilter> filters) {
+        classesFiltersSelected.addAll(filters);
+    }
+
+    public void addSelection(ClassesFilter filter) {
+        classesFiltersSelected.add(filter);
+    }
+
+    public void removeSelection(ClassesFilter filter) {
+        classesFiltersSelected.remove(filter);
+    }
+    public void removeAllSelection() {
+        classesFiltersSelected.clear();
+    }
+
+    public List<ClassesFilter> getClassesFiltersSelected() {
+        return classesFiltersSelected;
+    }
+
     public void refreshList() {
         list.clear();
         setList(classesFilterList);
+    }
+
+    public boolean isFilterSelected(ClassesFilter filter) {
+        if (classesFiltersSelected != null) {
+            return classesFiltersSelected.contains(filter);
+        }
+        return false;
+    }
+
+    public void clearExpansionAndSelection() {
+        list.clear();
+        classesFiltersSelected.clear();
+        clearSelected(classesFilterList);
+        notifyDataSetChanged();
+    }
+
+    private void clearSelected(List<ClassesFilter> classesFilterList) {
+        if (classesFilterList != null) {
+            for (ClassesFilter classesFilter : classesFilterList) {
+                if (classesFilter.getType() == ClassesFilter.TYPE_HEADER) {
+                    list.add(classesFilter);
+                    classesFilter.setExpanded(false);
+                    clearSelected(classesFilter.getList());
+                } else if (classesFilter.getType() == ClassesFilter.TYPE_SUB_HEADER) {
+                    classesFilter.setExpanded(false);
+                    clearSelected(classesFilter.getList());
+                } else if (classesFilter.getType() == ClassesFilter.TYPE_ITEM) {
+                    classesFilter.setSelected(false);
+                }
+            }
+        }
     }
 
     private void setList(List<ClassesFilter> classesFilterList) {
@@ -62,6 +115,7 @@ public class FilterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         setList(classesFilter.getList());
                     }
                 } else if (classesFilter.getType() == ClassesFilter.TYPE_ITEM) {
+                    classesFilter.setSelected(isFilterSelected(classesFilter) ? true : false);
                     list.add(classesFilter);
                 }
             }

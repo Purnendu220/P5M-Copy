@@ -80,12 +80,12 @@ public class TrainerProfile extends BaseFragment implements AdapterCallbacks {
     }
 
     @Override
-    public void onItemClick(View viewRoot, View view, Object model, int position) {
+    public void onAdapterItemClick(View viewRoot, View view, Object model, int position) {
 
     }
 
     @Override
-    public void onItemLongClick(View viewRoot, View view, Object model, int position) {
+    public void onAdapterItemLongClick(View viewRoot, View view, Object model, int position) {
 
     }
 

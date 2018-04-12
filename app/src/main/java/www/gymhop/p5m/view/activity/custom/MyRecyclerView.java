@@ -74,7 +74,7 @@ public class MyRecyclerView<T> extends RecyclerView.Adapter<RecyclerView.ViewHol
             if (showLoader && loader.enableLoader && loaderCallbacks != null) {
                 loaderCallbacks.onShowLoader(loaderItem, loader, holder.itemView, position);
             }
-            ((LoaderViewHolder) holder).bind(loaderItem, loader, holder.itemView, holder.itemView, position);
+//            ((LoaderViewHolder) holder).bind(listL, holder.itemView, holder.itemView, position);
         }
     }
 

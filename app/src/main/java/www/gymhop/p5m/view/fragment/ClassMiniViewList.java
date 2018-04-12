@@ -24,7 +24,7 @@ import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.view.activity.custom.MyRecyclerView;
 
-public class ClassMiniViewList extends BaseFragment implements AdapterCallbacks<Class>, MyRecyclerView.LoaderCallbacks {
+public class ClassMiniViewList extends BaseFragment implements AdapterCallbacks<Object>, MyRecyclerView.LoaderCallbacks {
 
     @BindView(R.id.recyclerViewClass)
     public RecyclerView recyclerViewClass;
@@ -72,12 +72,12 @@ public class ClassMiniViewList extends BaseFragment implements AdapterCallbacks<
     }
 
     @Override
-    public void onItemClick(View viewRoot, View view, Class model, int position) {
+    public void onAdapterItemClick(View viewRoot, View view, Object model, int position) {
         www.gymhop.p5m.view.activity.Main.TrainerProfile.open(context);
     }
 
     @Override
-    public void onItemLongClick(View viewRoot, View view, Class model, int position) {
+    public void onAdapterItemLongClick(View viewRoot, View view, Object model, int position) {
 
     }
 

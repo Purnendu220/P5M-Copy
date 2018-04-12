@@ -17,13 +17,13 @@ import www.gymhop.p5m.view.activity.custom.MyRecyclerView;
 public class ClassMiniViewAdapter extends MyRecyclerView<Class> {
 
     private static final int VIEW_TYPE_CLASS = 0;
-    private final AdapterCallbacks<Class> adapterCallbacks;
+    private final AdapterCallbacks<Object> adapterCallbacks;
 
-    private List<Class> model;
+    private List<Object> model;
     private boolean isLoadingAdded = false;
     private Context context;
 
-    public ClassMiniViewAdapter(Context context, AdapterCallbacks<Class> adapterCallbacks) {
+    public ClassMiniViewAdapter(Context context, AdapterCallbacks<Object> adapterCallbacks) {
         this.adapterCallbacks = adapterCallbacks;
         this.context = context;
         model = new ArrayList<>();
@@ -64,7 +64,7 @@ public class ClassMiniViewAdapter extends MyRecyclerView<Class> {
         return super.getItemCount();
     }
 
-    public Class getItem(int position) {
+    public Object getItem(int position) {
         if (model != null && model.size() > 0)
             return model.get(position);
         else

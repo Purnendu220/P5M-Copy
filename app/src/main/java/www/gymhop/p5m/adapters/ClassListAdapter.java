@@ -13,30 +13,59 @@ import java.util.List;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.viewholder.ClassViewHolder;
 import www.gymhop.p5m.adapters.viewholder.EmptyViewHolder;
-import www.gymhop.p5m.data.Class;
-import www.gymhop.p5m.view.activity.custom.MyRecyclerView;
+import www.gymhop.p5m.adapters.viewholder.LoaderViewHolder;
+import www.gymhop.p5m.data.ListLoader;
+import www.gymhop.p5m.data.gym_class.ClassModel;
 
 public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int VIEW_TYPE_CLASS = 1;
-    private final AdapterCallbacks<Class> adapterCallbacks;
+    private static final int VIEW_TYPE_LOADER = 2;
+    private static final int VIEW_TYPE_UNKNOWN = 3;
 
-    private List<Class> list;
+    private final AdapterCallbacks<Object> adapterCallbacks;
+
+    private List<Object> list;
     private Context context;
 
-    public ClassListAdapter(Context context, AdapterCallbacks<Class> adapterCallbacks) {
+    private boolean showLoader;
+    private ListLoader listLoader;
+
+    public ClassListAdapter(Context context, boolean showLoader, AdapterCallbacks<Object> adapterCallbacks) {
         this.adapterCallbacks = adapterCallbacks;
         this.context = context;
         list = new ArrayList<>();
+        this.showLoader = showLoader;
+        listLoader = new ListLoader();
+    }
+
+    public void addAllClass(ClassModel model) {
+        list.add(model);
+        addLoader();
+    }
+
+    public void addAllClass(List<ClassModel> models) {
+        list.addAll(models);
+        addLoader();
+    }
+
+    private void addLoader() {
+        if (showLoader && list.contains(listLoader)) {
+            list.remove(listLoader);
+            list.add(listLoader);
+        }
     }
 
     @Override
     public int getItemViewType(int position) {
 
-        int itemViewType = super.getItemViewType(position);
+        int itemViewType = VIEW_TYPE_UNKNOWN;
 
-        if (itemViewType == MyRecyclerView.VIEW_TYPE_UNKNOWN) {
+        Object item = getItem(position);
+        if (item instanceof ClassModel) {
             itemViewType = VIEW_TYPE_CLASS;
+        } else if (item instanceof ListLoader) {
+            itemViewType = VIEW_TYPE_UNKNOWN;
         }
 
         return itemViewType;
@@ -47,6 +76,10 @@ public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (viewType == VIEW_TYPE_CLASS) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_class, parent, false);
             return new ClassViewHolder(view);
+
+        } else if (viewType == VIEW_TYPE_LOADER) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_list_progress, parent, false);
+            return new LoaderViewHolder(view);
         }
 
         return new EmptyViewHolder(new LinearLayout(context));
@@ -56,6 +89,8 @@ public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ClassViewHolder) {
             ((ClassViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
+        } else if (holder instanceof LoaderViewHolder) {
+            ((LoaderViewHolder) holder).bind(listLoader, adapterCallbacks);
         }
     }
 
@@ -64,7 +99,7 @@ public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return list.size();
     }
 
-    public Class getItem(int position) {
+    public Object getItem(int position) {
         if (list != null && list.size() > 0)
             return list.get(position);
         else

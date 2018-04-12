@@ -159,7 +159,7 @@ public class BottomTapLayout implements View.OnClickListener {
                 tabView.textView.setText(tab.textActive);
                 tabView.textView.setTextColor(tab.textColorActive);
                 tab.isActive = true;
-                tabView.linearLayout.animate().scaleXBy(.12f).scaleYBy(.12f).setDuration(400).setInterpolator(new LinearInterpolator()).start();
+                tabView.linearLayout.animate().scaleXBy(.12f).scaleYBy(.12f).setDuration(100).setInterpolator(new LinearInterpolator()).start();
 
             } else {
                 tabView.imageView.setImageResource(tab.imageResInactive);
@@ -167,7 +167,7 @@ public class BottomTapLayout implements View.OnClickListener {
                 tabView.textView.setText(tab.textInactive);
                 tabView.textView.setTextColor(tab.textColorInactive);
                 tab.isActive = false;
-                tabView.linearLayout.animate().scaleX(1f).scaleY(1f).setDuration(400).setInterpolator(new LinearInterpolator()).start();
+                tabView.linearLayout.animate().scaleX(1f).scaleY(1f).setDuration(200).setInterpolator(new LinearInterpolator()).start();
             }
         }
     }

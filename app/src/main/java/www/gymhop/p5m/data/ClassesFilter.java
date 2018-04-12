@@ -1,12 +1,13 @@
 package www.gymhop.p5m.data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Varun John on 4/5/2018.
  */
 
-public class ClassesFilter<K,T> {
+public class ClassesFilter implements Serializable {
 
     public static int TYPE_ITEM = 1;
     public static int TYPE_HEADER = 2;
@@ -18,29 +19,53 @@ public class ClassesFilter<K,T> {
     private boolean isExpanded;
     private boolean isSelected;
 
-    private List<ClassesFilter<K,T>> list;
-    private K object;
+    private boolean isLoading;
 
-    public List<ClassesFilter<K, T>> getList() {
-        return list;
-    }
-
-    public void setList(List<ClassesFilter<K, T>> list) {
-        this.list = list;
-    }
-
-    public K getObject() {
-        return object;
-    }
-
-    public void setObject(K object) {
-        this.object = object;
-    }
+    private List<ClassesFilter> list;
+    private Object object;
 
     public ClassesFilter(String name, int iconResource, int type) {
         this.name = name;
         this.iconResource = iconResource;
         this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (obj instanceof ClassesFilter) {
+            ClassesFilter filter = (ClassesFilter) obj;
+
+            if (filter.getObject() != null && filter.getName().equals(this.getName())) {
+                return true;
+            }
+        }
+
+        return super.equals(obj);
+    }
+
+    public List<ClassesFilter> getList() {
+        return list;
+    }
+
+    public void setList(List<ClassesFilter> list) {
+        this.list = list;
+    }
+
+    public Object getObject() {
+        return object;
+    }
+
+    public void setObject(Object object) {
+        this.object = object;
+    }
+
+    public boolean isLoading() {
+        return isLoading;
+    }
+
+    public void setLoading(boolean loading) {
+        isLoading = loading;
     }
 
     public String getName() {

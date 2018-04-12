@@ -30,4 +30,5 @@
     <dimen name="text_small">12sp</dimen>
     <dimen name="text_extra_small">10sp</dimen>
     <dimen name="indicator_list_header_tab">2dp</dimen>
+    <dimen name="bottom_text_button_height">48dp</dimen>
 </resources>

@@ -1,26 +1,30 @@
 package www.gymhop.p5m.data.request_model;
 
+import java.util.List;
+
 import www.gymhop.p5m.data.CityLocality;
 
 public class ClassListRequest implements java.io.Serializable {
     private static final long serialVersionUID = -9109485815849361072L;
-    private CityLocality[] locationList;
+
+    private List<CityLocality> locationList;
+    private List<String> timingList;
+    private List<String> activityList;
+    private List<String> genderList;
+
     private String classDate;
-    private String[] timingList;
+    private int userId;
     private int size;
     private int page;
-    private String[] activityList;
-    private int userId;
-    private String[] genderList;
 
     public ClassListRequest() {
     }
 
-    public CityLocality[] getLocationList() {
+    public List<CityLocality> getLocationList() {
         return locationList;
     }
 
-    public void setLocationList(CityLocality[] locationList) {
+    public void setLocationList(List<CityLocality> locationList) {
         this.locationList = locationList;
     }
 
@@ -32,11 +36,11 @@ public class ClassListRequest implements java.io.Serializable {
         this.classDate = classDate;
     }
 
-    public String[] getTimingList() {
+    public List<String> getTimingList() {
         return timingList;
     }
 
-    public void setTimingList(String[] timingList) {
+    public void setTimingList(List<String> timingList) {
         this.timingList = timingList;
     }
 
@@ -56,11 +60,11 @@ public class ClassListRequest implements java.io.Serializable {
         this.page = page;
     }
 
-    public String[] getActivityList() {
+    public List<String> getActivityList() {
         return activityList;
     }
 
-    public void setActivityList(String[] activityList) {
+    public void setActivityList(List<String> activityList) {
         this.activityList = activityList;
     }
 
@@ -72,11 +76,11 @@ public class ClassListRequest implements java.io.Serializable {
         this.userId = userId;
     }
 
-    public String[] getGenderList() {
+    public List<String> getGenderList() {
         return genderList;
     }
 
-    public void setGenderList(String[] genderList) {
+    public void setGenderList(List<String> genderList) {
         this.genderList = genderList;
     }
 }

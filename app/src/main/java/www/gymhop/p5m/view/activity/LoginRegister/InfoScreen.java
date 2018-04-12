@@ -16,7 +16,6 @@ import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.InfoScreenAdapter;
 import www.gymhop.p5m.data.InfoScreenData;
 import www.gymhop.p5m.utils.ViewPagerIndicator;
-import www.gymhop.p5m.view.activity.Main.Home;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
 public class InfoScreen extends BaseActivity {
@@ -66,7 +65,7 @@ public class InfoScreen extends BaseActivity {
 
     @OnClick(R.id.buttonRegister)
     public void register() {
-        Home.open(context);
+//        Home.open(context);
     }
 
 }

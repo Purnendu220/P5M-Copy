@@ -85,6 +85,10 @@
     <string name="login_gamil">ENTER WITH GOOGLE</string>
     <string name="signup_email">SIGN UP WITH EMAIL</string>
 
+    <string name="booked">Booked</string>
+    <string name="full">Full</string>
+    <string name="book">Book</string>
+
     <string name="email"><font size="10">E-mail</font></string>
     <string name="password"><font size="5">Password</font></string>
     <string name="reminders">REMINDERS:</string>
@@ -96,7 +100,6 @@
     <string name="favorite_trainer">Favourite Trainer</string>
     <string name="finished">Finished</string>
     <string name="join">JOIN</string>
-    <string name="full">FULL</string>
     <string name="joined">JOINED</string>
     <string name="gender">pls!select gender</string>
     <string name="addInWishList">Added in your wish List</string>
@@ -129,6 +132,7 @@
     <string name="kwd"> KWD total price</string>
     <string name="valid">Valid for </string>
     <string name="clean_filter">Clean All</string>
+    <string name="filter">Filter</string>
     <string name="our_class">Our classes:</string>
     <string name="empty_text">No data available</string>
     <string name="facebook_app_id">496906260680338</string>

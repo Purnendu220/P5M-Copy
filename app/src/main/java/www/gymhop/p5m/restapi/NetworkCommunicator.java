@@ -8,6 +8,10 @@ import retrofit2.Call;
 import retrofit2.Response;
 import www.gymhop.p5m.data.City;
 import www.gymhop.p5m.data.ClassActivity;
+import www.gymhop.p5m.data.User;
+import www.gymhop.p5m.data.gym_class.ClassModel;
+import www.gymhop.p5m.data.request_model.ClassListRequest;
+import www.gymhop.p5m.data.request_model.LoginRequest;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.storage.preferences.MyPreferences;
 import www.gymhop.p5m.utils.LogUtils;
@@ -27,8 +31,12 @@ public class NetworkCommunicator {
 
     public class RequestCode {
 
+        public static final int LOGIN = 100;
         public static final int ALL_CITY = 101;
         public static final int ALL_CLASS_ACTIVITY = 102;
+
+        public static final int CLASS_LIST = 103;
+        public static final int TRAINER_LIST = 104;
 
     }
 
@@ -40,7 +48,7 @@ public class NetworkCommunicator {
     private NetworkCommunicator(Context context) {
         this.context = context;
         this.apiService = RestServiceFactory.createService();
-        this.myPreferences = MyPreferences.getInstance(context);
+        this.myPreferences = MyPreferences.initialize(context);
     }
 
     public static NetworkCommunicator getInstance(Context context) {
@@ -48,6 +56,32 @@ public class NetworkCommunicator {
             networkCommunicator = new NetworkCommunicator(context);
         }
         return networkCommunicator;
+    }
+
+
+    public Call login(LoginRequest loginRequest, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.LOGIN;
+        Call<ResponseModel<User>> call = apiService.login(loginRequest);
+        LogUtils.debug("NetworkCommunicator hitting login");
+
+        if (useCache) {
+
+        }
+
+        call.enqueue(new RestCallBack<ResponseModel<User>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<User>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator login onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<User>> call, Response<ResponseModel<User>> restResponse, ResponseModel<User> response) {
+                LogUtils.networkSuccess("NetworkCommunicator login onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
     }
 
     public Call getCities(final RequestListener requestListener, boolean useCache) {
@@ -59,7 +93,9 @@ public class NetworkCommunicator {
             List<City> cities = TempStorage.getCities();
 
             if (cities != null) {
-                requestListener.onApiSuccess(cities, requestCode);
+                ResponseModel<List<City>> responseModel = new ResponseModel<>();
+                responseModel.data = cities;
+                requestListener.onApiSuccess(responseModel, requestCode);
                 return null;
             }
         }
@@ -75,6 +111,7 @@ public class NetworkCommunicator {
             public void onResponse(Call<ResponseModel<List<City>>> call, Response<ResponseModel<List<City>>> restResponse, ResponseModel<List<City>> response) {
                 LogUtils.networkSuccess("NetworkCommunicator getCities onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
+                TempStorage.setCities(response.data);
             }
         });
         return call;
@@ -89,7 +126,9 @@ public class NetworkCommunicator {
             List<ClassActivity> activities = TempStorage.getActivities();
 
             if (activities != null) {
-                requestListener.onApiSuccess(activities, requestCode);
+                ResponseModel<List<ClassActivity>> responseModel = new ResponseModel<>();
+                responseModel.data = activities;
+                requestListener.onApiSuccess(responseModel, requestCode);
                 return null;
             }
         }
@@ -105,10 +144,40 @@ public class NetworkCommunicator {
             public void onResponse(Call<ResponseModel<List<ClassActivity>>> call, Response<ResponseModel<List<ClassActivity>>> restResponse, ResponseModel<List<ClassActivity>> response) {
                 LogUtils.networkSuccess("NetworkCommunicator getActivities onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
+                TempStorage.setActivities(response.data);
             }
         });
         return call;
     }
 
+    public Call getClassList(ClassListRequest classListRequest, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.CLASS_LIST;
+        Call<ResponseModel<List<ClassModel>>> call = apiService.getClassList(classListRequest);
+        LogUtils.debug("NetworkCommunicator hitting getClassList");
+
+        if (useCache) {
+//            List<ClassModel> cities = TempStorage.getCities();
+//
+//            if (cities != null) {
+//                requestListener.onApiSuccess(cities, requestCode);
+//                return null;
+//            }
+        }
+
+        call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<List<ClassModel>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getClassList onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<ClassModel>>> call, Response<ResponseModel<List<ClassModel>>> restResponse, ResponseModel<List<ClassModel>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getClassList onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
 
 }

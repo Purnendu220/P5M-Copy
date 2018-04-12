@@ -2,12 +2,16 @@ package www.gymhop.p5m.view.activity.Main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -25,9 +29,10 @@ import www.gymhop.p5m.data.ClassesFilter;
 import www.gymhop.p5m.data.Filter;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
+import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
-public class FilterActivity extends BaseActivity implements NetworkCommunicator.RequestListener<ResponseModel>, AdapterCallbacks {
+public class FilterActivity extends BaseActivity implements NetworkCommunicator.RequestListener<ResponseModel>, AdapterCallbacks, View.OnClickListener {
 
     public static void openActivity(Context context) {
         context.startActivity(new Intent(context, FilterActivity.class));
@@ -40,6 +45,9 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
     @BindView(R.id.appBarLayout)
     public AppBarLayout appBarLayout;
 
+    @BindView(R.id.textViewFindClasses)
+    public View textViewFindClasses;
+
     private FilterAdapter filterAdapter;
 
     @Override
@@ -49,17 +57,51 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
 
         ButterKnife.bind(activity);
 
-        networkCommunicator.getCities(this, false);
-        networkCommunicator.getActivities(this, false);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setHasFixedSize(false);
 
         filterAdapter = new FilterAdapter(context, this);
         recyclerView.setAdapter(filterAdapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        loaderFilters();
+
+        textViewFindClasses.setOnClickListener(this);
 
         setListAdapter();
+
+        networkCommunicator.getCities(this, true);
+        networkCommunicator.getActivities(this, true);
+
+        setToolBar();
+
+    }
+
+    private void loaderFilters() {
+        if (!TempStorage.getFilters().isEmpty()) {
+            filterAdapter.addSelection(TempStorage.getFilters());
+        }
+    }
+
+    private void
+    setToolBar() {
+
+        BaseActivity activity = (BaseActivity) this.activity;
+        activity.setSupportActionBar(toolbar);
+
+        activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(context, R.color.colorPrimaryDark)));
+        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        activity.getSupportActionBar().setHomeButtonEnabled(true);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
+        activity.getSupportActionBar().setDisplayUseLogoEnabled(true);
+
+        View v = LayoutInflater.from(context).inflate(R.layout.view_tool_bar_filter, null);
+        v.findViewById(R.id.textViewClear).setOnClickListener(this);
+        v.findViewById(R.id.imageViewBack).setOnClickListener(this);
+
+        activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
+                ActionBar.LayoutParams.MATCH_PARENT));
+        activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
     }
 
     private void setListAdapter() {
@@ -73,16 +115,16 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
         filterAdapter.setClassesFilterList(classesFilterList);
 
         List<ClassesFilter> timeList = new ArrayList<>(4);
-        addClassFilterTime(timeList, new Filter.Time("Morning"));
-        addClassFilterTime(timeList, new Filter.Time("After Noon"));
-        addClassFilterTime(timeList, new Filter.Time("Evening"));
+        addClassFilterTime(timeList, new Filter.Time("MORNING", "Morning"));
+        addClassFilterTime(timeList, new Filter.Time("AFTERNOON", "After Noon"));
+        addClassFilterTime(timeList, new Filter.Time("EVENING", "Evening"));
 
         filterAdapter.getClassesFilterList().get(2).setList(timeList);
 
         List<ClassesFilter> genderList = new ArrayList<>(4);
-        addClassFilterGender(genderList, new Filter.Gender("Male"));
-        addClassFilterGender(genderList, new Filter.Gender("Female"));
-        addClassFilterGender(genderList, new Filter.Gender("Both"));
+        addClassFilterGender(genderList, new Filter.Gender("MALE", "Males Only"));
+        addClassFilterGender(genderList, new Filter.Gender("FEMALE", "Females Only"));
+        addClassFilterGender(genderList, new Filter.Gender("MIXED", "Both"));
 
         filterAdapter.getClassesFilterList().get(3).setList(genderList);
 
@@ -123,6 +165,7 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
                             List<ClassesFilter> filters = new ArrayList<>();
                             if (city.getLocality() != null && !city.getLocality().isEmpty()) {
                                 for (CityLocality cityLocality : city.getLocality()) {
+
                                     ClassesFilter filter = new ClassesFilter(cityLocality.getName(), 0, ClassesFilter.TYPE_ITEM);
                                     filter.setObject(cityLocality);
                                     filter.setList(null);
@@ -163,12 +206,13 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
     }
 
     @Override
-    public void onItemClick(View viewRoot, View view, Object model, int position) {
+    public void onAdapterItemClick(View viewRoot, View view, Object model, int position) {
         ClassesFilter classesFilter = model instanceof ClassesFilter ? ((ClassesFilter) model) : null;
 
         if (classesFilter != null && (classesFilter.getType() == ClassesFilter.TYPE_HEADER || classesFilter.getType() == ClassesFilter.TYPE_SUB_HEADER)) {
 
             if (classesFilter.isExpanded()) {
+
                 classesFilter.setExpanded(!classesFilter.isExpanded());
 
                 filterAdapter.refreshList();
@@ -182,13 +226,15 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
 ////                    filterAdapter.notifyItemChanged(index);
 //                    filterAdapter.notifyItemRangeRemoved(index + 1, index + classesFilter.getList().size());
 //                }
-//                LogUtils.debug("FilterActivity onItemClick " + (index + 1) + " " + (index + classesFilter.getList().size()));
+//                LogUtils.debug("FilterActivity onAdapterItemClick " + (index + 1) + " " + (index + classesFilter.getList().size()));
 
             } else {
                 classesFilter.setExpanded(!classesFilter.isExpanded());
+
                 filterAdapter.refreshList();
-                int index = filterAdapter.getList().indexOf(classesFilter);
                 filterAdapter.notifyDataSetChanged();
+
+//                int index = filterAdapter.getList().indexOf(classesFilter);
 
 //                if (index == -1) {
 //                    filterAdapter.notifyDataSetChanged();
@@ -196,10 +242,18 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
 ////                    filterAdapter.notifyItemChanged(index);
 //                    filterAdapter.notifyItemRangeInserted(index + 1, index + classesFilter.getList().size());
 //                }
-//                LogUtils.debug("FilterActivity onItemClick " + (index + 1) + " " + (index + classesFilter.getList().size()));
+//                LogUtils.debug("FilterActivity onAdapterItemClick " + (index + 1) + " " + (index + classesFilter.getList().size()));
             }
         } else if (classesFilter != null && (classesFilter.getType() == ClassesFilter.TYPE_ITEM)) {
+
             classesFilter.setSelected(!classesFilter.isSelected());
+
+            if (classesFilter.isSelected()) {
+                filterAdapter.addSelection(classesFilter);
+            } else {
+                filterAdapter.removeSelection(classesFilter);
+            }
+
             int index = filterAdapter.getList().indexOf(classesFilter);
 
             if (index == -1) {
@@ -207,17 +261,32 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
             } else {
                 filterAdapter.notifyItemChanged(index);
             }
-//            LogUtils.debug("FilterActivity onItemClick " + index);
+//            LogUtils.debug("FilterActivity onAdapterItemClick " + index);
         }
     }
 
     @Override
-    public void onItemLongClick(View viewRoot, View view, Object model, int position) {
-
+    public void onAdapterItemLongClick(View viewRoot, View view, Object model, int position) {
     }
 
     @Override
     public void onShowLastItem() {
+    }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.textViewClear:
+                filterAdapter.clearExpansionAndSelection();
+                TempStorage.setFilterList(new ArrayList<ClassesFilter>());
+                break;
+            case R.id.imageViewBack:
+                finish();
+                break;
+            case R.id.textViewFindClasses:
+                TempStorage.setFilterList(filterAdapter.getClassesFiltersSelected());
+                finish();
+                break;
+        }
     }
 }

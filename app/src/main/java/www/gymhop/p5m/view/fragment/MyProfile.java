@@ -142,7 +142,7 @@ public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>,
     }
 
     @Override
-    public void onItemClick(View viewRoot, View view, Object model, int position) {
+    public void onAdapterItemClick(View viewRoot, View view, Object model, int position) {
         switch (view.getId()) {
             case R.id.header1: {
                 myProfileAdapter.onTabSelection(ProfileHeaderTabViewHolder.TAB_1);
@@ -178,7 +178,7 @@ public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>,
     }
 
     @Override
-    public void onItemLongClick(View viewRoot, View view, Object model, int position) {
+    public void onAdapterItemLongClick(View viewRoot, View view, Object model, int position) {
     }
 
     @Override

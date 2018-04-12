@@ -66,12 +66,12 @@ public class TrainerList extends BaseFragment implements AdapterCallbacks<Class>
     }
 
     @Override
-    public void onItemClick(View viewRoot, View view, Class model, int position) {
+    public void onAdapterItemClick(View viewRoot, View view, Class model, int position) {
 
     }
 
     @Override
-    public void onItemLongClick(View viewRoot, View view, Class model, int position) {
+    public void onAdapterItemLongClick(View viewRoot, View view, Class model, int position) {
 
     }
 

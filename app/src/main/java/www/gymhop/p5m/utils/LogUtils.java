@@ -26,7 +26,11 @@ public class LogUtils {
     }
 
     public static void debug(String msg) {
+
         log("VarunDebug", msg);
+    }
+    public static void exception(Exception e) {
+        log("EXCEPTION: ", e.toString());
     }
 
     private static void log(String tag, String msg) {

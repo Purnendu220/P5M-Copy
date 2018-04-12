@@ -28,7 +28,7 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                adapterCallbacks.onItemClick(itemView, itemView, model, position);
+                adapterCallbacks.onAdapterItemClick(itemView, itemView, model, position);
             }
         });
     }

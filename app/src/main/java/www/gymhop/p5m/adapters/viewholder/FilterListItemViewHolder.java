@@ -91,7 +91,7 @@ public class FilterListItemViewHolder extends RecyclerView.ViewHolder {
             this.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    adapterCallbacks.onItemClick(FilterListItemViewHolder.this.itemView, FilterListItemViewHolder.this.itemView, model, position);
+                    adapterCallbacks.onAdapterItemClick(FilterListItemViewHolder.this.itemView, FilterListItemViewHolder.this.itemView, model, position);
                 }
             });
         }

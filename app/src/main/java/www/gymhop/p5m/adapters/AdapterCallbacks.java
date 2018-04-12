@@ -6,10 +6,10 @@ import android.view.View;
  * Created by MyU10 on 3/15/2018.
  */
 
-public interface AdapterCallbacks<T> {
-    void onItemClick(View viewRoot, View view, T model, int position);
+public interface AdapterCallbacks<Object> {
+    void onAdapterItemClick(View viewRoot, View view, Object model, int position);
 
-    void onItemLongClick(View viewRoot, View view, T model, int position);
+    void onAdapterItemLongClick(View viewRoot, View view, Object model, int position);
 
     void onShowLastItem();
 }
