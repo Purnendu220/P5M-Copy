@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import www.gymhop.p5m.utils.AppConstants;
@@ -20,7 +19,7 @@ public class FindClassAdapter extends FragmentStatePagerAdapter {
     private int totalTabs;
 
     private List<Fragment> fragments;
-    private List<GregorianCalendar> calendarList;
+    private List<String> calendarList;
 
     public FindClassAdapter(FragmentManager fm, int totalTabs) {
         super(fm);
@@ -33,11 +32,11 @@ public class FindClassAdapter extends FragmentStatePagerAdapter {
         }
     }
 
-    public List<GregorianCalendar> getCalendarList() {
+    public List<String> getCalendarList() {
         return calendarList;
     }
 
-    public void setCalendarList(List<GregorianCalendar> calendarList) {
+    public void setCalendarList(List<String> calendarList) {
         this.calendarList = calendarList;
     }
 
@@ -48,13 +47,7 @@ public class FindClassAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
 
-        GregorianCalendar gregorianCalendar = calendarList.get(position);
-        String date = "";
-        if (gregorianCalendar != null) {
-            date = String.format("%1$tY-%1$tm-%1$td", gregorianCalendar);
-        }
-
-        Fragment tabFragment = ClassList.createFragment(date, position,
+        Fragment tabFragment = ClassList.createFragment(calendarList.get(position), position,
                 AppConstants.AppNavigation.SHOWN_IN_HOME_FIND_CLASSES);
 
         fragments.set(position, tabFragment);
