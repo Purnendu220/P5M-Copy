@@ -24,10 +24,8 @@
                 <ImageView
                     android:id="@+id/imageViewProfile"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorPrimaryDark"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/info_screen_1" />
+                    android:layout_height="match_parent" />
             </android.support.v7.widget.CardView>
 
             <LinearLayout
@@ -49,38 +47,38 @@
                     android:ellipsize="end"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center_vertical"
-                    android:letterSpacing="@dimen/text_title_letter_spacing"
+                    android:letterSpacing="@dimen/button_letter_spacing_very_little"
                     android:maxLines="2"
                     android:text="Trainer Name"
                     android:textColor="@color/theme_dark_text"
-                    android:textSize="@dimen/text_title" />
+                    android:textSize="@dimen/text_large" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingTop="4dp">
+                    android:paddingTop="6dp">
 
                     <ImageView
                         android:id="@+id/imageViewSubtitle"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:visibility="gone"
                         android:layout_marginRight="6dp"
-                        android:src="@drawable/class_icon" />
+                        android:src="@drawable/class_icon"
+                        android:visibility="gone" />
 
                     <TextView
-                        android:id="@+id/textViewwSubtitle"
+                        android:id="@+id/textViewSubtitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_toEndOf="@+id/imageViewClassCategory"
-                        android:fontFamily="sans-serif"
-                        android:letterSpacing="@dimen/text_medium_letter_spacing"
+                        android:fontFamily="sans-serif-medium"
+                        android:letterSpacing="@dimen/button_letter_spacing_very_little"
                         android:lineSpacingExtra="@dimen/line_spacing_extra"
                         android:text="East American Yoga Club"
                         android:textColor="@color/theme_medium_dark_text"
-                        android:textSize="@dimen/text_medium" />
+                        android:textSize="@dimen/text_small" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -93,8 +91,8 @@
                 android:layout_marginTop="16dp">
 
                 <Button
-                    android:id="@+id/button"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/buttonFav"
+                    android:layout_width="72dp"
                     android:layout_height="28dp"
                     android:layout_alignParentEnd="true"
                     android:layout_below="@+id/imageViewClass"
@@ -104,11 +102,9 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/join_rect"
-                    android:fontFamily="sans-serif-medium"
-                    android:letterSpacing="@dimen/button_letter_spacing"
+                    android:fontFamily="sans-serif"
+                    android:letterSpacing="@dimen/button_letter_spacing_very_little"
                     android:maxLines="1"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
                     android:text="@string/favorited"
                     android:textAllCaps="true"
                     android:textColor="@color/white"

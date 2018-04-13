@@ -16,9 +16,10 @@ public class GymBranchDetail implements java.io.Serializable {
     private String mediaThumbNailUrl;
     private int localityId;
     private double longitude;
+    private String gender;
 
     public String getStudioInstruction() {
-        return this.studioInstruction;
+        return studioInstruction == null ? "" : studioInstruction;
     }
 
     public void setStudioInstruction(String studioInstruction) {
@@ -26,7 +27,7 @@ public class GymBranchDetail implements java.io.Serializable {
     }
 
     public int getBranchId() {
-        return this.branchId;
+        return branchId;
     }
 
     public void setBranchId(int branchId) {
@@ -34,7 +35,7 @@ public class GymBranchDetail implements java.io.Serializable {
     }
 
     public String getAddress() {
-        return this.address;
+        return address == null ? "" : address;
     }
 
     public void setAddress(String address) {
@@ -42,7 +43,7 @@ public class GymBranchDetail implements java.io.Serializable {
     }
 
     public String getMediaUrl() {
-        return this.mediaUrl;
+        return mediaUrl == null ? "" : mediaUrl;
     }
 
     public void setMediaUrl(String mediaUrl) {
@@ -50,7 +51,7 @@ public class GymBranchDetail implements java.io.Serializable {
     }
 
     public double getLatitude() {
-        return this.latitude;
+        return latitude;
     }
 
     public void setLatitude(double latitude) {
@@ -58,7 +59,7 @@ public class GymBranchDetail implements java.io.Serializable {
     }
 
     public String getGymName() {
-        return this.gymName;
+        return gymName == null ? "" : gymName;
     }
 
     public void setGymName(String gymName) {
@@ -66,7 +67,7 @@ public class GymBranchDetail implements java.io.Serializable {
     }
 
     public String getBranchName() {
-        return this.branchName;
+        return branchName == null ? "" : branchName;
     }
 
     public void setBranchName(String branchName) {
@@ -74,7 +75,7 @@ public class GymBranchDetail implements java.io.Serializable {
     }
 
     public int getMediaId() {
-        return this.mediaId;
+        return mediaId;
     }
 
     public void setMediaId(int mediaId) {
@@ -82,7 +83,7 @@ public class GymBranchDetail implements java.io.Serializable {
     }
 
     public int getGymId() {
-        return this.gymId;
+        return gymId;
     }
 
     public void setGymId(int gymId) {
@@ -90,7 +91,7 @@ public class GymBranchDetail implements java.io.Serializable {
     }
 
     public String getLocalityName() {
-        return this.localityName;
+        return localityName == null ? "" : localityName;
     }
 
     public void setLocalityName(String localityName) {
@@ -98,7 +99,7 @@ public class GymBranchDetail implements java.io.Serializable {
     }
 
     public String getPhoneNumber() {
-        return this.phoneNumber;
+        return phoneNumber == null ? "" : phoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
@@ -106,7 +107,7 @@ public class GymBranchDetail implements java.io.Serializable {
     }
 
     public String getMediaThumbNailUrl() {
-        return this.mediaThumbNailUrl;
+        return mediaThumbNailUrl == null ? "" : mediaThumbNailUrl;
     }
 
     public void setMediaThumbNailUrl(String mediaThumbNailUrl) {
@@ -114,7 +115,7 @@ public class GymBranchDetail implements java.io.Serializable {
     }
 
     public int getLocalityId() {
-        return this.localityId;
+        return localityId;
     }
 
     public void setLocalityId(int localityId) {
@@ -122,10 +123,18 @@ public class GymBranchDetail implements java.io.Serializable {
     }
 
     public double getLongitude() {
-        return this.longitude;
+        return longitude;
     }
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public String getGender() {
+        return gender == null ? "" : gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }

@@ -25,6 +25,7 @@ import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.FindClassAdapter;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.DateUtils;
+import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.view.activity.Main.FilterActivity;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
@@ -66,7 +67,7 @@ public class FindClass extends BaseFragment implements View.OnClickListener {
 
         setToolBar();
 
-        findClassAdapter = new FindClassAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_DATE_TABS);
+        findClassAdapter = new FindClassAdapter(getChildFragmentManager(), TOTAL_DATE_TABS);
         viewPager.setAdapter(findClassAdapter);
         findClassAdapter.setCalendarList(calendarList);
         viewPager.setOffscreenPageLimit(TOTAL_DATE_TABS);
@@ -85,6 +86,7 @@ public class FindClass extends BaseFragment implements View.OnClickListener {
                     ((ViewPagerFragmentSelection) findClassAdapter.getFragments().get(position)).onTabSelection(position);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    LogUtils.exception(e);
                 }
             }
 

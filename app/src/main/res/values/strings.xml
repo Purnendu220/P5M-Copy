@@ -95,8 +95,8 @@
     <string name="studio_instruction">STUDIO INSTRUCTION:</string>
     <string name="special_note_by_trainer">SPECIAL NOTE BY THE TRAINER:</string>
     <string name="reserve_class">RESERVE CLASS</string>
-    <string name="favourite">FAVOURITE</string>
-    <string name="favorited">FAVORITED</string>
+    <string name="favourite">Favourite</string>
+    <string name="favorited">Favorited</string>
     <string name="favorite_trainer">Favourite Trainer</string>
     <string name="finished">Finished</string>
     <string name="join">JOIN</string>

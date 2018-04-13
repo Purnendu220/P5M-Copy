@@ -1,6 +1,5 @@
 package www.gymhop.p5m.adapters;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -49,16 +48,13 @@ public class FindClassAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
 
-        Fragment tabFragment = new ClassList();
-        Bundle bundle = new Bundle();
-
         GregorianCalendar gregorianCalendar = calendarList.get(position);
+        String date = "";
         if (gregorianCalendar != null) {
-            String date = String.format("%1$tY-%1$tm-%1$td", gregorianCalendar);
-            bundle.putString(AppConstants.DataKey.CLASS_DATE_STRING, date);
-            bundle.putInt(AppConstants.DataKey.TAB_POSITION_INT, position);
+            date = String.format("%1$tY-%1$tm-%1$td", gregorianCalendar);
         }
-        tabFragment.setArguments(bundle);
+
+        Fragment tabFragment = ClassList.getInstance(date, position, AppConstants.AppNavigation.SHOWN_IN_FIND_CLASS);
 
         fragments.set(position, tabFragment);
         return tabFragment;

@@ -7,11 +7,13 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 import www.gymhop.p5m.data.City;
 import www.gymhop.p5m.data.ClassActivity;
-import www.gymhop.p5m.data.TrainerDetail;
 import www.gymhop.p5m.data.User;
 import www.gymhop.p5m.data.gym_class.ClassModel;
+import www.gymhop.p5m.data.gym_class.TrainerModel;
 import www.gymhop.p5m.data.request_model.ClassListRequest;
 import www.gymhop.p5m.data.request_model.LoginRequest;
 import www.gymhop.p5m.utils.AppConstants;
@@ -35,7 +37,21 @@ public interface ApiService {
     Call<ResponseModel<List<ClassModel>>> getClassList(@Body ClassListRequest classListRequest);
 
     @Headers("Content-type: application/json")
-    @POST(AppConstants.Url.TRAINER_LIST)
-    Call<ResponseModel<List<TrainerDetail>>> getTrainerList();
+    @GET(AppConstants.Url.TRAINER_LIST)
+    Call<ResponseModel<List<TrainerModel>>> getTrainerList(@Query(AppConstants.ApiParamKey.CATEGORY_ID) int categoryId,
+                                                           @Query(AppConstants.ApiParamKey.PAGE) int page,
+                                                           @Query(AppConstants.ApiParamKey.SIZE) int size);
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.WISH_LIST + "/{" + AppConstants.ApiParamKey.USER_ID + "}")
+    Call<ResponseModel<List<ClassModel>>> getWishList(@Path(AppConstants.ApiParamKey.USER_ID) int userId,
+                                                      @Query(AppConstants.ApiParamKey.PAGE) int page,
+                                                      @Query(AppConstants.ApiParamKey.SIZE) int size);
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.SCHEDULE_LIST)
+    Call<ResponseModel<List<ClassModel>>> getScheduleList(@Query(AppConstants.ApiParamKey.USER_ID) int userId,
+                                                          @Query(AppConstants.ApiParamKey.PAGE) int page,
+                                                          @Query(AppConstants.ApiParamKey.SIZE) int size);
 
 }

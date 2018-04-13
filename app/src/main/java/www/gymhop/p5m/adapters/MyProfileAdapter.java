@@ -18,8 +18,8 @@ import www.gymhop.p5m.adapters.viewholder.EmptyViewHolder;
 import www.gymhop.p5m.adapters.viewholder.ProfileHeaderTabViewHolder;
 import www.gymhop.p5m.adapters.viewholder.ProfileHeaderViewHolder;
 import www.gymhop.p5m.adapters.viewholder.TrainerListViewHolder;
-import www.gymhop.p5m.data.Class;
-import www.gymhop.p5m.data.TrainerDetail;
+import www.gymhop.p5m.data.gym_class.TrainerModel;
+import www.gymhop.p5m.utils.AppConstants;
 
 /**
  * Created by MyU10 on 3/10/2018.
@@ -72,7 +72,7 @@ public class MyProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             itemViewType = TAB_HEADER;
         } else if (getItem(position) instanceof Class) {
             itemViewType = CLASSES;
-        } else if (getItem(position) instanceof TrainerDetail) {
+        } else if (getItem(position) instanceof TrainerModel) {
             itemViewType = TRAINERS;
         }
         return itemViewType;
@@ -88,7 +88,7 @@ public class MyProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             return new ProfileHeaderTabViewHolder(view);
         } else if (viewType == CLASSES) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_class_mini, parent, false);
-            return new ClassMiniDetailViewHolder(view);
+            return new ClassMiniDetailViewHolder(view, AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED);
         } else if (viewType == TRAINERS) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_trainer_list, parent, false);
             return new TrainerListViewHolder(view);

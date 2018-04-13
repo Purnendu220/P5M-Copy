@@ -19,27 +19,30 @@ import www.gymhop.p5m.data.gym_class.ClassModel;
 
 public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private static final int VIEW_TYPE_UNKNOWN = -1;
     private static final int VIEW_TYPE_CLASS = 1;
     private static final int VIEW_TYPE_LOADER = 2;
-    private static final int VIEW_TYPE_UNKNOWN = 3;
 
-    private final AdapterCallbacks<Object> adapterCallbacks;
+    private final AdapterCallbacks<ClassModel> adapterCallbacks;
 
     private List<Object> list;
     private Context context;
 
+    private int shownInScreen;
+
     private boolean showLoader;
     private ListLoader listLoader;
 
-    public ClassListAdapter(Context context, boolean showLoader, AdapterCallbacks<Object> adapterCallbacks) {
+    public ClassListAdapter(Context context, int shownInScreen, boolean showLoader, AdapterCallbacks<ClassModel> adapterCallbacks) {
         this.adapterCallbacks = adapterCallbacks;
         this.context = context;
         list = new ArrayList<>();
+        this.shownInScreen = shownInScreen;
         this.showLoader = showLoader;
         listLoader = new ListLoader();
     }
 
-    public void addAllClass(ClassModel model) {
+    public void addClass(ClassModel model) {
         list.add(model);
         addLoader();
     }
@@ -65,7 +68,7 @@ public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (item instanceof ClassModel) {
             itemViewType = VIEW_TYPE_CLASS;
         } else if (item instanceof ListLoader) {
-            itemViewType = VIEW_TYPE_UNKNOWN;
+            itemViewType = VIEW_TYPE_LOADER;
         }
 
         return itemViewType;
@@ -75,7 +78,7 @@ public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_CLASS) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_class, parent, false);
-            return new ClassViewHolder(view);
+            return new ClassViewHolder(view, shownInScreen);
 
         } else if (viewType == VIEW_TYPE_LOADER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_list_progress, parent, false);
@@ -91,6 +94,8 @@ public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ((ClassViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
         } else if (holder instanceof LoaderViewHolder) {
             ((LoaderViewHolder) holder).bind(listLoader, adapterCallbacks);
+        } else if (holder instanceof EmptyViewHolder) {
+            ((EmptyViewHolder) holder).bind();
         }
     }
 

@@ -14,10 +14,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.TrainersAdapter;
+import www.gymhop.p5m.data.ClassActivity;
+import www.gymhop.p5m.storage.TempStorage;
+import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
 public class Trainers extends BaseFragment {
@@ -32,7 +38,9 @@ public class Trainers extends BaseFragment {
     public Toolbar toolbar;
 
     private TrainersAdapter trainersAdapter;
-    private String[] titleTabs = new String[]{"Varun", "John", "Trainer", "Fitness", "Gold Gym", "ALTO",};
+    private String[] titleTabs = new String[]{"", ""};
+
+    private List<ClassActivity> activities;
 
     public Trainers() {
     }
@@ -51,12 +59,42 @@ public class Trainers extends BaseFragment {
 
         setToolBar();
 
-        trainersAdapter = new TrainersAdapter(((BaseActivity) activity).getSupportFragmentManager(), titleTabs);
+        try {
+            activities = TempStorage.getActivities();
+            if (activities == null) {
+                activities = new ArrayList<>();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+
+        trainersAdapter = new TrainersAdapter(getChildFragmentManager(), activities);
         viewPager.setAdapter(trainersAdapter);
-        viewPager.setOffscreenPageLimit(0);
+        viewPager.setOffscreenPageLimit(activities.size());
 
         tabLayout.setTabTextColors(ContextCompat.getColorStateList(context, R.color.date_tabs));
         tabLayout.setupWithViewPager(viewPager);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                try {
+                    ((ViewPagerFragmentSelection) trainersAdapter.getFragments().get(position)).onTabSelection(position);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    LogUtils.exception(e);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
     }
 
     private void setToolBar() {

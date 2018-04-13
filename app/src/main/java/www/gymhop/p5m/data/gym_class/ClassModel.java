@@ -2,6 +2,7 @@ package www.gymhop.p5m.data.gym_class;
 
 public class ClassModel implements java.io.Serializable {
     private static final long serialVersionUID = -7121053493736355823L;
+
     private int numberOfParticipants;
     private String classDate;
     private ClassMedia classMedia;
@@ -14,7 +15,7 @@ public class ClassModel implements java.io.Serializable {
     private String title;
     private boolean userJoinStatus;
     private int classId;
-    private TrainerDetail trainerDetail;
+    private TrainerModel trainerDetail;
     private int verifyStatus;
     private String specialNote;
     private int classSessionId;
@@ -25,8 +26,14 @@ public class ClassModel implements java.io.Serializable {
     private int totalSeat;
     private GymBranchDetail gymBranchDetail;
 
+    /********From wish list**********/
+    private String classDay;
+    private int wishListId;
+    private String classImage;
+    //////////////////////////////////
+
     public int getNumberOfParticipants() {
-        return this.numberOfParticipants;
+        return numberOfParticipants;
     }
 
     public void setNumberOfParticipants(int numberOfParticipants) {
@@ -34,7 +41,7 @@ public class ClassModel implements java.io.Serializable {
     }
 
     public String getClassDate() {
-        return this.classDate;
+        return classDate == null ? "" : classDate;
     }
 
     public void setClassDate(String classDate) {
@@ -42,7 +49,7 @@ public class ClassModel implements java.io.Serializable {
     }
 
     public ClassMedia getClassMedia() {
-        return this.classMedia;
+        return classMedia;
     }
 
     public void setClassMedia(ClassMedia classMedia) {
@@ -50,15 +57,15 @@ public class ClassModel implements java.io.Serializable {
     }
 
     public String getReminder() {
-        return this.reminder;
+        return reminder == null ? "" : reminder;
     }
 
     public void setReminder(String reminder) {
         this.reminder = reminder;
     }
 
-    public boolean getHideClass() {
-        return this.hideClass;
+    public boolean isHideClass() {
+        return hideClass;
     }
 
     public void setHideClass(boolean hideClass) {
@@ -66,7 +73,7 @@ public class ClassModel implements java.io.Serializable {
     }
 
     public String getDescription() {
-        return this.description;
+        return description == null ? "" : description;
     }
 
     public void setDescription(String description) {
@@ -74,7 +81,7 @@ public class ClassModel implements java.io.Serializable {
     }
 
     public String getPriceModel() {
-        return this.priceModel;
+        return priceModel == null ? "" : priceModel;
     }
 
     public void setPriceModel(String priceModel) {
@@ -82,7 +89,7 @@ public class ClassModel implements java.io.Serializable {
     }
 
     public int getAvailableSeat() {
-        return this.availableSeat;
+        return availableSeat;
     }
 
     public void setAvailableSeat(int availableSeat) {
@@ -90,7 +97,7 @@ public class ClassModel implements java.io.Serializable {
     }
 
     public String getClassCategory() {
-        return this.classCategory;
+        return classCategory == null ? "" : classCategory;
     }
 
     public void setClassCategory(String classCategory) {
@@ -98,15 +105,15 @@ public class ClassModel implements java.io.Serializable {
     }
 
     public String getTitle() {
-        return this.title;
+        return title == null ? "" : title;
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public boolean getUserJoinStatus() {
-        return this.userJoinStatus;
+    public boolean isUserJoinStatus() {
+        return userJoinStatus;
     }
 
     public void setUserJoinStatus(boolean userJoinStatus) {
@@ -114,23 +121,23 @@ public class ClassModel implements java.io.Serializable {
     }
 
     public int getClassId() {
-        return this.classId;
+        return classId;
     }
 
     public void setClassId(int classId) {
         this.classId = classId;
     }
 
-    public TrainerDetail getTrainerDetail() {
-        return this.trainerDetail;
+    public TrainerModel getTrainerDetail() {
+        return trainerDetail;
     }
 
-    public void setTrainerDetail(TrainerDetail trainerDetail) {
+    public void setTrainerDetail(TrainerModel trainerDetail) {
         this.trainerDetail = trainerDetail;
     }
 
     public int getVerifyStatus() {
-        return this.verifyStatus;
+        return verifyStatus;
     }
 
     public void setVerifyStatus(int verifyStatus) {
@@ -138,7 +145,7 @@ public class ClassModel implements java.io.Serializable {
     }
 
     public String getSpecialNote() {
-        return this.specialNote;
+        return specialNote == null ? "" : specialNote;
     }
 
     public void setSpecialNote(String specialNote) {
@@ -146,7 +153,7 @@ public class ClassModel implements java.io.Serializable {
     }
 
     public int getClassSessionId() {
-        return this.classSessionId;
+        return classSessionId;
     }
 
     public void setClassSessionId(int classSessionId) {
@@ -154,7 +161,7 @@ public class ClassModel implements java.io.Serializable {
     }
 
     public String getFromTime() {
-        return this.fromTime;
+        return fromTime == null ? "" : fromTime;
     }
 
     public void setFromTime(String fromTime) {
@@ -162,7 +169,7 @@ public class ClassModel implements java.io.Serializable {
     }
 
     public String getShortDesc() {
-        return this.shortDesc;
+        return shortDesc == null ? "" : shortDesc;
     }
 
     public void setShortDesc(String shortDesc) {
@@ -170,7 +177,7 @@ public class ClassModel implements java.io.Serializable {
     }
 
     public String getClassType() {
-        return this.classType;
+        return classType == null ? "" : classType;
     }
 
     public void setClassType(String classType) {
@@ -178,7 +185,7 @@ public class ClassModel implements java.io.Serializable {
     }
 
     public String getToTime() {
-        return this.toTime;
+        return toTime == null ? "" : toTime;
     }
 
     public void setToTime(String toTime) {
@@ -186,7 +193,7 @@ public class ClassModel implements java.io.Serializable {
     }
 
     public int getTotalSeat() {
-        return this.totalSeat;
+        return totalSeat;
     }
 
     public void setTotalSeat(int totalSeat) {
@@ -194,10 +201,34 @@ public class ClassModel implements java.io.Serializable {
     }
 
     public GymBranchDetail getGymBranchDetail() {
-        return this.gymBranchDetail;
+        return gymBranchDetail;
     }
 
     public void setGymBranchDetail(GymBranchDetail gymBranchDetail) {
         this.gymBranchDetail = gymBranchDetail;
+    }
+
+    public String getClassDay() {
+        return classDay == null ? "" : classDay;
+    }
+
+    public void setClassDay(String classDay) {
+        this.classDay = classDay;
+    }
+
+    public int getWishListId() {
+        return wishListId;
+    }
+
+    public void setWishListId(int wishListId) {
+        this.wishListId = wishListId;
+    }
+
+    public String getClassImage() {
+        return classImage == null ? "" : classImage;
+    }
+
+    public void setClassImage(String classImage) {
+        this.classImage = classImage;
     }
 }

@@ -3,6 +3,7 @@ package www.gymhop.p5m.view.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,7 +32,18 @@ import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.view.activity.custom.MyRecyclerView;
 
-public class ClassList extends BaseFragment implements ViewPagerFragmentSelection, MyRecyclerView.LoaderCallbacks, AdapterCallbacks<Object>, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
+public class ClassList extends BaseFragment implements ViewPagerFragmentSelection, MyRecyclerView.LoaderCallbacks, AdapterCallbacks<ClassModel>, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
+
+    public static Fragment getInstance(String date, int position, int shownIn) {
+        Fragment tabFragment = new ClassList();
+        Bundle bundle = new Bundle();
+        bundle.putString(AppConstants.DataKey.CLASS_DATE_STRING, date);
+        bundle.putInt(AppConstants.DataKey.TAB_POSITION_INT, position);
+        bundle.putInt(AppConstants.DataKey.TAB_SHOWN_IN, shownIn);
+        tabFragment.setArguments(bundle);
+
+        return tabFragment;
+    }
 
     @BindView(R.id.recyclerViewClass)
     public RecyclerView recyclerViewClass;
@@ -45,6 +57,8 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
     private int fragmentPositionInViewPager;
     private boolean isShownFirstTime = true;
+
+    private int shownInScreen;
 
     public ClassList() {
     }
@@ -64,14 +78,14 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
         swipeRefreshLayout.setOnRefreshListener(this);
 
         fragmentPositionInViewPager = getArguments().getInt(AppConstants.DataKey.TAB_POSITION_INT);
+        shownInScreen = getArguments().getInt(AppConstants.DataKey.TAB_SHOWN_IN);
         date = getArguments().getString(AppConstants.DataKey.CLASS_DATE_STRING, null);
 
         recyclerViewClass.setLayoutManager(new LinearLayoutManager(activity));
         recyclerViewClass.setHasFixedSize(false);
 
-        classListAdapter = new ClassListAdapter(context, true, this);
+        classListAdapter = new ClassListAdapter(context, shownInScreen, true, this);
         recyclerViewClass.setAdapter(classListAdapter);
-
     }
 
     private ClassListRequest generateRequest() {
@@ -122,12 +136,12 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
     }
 
     @Override
-    public void onAdapterItemClick(View viewRoot, View view, Object model, int position) {
+    public void onAdapterItemClick(View viewRoot, View view, ClassModel model, int position) {
         www.gymhop.p5m.view.activity.Main.TrainerProfile.open(context);
     }
 
     @Override
-    public void onAdapterItemLongClick(View viewRoot, View view, Object model, int position) {
+    public void onAdapterItemLongClick(View viewRoot, View view, ClassModel model, int position) {
     }
 
     @Override
@@ -152,17 +166,19 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
         }
     }
 
-    private void checkListData() {
-    }
-
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.CLASS_LIST:
 
                 swipeRefreshLayout.setRefreshing(false);
+                checkListData();
+
                 break;
         }
+    }
+
+    private void checkListData() {
     }
 
     @Override

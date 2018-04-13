@@ -50,24 +50,28 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
     public TextView textViewTrainerName;
 
     private final Context context;
+    private int shownInScreen;
 
-    public ClassViewHolder(View itemView) {
+    public ClassViewHolder(View itemView, int shownInScreen) {
         super(itemView);
 
         context = itemView.getContext();
 
         ButterKnife.bind(this, itemView);
+        this.shownInScreen = shownInScreen;
     }
 
-    public void bind(final Object data, final AdapterCallbacks<Object> adapterCallbacks, final int position) {
+    public void bind(final Object data, final AdapterCallbacks adapterCallbacks, final int position) {
 
         if (data != null && data instanceof ClassModel) {
+            itemView.setVisibility(View.VISIBLE);
+
             final ClassModel model = (ClassModel) data;
 
             if (model.getClassMedia() != null) {
                 ImageUtils.setImage(context,
                         model.getClassMedia().getMediaUrl(),
-                        R.drawable.placeholder_class, imageViewClass);
+                        R.drawable.class_holder, imageViewClass);
             }
 
             if (model.getTrainerDetail() != null) {
@@ -83,11 +87,15 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
                 ImageUtils.setImage(context,
                         model.getGymBranchDetail().getMediaThumbNailUrl(),
                         R.drawable.profile_holder, imageViewTrainerProfile);
+                textViewLocation.setText(model.getGymBranchDetail().getAddress());
+
             } else {
 
                 ImageUtils.setImage(context,
                         R.drawable.profile_holder,
                         R.drawable.profile_holder, imageViewTrainerProfile);
+                textViewLocation.setText("");
+
             }
 
             textViewClassName.setText(model.getTitle());
@@ -102,7 +110,7 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
                         + "  available");
             }
 
-            if (model.getUserJoinStatus()) {
+            if (model.isUserJoinStatus()) {
                 buttonJoin.setText(context.getString(R.string.booked));
                 buttonJoin.setBackgroundResource(R.drawable.joined_rect);
             } else if (model.getAvailableSeat() == model.getTotalSeat()) {
@@ -116,7 +124,6 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
             textViewInfo.setText(model.getShortDesc());
 
             textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
-            textViewLocation.setText(model.getGymBranchDetail().getAddress());
             textViewGender.setText(model.getClassType());
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -125,6 +132,8 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
                     adapterCallbacks.onAdapterItemClick(itemView, itemView, model, position);
                 }
             });
+        } else {
+            itemView.setVisibility(View.GONE);
         }
     }
 }

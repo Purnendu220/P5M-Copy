@@ -5,10 +5,16 @@
     <dimen name="text_icon_gap">8dp</dimen>
 
     <dimen name="line_spacing_extra">6sp</dimen>
-    <dimen name="line_spacing_extra_title">4dp</dimen>
+    <dimen name="line_spacing_extra_title">4sp</dimen>
+    <dimen name="button_letter_spacing_very_little">-0.01</dimen>
     <dimen name="button_letter_spacing">0.04</dimen>
     <dimen name="text_medium_letter_spacing">0.01</dimen>
     <dimen name="text_title_letter_spacing">0.02</dimen>
+
+    <dimen name="button_height_main_list">40dp</dimen>
+    <dimen name="button_width_main_list">84dp</dimen>
+    <dimen name="button_height_inner_list">32dp</dimen>
+    <dimen name="button_width_inner_list">72dp</dimen>
 
     <dimen name="bottom_navigation_elevation">10dp</dimen>
     <dimen name="bottom_tab_bar_height">56dp</dimen>
@@ -22,7 +28,7 @@
     <dimen name="text_list_header">16sp</dimen>
     <dimen name="button_text_medium">16sp</dimen>
     <dimen name="button_text_small">14sp</dimen>
-    <dimen name="button_text_very_small">11sp</dimen>
+    <dimen name="button_text_very_small">10sp</dimen>
 
     <dimen name="text_large">16sp</dimen>
     <dimen name="text_medium">14sp</dimen>

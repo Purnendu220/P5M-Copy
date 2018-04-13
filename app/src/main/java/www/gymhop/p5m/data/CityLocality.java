@@ -16,7 +16,7 @@ public class CityLocality implements java.io.Serializable {
     }
 
     public String getName() {
-        return this.name;
+        return this.name == null ? "" : name;
     }
 
     public void setName(String name) {

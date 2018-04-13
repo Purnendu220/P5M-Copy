@@ -13,16 +13,12 @@ import android.view.ViewGroup;
 import com.brandongogetap.stickyheaders.StickyLayoutManager;
 import com.brandongogetap.stickyheaders.exposed.StickyHeaderListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.adapters.TrainerProfileAdapter;
-import www.gymhop.p5m.data.HeaderSticky;
-import www.gymhop.p5m.data.TrainerDetail;
+import www.gymhop.p5m.utils.AppConstants;
 
 public class TrainerProfile extends BaseFragment implements AdapterCallbacks {
 
@@ -48,7 +44,7 @@ public class TrainerProfile extends BaseFragment implements AdapterCallbacks {
 
         ButterKnife.bind(this, getView());
 
-        trainerProfileAdapter = new TrainerProfileAdapter(context, this);
+        trainerProfileAdapter = new TrainerProfileAdapter(context, AppConstants.AppNavigation.SHOWN_IN_TRAINER, this);
         recyclerViewTrainerProfile.setAdapter(trainerProfileAdapter);
 
         StickyLayoutManager layoutManager = new StickyLayoutManager(context, trainerProfileAdapter);
@@ -68,15 +64,15 @@ public class TrainerProfile extends BaseFragment implements AdapterCallbacks {
             }
         });
 
-        List<Object> data = new ArrayList<>();
-        for (int count = 0; count < 7; count++) {
-            if (count == 1)
-                data.add(new HeaderSticky(""));
-            else
-                data.add(new TrainerDetail());
-        }
-
-        trainerProfileAdapter.setData(data);
+//        List<Object> data = new ArrayList<>();
+//        for (int count = 0; count < 7; count++) {
+//            if (count == 1)
+//                data.add(new HeaderSticky(""));
+//            else
+//                data.add(new TrainerDetail());
+//        }
+//
+//        trainerProfileAdapter.setData(data);
     }
 
     @Override

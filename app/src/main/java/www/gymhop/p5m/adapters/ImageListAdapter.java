@@ -14,7 +14,6 @@ import java.util.List;
 
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.viewholder.ImageViewHolder;
-import www.gymhop.p5m.data.Class;
 import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.view.activity.custom.SquareImageView;
 

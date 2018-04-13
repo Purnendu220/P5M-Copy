@@ -13,7 +13,7 @@ public class UserPackage implements java.io.Serializable {
     private int totalNumberOfClass;
 
     public String getExpiryDate() {
-        return this.expiryDate;
+        return this.expiryDate == null ? "" : expiryDate;
     }
 
     public void setExpiryDate(String expiryDate) {
@@ -37,7 +37,7 @@ public class UserPackage implements java.io.Serializable {
     }
 
     public String getGymName() {
-        return this.gymName;
+        return this.gymName == null ? "" : gymName;
     }
 
     public void setGymName(String gymName) {
@@ -53,7 +53,7 @@ public class UserPackage implements java.io.Serializable {
     }
 
     public String getPackageName() {
-        return this.packageName;
+        return this.packageName == null ? "" : packageName;
     }
 
     public void setPackageName(String packageName) {
@@ -61,7 +61,7 @@ public class UserPackage implements java.io.Serializable {
     }
 
     public String getPackageType() {
-        return this.packageType;
+        return this.packageType == null ? "" : packageType;
     }
 
     public void setPackageType(String packageType) {

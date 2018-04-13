@@ -7,7 +7,7 @@ public class ClassMedia implements java.io.Serializable {
     private int mediaId;
 
     public String getMediaUrl() {
-        return this.mediaUrl;
+        return this.mediaUrl == null ? "" : mediaUrl;
     }
 
     public void setMediaUrl(String mediaUrl) {
@@ -15,7 +15,7 @@ public class ClassMedia implements java.io.Serializable {
     }
 
     public String getMediaThumbNailUrl() {
-        return this.mediaThumbNailUrl;
+        return this.mediaThumbNailUrl == null ? "" : mediaThumbNailUrl;
     }
 
     public void setMediaThumbNailUrl(String mediaThumbNailUrl) {

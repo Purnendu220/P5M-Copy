@@ -10,7 +10,7 @@ public class City implements java.io.Serializable {
     private boolean status;
 
     public String getName() {
-        return name;
+        return name == null ? "" : name;
     }
 
     public void setName(String name) {

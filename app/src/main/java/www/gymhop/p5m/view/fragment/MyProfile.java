@@ -25,9 +25,9 @@ import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.adapters.MyProfileAdapter;
 import www.gymhop.p5m.adapters.viewholder.ProfileHeaderTabViewHolder;
-import www.gymhop.p5m.data.Class;
 import www.gymhop.p5m.data.HeaderSticky;
-import www.gymhop.p5m.data.TrainerDetail;
+import www.gymhop.p5m.data.gym_class.ClassModel;
+import www.gymhop.p5m.data.gym_class.TrainerModel;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 import www.gymhop.p5m.view.activity.custom.MyRecyclerView;
 
@@ -85,7 +85,7 @@ public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>,
             if (count == 1)
                 data.add(new HeaderSticky(""));
             else
-                data.add(new TrainerDetail());
+                data.add(new TrainerModel());
         }
 
         myProfileAdapter.setData(data);
@@ -152,7 +152,7 @@ public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>,
                     if (count == 1)
                         data.add(new HeaderSticky(""));
                     else
-                        data.add(new TrainerDetail());
+                        data.add(new TrainerModel());
                 }
 
                 myProfileAdapter.setData(data);
@@ -167,7 +167,7 @@ public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>,
                     if (count == 1)
                         data.add(new HeaderSticky(""));
                     else
-                        data.add(new Class());
+                        data.add(new ClassModel());
                 }
 
                 myProfileAdapter.setData(data);

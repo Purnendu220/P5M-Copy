@@ -45,7 +45,7 @@
                         android:layout_below="@+id/imageViewClass"
                         android:layout_marginLeft="4dp"
                         android:layout_marginRight="4dp"
-                        android:layout_toStartOf="@+id/button"
+                        android:layout_toStartOf="@+id/buttonJoin"
                         android:ellipsize="end"
                         android:fontFamily="sans-serif-medium"
                         android:letterSpacing="@dimen/text_title_letter_spacing"
@@ -57,7 +57,7 @@
                         android:textSize="@dimen/text_title" />
 
                     <Button
-                        android:id="@+id/button"
+                        android:id="@+id/buttonJoin"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
                         android:layout_alignParentEnd="true"

@@ -21,13 +21,15 @@ public class TrainerProfileAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private static final int UPCOMING_CLASSES = 1;
     private static final int UPCOMING_CLASSES_HEADER = 2;
 
+    private int shownIn;
     private final AdapterCallbacks adapterCallbacks;
     private List<Object> list;
     private Context context;
 
-    public TrainerProfileAdapter(Context context, AdapterCallbacks adapterCallbacks) {
+    public TrainerProfileAdapter(Context context, int shownIn, AdapterCallbacks adapterCallbacks) {
         this.context = context;
         this.adapterCallbacks = adapterCallbacks;
+        this.shownIn = shownIn;
         list = new ArrayList<>();
     }
 
@@ -55,12 +57,13 @@ public class TrainerProfileAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         if (viewType == UPCOMING_CLASSES) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_class_mini, parent, false);
-            return new ClassMiniDetailViewHolder(view);
+            return new ClassMiniDetailViewHolder(view, shownIn);
         }
         if (viewType == UPCOMING_CLASSES_HEADER) {
 
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_header, parent, false);
             return new HeaderViewHolder(view);
+
 //            LinearLayout linearLayout = new LinearLayout(context);
 //            linearLayout.setOrientation(LinearLayout.VERTICAL);
 //            linearLayout.setBackgroundColor(Color.WHITE);

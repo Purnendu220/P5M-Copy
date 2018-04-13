@@ -17,6 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.ScheduleAdapter;
+import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
 public class MySchedule extends BaseFragment {
@@ -32,7 +33,6 @@ public class MySchedule extends BaseFragment {
 
     private ScheduleAdapter scheduleAdapter;
     private String[] titleTabs = new String[]{"Upcoming", "Wish List"};
-
 
     public MySchedule() {
     }
@@ -53,10 +53,32 @@ public class MySchedule extends BaseFragment {
 
         scheduleAdapter = new ScheduleAdapter(((BaseActivity) activity).getSupportFragmentManager(), titleTabs);
         viewPager.setAdapter(scheduleAdapter);
-        viewPager.setOffscreenPageLimit(0);
+        viewPager.setOffscreenPageLimit(1);
 
         tabLayout.setTabTextColors(ContextCompat.getColorStateList(context, R.color.date_tabs));
         tabLayout.setupWithViewPager(viewPager);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                try {
+                    ((ViewPagerFragmentSelection) scheduleAdapter.getFragments().get(position)).onTabSelection(position);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    LogUtils.exception(e);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+
+        viewPager.setCurrentItem(0);
     }
 
     private void setToolBar() {

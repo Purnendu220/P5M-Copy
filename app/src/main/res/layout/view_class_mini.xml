@@ -32,14 +32,13 @@
                         android:layout_height="48dp"
                         android:layout_marginBottom="12dp"
                         android:layout_marginLeft="16dp"
-                        android:layout_marginRight="12dp"
+                        android:layout_marginRight="8dp"
                         android:layout_marginTop="16dp">
 
                         <ImageView
-                            android:id="@+id/imageViewProfile"
+                            android:id="@+id/imageViewClass"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@color/colorPrimaryDark"
                             android:scaleType="centerCrop"
                             android:src="@drawable/info_screen_1" />
                     </android.support.v7.widget.CardView>
@@ -57,43 +56,55 @@
                         android:paddingTop="16dp">
 
                         <TextView
-                            android:id="@+id/textViewTrainerName"
+                            android:id="@+id/textViewClassName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
                             android:ellipsize="end"
-                            android:fontFamily="sans-serif-medium"
+                            android:fontFamily="sans-serif"
                             android:gravity="center_vertical"
                             android:letterSpacing="@dimen/text_title_letter_spacing"
-                            android:maxLines="2"
+                            android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                             android:text="Name of the Class"
+                            android:textAllCaps="true"
                             android:textColor="@color/theme_dark_text"
-                            android:textSize="@dimen/text_title" />
+                            android:textSize="@dimen/text_small"
+                            android:textStyle="bold" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
+                            android:paddingLeft="2dp"
                             android:paddingTop="4dp">
 
-                            <ImageView
-                                android:id="@+id/imageViewTrainerProfile"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginRight="8dp"
-                                android:src="@drawable/users" />
+                            <android.support.v7.widget.CardView
+                                style="@style/CardViewCircularProfileSmallest"
+                                android:layout_margin="4dp"
+                                android:layout_marginTop="4dp"
+                                android:visibility="visible">
+
+                                <ImageView
+                                    android:id="@+id/imageViewTrainerProfile"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:scaleType="centerCrop" />
+                            </android.support.v7.widget.CardView>
 
                             <TextView
-                                android:id="@+id/textViewClassTrainer"
+                                android:id="@+id/textViewTrainerName"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
                                 android:layout_toEndOf="@+id/imageViewClassCategory"
                                 android:fontFamily="sans-serif"
-                                android:letterSpacing="@dimen/text_medium_letter_spacing"
-                                android:lineSpacingExtra="@dimen/line_spacing_extra"
+                                android:letterSpacing="@dimen/text_title_letter_spacing"
+                                android:lineSpacingExtra="@dimen/line_spacing_extra_title"
+                                android:paddingLeft="4dp"
+                                android:paddingTop="4dp"
                                 android:text="Varun John"
                                 android:textColor="@color/theme_dark_text"
-                                android:textSize="@dimen/text_medium" />
+                                android:textSize="@dimen/text_small" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -103,13 +114,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true">
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="4dp">
 
                         <ImageView
                             android:id="@+id/imageViewOptions"
                             style="@style/ToolBarIcon"
                             android:layout_height="wrap_content"
-                            android:padding="15dp"
+                            android:padding="16dp"
                             android:src="@drawable/more_options" />
                     </LinearLayout>
                 </RelativeLayout>
@@ -124,7 +136,7 @@
 
                     <ImageView
                         android:id="@+id/imageViewClassCategory"
-                        style="@style/ClassIconSmall"
+                        style="@style/ClassIconSmaller"
                         android:src="@drawable/class_icon" />
 
                     <TextView
@@ -135,11 +147,11 @@
                         android:layout_marginLeft="@dimen/text_icon_gap"
                         android:layout_toEndOf="@+id/imageViewClassCategory"
                         android:fontFamily="sans-serif"
-                        android:letterSpacing="@dimen/text_medium_letter_spacing"
+                        android:letterSpacing="@dimen/text_title_letter_spacing"
                         android:lineSpacingExtra="@dimen/line_spacing_extra"
                         android:text="Class A: Boxing, strength training and cardio"
                         android:textColor="@color/theme_dark_text"
-                        android:textSize="@dimen/text_medium" />
+                        android:textSize="@dimen/text_small" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -153,7 +165,7 @@
 
                     <ImageView
                         android:id="@+id/imageViewClassDate"
-                        style="@style/ClassIconSmall"
+                        style="@style/ClassIconSmaller"
                         android:src="@drawable/calendar" />
 
                     <TextView
@@ -168,18 +180,18 @@
                         android:lineSpacingExtra="@dimen/line_spacing_extra"
                         android:text="January 11, 2018"
                         android:textColor="@color/theme_dark_text"
-                        android:textSize="@dimen/text_medium" />
+                        android:textSize="@dimen/text_small" />
 
                     <ImageView
                         android:id="@+id/imageViewClassTime"
-                        style="@style/ClassIconSmall"
+                        style="@style/ClassIconSmaller"
                         android:layout_alignParentTop="true"
-                        android:layout_marginLeft="40dp"
                         android:layout_toEndOf="@+id/textViewClassDate"
-                        android:src="@drawable/time" />
+                        android:src="@drawable/time"
+                        android:visibility="gone" />
 
                     <TextView
-                        android:id="@+id/textViewClassTime"
+                        android:id="@+id/textViewTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
@@ -190,7 +202,8 @@
                         android:lineSpacingExtra="@dimen/line_spacing_extra"
                         android:text="7:00 - 8:00 PM"
                         android:textColor="@color/theme_dark_text"
-                        android:textSize="@dimen/text_medium" />
+                        android:textSize="@dimen/text_small"
+                        android:textStyle="bold" />
 
                 </RelativeLayout>
 
@@ -202,7 +215,7 @@
 
                     <ImageView
                         android:id="@+id/imageViewLocation"
-                        style="@style/ClassIconSmall"
+                        style="@style/ClassIconSmaller"
                         android:src="@drawable/location" />
 
                     <TextView
@@ -213,34 +226,31 @@
                         android:layout_marginBottom="16dp"
                         android:layout_marginLeft="@dimen/text_icon_gap"
                         android:layout_toEndOf="@+id/imageViewLocation"
-                        android:layout_toStartOf="@+id/button"
+                        android:layout_toStartOf="@+id/buttonJoin"
                         android:ellipsize="end"
                         android:fontFamily="sans-serif"
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
-                        android:lineSpacingExtra="@dimen/line_spacing_extra"
+                        android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                         android:maxLines="3"
                         android:text="Fikra Edutech Logix Technova, Noida Sector 132"
                         android:textColor="@color/theme_dark_text"
-                        android:textSize="@dimen/text_medium" />
+                        android:textSize="@dimen/text_small" />
 
                     <Button
-                        android:id="@+id/button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
+                        android:id="@+id/buttonJoin"
+                        android:layout_width="@dimen/button_width_inner_list"
+                        android:layout_height="@dimen/button_height_inner_list"
+                        android:layout_alignBottom="@+id/textViewLocation"
                         android:layout_alignParentEnd="true"
-                        android:layout_below="@+id/imageViewClass"
                         android:layout_gravity="right"
-                        android:layout_marginBottom="16dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="16dp"
                         android:background="@drawable/join_rect"
                         android:fontFamily="sans-serif-medium"
                         android:letterSpacing="@dimen/button_letter_spacing"
                         android:text="@string/join"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/button_text_medium" />
+                        android:textSize="@dimen/button_text_small" />
                 </RelativeLayout>
 
                 <View

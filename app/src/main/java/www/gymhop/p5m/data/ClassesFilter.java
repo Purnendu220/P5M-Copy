@@ -14,6 +14,7 @@ public class ClassesFilter implements Serializable {
     public static int TYPE_SUB_HEADER = 3;
 
     private String name;
+    private String id;
     private int type;
     private int iconResource;
     private boolean isExpanded;
@@ -23,6 +24,13 @@ public class ClassesFilter implements Serializable {
 
     private List<ClassesFilter> list;
     private Object object;
+
+    public ClassesFilter(String id, String name, int iconResource, int type) {
+        this.id = id;
+        this.name = name;
+        this.iconResource = iconResource;
+        this.type = type;
+    }
 
     public ClassesFilter(String name, int iconResource, int type) {
         this.name = name;
@@ -42,6 +50,14 @@ public class ClassesFilter implements Serializable {
         }
 
         return super.equals(obj);
+    }
+
+    public String getId() {
+        return id == null ? "" : id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public List<ClassesFilter> getList() {
@@ -69,7 +85,7 @@ public class ClassesFilter implements Serializable {
     }
 
     public String getName() {
-        return name;
+        return name == null ? "" : name;
     }
 
     public void setName(String name) {

@@ -13,8 +13,10 @@
             android:id="@+id/recyclerViewClass"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/theme_bg"
+            android:background="@color/white"
             android:clipToPadding="false"
+            android:paddingBottom="16dp"
+            android:paddingTop="12dp"
             android:scrollbars="none" />
     </android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>

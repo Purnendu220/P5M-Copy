@@ -8,12 +8,13 @@ import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
+import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.storage.preferences.MyPreferences;
 import www.gymhop.p5m.view.activity.LoginRegister.InfoScreen;
 import www.gymhop.p5m.view.activity.Main.Home;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
-public class Splash extends BaseActivity {
+public class Splash extends BaseActivity implements NetworkCommunicator.RequestListener {
 
     private Handler handler;
     private Runnable nextScreenRunnable;
@@ -36,6 +37,7 @@ public class Splash extends BaseActivity {
 
         startTimerForGoToNextScreen();
 
+        networkCommunicator.getActivities(this, false);
     }
 
     private void startTimerForGoToNextScreen() {
@@ -63,5 +65,13 @@ public class Splash extends BaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
         handler.removeCallbacks(nextScreenRunnable);
+    }
+
+    @Override
+    public void onApiSuccess(Object response, int requestCode) {
+    }
+
+    @Override
+    public void onApiFailure(String errorMessage, int requestCode) {
     }
 }

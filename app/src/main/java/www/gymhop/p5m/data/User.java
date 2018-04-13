@@ -33,7 +33,7 @@ public class User implements java.io.Serializable {
     }
 
     public String getProfileImageThumbnail() {
-        return this.profileImageThumbnail;
+        return this.profileImageThumbnail == null ? "" : profileImageThumbnail;
     }
 
     public void setProfileImageThumbnail(String profileImageThumbnail) {
@@ -41,7 +41,7 @@ public class User implements java.io.Serializable {
     }
 
     public String getGender() {
-        return this.gender;
+        return this.gender == null ? "" : gender;
     }
 
     public void setGender(String gender) {
@@ -81,7 +81,7 @@ public class User implements java.io.Serializable {
     }
 
     public String getProfileImage() {
-        return this.profileImage;
+        return this.profileImage == null ? "" : profileImage;
     }
 
     public void setProfileImage(String profileImage) {
@@ -89,7 +89,7 @@ public class User implements java.io.Serializable {
     }
 
     public String getFirstName() {
-        return this.firstName;
+        return this.firstName == null ? "" : firstName;
     }
 
     public void setFirstName(String firstName) {
@@ -105,7 +105,7 @@ public class User implements java.io.Serializable {
     }
 
     public String getNationality() {
-        return this.nationality;
+        return this.nationality  == null ? "" : nationality;
     }
 
     public void setNationality(String nationality) {
@@ -113,7 +113,7 @@ public class User implements java.io.Serializable {
     }
 
     public String getUserCategory() {
-        return this.userCategory;
+        return this.userCategory  == null ? "" : userCategory;
     }
 
     public void setUserCategory(String userCategory) {
@@ -153,7 +153,7 @@ public class User implements java.io.Serializable {
     }
 
     public String getEmail() {
-        return this.email;
+        return this.email == null ? "" : email;
     }
 
     public void setEmail(String email) {

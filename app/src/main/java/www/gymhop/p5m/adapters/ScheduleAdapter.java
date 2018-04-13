@@ -1,6 +1,5 @@
 package www.gymhop.p5m.adapters;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -34,10 +33,15 @@ public class ScheduleAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
 
-        Fragment tabFragment = new ClassMiniViewList();
-        Bundle bundle = new Bundle();
-        bundle.putInt(AppConstants.DataKey.TAB_POSITION_INT, position);
-        tabFragment.setArguments(bundle);
+        int shownInScreen = AppConstants.AppNavigation.SHOWN_IN_SCHEDULE;
+
+        if (position == 0) {
+            shownInScreen = AppConstants.AppNavigation.SHOWN_IN_SCHEDULE;
+        } else if (position == 1) {
+            shownInScreen = AppConstants.AppNavigation.SHOWN_IN_WISH_LIST;
+        }
+
+        Fragment tabFragment = ClassMiniViewList.getInstance(position, shownInScreen);
 
         fragments.set(position, tabFragment);
         return tabFragment;
