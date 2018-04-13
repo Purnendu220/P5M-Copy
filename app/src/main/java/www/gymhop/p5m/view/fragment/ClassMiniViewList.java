@@ -32,7 +32,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
         Fragment tabFragment = new ClassMiniViewList();
         Bundle bundle = new Bundle();
         bundle.putInt(AppConstants.DataKey.TAB_POSITION_INT, position);
-        bundle.putInt(AppConstants.DataKey.TAB_SHOWN_IN, shownIn);
+        bundle.putInt(AppConstants.DataKey.TAB_SHOWN_IN_INT, shownIn);
         tabFragment.setArguments(bundle);
 
         return tabFragment;
@@ -68,7 +68,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
         ButterKnife.bind(this, getView());
 
         fragmentPositionInViewPager = getArguments().getInt(AppConstants.DataKey.TAB_POSITION_INT);
-        shownInScreen = getArguments().getInt(AppConstants.DataKey.TAB_SHOWN_IN);
+        shownInScreen = getArguments().getInt(AppConstants.DataKey.TAB_SHOWN_IN_INT);
 
         swipeRefreshLayout.setOnRefreshListener(this);
 
@@ -109,7 +109,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
 
-        if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE) {
+        if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
             networkCommunicator.getScheduleList(TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_CLASS_LIST, this, false);
 
         } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_WISH_LIST) {
@@ -121,7 +121,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
     public void onApiSuccess(Object response, int requestCode) {
 
         switch (requestCode) {
-            case NetworkCommunicator.RequestCode.TRAINER_LIST:
+            case NetworkCommunicator.RequestCode.CLASS_LIST:
                 swipeRefreshLayout.setRefreshing(false);
                 List<ClassModel> classModels = ((ResponseModel<List<ClassModel>>) response).data;
 
@@ -138,7 +138,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
         switch (requestCode) {
-            case NetworkCommunicator.RequestCode.TRAINER_LIST:
+            case NetworkCommunicator.RequestCode.CLASS_LIST:
 
                 swipeRefreshLayout.setRefreshing(false);
                 checkListData();

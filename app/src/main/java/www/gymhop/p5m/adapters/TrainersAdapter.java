@@ -1,6 +1,5 @@
 package www.gymhop.p5m.adapters;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -39,11 +38,8 @@ public class TrainersAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
 
-        Fragment tabFragment = new TrainerList();
-        Bundle bundle = new Bundle();
-        bundle.putInt(AppConstants.DataKey.TAB_POSITION_INT, position);
-        bundle.putInt(AppConstants.DataKey.TAB_ACTIVITY_ID, titleTabs.get(position).getId());
-        tabFragment.setArguments(bundle);
+        Fragment tabFragment = TrainerList.createFragment(titleTabs.get(position).getId(),
+                position, AppConstants.AppNavigation.SHOWN_IN_HOME_TRAINERS);
 
         fragments.set(position, tabFragment);
         return tabFragment;

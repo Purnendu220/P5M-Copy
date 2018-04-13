@@ -27,6 +27,10 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
     public ImageView imageViewClass;
     @BindView(R.id.imageViewTrainerProfile)
     public ImageView imageViewTrainerProfile;
+    @BindView(R.id.imageViewOptions1)
+    public ImageView imageViewOptions1;
+    @BindView(R.id.imageViewOptions2)
+    public ImageView imageViewOptions2;
 
     @BindView(R.id.buttonJoin)
     public Button buttonJoin;
@@ -62,22 +66,39 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
 
             final ClassModel model = (ClassModel) data;
 
-            if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE) {
-                buttonJoin.setVisibility(View.GONE);
+            if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
                 imageViewTrainerProfile.setVisibility(View.VISIBLE);
+
+                buttonJoin.setVisibility(View.GONE);
+                imageViewOptions1.setVisibility(View.VISIBLE);
+                imageViewOptions2.setVisibility(View.GONE);
 
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_WISH_LIST) {
                 buttonJoin.setVisibility(View.VISIBLE);
                 imageViewTrainerProfile.setVisibility(View.VISIBLE);
 
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_TRAINER) {
-                buttonJoin.setVisibility(View.VISIBLE);
                 imageViewTrainerProfile.setVisibility(View.VISIBLE);
                 imageViewTrainerProfile.setVisibility(View.GONE);
 
-            } else {
                 buttonJoin.setVisibility(View.VISIBLE);
+                imageViewOptions1.setVisibility(View.GONE);
+                imageViewOptions2.setVisibility(View.VISIBLE);
+
+            } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED) {
+                imageViewTrainerProfile.setVisibility(View.GONE);
+                imageViewTrainerProfile.setVisibility(View.GONE);
+
+                buttonJoin.setVisibility(View.GONE);
+                imageViewOptions1.setVisibility(View.GONE);
+                imageViewOptions2.setVisibility(View.GONE);
+
+            } else {
                 imageViewTrainerProfile.setVisibility(View.VISIBLE);
+
+                buttonJoin.setVisibility(View.VISIBLE);
+                imageViewOptions1.setVisibility(View.GONE);
+                imageViewOptions2.setVisibility(View.VISIBLE);
             }
 
             if (model.getClassMedia() != null) {

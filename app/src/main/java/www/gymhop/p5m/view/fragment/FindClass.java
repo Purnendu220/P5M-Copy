@@ -43,7 +43,8 @@ public class FindClass extends BaseFragment implements View.OnClickListener {
     public TextView textViewNotificationMessageCounter;
 
     private FindClassAdapter findClassAdapter;
-    private int TOTAL_DATE_TABS = 45;
+//    private int TOTAL_DATE_TABS = 45;
+    private int TOTAL_DATE_TABS = 7;
 
     private List<GregorianCalendar> calendarList;
 
@@ -63,17 +64,19 @@ public class FindClass extends BaseFragment implements View.OnClickListener {
         ButterKnife.bind(this, getView());
 
         calendarList = new ArrayList<>(TOTAL_DATE_TABS);
-        generateTabs();
-
-        setToolBar();
 
         findClassAdapter = new FindClassAdapter(getChildFragmentManager(), TOTAL_DATE_TABS);
         viewPager.setAdapter(findClassAdapter);
-        findClassAdapter.setCalendarList(calendarList);
-        viewPager.setOffscreenPageLimit(TOTAL_DATE_TABS);
 
         tabLayout.setTabTextColors(ContextCompat.getColorStateList(context, R.color.date_tabs));
         tabLayout.setupWithViewPager(viewPager);
+
+        generateTabs();
+        setToolBar();
+
+        findClassAdapter.setCalendarList(calendarList);
+        viewPager.setOffscreenPageLimit(TOTAL_DATE_TABS);
+        viewPager.setCurrentItem(0);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -94,8 +97,6 @@ public class FindClass extends BaseFragment implements View.OnClickListener {
             public void onPageScrollStateChanged(int state) {
             }
         });
-
-        viewPager.setCurrentItem(0);
     }
 
     @Override
@@ -117,35 +118,53 @@ public class FindClass extends BaseFragment implements View.OnClickListener {
             gregorianCalendar.set(GregorianCalendar.DATE, gregorianCalendar.get(GregorianCalendar.DATE) + index);
 
             calendarList.add(gregorianCalendar);
+
+            String monthName = DateUtils.getMonthName(gregorianCalendar.get(GregorianCalendar.MONTH));
+            String weekdayName = DateUtils.getWeekDaysName(gregorianCalendar.get(GregorianCalendar.DAY_OF_WEEK));
+            int day = gregorianCalendar.get(GregorianCalendar.DAY_OF_MONTH);
+
+            tabLayout.getTabAt(index).setCustomView(R.layout.view_date_tab);
+            View customView = tabLayout.getTabAt(index).getCustomView();
+
+            TextView info = customView.findViewById(R.id.textViewInfo);
+            TextView title = customView.findViewById(R.id.textViewTitle);
+
+            info.setText(monthName + " " + day);
+
+            if (index == 0) {
+                title.setText(getString(R.string.today));
+            } else {
+                title.setText(weekdayName);
+            }
         }
 
-        viewPager.post(new Runnable() {
-            @Override
-            public void run() {
-                for (int index = 0; index < calendarList.size(); index++) {
-
-                    final GregorianCalendar gregorianCalendar = calendarList.get(index);
-
-                    String monthName = DateUtils.getMonthName(gregorianCalendar.get(GregorianCalendar.MONTH));
-                    String weekdayName = DateUtils.getWeekDaysName(gregorianCalendar.get(GregorianCalendar.DAY_OF_WEEK));
-                    int day = gregorianCalendar.get(GregorianCalendar.DAY_OF_MONTH);
-
-                    tabLayout.getTabAt(index).setCustomView(R.layout.view_date_tab);
-                    View customView = tabLayout.getTabAt(index).getCustomView();
-
-                    TextView info = customView.findViewById(R.id.textViewInfo);
-                    TextView title = customView.findViewById(R.id.textViewTitle);
-
-                    info.setText(monthName + " " + day);
-
-                    if (index == 0) {
-                        title.setText(getString(R.string.today));
-                    } else {
-                        title.setText(weekdayName);
-                    }
-                }
-            }
-        });
+//        viewPager.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                for (int index = 0; index < calendarList.size(); index++) {
+//
+//                    final GregorianCalendar gregorianCalendar = calendarList.get(index);
+//
+//                    String monthName = DateUtils.getMonthName(gregorianCalendar.get(GregorianCalendar.MONTH));
+//                    String weekdayName = DateUtils.getWeekDaysName(gregorianCalendar.get(GregorianCalendar.DAY_OF_WEEK));
+//                    int day = gregorianCalendar.get(GregorianCalendar.DAY_OF_MONTH);
+//
+//                    tabLayout.getTabAt(index).setCustomView(R.layout.view_date_tab);
+//                    View customView = tabLayout.getTabAt(index).getCustomView();
+//
+//                    TextView info = customView.findViewById(R.id.textViewInfo);
+//                    TextView title = customView.findViewById(R.id.textViewTitle);
+//
+//                    info.setText(monthName + " " + day);
+//
+//                    if (index == 0) {
+//                        title.setText(getString(R.string.today));
+//                    } else {
+//                        title.setText(weekdayName);
+//                    }
+//                }
+//            }
+//        });
     }
 
     private void setToolBar() {

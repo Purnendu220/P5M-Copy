@@ -18,10 +18,11 @@
                 style="@style/CardViewCircularProfile"
                 android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginRight="12dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="16dp">
 
                 <ImageView
+                    android:src="@drawable/profile_holder"
                     android:id="@+id/imageViewProfile"
                     android:layout_width="match_parent"
                     android:scaleType="centerCrop"
@@ -49,7 +50,7 @@
                     android:gravity="center_vertical"
                     android:letterSpacing="@dimen/button_letter_spacing_very_little"
                     android:maxLines="2"
-                    android:text="Trainer Name"
+                    android:text="STrainer Name"
                     android:textColor="@color/theme_dark_text"
                     android:textSize="@dimen/text_large" />
 
@@ -61,9 +62,9 @@
 
                     <ImageView
                         android:id="@+id/imageViewSubtitle"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginRight="6dp"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginRight="4dp"
                         android:src="@drawable/class_icon"
                         android:visibility="gone" />
 

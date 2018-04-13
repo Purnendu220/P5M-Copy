@@ -54,21 +54,12 @@ public class FindClassAdapter extends FragmentStatePagerAdapter {
             date = String.format("%1$tY-%1$tm-%1$td", gregorianCalendar);
         }
 
-        Fragment tabFragment = ClassList.getInstance(date, position, AppConstants.AppNavigation.SHOWN_IN_FIND_CLASS);
+        Fragment tabFragment = ClassList.createFragment(date, position,
+                AppConstants.AppNavigation.SHOWN_IN_HOME_FIND_CLASSES);
 
         fragments.set(position, tabFragment);
         return tabFragment;
     }
-
-
-//    @Override
-//    public CharSequence getPageTitle(int position) {
-//        return "Wed\nMar 17";
-//    }
-//
-//    public int getTotalTabs() {
-//        return totalTabs;
-//    }
 
     @Override
     public int getCount() {

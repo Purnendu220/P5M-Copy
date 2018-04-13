@@ -33,7 +33,8 @@
                         android:layout_height="120dp"
                         android:background="@color/white"
                         android:elevation="2dp"
-                        android:scaleType="centerCrop" />
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/class_holder" />
 
                     <TextView
                         android:id="@+id/textViewClassName"
@@ -310,8 +311,9 @@
                         <ImageView
                             android:id="@+id/imageViewTrainerProfile"
                             android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:scaleType="centerCrop"
-                            android:layout_height="match_parent" />
+                            android:src="@drawable/profile_holder" />
                     </android.support.v7.widget.CardView>
 
                     <TextView

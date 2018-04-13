@@ -2,6 +2,8 @@ package www.gymhop.p5m.utils;
 
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by MyU10 on 3/13/2018.
@@ -35,6 +37,16 @@ public class DateUtils {
     private static SimpleDateFormat classDate = new SimpleDateFormat("yyyy-MM-dd");
     private static SimpleDateFormat classDateFormat = new SimpleDateFormat("EEE, MMM d, yyyy");
 
+    public static int getDaysLeftFromPackageExpiryDate(String date) {
+        try {
+            Date expiryDate = classDate.parse(date);
+            return expiryDate.compareTo(Calendar.getInstance().getTime());
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+        return 0;
+    }
     public static String getClassTime(String from, String till) {
         try {
             return classTimeFormat.format(classTime.parse(from)) + " - " +

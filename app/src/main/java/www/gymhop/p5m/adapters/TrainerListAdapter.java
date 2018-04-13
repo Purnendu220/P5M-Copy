@@ -27,13 +27,16 @@ public class TrainerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private List<Object> list;
     private Context context;
 
+    private final int shownInScreen;
+
     private boolean showLoader;
     private ListLoader listLoader;
 
-    public TrainerListAdapter(Context context, boolean showLoader, AdapterCallbacks adapterCallbacks) {
+    public TrainerListAdapter(Context context, int shownInScreen, boolean showLoader, AdapterCallbacks adapterCallbacks) {
         this.adapterCallbacks = adapterCallbacks;
         this.context = context;
         list = new ArrayList<>();
+        this.shownInScreen = shownInScreen;
         this.showLoader = showLoader;
         listLoader = new ListLoader();
     }
@@ -73,7 +76,7 @@ public class TrainerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_TRAINER_LIST) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_trainer_list, parent, false);
-            return new TrainerListViewHolder(view);
+            return new TrainerListViewHolder(view, shownInScreen);
         } else if (viewType == VIEW_TYPE_LOADER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_list_progress, parent, false);
             return new LoaderViewHolder(view);

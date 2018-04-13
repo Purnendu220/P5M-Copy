@@ -33,10 +33,10 @@ public class ScheduleAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
 
-        int shownInScreen = AppConstants.AppNavigation.SHOWN_IN_SCHEDULE;
+        int shownInScreen = AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING;
 
         if (position == 0) {
-            shownInScreen = AppConstants.AppNavigation.SHOWN_IN_SCHEDULE;
+            shownInScreen = AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING;
         } else if (position == 1) {
             shownInScreen = AppConstants.AppNavigation.SHOWN_IN_WISH_LIST;
         }

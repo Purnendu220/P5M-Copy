@@ -7,11 +7,7 @@ package www.gymhop.p5m.utils;
 public class AppConstants {
 
     public static String plural(String word, int number) {
-        if (number == 1) {
-            return word;
-        } else {
-            return word + "s";
-        }
+        return number == 1 ? word : word + "s";
     }
 
     public static class Pref {
@@ -25,9 +21,9 @@ public class AppConstants {
 
     public class DataKey {
         public static final String TAB_POSITION_INT = "tab_position_int";
-        public static final String TAB_SHOWN_IN = "tab_shown_in";
+        public static final String TAB_SHOWN_IN_INT = "tab_shown_in";
         public static final String CLASS_DATE_STRING = "class_date_string";
-        public static final String TAB_ACTIVITY_ID = "tab_activity_id";
+        public static final String TAB_ACTIVITY_ID_INT = "tab_activity_id";
     }
 
     public class Url {
@@ -46,10 +42,16 @@ public class AppConstants {
         public static final String TRAINER_LIST = "api/v1/user/getTrainerList";
         public static final String WISH_LIST = "api/v1/wish/getWishList";
         public static final String SCHEDULE_LIST = "api/v1/user/upcomingClasses";
+        public static final String FINISHED_CLASS_LIST = "api/v1/user/finishedClasses";
+        public static final String FAV_TRAINER_LIST = "api/v1/follow/getFavList";
     }
 
     public class ApiParamValue {
         public static final String SUCCESS_RESPONSE_CODE = "2XX";
+        public static final String FOLLOW_TYPE_FOLLOWED = "Followed";
+
+        public static final String PACKAGE_TYPE_GENERAL = "GENERAL";
+        public static final String PACKAGE_TYPE_DROP_IN = "DROPIN";
     }
 
     public class ApiParamKey {
@@ -57,17 +59,21 @@ public class AppConstants {
         public static final String APP_VERSION = "";
         public static final String SIZE = "size";
         public static final String PAGE = "page";
+        public static final String ID = "id";
         public static final String CATEGORY_ID = "categoryId";
         public static final String USER_ID = "userId";
+        public static final String TYPE = "type";
     }
 
     public class AppNavigation {
-        public static final int SHOWN_IN_SCHEDULE = 1;
+        public static final int SHOWN_IN_SCHEDULE_UPCOMING = 1;
         public static final int SHOWN_IN_WISH_LIST = 2;
         public static final int SHOWN_IN_MY_PROFILE_FINISHED = 3;
         public static final int SHOWN_IN_SEARCH = 4;
         public static final int SHOWN_IN_TRAINER = 5;
-        public static final int SHOWN_IN_FIND_CLASS = 6;
+        public static final int SHOWN_IN_HOME_FIND_CLASSES = 6;
+        public static final int SHOWN_IN_HOME_TRAINERS = 7;
+        public static final int SHOWN_IN_MY_PROFILE_FAV_TRAINERS = 8;
     }
 
     public class Limit {

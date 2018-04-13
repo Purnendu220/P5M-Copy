@@ -145,7 +145,7 @@
     <string name="coach_at">Coach at </string>
     <string name="remaing_day"><b>days</b> remaining until your classes expire.</string>
     <string name="fuel_your_workout">Fuel your workout.</string>
-    <string name="recharge">Recharge</string>
+    <string name="recharge">"<u>Recharge</u>"</string>
     <string name="login_error">The email and password combination is incorrect.\n Please try again.</string>
     <string name="password_error">The password you entered is incorrect. \n Please Try again</string>
     <string name="password_error_text">Password must be 6 to 14 character long.</string>
@@ -178,4 +178,5 @@
     <string name="sign_up">Sign Up</string>
     <string name="no_more_data">No more data</string>
     <string name="loading">Loading</string>
+    <string name="profile_package_expiry">" remaining until your classes expire."</string>
 </resources>

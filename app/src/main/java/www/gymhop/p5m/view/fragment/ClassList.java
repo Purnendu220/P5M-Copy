@@ -34,12 +34,12 @@ import www.gymhop.p5m.view.activity.custom.MyRecyclerView;
 
 public class ClassList extends BaseFragment implements ViewPagerFragmentSelection, MyRecyclerView.LoaderCallbacks, AdapterCallbacks<ClassModel>, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
 
-    public static Fragment getInstance(String date, int position, int shownIn) {
+    public static Fragment createFragment(String date, int position, int shownIn) {
         Fragment tabFragment = new ClassList();
         Bundle bundle = new Bundle();
         bundle.putString(AppConstants.DataKey.CLASS_DATE_STRING, date);
         bundle.putInt(AppConstants.DataKey.TAB_POSITION_INT, position);
-        bundle.putInt(AppConstants.DataKey.TAB_SHOWN_IN, shownIn);
+        bundle.putInt(AppConstants.DataKey.TAB_SHOWN_IN_INT, shownIn);
         tabFragment.setArguments(bundle);
 
         return tabFragment;
@@ -78,7 +78,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
         swipeRefreshLayout.setOnRefreshListener(this);
 
         fragmentPositionInViewPager = getArguments().getInt(AppConstants.DataKey.TAB_POSITION_INT);
-        shownInScreen = getArguments().getInt(AppConstants.DataKey.TAB_SHOWN_IN);
+        shownInScreen = getArguments().getInt(AppConstants.DataKey.TAB_SHOWN_IN_INT);
         date = getArguments().getString(AppConstants.DataKey.CLASS_DATE_STRING, null);
 
         recyclerViewClass.setLayoutManager(new LinearLayoutManager(activity));

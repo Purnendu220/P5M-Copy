@@ -28,10 +28,14 @@ import www.gymhop.p5m.adapters.viewholder.ProfileHeaderTabViewHolder;
 import www.gymhop.p5m.data.HeaderSticky;
 import www.gymhop.p5m.data.gym_class.ClassModel;
 import www.gymhop.p5m.data.gym_class.TrainerModel;
+import www.gymhop.p5m.restapi.NetworkCommunicator;
+import www.gymhop.p5m.restapi.ResponseModel;
+import www.gymhop.p5m.storage.TempStorage;
+import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 import www.gymhop.p5m.view.activity.custom.MyRecyclerView;
 
-public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>, MyRecyclerView.LoaderCallbacks {
+public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>, MyRecyclerView.LoaderCallbacks, NetworkCommunicator.RequestListener {
 
     @BindView(R.id.recyclerView)
     public RecyclerView recyclerView;
@@ -42,6 +46,7 @@ public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>,
     public Toolbar toolbar;
 
     private MyProfileAdapter myProfileAdapter;
+    private int page;
 
     public MyProfile() {
     }
@@ -62,6 +67,8 @@ public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>,
 
         myProfileAdapter = new MyProfileAdapter(context, this);
         recyclerView.setAdapter(myProfileAdapter);
+
+        myProfileAdapter.setUser(TempStorage.getUser());
 
         StickyLayoutManager layoutManager = new StickyLayoutManager(context, myProfileAdapter);
         layoutManager.elevateHeaders(true);
@@ -88,9 +95,8 @@ public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>,
                 data.add(new TrainerModel());
         }
 
-        myProfileAdapter.setData(data);
-
         myProfileAdapter.onTabSelection(ProfileHeaderTabViewHolder.TAB_1);
+        myProfileAdapter.notifyDataSetChanges();
     }
 
     /**
@@ -145,33 +151,21 @@ public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>,
     public void onAdapterItemClick(View viewRoot, View view, Object model, int position) {
         switch (view.getId()) {
             case R.id.header1: {
-                myProfileAdapter.onTabSelection(ProfileHeaderTabViewHolder.TAB_1);
-
-                List<Object> data = new ArrayList<>();
-                for (int count = 0; count < 10; count++) {
-                    if (count == 1)
-                        data.add(new HeaderSticky(""));
-                    else
-                        data.add(new TrainerModel());
+                if (myProfileAdapter.getTrainers().isEmpty()) {
+                    networkCommunicator.getFavTrainerList(AppConstants.ApiParamValue.FOLLOW_TYPE_FOLLOWED, TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_TRAINER_LIST, this, false);
                 }
 
-                myProfileAdapter.setData(data);
-                myProfileAdapter.notifyDataSetChanged();
+                myProfileAdapter.onTabSelection(ProfileHeaderTabViewHolder.TAB_1);
+                myProfileAdapter.notifyDataSetChanges();
             }
             break;
             case R.id.header2: {
-                myProfileAdapter.onTabSelection(ProfileHeaderTabViewHolder.TAB_2);
-
-                List<Object> data = new ArrayList<>();
-                for (int count = 0; count < 10; count++) {
-                    if (count == 1)
-                        data.add(new HeaderSticky(""));
-                    else
-                        data.add(new ClassModel());
+                if (myProfileAdapter.getClasses().isEmpty()) {
+                    networkCommunicator.getFinishedClassList(TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_TRAINER_LIST, this, false);
                 }
 
-                myProfileAdapter.setData(data);
-                myProfileAdapter.notifyDataSetChanged();
+                myProfileAdapter.onTabSelection(ProfileHeaderTabViewHolder.TAB_2);
+                myProfileAdapter.notifyDataSetChanges();
             }
             break;
         }
@@ -188,4 +182,41 @@ public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>,
     @Override
     public void onShowLoader(MyRecyclerView.LoaderItem loaderItem, MyRecyclerView.Loader loader, View view, int position) {
     }
+
+    @Override
+    public void onApiSuccess(Object response, int requestCode) {
+        switch (requestCode) {
+            case NetworkCommunicator.RequestCode.CLASS_LIST:
+                List<ClassModel> classModels = ((ResponseModel<List<ClassModel>>) response).data;
+
+                if (!classModels.isEmpty()) {
+                    myProfileAdapter.addClasses(classModels);
+                    myProfileAdapter.notifyDataSetChanges();
+                } else {
+                    checkListData();
+                }
+
+                break;
+            case NetworkCommunicator.RequestCode.TRAINER_LIST:
+                List<TrainerModel> trainerModels = ((ResponseModel<List<TrainerModel>>) response).data;
+
+                if (!trainerModels.isEmpty()) {
+                    myProfileAdapter.addTrainers(trainerModels);
+                    myProfileAdapter.notifyDataSetChanges();
+                } else {
+                    checkListData();
+                }
+
+                break;
+        }
+    }
+
+    @Override
+    public void onApiFailure(String errorMessage, int requestCode) {
+
+    }
+
+    private void checkListData() {
+    }
+
 }

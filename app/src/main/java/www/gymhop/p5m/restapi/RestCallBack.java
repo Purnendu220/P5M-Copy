@@ -2,12 +2,11 @@ package www.gymhop.p5m.restapi;
 
 import com.google.gson.Gson;
 
-import java.io.IOException;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import www.gymhop.p5m.utils.AppConstants;
+import www.gymhop.p5m.utils.LogUtils;
 
 /**
  * Created by MyU10 on 1/21/2017.
@@ -33,8 +32,9 @@ public abstract class RestCallBack<T> implements Callback<T> {
             try {
                 responseModel = gson.fromJson(response.errorBody().string(), ResponseModel.class);
                 onFailure(call, responseModel.errorMessage);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
+                LogUtils.exception(e);
                 onFailure(call, "");
             }
         }

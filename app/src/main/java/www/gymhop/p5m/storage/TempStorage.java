@@ -26,7 +26,7 @@ public class TempStorage {
 
     public static List<City> getCities() {
 //        if (cities == null) {
-//            cities = MyPreferences.getInstance().getCities();
+//            cities = MyPreferences.createFragment().getCities();
 //        }
         return cities;
     }
@@ -37,7 +37,7 @@ public class TempStorage {
 
     public static List<ClassActivity> getActivities() {
 //        if (activities == null) {
-//            activities = MyPreferences.getInstance().getActivities();
+//            activities = MyPreferences.createFragment().getActivities();
 //        }
         return activities;
     }

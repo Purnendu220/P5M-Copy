@@ -3,6 +3,7 @@ package www.gymhop.p5m.view.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,6 +26,17 @@ import www.gymhop.p5m.view.activity.custom.MyRecyclerView;
 
 public class TrainerList extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks<TrainerModel>, MyRecyclerView.LoaderCallbacks, SwipeRefreshLayout.OnRefreshListener, NetworkCommunicator.RequestListener {
 
+    public static Fragment createFragment(int activityId, int position, int shownIn) {
+        Fragment tabFragment = new TrainerList();
+        Bundle bundle = new Bundle();
+        bundle.putInt(AppConstants.DataKey.TAB_POSITION_INT, position);
+        bundle.putInt(AppConstants.DataKey.TAB_ACTIVITY_ID_INT, activityId);
+        bundle.putInt(AppConstants.DataKey.TAB_SHOWN_IN_INT, shownIn);
+        tabFragment.setArguments(bundle);
+
+        return tabFragment;
+    }
+
     @BindView(R.id.recyclerViewClass)
     public RecyclerView recyclerViewTrainers;
     @BindView(R.id.swipeRefreshLayout)
@@ -36,6 +48,7 @@ public class TrainerList extends BaseFragment implements ViewPagerFragmentSelect
     private boolean isShownFirstTime = true;
     private int page;
     private int activityId;
+    private int shownInScreen;
 
     public TrainerList() {
     }
@@ -53,14 +66,15 @@ public class TrainerList extends BaseFragment implements ViewPagerFragmentSelect
         ButterKnife.bind(this, getView());
 
         fragmentPositionInViewPager = getArguments().getInt(AppConstants.DataKey.TAB_POSITION_INT);
-        activityId = getArguments().getInt(AppConstants.DataKey.TAB_ACTIVITY_ID);
+        activityId = getArguments().getInt(AppConstants.DataKey.TAB_ACTIVITY_ID_INT);
+        shownInScreen = getArguments().getInt(AppConstants.DataKey.TAB_SHOWN_IN_INT);
 
         swipeRefreshLayout.setOnRefreshListener(this);
 
         recyclerViewTrainers.setLayoutManager(new LinearLayoutManager(activity));
         recyclerViewTrainers.setHasFixedSize(false);
 
-        trainerListAdapter = new TrainerListAdapter(context, true, this);
+        trainerListAdapter = new TrainerListAdapter(context, shownInScreen, true, this);
         recyclerViewTrainers.setAdapter(trainerListAdapter);
     }
 
@@ -95,9 +109,8 @@ public class TrainerList extends BaseFragment implements ViewPagerFragmentSelect
     @Override
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
-        networkCommunicator.getTrainerList(activityId, page,  AppConstants.Limit.PAGE_LIMIT_MAIN_TRAINER_LIST, this, false);
+        networkCommunicator.getTrainerList(activityId, page, AppConstants.Limit.PAGE_LIMIT_MAIN_TRAINER_LIST, this, false);
     }
-
 
     @Override
     public void onApiSuccess(Object response, int requestCode) {

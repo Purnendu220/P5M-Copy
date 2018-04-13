@@ -77,6 +77,8 @@ public class Home extends BaseActivity implements BottomTapLayout.TabListener {
     public void onPositionChange(int currentPosition, BottomTapLayout.Tab tab, List<BottomTapLayout.Tab> tabList) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+
         if (tab.id == TAB_FIND_CLASS) {
             Fragment frag = getSupportFragmentManager().findFragmentByTag("FindClass");
             if (frag == null) {
