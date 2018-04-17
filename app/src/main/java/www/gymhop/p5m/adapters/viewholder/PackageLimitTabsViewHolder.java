@@ -1,5 +1,7 @@
 package www.gymhop.p5m.adapters.viewholder;
 
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -7,7 +9,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import www.gymhop.p5m.adapters.AdapterCallbacks;
+import www.gymhop.p5m.R;
+import www.gymhop.p5m.adapters.PackageLimitAdapter;
 import www.gymhop.p5m.data.PackageLimitListItem;
 import www.gymhop.p5m.data.PackageLimitModel;
 
@@ -16,18 +19,21 @@ import www.gymhop.p5m.data.PackageLimitModel;
  */
 
 public class PackageLimitTabsViewHolder extends RecyclerView.ViewHolder {
-    public List<Tab> tabs;
+
+    private List<Tab> tabs;
+    private Context context;
 
     public PackageLimitTabsViewHolder(View itemView, List<Tab> tabs) {
         super(itemView);
 
         this.tabs = tabs;
+        context = itemView.getContext();
     }
 
-    public void bind(Object data, AdapterCallbacks adapterCallbacks, int position) {
+    public void bind(final Object data, final PackageLimitAdapter packageLimitAdapter, int position) {
         if (data != null && data instanceof PackageLimitListItem) {
             itemView.setVisibility(View.VISIBLE);
-            PackageLimitListItem model = (PackageLimitListItem) data;
+            final PackageLimitListItem model = (PackageLimitListItem) data;
 
             for (int index = 0; index < tabs.size(); index++) {
                 Tab tab = tabs.get(index);
@@ -37,7 +43,14 @@ public class PackageLimitTabsViewHolder extends RecyclerView.ViewHolder {
                 } else {
                     tab.view.setVisibility(View.VISIBLE);
 
-                    PackageLimitModel packageLimitModel = model.getList().get(index);
+                    final PackageLimitModel packageLimitModel = model.getList().get(index);
+                    if (model.getSelectedTab() == index) {
+                        tab.title.setTextColor(ContextCompat.getColor(context, R.color.theme_accent_text));
+                        tab.separator.setBackgroundColor(ContextCompat.getColor(context, R.color.theme_accent_text));
+                    } else {
+                        tab.title.setTextColor(ContextCompat.getColor(context, R.color.theme_medium_text));
+                        tab.separator.setBackgroundColor(ContextCompat.getColor(context, R.color.separator));
+                    }
 
                     if (packageLimitModel.getNumberOfVisit() == 1) {
                         tab.title.setText(packageLimitModel.getNumberOfVisit() + " TIME");
@@ -46,10 +59,19 @@ public class PackageLimitTabsViewHolder extends RecyclerView.ViewHolder {
                     } else {
                         tab.title.setText(packageLimitModel.getNumberOfVisit() + " TIMES");
                     }
+
+                    final int finalIndex = index;
+                    tab.view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (finalIndex != model.getPackageLimitListItem().getSelectedTab()) {
+                                model.getPackageLimitListItem().setSelectedTab(finalIndex);
+                                packageLimitAdapter.notifyDataSetChanges();
+                            }
+                        }
+                    });
                 }
             }
-
-
         } else {
             itemView.setVisibility(View.GONE);
         }

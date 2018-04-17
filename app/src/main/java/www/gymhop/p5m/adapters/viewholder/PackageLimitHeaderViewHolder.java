@@ -5,7 +5,7 @@ import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
-import www.gymhop.p5m.adapters.AdapterCallbacks;
+import www.gymhop.p5m.adapters.PackageLimitAdapter;
 import www.gymhop.p5m.data.PackageLimitListItem;
 
 /**
@@ -21,13 +21,25 @@ public class PackageLimitHeaderViewHolder extends RecyclerView.ViewHolder {
         this.textView = textView;
     }
 
-    public void bind(Object data, AdapterCallbacks adapterCallbacks, int position) {
+    public void bind(Object data, final PackageLimitAdapter packageLimitAdapter, int position) {
         if (data != null && data instanceof PackageLimitListItem) {
             itemView.setVisibility(View.VISIBLE);
-            PackageLimitListItem model = (PackageLimitListItem) data;
+            final PackageLimitListItem model = (PackageLimitListItem) data;
 
             textView.setText(Html.fromHtml("<b>" + model.getPackageLimitModel().getPackageName() + "</b>" +
                     " (" + model.getPackageLimitModel().getTotalClassPerPackage() + " Classes)"));
+
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    for (PackageLimitListItem packageLimitListItem : packageLimitAdapter.getPackageLimitListItems()) {
+                        packageLimitListItem.setExpanded(false);
+                    }
+                    model.setExpanded(true);
+
+                    packageLimitAdapter.notifyDataSetChanges();
+                }
+            });
         } else {
             itemView.setVisibility(View.GONE);
 

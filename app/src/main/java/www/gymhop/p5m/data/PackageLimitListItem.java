@@ -30,9 +30,12 @@ public class PackageLimitListItem implements Serializable {
     private String name;
     private String id;
     private int selectedTab;
-    private boolean isExpanded = true;
+    private boolean isExpanded;
 
     private PackageLimitModel packageLimitModel;
+
+    //Parent Header item, useful in tabs
+    private PackageLimitListItem packageLimitListItem;
 
     private List<PackageLimitModel> list;
 
@@ -43,10 +46,11 @@ public class PackageLimitListItem implements Serializable {
         list = new ArrayList<>();
     }
 
-    public PackageLimitListItem(List<PackageLimitModel> list, int type, int selectedTab) {
+    public PackageLimitListItem(List<PackageLimitModel> list, int type, int selectedTab, PackageLimitListItem packageLimitListItem) {
         this.list = list;
         this.type = type;
         this.selectedTab = selectedTab;
+        this.packageLimitListItem = packageLimitListItem;
     }
 
     @Override
@@ -61,6 +65,14 @@ public class PackageLimitListItem implements Serializable {
         }
 
         return super.equals(obj);
+    }
+
+    public PackageLimitListItem getPackageLimitListItem() {
+        return packageLimitListItem;
+    }
+
+    public void setPackageLimitListItem(PackageLimitListItem packageLimitListItem) {
+        this.packageLimitListItem = packageLimitListItem;
     }
 
     public int getType() {

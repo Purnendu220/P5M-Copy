@@ -48,6 +48,14 @@ public class PackageLimitAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
     }
 
+    public List<PackageLimitListItem> getPackageLimitListItems() {
+        return packageLimitListItems;
+    }
+
+    public List<Object> getList() {
+        return list;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -118,20 +126,20 @@ public class PackageLimitAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             LinearLayout linearLayout = new LinearLayout(context);
             linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-            linearLayout.setBackgroundColor(Color.BLACK);
-            linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            linearLayout.setBackgroundColor(Color.WHITE);
+            linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
             for (int index = 0; index < AppConstants.Limit.PACKAGE_LIMIT_SCREEN_TABS; index++) {
 
                 LinearLayout linearLayoutTab = new LinearLayout(context);
                 linearLayoutTab.setOrientation(LinearLayout.VERTICAL);
-                linearLayoutTab.setBackgroundColor(Color.BLUE);
                 linearLayoutTab.setGravity(Gravity.CENTER);
+                linearLayoutTab.setBackgroundColor(Color.WHITE);
                 linearLayoutTab.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
 
                 TextView textView = new TextView(context);
                 textView.setGravity(Gravity.CENTER);
-                textView.setBackgroundColor(Color.RED);
+                textView.setBackgroundResource(R.drawable.click_highlight);
                 textView.setPadding(dp * 12, dp * 12, dp * 16, dp * 12);
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                 textView.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
@@ -142,10 +150,8 @@ public class PackageLimitAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                 linearLayoutTab.addView(textView);
                 linearLayoutTab.addView(linearLayoutSeparator);
-
                 linearLayout.addView(linearLayoutTab);
-
-                tabs.add(new PackageLimitTabsViewHolder.Tab(linearLayout, textView, linearLayoutSeparator));
+                tabs.add(new PackageLimitTabsViewHolder.Tab(linearLayoutTab, textView, linearLayoutSeparator));
             }
 
             return new PackageLimitTabsViewHolder(linearLayout, tabs);
@@ -162,11 +168,11 @@ public class PackageLimitAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (holder instanceof PackageLimitTabsItemsViewHolder) {
             ((PackageLimitTabsItemsViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
         } else if (holder instanceof PackageLimitTabsViewHolder) {
-            ((PackageLimitTabsViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
+            ((PackageLimitTabsViewHolder) holder).bind(getItem(position), this, position);
         } else if (holder instanceof PackageLimitMainHeaderViewHolder) {
             ((PackageLimitMainHeaderViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
         } else if (holder instanceof PackageLimitHeaderViewHolder) {
-            ((PackageLimitHeaderViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
+            ((PackageLimitHeaderViewHolder) holder).bind(getItem(position), this, position);
         }
     }
 
@@ -217,7 +223,7 @@ public class PackageLimitAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             list.add(packageLimitListItem);
 
             if (packageLimitListItem.isExpanded()) {
-                list.add(new PackageLimitListItem(packageLimitListItem.getList(), PackageLimitListItem.TYPE_TAB, packageLimitListItem.getSelectedTab()));
+                list.add(new PackageLimitListItem(packageLimitListItem.getList(), PackageLimitListItem.TYPE_TAB, packageLimitListItem.getSelectedTab(), packageLimitListItem));
 
                 if (packageLimitListItem.getList().get(packageLimitListItem.getSelectedTab()) != null) {
                     for (String gymName : packageLimitListItem.getList().get(packageLimitListItem.getSelectedTab()).getGymNames().split(",")) {
