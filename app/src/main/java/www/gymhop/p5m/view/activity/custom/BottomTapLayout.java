@@ -86,8 +86,8 @@ public class BottomTapLayout implements View.OnClickListener {
         linearLayoutMain.setBackgroundColor(Color.WHITE);
         linearLayoutMain.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, tabSize));
 
-        TypedValue outValue = new TypedValue();
-        context.getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
+//        TypedValue outValue = new TypedValue();
+//        context.getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
 
         for (int count = 0; count < tabList.size(); count++) {
 

@@ -20,7 +20,7 @@ import www.gymhop.p5m.adapters.ScheduleAdapter;
 import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
-public class MySchedule extends BaseFragment {
+public class MySchedule extends BaseFragment implements ViewPager.OnPageChangeListener {
 
     @BindView(R.id.viewPager)
     public ViewPager viewPager;
@@ -58,27 +58,14 @@ public class MySchedule extends BaseFragment {
         tabLayout.setTabTextColors(ContextCompat.getColorStateList(context, R.color.date_tabs));
         tabLayout.setupWithViewPager(viewPager);
 
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
+        viewPager.addOnPageChangeListener(this);
 
+        viewPager.post(new Runnable() {
             @Override
-            public void onPageSelected(int position) {
-                try {
-                    ((ViewPagerFragmentSelection) scheduleAdapter.getFragments().get(position)).onTabSelection(position);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    LogUtils.exception(e);
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
+            public void run() {
+                onPageSelected(0);
             }
         });
-
-        viewPager.setCurrentItem(0);
     }
 
     private void setToolBar() {
@@ -100,4 +87,23 @@ public class MySchedule extends BaseFragment {
         activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
     }
 
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        try {
+            ((ViewPagerFragmentSelection) scheduleAdapter.getFragments().get(position)).onTabSelection(position);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
 }

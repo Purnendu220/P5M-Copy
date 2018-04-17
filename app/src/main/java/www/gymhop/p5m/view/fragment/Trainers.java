@@ -26,7 +26,7 @@ import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
-public class Trainers extends BaseFragment {
+public class Trainers extends BaseFragment implements ViewPager.OnPageChangeListener {
 
     @BindView(R.id.viewPager)
     public ViewPager viewPager;
@@ -76,23 +76,12 @@ public class Trainers extends BaseFragment {
         tabLayout.setTabTextColors(ContextCompat.getColorStateList(context, R.color.date_tabs));
         tabLayout.setupWithViewPager(viewPager);
 
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
+        viewPager.addOnPageChangeListener(this);
 
+        viewPager.post(new Runnable() {
             @Override
-            public void onPageSelected(int position) {
-                try {
-                    ((ViewPagerFragmentSelection) trainersAdapter.getFragments().get(position)).onTabSelection(position);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    LogUtils.exception(e);
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
+            public void run() {
+                onPageSelected(0);
             }
         });
     }
@@ -114,5 +103,25 @@ public class Trainers extends BaseFragment {
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT));
         activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        try {
+            ((ViewPagerFragmentSelection) trainersAdapter.getFragments().get(position)).onTabSelection(position);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }

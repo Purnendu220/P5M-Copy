@@ -159,7 +159,7 @@
                     android:id="@+id/buttonLogin"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/button_height_normal"
-                    android:background="@drawable/rect_corner_boarder_black"
+                    android:background="@drawable/button_white"
                     android:fontFamily="sans-serif"
                     android:gravity="center"
                     android:text="@string/login_back"

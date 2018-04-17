@@ -33,7 +33,7 @@ import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.view.activity.Main.FilterActivity;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
-public class FindClass extends BaseFragment implements View.OnClickListener {
+public class FindClass extends BaseFragment implements View.OnClickListener, ViewPager.OnPageChangeListener {
 
     @BindView(R.id.viewPager)
     public ViewPager viewPager;
@@ -84,25 +84,13 @@ public class FindClass extends BaseFragment implements View.OnClickListener {
 
         findClassAdapter.setCalendarList(calendarList);
         viewPager.setOffscreenPageLimit(TOTAL_DATE_TABS);
-        viewPager.setCurrentItem(0);
 
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
+        viewPager.addOnPageChangeListener(this);
 
+        viewPager.post(new Runnable() {
             @Override
-            public void onPageSelected(int position) {
-                try {
-                    ((ViewPagerFragmentSelection) findClassAdapter.getFragments().get(position)).onTabSelection(position);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    LogUtils.exception(e);
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
+            public void run() {
+                onPageSelected(0);
             }
         });
     }
@@ -202,5 +190,25 @@ public class FindClass extends BaseFragment implements View.OnClickListener {
                 FilterActivity.openActivity(context);
                 break;
         }
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        try {
+            ((ViewPagerFragmentSelection) findClassAdapter.getFragments().get(position)).onTabSelection(position);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }

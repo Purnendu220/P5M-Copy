@@ -130,6 +130,7 @@
     <string name="gyms">GYMS</string>
     <string name="gym">Gym</string>
     <string name="kwd"> KWD total price</string>
+    <string name="currency">kwd</string>
     <string name="valid">Valid for </string>
     <string name="clean_filter">Clean All</string>
     <string name="filter">Filter</string>
@@ -179,4 +180,16 @@
     <string name="no_more_data">No more data</string>
     <string name="loading">Loading</string>
     <string name="profile_package_expiry">" remaining until your classes expire."</string>
+    <string name="view_gym_visit_limits"><u>View gym visit limits</u></string>
+    <string name="select_plan">Select Plan</string>
+    <string name="membership_no_package_heading_1">Pick a plan that suits your fitness needs. The ‘Get Set’ and ‘Pro’ options will allow you to visit all the gyms available on P5M. Be sure to check each gym visit limits to find the plan that works best for you.</string>
+    <string name="membership_no_package_heading_2"></string>
+    <string name="membership_only_drop_in_package_heading_1">Purchase a one-time visit without changing your current plan. Studio visits will not reset with this purchase. In the case of cancellation you will have 1 week to use this class.</string>
+    <string name="membership_only_drop_in_package_heading_2">This class will not roll over to your next plan, so make sure to use your class before the class expires.</string>
+    <string name="membership_drop_in_package_heading_1">Pick a plan that suits your fitness needs. The ‘Get Set’ and ‘Pro’ options will allow you to visit all the gyms available on P5M. Be sure to check each gym visit limits to find the plan that works best for you.</string>
+    <string name="membership_drop_in_package_heading_2">This class will not roll over to your next plan, so make sure to use your class before the class expires.</string>
+    <string name="membership_general_package_heading_1"></string>
+    <string name="membership_general_package_heading_2">Unused classes do not roll over to your next plan, so make sure to use up all your classes before the plan expires.</string>
+    <string name="title_activity_class_profile">ClassProfile</string>
+    <string name="package_limit_header">Under each plan, there are limits to the number of times you can visit each gym. Once the limit is reached, you may still visit your favorite gym by purchasing a single visit pass. Check below for the number of times you can visit a gym per plan.</string>
 </resources>

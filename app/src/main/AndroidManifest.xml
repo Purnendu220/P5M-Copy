@@ -30,7 +30,13 @@
         <activity android:name=".view.activity.Main.Home" />
         <activity android:name=".view.activity.LoginRegister.Login" />
         <activity android:name=".view.activity.Main.TrainerProfile" />
-        <activity android:name=".view.activity.Main.FilterActivity"></activity>
+        <activity android:name=".view.activity.Main.FilterActivity" />
+        <activity android:name=".view.activity.Main.MemberShip" />
+        <activity
+            android:name=".view.activity.ClassProfile"
+            android:label="@string/title_activity_class_profile"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".view.activity.Main.PackageLimits"></activity>
     </application>
 
 </manifest>

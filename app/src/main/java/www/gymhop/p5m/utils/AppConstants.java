@@ -22,8 +22,10 @@ public class AppConstants {
     public class DataKey {
         public static final String TAB_POSITION_INT = "tab_position_int";
         public static final String TAB_SHOWN_IN_INT = "tab_shown_in";
+        public static final String NAVIGATED_FROM_INT = "navigated_from";
         public static final String CLASS_DATE_STRING = "class_date_string";
         public static final String TAB_ACTIVITY_ID_INT = "tab_activity_id";
+        public static final String CLASS_OBJECT = "class_object";
     }
 
     public class Url {
@@ -44,6 +46,9 @@ public class AppConstants {
         public static final String SCHEDULE_LIST = "api/v1/user/upcomingClasses";
         public static final String FINISHED_CLASS_LIST = "api/v1/user/finishedClasses";
         public static final String FAV_TRAINER_LIST = "api/v1/follow/getFavList";
+        public static final String PACKAGE_LIST = "api/v1/package";
+        public static final String CLASS_PACKAGE_LIST = "api/v1/package";
+        public static final String PACKAGE_LIMITS = "api/v1/gym/mapping/";
     }
 
     public class ApiParamValue {
@@ -62,7 +67,9 @@ public class AppConstants {
         public static final String ID = "id";
         public static final String CATEGORY_ID = "categoryId";
         public static final String USER_ID = "userId";
+        public static final String PACKAGE_TYPE = "packageType";
         public static final String TYPE = "type";
+        public static final String GYM_ID = "gymId";
     }
 
     public class AppNavigation {
@@ -74,6 +81,10 @@ public class AppConstants {
         public static final int SHOWN_IN_HOME_FIND_CLASSES = 6;
         public static final int SHOWN_IN_HOME_TRAINERS = 7;
         public static final int SHOWN_IN_MY_PROFILE_FAV_TRAINERS = 8;
+
+        public static final int NAVIGATION_FROM_RESERVE_CLASS = 51;
+        public static final int NAVIGATION_FROM_MY_PROFILE = 52;
+        public static final int NAVIGATION_FROM_SETTING = 53;
     }
 
     public class Limit {
@@ -81,5 +92,7 @@ public class AppConstants {
         public static final int PAGE_LIMIT_INNER_CLASS_LIST = 5;
         public static final int PAGE_LIMIT_MAIN_TRAINER_LIST = 25;
         public static final int PAGE_LIMIT_INNER_TRAINER_LIST = 25;
+
+        public static final int PACKAGE_LIMIT_SCREEN_TABS = 5;
     }
 }

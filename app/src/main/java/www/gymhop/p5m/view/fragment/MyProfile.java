@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import com.brandongogetap.stickyheaders.StickyLayoutManager;
 import com.brandongogetap.stickyheaders.exposed.StickyHeaderListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -25,7 +24,6 @@ import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.adapters.MyProfileAdapter;
 import www.gymhop.p5m.adapters.viewholder.ProfileHeaderTabViewHolder;
-import www.gymhop.p5m.data.HeaderSticky;
 import www.gymhop.p5m.data.gym_class.ClassModel;
 import www.gymhop.p5m.data.gym_class.TrainerModel;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
@@ -66,15 +64,17 @@ public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>,
         setToolBar();
 
         myProfileAdapter = new MyProfileAdapter(context, this);
-        recyclerView.setAdapter(myProfileAdapter);
-
-        myProfileAdapter.setUser(TempStorage.getUser());
-
         StickyLayoutManager layoutManager = new StickyLayoutManager(context, myProfileAdapter);
         layoutManager.elevateHeaders(true);
         layoutManager.elevateHeaders((int) context.getResources().getDimension(R.dimen.view_separator_elevation));
+        layoutManager.setAutoMeasureEnabled(false);
 
         recyclerView.setLayoutManager(layoutManager);
+
+        recyclerView.setAdapter(myProfileAdapter);
+        myProfileAdapter.setUser(TempStorage.getUser());
+        recyclerView.setHasFixedSize(true);
+
         layoutManager.setStickyHeaderListener(new StickyHeaderListener() {
             @Override
             public void headerAttached(View headerView, int adapterPosition) {
@@ -87,16 +87,10 @@ public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>,
             }
         });
 
-        List<Object> data = new ArrayList<>();
-        for (int count = 0; count < 10; count++) {
-            if (count == 1)
-                data.add(new HeaderSticky(""));
-            else
-                data.add(new TrainerModel());
+        if (myProfileAdapter.getTrainers().isEmpty()) {
+            networkCommunicator.getFavTrainerList(AppConstants.ApiParamValue.FOLLOW_TYPE_FOLLOWED, TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_TRAINER_LIST, this, false);
+            myProfileAdapter.onTabSelection(ProfileHeaderTabViewHolder.TAB_1);
         }
-
-        myProfileAdapter.onTabSelection(ProfileHeaderTabViewHolder.TAB_1);
-        myProfileAdapter.notifyDataSetChanges();
     }
 
     /**

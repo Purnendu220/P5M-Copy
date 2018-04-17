@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewCompat;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -68,7 +67,7 @@ public class Home extends BaseActivity implements BottomTapLayout.TabListener {
         bottomTapLayout = new BottomTapLayout();
         bottomTapLayout.setup(context, layoutBottomTabs, tabList, this);
 
-        ViewCompat.setElevation(layoutBottomTabs, getResources().getDimension(R.dimen.bottom_navigation_elevation));
+//        ViewCompat.setElevation(layoutBottomTabs, getResources().getDimension(R.dimen.bottom_navigation_elevation));
 
         bottomTapLayout.setTab(TAB_FIND_CLASS);
     }
@@ -103,6 +102,8 @@ public class Home extends BaseActivity implements BottomTapLayout.TabListener {
                 frag = new MyProfile();
             }
             transaction.replace(R.id.layoutFragment, frag, "MyProfile").commitNow();
+
+            PackageLimits.openActivity(context);
         }
     }
 

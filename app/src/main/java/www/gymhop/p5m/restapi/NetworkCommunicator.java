@@ -8,7 +8,10 @@ import retrofit2.Call;
 import retrofit2.Response;
 import www.gymhop.p5m.data.City;
 import www.gymhop.p5m.data.ClassActivity;
+import www.gymhop.p5m.data.Package;
+import www.gymhop.p5m.data.PackageLimitModel;
 import www.gymhop.p5m.data.User;
+import www.gymhop.p5m.data.UserPackage;
 import www.gymhop.p5m.data.gym_class.ClassModel;
 import www.gymhop.p5m.data.gym_class.TrainerModel;
 import www.gymhop.p5m.data.request_model.ClassListRequest;
@@ -44,6 +47,8 @@ public class NetworkCommunicator {
         public static final int FAV_TRAINER_LIST = 107;
         public static final int FINISHED_CLASS_LIST = 108;
 
+        public static final int PACKAGES_USER = 109;
+        public static final int PACKAGES_FOR_CLASS = 110;
     }
 
     private Context context;
@@ -69,10 +74,6 @@ public class NetworkCommunicator {
         final int requestCode = RequestCode.LOGIN;
         Call<ResponseModel<User>> call = apiService.login(loginRequest);
         LogUtils.debug("NetworkCommunicator hitting login");
-
-        if (useCache) {
-
-        }
 
         call.enqueue(new RestCallBack<ResponseModel<User>>() {
             @Override
@@ -161,15 +162,6 @@ public class NetworkCommunicator {
         Call<ResponseModel<List<ClassModel>>> call = apiService.getClassList(classListRequest);
         LogUtils.debug("NetworkCommunicator hitting getClassList");
 
-//        if (useCache) {
-//            List<ClassModel> cities = TempStorage.getCities();
-//
-//            if (cities != null) {
-//                requestListener.onApiSuccess(cities, requestCode);
-//                return null;
-//            }
-//        }
-
         call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>() {
             @Override
             public void onFailure(Call<ResponseModel<List<ClassModel>>> call, String message) {
@@ -190,15 +182,6 @@ public class NetworkCommunicator {
         final int requestCode = RequestCode.TRAINER_LIST;
         Call<ResponseModel<List<TrainerModel>>> call = apiService.getTrainerList(categoryId, page, size);
         LogUtils.debug("NetworkCommunicator hitting getTrainerList");
-
-//        if (useCache) {
-//            List<ClassModel> cities = TempStorage.getCities();
-//
-//            if (cities != null) {
-//                requestListener.onApiSuccess(cities, requestCode);
-//                return null;
-//            }
-//        }
 
         call.enqueue(new RestCallBack<ResponseModel<List<TrainerModel>>>() {
             @Override
@@ -221,15 +204,6 @@ public class NetworkCommunicator {
         Call<ResponseModel<List<ClassModel>>> call = apiService.getWishList(userId, page, size);
         LogUtils.debug("NetworkCommunicator hitting getTrainerList");
 
-//        if (useCache) {
-//            List<ClassModel> cities = TempStorage.getCities();
-//
-//            if (cities != null) {
-//                requestListener.onApiSuccess(cities, requestCode);
-//                return null;
-//            }
-//        }
-
         call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>() {
             @Override
             public void onFailure(Call<ResponseModel<List<ClassModel>>> call, String message) {
@@ -250,15 +224,6 @@ public class NetworkCommunicator {
         final int requestCode = RequestCode.CLASS_LIST;
         Call<ResponseModel<List<ClassModel>>> call = apiService.getScheduleList(userId, page, size);
         LogUtils.debug("NetworkCommunicator hitting getTrainerList");
-
-//        if (useCache) {
-//            List<ClassModel> cities = TempStorage.getCities();
-//
-//            if (cities != null) {
-//                requestListener.onApiSuccess(cities, requestCode);
-//                return null;
-//            }
-//        }
 
         call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>() {
             @Override
@@ -281,15 +246,6 @@ public class NetworkCommunicator {
         Call<ResponseModel<List<ClassModel>>> call = apiService.getFinishedClassList(userId, page, size);
         LogUtils.debug("NetworkCommunicator hitting getFinishedClassList");
 
-//        if (useCache) {
-//            List<ClassModel> cities = TempStorage.getCities();
-//
-//            if (cities != null) {
-//                requestListener.onApiSuccess(cities, requestCode);
-//                return null;
-//            }
-//        }
-
         call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>() {
             @Override
             public void onFailure(Call<ResponseModel<List<ClassModel>>> call, String message) {
@@ -306,20 +262,10 @@ public class NetworkCommunicator {
         return call;
     }
 
-
     public Call getFavTrainerList(String followType, int userId, int page, int size, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.TRAINER_LIST;
         Call<ResponseModel<List<TrainerModel>>> call = apiService.getFavTrainerList(followType, userId, page, size);
         LogUtils.debug("NetworkCommunicator hitting getFavTrainerList");
-
-//        if (useCache) {
-//            List<ClassModel> cities = TempStorage.getCities();
-//
-//            if (cities != null) {
-//                requestListener.onApiSuccess(cities, requestCode);
-//                return null;
-//            }
-//        }
 
         call.enqueue(new RestCallBack<ResponseModel<List<TrainerModel>>>() {
             @Override
@@ -331,6 +277,69 @@ public class NetworkCommunicator {
             @Override
             public void onResponse(Call<ResponseModel<List<TrainerModel>>> call, Response<ResponseModel<List<TrainerModel>>> restResponse, ResponseModel<List<TrainerModel>> response) {
                 LogUtils.networkSuccess("NetworkCommunicator getFavTrainerList onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call getPackages(int userId, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.PACKAGES_USER;
+        Call<ResponseModel<List<UserPackage>>> call = apiService.getPackageList(userId);
+        LogUtils.debug("NetworkCommunicator hitting getPackages");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<UserPackage>>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<List<UserPackage>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getPackages onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<UserPackage>>> call, Response<ResponseModel<List<UserPackage>>> restResponse, ResponseModel<List<UserPackage>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getPackages onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call getPackagesForClass(int userId, int gymId, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.PACKAGES_FOR_CLASS;
+        Call<ResponseModel<List<Package>>> call = apiService.getClassPackageList(userId, gymId);
+        LogUtils.debug("NetworkCommunicator hitting getPackagesForClass");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<Package>>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<List<Package>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getPackagesForClass onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<Package>>> call, Response<ResponseModel<List<Package>>> restResponse, ResponseModel<List<Package>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getPackagesForClass onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call getPackagesLimit(String packageType,final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.PACKAGES_FOR_CLASS;
+        Call<ResponseModel<List<PackageLimitModel>>> call = apiService.getPackageLimitList(packageType);
+        LogUtils.debug("NetworkCommunicator hitting getPackagesLimit");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<PackageLimitModel>>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<List<PackageLimitModel>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getPackageLimitssForClass onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<PackageLimitModel>>> call, Response<ResponseModel<List<PackageLimitModel>>> restResponse, ResponseModel<List<PackageLimitModel>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getPackagesLimit onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
             }
         });

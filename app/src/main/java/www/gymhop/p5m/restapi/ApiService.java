@@ -11,7 +11,10 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import www.gymhop.p5m.data.City;
 import www.gymhop.p5m.data.ClassActivity;
+import www.gymhop.p5m.data.Package;
+import www.gymhop.p5m.data.PackageLimitModel;
 import www.gymhop.p5m.data.User;
+import www.gymhop.p5m.data.UserPackage;
 import www.gymhop.p5m.data.gym_class.ClassModel;
 import www.gymhop.p5m.data.gym_class.TrainerModel;
 import www.gymhop.p5m.data.request_model.ClassListRequest;
@@ -66,5 +69,19 @@ public interface ApiService {
                                                               @Query(AppConstants.ApiParamKey.ID) int userId,
                                                               @Query(AppConstants.ApiParamKey.PAGE) int page,
                                                               @Query(AppConstants.ApiParamKey.SIZE) int size);
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.PACKAGE_LIST)
+    Call<ResponseModel<List<UserPackage>>> getPackageList(@Query(AppConstants.ApiParamKey.USER_ID) int userId);
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.CLASS_PACKAGE_LIST)
+    Call<ResponseModel<List<Package>>> getClassPackageList(@Query(AppConstants.ApiParamKey.USER_ID) int userId,
+                                                           @Query(AppConstants.ApiParamKey.GYM_ID) int gymId);
+
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.PACKAGE_LIMITS)
+    Call<ResponseModel<List<PackageLimitModel>>> getPackageLimitList(@Query(AppConstants.ApiParamKey.PACKAGE_TYPE) String packageType);
 
 }
