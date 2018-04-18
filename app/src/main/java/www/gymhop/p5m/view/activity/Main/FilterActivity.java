@@ -82,8 +82,7 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
         }
     }
 
-    private void
-    setToolBar() {
+    private void setToolBar() {
 
         BaseActivity activity = (BaseActivity) this.activity;
         activity.setSupportActionBar(toolbar);

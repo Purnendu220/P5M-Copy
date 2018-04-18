@@ -3,6 +3,7 @@ package www.gymhop.p5m.adapters.viewholder;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -44,20 +45,24 @@ public class PackageLimitTabsViewHolder extends RecyclerView.ViewHolder {
                     tab.view.setVisibility(View.VISIBLE);
 
                     final PackageLimitModel packageLimitModel = model.getList().get(index);
+
+                    String text = "";
+                    if (packageLimitModel.getNumberOfVisit() == 1) {
+                        text = packageLimitModel.getNumberOfVisit() + " TIME";
+                    } else if (packageLimitModel.getNumberOfVisit() == 0) {
+                        text = "UNLIMITED";
+                    } else {
+                        text = packageLimitModel.getNumberOfVisit() + " TIMES";
+                    }
+
                     if (model.getSelectedTab() == index) {
                         tab.title.setTextColor(ContextCompat.getColor(context, R.color.theme_accent_text));
                         tab.separator.setBackgroundColor(ContextCompat.getColor(context, R.color.theme_accent_text));
+                        tab.title.setText(Html.fromHtml("<b>" + text + "</b>"));
                     } else {
                         tab.title.setTextColor(ContextCompat.getColor(context, R.color.theme_medium_text));
                         tab.separator.setBackgroundColor(ContextCompat.getColor(context, R.color.separator));
-                    }
-
-                    if (packageLimitModel.getNumberOfVisit() == 1) {
-                        tab.title.setText(packageLimitModel.getNumberOfVisit() + " TIME");
-                    } else if (packageLimitModel.getNumberOfVisit() == 0) {
-                        tab.title.setText("UNLIMITED");
-                    } else {
-                        tab.title.setText(packageLimitModel.getNumberOfVisit() + " TIMES");
+                        tab.title.setText(text);
                     }
 
                     final int finalIndex = index;

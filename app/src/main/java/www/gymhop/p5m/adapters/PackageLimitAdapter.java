@@ -71,6 +71,9 @@ public class PackageLimitAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             linearLayoutSeparator.setBackgroundColor(ContextCompat.getColor(context, R.color.separator));
 
             TextView textView = new TextView(context);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                textView.setLetterSpacing(-0.01f);
+//            }
             textView.setPadding(dp * 16, dp * 12, dp * 16, dp * 12);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             textView.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
@@ -93,32 +96,45 @@ public class PackageLimitAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             TextView textView = new TextView(context);
             textView.setGravity(Gravity.CENTER);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                textView.setLetterSpacing(-0.01f);
+//            }
             textView.setPadding(dp * 16, dp * 16, dp * 16, dp * 16);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             textView.setBackgroundResource(R.drawable.click_highlight);
             textView.setClickable(true);
             textView.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
 
-            LinearLayout linearLayoutSeparator1 = new LinearLayout(context);
-            linearLayoutSeparator1.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 2 * dp));
-            linearLayoutSeparator1.setBackgroundColor(ContextCompat.getColor(context, R.color.separator));
-
-            linearLayout.addView(linearLayoutSeparator);
             linearLayout.addView(textView);
-            linearLayout.addView(linearLayoutSeparator1);
+            linearLayout.addView(linearLayoutSeparator);
 
             return new PackageLimitHeaderViewHolder(linearLayout, textView);
 
         } else if (viewType == VIEW_TYPE_PACKAGE_LIMIT_MAIN_HEADER) {
 
+            LinearLayout linearLayout = new LinearLayout(context);
+            linearLayout.setOrientation(LinearLayout.VERTICAL);
+            linearLayout.setBackgroundColor(Color.WHITE);
+            linearLayout.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            LinearLayout linearLayoutSeparator = new LinearLayout(context);
+            linearLayoutSeparator.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp));
+            linearLayoutSeparator.setBackgroundColor(ContextCompat.getColor(context, R.color.separator));
+
             TextView textView = new TextView(context);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                textView.setLetterSpacing(-0.01f);
+//            }
             textView.setPadding(dp * 16, dp * 20, dp * 16, dp * 20);
             textView.setLineSpacing(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 6.0f, context.getResources().getDisplayMetrics()), 1.0f);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
             textView.setGravity(Gravity.CENTER);
             textView.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
 
-            return new PackageLimitMainHeaderViewHolder(textView, textView);
+            linearLayout.addView(textView);
+            linearLayout.addView(linearLayoutSeparator);
+
+            return new PackageLimitMainHeaderViewHolder(linearLayout, textView);
 
         } else if (viewType == VIEW_TYPE_PACKAGE_LIMIT_TAB) {
 
@@ -139,13 +155,16 @@ public class PackageLimitAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                 TextView textView = new TextView(context);
                 textView.setGravity(Gravity.CENTER);
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                    textView.setLetterSpacing(-0.01f);
+//                }
                 textView.setBackgroundResource(R.drawable.click_highlight);
                 textView.setPadding(dp * 12, dp * 12, dp * 16, dp * 12);
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                 textView.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
 
                 LinearLayout linearLayoutSeparator = new LinearLayout(context);
-                linearLayoutSeparator.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 3 * dp));
+                linearLayoutSeparator.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 2 * dp));
                 linearLayoutSeparator.setBackgroundColor(ContextCompat.getColor(context, R.color.separator));
 
                 linearLayoutTab.addView(textView);

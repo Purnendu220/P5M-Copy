@@ -32,10 +32,12 @@ public class PackageLimitHeaderViewHolder extends RecyclerView.ViewHolder {
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    boolean state = model.isExpanded();
+
                     for (PackageLimitListItem packageLimitListItem : packageLimitAdapter.getPackageLimitListItems()) {
                         packageLimitListItem.setExpanded(false);
                     }
-                    model.setExpanded(true);
+                    model.setExpanded(!state);
 
                     packageLimitAdapter.notifyDataSetChanges();
                 }
