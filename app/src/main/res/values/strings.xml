@@ -100,6 +100,7 @@
     <string name="favorite_trainer">Favourite Trainer</string>
     <string name="finished">Finished</string>
     <string name="join">JOIN</string>
+    <string name="join_class">Join Class</string>
     <string name="joined">JOINED</string>
     <string name="gender">pls!select gender</string>
     <string name="addInWishList">Added in your wish List</string>
@@ -194,4 +195,6 @@
     <string name="title_activity_class_profile">ClassProfile</string>
     <string name="package_limit_header">Under each plan, there are limits to the number of times you can visit each gym. Once the limit is reached, you may still visit your favorite gym by purchasing a single visit pass. Check below for the number of times you can visit a gym per plan.</string>
     <string name="title_activity_search">SearchActivity</string>
+    <string name="memebership_price_postfix">total price</string>
+    <string name="profile_validiy_no_package">Fuel your workout</string>
 </resources>

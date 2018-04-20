@@ -5,13 +5,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
-import www.gymhop.p5m.data.gym_class.ClassModel;
+import www.gymhop.p5m.data.main.ClassModel;
+import www.gymhop.p5m.helper.Helper;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.DateUtils;
 import www.gymhop.p5m.utils.ImageUtils;
@@ -48,6 +50,9 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
     public TextView textViewGender;
     @BindView(R.id.textViewTrainerName)
     public TextView textViewTrainerName;
+
+    @BindView(R.id.layoutTrainer)
+    public LinearLayout layoutTrainer;
 
     private final Context context;
     private int shownInScreen;
@@ -87,7 +92,6 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
                 ImageUtils.setImage(context,
                         model.getGymBranchDetail().getMediaThumbNailUrl(),
                         R.drawable.profile_holder, imageViewTrainerProfile);
-                textViewLocation.setText(model.getGymBranchDetail().getAddress());
 
             } else {
 
@@ -95,7 +99,10 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
                         R.drawable.profile_holder,
                         R.drawable.profile_holder, imageViewTrainerProfile);
                 textViewLocation.setText("");
+            }
 
+            if (model.getGymBranchDetail() != null) {
+                textViewLocation.setText(model.getGymBranchDetail().getGymName()+", "+model.getGymBranchDetail().getBranchName());
             }
 
             textViewClassName.setText(model.getTitle());
@@ -110,16 +117,7 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
                         + "  available");
             }
 
-            if (model.isUserJoinStatus()) {
-                buttonJoin.setText(context.getString(R.string.booked));
-                buttonJoin.setBackgroundResource(R.drawable.joined_rect);
-            } else if (model.getAvailableSeat() == model.getTotalSeat()) {
-                buttonJoin.setText(context.getString(R.string.full));
-                buttonJoin.setBackgroundResource(R.drawable.full_rect);
-            } else {
-                buttonJoin.setText(context.getString(R.string.book));
-                buttonJoin.setBackgroundResource(R.drawable.join_rect);
-            }
+            Helper.setJoinButton(context, buttonJoin, model);
 
             textViewInfo.setText(model.getShortDesc());
 
@@ -129,7 +127,28 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    adapterCallbacks.onAdapterItemClick(itemView, itemView, model, position);
+                    adapterCallbacks.onAdapterItemClick(ClassViewHolder.this, itemView, model, position);
+                }
+            });
+
+            textViewLocation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ClassViewHolder.this, textViewLocation, model, position);
+                }
+            });
+
+            layoutTrainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ClassViewHolder.this, layoutTrainer, model, position);
+                }
+            });
+
+            buttonJoin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ClassViewHolder.this, buttonJoin, model, position);
                 }
             });
         } else {

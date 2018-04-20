@@ -26,53 +26,56 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true">
 
-                    <www.gymhop.p5m.view.activity.custom.WideAngleImageView
-                        android:id="@+id/imageViewClass"
+                    <www.gymhop.p5m.view.activity.custom.WideAngleProfileImageView
+                        android:id="@+id/imageViewProfile"
                         android:layout_width="match_parent"
                         android:layout_height="120dp"
                         android:background="@color/colorPrimaryDark"
                         android:elevation="2dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/info_screen_1" />
+                        android:src="@drawable/class_holder" />
 
                     <TextView
                         android:id="@+id/textViewName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
-                        android:layout_below="@+id/imageViewClass"
+                        android:layout_below="@+id/imageViewProfile"
                         android:layout_marginLeft="4dp"
                         android:layout_marginRight="4dp"
-                        android:layout_toStartOf="@+id/buttonJoin"
+                        android:layout_toStartOf="@+id/button"
                         android:ellipsize="end"
                         android:fontFamily="sans-serif-medium"
                         android:letterSpacing="@dimen/text_title_letter_spacing"
                         android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                         android:maxLines="2"
                         android:padding="12dp"
+                        android:textAllCaps="true"
                         android:text="Varun John"
                         android:textColor="@color/theme_dark_text"
-                        android:textSize="@dimen/text_title" />
+                        android:textSize="@dimen/text_large" />
 
                     <Button
-                        android:id="@+id/buttonJoin"
+                        android:id="@+id/button"
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
+                        android:layout_height="@dimen/button_height_main_list"
                         android:layout_alignParentEnd="true"
-                        android:layout_below="@+id/imageViewClass"
+                        android:layout_below="@+id/imageViewProfile"
                         android:layout_marginRight="16dp"
                         android:layout_marginTop="-20dp"
                         android:background="@drawable/join_rect"
                         android:fontFamily="sans-serif-medium"
-                        android:letterSpacing="@dimen/button_letter_spacing"
+                        android:letterSpacing="@dimen/button_letter_spacing_little"
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
                         android:text="@string/favourite"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/button_text_medium" />
+                        android:textSize="@dimen/button_join" />
 
                 </RelativeLayout>
 
@@ -114,7 +117,7 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:id="@+id/imageViewClassCategory"
+                        android:id="@+id/imageViewProfileCategory"
                         style="@style/ClassIconSmall"
                         android:src="@drawable/class_icon" />
 
@@ -124,13 +127,14 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_marginLeft="@dimen/text_icon_gap"
-                        android:layout_toEndOf="@+id/imageViewClassCategory"
+                        android:layout_toEndOf="@+id/imageViewProfileCategory"
                         android:fontFamily="sans-serif"
-                        android:lineSpacingExtra="@dimen/line_spacing_extra"
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
+                        android:lineSpacingExtra="@dimen/line_spacing_extra"
                         android:text="Boxing, fitness, TRX, strength training and cardio"
                         android:textColor="@color/theme_dark_text"
                         android:textSize="@dimen/text_medium" />
+
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -145,54 +149,21 @@
                         style="@style/ClassIconSmall"
                         android:src="@drawable/location" />
 
-                    <TextView
-                        android:id="@+id/textViewLocation"
+                    <LinearLayout
+                        android:id="@+id/layoutLocation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_marginLeft="@dimen/text_icon_gap"
                         android:layout_toEndOf="@+id/imageViewLocation"
-                        android:fontFamily="sans-serif"
-                        android:lineSpacingExtra="@dimen/line_spacing_extra"
-                        android:text="6 available seats"
-                        android:letterSpacing="@dimen/text_medium_letter_spacing"
-                        android:textColor="@color/theme_dark_text"
-                        android:textSize="@dimen/text_medium" />
+                        android:orientation="vertical" />
+
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/view_separator_size"
-            android:background="@color/theme_bg"
-            android:elevation="@dimen/view_separator_elevation"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:id="@+id/textViewInfo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:lineSpacingExtra="@dimen/line_spacing_extra"
-                    android:letterSpacing="@dimen/text_medium_letter_spacing"
-                    android:text="You don’t want to do this circuit before work unless there's a shower nearby it may only take 30 minutes, but it'll leave you drenched in sweat.
-Attack 10 rounds of jumping jacks, mountain climbers, and alternating shoulder taps to unload calories, blast fat, and build all-around strength."
-                    android:textColor="@color/theme_medium_dark_text"
-                    android:textSize="@dimen/text_medium"
-                    android:textStyle="normal" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
+            android:id="@+id/layoutGallery"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/view_separator_size"
@@ -221,7 +192,7 @@ Attack 10 rounds of jumping jacks, mountain climbers, and alternating shoulder t
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerViewGallery"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
+                    android:layout_height="wrap_content"
                     android:layout_below="@+id/textViewGallery"
                     android:clipToPadding="false"
                     android:orientation="horizontal"

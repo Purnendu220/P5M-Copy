@@ -18,7 +18,8 @@ import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.adapters.TrainerListAdapter;
-import www.gymhop.p5m.data.gym_class.TrainerModel;
+import www.gymhop.p5m.data.main.TrainerModel;
+import www.gymhop.p5m.helper.TrainerListListenerHelper;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.utils.AppConstants;
@@ -74,16 +75,16 @@ public class TrainerList extends BaseFragment implements ViewPagerFragmentSelect
         recyclerViewTrainers.setLayoutManager(new LinearLayoutManager(activity));
         recyclerViewTrainers.setHasFixedSize(false);
 
-        trainerListAdapter = new TrainerListAdapter(context, shownInScreen, true, this);
+        trainerListAdapter = new TrainerListAdapter(context, shownInScreen, true, new TrainerListListenerHelper(context, activity));
         recyclerViewTrainers.setAdapter(trainerListAdapter);
     }
 
     @Override
-    public void onAdapterItemClick(View viewRoot, View view, TrainerModel model, int position) {
+    public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, TrainerModel model, int position) {
     }
 
     @Override
-    public void onAdapterItemLongClick(View viewRoot, View view, TrainerModel model, int position) {
+    public void onAdapterItemLongClick(RecyclerView.ViewHolder viewHolder, View view, TrainerModel model, int position) {
 
     }
 

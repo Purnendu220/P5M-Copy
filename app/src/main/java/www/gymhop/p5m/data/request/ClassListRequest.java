@@ -1,4 +1,4 @@
-package www.gymhop.p5m.data.request_model;
+package www.gymhop.p5m.data.request;
 
 import java.util.List;
 

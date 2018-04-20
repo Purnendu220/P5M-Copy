@@ -32,7 +32,7 @@ public class BottomTapLayout implements View.OnClickListener {
         public String textActive;
         public String textInactive;
         public boolean isActive;
-        public int id;
+        public int id = 0;
 
         public Tab(int id, int imageResActive, int imageResInactive, int textColorActive, int textColorInactive, String textActive, String textInactive) {
             this.id = id;
@@ -67,7 +67,7 @@ public class BottomTapLayout implements View.OnClickListener {
 
     private List<Tab> tabList;
     private List<TabView> tabViewList;
-    private int currentlySelectedId;
+    private int currentlySelectedId = -1;
     private TabListener tabListener;
     private Context context;
 
@@ -103,7 +103,7 @@ public class BottomTapLayout implements View.OnClickListener {
 
             ImageView imageView = new ImageView(context);
             imageView.setLayoutParams(new LinearLayout.LayoutParams(iconSize, iconSize));
-            imageView.setPadding(padding, padding*4, padding, padding);
+            imageView.setPadding(padding, padding * 4, padding, padding);
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
             TextView textView = new TextView(context);
@@ -144,7 +144,8 @@ public class BottomTapLayout implements View.OnClickListener {
                 } else {
                     tabListener.onReselection(currentlySelectedId, tab, tabList);
                 }
-            };
+            }
+            ;
         }
     }
 

@@ -4,12 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="www.gymhop.p5m.view.activity.Main.TrainerProfile">
+    tools:context="www.gymhop.p5m.view.activity.Main.TrainerProfileActivity">
 
-    <LinearLayout
-        android:id="@+id/layoutFragment"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerViewTrainerProfile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/theme_bg"
+                android:clipToPadding="false"
+                android:scrollbars="none" />
+        </FrameLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </android.support.constraint.ConstraintLayout>

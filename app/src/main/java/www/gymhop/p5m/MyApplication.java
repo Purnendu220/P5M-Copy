@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class MyApplication extends MultiDexApplication implements NetworkChangeR
 
     private Context context;
 
-    public final static ApiMode apiMode = ApiMode.TESTING_ALPHA;
+    public final static ApiMode apiMode = ApiMode.TESTING_BETA;
     public final static boolean SHOW_LOG = true;
     public final static boolean RETROFIT_SHOW_LOG = true;
     public final static boolean USE_CRASH_ANALYTICS = false;
@@ -40,8 +42,18 @@ public class MyApplication extends MultiDexApplication implements NetworkChangeR
         super.onCreate();
         context = this;
 
-        registerActivityLifecycleCallbacks(this);
+        Fresco.initialize(this);
         MultiDex.install(this);
+        registerActivityLifecycleCallbacks(this);
+
+//        ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
+//                .setProgressiveJpegConfig(new SimpleProgressiveJpegConfig())
+//                .setResizeAndRotateEnabledForNetwork(true)
+//                .setDownsampleEnabled(true)
+//                .build();
+//
+//        Fresco.initialize(this, config);
+
 
         NetworkChangeReceiver.register(this);
 

@@ -11,7 +11,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
-import www.gymhop.p5m.data.gym_class.ClassModel;
+import www.gymhop.p5m.data.main.ClassModel;
+import www.gymhop.p5m.helper.Helper;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.DateUtils;
 import www.gymhop.p5m.utils.ImageUtils;
@@ -21,7 +22,6 @@ import www.gymhop.p5m.utils.ImageUtils;
  */
 
 public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
-
 
     @BindView(R.id.imageViewClass)
     public ImageView imageViewClass;
@@ -134,23 +134,14 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
             textViewClassCategory.setText(model.getClassCategory());
             textViewClassDate.setText(DateUtils.getClassDate(model.getClassDate()));
 
-            if (model.isUserJoinStatus()) {
-                buttonJoin.setText(context.getString(R.string.booked));
-                buttonJoin.setBackgroundResource(R.drawable.joined_rect);
-            } else if (model.getAvailableSeat() == model.getTotalSeat()) {
-                buttonJoin.setText(context.getString(R.string.full));
-                buttonJoin.setBackgroundResource(R.drawable.full_rect);
-            } else {
-                buttonJoin.setText(context.getString(R.string.book));
-                buttonJoin.setBackgroundResource(R.drawable.join_rect);
-            }
+            Helper.setJoinButton(context, buttonJoin, model);
 
             textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    adapterCallbacks.onAdapterItemClick(itemView, itemView, model, position);
+                    adapterCallbacks.onAdapterItemClick(ClassMiniDetailViewHolder.this, itemView, model, position);
                 }
             });
 

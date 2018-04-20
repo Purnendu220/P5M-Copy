@@ -26,6 +26,7 @@ public class AppConstants {
         public static final String CLASS_DATE_STRING = "class_date_string";
         public static final String TAB_ACTIVITY_ID_INT = "tab_activity_id";
         public static final String CLASS_OBJECT = "class_object";
+        public static final String TRAINER_OBJECT = "trainer_object";
     }
 
     public class Url {
@@ -46,9 +47,13 @@ public class AppConstants {
         public static final String SCHEDULE_LIST = "api/v1/user/upcomingClasses";
         public static final String FINISHED_CLASS_LIST = "api/v1/user/finishedClasses";
         public static final String FAV_TRAINER_LIST = "api/v1/follow/getFavList";
+
         public static final String PACKAGE_LIST = "api/v1/package";
         public static final String CLASS_PACKAGE_LIST = "api/v1/package";
+
         public static final String PACKAGE_LIMITS = "api/v1/gym/mapping/";
+
+        public static final String PACKAGE_PURCHASE = "api/v1/payment/package-purchase/";
     }
 
     public class ApiParamValue {
@@ -70,6 +75,10 @@ public class AppConstants {
         public static final String PACKAGE_TYPE = "packageType";
         public static final String TYPE = "type";
         public static final String GYM_ID = "gymId";
+        public static final String TRAINER_ID = "trainerId";
+        public static final String PACKAGE_ID = "packageId";
+        public static final String PROMO_ID = "promoId";
+        public static final String SESSION_ID = "sessionId";
     }
 
     public class AppNavigation {
@@ -81,6 +90,9 @@ public class AppConstants {
         public static final int SHOWN_IN_HOME_FIND_CLASSES = 6;
         public static final int SHOWN_IN_HOME_TRAINERS = 7;
         public static final int SHOWN_IN_MY_PROFILE_FAV_TRAINERS = 8;
+        public static final int SHOWN_IN_CLASS_PROFILE = 9;
+        public static final int SHOWN_IN_TRAINER_PROFILE = 10;
+        public static final int SHOWN_IN_GYM_PROFILE = 11;
 
         public static final int NAVIGATION_FROM_RESERVE_CLASS = 51;
         public static final int NAVIGATION_FROM_MY_PROFILE = 52;
@@ -89,7 +101,7 @@ public class AppConstants {
 
     public class Limit {
         public static final int PAGE_LIMIT_MAIN_CLASS_LIST = 5;
-        public static final int PAGE_LIMIT_INNER_CLASS_LIST = 5;
+        public static final int PAGE_LIMIT_INNER_CLASS_LIST = 15;
         public static final int PAGE_LIMIT_MAIN_TRAINER_LIST = 25;
         public static final int PAGE_LIMIT_INNER_TRAINER_LIST = 25;
 

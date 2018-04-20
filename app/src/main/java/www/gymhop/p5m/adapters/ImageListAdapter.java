@@ -9,32 +9,30 @@ import android.util.TypedValue;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.viewholder.ImageViewHolder;
+import www.gymhop.p5m.data.main.MediaModel;
 import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.view.activity.custom.SquareImageView;
 
 public class ImageListAdapter extends RecyclerView.Adapter<ImageViewHolder> {
     private static final int ITEM = 0;
-    private static final int LOADING = 1;
-    private final int imageSize, margin;
 
-    private List<Class> list;
+    private int dp;
+    private List<MediaModel> list;
     Context context;
 
-    public ImageListAdapter(Context context) {
+    public ImageListAdapter(Context context, List<MediaModel> mediaResponseDtoList) {
         this.context = context;
-        list = new ArrayList<>();
-        margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, context.getResources().getDisplayMetrics());
-        imageSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 96, context.getResources().getDisplayMetrics());
+        list = mediaResponseDtoList;
+
+        dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
     }
 
     @Override
     public int getItemViewType(int position) {
-//        return (position == list.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
         return ITEM;
     }
 
@@ -43,10 +41,11 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageViewHolder> {
         CardView cardView = new CardView(context);
 
         cardView.setCardBackgroundColor(Color.BLACK);
-        cardView.setRadius(margin / 2);
-        RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(imageSize, imageSize);
-        layoutParams.setMargins(margin, margin, 0, margin);
+        cardView.setRadius(dp * 4);
+        RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(dp * 96, dp * 96);
+        layoutParams.setMargins(dp * 4, dp * 4, 0, dp * 4);
         cardView.setLayoutParams(layoutParams);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             cardView.setElevation(8f);
         }
@@ -55,27 +54,29 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageViewHolder> {
 
         ImageView imageView = new SquareImageView(context);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        imageView.setImageResource(R.drawable.info_screen_1);
+        imageView.setImageResource(R.drawable.image_holder);
 
         cardView.addView(imageView);
-        return new ImageViewHolder(cardView);
+        return new ImageViewHolder(cardView, imageView);
     }
 
     @Override
     public void onBindViewHolder(ImageViewHolder holder, final int position) {
         LogUtils.debug("onBindViewHolder " + position);
 
-        holder.bind();
+        holder.bind(getItem(position), this, position);
     }
 
     @Override
     public int getItemCount() {
-//        return list == null ? 0 : list.size();
-//        return list.size();
-        return 50;
+        return list.size();
     }
 
-    public Class getItem(int position) {
+    public List<MediaModel> getList() {
+        return list;
+    }
+
+    public MediaModel getItem(int position) {
         if (list != null && list.size() > 0)
             return list.get(position);
         else

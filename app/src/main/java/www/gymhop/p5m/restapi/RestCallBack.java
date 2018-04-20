@@ -20,6 +20,7 @@ public abstract class RestCallBack<T> implements Callback<T> {
 
     @Override
     public void onFailure(Call<T> call, Throwable t) {
+        onFailure(call, t.toString());
     }
 
     @Override

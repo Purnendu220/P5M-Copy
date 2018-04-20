@@ -4,6 +4,7 @@ import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by MyU10 on 3/13/2018.
@@ -31,7 +32,6 @@ public class DateUtils {
         return month;
     }
 
-
     private static SimpleDateFormat classTime = new SimpleDateFormat("HH:mm:ss");
     private static SimpleDateFormat classTimeFormat = new SimpleDateFormat("h:mma");
     private static SimpleDateFormat classDate = new SimpleDateFormat("yyyy-MM-dd");
@@ -40,16 +40,29 @@ public class DateUtils {
     public static int getDaysLeftFromPackageExpiryDate(String date) {
         try {
             Date expiryDate = classDate.parse(date);
-            return expiryDate.compareTo(Calendar.getInstance().getTime());
+            Date today = Calendar.getInstance().getTime();
+            long diff = expiryDate.getTime() - today.getTime();
+            return (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
         }
         return 0;
     }
+
+    public static int canJoinClass(String classDateText, String packageExpiryDateText) {
+        try {
+            return classDate.parse(packageExpiryDateText).compareTo(classDate.parse(classDateText));
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+        return 0;
+    }
+
     public static String getClassTime(String from, String till) {
         try {
-            return classTimeFormat.format(classTime.parse(from)) + " - " +
+            return "  " + classTimeFormat.format(classTime.parse(from)) + " - " +
                     classTimeFormat.format(classTime.parse(till));
         } catch (Exception e) {
             e.printStackTrace();

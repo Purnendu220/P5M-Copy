@@ -63,7 +63,7 @@ public class ProfileHeaderTabViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 if (selectedTab != TAB_1) {
-                    adapterCallbacks.onAdapterItemClick(itemView, header1, model, position);
+                    adapterCallbacks.onAdapterItemClick(ProfileHeaderTabViewHolder.this, header1, model, position);
                     header1.setTextColor(ContextCompat.getColor(context, R.color.theme_accent_text));
                     header1Indicator.setBackgroundColor(ContextCompat.getColor(context, R.color.theme_accent_text));
                     header2.setTextColor(ContextCompat.getColor(context, R.color.theme_medium_text));
@@ -75,7 +75,7 @@ public class ProfileHeaderTabViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 if (selectedTab != TAB_2) {
-                    adapterCallbacks.onAdapterItemClick(itemView, header2, model, position);
+                    adapterCallbacks.onAdapterItemClick(ProfileHeaderTabViewHolder.this, header2, model, position);
                     header1.setTextColor(ContextCompat.getColor(context, R.color.theme_medium_text));
                     header1Indicator.setBackgroundColor(ContextCompat.getColor(context, R.color.separator));
                     header2.setTextColor(ContextCompat.getColor(context, R.color.theme_accent_text));

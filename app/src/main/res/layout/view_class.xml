@@ -71,7 +71,7 @@
                         android:text="@string/join"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/button_text_medium" />
+                        android:textSize="@dimen/button_join" />
 
                 </RelativeLayout>
 
@@ -214,7 +214,7 @@
                             android:letterSpacing="@dimen/text_medium_letter_spacing"
                             android:lineSpacingExtra="@dimen/line_spacing_extra"
                             android:paddingTop="8dp"
-                            android:text="11:20 AM - 12:50 AM"
+                            android:text="  11:20AM - 12:50AM"
                             android:textColor="@color/theme_dark_text"
                             android:textSize="@dimen/text_small" />
 
@@ -224,9 +224,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:paddingLeft="6dp"
-                        android:paddingRight="6dp">
+                        android:orientation="vertical">
 
                         <ImageView
                             android:id="@+id/imageViewClassLocation"
@@ -246,7 +244,7 @@
                             android:letterSpacing="@dimen/text_medium_letter_spacing"
                             android:lineSpacingExtra="@dimen/line_spacing_extra"
                             android:paddingTop="8dp"
-                            android:text="Noida Sector 132"
+                            android:text="Fikra edutech, Noida Sector 132"
                             android:textColor="@color/theme_dark_text"
                             android:textSize="@dimen/text_small" />
 
@@ -279,7 +277,7 @@
                             android:letterSpacing="@dimen/text_medium_letter_spacing"
                             android:lineSpacingExtra="@dimen/line_spacing_extra"
                             android:paddingTop="8dp"
-                            android:text="Only girls"
+                            android:text="FEMALE"
                             android:textColor="@color/theme_dark_text"
                             android:textSize="@dimen/text_small" />
 
@@ -294,6 +292,7 @@
                     android:visibility="gone" />
 
                 <LinearLayout
+                    android:id="@+id/layoutTrainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/click_highlight"

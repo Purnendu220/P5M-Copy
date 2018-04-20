@@ -20,8 +20,8 @@ import www.gymhop.p5m.adapters.viewholder.ProfileHeaderViewHolder;
 import www.gymhop.p5m.adapters.viewholder.TrainerListViewHolder;
 import www.gymhop.p5m.data.HeaderSticky;
 import www.gymhop.p5m.data.User;
-import www.gymhop.p5m.data.gym_class.ClassModel;
-import www.gymhop.p5m.data.gym_class.TrainerModel;
+import www.gymhop.p5m.data.main.ClassModel;
+import www.gymhop.p5m.data.main.TrainerModel;
 import www.gymhop.p5m.utils.AppConstants;
 
 /**
@@ -37,7 +37,9 @@ public class MyProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private static final int VIEW_TYPE_TAB_HEADER = 3;
 
     private Context context;
-    private final AdapterCallbacks<Object> adapterCallbacks;
+    private final AdapterCallbacks<Object> adapterCallbacksTrainers;
+    private final AdapterCallbacks<Object> adapterCallbacksClasses;
+    private final AdapterCallbacks<Object> adapterCallbacksProfile;
     private List<Object> list;
 
     private List<TrainerModel> trainers;
@@ -49,9 +51,11 @@ public class MyProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private ProfileHeaderTabViewHolder profileHeaderTabViewHolder;
 
-    public MyProfileAdapter(Context context, AdapterCallbacks<Object> adapterCallbacks) {
-        this.adapterCallbacks = adapterCallbacks;
+    public MyProfileAdapter(Context context, AdapterCallbacks<Object> adapterCallbacksTrainers, AdapterCallbacks<Object> adapterCallbacksClasses, AdapterCallbacks<Object> adapterCallbacksProfile) {
         this.context = context;
+        this.adapterCallbacksTrainers = adapterCallbacksTrainers;
+        this.adapterCallbacksClasses = adapterCallbacksClasses;
+        this.adapterCallbacksProfile = adapterCallbacksProfile;
 
         list = new ArrayList<>();
         trainers = new ArrayList<>();
@@ -151,14 +155,14 @@ public class MyProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ProfileHeaderViewHolder) {
-            ((ProfileHeaderViewHolder) holder).bind(list.get(position), adapterCallbacks, position);
+            ((ProfileHeaderViewHolder) holder).bind(list.get(position), adapterCallbacksProfile, position);
         } else if (holder instanceof ProfileHeaderTabViewHolder) {
             profileHeaderTabViewHolder = (ProfileHeaderTabViewHolder) holder;
-            ((ProfileHeaderTabViewHolder) holder).bind(selectedTab, list.get(position), adapterCallbacks, position);
+            ((ProfileHeaderTabViewHolder) holder).bind(selectedTab, list.get(position), adapterCallbacksProfile, position);
         } else if (holder instanceof ClassMiniDetailViewHolder) {
-            ((ClassMiniDetailViewHolder) holder).bind(list.get(position), adapterCallbacks, position);
+            ((ClassMiniDetailViewHolder) holder).bind(list.get(position), adapterCallbacksClasses, position);
         } else if (holder instanceof TrainerListViewHolder) {
-            ((TrainerListViewHolder) holder).bind(list.get(position), adapterCallbacks, position);
+            ((TrainerListViewHolder) holder).bind(list.get(position), adapterCallbacksTrainers, position);
         } else if (holder instanceof EmptyViewHolder) {
             ((EmptyViewHolder) holder).bind();
         }

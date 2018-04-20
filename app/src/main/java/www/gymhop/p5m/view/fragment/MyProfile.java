@@ -24,12 +24,15 @@ import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.adapters.MyProfileAdapter;
 import www.gymhop.p5m.adapters.viewholder.ProfileHeaderTabViewHolder;
-import www.gymhop.p5m.data.gym_class.ClassModel;
-import www.gymhop.p5m.data.gym_class.TrainerModel;
+import www.gymhop.p5m.data.main.ClassModel;
+import www.gymhop.p5m.data.main.TrainerModel;
+import www.gymhop.p5m.helper.ClassMiniListListenerHelper;
+import www.gymhop.p5m.helper.TrainerListListenerHelper;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.AppConstants;
+import www.gymhop.p5m.view.activity.Main.MemberShip;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 import www.gymhop.p5m.view.activity.custom.MyRecyclerView;
 
@@ -63,7 +66,8 @@ public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>,
 
         setToolBar();
 
-        myProfileAdapter = new MyProfileAdapter(context, this);
+        myProfileAdapter = new MyProfileAdapter(context, new TrainerListListenerHelper(context, activity),
+                new ClassMiniListListenerHelper(context, activity), this);
         StickyLayoutManager layoutManager = new StickyLayoutManager(context, myProfileAdapter);
         layoutManager.elevateHeaders(true);
         layoutManager.elevateHeaders((int) context.getResources().getDimension(R.dimen.view_separator_elevation));
@@ -142,7 +146,7 @@ public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>,
     }
 
     @Override
-    public void onAdapterItemClick(View viewRoot, View view, Object model, int position) {
+    public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
         switch (view.getId()) {
             case R.id.header1: {
                 if (myProfileAdapter.getTrainers().isEmpty()) {
@@ -162,11 +166,16 @@ public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>,
                 myProfileAdapter.notifyDataSetChanges();
             }
             break;
+            case R.id.textViewMore:
+            case R.id.textViewRecharge:
+                MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE);
+                break;
+
         }
     }
 
     @Override
-    public void onAdapterItemLongClick(View viewRoot, View view, Object model, int position) {
+    public void onAdapterItemLongClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
     }
 
     @Override

@@ -205,7 +205,7 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
     }
 
     @Override
-    public void onAdapterItemClick(View viewRoot, View view, Object model, int position) {
+    public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
         ClassesFilter classesFilter = model instanceof ClassesFilter ? ((ClassesFilter) model) : null;
 
         if (classesFilter != null && (classesFilter.getType() == ClassesFilter.TYPE_HEADER || classesFilter.getType() == ClassesFilter.TYPE_SUB_HEADER)) {
@@ -265,7 +265,7 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
     }
 
     @Override
-    public void onAdapterItemLongClick(View viewRoot, View view, Object model, int position) {
+    public void onAdapterItemLongClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
     }
 
     @Override

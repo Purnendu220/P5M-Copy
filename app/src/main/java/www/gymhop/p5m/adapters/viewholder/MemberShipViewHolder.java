@@ -98,8 +98,8 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
                         textViewPackageName.setText(model.getName());
                         textViewPageTitle.setText(model.getNoOfClass() + " " + context.getString(R.string.classes));
-                        textViewPackageValidity.setText("Valid for " + model.getDuration() + " " + model.getValidityPeriod());
-                        textViewPackagePrice.setText(model.getCost() + " " + context.getString(R.string.currency).toUpperCase());
+                        textViewPackageValidity.setText("Valid for " + model.getDuration() + " " + model.getValidityPeriod().toLowerCase());
+                        textViewPackagePrice.setText(model.getCost() + " " + context.getString(R.string.currency).toUpperCase() + " " + context.getString(R.string.memebership_price_postfix));
 
                         textViewViewLimit.setVisibility(View.GONE);
 
@@ -107,13 +107,27 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
                         textViewPackageName.setText(model.getName());
                         textViewPageTitle.setText(model.getNoOfClass() + " " + context.getString(R.string.classes));
-                        textViewPackageValidity.setText("Valid for " + model.getDuration() + " " + model.getValidityPeriod());
-                        textViewPackagePrice.setText(model.getCost() + " " + context.getString(R.string.currency).toUpperCase());
+                        textViewPackageValidity.setText("Valid for " + model.getGymName());
+                        textViewPackagePrice.setText(model.getCost() + " " + context.getString(R.string.currency).toUpperCase() + " " + context.getString(R.string.memebership_price_postfix));
 
                         textViewViewLimit.setVisibility(View.VISIBLE);
                         imageViewInfo.setVisibility(View.VISIBLE);
                     }
                 }
+
+            imageViewInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(MemberShipViewHolder.this, imageViewInfo, data, position);
+                }
+            });
+
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(MemberShipViewHolder.this, button, data, position);
+                }
+            });
         } else {
             itemView.setVisibility(View.GONE);
         }

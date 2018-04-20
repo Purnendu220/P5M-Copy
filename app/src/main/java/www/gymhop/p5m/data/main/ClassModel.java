@@ -1,11 +1,11 @@
-package www.gymhop.p5m.data.gym_class;
+package www.gymhop.p5m.data.main;
 
 public class ClassModel implements java.io.Serializable {
     private static final long serialVersionUID = -7121053493736355823L;
 
     private int numberOfParticipants;
     private String classDate;
-    private ClassMedia classMedia;
+    private MediaModel classMedia;
     private String reminder;
     private boolean hideClass;
     private String description;
@@ -48,11 +48,11 @@ public class ClassModel implements java.io.Serializable {
         this.classDate = classDate;
     }
 
-    public ClassMedia getClassMedia() {
+    public MediaModel getClassMedia() {
         return classMedia;
     }
 
-    public void setClassMedia(ClassMedia classMedia) {
+    public void setClassMedia(MediaModel classMedia) {
         this.classMedia = classMedia;
     }
 

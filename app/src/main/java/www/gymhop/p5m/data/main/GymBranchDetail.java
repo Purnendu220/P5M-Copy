@@ -1,4 +1,4 @@
-package www.gymhop.p5m.data.gym_class;
+package www.gymhop.p5m.data.main;
 
 public class GymBranchDetail implements java.io.Serializable {
     private static final long serialVersionUID = 7807737247569814553L;

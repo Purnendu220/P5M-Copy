@@ -66,7 +66,7 @@ public class PackageLimits extends BaseActivity implements NetworkCommunicator.R
     @Override
     public void onApiSuccess(Object response, int requestCode) {
         switch (requestCode) {
-            case NetworkCommunicator.RequestCode.PACKAGES_FOR_CLASS:
+            case NetworkCommunicator.RequestCode.PACKAGES_LIMIT:
                 List<PackageLimitModel> models = ((ResponseModel<List<PackageLimitModel>>) response).data;
 
                 if (!models.isEmpty()) {
@@ -124,12 +124,12 @@ public class PackageLimits extends BaseActivity implements NetworkCommunicator.R
     }
 
     @Override
-    public void onAdapterItemClick(View viewRoot, View view, Object model, int position) {
+    public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
 
     }
 
     @Override
-    public void onAdapterItemLongClick(View viewRoot, View view, Object model, int position) {
+    public void onAdapterItemLongClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
 
     }
 

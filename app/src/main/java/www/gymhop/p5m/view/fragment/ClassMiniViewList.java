@@ -18,7 +18,8 @@ import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.adapters.ClassMiniViewAdapter;
-import www.gymhop.p5m.data.gym_class.ClassModel;
+import www.gymhop.p5m.data.main.ClassModel;
+import www.gymhop.p5m.helper.ClassMiniListListenerHelper;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
@@ -75,7 +76,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
         recyclerViewClass.setLayoutManager(new LinearLayoutManager(activity));
         recyclerViewClass.setHasFixedSize(false);
 
-        classListAdapter = new ClassMiniViewAdapter(context, shownInScreen, true, this);
+        classListAdapter = new ClassMiniViewAdapter(context, shownInScreen, true, new ClassMiniListListenerHelper(context, activity));
         recyclerViewClass.setAdapter(classListAdapter);
     }
 
@@ -85,11 +86,11 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
     }
 
     @Override
-    public void onAdapterItemClick(View viewRoot, View view, ClassModel model, int position) {
+    public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, ClassModel model, int position) {
     }
 
     @Override
-    public void onAdapterItemLongClick(View viewRoot, View view, ClassModel model, int position) {
+    public void onAdapterItemLongClick(RecyclerView.ViewHolder viewHolder, View view, ClassModel model, int position) {
     }
 
     @Override

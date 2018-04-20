@@ -15,7 +15,7 @@ import www.gymhop.p5m.adapters.viewholder.ClassMiniDetailViewHolder;
 import www.gymhop.p5m.adapters.viewholder.EmptyViewHolder;
 import www.gymhop.p5m.adapters.viewholder.LoaderViewHolder;
 import www.gymhop.p5m.data.ListLoader;
-import www.gymhop.p5m.data.gym_class.ClassModel;
+import www.gymhop.p5m.data.main.ClassModel;
 
 public class ClassMiniViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

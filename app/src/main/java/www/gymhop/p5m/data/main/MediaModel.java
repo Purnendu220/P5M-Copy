@@ -1,6 +1,6 @@
-package www.gymhop.p5m.data.gym_class;
+package www.gymhop.p5m.data.main;
 
-public class ClassMedia implements java.io.Serializable {
+public class MediaModel implements java.io.Serializable {
     private static final long serialVersionUID = 7751671452405443847L;
     private String mediaUrl;
     private String mediaThumbNailUrl;

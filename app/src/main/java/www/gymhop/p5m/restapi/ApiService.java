@@ -14,11 +14,12 @@ import www.gymhop.p5m.data.ClassActivity;
 import www.gymhop.p5m.data.Package;
 import www.gymhop.p5m.data.PackageLimitModel;
 import www.gymhop.p5m.data.User;
-import www.gymhop.p5m.data.UserPackage;
-import www.gymhop.p5m.data.gym_class.ClassModel;
-import www.gymhop.p5m.data.gym_class.TrainerModel;
-import www.gymhop.p5m.data.request_model.ClassListRequest;
-import www.gymhop.p5m.data.request_model.LoginRequest;
+import www.gymhop.p5m.data.main.ClassModel;
+import www.gymhop.p5m.data.main.TrainerDetailModel;
+import www.gymhop.p5m.data.main.TrainerModel;
+import www.gymhop.p5m.data.request.ClassListRequest;
+import www.gymhop.p5m.data.request.LoginRequest;
+import www.gymhop.p5m.data.request.PaymentUrlRequest;
 import www.gymhop.p5m.utils.AppConstants;
 
 public interface ApiService {
@@ -58,6 +59,14 @@ public interface ApiService {
                                                           @Query(AppConstants.ApiParamKey.SIZE) int size);
 
     @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.SCHEDULE_LIST)
+    Call<ResponseModel<List<ClassModel>>> getUpcomingClasses(@Query(AppConstants.ApiParamKey.USER_ID) int userId,
+                                                             @Query(AppConstants.ApiParamKey.GYM_ID) int gymId,
+                                                             @Query(AppConstants.ApiParamKey.TRAINER_ID) int trainerId,
+                                                             @Query(AppConstants.ApiParamKey.PAGE) int page,
+                                                             @Query(AppConstants.ApiParamKey.SIZE) int size);
+
+    @Headers("Content-type: application/json")
     @GET(AppConstants.Url.FINISHED_CLASS_LIST + "/{" + AppConstants.ApiParamKey.USER_ID + "}")
     Call<ResponseModel<List<ClassModel>>> getFinishedClassList(@Path(AppConstants.ApiParamKey.USER_ID) int userId,
                                                                @Query(AppConstants.ApiParamKey.PAGE) int page,
@@ -72,16 +81,31 @@ public interface ApiService {
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.PACKAGE_LIST)
-    Call<ResponseModel<List<UserPackage>>> getPackageList(@Query(AppConstants.ApiParamKey.USER_ID) int userId);
+    Call<ResponseModel<List<Package>>> getPackageList(@Query(AppConstants.ApiParamKey.USER_ID) int userId);
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.CLASS_PACKAGE_LIST)
     Call<ResponseModel<List<Package>>> getClassPackageList(@Query(AppConstants.ApiParamKey.USER_ID) int userId,
-                                                           @Query(AppConstants.ApiParamKey.GYM_ID) int gymId);
-
+                                                           @Query(AppConstants.ApiParamKey.GYM_ID) int gymId,
+                                                           @Query(AppConstants.ApiParamKey.SESSION_ID) int sessionId);
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.PACKAGE_LIMITS)
-    Call<ResponseModel<List<PackageLimitModel>>> getPackageLimitList(@Query(AppConstants.ApiParamKey.PACKAGE_TYPE) String packageType);
+    Call<ResponseModel<List<PackageLimitModel>>> getPackageLimitList(
+            @Query(AppConstants.ApiParamKey.PACKAGE_TYPE) String packageType);
 
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.PACKAGE_PURCHASE)
+    Call<ResponseModel<List<PackageLimitModel>>> purchasePackageForSelf(
+            @Query(AppConstants.ApiParamKey.USER_ID) int userId,
+            @Query(AppConstants.ApiParamKey.PACKAGE_ID) int packageId);
+
+    @Headers("Content-type: application/json")
+    @POST(AppConstants.Url.PACKAGE_PURCHASE)
+    Call<ResponseModel<List<PackageLimitModel>>> purchasePackageForClass(@Body PaymentUrlRequest paymentUrlRequest);
+
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.USER + "/{" + AppConstants.ApiParamKey.USER_ID + "}")
+    Call<ResponseModel<TrainerDetailModel>> getTrainer(@Path(AppConstants.ApiParamKey.USER_ID) int trainerId);
 }

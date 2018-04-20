@@ -10,9 +10,18 @@ public class Package implements java.io.Serializable {
     private int noOfClass;
     private String name;
     private String description;
+    private String gymName;
     private int id;
     private String packageType;
     private boolean status;
+
+    public String getGymName() {
+        return gymName == null ? "" : gymName;
+    }
+
+    public void setGymName(String gymName) {
+        this.gymName = gymName;
+    }
 
     public int getDuration() {
         return this.duration;

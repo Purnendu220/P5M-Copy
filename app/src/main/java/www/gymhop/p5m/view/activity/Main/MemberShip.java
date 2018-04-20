@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -19,7 +20,8 @@ import www.gymhop.p5m.adapters.MemberShipAdapter;
 import www.gymhop.p5m.data.Package;
 import www.gymhop.p5m.data.User;
 import www.gymhop.p5m.data.UserPackageInfo;
-import www.gymhop.p5m.data.gym_class.ClassModel;
+import www.gymhop.p5m.data.main.ClassModel;
+import www.gymhop.p5m.data.request.PaymentUrlRequest;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
@@ -27,6 +29,7 @@ import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
 public class MemberShip extends BaseActivity implements AdapterCallbacks, NetworkCommunicator.RequestListener {
+
 
     public static void openActivity(Context context, int navigationFrom) {
         context.startActivity(new Intent(context, MemberShip.class)
@@ -50,6 +53,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     private int navigatedFrom;
     private ClassModel classModel;
     private MemberShipAdapter memberShipAdapter;
+    private UserPackageInfo userPackageInfo;
 
     private User user;
 
@@ -75,19 +79,52 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     }
 
     private void checkPackages() {
-        UserPackageInfo userPackageInfo = new UserPackageInfo(user);
+        userPackageInfo = new UserPackageInfo(user);
 
         if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS) {
 
             // show general, ready, and owned packages
             if (userPackageInfo.havePackages) {
+                memberShipAdapter.addAllOwnedPackages(userPackageInfo.userPackageReady);
+
                 if (userPackageInfo.haveGeneralPackage) {
                     // User have General package and may be also have dropins..
+                    memberShipAdapter.addOwnedPackages(userPackageInfo.userPackageGeneral);
                     memberShipAdapter.setHeaderText(context.getString(R.string.membership_only_drop_in_package_heading_1),
-                            context.getString(R.string.membership_only_drop_in_package_heading_1));
+                            context.getString(R.string.membership_only_drop_in_package_heading_2));
                 } else {
                     // User don't have General package but may have dropins..
-                    memberShipAdapter.setHeaderText(context.getString(R.string.membership_drop_in_package_heading_1), context.getString(R.string.membership_drop_in_package_heading_1));
+                    memberShipAdapter.setHeaderText(context.getString(R.string.membership_drop_in_package_heading_1), context.getString(R.string.membership_drop_in_package_heading_2));
+                }
+            } else {
+                // User have no packages
+                // Show offered packages
+                memberShipAdapter.setHeaderText(context.getString(R.string.membership_no_package_heading_1),
+                        context.getString(R.string.membership_no_package_heading_2));
+            }
+
+            networkCommunicator.getPackagesForClass(user.getId(), classModel.getGymBranchDetail().getGymId(), classModel.getClassSessionId(), this, false);
+
+        } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SETTING ||
+                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE) {
+
+            if (userPackageInfo.havePackages) {
+
+                memberShipAdapter.addAllOwnedPackages(userPackageInfo.userPackageReady);
+
+                if (!userPackageInfo.haveGeneralPackage) {
+                    // User don't have General package..
+                    // get general and show owned packages
+                    networkCommunicator.getPackages(user.getId(), this, false);
+                    memberShipAdapter.setHeaderText(context.getString(R.string.membership_drop_in_package_heading_1),
+                            context.getString(R.string.membership_drop_in_package_heading_2));
+
+                } else {
+                    // User only have drop in packages..
+                    // only Show owned packages..
+                    memberShipAdapter.addOwnedPackages(userPackageInfo.userPackageGeneral);
+                    memberShipAdapter.setHeaderText(context.getString(R.string.membership_general_package_heading_1), context.getString(R.string.membership_general_package_heading_2));
+                    memberShipAdapter.notifyDataSetChanges();
                 }
             } else {
                 // User have no packages
@@ -96,45 +133,33 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                 memberShipAdapter.setHeaderText(context.getString(R.string.membership_no_package_heading_1),
                         context.getString(R.string.membership_no_package_heading_2));
             }
-
-            networkCommunicator.getPackagesForClass(user.getId(), classModel.getGymBranchDetail().getGymId(), this, false);
-
-        } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SETTING ||
-                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE) {
-
-            if (userPackageInfo.havePackages) {
-
-                memberShipAdapter.addOwnedPackages(userPackageInfo.userPackageGeneral);
-                memberShipAdapter.addAllOwnedPackages(userPackageInfo.userPackageReady);
-
-                if (!userPackageInfo.haveGeneralPackage) {
-                    // User don't have General package..
-                    // get general and show owned packages
-                    networkCommunicator.getPackages(user.getId(), this, false);
-                    memberShipAdapter.setHeaderText(context.getString(R.string.membership_drop_in_package_heading_1), context.getString(R.string.membership_drop_in_package_heading_1));
-
-                } else {
-                    // User only have drop in packages..
-                    // only Show owned packages..
-                    memberShipAdapter.setHeaderText(context.getString(R.string.membership_general_package_heading_1), context.getString(R.string.membership_general_package_heading_2));
-                    memberShipAdapter.notifyDataSetChanges();
-                }
-            } else {
-                // User have no packages
-                // Show offered packages
-                networkCommunicator.getPackages(user.getId(), this, false);
-                memberShipAdapter.setHeaderText(context.getString(R.string.membership_no_package_heading_1), context.getString(R.string.membership_no_package_heading_2));
-            }
         }
     }
 
     @Override
-    public void onAdapterItemClick(View viewRoot, View view, Object model, int position) {
+    public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
+        Package aPackage = (Package) model;
 
+        switch (view.getId()) {
+            case R.id.button:
+                if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS) {
+                    networkCommunicator.purchasePackageForClass(new PaymentUrlRequest(TempStorage.getUser().getId(),
+                            aPackage.getId(), classModel.getClassSessionId(),
+                            classModel.getGymBranchDetail().getGymId()), this, false);
+
+                } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SETTING ||
+                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE) {
+                    networkCommunicator.purchasePackageForClass(new PaymentUrlRequest(TempStorage.getUser().getId(),
+                            aPackage.getId()), this, false);
+                }
+                break;
+            case R.id.imageViewInfo:
+                break;
+        }
     }
 
     @Override
-    public void onAdapterItemLongClick(View viewRoot, View view, Object model, int position) {
+    public void onAdapterItemLongClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
 
     }
 
@@ -146,15 +171,32 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     @Override
     public void onApiSuccess(Object response, int requestCode) {
         switch (requestCode) {
-            case NetworkCommunicator.RequestCode.PACKAGES_FOR_CLASS:
-            case NetworkCommunicator.RequestCode.PACKAGES_USER:
+            case NetworkCommunicator.RequestCode.PACKAGES_LIMIT:
+            case NetworkCommunicator.RequestCode.PACKAGES_FOR_USER:
 
-                List<Package> packages = ((ResponseModel<List<Package>>) response).data;
+                List<Package> packagesTemp = ((ResponseModel<List<Package>>) response).data;
 
-                if (packages != null && !packages.isEmpty()) {
+                if (packagesTemp != null && !packagesTemp.isEmpty()) {
+                    List<Package> packages = new ArrayList<>(packagesTemp.size());
+
+                    for (Package aPackage : packagesTemp) {
+                        if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
+                            if (!userPackageInfo.haveGeneralPackage) {
+                                packages.add(aPackage);
+                            }
+                        } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
+                            aPackage.setGymName(classModel.getGymBranchDetail().getGymName());
+                            packages.add(aPackage);
+                        }
+                    }
+
                     memberShipAdapter.addAllOfferedPackages(packages);
                 }
                 memberShipAdapter.notifyDataSetChanges();
+                break;
+
+            case NetworkCommunicator.RequestCode.BUY_PACKAGE:
+
                 break;
         }
     }

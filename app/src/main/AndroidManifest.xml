@@ -10,6 +10,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:theme="@style/AppTheme">
         <activity android:name=".view.activity.Splash">
             <intent-filter>
@@ -29,11 +30,11 @@
         <activity android:name=".view.activity.LoginRegister.InfoScreen" />
         <activity android:name=".view.activity.Main.Home" />
         <activity android:name=".view.activity.LoginRegister.Login" />
-        <activity android:name=".view.activity.Main.TrainerProfile" />
+        <activity android:name=".view.activity.Main.TrainerProfileActivity" />
         <activity android:name=".view.activity.Main.FilterActivity" />
         <activity android:name=".view.activity.Main.MemberShip" />
         <activity
-            android:name=".view.activity.ClassProfile"
+            android:name=".view.activity.Main.ClassProfileActivity"
             android:label="@string/title_activity_class_profile"
             android:theme="@style/AppTheme" />
         <activity android:name=".view.activity.Main.PackageLimits" />

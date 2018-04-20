@@ -11,7 +11,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
-import www.gymhop.p5m.data.gym_class.TrainerModel;
+import www.gymhop.p5m.data.main.TrainerModel;
+import www.gymhop.p5m.helper.Helper;
+import www.gymhop.p5m.helper.TrainerListListenerHelper;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.ImageUtils;
 import www.gymhop.p5m.utils.LogUtils;
@@ -61,13 +63,7 @@ public class TrainerListViewHolder extends RecyclerView.ViewHolder {
                         R.drawable.profile_holder, imageViewProfile);
             }
 
-            if (model.isIsfollow()) {
-                buttonFav.setText(context.getString(R.string.favorited));
-                buttonFav.setBackgroundResource(R.drawable.joined_rect);
-            } else {
-                buttonFav.setText(context.getString(R.string.favourite));
-                buttonFav.setBackgroundResource(R.drawable.join_rect);
-            }
+            Helper.setFavButton(context, buttonFav, model);
 
             textViewTrainerName.setText(model.getFirstName());
 
@@ -96,23 +92,12 @@ public class TrainerListViewHolder extends RecyclerView.ViewHolder {
                 }
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FAV_TRAINERS) {
 
-                if (model.getCategoryList() != null && !model.getCategoryList().isEmpty()) {
+                String categoryList = TrainerListListenerHelper.getCategoryList(model.getCategoryList());
+
+                if (!categoryList.isEmpty()) {
                     imageViewSubtitle.setVisibility(View.VISIBLE);
                     textViewSubtitle.setVisibility(View.VISIBLE);
-                    try {
-                        String name = "";
-                        for (int index = 0; index < model.getCategoryList().size(); index++) {
-                            String value = model.getCategoryList().get(index);
-                            if (!name.contains(value)) {
-                                name = index == 0 ? (name += value) : (name += ", " + value);
-                            }
-                        }
-                        textViewSubtitle.setText(name);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        LogUtils.exception(e);
-                        textViewSubtitle.setVisibility(View.GONE);
-                    }
+                    textViewSubtitle.setText(categoryList);
                 } else {
                     textViewSubtitle.setVisibility(View.GONE);
                 }
@@ -121,7 +106,14 @@ public class TrainerListViewHolder extends RecyclerView.ViewHolder {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    adapterCallbacks.onAdapterItemClick(itemView, itemView, data, position);
+                    adapterCallbacks.onAdapterItemClick(TrainerListViewHolder.this, itemView, data, position);
+                }
+            });
+
+            buttonFav.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(TrainerListViewHolder.this, buttonFav, data, position);
                 }
             });
         } else {

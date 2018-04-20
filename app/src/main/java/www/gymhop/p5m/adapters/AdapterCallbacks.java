@@ -1,5 +1,6 @@
 package www.gymhop.p5m.adapters;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 /**
@@ -7,9 +8,9 @@ import android.view.View;
  */
 
 public interface AdapterCallbacks<Object> {
-    void onAdapterItemClick(View viewRoot, View view, Object model, int position);
+    void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position);
 
-    void onAdapterItemLongClick(View viewRoot, View view, Object model, int position);
+    void onAdapterItemLongClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position);
 
     void onShowLastItem();
 }

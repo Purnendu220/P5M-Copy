@@ -107,14 +107,28 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                 textViewPackage.setText(Html.fromHtml("<b>" + 0 + "</b> " + context.getString(R.string.classes).toLowerCase()));
                 textViewRecharge.setVisibility(View.VISIBLE);
                 textViewMore.setVisibility(View.GONE);
-                textViewValidity.setText("Buy packages");
+                textViewValidity.setText(R.string.profile_validiy_no_package);
                 /***************************************************************/
             }
+
+            textViewRecharge.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ProfileHeaderViewHolder.this, textViewRecharge, user, position);
+                }
+            });
+
+            textViewMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ProfileHeaderViewHolder.this, textViewMore, user, position);
+                }
+            });
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    adapterCallbacks.onAdapterItemClick(itemView, itemView, user, position);
+                    adapterCallbacks.onAdapterItemClick(ProfileHeaderViewHolder.this, itemView, user, position);
                 }
             });
         } else {

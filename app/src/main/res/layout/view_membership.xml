@@ -16,9 +16,8 @@
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:layout_marginTop="18dp"
-            android:elevation="2dp"
-            android:orientation="vertical"
-            android:translationZ="1dp">
+            android:elevation="0dp"
+            android:orientation="vertical">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -42,15 +41,15 @@
                             android:layout_gravity="left|center_vertical"
                             android:ellipsize="end"
                             android:fontFamily="sans-serif"
-                            android:letterSpacing="@dimen/text_medium_letter_spacing"
+                            android:letterSpacing="@dimen/button_letter_spacing_very_little"
                             android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                             android:maxLines="1"
                             android:paddingBottom="12dp"
                             android:paddingTop="16dp"
                             android:text="READY"
                             android:textAllCaps="true"
-                            android:textColor="@color/theme_medium_text"
-                            android:textSize="@dimen/text_large"
+                            android:textColor="@color/theme_medium_light_text"
+                            android:textSize="@dimen/text_extra_large"
                             android:textStyle="bold" />
 
                         <TextView
@@ -59,13 +58,13 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:fontFamily="sans-serif"
-                            android:letterSpacing="@dimen/text_title_letter_spacing"
+                            android:letterSpacing="@dimen/text_medium_letter_spacing"
                             android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                             android:maxLines="1"
                             android:paddingBottom="4dp"
-                            android:text="10 Classes"
+                            android:text="10 of 10 Classes remaining"
                             android:textColor="@color/theme_dark_text"
-                            android:textSize="@dimen/text_extra_large"
+                            android:textSize="@dimen/text_extra_extra_large"
                             android:textStyle="bold" />
 
                         <TextView
@@ -74,15 +73,14 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:fontFamily="sans-serif-medium"
-                            android:letterSpacing="@dimen/text_title_letter_spacing"
+                            android:letterSpacing="@dimen/text_medium_letter_spacing"
                             android:lineSpacingExtra="@dimen/line_spacing_extra_title"
-                            android:paddingTop="2dp"
+                            android:paddingTop="6dp"
                             android:maxLines="1"
                             android:text="50 KWD"
                             android:visibility="visible"
-                            android:textColor="@color/theme_medium_text"
-                            android:textSize="@dimen/text_small"
-                            android:textStyle="bold" />
+                            android:textColor="@color/theme_dark_text"
+                            android:textSize="@dimen/text_medium" />
 
                         <TextView
                             android:id="@+id/textViewPackageValidity"
@@ -96,8 +94,8 @@
                             android:maxLines="1"
                             android:paddingBottom="12dp"
                             android:text="Valid for P5M Studio"
-                            android:textColor="@color/theme_medium_text"
-                            android:textSize="@dimen/text_medium"
+                            android:textColor="@color/theme_light_text"
+                            android:textSize="@dimen/text_extra_large"
                             android:textStyle="normal" />
 
                         <TextView
@@ -109,8 +107,7 @@
                             android:lineSpacingExtra="@dimen/line_spacing_extra"
                             android:text="@string/view_gym_visit_limits"
                             android:textColor="@color/theme_accent_text"
-                            android:textSize="@dimen/text_small"
-                            android:textStyle="bold"
+                            android:textSize="@dimen/text_large"
                             android:visibility="visible" />
 
                     </LinearLayout>
@@ -118,7 +115,7 @@
                     <Button
                         android:id="@+id/button"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/button_height_main_list"
+                        android:layout_height="40dp"
                         android:layout_margin="16dp"
                         android:background="@drawable/join_rect"
                         android:fontFamily="sans-serif-medium"
@@ -136,6 +133,8 @@
                     android:layout_height="48dp"
                     android:layout_gravity="right"
                     android:padding="12dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="8dp"
                     android:src="@drawable/info_membership" />
 
             </FrameLayout>
@@ -144,9 +143,9 @@
         <android.support.v7.widget.CardView
             style="@style/CardViewCircularMembership"
             android:layout_gravity="center_horizontal"
-            android:elevation="1dp"
+            android:elevation="0dp"
             android:orientation="vertical"
-            android:translationZ="2dp">
+            android:translationZ="1px">
 
             <ImageView
                 android:id="@+id/imageViewHeader"

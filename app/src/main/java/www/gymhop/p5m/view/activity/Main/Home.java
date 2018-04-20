@@ -3,9 +3,8 @@ package www.gymhop.p5m.view.activity.Main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -14,30 +13,32 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
+import www.gymhop.p5m.adapters.HomeAdapter;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 import www.gymhop.p5m.view.activity.custom.BottomTapLayout;
-import www.gymhop.p5m.view.fragment.FindClass;
-import www.gymhop.p5m.view.fragment.MyProfile;
-import www.gymhop.p5m.view.fragment.MySchedule;
-import www.gymhop.p5m.view.fragment.Trainers;
 
-public class Home extends BaseActivity implements BottomTapLayout.TabListener {
+public class Home extends BaseActivity implements BottomTapLayout.TabListener, ViewPager.OnPageChangeListener {
+
 
     public static void open(Context context) {
         context.startActivity(new Intent(context, Home.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
 
+    @BindView(R.id.viewPager)
+    public ViewPager viewPager;
+
     @BindView(R.id.layoutBottomTabs)
     public LinearLayout layoutBottomTabs;
-    @BindView(R.id.layoutFragment)
-    public LinearLayout layoutFragment;
 
     private BottomTapLayout bottomTapLayout;
+    private HomeAdapter homeAdapter;
 
-    private static int TAB_FIND_CLASS = 1;
-    private static int TAB_TRAINER = 2;
-    private static int TAB_SCHEDULE = 3;
-    private static int TAB_MY_PROFILE = 4;
+    private static final int TOTAL_TABS = 4;
+
+    private static int TAB_FIND_CLASS = 0;
+    private static int TAB_TRAINER = 1;
+    private static int TAB_SCHEDULE = 2;
+    private static int TAB_MY_PROFILE = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,18 @@ public class Home extends BaseActivity implements BottomTapLayout.TabListener {
         ButterKnife.bind(activity);
 
         setupBottomTabs();
+
+        homeAdapter = new HomeAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_TABS);
+        viewPager.setAdapter(homeAdapter);
+        viewPager.addOnPageChangeListener(this);
+        viewPager.setOffscreenPageLimit(TOTAL_TABS);
+
+        layoutBottomTabs.post(new Runnable() {
+            @Override
+            public void run() {
+                bottomTapLayout.setTab(TAB_FIND_CLASS);
+            }
+        });
     }
 
     private void setupBottomTabs() {
@@ -67,47 +80,30 @@ public class Home extends BaseActivity implements BottomTapLayout.TabListener {
         bottomTapLayout = new BottomTapLayout();
         bottomTapLayout.setup(context, layoutBottomTabs, tabList, this);
 
-//        ViewCompat.setElevation(layoutBottomTabs, getResources().getDimension(R.dimen.bottom_navigation_elevation));
-
         bottomTapLayout.setTab(TAB_FIND_CLASS);
     }
 
     @Override
     public void onPositionChange(int currentPosition, BottomTapLayout.Tab tab, List<BottomTapLayout.Tab> tabList) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-
-        if (tab.id == TAB_FIND_CLASS) {
-            Fragment frag = getSupportFragmentManager().findFragmentByTag("FindClass");
-            if (frag == null) {
-                frag = new FindClass();
-            }
-            transaction.replace(R.id.layoutFragment, frag, "FindClass").commitNow();
-        } else if (tab.id == TAB_TRAINER) {
-            Fragment frag = getSupportFragmentManager().findFragmentByTag("Trainers");
-            if (frag == null) {
-                frag = new Trainers();
-            }
-            transaction.replace(R.id.layoutFragment, frag, "Trainers").commitNow();
-        } else if (tab.id == TAB_SCHEDULE) {
-            Fragment frag = getSupportFragmentManager().findFragmentByTag("MySchedule");
-            if (frag == null) {
-                frag = new MySchedule();
-            }
-            transaction.replace(R.id.layoutFragment, frag, "MySchedule").commitNow();
-        } else if (tab.id == TAB_MY_PROFILE) {
-            Fragment frag = getSupportFragmentManager().findFragmentByTag("MyProfile");
-            if (frag == null) {
-                frag = new MyProfile();
-            }
-            transaction.replace(R.id.layoutFragment, frag, "MyProfile").commitNow();
-
-            PackageLimits.openActivity(context);
-        }
+        viewPager.setCurrentItem(tab.id);
     }
 
     @Override
     public void onReselection(int currentPosition, BottomTapLayout.Tab tab, List<BottomTapLayout.Tab> tabList) {
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        bottomTapLayout.setTab(position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }

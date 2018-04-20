@@ -12,6 +12,11 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 public class ImageUtils {
 
+    public static String generateMapImageUrl(double latitude, double longitude) {
+        return "https://maps.googleapis.com/maps/api/staticmap?zoom=13&size=200x240" +
+                "&maptype=roadmap&markers=color:red%7C" + latitude + "," + longitude + "&key=AIzaSyCrAO08EU2sNMocuMZv03sSkOj6NQrOzSs";
+    }
+
     public static void setImage(Context context, String url, int placeHolder, ImageView imageView) {
         if (url != null && !url.isEmpty()) {
             Glide.with(context)

@@ -1,4 +1,4 @@
-package www.gymhop.p5m.data.request_model;
+package www.gymhop.p5m.data.request;
 
 public class LoginRequest implements java.io.Serializable {
     private static final long serialVersionUID = -5995156969528755923L;

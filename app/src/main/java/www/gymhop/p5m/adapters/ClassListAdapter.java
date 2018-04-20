@@ -15,7 +15,7 @@ import www.gymhop.p5m.adapters.viewholder.ClassViewHolder;
 import www.gymhop.p5m.adapters.viewholder.EmptyViewHolder;
 import www.gymhop.p5m.adapters.viewholder.LoaderViewHolder;
 import www.gymhop.p5m.data.ListLoader;
-import www.gymhop.p5m.data.gym_class.ClassModel;
+import www.gymhop.p5m.data.main.ClassModel;
 
 public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -84,7 +84,6 @@ public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_list_progress, parent, false);
             return new LoaderViewHolder(view);
         }
-
         return new EmptyViewHolder(new LinearLayout(context));
     }
 

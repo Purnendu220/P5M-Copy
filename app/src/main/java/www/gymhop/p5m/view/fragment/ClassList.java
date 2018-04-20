@@ -23,13 +23,14 @@ import www.gymhop.p5m.data.CityLocality;
 import www.gymhop.p5m.data.ClassActivity;
 import www.gymhop.p5m.data.ClassesFilter;
 import www.gymhop.p5m.data.Filter;
-import www.gymhop.p5m.data.gym_class.ClassModel;
-import www.gymhop.p5m.data.request_model.ClassListRequest;
+import www.gymhop.p5m.data.main.ClassModel;
+import www.gymhop.p5m.data.request.ClassListRequest;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
+import www.gymhop.p5m.view.activity.Main.ClassProfileActivity;
 import www.gymhop.p5m.view.activity.custom.MyRecyclerView;
 
 public class ClassList extends BaseFragment implements ViewPagerFragmentSelection, MyRecyclerView.LoaderCallbacks, AdapterCallbacks<ClassModel>, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
@@ -136,12 +137,20 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
     }
 
     @Override
-    public void onAdapterItemClick(View viewRoot, View view, ClassModel model, int position) {
-        www.gymhop.p5m.view.activity.Main.TrainerProfile.open(context);
+    public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, ClassModel model, int position) {
+        switch (view.getId()) {
+            case R.id.textViewLocation:
+                break;
+            case R.id.layoutTrainer:
+                break;
+            case R.id.buttonJoin:
+            default:
+                ClassProfileActivity.open(context, model);
+        }
     }
 
     @Override
-    public void onAdapterItemLongClick(View viewRoot, View view, ClassModel model, int position) {
+    public void onAdapterItemLongClick(RecyclerView.ViewHolder viewHolder, View view, ClassModel model, int position) {
     }
 
     @Override

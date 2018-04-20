@@ -1,11 +1,15 @@
 package www.gymhop.p5m.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +31,7 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private static final int VIEW_TYPE_LOADER = 3;
 
     private final AdapterCallbacks adapterCallbacks;
+    private final int dp;
 
     private List<Object> list;
     private Context context;
@@ -35,7 +40,6 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private List<Package> offeredPackages;
 
     private HeaderSticky headerSticky1, headerSticky2;
-
 
     private final int navigatedFrom;
 
@@ -55,6 +59,8 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         headerSticky1 = new HeaderSticky("");
         headerSticky2 = new HeaderSticky("");
+
+        dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
     }
 
     public void addAllOfferedPackages(List<Package> data) {
@@ -87,7 +93,8 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     public void setHeaderText(String text1, String text2) {
-
+        headerSticky1.setTitle(text1);
+        headerSticky2.setTitle(text2);
     }
 
     public void notifyDataSetChanges() {
@@ -118,9 +125,9 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         int itemViewType = VIEW_TYPE_UNKNOWN;
 
         Object item = getItem(position);
-        if (item instanceof UserPackage) {
+        if (item instanceof UserPackage || item instanceof Package) {
             itemViewType = VIEW_TYPE_MEMBERSHIP;
-        } else if (item instanceof String) {
+        } else if (item instanceof HeaderSticky) {
             itemViewType = VIEW_TYPE_MEMBERSHIP_HEADER;
         } else if (item instanceof ListLoader) {
             itemViewType = VIEW_TYPE_LOADER;
@@ -135,8 +142,15 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_membership, parent, false);
             return new MemberShipViewHolder(view, navigatedFrom);
         } else if (viewType == VIEW_TYPE_MEMBERSHIP_HEADER) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_list_progress, parent, false);
-            return new MemberShipHeaderViewHolder(view);
+
+            TextView textView = new TextView(context);
+            textView.setPadding(dp * 16, dp * 20, dp * 16, dp * 20);
+            textView.setLineSpacing(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 6.0f, context.getResources().getDisplayMetrics()), 1.0f);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            textView.setGravity(Gravity.CENTER);
+            textView.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
+
+            return new MemberShipHeaderViewHolder(textView, textView);
         } else if (viewType == VIEW_TYPE_LOADER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_list_progress, parent, false);
             return new LoaderViewHolder(view);
@@ -150,7 +164,7 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (holder instanceof MemberShipViewHolder) {
             ((MemberShipViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
         } else if (holder instanceof MemberShipHeaderViewHolder) {
-//            ((MemberShipHeaderViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
+            ((MemberShipHeaderViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
         } else if (holder instanceof LoaderViewHolder) {
             ((LoaderViewHolder) holder).bind(listLoader, adapterCallbacks);
         }
