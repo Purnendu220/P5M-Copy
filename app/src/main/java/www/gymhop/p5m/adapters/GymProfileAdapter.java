@@ -15,18 +15,18 @@ import java.util.List;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.viewholder.ClassMiniDetailViewHolder;
 import www.gymhop.p5m.adapters.viewholder.EmptyViewHolder;
+import www.gymhop.p5m.adapters.viewholder.GymProfileViewHolder;
 import www.gymhop.p5m.adapters.viewholder.HeaderViewHolder;
 import www.gymhop.p5m.adapters.viewholder.LoaderViewHolder;
-import www.gymhop.p5m.adapters.viewholder.TrainerProfileViewHolder;
 import www.gymhop.p5m.data.HeaderSticky;
 import www.gymhop.p5m.data.ListLoader;
 import www.gymhop.p5m.data.main.ClassModel;
-import www.gymhop.p5m.data.main.TrainerDetailModel;
+import www.gymhop.p5m.data.temp.GymDetailModel;
 
-public class TrainerProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements StickyHeaderHandler {
+public class GymProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements StickyHeaderHandler {
 
     private static final int VIEW_TYPE_UNKNOWN = -1;
-    private static final int VIEW_TYPE_TRAINER_INFO = 1;
+    private static final int VIEW_TYPE_GYM_PROFILE = 1;
     private static final int VIEW_TYPE_UPCOMING_CLASSES = 2;
     private static final int VIEW_TYPE_UPCOMING_CLASSES_HEADER = 3;
     private static final int VIEW_TYPE_LOADER = 4;
@@ -37,11 +37,11 @@ public class TrainerProfileAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private final AdapterCallbacks adapterCallbacksClasses;
     private List<Object> list;
 
-    private TrainerDetailModel trainerDetailModel;
+    private GymDetailModel gymDetailModel;
     private List<ClassModel> classModels;
     private HeaderSticky headerSticky;
 
-    public TrainerProfileAdapter(Context context, int shownIn, AdapterCallbacks adapterCallbacksTrainerProfile, AdapterCallbacks adapterCallbacksClasses) {
+    public GymProfileAdapter(Context context, int shownIn, AdapterCallbacks adapterCallbacksTrainerProfile, AdapterCallbacks adapterCallbacksClasses) {
         this.adapterCallbacksTrainerProfile = adapterCallbacksTrainerProfile;
         this.adapterCallbacksClasses = adapterCallbacksClasses;
 
@@ -52,19 +52,19 @@ public class TrainerProfileAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         headerSticky = new HeaderSticky(context.getString(R.string.upcoming_classes));
     }
 
-    public TrainerDetailModel getTrainerModel() {
-        return trainerDetailModel;
+    public GymDetailModel getGymDetailModel() {
+        return gymDetailModel;
     }
 
-    public void setTrainerModel(TrainerDetailModel trainerDetailModel) {
-        this.trainerDetailModel = trainerDetailModel;
+    public void setGymDetailModel(GymDetailModel gymDetailModel) {
+        this.gymDetailModel = gymDetailModel;
     }
 
     public void notifyDataSetChanges() {
 
         list.clear();
 
-        list.add(trainerDetailModel);
+        list.add(gymDetailModel);
 
         if (!classModels.isEmpty()) {
             list.add(headerSticky);
@@ -82,8 +82,8 @@ public class TrainerProfileAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         Object item = getItem(position);
         if (getItem(position) instanceof ClassModel) {
             itemViewType = VIEW_TYPE_UPCOMING_CLASSES;
-        } else if (getItem(position) instanceof TrainerDetailModel) {
-            itemViewType = VIEW_TYPE_TRAINER_INFO;
+        } else if (getItem(position) instanceof GymDetailModel) {
+            itemViewType = VIEW_TYPE_GYM_PROFILE;
         } else if (getItem(position) instanceof HeaderSticky) {
             itemViewType = VIEW_TYPE_UPCOMING_CLASSES_HEADER;
         } else if (item instanceof ListLoader) {
@@ -95,9 +95,9 @@ public class TrainerProfileAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == VIEW_TYPE_TRAINER_INFO) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_trainer_profile, parent, false);
-            return new TrainerProfileViewHolder(view);
+        if (viewType == VIEW_TYPE_GYM_PROFILE) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_gym_profile, parent, false);
+            return new GymProfileViewHolder(view);
         } else if (viewType == VIEW_TYPE_UPCOMING_CLASSES) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_class_mini, parent, false);
             return new ClassMiniDetailViewHolder(view, shownIn);
@@ -113,8 +113,8 @@ public class TrainerProfileAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        if (holder instanceof TrainerProfileViewHolder) {
-            ((TrainerProfileViewHolder) holder).bind(list.get(position), adapterCallbacksTrainerProfile, position);
+        if (holder instanceof GymProfileViewHolder) {
+            ((GymProfileViewHolder) holder).bind(list.get(position), adapterCallbacksTrainerProfile, position);
         } else if (holder instanceof ClassMiniDetailViewHolder) {
             ((ClassMiniDetailViewHolder) holder).bind(list.get(position), adapterCallbacksClasses, position);
         } else if (holder instanceof HeaderViewHolder) {
@@ -144,4 +144,5 @@ public class TrainerProfileAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void addAllClass(List<ClassModel> classModels) {
         this.classModels = classModels;
     }
+
 }

@@ -14,6 +14,7 @@ import www.gymhop.p5m.data.main.ClassModel;
 import www.gymhop.p5m.data.main.MediaModel;
 import www.gymhop.p5m.data.main.TrainerDetailModel;
 import www.gymhop.p5m.data.main.TrainerModel;
+import www.gymhop.p5m.data.temp.GymDetailModel;
 
 /**
  * Created by Varun John on 4/20/2018.
@@ -35,17 +36,19 @@ public class Helper {
     }
 
     public static void setFavButton(Context context, Button buttonFav, TrainerModel model) {
-        if (model.isIsfollow()) {
-            buttonFav.setText(context.getString(R.string.favorited));
-            buttonFav.setBackgroundResource(R.drawable.joined_rect);
-        } else {
-            buttonFav.setText(context.getString(R.string.favourite));
-            buttonFav.setBackgroundResource(R.drawable.join_rect);
-        }
+        setFavButton(context, buttonFav, model.isIsfollow());
     }
 
     public static void setFavButton(Context context, Button buttonFav, TrainerDetailModel model) {
-        if (model.isIsfollow()) {
+        setFavButton(context, buttonFav, model.isIsfollow());
+    }
+
+    public static void setFavButton(Context context, Button buttonFav, GymDetailModel model) {
+        setFavButton(context, buttonFav, model.isIsfollow());
+    }
+
+    private static void setFavButton(Context context, Button buttonFav, boolean isFollow) {
+        if (isFollow) {
             buttonFav.setText(context.getString(R.string.favorited));
             buttonFav.setBackgroundResource(R.drawable.joined_rect);
         } else {
@@ -86,4 +89,5 @@ public class Helper {
                 .setCustomDraweeHierarchyBuilder(hierarchyBuilder)
                 .show();
     }
+
 }

@@ -193,6 +193,7 @@
     <string name="membership_general_package_heading_1"></string>
     <string name="membership_general_package_heading_2">Unused classes do not roll over to your next plan, so make sure to use up all your classes before the plan expires.</string>
     <string name="title_activity_class_profile">ClassProfile</string>
+    <string name="title_activity_gym_profile">GymProfile</string>
     <string name="package_limit_header">Under each plan, there are limits to the number of times you can visit each gym. Once the limit is reached, you may still visit your favorite gym by purchasing a single visit pass. Check below for the number of times you can visit a gym per plan.</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="memebership_price_postfix">total price</string>

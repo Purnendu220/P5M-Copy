@@ -27,6 +27,8 @@ public class AppConstants {
         public static final String TAB_ACTIVITY_ID_INT = "tab_activity_id";
         public static final String CLASS_OBJECT = "class_object";
         public static final String TRAINER_OBJECT = "trainer_object";
+        public static final String GYM_OBJECT = "gym_object";
+        public static final String GYM_ID_INT = "gym_id_int";
     }
 
     public class Url {

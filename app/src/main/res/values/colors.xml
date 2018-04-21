@@ -14,12 +14,14 @@
     <color name="grey">#999999</color>
     <color name="white">#FFFFFF</color>
     <color name="highlight">#0D000000</color>
+    <color name="text_shadow">#7F000000</color>
     <color name="facebook_button">#485b92</color>
     <color name="theme_medium_text">#979797</color>
     <color name="theme_medium_light_text">#a7abb4</color>
     <color name="theme_medium_dark_text">#AA031d22</color>
     <color name="theme_light_text">#c7cfd4</color>
     <color name="theme_dark_text">#031d22</color>
+    <color name="theme_dark_light_text">#262626</color>
     <color name="theme_error_text">#d50000</color>
     <color name="theme_accent_text">#007fe7</color>
 

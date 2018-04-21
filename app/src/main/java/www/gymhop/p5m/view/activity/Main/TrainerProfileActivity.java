@@ -58,6 +58,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
 
         if (trainerModel == null) {
             finish();
+            return;
         }
 
         trainerDetailModel = new TrainerDetailModel(trainerModel);
@@ -69,7 +70,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
 
         trainerProfileAdapter.notifyDataSetChanges();
 
-        networkCommunicator.getUpcomingClasses(TempStorage.getUser().getId(), AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE, trainerModel.getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_CLASS_LIST, this, false);
+        networkCommunicator.getUpcomingClasses(TempStorage.getUser().getId(), 0, trainerModel.getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_CLASS_LIST, this, false);
         networkCommunicator.getTrainer(trainerModel.getId(), this, false);
 
         StickyLayoutManager layoutManager = new StickyLayoutManager(context, trainerProfileAdapter);
@@ -94,7 +95,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
         switch (view.getId()) {
             case R.id.imageViewProfile:
-                if (!trainerDetailModel.getProfileImage().isEmpty()) {
+                if (trainerDetailModel != null && !trainerDetailModel.getProfileImage().isEmpty()) {
                     Helper.openImageViewer(context, trainerDetailModel.getProfileImage());
                 }
                 break;

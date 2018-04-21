@@ -3,6 +3,7 @@ package www.gymhop.p5m.data.main;
 import java.util.List;
 
 import www.gymhop.p5m.data.ClassActivity;
+import www.gymhop.p5m.utils.LogUtils;
 
 public class TrainerDetailModel implements java.io.Serializable {
     private static final long serialVersionUID = -2605596037140272546L;
@@ -26,7 +27,7 @@ public class TrainerDetailModel implements java.io.Serializable {
     private String certificates;
     private int userProfileImageId;
     private int id;
-    private Integer followerCount;
+    private int followerCount = -1;
     private String email;
     private boolean isfollow;
     private List<ClassActivity> classCategoryList;
@@ -37,18 +38,23 @@ public class TrainerDetailModel implements java.io.Serializable {
 
     public TrainerDetailModel(TrainerModel trainerModel) {
 
-        firstName = trainerModel.getFirstName();
-        profileImageThumbnail = trainerModel.getProfileImageThumbnail();
-        gymNames = trainerModel.getGymNames();
-        int id = trainerModel.getId();
-        profileImage = trainerModel.getProfileImage();
-        isfollow = trainerModel.isIsfollow();
-        profileImageId = trainerModel.getProfileImageId();
-        trainerDeleted = trainerModel.isTrainerDeleted();
-        trainerStatus = trainerModel.isTrainerStatus();
+        try {
+            firstName = trainerModel.getFirstName();
+            profileImageThumbnail = trainerModel.getProfileImageThumbnail();
+            gymNames = trainerModel.getGymNames();
+            int id = trainerModel.getId();
+            profileImage = trainerModel.getProfileImage();
+            isfollow = trainerModel.isIsfollow();
+            profileImageId = trainerModel.getProfileImageId();
+            trainerDeleted = trainerModel.isTrainerDeleted();
+            trainerStatus = trainerModel.isTrainerStatus();
 
-        categoryList = trainerModel.getCategoryList();
-        trainerBranchResponseList = trainerModel.getTrainerBranchResponseList();
+            categoryList = trainerModel.getCategoryList();
+            trainerBranchResponseList = trainerModel.getTrainerBranchResponseList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
     }
 
     public int getProfileImageId() {
@@ -195,8 +201,8 @@ public class TrainerDetailModel implements java.io.Serializable {
         this.id = id;
     }
 
-    public Integer getFollowerCount() {
-        return followerCount == null ? -1 : followerCount;
+    public int getFollowerCount() {
+        return followerCount;
     }
 
     public void setFollowerCount(int followerCount) {

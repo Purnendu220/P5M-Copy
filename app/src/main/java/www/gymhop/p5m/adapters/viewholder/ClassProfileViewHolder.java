@@ -83,7 +83,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
             if (model.getGymBranchDetail() != null) {
 
                 layoutMap.setVisibility(View.VISIBLE);
-                ImageUtils.setImage(context, ImageUtils.generateMapImageUrl(model.getGymBranchDetail().getLatitude(), model.getGymBranchDetail().getLongitude()),
+                ImageUtils.setImage(context, ImageUtils.generateMapImageUrlClassDetail(model.getGymBranchDetail().getLatitude(), model.getGymBranchDetail().getLongitude()),
                         R.drawable.no_map, imageViewMap);
                 textViewMap.setText(Html.fromHtml("<b>ADDRESS:</b>   " + model.getGymBranchDetail().getAddress()));
             } else {
@@ -104,7 +104,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
                 layoutMoreDetails.setVisibility(View.VISIBLE);
 
                 if (!model.getSpecialNote().isEmpty() && !model.getReminder().isEmpty()) {
-                    textViewMoreDetails.setText(Html.fromHtml("<b>REMINDERS:</b>   " + model.getReminder() + "<br/><br/><b>STUDIO INSTRUCTION:</b> " + model.getSpecialNote()));
+                    textViewMoreDetails.setText(Html.fromHtml("<b>REMINDERS:</b>   " + model.getReminder() + "<br/><b>STUDIO INSTRUCTION:</b> " + model.getSpecialNote()));
                 } else if (model.getSpecialNote().isEmpty() && !model.getReminder().isEmpty()) {
                     textViewMoreDetails.setText(Html.fromHtml("<b>REMINDERS:</b>   " + model.getReminder()));
                 } else if (!model.getSpecialNote().isEmpty() && model.getReminder().isEmpty()) {

@@ -17,6 +17,7 @@ import www.gymhop.p5m.data.main.TrainerModel;
 import www.gymhop.p5m.data.request.ClassListRequest;
 import www.gymhop.p5m.data.request.LoginRequest;
 import www.gymhop.p5m.data.request.PaymentUrlRequest;
+import www.gymhop.p5m.data.temp.GymDetailModel;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.storage.preferences.MyPreferences;
 import www.gymhop.p5m.utils.LogUtils;
@@ -55,6 +56,7 @@ public class NetworkCommunicator {
         public static final int BUY_PACKAGE = 111;
         public static final int UPCOMING_CLASSES = 112;
         public static final int TRAINER = 113;
+        public static final int GYM = 114;
     }
 
     private Context context;
@@ -410,6 +412,27 @@ public class NetworkCommunicator {
             @Override
             public void onResponse(Call<ResponseModel<TrainerDetailModel>> call, Response<ResponseModel<TrainerDetailModel>> restResponse, ResponseModel<TrainerDetailModel> response) {
                 LogUtils.networkSuccess("NetworkCommunicator getTrainer onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call getGym(int gymId, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.GYM;
+        Call<ResponseModel<GymDetailModel>> call = apiService.getGym(gymId);
+        LogUtils.debug("NetworkCommunicator hitting getGym");
+
+        call.enqueue(new RestCallBack<ResponseModel<GymDetailModel>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<GymDetailModel>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getGym onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<GymDetailModel>> call, Response<ResponseModel<GymDetailModel>> restResponse, ResponseModel<GymDetailModel> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getGym onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
             }
         });

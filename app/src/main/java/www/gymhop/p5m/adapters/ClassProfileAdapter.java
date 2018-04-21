@@ -53,7 +53,6 @@ public class ClassProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return new ClassProfileViewHolder(view);
         }
         return new EmptyViewHolder(new LinearLayout(context));
-
     }
 
     @Override

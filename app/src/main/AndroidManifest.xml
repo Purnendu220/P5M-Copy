@@ -37,6 +37,10 @@
             android:name=".view.activity.Main.ClassProfileActivity"
             android:label="@string/title_activity_class_profile"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".view.activity.Main.GymProfileActivity"
+            android:label="@string/title_activity_gym_profile"
+            android:theme="@style/AppTheme" />
         <activity android:name=".view.activity.Main.PackageLimits" />
         <activity
             android:name=".view.activity.Main.SearchActivity"

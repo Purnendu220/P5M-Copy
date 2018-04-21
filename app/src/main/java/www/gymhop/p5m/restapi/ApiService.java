@@ -20,6 +20,7 @@ import www.gymhop.p5m.data.main.TrainerModel;
 import www.gymhop.p5m.data.request.ClassListRequest;
 import www.gymhop.p5m.data.request.LoginRequest;
 import www.gymhop.p5m.data.request.PaymentUrlRequest;
+import www.gymhop.p5m.data.temp.GymDetailModel;
 import www.gymhop.p5m.utils.AppConstants;
 
 public interface ApiService {
@@ -108,4 +109,8 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.USER + "/{" + AppConstants.ApiParamKey.USER_ID + "}")
     Call<ResponseModel<TrainerDetailModel>> getTrainer(@Path(AppConstants.ApiParamKey.USER_ID) int trainerId);
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.USER + "/{" + AppConstants.ApiParamKey.USER_ID + "}")
+    Call<ResponseModel<GymDetailModel>> getGym(@Path(AppConstants.ApiParamKey.USER_ID) int gymId);
 }
