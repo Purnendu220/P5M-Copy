@@ -25,16 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="left"
-            android:text="@string/join_class"
+            android:text="Title"
             android:textColor="@color/white" />
-
-        <ImageView
-            android:id="@+id/imageViewOptions"
-            style="@style/ToolBarIcon"
-            android:layout_height="match_parent"
-            android:padding="18dp"
-            android:tint="@color/white"
-            android:src="@drawable/more_options" />
 
     </LinearLayout>
 

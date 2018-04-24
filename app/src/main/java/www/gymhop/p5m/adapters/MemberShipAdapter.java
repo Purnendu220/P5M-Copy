@@ -23,6 +23,7 @@ import www.gymhop.p5m.data.HeaderSticky;
 import www.gymhop.p5m.data.ListLoader;
 import www.gymhop.p5m.data.Package;
 import www.gymhop.p5m.data.UserPackage;
+import www.gymhop.p5m.data.main.ClassModel;
 
 public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int VIEW_TYPE_UNKNOWN = -1;
@@ -45,6 +46,7 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private boolean showLoader;
     private ListLoader listLoader;
+    private ClassModel classModel;
 
     public MemberShipAdapter(Context context, int navigatedFrom, boolean showLoader, AdapterCallbacks adapterCallbacks) {
         this.adapterCallbacks = adapterCallbacks;
@@ -162,7 +164,7 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof MemberShipViewHolder) {
-            ((MemberShipViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
+            ((MemberShipViewHolder) holder).bind(classModel, getItem(position), adapterCallbacks, position);
         } else if (holder instanceof MemberShipHeaderViewHolder) {
             ((MemberShipHeaderViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
         } else if (holder instanceof LoaderViewHolder) {
@@ -182,4 +184,7 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             return null;
     }
 
+    public void setClassModel(ClassModel classModel) {
+        this.classModel = classModel;
+    }
 }

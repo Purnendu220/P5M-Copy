@@ -13,6 +13,7 @@ import www.gymhop.p5m.data.City;
 import www.gymhop.p5m.data.ClassActivity;
 import www.gymhop.p5m.data.Package;
 import www.gymhop.p5m.data.PackageLimitModel;
+import www.gymhop.p5m.data.PaymentUrl;
 import www.gymhop.p5m.data.User;
 import www.gymhop.p5m.data.main.ClassModel;
 import www.gymhop.p5m.data.main.TrainerDetailModel;
@@ -20,6 +21,7 @@ import www.gymhop.p5m.data.main.TrainerModel;
 import www.gymhop.p5m.data.request.ClassListRequest;
 import www.gymhop.p5m.data.request.LoginRequest;
 import www.gymhop.p5m.data.request.PaymentUrlRequest;
+import www.gymhop.p5m.data.request.RegistrationRequest;
 import www.gymhop.p5m.data.temp.GymDetailModel;
 import www.gymhop.p5m.utils.AppConstants;
 
@@ -28,6 +30,15 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @POST(AppConstants.Url.LOGIN)
     Call<ResponseModel<User>> login(@Body LoginRequest classListRequest);
+
+    @Headers("Content-type: application/json")
+    @POST(AppConstants.Url.REGISTER)
+    Call<ResponseModel<User>> register(@Body RegistrationRequest registrationRequest);
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.VALIDATE_EMAIL)
+    Call<ResponseModel> validateEmail(@Query(AppConstants.ApiParamKey.TYPE) String type,
+                                      @Query(AppConstants.ApiParamKey.VALUE) String value);
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.ALL_CITY)
@@ -103,7 +114,7 @@ public interface ApiService {
 
     @Headers("Content-type: application/json")
     @POST(AppConstants.Url.PACKAGE_PURCHASE)
-    Call<ResponseModel<List<PackageLimitModel>>> purchasePackageForClass(@Body PaymentUrlRequest paymentUrlRequest);
+    Call<ResponseModel<PaymentUrl>> purchasePackageForClass(@Body PaymentUrlRequest paymentUrlRequest);
 
 
     @Headers("Content-type: application/json")

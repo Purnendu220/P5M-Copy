@@ -28,8 +28,9 @@
         </receiver>
 
         <activity android:name=".view.activity.LoginRegister.InfoScreen" />
-        <activity android:name=".view.activity.Main.Home" />
-        <activity android:name=".view.activity.LoginRegister.Login" />
+        <activity android:name=".view.activity.LoginRegister.RegistrationActivity" />
+        <activity android:name=".view.activity.Main.HomeActivity" />
+        <activity android:name=".view.activity.LoginRegister.LoginActivity" />
         <activity android:name=".view.activity.Main.TrainerProfileActivity" />
         <activity android:name=".view.activity.Main.FilterActivity" />
         <activity android:name=".view.activity.Main.MemberShip" />
@@ -41,11 +42,17 @@
             android:name=".view.activity.Main.GymProfileActivity"
             android:label="@string/title_activity_gym_profile"
             android:theme="@style/AppTheme" />
-        <activity android:name=".view.activity.Main.PackageLimits" />
+        <activity android:name=".view.activity.Main.PackageLimitsActivity" />
         <activity
             android:name=".view.activity.Main.SearchActivity"
             android:label="@string/title_activity_search"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".view.activity.Main.PaymentWebViewActivity" />
+        <activity
+            android:name=".view.activity.LoginRegister.SignUpOptions"
+            android:label="@string/title_activity_sign_up_options"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".view.activity.LoginRegister.RegistrationDoneActivity"></activity>
     </application>
 
 </manifest>

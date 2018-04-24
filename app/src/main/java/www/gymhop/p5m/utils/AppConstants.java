@@ -10,6 +10,19 @@ public class AppConstants {
         return number == 1 ? word : word + "s";
     }
 
+    public static class FragmentPosition {
+
+        public static final int REGISTRATION_STEP_NAME = 0;
+        public static final int REGISTRATION_STEP_EMAIL = 1;
+        public static final int REGISTRATION_STEP_GENDER = 3;
+        public static final int REGISTRATION_STEP_PASSWORD = 2;
+
+        public static final int TAB_FIND_CLASS = 0;
+        public static final int TAB_TRAINER = 1;
+        public static final int TAB_SCHEDULE = 2;
+        public static final int TAB_MY_PROFILE = 3;
+    }
+
     public static class Pref {
         public static final String NAME = "p5m_pref_main";
         public static final String LOGIN = "pref_login";
@@ -27,6 +40,7 @@ public class AppConstants {
         public static final String TAB_ACTIVITY_ID_INT = "tab_activity_id";
         public static final String CLASS_OBJECT = "class_object";
         public static final String TRAINER_OBJECT = "trainer_object";
+        public static final String PAYMENT_URL_OBJECT = "payment_url_object";
         public static final String GYM_OBJECT = "gym_object";
         public static final String GYM_ID_INT = "gym_id_int";
     }
@@ -37,6 +51,8 @@ public class AppConstants {
         public static final String BASE_SERVICE_LIVE = " http://api.p5m.me/profive-midl/";
 
         public static final String LOGIN = "api/v1/user/login";
+        public static final String REGISTER = "api/v1/user/register";
+        public static final String VALIDATE_EMAIL = "api/v1/user/validate";
 
         public static final String ALL_CITY = "api/v1/country/getAllCity";
         public static final String ALL_CLASS_CATEGORY = "api/v1/class/getAllClassCategory";
@@ -61,9 +77,14 @@ public class AppConstants {
     public class ApiParamValue {
         public static final String SUCCESS_RESPONSE_CODE = "2XX";
         public static final String FOLLOW_TYPE_FOLLOWED = "Followed";
+        public static final String EMAIL = "email";
 
         public static final String PACKAGE_TYPE_GENERAL = "GENERAL";
         public static final String PACKAGE_TYPE_DROP_IN = "DROPIN";
+
+        public static final String GENDER_MALE = "MALE";
+        public static final String GENDER_FEMALE = "FEMALE";
+        public static final String GENDER_BOTH = "MIXED";
     }
 
     public class ApiParamKey {
@@ -75,6 +96,8 @@ public class AppConstants {
         public static final String CATEGORY_ID = "categoryId";
         public static final String USER_ID = "userId";
         public static final String PACKAGE_TYPE = "packageType";
+        public static final String EMAIL = "email";
+        public static final String VALUE = "value";
         public static final String TYPE = "type";
         public static final String GYM_ID = "gymId";
         public static final String TRAINER_ID = "trainerId";

@@ -10,6 +10,7 @@ import www.gymhop.p5m.data.City;
 import www.gymhop.p5m.data.ClassActivity;
 import www.gymhop.p5m.data.Package;
 import www.gymhop.p5m.data.PackageLimitModel;
+import www.gymhop.p5m.data.PaymentUrl;
 import www.gymhop.p5m.data.User;
 import www.gymhop.p5m.data.main.ClassModel;
 import www.gymhop.p5m.data.main.TrainerDetailModel;
@@ -17,9 +18,11 @@ import www.gymhop.p5m.data.main.TrainerModel;
 import www.gymhop.p5m.data.request.ClassListRequest;
 import www.gymhop.p5m.data.request.LoginRequest;
 import www.gymhop.p5m.data.request.PaymentUrlRequest;
+import www.gymhop.p5m.data.request.RegistrationRequest;
 import www.gymhop.p5m.data.temp.GymDetailModel;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.storage.preferences.MyPreferences;
+import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
 
 /**
@@ -38,6 +41,8 @@ public class NetworkCommunicator {
 
     public class RequestCode {
 
+        public static final int VALIDATE_EMAIL = 98;
+        public static final int REGISTER = 99;
         public static final int LOGIN = 100;
         public static final int ALL_CITY = 101;
         public static final int ALL_CLASS_ACTIVITY = 102;
@@ -77,7 +82,6 @@ public class NetworkCommunicator {
         return networkCommunicator;
     }
 
-
     public Call login(LoginRequest loginRequest, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.LOGIN;
         Call<ResponseModel<User>> call = apiService.login(loginRequest);
@@ -93,6 +97,48 @@ public class NetworkCommunicator {
             @Override
             public void onResponse(Call<ResponseModel<User>> call, Response<ResponseModel<User>> restResponse, ResponseModel<User> response) {
                 LogUtils.networkSuccess("NetworkCommunicator login onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call register(RegistrationRequest registrationRequest, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.REGISTER;
+        Call<ResponseModel<User>> call = apiService.register(registrationRequest);
+        LogUtils.debug("NetworkCommunicator hitting register");
+
+        call.enqueue(new RestCallBack<ResponseModel<User>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<User>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator register onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<User>> call, Response<ResponseModel<User>> restResponse, ResponseModel<User> response) {
+                LogUtils.networkSuccess("NetworkCommunicator validateEmail onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call validateEmail(String email, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.VALIDATE_EMAIL;
+        Call<ResponseModel> call = apiService.validateEmail(AppConstants.ApiParamValue.EMAIL, email);
+        LogUtils.debug("NetworkCommunicator hitting validateEmail");
+
+        call.enqueue(new RestCallBack<ResponseModel>() {
+            @Override
+            public void onFailure(Call<ResponseModel> call, String message) {
+                LogUtils.networkError("NetworkCommunicator validateEmail onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> restResponse, ResponseModel response) {
+                LogUtils.networkSuccess("NetworkCommunicator validateEmail onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
             }
         });
@@ -357,18 +403,18 @@ public class NetworkCommunicator {
     public Call purchasePackageForClass(PaymentUrlRequest paymentUrlRequest, final RequestListener requestListener, boolean useCache) {
 
         final int requestCode = RequestCode.BUY_PACKAGE;
-        Call<ResponseModel<List<PackageLimitModel>>> call = apiService.purchasePackageForClass(paymentUrlRequest);
+        Call<ResponseModel<PaymentUrl>> call = apiService.purchasePackageForClass(paymentUrlRequest);
         LogUtils.debug("NetworkCommunicator hitting getPackagesLimit");
 
-        call.enqueue(new RestCallBack<ResponseModel<List<PackageLimitModel>>>() {
+        call.enqueue(new RestCallBack<ResponseModel<PaymentUrl>>() {
             @Override
-            public void onFailure(Call<ResponseModel<List<PackageLimitModel>>> call, String message) {
+            public void onFailure(Call<ResponseModel<PaymentUrl>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator getPackagesLimit onFailure " + message);
                 requestListener.onApiFailure(message, requestCode);
             }
 
             @Override
-            public void onResponse(Call<ResponseModel<List<PackageLimitModel>>> call, Response<ResponseModel<List<PackageLimitModel>>> restResponse, ResponseModel<List<PackageLimitModel>> response) {
+            public void onResponse(Call<ResponseModel<PaymentUrl>> call, Response<ResponseModel<PaymentUrl>> restResponse, ResponseModel<PaymentUrl> response) {
                 LogUtils.networkSuccess("NetworkCommunicator getPackagesLimit onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
             }

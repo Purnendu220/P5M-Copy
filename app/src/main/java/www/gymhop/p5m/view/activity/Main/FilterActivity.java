@@ -30,6 +30,7 @@ import www.gymhop.p5m.data.Filter;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
+import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
 public class FilterActivity extends BaseActivity implements NetworkCommunicator.RequestListener<ResponseModel>, AdapterCallbacks, View.OnClickListener {
@@ -121,9 +122,9 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
         filterAdapter.getClassesFilterList().get(2).setList(timeList);
 
         List<ClassesFilter> genderList = new ArrayList<>(4);
-        addClassFilterGender(genderList, new Filter.Gender("MALE", "Males Only"));
-        addClassFilterGender(genderList, new Filter.Gender("FEMALE", "Females Only"));
-        addClassFilterGender(genderList, new Filter.Gender("MIXED", "Both"));
+        addClassFilterGender(genderList, new Filter.Gender(AppConstants.ApiParamValue.GENDER_MALE, "Males Only"));
+        addClassFilterGender(genderList, new Filter.Gender(AppConstants.ApiParamValue.GENDER_FEMALE, "Females Only"));
+        addClassFilterGender(genderList, new Filter.Gender(AppConstants.ApiParamValue.GENDER_BOTH, "Both"));
 
         filterAdapter.getClassesFilterList().get(3).setList(genderList);
 

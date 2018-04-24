@@ -36,7 +36,7 @@
                 android:layout_height="@dimen/button_height_normal"
                 android:layout_marginLeft="@dimen/button_margin"
                 android:layout_marginRight="@dimen/button_margin"
-                android:background="@drawable/rect_corner_boarder_black"
+                android:background="@drawable/button_white"
                 android:fontFamily="sans-serif"
                 android:gravity="center"
                 android:text="@string/start_being_active"

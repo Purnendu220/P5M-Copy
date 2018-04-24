@@ -8,18 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import www.gymhop.p5m.utils.AppConstants;
-import www.gymhop.p5m.view.fragment.FindClass;
-import www.gymhop.p5m.view.fragment.MyProfile;
-import www.gymhop.p5m.view.fragment.MySchedule;
-import www.gymhop.p5m.view.fragment.Trainers;
+import www.gymhop.p5m.view.fragment.RegistrationSteps;
 
-public class HomeAdapter extends FragmentStatePagerAdapter {
+public class RegistrationStepsAdapter extends FragmentStatePagerAdapter {
 
     private List<Fragment> fragments;
 
     private int tabsCount;
 
-    public HomeAdapter(FragmentManager fm, int tabsCount) {
+    public RegistrationStepsAdapter(FragmentManager fm, int tabsCount) {
         super(fm);
         this.tabsCount = tabsCount;
         fragments = new ArrayList<>(tabsCount);
@@ -38,14 +35,14 @@ public class HomeAdapter extends FragmentStatePagerAdapter {
 
         Fragment frag = null;
 
-        if (position == AppConstants.FragmentPosition.TAB_FIND_CLASS) {
-            frag = new FindClass();
-        } else if (position == AppConstants.FragmentPosition.TAB_TRAINER) {
-            frag = new Trainers();
-        } else if (position == AppConstants.FragmentPosition.TAB_SCHEDULE) {
-            frag = new MySchedule();
-        } else if (position == AppConstants.FragmentPosition.TAB_MY_PROFILE) {
-            frag = new MyProfile();
+        if (position == 0) {
+            frag = RegistrationSteps.createFragment(AppConstants.FragmentPosition.REGISTRATION_STEP_NAME);
+        } else if (position == 1) {
+            frag = RegistrationSteps.createFragment(AppConstants.FragmentPosition.REGISTRATION_STEP_EMAIL);
+        } else if (position == 2) {
+            frag = RegistrationSteps.createFragment(AppConstants.FragmentPosition.REGISTRATION_STEP_PASSWORD);
+        } else if (position == 3) {
+            frag = RegistrationSteps.createFragment(AppConstants.FragmentPosition.REGISTRATION_STEP_GENDER);
         }
 
         fragments.set(position, frag);

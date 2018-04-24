@@ -35,7 +35,6 @@ import www.gymhop.p5m.view.activity.custom.MyRecyclerView;
 
 public class ClassProfile extends BaseFragment implements AdapterCallbacks<Object>, MyRecyclerView.LoaderCallbacks, NetworkCommunicator.RequestListener {
 
-
     @BindView(R.id.recyclerView)
     public RecyclerView recyclerView;
 

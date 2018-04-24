@@ -10,6 +10,7 @@
     <color name="theme_bg">#f1f0ee</color>
     <color name="separator">#f1f0ee</color>
     <color name="login_active">#FFFFFF</color>
+    <color name="login_active_highlighted">#EEEEEE</color>
     <color name="black">#000000</color>
     <color name="grey">#999999</color>
     <color name="white">#FFFFFF</color>
@@ -28,14 +29,16 @@
     <color name="float_transparent">#00000000</color>
 
     <color name="theme_full">#FF0000</color>
+    <color name="theme_full_highlight">#CCFF0000</color>
     <color name="theme_booked">#FF8C00</color>
+    <color name="theme_booked_highlight">#CCFF8C00</color>
     <color name="theme_book">#007fe7</color>
+    <color name="theme_select_disable">#f5f9fc</color>
 
     <drawable name="transparent">#00000000</drawable>
     <drawable name="highlight">#1A000000</drawable>
 
     <drawable name="no_map">#c7cfd4</drawable>
-
 
 
 </resources>

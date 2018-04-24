@@ -2,6 +2,7 @@ package www.gymhop.p5m.helper;
 
 import android.content.Context;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
@@ -26,12 +27,27 @@ public class Helper {
         if (model.isUserJoinStatus()) {
             buttonJoin.setText(context.getString(R.string.booked));
             buttonJoin.setBackgroundResource(R.drawable.joined_rect);
-        } else if (model.getAvailableSeat() == model.getTotalSeat()) {
+        } else if (model.getAvailableSeat() == 0) {
             buttonJoin.setText(context.getString(R.string.full));
             buttonJoin.setBackgroundResource(R.drawable.full_rect);
         } else {
             buttonJoin.setText(context.getString(R.string.book));
             buttonJoin.setBackgroundResource(R.drawable.join_rect);
+        }
+    }
+
+    public static void setJoinStatusProfile(Context context, TextView view, ClassModel model) {
+        if (model.isUserJoinStatus()) {
+            view.setText(context.getString(R.string.booked));
+            view.setBackgroundResource(R.drawable.theme_bottom_text_button_booked);
+            view.setEnabled(false);
+        } else if (model.getAvailableSeat() == 0) {
+            view.setText(context.getString(R.string.full));
+            view.setBackgroundResource(R.drawable.theme_bottom_text_button_full);
+            view.setEnabled(false);
+        } else {
+            view.setText(context.getString(R.string.reserve_class));
+            view.setBackgroundResource(R.drawable.theme_bottom_text_button_book);
         }
     }
 

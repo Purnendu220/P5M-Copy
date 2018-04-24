@@ -77,6 +77,7 @@ public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>,
 
         recyclerView.setAdapter(myProfileAdapter);
         myProfileAdapter.setUser(TempStorage.getUser());
+        myProfileAdapter.notifyDataSetChanges();
         recyclerView.setHasFixedSize(true);
 
         layoutManager.setStickyHeaderListener(new StickyHeaderListener() {

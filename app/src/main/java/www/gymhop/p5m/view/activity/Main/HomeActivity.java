@@ -14,14 +14,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.HomeAdapter;
+import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 import www.gymhop.p5m.view.activity.custom.BottomTapLayout;
 
-public class Home extends BaseActivity implements BottomTapLayout.TabListener, ViewPager.OnPageChangeListener {
+public class HomeActivity extends BaseActivity implements BottomTapLayout.TabListener, ViewPager.OnPageChangeListener {
 
 
     public static void open(Context context) {
-        context.startActivity(new Intent(context, Home.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        context.startActivity(new Intent(context, HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
 
     @BindView(R.id.viewPager)
@@ -34,11 +35,6 @@ public class Home extends BaseActivity implements BottomTapLayout.TabListener, V
     private HomeAdapter homeAdapter;
 
     private static final int TOTAL_TABS = 4;
-
-    private static int TAB_FIND_CLASS = 0;
-    private static int TAB_TRAINER = 1;
-    private static int TAB_SCHEDULE = 2;
-    private static int TAB_MY_PROFILE = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,30 +53,30 @@ public class Home extends BaseActivity implements BottomTapLayout.TabListener, V
         layoutBottomTabs.post(new Runnable() {
             @Override
             public void run() {
-                bottomTapLayout.setTab(TAB_FIND_CLASS);
+                bottomTapLayout.setTab(AppConstants.FragmentPosition.TAB_FIND_CLASS);
             }
         });
     }
 
     private void setupBottomTabs() {
         List<BottomTapLayout.Tab> tabList = new ArrayList<>();
-        tabList.add(new BottomTapLayout.Tab(TAB_FIND_CLASS, R.drawable.find_a_class, R.drawable.find_a_class,
+        tabList.add(new BottomTapLayout.Tab(AppConstants.FragmentPosition.TAB_FIND_CLASS, R.drawable.find_a_class, R.drawable.find_a_class,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
                 context.getString(R.string.find_class), context.getString(R.string.find_class)));
-        tabList.add(new BottomTapLayout.Tab(TAB_TRAINER, R.drawable.trainers, R.drawable.trainers,
+        tabList.add(new BottomTapLayout.Tab(AppConstants.FragmentPosition.TAB_TRAINER, R.drawable.trainers, R.drawable.trainers,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
                 context.getString(R.string.trainer), context.getString(R.string.trainer)));
-        tabList.add(new BottomTapLayout.Tab(TAB_SCHEDULE, R.drawable.schedule, R.drawable.schedule,
+        tabList.add(new BottomTapLayout.Tab(AppConstants.FragmentPosition.TAB_SCHEDULE, R.drawable.schedule, R.drawable.schedule,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
                 context.getString(R.string.schedule), context.getString(R.string.schedule)));
-        tabList.add(new BottomTapLayout.Tab(TAB_MY_PROFILE, R.drawable.profile, R.drawable.profile,
+        tabList.add(new BottomTapLayout.Tab(AppConstants.FragmentPosition.TAB_MY_PROFILE, R.drawable.profile, R.drawable.profile,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
                 context.getString(R.string.profile), context.getString(R.string.profile)));
 
         bottomTapLayout = new BottomTapLayout();
         bottomTapLayout.setup(context, layoutBottomTabs, tabList, this);
 
-        bottomTapLayout.setTab(TAB_FIND_CLASS);
+        bottomTapLayout.setTab(AppConstants.FragmentPosition.TAB_FIND_CLASS);
     }
 
     @Override
@@ -94,7 +90,6 @@ public class Home extends BaseActivity implements BottomTapLayout.TabListener, V
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
     }
 
     @Override
@@ -104,6 +99,5 @@ public class Home extends BaseActivity implements BottomTapLayout.TabListener, V
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
     }
 }

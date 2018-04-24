@@ -2,12 +2,18 @@ package www.gymhop.p5m.view.activity.Main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +23,11 @@ import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.adapters.MemberShipAdapter;
+import www.gymhop.p5m.adapters.viewholder.MemberShipViewHolder;
 import www.gymhop.p5m.data.Package;
+import www.gymhop.p5m.data.PaymentUrl;
 import www.gymhop.p5m.data.User;
+import www.gymhop.p5m.data.UserPackage;
 import www.gymhop.p5m.data.UserPackageInfo;
 import www.gymhop.p5m.data.main.ClassModel;
 import www.gymhop.p5m.data.request.PaymentUrlRequest;
@@ -26,10 +35,10 @@ import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.AppConstants;
+import www.gymhop.p5m.utils.DialogUtils;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
-public class MemberShip extends BaseActivity implements AdapterCallbacks, NetworkCommunicator.RequestListener {
-
+public class MemberShip extends BaseActivity implements AdapterCallbacks, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
 
     public static void openActivity(Context context, int navigationFrom) {
         context.startActivity(new Intent(context, MemberShip.class)
@@ -49,6 +58,8 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     public RecyclerView recyclerView;
     @BindView(R.id.appBarLayout)
     public AppBarLayout appBarLayout;
+    @BindView(R.id.swipeRefreshLayout)
+    public SwipeRefreshLayout swipeRefreshLayout;
 
     private int navigatedFrom;
     private ClassModel classModel;
@@ -64,6 +75,8 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
         ButterKnife.bind(activity);
 
+        swipeRefreshLayout.setOnRefreshListener(this);
+
         navigatedFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
         classModel = (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_OBJECT);
 
@@ -75,13 +88,44 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
         user = TempStorage.getUser();
 
-        checkPackages();
+        onRefresh();
+
+        setToolBar();
+    }
+
+    private void setToolBar() {
+
+        BaseActivity activity = (BaseActivity) this.activity;
+        activity.setSupportActionBar(toolbar);
+
+        activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(context, R.color.colorPrimaryDark)));
+        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        activity.getSupportActionBar().setHomeButtonEnabled(true);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
+        activity.getSupportActionBar().setDisplayUseLogoEnabled(true);
+
+        View v = LayoutInflater.from(context).inflate(R.layout.view_tool_normal, null);
+
+        v.findViewById(R.id.imageViewBack).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.membership));
+
+        activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
+                ActionBar.LayoutParams.MATCH_PARENT));
+        activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
     }
 
     private void checkPackages() {
         userPackageInfo = new UserPackageInfo(user);
 
         if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS) {
+            memberShipAdapter.setClassModel(classModel);
 
             // show general, ready, and owned packages
             if (userPackageInfo.havePackages) {
@@ -138,10 +182,20 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
     @Override
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
-        Package aPackage = (Package) model;
 
         switch (view.getId()) {
-            case R.id.button:
+            case R.id.textViewViewLimit: {
+                PackageLimitsActivity.openActivity(context);
+            }
+            break;
+            case R.id.button: {
+
+                if (viewHolder instanceof MemberShipViewHolder) {
+                    ((MemberShipViewHolder) viewHolder).button.setText("Please wait...");
+                    ((MemberShipViewHolder) viewHolder).button.setEnabled(false);
+                }
+
+                Package aPackage = (Package) model;
                 if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS) {
                     networkCommunicator.purchasePackageForClass(new PaymentUrlRequest(TempStorage.getUser().getId(),
                             aPackage.getId(), classModel.getClassSessionId(),
@@ -152,20 +206,35 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                     networkCommunicator.purchasePackageForClass(new PaymentUrlRequest(TempStorage.getUser().getId(),
                             aPackage.getId()), this, false);
                 }
-                break;
-            case R.id.imageViewInfo:
-                break;
+            }
+            break;
+            case R.id.imageViewInfo: {
+                if (model instanceof Package) {
+                    Package aPackage = (Package) model;
+                    if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
+                        DialogUtils.showBasicMessage(context, aPackage.getName(), "Ok", R.string.membership_package_limit_info);
+                    } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
+                        DialogUtils.showBasicMessage(context, aPackage.getName(), "Ok", R.string.membership_drop_in_info);
+                    }
+                } else if (model instanceof UserPackage) {
+                    UserPackage aPackage = (UserPackage) model;
+                    if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
+                        DialogUtils.showBasicMessage(context, aPackage.getPackageName(), "Ok", R.string.membership_package_limit_info);
+                    } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
+                        DialogUtils.showBasicMessage(context, aPackage.getPackageName(), "Ok", R.string.membership_drop_in_info);
+                    }
+                }
+            }
+            break;
         }
     }
 
     @Override
     public void onAdapterItemLongClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
-
     }
 
     @Override
     public void onShowLastItem() {
-
     }
 
     @Override
@@ -173,6 +242,9 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.PACKAGES_LIMIT:
             case NetworkCommunicator.RequestCode.PACKAGES_FOR_USER:
+
+                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setEnabled(false);
 
                 List<Package> packagesTemp = ((ResponseModel<List<Package>>) response).data;
 
@@ -197,12 +269,25 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
             case NetworkCommunicator.RequestCode.BUY_PACKAGE:
 
+                PaymentWebViewActivity.open(context, ((ResponseModel<PaymentUrl>) response).data);
+                memberShipAdapter.notifyDataSetChanges();
                 break;
         }
     }
 
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
+        switch (requestCode) {
+            case NetworkCommunicator.RequestCode.BUY_PACKAGE:
+                memberShipAdapter.notifyDataSetChanges();
+                break;
+        }
+    }
 
+    @Override
+    public void onRefresh() {
+
+        swipeRefreshLayout.setRefreshing(true);
+        checkPackages();
     }
 }

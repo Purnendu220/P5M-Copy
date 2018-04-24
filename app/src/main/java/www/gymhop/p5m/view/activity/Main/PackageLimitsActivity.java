@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,10 +31,10 @@ import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
-public class PackageLimits extends BaseActivity implements NetworkCommunicator.RequestListener, AdapterCallbacks, View.OnClickListener {
+public class PackageLimitsActivity extends BaseActivity implements NetworkCommunicator.RequestListener, AdapterCallbacks, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     public static void openActivity(Context context) {
-        context.startActivity(new Intent(context, PackageLimits.class));
+        context.startActivity(new Intent(context, PackageLimitsActivity.class));
     }
 
     @BindView(R.id.toolbar)
@@ -42,6 +43,8 @@ public class PackageLimits extends BaseActivity implements NetworkCommunicator.R
     public RecyclerView recyclerView;
     @BindView(R.id.appBarLayout)
     public AppBarLayout appBarLayout;
+    @BindView(R.id.swipeRefreshLayout)
+    public SwipeRefreshLayout swipeRefreshLayout;
 
     public PackageLimitAdapter packageLimitAdapter;
 
@@ -52,19 +55,24 @@ public class PackageLimits extends BaseActivity implements NetworkCommunicator.R
 
         ButterKnife.bind(activity);
 
+        swipeRefreshLayout.setOnRefreshListener(this);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setHasFixedSize(false);
 
         packageLimitAdapter = new PackageLimitAdapter(context, this);
         recyclerView.setAdapter(packageLimitAdapter);
 
-        networkCommunicator.getPackagesLimit(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL, this, false);
+        onRefresh();
 
         setToolBar();
     }
 
     @Override
     public void onApiSuccess(Object response, int requestCode) {
+
+        swipeRefreshLayout.setRefreshing(false);
+
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.PACKAGES_LIMIT:
                 List<PackageLimitModel> models = ((ResponseModel<List<PackageLimitModel>>) response).data;
@@ -115,12 +123,12 @@ public class PackageLimits extends BaseActivity implements NetworkCommunicator.R
         }
     }
 
-    private void checkListData() {
-    }
-
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
+        swipeRefreshLayout.setRefreshing(false);
+    }
 
+    private void checkListData() {
     }
 
     @Override
@@ -165,5 +173,11 @@ public class PackageLimits extends BaseActivity implements NetworkCommunicator.R
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        networkCommunicator.getPackagesLimit(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL, this, false);
     }
 }

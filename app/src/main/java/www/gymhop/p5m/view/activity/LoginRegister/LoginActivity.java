@@ -21,10 +21,14 @@ import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.storage.preferences.MyPreferences;
-import www.gymhop.p5m.view.activity.Main.Home;
+import www.gymhop.p5m.view.activity.Main.HomeActivity;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
-public class Login extends BaseActivity implements NetworkCommunicator.RequestListener {
+public class LoginActivity extends BaseActivity implements NetworkCommunicator.RequestListener {
+
+    public static void open(Context context) {
+        context.startActivity(new Intent(context, LoginActivity.class));
+    }
 
     @BindView(R.id.textViewForgetPassword)
     public TextView textViewForgetPassword;
@@ -46,12 +50,9 @@ public class Login extends BaseActivity implements NetworkCommunicator.RequestLi
     @BindView(R.id.buttonLogin)
     public Button buttonLogin;
 
-    public static void open(Context context) {
-        context.startActivity(new Intent(context, Login.class));
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        showActionBar = false;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -129,7 +130,7 @@ public class Login extends BaseActivity implements NetworkCommunicator.RequestLi
                 if (user != null) {
                     TempStorage.setUser(context, user);
                     MyPreferences.getInstance().setLogin(true);
-                    Home.open(context);
+                    HomeActivity.open(context);
                     finish();
                 } else {
                     textInputLayoutPassword.setError("Please try again");

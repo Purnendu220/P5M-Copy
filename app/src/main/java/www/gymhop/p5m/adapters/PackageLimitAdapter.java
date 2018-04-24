@@ -71,9 +71,6 @@ public class PackageLimitAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             linearLayoutSeparator.setBackgroundColor(ContextCompat.getColor(context, R.color.separator));
 
             TextView textView = new TextView(context);
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                textView.setLetterSpacing(-0.01f);
-//            }
             textView.setPadding(dp * 16, dp * 12, dp * 16, dp * 12);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             textView.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
@@ -96,9 +93,6 @@ public class PackageLimitAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             TextView textView = new TextView(context);
             textView.setGravity(Gravity.CENTER);
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                textView.setLetterSpacing(-0.01f);
-//            }
             textView.setPadding(dp * 16, dp * 16, dp * 16, dp * 16);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             textView.setBackgroundResource(R.drawable.click_highlight);
@@ -122,9 +116,6 @@ public class PackageLimitAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             linearLayoutSeparator.setBackgroundColor(ContextCompat.getColor(context, R.color.separator));
 
             TextView textView = new TextView(context);
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                textView.setLetterSpacing(-0.01f);
-//            }
             textView.setPadding(dp * 16, dp * 20, dp * 16, dp * 20);
             textView.setLineSpacing(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 6.0f, context.getResources().getDisplayMetrics()), 1.0f);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
@@ -155,9 +146,6 @@ public class PackageLimitAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                 TextView textView = new TextView(context);
                 textView.setGravity(Gravity.CENTER);
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                    textView.setLetterSpacing(-0.01f);
-//                }
                 textView.setBackgroundResource(R.drawable.click_highlight);
                 textView.setPadding(dp * 12, dp * 12, dp * 16, dp * 12);
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);

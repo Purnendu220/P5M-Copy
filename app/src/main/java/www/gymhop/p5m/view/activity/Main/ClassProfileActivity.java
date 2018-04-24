@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.brandongogetap.stickyheaders.StickyLayoutManager;
 
@@ -26,7 +27,7 @@ import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.ToastUtils;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
-public class ClassProfileActivity extends BaseActivity implements AdapterCallbacks {
+public class ClassProfileActivity extends BaseActivity implements AdapterCallbacks, View.OnClickListener {
 
     public static void open(Context context, ClassModel classModel) {
         context.startActivity(new Intent(context, ClassProfileActivity.class)
@@ -40,6 +41,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public AppBarLayout appBarLayout;
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
+
+    @BindView(R.id.textViewBook)
+    public TextView textViewBook;
 
     private ClassProfileAdapter classProfileAdapter;
     private ClassModel classModel;
@@ -72,6 +76,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         recyclerView.setAdapter(classProfileAdapter);
         classProfileAdapter.setClass(classModel);
         recyclerView.setHasFixedSize(true);
+
+        Helper.setJoinStatusProfile(context, textViewBook, classModel);
     }
 
     @OnClick(R.id.textViewBook)
@@ -127,6 +133,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
         View v = LayoutInflater.from(context).inflate(R.layout.view_tool_bar_class_profile, null);
 
+        v.findViewById(R.id.imageViewBack).setOnClickListener(this);
+        v.findViewById(R.id.imageViewOptions).setOnClickListener(this);
+
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT));
         activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
@@ -149,5 +158,16 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
     @Override
     public void onShowLastItem() {
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.imageViewBack:
+                finish();
+                break;
+            case R.id.imageViewOptions:
+                break;
+        }
     }
 }

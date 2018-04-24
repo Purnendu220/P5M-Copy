@@ -30,22 +30,23 @@
             app:tabIndicatorColor="@color/date_tabs" />
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:paddingTop="12dp"
-            android:paddingBottom="16dp"
             android:layout_weight="1"
             android:clipToPadding="false"
+            android:paddingBottom="16dp"
+            android:paddingTop="12dp"
             android:scrollbars="none" />
-    </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </android.support.design.widget.CoordinatorLayout>
 

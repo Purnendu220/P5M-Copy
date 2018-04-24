@@ -26,10 +26,10 @@
     <string name="slide_4_desc">Book tickets of any transportation and travel the world!</string>
     <string name="please_wiat">Please Wait</string>
     <string name="title_activity_registration_pager">RegistrationActivityPager</string>
-    <string name="terms_of_service">By login you are agree to our <u>terms of service</u> \n and <u>privacy policy</u>.</string>
+    <string name="terms_of_service">"By login you are agree to our <u>terms of service</u>\nand <u>privacy policy</u>"</string>
 
     <string name="whats_your_name">What\'s Your Name</string>
-    <string name="and_your_email">And,Your Email?</string>
+    <string name="and_your_email">And, Your Email ?</string>
     <string name="next">NEXT</string>
     <string name="enter_name">Enter your name</string>
     <string name="create_a_password">Create a password</string>
@@ -59,6 +59,7 @@
     <string name="switch_an_account">Switch an account</string>
     <string name="register">REGISTER</string>
     <string name="login_back">LOGIN</string>
+    <string name="start_journey">Start your fitness journey</string>
     <string name="donot_signup">Don\'t have an account?</string>
     <string name="already_account">Already have an account? </string>
     <string name="already_account_html">Already have an account? <u><b>Login!</b></u></string>
@@ -83,7 +84,7 @@
     <string name="login_facebook">ENTER WITH FACEBOOK</string>
     <string name="login">Log in</string>
     <string name="login_gamil">ENTER WITH GOOGLE</string>
-    <string name="signup_email">SIGN UP WITH EMAIL</string>
+    <string name="sign_up_email">SIGN UP WITH EMAIL</string>
 
     <string name="booked">Booked</string>
     <string name="full">Full</string>
@@ -165,7 +166,7 @@
     <string name="no_classes">No classes are available.\n Try diffrent days to find your match. </string>
     <string name="password_required">Password is required.</string>
     <string name="confirm_password_required">Confirm password is required.</string>
-    <string name="confirm_password_not_matched">Password is not confirmed.Please try again.</string>
+    <string name="confirm_password_not_matched">Password is not confirmed. Please try again.</string>
 
 
     <string-array name="gender_type">
@@ -194,8 +195,15 @@
     <string name="membership_general_package_heading_2">Unused classes do not roll over to your next plan, so make sure to use up all your classes before the plan expires.</string>
     <string name="title_activity_class_profile">ClassProfile</string>
     <string name="title_activity_gym_profile">GymProfile</string>
+
+    <string name="membership_drop_in_info">"You can only access the following gym with this purchase. In case of cancellation, you have 7 days from the date of cancellation to attend a class at the same facility."</string>
+    <string name="membership_package_limit_info">"You can't purchase this package. It's validity is less than your selected class."</string>
+
     <string name="package_limit_header">Under each plan, there are limits to the number of times you can visit each gym. Once the limit is reached, you may still visit your favorite gym by purchasing a single visit pass. Check below for the number of times you can visit a gym per plan.</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="memebership_price_postfix">total price</string>
     <string name="profile_validiy_no_package">Fuel your workout</string>
+    <string name="title_activity_sign_up_options">SignUpOptions</string>
+    <string name="your_fitness_freedom">Your Fitness Freedom</string>
+    <string name="registration_done">Registration completed successfully!</string>
 </resources>

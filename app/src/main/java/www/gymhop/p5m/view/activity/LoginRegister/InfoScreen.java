@@ -55,17 +55,17 @@ public class InfoScreen extends BaseActivity {
         viewPager.setAdapter(infoScreenAdapter);
 
         // Indicator setup..
-        new ViewPagerIndicator().setup(context, viewPager, layoutIndicator, R.drawable.circle_black, R.drawable.circle_grey);
+        new ViewPagerIndicator(context, ViewPagerIndicator.STYLE_SMALL).setup(viewPager, layoutIndicator, R.drawable.circle_black, R.drawable.circle_grey);
     }
 
     @OnClick(R.id.textViewLogin)
     public void login() {
-        Login.open(context);
+        LoginActivity.open(context);
     }
 
     @OnClick(R.id.buttonRegister)
     public void register() {
-//        Home.open(context);
+        SignUpOptions.open(context);
     }
 
 }
