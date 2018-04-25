@@ -15,8 +15,7 @@ public class TempStorage {
 
     private static int userId;
     public static String version;
-    private static String authToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM3NSwiY3JlYXRlZCI6MTUyMjkxMDgwNDQ2MywiaWQiOiIxNjdlNTBhZC02YmViLTQ3ZGEtYThmNC1lMTYxMGEyNTczYzIiLCJleHAiOjIxMjc3MTA4MDR9.MRfwMBagPtrQTkb8WiRr2ifx6wEWXJ5BZb0cFFRFPsk";
-
+    private static String authToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQ4OCwiY3JlYXRlZCI6MTUyNDY0NTUwMzYwMCwiaWQiOiJjNjIzMTc0MC1jMmEzLTQ0YWUtOWY5NC1mYmUxYzc0MWQ0OGYiLCJleHAiOjIxMjk0NDU1MDN9.bP2Z4q-MJ1amGrqK8ELWantOo1nXOCS5lwpgzEZUE44";
     private static List<ClassActivity> activities;
     private static List<City> cities;
     private static User user;
@@ -47,11 +46,15 @@ public class TempStorage {
     }
 
     public static String getAuthToken() {
+        if (authToken == null) {
+            authToken = MyPreferences.getInstance().getAuthToken();
+        }
         return authToken;
     }
 
     public static void setAuthToken(String authToken) {
         TempStorage.authToken = authToken;
+        MyPreferences.getInstance().saveAuthToken(authToken);
     }
 
     public static List<ClassesFilter> getFilters() {

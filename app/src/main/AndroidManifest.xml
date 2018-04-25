@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
     <application
         android:allowBackup="true"
@@ -12,6 +13,15 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC36Oyf3q-4pO0HC7ZCydtu6OFFgUFxens" />
+
         <activity android:name=".view.activity.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -52,7 +62,10 @@
             android:name=".view.activity.LoginRegister.SignUpOptions"
             android:label="@string/title_activity_sign_up_options"
             android:theme="@style/AppTheme" />
-        <activity android:name=".view.activity.LoginRegister.RegistrationDoneActivity"></activity>
+        <activity android:name=".view.activity.LoginRegister.RegistrationDoneActivity" />
+        <activity android:name=".view.activity.Main.EditProfileActivity" />
+        <activity android:name=".view.activity.Main.SettingActivity" />
+        <activity android:name=".view.activity.Main.LocationListMapActivity"></activity>
     </application>
 
 </manifest>

@@ -12,6 +12,12 @@ public class ClassActivity implements java.io.Serializable {
 
     private boolean status;
 
+    public ClassActivity(String name, int id) {
+        this.name = name;
+        this.id = id;
+        status = true;
+    }
+
     public String getName() {
         return this.name;
     }

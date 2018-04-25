@@ -102,8 +102,14 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void notifyDataSetChanges() {
         list.clear();
 
-        list.add(headerSticky1);
-        list.addAll(offeredPackages);
+        if (!headerSticky1.getTitle().isEmpty()) {
+            list.add(headerSticky1);
+        }
+
+        if (!offeredPackages.isEmpty()) {
+            list.addAll(offeredPackages);
+        }
+
         list.add(headerSticky2);
         list.addAll(ownedPackages);
 
@@ -165,8 +171,10 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof MemberShipViewHolder) {
             ((MemberShipViewHolder) holder).bind(classModel, getItem(position), adapterCallbacks, position);
+
         } else if (holder instanceof MemberShipHeaderViewHolder) {
             ((MemberShipHeaderViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
+
         } else if (holder instanceof LoaderViewHolder) {
             ((LoaderViewHolder) holder).bind(listLoader, adapterCallbacks);
         }

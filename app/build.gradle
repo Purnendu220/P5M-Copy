@@ -72,7 +72,11 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.0.0'
     implementation 'com.afollestad.material-dialogs:commons:0.9.1.0'
     implementation 'com.afollestad.material-dialogs:core:0.9.1.0'
+    implementation 'com.google.android.gms:play-services:9.8.0'
 }
+
+
+
 
 
 

@@ -52,6 +52,10 @@ public class TrainerProfileAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         headerSticky = new HeaderSticky(context.getString(R.string.upcoming_classes));
     }
 
+    public void clearClasses() {
+        classModels.clear();
+    }
+
     public TrainerDetailModel getTrainerModel() {
         return trainerDetailModel;
     }

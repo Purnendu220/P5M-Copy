@@ -24,7 +24,7 @@
 
     <string name="slide_4_title">" I don't know where to start" Is no longer an excuse.</string>
     <string name="slide_4_desc">Book tickets of any transportation and travel the world!</string>
-    <string name="please_wiat">Please Wait</string>
+    <string name="please_wait">Please wait...</string>
     <string name="title_activity_registration_pager">RegistrationActivityPager</string>
     <string name="terms_of_service">"By login you are agree to our <u>terms of service</u>\nand <u>privacy policy</u>"</string>
 
@@ -206,4 +206,6 @@
     <string name="title_activity_sign_up_options">SignUpOptions</string>
     <string name="your_fitness_freedom">Your Fitness Freedom</string>
     <string name="registration_done">Registration completed successfully!</string>
+    <string name="join_fail_date_expire">Your current plan will expire before the date of the following class. Would you like to continue and purchase a one-time visit to this class?</string>
+    <string name="join_fail_limit_exhaust">You have exceeded the number of visits to this studio. Would you like to continue and purchase a one-time visit to this class, without changing your current plan?</string>
 </resources>

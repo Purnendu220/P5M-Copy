@@ -2,10 +2,16 @@ package www.gymhop.p5m.view.activity.Main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.brandongogetap.stickyheaders.StickyLayoutManager;
 import com.brandongogetap.stickyheaders.exposed.StickyHeaderListener;
@@ -31,17 +37,13 @@ import www.gymhop.p5m.view.activity.base.BaseActivity;
 
 public class GymProfileActivity extends BaseActivity implements AdapterCallbacks, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
 
-
-//    public static void open(Context context, TrainerModel trainerModel) {
-//        context.startActivity(new Intent(context, GymProfileActivity.class)
-//                .putExtra(AppConstants.DataKey.TRAINER_OBJECT, trainerModel));
-//    }
-
     public static void open(Context context, int gymId) {
         context.startActivity(new Intent(context, GymProfileActivity.class)
                 .putExtra(AppConstants.DataKey.GYM_ID_INT, gymId));
     }
 
+    @BindView(R.id.toolbar)
+    public Toolbar toolbar;
     @BindView(R.id.recyclerViewTrainerProfile)
     public RecyclerView recyclerViewTrainerProfile;
     @BindView(R.id.swipeRefreshLayout)
@@ -73,7 +75,7 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
 
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        gymProfileAdapter = new GymProfileAdapter(context, AppConstants.AppNavigation.SHOWN_IN_TRAINER, this,
+        gymProfileAdapter = new GymProfileAdapter(context, AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE, this,
                 new ClassMiniListListenerHelper(context, activity));
         recyclerViewTrainerProfile.setAdapter(gymProfileAdapter);
 
@@ -103,6 +105,36 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
                 LogUtils.debug("Listener Detached with position: " + adapterPosition);
             }
         });
+
+        setToolBar();
+    }
+
+    private void setToolBar() {
+
+        BaseActivity activity = (BaseActivity) this.activity;
+        activity.setSupportActionBar(toolbar);
+
+        activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(context, R.color.colorPrimaryDark)));
+        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        activity.getSupportActionBar().setHomeButtonEnabled(true);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
+        activity.getSupportActionBar().setDisplayUseLogoEnabled(true);
+
+        View v = LayoutInflater.from(context).inflate(R.layout.view_tool_normal, null);
+
+        v.findViewById(R.id.imageViewBack).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.gym));
+
+        activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
+                ActionBar.LayoutParams.MATCH_PARENT));
+        activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
     }
 
     @Override

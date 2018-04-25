@@ -61,13 +61,16 @@ public class Trainers extends BaseFragment implements ViewPager.OnPageChangeList
 
         try {
             activities = TempStorage.getActivities();
-            if (activities == null) {
-                activities = new ArrayList<>();
-            }
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
         }
+
+        if (activities == null) {
+            activities = new ArrayList<>();
+        }
+
+        activities.add(0, new ClassActivity("ALL", 0));
 
         trainersAdapter = new TrainersAdapter(getChildFragmentManager(), activities);
         viewPager.setAdapter(trainersAdapter);

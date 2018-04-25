@@ -2,7 +2,13 @@
 <resources>
     <dimen name="view_separator_size">8dp</dimen>
     <dimen name="view_separator_elevation">1dp</dimen>
+    <dimen name="view_separator_elevation_edit_profile">1dp</dimen>
+    <dimen name="view_separator_elevation_edit_setting">1dp</dimen>
     <dimen name="text_icon_gap">8dp</dimen>
+
+    <dimen name="text_icon_gap_setting">16dp</dimen>
+    <dimen name="view_padding_setting">16dp</dimen>
+    <dimen name="view_padding_edit_profile">16dp</dimen>
 
     <dimen name="line_spacing_extra">6sp</dimen>
     <dimen name="line_spacing_extra_title">4sp</dimen>

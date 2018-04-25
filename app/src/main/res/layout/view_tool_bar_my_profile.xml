@@ -22,7 +22,7 @@
             android:textColor="@color/white" />
 
         <ImageView
-            android:id="@+id/imageViewSearch"
+            android:id="@+id/imageViewOptions"
             style="@style/ToolBarIcon"
             android:layout_height="match_parent"
             android:padding="18dp"

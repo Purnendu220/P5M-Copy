@@ -19,6 +19,7 @@ import www.gymhop.p5m.data.main.ClassModel;
 import www.gymhop.p5m.data.main.TrainerDetailModel;
 import www.gymhop.p5m.data.main.TrainerModel;
 import www.gymhop.p5m.data.request.ClassListRequest;
+import www.gymhop.p5m.data.request.JoinClassRequest;
 import www.gymhop.p5m.data.request.LoginRequest;
 import www.gymhop.p5m.data.request.PaymentUrlRequest;
 import www.gymhop.p5m.data.request.RegistrationRequest;
@@ -71,7 +72,7 @@ public interface ApiService {
                                                           @Query(AppConstants.ApiParamKey.SIZE) int size);
 
     @Headers("Content-type: application/json")
-    @GET(AppConstants.Url.SCHEDULE_LIST)
+    @GET(AppConstants.Url.UPCOMING_CLASSES)
     Call<ResponseModel<List<ClassModel>>> getUpcomingClasses(@Query(AppConstants.ApiParamKey.USER_ID) int userId,
                                                              @Query(AppConstants.ApiParamKey.GYM_ID) int gymId,
                                                              @Query(AppConstants.ApiParamKey.TRAINER_ID) int trainerId,
@@ -116,6 +117,9 @@ public interface ApiService {
     @POST(AppConstants.Url.PACKAGE_PURCHASE)
     Call<ResponseModel<PaymentUrl>> purchasePackageForClass(@Body PaymentUrlRequest paymentUrlRequest);
 
+    @Headers("Content-type: application/json")
+    @POST(AppConstants.Url.JOIN_CLASS)
+    Call<ResponseModel<User>> joinClass(@Body JoinClassRequest joinClassRequest);
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.USER + "/{" + AppConstants.ApiParamKey.USER_ID + "}")

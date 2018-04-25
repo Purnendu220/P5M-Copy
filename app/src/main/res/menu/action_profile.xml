@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" >
+
+    <item android:id="@+id/actionEditProfile"
+        android:icon="@drawable/class_icon"
+        app:showAsAction="always"
+        android:title="@string/edit_profile"></item>
+
+    <item android:id="@+id/actionSettings"
+        android:icon="@drawable/class_icon"
+        app:showAsAction="always"
+        android:title="@string/settings"></item>
+
+</menu>

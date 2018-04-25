@@ -44,6 +44,14 @@ public class MyPreferences {
         return myPreferences;
     }
 
+    public String getAuthToken() {
+        return PreferencesManager.getString(AppConstants.Pref.AUTH_TOKEN);
+    }
+
+    public void saveAuthToken(String authToken) {
+        PreferencesManager.putString(AppConstants.Pref.AUTH_TOKEN, authToken);
+    }
+
     public boolean isLogin() {
         return PreferencesManager.getBoolean(AppConstants.Pref.LOGIN, false);
     }

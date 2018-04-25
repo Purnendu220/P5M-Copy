@@ -108,6 +108,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     textViewPackageValidity.setText("Valid for " + model.getGymName());
 
                     textViewViewLimit.setVisibility(View.GONE);
+                    imageViewInfo.setVisibility(View.VISIBLE);
                 }
             } else
                 // Packages offered..

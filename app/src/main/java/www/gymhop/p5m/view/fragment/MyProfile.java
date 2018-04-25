@@ -10,8 +10,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 
 import com.brandongogetap.stickyheaders.StickyLayoutManager;
 import com.brandongogetap.stickyheaders.exposed.StickyHeaderListener;
@@ -27,16 +29,20 @@ import www.gymhop.p5m.adapters.viewholder.ProfileHeaderTabViewHolder;
 import www.gymhop.p5m.data.main.ClassModel;
 import www.gymhop.p5m.data.main.TrainerModel;
 import www.gymhop.p5m.helper.ClassMiniListListenerHelper;
+import www.gymhop.p5m.helper.Helper;
 import www.gymhop.p5m.helper.TrainerListListenerHelper;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.AppConstants;
+import www.gymhop.p5m.view.activity.Main.EditProfileActivity;
+import www.gymhop.p5m.view.activity.Main.LocationListMapActivity;
 import www.gymhop.p5m.view.activity.Main.MemberShip;
+import www.gymhop.p5m.view.activity.Main.SettingActivity;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 import www.gymhop.p5m.view.activity.custom.MyRecyclerView;
 
-public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>, MyRecyclerView.LoaderCallbacks, NetworkCommunicator.RequestListener {
+public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>, MyRecyclerView.LoaderCallbacks, NetworkCommunicator.RequestListener, PopupMenu.OnMenuItemClickListener {
 
     @BindView(R.id.recyclerView)
     public RecyclerView recyclerView;
@@ -63,8 +69,6 @@ public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>,
         super.onActivityCreated(savedInstanceState);
 
         ButterKnife.bind(this, getView());
-
-        setToolBar();
 
         myProfileAdapter = new MyProfileAdapter(context, new TrainerListListenerHelper(context, activity),
                 new ClassMiniListListenerHelper(context, activity), this);
@@ -96,6 +100,34 @@ public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>,
             networkCommunicator.getFavTrainerList(AppConstants.ApiParamValue.FOLLOW_TYPE_FOLLOWED, TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_TRAINER_LIST, this, false);
             myProfileAdapter.onTabSelection(ProfileHeaderTabViewHolder.TAB_1);
         }
+
+        setToolBar();
+    }
+
+    private void setToolBar() {
+
+        BaseActivity activity = (BaseActivity) this.activity;
+        activity.setSupportActionBar(toolbar);
+
+        activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(context, R.color.colorPrimaryDark)));
+        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        activity.getSupportActionBar().setHomeButtonEnabled(true);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
+        activity.getSupportActionBar().setDisplayUseLogoEnabled(true);
+
+        View v = LayoutInflater.from(context).inflate(R.layout.view_tool_bar_my_profile, null);
+
+        v.findViewById(R.id.imageViewOptions).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Helper.showPopMenu(context, view, MyProfile.this);
+            }
+        });
+
+        activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
+                ActionBar.LayoutParams.MATCH_PARENT));
+        activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
     }
 
     /**
@@ -125,25 +157,6 @@ public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>,
                 profileHeaderTabViewHolder.header2Indicator.setBackgroundColor(ContextCompat.getColor(context, R.color.theme_accent_text));
                 break;
         }
-    }
-
-    private void setToolBar() {
-
-        BaseActivity activity = (BaseActivity) this.activity;
-        activity.setSupportActionBar(toolbar);
-
-        activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(context, R.color.colorPrimaryDark)));
-        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        activity.getSupportActionBar().setHomeButtonEnabled(true);
-        activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
-        activity.getSupportActionBar().setDisplayUseLogoEnabled(true);
-
-        View v = LayoutInflater.from(context).inflate(R.layout.view_tool_bar_my_profile, null);
-
-        activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
-                ActionBar.LayoutParams.MATCH_PARENT));
-        activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
     }
 
     @Override
@@ -217,10 +230,26 @@ public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>,
 
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
-
     }
 
     private void checkListData() {
     }
 
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+
+        switch (menuItem.getItemId()) {
+            case R.id.actionSettings: {
+                SettingActivity.openActivity(context);
+                return true;
+            }
+            case R.id.actionEditProfile: {
+                EditProfileActivity.openActivity(context);
+                LocationListMapActivity.openActivity(context);
+                return true;
+            }
+            default:
+                return false;
+        }
+    }
 }

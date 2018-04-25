@@ -8,17 +8,17 @@ import android.widget.FrameLayout;
  * Created by MyU10 on 3/9/2018.
  */
 
-public class FrameLayout_3_1 extends FrameLayout {
+public class FrameLayoutMap extends FrameLayout {
 
-    public FrameLayout_3_1(Context context) {
+    public FrameLayoutMap(Context context) {
         super(context);
     }
 
-    public FrameLayout_3_1(Context context, AttributeSet attrs) {
+    public FrameLayoutMap(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public FrameLayout_3_1(Context context, AttributeSet attrs, int defStyle) {
+    public FrameLayoutMap(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
@@ -27,7 +27,7 @@ public class FrameLayout_3_1 extends FrameLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         int width = getMeasuredWidth();
-        setMeasuredDimension(width, (int) (width * 0.35)); //aspect ratio
+        setMeasuredDimension(width, (int) (width * 1)); //aspect ratio
     }
 
 }

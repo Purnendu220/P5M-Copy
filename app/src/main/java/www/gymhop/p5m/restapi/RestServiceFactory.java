@@ -45,6 +45,7 @@ public class RestServiceFactory {
 
                     Request request = chain.request().newBuilder()
                             .addHeader(AppConstants.ApiParamKey.MYU_AUTH_TOKEN, auth)
+                            .addHeader(AppConstants.ApiParamKey.USER_AGENT, "android")
 //                            .addHeader(AppConstants.ApiParamKey.APP_VERSION, TempStorage.version)
                             .build();
                     return chain.proceed(request);

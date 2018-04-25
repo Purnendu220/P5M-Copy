@@ -61,10 +61,10 @@ public class PaymentWebViewActivity extends BaseActivity {
             progressBar.setVisibility(View.GONE);
             LogUtils.debug("Payment onPageFinished " + url);
             if (url.equalsIgnoreCase("intent://com.profive.android.view.activity.SplashScreenActivity")) {
-                //Intent intent=new Intent(PaymentUrlAcivity.this,Me.class);
-                //  startActivity(intent);
+
                 webView.setVisibility(View.INVISIBLE);
-                setResult(12);
+                progressBar.setVisibility(View.VISIBLE);
+                setResult(AppConstants.ResultCode.PAYMENT_SUCCESS);
                 finish();
             }
         }
@@ -75,10 +75,10 @@ public class PaymentWebViewActivity extends BaseActivity {
             Uri uri = Uri.parse(url);
             LogUtils.debug("Payment onLoadResource" + url);
             if (url.equalsIgnoreCase("intent://com.profive.android.view.activity.SplashScreenActivity")) {
-                //Intent intent=new Intent(PaymentUrlAcivity.this,Me.class);
-                //  startActivity(intent);
+
                 webView.setVisibility(View.INVISIBLE);
-                setResult(12);
+                progressBar.setVisibility(View.VISIBLE);
+                setResult(AppConstants.ResultCode.PAYMENT_SUCCESS);
                 finish();
             }
         }

@@ -16,6 +16,7 @@ import www.gymhop.p5m.data.main.ClassModel;
 import www.gymhop.p5m.data.main.TrainerDetailModel;
 import www.gymhop.p5m.data.main.TrainerModel;
 import www.gymhop.p5m.data.request.ClassListRequest;
+import www.gymhop.p5m.data.request.JoinClassRequest;
 import www.gymhop.p5m.data.request.LoginRequest;
 import www.gymhop.p5m.data.request.PaymentUrlRequest;
 import www.gymhop.p5m.data.request.RegistrationRequest;
@@ -62,6 +63,7 @@ public class NetworkCommunicator {
         public static final int UPCOMING_CLASSES = 112;
         public static final int TRAINER = 113;
         public static final int GYM = 114;
+        public static final int JOIN_CLASS = 115;
     }
 
     private Context context;
@@ -98,6 +100,8 @@ public class NetworkCommunicator {
             public void onResponse(Call<ResponseModel<User>> call, Response<ResponseModel<User>> restResponse, ResponseModel<User> response) {
                 LogUtils.networkSuccess("NetworkCommunicator login onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
+
+                TempStorage.setAuthToken(restResponse.headers().get(AppConstants.ApiParamKey.MYU_AUTH_TOKEN));
             }
         });
         return call;
@@ -277,18 +281,18 @@ public class NetworkCommunicator {
     public Call getScheduleList(int userId, int page, int size, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.CLASS_LIST;
         Call<ResponseModel<List<ClassModel>>> call = apiService.getScheduleList(userId, page, size);
-        LogUtils.debug("NetworkCommunicator hitting getTrainerList");
+        LogUtils.debug("NetworkCommunicator hitting getScheduleList");
 
         call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>() {
             @Override
             public void onFailure(Call<ResponseModel<List<ClassModel>>> call, String message) {
-                LogUtils.networkError("NetworkCommunicator getTrainerList onFailure " + message);
+                LogUtils.networkError("NetworkCommunicator getScheduleList onFailure " + message);
                 requestListener.onApiFailure(message, requestCode);
             }
 
             @Override
             public void onResponse(Call<ResponseModel<List<ClassModel>>> call, Response<ResponseModel<List<ClassModel>>> restResponse, ResponseModel<List<ClassModel>> response) {
-                LogUtils.networkSuccess("NetworkCommunicator getFinishedClassList onResponse data " + response);
+                LogUtils.networkSuccess("NetworkCommunicator getScheduleList onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
             }
         });
@@ -479,6 +483,27 @@ public class NetworkCommunicator {
             @Override
             public void onResponse(Call<ResponseModel<GymDetailModel>> call, Response<ResponseModel<GymDetailModel>> restResponse, ResponseModel<GymDetailModel> response) {
                 LogUtils.networkSuccess("NetworkCommunicator getGym onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call joinClass(JoinClassRequest joinClassRequest, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.JOIN_CLASS;
+        Call<ResponseModel<User>> call = apiService.joinClass(joinClassRequest);
+        LogUtils.debug("NetworkCommunicator hitting joinClass");
+
+        call.enqueue(new RestCallBack<ResponseModel<User>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<User>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator joinClass onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<User>> call, Response<ResponseModel<User>> restResponse, ResponseModel<User> response) {
+                LogUtils.networkSuccess("NetworkCommunicator joinClass onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
             }
         });

@@ -75,6 +75,8 @@ public class PackageLimitsActivity extends BaseActivity implements NetworkCommun
 
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.PACKAGES_LIMIT:
+
+                swipeRefreshLayout.setEnabled(false);
                 List<PackageLimitModel> models = ((ResponseModel<List<PackageLimitModel>>) response).data;
 
                 if (!models.isEmpty()) {

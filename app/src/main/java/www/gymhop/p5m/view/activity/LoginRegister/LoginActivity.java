@@ -98,6 +98,12 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
         });
     }
 
+    @OnClick(R.id.textViewSignUp)
+    public void textViewSignUp(View view) {
+        SignUpOptions.open(context);
+        finish();
+    }
+
     @OnClick(R.id.buttonLogin)
     public void buttonLogin(View view) {
         String user = editTextEmail.getText().toString().trim();

@@ -191,7 +191,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
             case R.id.button: {
 
                 if (viewHolder instanceof MemberShipViewHolder) {
-                    ((MemberShipViewHolder) viewHolder).button.setText("Please wait...");
+                    ((MemberShipViewHolder) viewHolder).button.setText(context.getResources().getString(R.string.please_wait));
                     ((MemberShipViewHolder) viewHolder).button.setEnabled(false);
                 }
 
@@ -239,11 +239,12 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
     @Override
     public void onApiSuccess(Object response, int requestCode) {
+        swipeRefreshLayout.setRefreshing(false);
+
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.PACKAGES_LIMIT:
             case NetworkCommunicator.RequestCode.PACKAGES_FOR_USER:
 
-                swipeRefreshLayout.setRefreshing(false);
                 swipeRefreshLayout.setEnabled(false);
 
                 List<Package> packagesTemp = ((ResponseModel<List<Package>>) response).data;
@@ -277,6 +278,8 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
+        swipeRefreshLayout.setRefreshing(false);
+
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.BUY_PACKAGE:
                 memberShipAdapter.notifyDataSetChanges();
@@ -289,5 +292,12 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
         swipeRefreshLayout.setRefreshing(true);
         checkPackages();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
     }
 }

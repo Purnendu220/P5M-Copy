@@ -30,6 +30,7 @@ public class AppConstants {
         public static final String ACTIVITIES = "pref_activities";
         public static final String FILTERS = "pref_filters";
         public static final String USER = "pref_user";
+        public static final String AUTH_TOKEN = "pref_auth_token";
     }
 
     public class DataKey {
@@ -46,9 +47,10 @@ public class AppConstants {
     }
 
     public class Url {
-        public static final String BASE_SERVICE_BETA = " http://qa-api.profive.co/profive-midl/";
-        public static final String BASE_SERVICE_ALPHA = " http://qa-api.profive.co/dev-midl/";
-        public static final String BASE_SERVICE_LIVE = " http://api.p5m.me/profive-midl/";
+//        public static final String BASE_SERVICE_BETA = "http://192.168.0.39:8080/profive-midl/";
+        public static final String BASE_SERVICE_BETA = "http://qa-api.profive.co/profive-midl/";
+        public static final String BASE_SERVICE_ALPHA = "http://qa-api.profive.co/dev-midl/";
+        public static final String BASE_SERVICE_LIVE = "http://api.p5m.me/profive-midl/";
 
         public static final String LOGIN = "api/v1/user/login";
         public static final String REGISTER = "api/v1/user/register";
@@ -63,6 +65,7 @@ public class AppConstants {
         public static final String TRAINER_LIST = "api/v1/user/getTrainerList";
         public static final String WISH_LIST = "api/v1/wish/getWishList";
         public static final String SCHEDULE_LIST = "api/v1/user/upcomingClasses";
+        public static final String UPCOMING_CLASSES = "api/v1/class/upcomingClasses";
         public static final String FINISHED_CLASS_LIST = "api/v1/user/finishedClasses";
         public static final String FAV_TRAINER_LIST = "api/v1/follow/getFavList";
 
@@ -72,6 +75,8 @@ public class AppConstants {
         public static final String PACKAGE_LIMITS = "api/v1/gym/mapping/";
 
         public static final String PACKAGE_PURCHASE = "api/v1/payment/package-purchase/";
+
+        public static final String JOIN_CLASS = "api/v1/user/class/join";
     }
 
     public class ApiParamValue {
@@ -89,6 +94,7 @@ public class AppConstants {
 
     public class ApiParamKey {
         public static final String MYU_AUTH_TOKEN = "Pro-Auth-Token";
+        public static final String USER_AGENT = "userAgent";
         public static final String APP_VERSION = "";
         public static final String SIZE = "size";
         public static final String PAGE = "page";
@@ -115,6 +121,7 @@ public class AppConstants {
         public static final int SHOWN_IN_HOME_FIND_CLASSES = 6;
         public static final int SHOWN_IN_HOME_TRAINERS = 7;
         public static final int SHOWN_IN_MY_PROFILE_FAV_TRAINERS = 8;
+
         public static final int SHOWN_IN_CLASS_PROFILE = 9;
         public static final int SHOWN_IN_TRAINER_PROFILE = 10;
         public static final int SHOWN_IN_GYM_PROFILE = 11;
@@ -131,5 +138,10 @@ public class AppConstants {
         public static final int PAGE_LIMIT_INNER_TRAINER_LIST = 25;
 
         public static final int PACKAGE_LIMIT_SCREEN_TABS = 5;
+    }
+
+    public class ResultCode {
+        public static final int PAYMENT_SUCCESS = 1001;
+
     }
 }

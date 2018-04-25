@@ -1,13 +1,17 @@
 package www.gymhop.p5m.helper;
 
 import android.content.Context;
+import android.view.MenuInflater;
+import android.view.View;
 import android.widget.Button;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.stfalcon.frescoimageviewer.ImageViewer;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import www.gymhop.p5m.R;
@@ -16,6 +20,7 @@ import www.gymhop.p5m.data.main.MediaModel;
 import www.gymhop.p5m.data.main.TrainerDetailModel;
 import www.gymhop.p5m.data.main.TrainerModel;
 import www.gymhop.p5m.data.temp.GymDetailModel;
+import www.gymhop.p5m.utils.LogUtils;
 
 /**
  * Created by Varun John on 4/20/2018.
@@ -48,6 +53,7 @@ public class Helper {
         } else {
             view.setText(context.getString(R.string.reserve_class));
             view.setBackgroundResource(R.drawable.theme_bottom_text_button_book);
+            view.setEnabled(true);
         }
     }
 
@@ -104,6 +110,27 @@ public class Helper {
                 .hideStatusBar(false)
                 .setCustomDraweeHierarchyBuilder(hierarchyBuilder)
                 .show();
+    }
+
+    public static void showPopMenu(Context context, View view, PopupMenu.OnMenuItemClickListener onMenuItemClickListener) {
+        PopupMenu popup = new PopupMenu(context, view);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.action_profile, popup.getMenu());
+
+        Object menuHelper;
+        Class[] argTypes;
+        try {
+            Field fMenuHelper = PopupMenu.class.getDeclaredField("mPopup");
+            fMenuHelper.setAccessible(true);
+            menuHelper = fMenuHelper.get(popup);
+            argTypes = new Class[]{boolean.class};
+            menuHelper.getClass().getDeclaredMethod("setForceShowIcon", argTypes).invoke(menuHelper, true);
+        } catch (Exception e) {
+            LogUtils.exception(e);
+        }
+
+        popup.setOnMenuItemClickListener(onMenuItemClickListener);
+        popup.show();
     }
 
 }

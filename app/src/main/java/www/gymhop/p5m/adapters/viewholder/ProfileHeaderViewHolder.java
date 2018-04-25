@@ -83,8 +83,9 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                             context.getString(R.string.profile_package_expiry)));
 
                     textViewMore.setVisibility(View.VISIBLE);
-                    textViewMore.setText("<b><u>" + "+" + daysLeftFromPackageExpiryDate + " more " +
-                            AppConstants.plural("package", daysLeftFromPackageExpiryDate) + "</u></b> ");
+                    String more = "+" + userPackageInfo.dropInPackageCount + " more " +
+                            AppConstants.plural("package", userPackageInfo.dropInPackageCount);
+                    textViewMore.setText(Html.fromHtml("<b><u>" + more + "</u></b> "));
 
                 } else if (!userPackageInfo.haveGeneralPackage && userPackageInfo.haveDropInPackage) {
                     textViewPackage.setText(Html.fromHtml("<b>" + userPackageInfo.userPackageGeneral.getBalanceClass() + "</b> " + " class remaining"));
@@ -96,8 +97,9 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
 
                     if (userPackageInfo.dropInPackageCount > 1) {
                         textViewMore.setVisibility(View.VISIBLE);
-                        textViewMore.setText("<b><u>" + "+" + (daysLeftFromPackageExpiryDate - 1) + " more " +
-                                AppConstants.plural("package", daysLeftFromPackageExpiryDate) + "</u></b> ");
+                        String more = "+" + (userPackageInfo.dropInPackageCount - 1) + " more " +
+                                AppConstants.plural("package", (userPackageInfo.dropInPackageCount - 1));
+                        textViewMore.setText(Html.fromHtml("<b><u>" + more + "</u></b> "));
                     }
                 }
                 /************************************************************************/

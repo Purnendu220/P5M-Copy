@@ -29,10 +29,17 @@ public abstract class RestCallBack<T> implements Callback<T> {
             onResponse(call, response, response.body());
         } else {
             Gson gson = new Gson();
-            ResponseModel responseModel = null;
+
             try {
-                responseModel = gson.fromJson(response.errorBody().string(), ResponseModel.class);
-                onFailure(call, responseModel.errorMessage);
+                ResponseModel responseModel = gson.fromJson(response.errorBody().string(), ResponseModel.class);
+
+                if (responseModel.statusCode.equals("402")) {
+
+                } else if (responseModel.statusCode.equals("402") || responseModel.statusCode.equals("402")) {
+                    onFailure(call, responseModel.statusCode);
+                } else {
+                    onFailure(call, responseModel.errorMessage);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 LogUtils.exception(e);
