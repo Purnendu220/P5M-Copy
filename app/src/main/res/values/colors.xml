@@ -5,6 +5,7 @@
     <color name="colorAccent">#007fe7</color>
 
     <color name="colorAccentHighlight">#CC007FE7</color>
+    <color name="colorPrimaryDarkHighLight">#BF031d22</color>
 
     <color name="theme_bg_splash">#031D22</color>
     <color name="theme_bg">#f1f0ee</color>

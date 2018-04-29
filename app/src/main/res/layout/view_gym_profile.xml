@@ -139,7 +139,6 @@
             </LinearLayout>
         </LinearLayout>
 
-
         <LinearLayout
             android:id="@+id/layoutMap"
             android:layout_width="match_parent"
@@ -155,9 +154,7 @@
                 android:layout_below="@+id/textViewMap"
                 android:background="@color/white"
                 android:clipToPadding="false"
-                android:orientation="horizontal"
-                android:scrollbars="none">
-
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -210,8 +207,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
-                            android:layout_marginRight="16dp"
-                            android:layout_marginTop="16dp"
                             android:orientation="horizontal">
 
                             <ImageView
@@ -238,7 +233,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
-                            android:layout_marginRight="16dp"
                             android:layout_marginTop="8dp"
                             android:orientation="horizontal">
 
@@ -257,7 +251,7 @@
                                 android:fontFamily="sans-serif"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
                                 android:lineSpacingExtra="@dimen/line_spacing_extra"
-                                android:text="Fikra Edutech"
+                                android:text="Fikra Edutech Fikra Edutech Fikra Edutech"
                                 android:textColor="@color/theme_dark_light_text"
                                 android:textSize="@dimen/text_small" />
                         </RelativeLayout>
@@ -271,9 +265,7 @@
                             <RelativeLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="16dp"
                                 android:layout_marginLeft="16dp"
-                                android:layout_marginRight="16dp"
                                 android:layout_marginTop="12dp"
                                 android:layout_weight="1"
                                 android:orientation="horizontal">
@@ -293,7 +285,7 @@
                                     android:fontFamily="sans-serif"
                                     android:letterSpacing="@dimen/text_medium_letter_spacing"
                                     android:lineSpacingExtra="@dimen/line_spacing_extra"
-                                    android:text="Fikra Edutech"
+                                    android:text="8744900324"
                                     android:textColor="@color/theme_dark_text"
                                     android:textSize="@dimen/text_medium" />
                             </RelativeLayout>

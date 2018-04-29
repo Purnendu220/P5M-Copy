@@ -8,8 +8,12 @@ import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
+import www.gymhop.p5m.data.request.DeviceUpdate;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
+import www.gymhop.p5m.restapi.ResponseModel;
+import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.storage.preferences.MyPreferences;
+import www.gymhop.p5m.view.activity.LoginRegister.ContinueUser;
 import www.gymhop.p5m.view.activity.LoginRegister.InfoScreen;
 import www.gymhop.p5m.view.activity.Main.HomeActivity;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
@@ -45,13 +49,19 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
             @Override
             public void run() {
 
-                if(MyPreferences.getInstance().isLogin()) {
+                if (MyPreferences.getInstance().isLogin()) {
                     /////////// HomeActivity Screen ////////////
                     HomeActivity.open(context);
+                    networkCommunicator.deviceUpdate(new DeviceUpdate(TempStorage.version, TempStorage.getUser().getId(), ""), Splash.this, false);
+                    networkCommunicator.getMyUser(Splash.this, false);
 
                 } else {
                     /////////// LoginActivity Page ////////////
-                    InfoScreen.openActivity(context);
+                    if (MyPreferences.getInstance().getUser() == null) {
+                        InfoScreen.openActivity(context);
+                    } else {
+                        ContinueUser.open(context);
+                    }
                 }
 
                 finish();
@@ -69,6 +79,15 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
 
     @Override
     public void onApiSuccess(Object response, int requestCode) {
+        switch (requestCode) {
+            case NetworkCommunicator.RequestCode.DEVICE:
+
+                Boolean forceUpdate = ((ResponseModel<Boolean>) response).data;
+
+
+
+                break;
+        }
     }
 
     @Override

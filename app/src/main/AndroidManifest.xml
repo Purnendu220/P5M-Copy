@@ -13,11 +13,9 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC36Oyf3q-4pO0HC7ZCydtu6OFFgUFxens" />
@@ -39,7 +37,9 @@
 
         <activity android:name=".view.activity.LoginRegister.InfoScreen" />
         <activity android:name=".view.activity.LoginRegister.RegistrationActivity" />
-        <activity android:name=".view.activity.Main.HomeActivity" />
+        <activity
+            android:name=".view.activity.Main.HomeActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".view.activity.LoginRegister.LoginActivity" />
         <activity android:name=".view.activity.Main.TrainerProfileActivity" />
         <activity android:name=".view.activity.Main.FilterActivity" />
@@ -57,7 +57,9 @@
             android:name=".view.activity.Main.SearchActivity"
             android:label="@string/title_activity_search"
             android:theme="@style/AppTheme" />
-        <activity android:name=".view.activity.Main.PaymentWebViewActivity" />
+        <activity
+            android:name=".view.activity.Main.PaymentWebViewActivity"
+            android:launchMode="singleInstance" />
         <activity
             android:name=".view.activity.LoginRegister.SignUpOptions"
             android:label="@string/title_activity_sign_up_options"
@@ -65,7 +67,16 @@
         <activity android:name=".view.activity.LoginRegister.RegistrationDoneActivity" />
         <activity android:name=".view.activity.Main.EditProfileActivity" />
         <activity android:name=".view.activity.Main.SettingActivity" />
-        <activity android:name=".view.activity.Main.LocationListMapActivity"></activity>
+        <activity android:name=".view.activity.Main.LocationListMapActivity" />
+        <activity
+            android:name=".view.activity.LoginRegister.ContinueUser"
+            android:label="@string/title_activity_continue_user"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".view.activity.Main.TransactionHistoryActivity" />
+        <activity android:name=".view.activity.Main.SettingNotification" />
+        <activity android:name=".view.activity.Main.ChooseFocusActivity" />
+        <activity android:name=".view.activity.Main.ChooseNationalityActivity" />
+        <activity android:name=".view.activity.Main.ChangePasswordActivity"></activity>
     </application>
 
 </manifest>

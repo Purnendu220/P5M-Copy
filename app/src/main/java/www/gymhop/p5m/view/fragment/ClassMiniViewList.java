@@ -49,6 +49,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
     private int fragmentPositionInViewPager;
     private boolean isShownFirstTime = true;
     private int page;
+    private int pageSizeLimit = AppConstants.Limit.PAGE_LIMIT_INNER_CLASS_LIST;
 
     private int shownInScreen;
 
@@ -74,9 +75,9 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
         swipeRefreshLayout.setOnRefreshListener(this);
 
         recyclerViewClass.setLayoutManager(new LinearLayoutManager(activity));
-        recyclerViewClass.setHasFixedSize(false);
+        recyclerViewClass.setHasFixedSize(true);
 
-        classListAdapter = new ClassMiniViewAdapter(context, shownInScreen, true, new ClassMiniListListenerHelper(context, activity));
+        classListAdapter = new ClassMiniViewAdapter(context, shownInScreen, true, new ClassMiniListListenerHelper(context, activity, this));
         recyclerViewClass.setAdapter(classListAdapter);
     }
 
@@ -95,6 +96,26 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
 
     @Override
     public void onShowLastItem() {
+        page++;
+        callApi();
+    }
+
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        page = 0;
+        classListAdapter.loaderReset();
+
+        callApi();
+    }
+
+    private void callApi() {
+        if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
+            networkCommunicator.getScheduleList(TempStorage.getUser().getId(), page, pageSizeLimit, this, false);
+
+        } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
+            networkCommunicator.getWishList(TempStorage.getUser().getId(), page, pageSizeLimit, this, false);
+        }
     }
 
     @Override
@@ -107,18 +128,6 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
     }
 
     @Override
-    public void onRefresh() {
-        swipeRefreshLayout.setRefreshing(true);
-
-        if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
-            networkCommunicator.getScheduleList(TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_CLASS_LIST, this, false);
-
-        } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_WISH_LIST) {
-            networkCommunicator.getWishList(TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_CLASS_LIST, this, false);
-        }
-    }
-
-    @Override
     public void onApiSuccess(Object response, int requestCode) {
 
         switch (requestCode) {
@@ -126,11 +135,21 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
                 swipeRefreshLayout.setRefreshing(false);
                 List<ClassModel> classModels = ((ResponseModel<List<ClassModel>>) response).data;
 
+                if (page == 0) {
+                    classListAdapter.clearAll();
+                }
+
                 if (!classModels.isEmpty()) {
                     classListAdapter.addAllClass(classModels);
+
+                    if (classModels.size() < pageSizeLimit) {
+                        classListAdapter.loaderDone();
+                    }
                     classListAdapter.notifyDataSetChanged();
+
                 } else {
                     checkListData();
+                    classListAdapter.loaderDone();
                 }
                 break;
         }

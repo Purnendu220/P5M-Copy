@@ -32,6 +32,9 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.imageViewOptions2)
     public ImageView imageViewOptions2;
 
+    @BindView(R.id.trainerImage)
+    public View trainerImage;
+
     @BindView(R.id.buttonJoin)
     public Button buttonJoin;
 
@@ -67,21 +70,21 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
             final ClassModel model = (ClassModel) data;
 
             if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
-                imageViewTrainerProfile.setVisibility(View.VISIBLE);
+                trainerImage.setVisibility(View.VISIBLE);
                 textViewTrainerName.setVisibility(View.VISIBLE);
 
                 buttonJoin.setVisibility(View.GONE);
                 imageViewOptions1.setVisibility(View.VISIBLE);
                 imageViewOptions2.setVisibility(View.GONE);
 
-            } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_WISH_LIST) {
-                imageViewTrainerProfile.setVisibility(View.VISIBLE);
+            } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
+                trainerImage.setVisibility(View.VISIBLE);
                 textViewTrainerName.setVisibility(View.VISIBLE);
 
                 buttonJoin.setVisibility(View.VISIBLE);
 
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE) {
-                imageViewTrainerProfile.setVisibility(View.GONE);
+                trainerImage.setVisibility(View.GONE);
                 textViewTrainerName.setVisibility(View.GONE);
 
                 buttonJoin.setVisibility(View.VISIBLE);
@@ -89,7 +92,7 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 imageViewOptions2.setVisibility(View.VISIBLE);
 
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE) {
-                imageViewTrainerProfile.setVisibility(View.VISIBLE);
+                trainerImage.setVisibility(View.VISIBLE);
                 textViewTrainerName.setVisibility(View.VISIBLE);
 
                 buttonJoin.setVisibility(View.VISIBLE);
@@ -97,7 +100,7 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 imageViewOptions2.setVisibility(View.VISIBLE);
 
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED) {
-                imageViewTrainerProfile.setVisibility(View.VISIBLE);
+                trainerImage.setVisibility(View.VISIBLE);
                 textViewTrainerName.setVisibility(View.VISIBLE);
 
                 buttonJoin.setVisibility(View.GONE);
@@ -105,7 +108,7 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 imageViewOptions2.setVisibility(View.GONE);
 
             } else {
-                imageViewTrainerProfile.setVisibility(View.VISIBLE);
+                trainerImage.setVisibility(View.VISIBLE);
                 textViewTrainerName.setVisibility(View.VISIBLE);
 
                 buttonJoin.setVisibility(View.VISIBLE);

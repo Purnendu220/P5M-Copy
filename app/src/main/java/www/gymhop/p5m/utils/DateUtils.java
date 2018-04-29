@@ -35,13 +35,37 @@ public class DateUtils {
     private static SimpleDateFormat classTime = new SimpleDateFormat("HH:mm:ss");
     private static SimpleDateFormat classTimeFormat = new SimpleDateFormat("h:mma");
     private static SimpleDateFormat classDate = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat classDateExpiry = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private static SimpleDateFormat classDateFormat = new SimpleDateFormat("EEE, MMM d, yyyy");
+
+    public static String getFormattedDobFromServer(Date date) {
+        try {
+            return classDate.format(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+        return "";
+    }
+
+    public static String getFormattedDobFromDisplay(Date date) {
+        try {
+            return classDateFormat.format(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+        return "";
+    }
 
     public static int getDaysLeftFromPackageExpiryDate(String date) {
         try {
-            Date expiryDate = classDate.parse(date);
+            date = date + " 23:59";
+            Date expiryDate = classDateExpiry.parse(date);
+
             Date today = Calendar.getInstance().getTime();
             long diff = expiryDate.getTime() - today.getTime();
+//            LogUtils.debug("getDaysLeftFromPackageExpiryDate hours : " + TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS));
             return (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,6 +98,18 @@ public class DateUtils {
     public static String getClassDate(String date) {
         try {
             return classDateFormat.format(classDate.parse(date));
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+        return "";
+    }
+
+    public static String getTransactionDate(long date) {
+        try {
+            Date time = Calendar.getInstance().getTime();
+            time.setTime(date);
+            return classDateFormat.format(time);
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);

@@ -36,6 +36,7 @@ import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.DialogUtils;
+import www.gymhop.p5m.utils.ToastUtils;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
 public class MemberShip extends BaseActivity implements AdapterCallbacks, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
@@ -76,6 +77,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
         ButterKnife.bind(activity);
 
         swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setEnabled(false);
 
         navigatedFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
         classModel = (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_OBJECT);
@@ -147,6 +149,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                         context.getString(R.string.membership_no_package_heading_2));
             }
 
+            swipeRefreshLayout.setRefreshing(true);
             networkCommunicator.getPackagesForClass(user.getId(), classModel.getGymBranchDetail().getGymId(), classModel.getClassSessionId(), this, false);
 
         } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SETTING ||
@@ -159,6 +162,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                 if (!userPackageInfo.haveGeneralPackage) {
                     // User don't have General package..
                     // get general and show owned packages
+                    swipeRefreshLayout.setRefreshing(true);
                     networkCommunicator.getPackages(user.getId(), this, false);
                     memberShipAdapter.setHeaderText(context.getString(R.string.membership_drop_in_package_heading_1),
                             context.getString(R.string.membership_drop_in_package_heading_2));
@@ -173,6 +177,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
             } else {
                 // User have no packages
                 // Show offered packages
+                swipeRefreshLayout.setRefreshing(true);
                 networkCommunicator.getPackages(user.getId(), this, false);
                 memberShipAdapter.setHeaderText(context.getString(R.string.membership_no_package_heading_1),
                         context.getString(R.string.membership_no_package_heading_2));
@@ -270,7 +275,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
             case NetworkCommunicator.RequestCode.BUY_PACKAGE:
 
-                PaymentWebViewActivity.open(context, ((ResponseModel<PaymentUrl>) response).data);
+                PaymentWebViewActivity.open(activity, ((ResponseModel<PaymentUrl>) response).data);
                 memberShipAdapter.notifyDataSetChanges();
                 break;
         }
@@ -279,9 +284,11 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
         swipeRefreshLayout.setRefreshing(false);
+        swipeRefreshLayout.setEnabled(true);
 
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.BUY_PACKAGE:
+                ToastUtils.showFailureResponse(context, errorMessage);
                 memberShipAdapter.notifyDataSetChanges();
                 break;
         }
@@ -289,8 +296,6 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
     @Override
     public void onRefresh() {
-
-        swipeRefreshLayout.setRefreshing(true);
         checkPackages();
     }
 
@@ -298,6 +303,18 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        if (requestCode == AppConstants.ResultCode.PAYMENT_SUCCESS && resultCode == RESULT_OK) {
 
+            if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS) {
+                HomeActivity.show(context, AppConstants.FragmentPosition.TAB_SCHEDULE);
+
+            } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SETTING ||
+                    navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE) {
+
+                memberShipAdapter.clearAll();
+                memberShipAdapter.notifyDataSetChanges();
+                onRefresh();
+            }
+        }
     }
 }

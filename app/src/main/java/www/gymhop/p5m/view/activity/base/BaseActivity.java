@@ -19,6 +19,8 @@ public class BaseActivity extends AppCompatActivity {
     public static boolean isForeground = false;
     public boolean showActionBar = true;
 
+    public static Context contextRef;
+
     public Activity activity;
     public Context context;
     public NetworkCommunicator networkCommunicator;
@@ -29,6 +31,7 @@ public class BaseActivity extends AppCompatActivity {
 
         activity = this;
         context = this;
+        contextRef = this;
 
         networkCommunicator = NetworkCommunicator.getInstance(context);
 

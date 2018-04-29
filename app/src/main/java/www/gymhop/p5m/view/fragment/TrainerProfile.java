@@ -47,8 +47,8 @@ public class TrainerProfile extends BaseFragment implements AdapterCallbacks {
 
         ButterKnife.bind(this, getView());
 
-        trainerProfileAdapter = new TrainerProfileAdapter(context, AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE, this,
-                new ClassMiniListListenerHelper(context, activity));
+        trainerProfileAdapter = new TrainerProfileAdapter(context, AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE, true,  this,
+                new ClassMiniListListenerHelper(context, activity, this));
         recyclerViewTrainerProfile.setAdapter(trainerProfileAdapter);
 
         StickyLayoutManager layoutManager = new StickyLayoutManager(context, trainerProfileAdapter);

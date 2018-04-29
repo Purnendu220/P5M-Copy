@@ -75,7 +75,7 @@ public class TrainerList extends BaseFragment implements ViewPagerFragmentSelect
         recyclerViewTrainers.setLayoutManager(new LinearLayoutManager(activity));
         recyclerViewTrainers.setHasFixedSize(false);
 
-        trainerListAdapter = new TrainerListAdapter(context, shownInScreen, true, new TrainerListListenerHelper(context, activity));
+        trainerListAdapter = new TrainerListAdapter(context, shownInScreen, true, new TrainerListListenerHelper(context, activity, this));
         recyclerViewTrainers.setAdapter(trainerListAdapter);
     }
 
@@ -90,7 +90,20 @@ public class TrainerList extends BaseFragment implements ViewPagerFragmentSelect
 
     @Override
     public void onShowLastItem() {
+        page++;
+        callApiTrainers();
+    }
 
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        page = 0;
+        trainerListAdapter.loaderReset();
+        callApiTrainers();
+    }
+
+    private void callApiTrainers() {
+        networkCommunicator.getTrainerList(activityId, page, AppConstants.Limit.PAGE_LIMIT_MAIN_TRAINER_LIST, this, false);
     }
 
     @Override
@@ -108,12 +121,6 @@ public class TrainerList extends BaseFragment implements ViewPagerFragmentSelect
     }
 
     @Override
-    public void onRefresh() {
-        swipeRefreshLayout.setRefreshing(true);
-        networkCommunicator.getTrainerList(activityId, page, AppConstants.Limit.PAGE_LIMIT_MAIN_TRAINER_LIST, this, false);
-    }
-
-    @Override
     public void onApiSuccess(Object response, int requestCode) {
 
         switch (requestCode) {
@@ -121,10 +128,15 @@ public class TrainerList extends BaseFragment implements ViewPagerFragmentSelect
                 swipeRefreshLayout.setRefreshing(false);
                 List<TrainerModel> classModels = ((ResponseModel<List<TrainerModel>>) response).data;
 
+                if (page == 0) {
+                    trainerListAdapter.clearAll();
+                }
+
                 if (!classModels.isEmpty()) {
                     trainerListAdapter.addAll(classModels);
                     trainerListAdapter.notifyDataSetChanged();
                 } else {
+                    trainerListAdapter.loaderDone();
                     checkListData();
                 }
                 break;

@@ -15,13 +15,12 @@ public class TempStorage {
 
     private static int userId;
     public static String version;
-    private static String authToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQ4OCwiY3JlYXRlZCI6MTUyNDY0NTUwMzYwMCwiaWQiOiJjNjIzMTc0MC1jMmEzLTQ0YWUtOWY5NC1mYmUxYzc0MWQ0OGYiLCJleHAiOjIxMjk0NDU1MDN9.bP2Z4q-MJ1amGrqK8ELWantOo1nXOCS5lwpgzEZUE44";
+    private static String authToken;
     private static List<ClassActivity> activities;
     private static List<City> cities;
     private static User user;
 
     private static List<ClassesFilter> filterList;
-
 
     public static List<City> getCities() {
 //        if (cities == null) {

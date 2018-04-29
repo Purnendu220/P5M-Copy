@@ -21,10 +21,16 @@ import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.storage.preferences.MyPreferences;
+import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.view.activity.Main.HomeActivity;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
 public class LoginActivity extends BaseActivity implements NetworkCommunicator.RequestListener {
+
+    public static void open(Context context, int navigationFrom) {
+        context.startActivity(new Intent(context, LoginActivity.class)
+                .putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom));
+    }
 
     public static void open(Context context) {
         context.startActivity(new Intent(context, LoginActivity.class));
@@ -50,6 +56,8 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
     @BindView(R.id.buttonLogin)
     public Button buttonLogin;
 
+    private int navigatedFrom;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         showActionBar = false;
@@ -57,6 +65,12 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
         setContentView(R.layout.activity_login);
 
         ButterKnife.bind(activity);
+
+        navigatedFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
+
+        if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_CONTINUE_USER) {
+            editTextEmail.setText(TempStorage.getUser().getEmail());
+        }
 
         setEditWatcher();
     }

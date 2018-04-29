@@ -94,6 +94,13 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         addLoader();
     }
 
+    public void clearAll() {
+        setHeaderText("", "");
+        offeredPackages.clear();
+        ownedPackages.clear();
+        list.clear();
+    }
+
     public void setHeaderText(String text1, String text2) {
         headerSticky1.setTitle(text1);
         headerSticky2.setTitle(text2);
@@ -122,7 +129,7 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     private void addLoader() {
-        if (showLoader && list.contains(listLoader)) {
+        if (showLoader) {
             list.remove(listLoader);
             list.add(listLoader);
         }

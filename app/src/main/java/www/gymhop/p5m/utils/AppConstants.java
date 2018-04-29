@@ -40,19 +40,23 @@ public class AppConstants {
         public static final String CLASS_DATE_STRING = "class_date_string";
         public static final String TAB_ACTIVITY_ID_INT = "tab_activity_id";
         public static final String CLASS_OBJECT = "class_object";
+        public static final String NATIONALITY_OBJECT = "nationality_object";
         public static final String TRAINER_OBJECT = "trainer_object";
         public static final String PAYMENT_URL_OBJECT = "payment_url_object";
         public static final String GYM_OBJECT = "gym_object";
         public static final String GYM_ID_INT = "gym_id_int";
+        public static final String HOME_TAB_POSITION = "home_tab_position";
     }
 
     public class Url {
 //        public static final String BASE_SERVICE_BETA = "http://192.168.0.39:8080/profive-midl/";
+        public static final String WEBSITE = "http://www.p5m.me/";
         public static final String BASE_SERVICE_BETA = "http://qa-api.profive.co/profive-midl/";
         public static final String BASE_SERVICE_ALPHA = "http://qa-api.profive.co/dev-midl/";
         public static final String BASE_SERVICE_LIVE = "http://api.p5m.me/profive-midl/";
 
         public static final String LOGIN = "api/v1/user/login";
+        public static final String LOGOUT = "api/v1/device/logout";
         public static final String REGISTER = "api/v1/user/register";
         public static final String VALIDATE_EMAIL = "api/v1/user/validate";
 
@@ -77,10 +81,17 @@ public class AppConstants {
         public static final String PACKAGE_PURCHASE = "api/v1/payment/package-purchase/";
 
         public static final String JOIN_CLASS = "api/v1/user/class/join";
+        public static final String TRANSACTIONS = "api/v1/payment";
+        public static final String USER_UPDATE = "api/v1/user/update";
+        public static final String DEVICE_SAVE = "api/v1/device/save";
+        public static final String UPDATE_PASS = "api/v1/user/updatepassword";
     }
 
     public class ApiParamValue {
         public static final String SUCCESS_RESPONSE_CODE = "2XX";
+        public static final String USER_AGENT_ANDROID = "android";
+        public static final String NO_TOKEN = "no-token";
+
         public static final String FOLLOW_TYPE_FOLLOWED = "Followed";
         public static final String EMAIL = "email";
 
@@ -108,13 +119,14 @@ public class AppConstants {
         public static final String GYM_ID = "gymId";
         public static final String TRAINER_ID = "trainerId";
         public static final String PACKAGE_ID = "packageId";
+        public static final String FAV_TRAINER_NOTIFICATION = "favTrainerNotification";
         public static final String PROMO_ID = "promoId";
         public static final String SESSION_ID = "sessionId";
     }
 
     public class AppNavigation {
         public static final int SHOWN_IN_SCHEDULE_UPCOMING = 1;
-        public static final int SHOWN_IN_WISH_LIST = 2;
+        public static final int SHOWN_IN_SCHEDULE_WISH_LIST = 2;
         public static final int SHOWN_IN_MY_PROFILE_FINISHED = 3;
         public static final int SHOWN_IN_SEARCH = 4;
         public static final int SHOWN_IN_TRAINER = 5;
@@ -129,19 +141,22 @@ public class AppConstants {
         public static final int NAVIGATION_FROM_RESERVE_CLASS = 51;
         public static final int NAVIGATION_FROM_MY_PROFILE = 52;
         public static final int NAVIGATION_FROM_SETTING = 53;
+        public static final int NAVIGATION_FROM_CONTINUE_USER = 54;
     }
 
     public class Limit {
-        public static final int PAGE_LIMIT_MAIN_CLASS_LIST = 5;
-        public static final int PAGE_LIMIT_INNER_CLASS_LIST = 15;
-        public static final int PAGE_LIMIT_MAIN_TRAINER_LIST = 25;
-        public static final int PAGE_LIMIT_INNER_TRAINER_LIST = 25;
+        public static final int PAGE_LIMIT_MAIN_CLASS_LIST = 2;
+        public static final int PAGE_LIMIT_INNER_CLASS_LIST = 3;
+        public static final int PAGE_LIMIT_MAIN_TRAINER_LIST = 8;
+        public static final int PAGE_LIMIT_INNER_TRAINER_LIST = 8;
 
         public static final int PACKAGE_LIMIT_SCREEN_TABS = 5;
     }
 
     public class ResultCode {
         public static final int PAYMENT_SUCCESS = 1001;
+        public static final int CHOOSE_NATIONALITY = 1002;
+        public static final int CHOOSE_LOCATION = 1003;
 
     }
 }

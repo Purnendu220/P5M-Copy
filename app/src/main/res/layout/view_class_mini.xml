@@ -13,6 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/theme_bg"
+            android:elevation="@dimen/view_separator_elevation"
             android:orientation="vertical">
 
             <LinearLayout
@@ -66,10 +67,10 @@
                             android:letterSpacing="@dimen/text_title_letter_spacing"
                             android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                             android:paddingRight="4dp"
-                            android:text="Name of the Class cl"
+                            android:text="Name of the Class"
                             android:textAllCaps="true"
                             android:textColor="@color/theme_dark_text"
-                            android:textSize="@dimen/text_small"
+                            android:textSize="@dimen/text_medium"
                             android:textStyle="bold" />
 
                         <LinearLayout
@@ -80,9 +81,12 @@
                             android:paddingTop="4dp">
 
                             <android.support.v7.widget.CardView
+                                android:id="@+id/trainerImage"
                                 style="@style/CardViewCircularProfileSmallest"
-                                android:layout_margin="4dp"
-                                android:layout_marginTop="4dp"
+                                android:layout_marginLeft="4dp"
+                                android:layout_marginRight="4dp"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginBottom="4dp"
                                 android:visibility="visible">
 
                                 <ImageView
@@ -107,7 +111,7 @@
                                 android:paddingTop="4dp"
                                 android:text="Varun John"
                                 android:textColor="@color/theme_dark_text"
-                                android:textSize="@dimen/text_small" />
+                                android:textSize="@dimen/text_medium" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -148,7 +152,7 @@
                                     android:layout_height="@dimen/button_height_inner_list"
                                     android:background="@drawable/join_rect"
                                     android:fontFamily="sans-serif-medium"
-                                    android:letterSpacing="@dimen/button_letter_spacing"
+                                    android:letterSpacing="@dimen/button_letter_spacing_little"
                                     android:text="@string/join"
                                     android:textAllCaps="true"
                                     android:textColor="@color/white"
@@ -184,7 +188,7 @@
                         android:lineSpacingExtra="@dimen/line_spacing_extra"
                         android:text="Class A: Boxing, strength training and cardio"
                         android:textColor="@color/theme_dark_text"
-                        android:textSize="@dimen/text_small" />
+                        android:textSize="@dimen/text_medium" />
                 </RelativeLayout>
 
                 <FrameLayout
@@ -222,7 +226,7 @@
                                 android:lineSpacingExtra="@dimen/line_spacing_extra"
                                 android:text="January 11, 2018"
                                 android:textColor="@color/theme_dark_text"
-                                android:textSize="@dimen/text_small" />
+                                android:textSize="@dimen/text_medium" />
 
                             <ImageView
                                 android:id="@+id/imageViewClassTime"
@@ -244,7 +248,7 @@
                                 android:lineSpacingExtra="@dimen/line_spacing_extra"
                                 android:text="7:00 - 8:00 PM"
                                 android:textColor="@color/theme_dark_text"
-                                android:textSize="@dimen/text_small"
+                                android:textSize="@dimen/text_medium"
                                 android:textStyle="bold" />
 
                         </RelativeLayout>
@@ -276,7 +280,7 @@
                                 android:maxLines="3"
                                 android:text="Fikra Edutech, Noida Sector 132"
                                 android:textColor="@color/theme_dark_text"
-                                android:textSize="@dimen/text_small" />
+                                android:textSize="@dimen/text_medium" />
 
                         </RelativeLayout>
                     </LinearLayout>

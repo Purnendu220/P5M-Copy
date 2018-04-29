@@ -33,7 +33,7 @@ import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.view.activity.Main.FilterActivity;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
-public class FindClass extends BaseFragment implements View.OnClickListener, ViewPager.OnPageChangeListener {
+public class FindClass extends BaseFragment implements ViewPagerFragmentSelection, View.OnClickListener, ViewPager.OnPageChangeListener {
 
     @BindView(R.id.viewPager)
     public ViewPager viewPager;
@@ -86,13 +86,21 @@ public class FindClass extends BaseFragment implements View.OnClickListener, Vie
         viewPager.setOffscreenPageLimit(TOTAL_DATE_TABS);
 
         viewPager.addOnPageChangeListener(this);
+    }
 
-        viewPager.post(new Runnable() {
-            @Override
-            public void run() {
-                onPageSelected(0);
-            }
-        });
+    boolean isLoadingFirstTime = true;
+
+    @Override
+    public void onTabSelection(int position) {
+        if (isLoadingFirstTime) {
+            isLoadingFirstTime = false;
+            viewPager.post(new Runnable() {
+                @Override
+                public void run() {
+                    onPageSelected(0);
+                }
+            });
+        }
     }
 
     @Override

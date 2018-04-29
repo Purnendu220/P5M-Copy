@@ -176,6 +176,13 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
                 }
             });
 
+            textViewMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(GymProfileViewHolder.this, textViewMore, model, position);
+                }
+            });
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

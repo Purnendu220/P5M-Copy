@@ -16,6 +16,7 @@ import www.gymhop.p5m.adapters.viewholder.LoaderViewHolder;
 import www.gymhop.p5m.adapters.viewholder.TrainerListViewHolder;
 import www.gymhop.p5m.data.ListLoader;
 import www.gymhop.p5m.data.main.TrainerModel;
+import www.gymhop.p5m.utils.LogUtils;
 
 public class TrainerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int VIEW_TYPE_TRAINER_LIST = 1;
@@ -38,7 +39,7 @@ public class TrainerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         list = new ArrayList<>();
         this.shownInScreen = shownInScreen;
         this.showLoader = showLoader;
-        listLoader = new ListLoader();
+        listLoader = new ListLoader(true, "No more trainers");
     }
 
     public void add(TrainerModel model) {
@@ -52,10 +53,28 @@ public class TrainerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     private void addLoader() {
-        if (showLoader && list.contains(listLoader)) {
+        if (showLoader) {
             list.remove(listLoader);
             list.add(listLoader);
         }
+    }
+
+    public void clearAll() {
+        list.clear();
+    }
+
+    public void loaderDone() {
+        listLoader.setFinish(true);
+        try {
+            notifyItemChanged(list.indexOf(listLoader));
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
+    public void loaderReset() {
+        listLoader.setFinish(false);
     }
 
     @Override
@@ -91,6 +110,11 @@ public class TrainerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((TrainerListViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
         } else if (holder instanceof LoaderViewHolder) {
             ((LoaderViewHolder) holder).bind(listLoader, adapterCallbacks);
+            if (position == getItemCount() - 1 && !listLoader.isFinish()) {
+                adapterCallbacks.onShowLastItem();
+            }
+        } else if (holder instanceof EmptyViewHolder) {
+            ((EmptyViewHolder) holder).bind();
         }
     }
 

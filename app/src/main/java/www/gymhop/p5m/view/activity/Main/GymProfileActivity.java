@@ -76,7 +76,7 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
         swipeRefreshLayout.setOnRefreshListener(this);
 
         gymProfileAdapter = new GymProfileAdapter(context, AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE, this,
-                new ClassMiniListListenerHelper(context, activity));
+                new ClassMiniListListenerHelper(context, activity, this));
         recyclerViewTrainerProfile.setAdapter(gymProfileAdapter);
 
         if (gymDetailModel != null) {
@@ -144,6 +144,9 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
                 if (gymDetailModel != null && !gymDetailModel.getProfileImage().isEmpty()) {
                     Helper.openImageViewer(context, gymDetailModel.getProfileImage());
                 }
+                break;
+            case R.id.textViewMore:
+                LocationListMapActivity.openActivity(context, gymProfileAdapter.getGymDetailModel().getGymBranchResponseList());
                 break;
         }
     }

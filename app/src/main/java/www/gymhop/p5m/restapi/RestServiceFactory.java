@@ -40,12 +40,13 @@ public class RestServiceFactory {
             httpClient.addInterceptor(new Interceptor() {
                 @Override
                 public Response intercept(Chain chain) throws IOException {
-                    String auth = (TempStorage.getAuthToken() != null && !TempStorage.getAuthToken().isEmpty()) ? TempStorage.getAuthToken() : "no-token";
-                    LogUtils.networkSuccess("Token " + auth);
+                    String auth = (TempStorage.getAuthToken() != null && !TempStorage.getAuthToken().isEmpty()) ?
+                            TempStorage.getAuthToken() : AppConstants.ApiParamValue.NO_TOKEN;
+                    LogUtils.debug("Token " + auth);
 
                     Request request = chain.request().newBuilder()
                             .addHeader(AppConstants.ApiParamKey.MYU_AUTH_TOKEN, auth)
-                            .addHeader(AppConstants.ApiParamKey.USER_AGENT, "android")
+                            .addHeader(AppConstants.ApiParamKey.USER_AGENT, AppConstants.ApiParamValue.USER_AGENT_ANDROID)
 //                            .addHeader(AppConstants.ApiParamKey.APP_VERSION, TempStorage.version)
                             .build();
                     return chain.proceed(request);

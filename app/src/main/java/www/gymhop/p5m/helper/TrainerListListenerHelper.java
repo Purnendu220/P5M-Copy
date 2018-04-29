@@ -20,12 +20,14 @@ import www.gymhop.p5m.view.activity.Main.TrainerProfileActivity;
 
 public class TrainerListListenerHelper implements AdapterCallbacks {
 
+    private final AdapterCallbacks adapterCallbacks;
     public Context context;
     public Activity activity;
 
-    public TrainerListListenerHelper(Context context, Activity activity) {
+    public TrainerListListenerHelper(Context context, Activity activity, AdapterCallbacks adapterCallbacks) {
         this.context = context;
         this.activity = activity;
+        this.adapterCallbacks = adapterCallbacks;
     }
 
     public static String getCategoryListFromClassActivity(List<ClassActivity> list) {
@@ -89,6 +91,6 @@ public class TrainerListListenerHelper implements AdapterCallbacks {
 
     @Override
     public void onShowLastItem() {
-
+        adapterCallbacks.onShowLastItem();
     }
 }

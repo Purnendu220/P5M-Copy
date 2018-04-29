@@ -6,7 +6,6 @@ public class GymBranchDetail implements java.io.Serializable {
     private int branchId;
     private String address;
     private String mediaUrl;
-    private double latitude;
     private String gymName;
     private String branchName;
     private int mediaId;
@@ -15,8 +14,19 @@ public class GymBranchDetail implements java.io.Serializable {
     private String phoneNumber;
     private String mediaThumbNailUrl;
     private int localityId;
-    private double longitude;
     private String gender;
+    private Double longitude;
+    private Double latitude;
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (obj instanceof GymBranchDetail && ((GymBranchDetail) obj).branchId == getBranchId()) {
+            return true;
+        }
+
+        return super.equals(obj);
+    }
 
     public String getStudioInstruction() {
         return studioInstruction == null ? "" : studioInstruction;
@@ -48,14 +58,6 @@ public class GymBranchDetail implements java.io.Serializable {
 
     public void setMediaUrl(String mediaUrl) {
         this.mediaUrl = mediaUrl;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
     }
 
     public String getGymName() {
@@ -122,19 +124,27 @@ public class GymBranchDetail implements java.io.Serializable {
         this.localityId = localityId;
     }
 
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
     public String getGender() {
         return gender == null ? "" : gender;
     }
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public Double getLongitude() {
+        return longitude == null ? 0 : longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getLatitude() {
+        return latitude == null ? 0 : latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
     }
 }

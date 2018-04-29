@@ -6,20 +6,27 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
+import www.gymhop.p5m.data.ChangePasswordRequest;
 import www.gymhop.p5m.data.City;
 import www.gymhop.p5m.data.ClassActivity;
 import www.gymhop.p5m.data.Package;
 import www.gymhop.p5m.data.PackageLimitModel;
 import www.gymhop.p5m.data.PaymentUrl;
+import www.gymhop.p5m.data.Transaction;
 import www.gymhop.p5m.data.User;
 import www.gymhop.p5m.data.main.ClassModel;
 import www.gymhop.p5m.data.main.TrainerDetailModel;
 import www.gymhop.p5m.data.main.TrainerModel;
+import www.gymhop.p5m.data.request.ChooseFocusRequest;
 import www.gymhop.p5m.data.request.ClassListRequest;
+import www.gymhop.p5m.data.request.DeviceUpdate;
 import www.gymhop.p5m.data.request.JoinClassRequest;
 import www.gymhop.p5m.data.request.LoginRequest;
+import www.gymhop.p5m.data.request.LogoutRequest;
 import www.gymhop.p5m.data.request.PaymentUrlRequest;
 import www.gymhop.p5m.data.request.RegistrationRequest;
+import www.gymhop.p5m.data.request.UserInfoUpdate;
+import www.gymhop.p5m.data.request.UserUpdateRequest;
 import www.gymhop.p5m.data.temp.GymDetailModel;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.storage.preferences.MyPreferences;
@@ -31,7 +38,6 @@ import www.gymhop.p5m.utils.LogUtils;
  */
 
 public class NetworkCommunicator {
-
 
     public abstract interface RequestListener<T> {
 
@@ -64,6 +70,12 @@ public class NetworkCommunicator {
         public static final int TRAINER = 113;
         public static final int GYM = 114;
         public static final int JOIN_CLASS = 115;
+        public static final int LOGOUT = 116;
+        public static final int TRANSACTION = 117;
+        public static final int UPDATE_USER = 118;
+        public static final int DEVICE = 119;
+        public static final int ME_USER = 120;
+        public static final int CHANGE_PASS = 121;
     }
 
     private Context context;
@@ -236,6 +248,27 @@ public class NetworkCommunicator {
         return call;
     }
 
+    public Call deviceUpdate(DeviceUpdate deviceUpdate, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.DEVICE;
+        Call<ResponseModel<Boolean>> call = apiService.saveDevice(deviceUpdate);
+        LogUtils.debug("NetworkCommunicator hitting deviceUpdate");
+
+        call.enqueue(new RestCallBack<ResponseModel<Boolean>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<Boolean>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator deviceUpdate onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<Boolean>> call, Response<ResponseModel<Boolean>> restResponse, ResponseModel<Boolean> response) {
+                LogUtils.networkSuccess("NetworkCommunicator deviceUpdate onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
     public Call getTrainerList(int categoryId, int page, int size, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.TRAINER_LIST;
         Call<ResponseModel<List<TrainerModel>>> call = apiService.getTrainerList(categoryId, page, size);
@@ -260,18 +293,18 @@ public class NetworkCommunicator {
     public Call getWishList(int userId, int page, int size, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.CLASS_LIST;
         Call<ResponseModel<List<ClassModel>>> call = apiService.getWishList(userId, page, size);
-        LogUtils.debug("NetworkCommunicator hitting getTrainerList");
+        LogUtils.debug("NetworkCommunicator hitting getWishList");
 
         call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>() {
             @Override
             public void onFailure(Call<ResponseModel<List<ClassModel>>> call, String message) {
-                LogUtils.networkError("NetworkCommunicator getTrainerList onFailure " + message);
+                LogUtils.networkError("NetworkCommunicator getWishList onFailure " + message);
                 requestListener.onApiFailure(message, requestCode);
             }
 
             @Override
             public void onResponse(Call<ResponseModel<List<ClassModel>>> call, Response<ResponseModel<List<ClassModel>>> restResponse, ResponseModel<List<ClassModel>> response) {
-                LogUtils.networkSuccess("NetworkCommunicator getTrainerList onResponse data " + response);
+                LogUtils.networkSuccess("NetworkCommunicator getWishList onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
             }
         });
@@ -468,6 +501,30 @@ public class NetworkCommunicator {
         return call;
     }
 
+    public Call getMyUser(final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.ME_USER;
+        Call<ResponseModel<User>> call = apiService.getUser(TempStorage.getUser().getId());
+        LogUtils.debug("NetworkCommunicator hitting User");
+
+        call.enqueue(new RestCallBack<ResponseModel<User>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<User>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator User onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<User>> call, Response<ResponseModel<User>> restResponse, ResponseModel<User> response) {
+                LogUtils.networkSuccess("NetworkCommunicator User onResponse data " + response);
+                if (response.data != null) {
+                    TempStorage.setUser(context, response.data);
+                }
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
     public Call getGym(int gymId, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.GYM;
         Call<ResponseModel<GymDetailModel>> call = apiService.getGym(gymId);
@@ -510,4 +567,129 @@ public class NetworkCommunicator {
         return call;
     }
 
+    public Call logout(LogoutRequest logoutRequest, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.LOGOUT;
+        Call<ResponseModel> call = apiService.logout(logoutRequest);
+        LogUtils.debug("NetworkCommunicator hitting joinClass");
+
+        call.enqueue(new RestCallBack<ResponseModel>() {
+            @Override
+            public void onFailure(Call<ResponseModel> call, String message) {
+                LogUtils.networkError("NetworkCommunicator joinClass onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> restResponse, ResponseModel response) {
+                LogUtils.networkSuccess("NetworkCommunicator joinClass onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call getTransactions(int userId, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.TRANSACTION;
+        Call<ResponseModel<List<Transaction>>> call = apiService.getTransactions(userId);
+        LogUtils.debug("NetworkCommunicator hitting getTransactions");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<Transaction>>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<List<Transaction>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getTransactions onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<Transaction>>> call, Response<ResponseModel<List<Transaction>>> restResponse, ResponseModel<List<Transaction>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getTransactions onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call updateUser(int userId, UserUpdateRequest userUpdateRequest, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.UPDATE_USER;
+        Call<ResponseModel<User>> call = apiService.userUpdate(userId, userUpdateRequest);
+        LogUtils.debug("NetworkCommunicator hitting updateUser");
+
+        call.enqueue(new RestCallBack<ResponseModel<User>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<User>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator updateUser onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<User>> call, Response<ResponseModel<User>> restResponse, ResponseModel<User> response) {
+                LogUtils.networkSuccess("NetworkCommunicator updateUser onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call userInfoUpdate(int userId, UserInfoUpdate userInfoUpdate, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.UPDATE_USER;
+        Call<ResponseModel<User>> call = apiService.userInfoUpdate(userId, userInfoUpdate);
+        LogUtils.debug("NetworkCommunicator hitting updateUser");
+
+        call.enqueue(new RestCallBack<ResponseModel<User>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<User>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator updateUser onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<User>> call, Response<ResponseModel<User>> restResponse, ResponseModel<User> response) {
+                LogUtils.networkSuccess("NetworkCommunicator updateUser onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call updateUserFocus(int userId, ChooseFocusRequest chooseFocusRequest, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.UPDATE_USER;
+        Call<ResponseModel<User>> call = apiService.updateFocus(userId, chooseFocusRequest);
+        LogUtils.debug("NetworkCommunicator hitting updateUser");
+
+        call.enqueue(new RestCallBack<ResponseModel<User>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<User>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator updateUser onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<User>> call, Response<ResponseModel<User>> restResponse, ResponseModel<User> response) {
+                LogUtils.networkSuccess("NetworkCommunicator updateUser onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call changePass(ChangePasswordRequest changePasswordRequest, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.CHANGE_PASS;
+        Call<ResponseModel<String>> call = apiService.changePass(changePasswordRequest);
+        LogUtils.debug("NetworkCommunicator hitting changePass");
+
+        call.enqueue(new RestCallBack<ResponseModel<String>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<String>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator changePass onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<String>> call, Response<ResponseModel<String>> restResponse, ResponseModel<String> response) {
+                LogUtils.networkSuccess("NetworkCommunicator changePass onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
 }

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/view_separator_size"
+            android:background="@color/theme_bg"
+            android:elevation="@dimen/view_separator_elevation"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="12dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/view_padding_edit_profile"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif"
+                        android:letterSpacing="@dimen/text_title_letter_spacing"
+                        android:text="Reference ID"
+                        android:textColor="@color/theme_dark_light_text"
+                        android:textSize="@dimen/text_medium"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/textViewRefId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:letterSpacing="@dimen/text_title_letter_spacing"
+                        android:text="42827399883"
+                        android:textColor="@color/theme_medium_light_text"
+                        android:textSize="@dimen/text_medium"
+                        android:textStyle="normal" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="12dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/view_padding_edit_profile"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif"
+                        android:letterSpacing="@dimen/text_title_letter_spacing"
+                        android:text="Package Name"
+                        android:textColor="@color/theme_dark_light_text"
+                        android:textSize="@dimen/text_medium"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/textViewPackageName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:letterSpacing="@dimen/text_title_letter_spacing"
+                        android:text="Get Set"
+                        android:textColor="@color/theme_medium_light_text"
+                        android:textSize="@dimen/text_medium"
+                        android:textStyle="normal" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="12dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/view_padding_edit_profile"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif"
+                        android:letterSpacing="@dimen/text_title_letter_spacing"
+                        android:text="Amount (KD)"
+                        android:textColor="@color/theme_dark_light_text"
+                        android:textSize="@dimen/text_medium"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/textViewPackagePrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:letterSpacing="@dimen/text_title_letter_spacing"
+                        android:text="30.0"
+                        android:textColor="@color/theme_medium_light_text"
+                        android:textSize="@dimen/text_medium"
+                        android:textStyle="normal" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="12dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/view_padding_edit_profile"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif"
+                        android:letterSpacing="@dimen/text_title_letter_spacing"
+                        android:text="Date"
+                        android:textColor="@color/theme_dark_light_text"
+                        android:textSize="@dimen/text_medium"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/textViewPackageDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:letterSpacing="@dimen/text_title_letter_spacing"
+                        android:text="Wed, 2018"
+                        android:textColor="@color/theme_medium_light_text"
+                        android:textSize="@dimen/text_medium"
+                        android:textStyle="normal" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/view_padding_edit_profile"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif"
+                        android:letterSpacing="@dimen/text_title_letter_spacing"
+                        android:text="Status"
+                        android:textColor="@color/theme_dark_light_text"
+                        android:textSize="@dimen/text_medium"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/textViewPackageStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:letterSpacing="@dimen/text_title_letter_spacing"
+                        android:text="30.0"
+                        android:textColor="@color/theme_medium_light_text"
+                        android:textSize="@dimen/text_medium"
+                        android:textStyle="normal" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

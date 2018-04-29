@@ -36,13 +36,12 @@ import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.view.activity.Main.EditProfileActivity;
-import www.gymhop.p5m.view.activity.Main.LocationListMapActivity;
 import www.gymhop.p5m.view.activity.Main.MemberShip;
 import www.gymhop.p5m.view.activity.Main.SettingActivity;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 import www.gymhop.p5m.view.activity.custom.MyRecyclerView;
 
-public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>, MyRecyclerView.LoaderCallbacks, NetworkCommunicator.RequestListener, PopupMenu.OnMenuItemClickListener {
+public class MyProfile extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks<Object>, MyRecyclerView.LoaderCallbacks, NetworkCommunicator.RequestListener, PopupMenu.OnMenuItemClickListener {
 
     @BindView(R.id.recyclerView)
     public RecyclerView recyclerView;
@@ -70,8 +69,8 @@ public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>,
 
         ButterKnife.bind(this, getView());
 
-        myProfileAdapter = new MyProfileAdapter(context, new TrainerListListenerHelper(context, activity),
-                new ClassMiniListListenerHelper(context, activity), this);
+        myProfileAdapter = new MyProfileAdapter(context, new TrainerListListenerHelper(context, activity, this),
+                new ClassMiniListListenerHelper(context, activity, this), this);
         StickyLayoutManager layoutManager = new StickyLayoutManager(context, myProfileAdapter);
         layoutManager.elevateHeaders(true);
         layoutManager.elevateHeaders((int) context.getResources().getDimension(R.dimen.view_separator_elevation));
@@ -96,12 +95,20 @@ public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>,
             }
         });
 
-        if (myProfileAdapter.getTrainers().isEmpty()) {
-            networkCommunicator.getFavTrainerList(AppConstants.ApiParamValue.FOLLOW_TYPE_FOLLOWED, TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_TRAINER_LIST, this, false);
-            myProfileAdapter.onTabSelection(ProfileHeaderTabViewHolder.TAB_1);
-        }
-
         setToolBar();
+    }
+
+    boolean isLoadingFirstTime = true;
+
+    @Override
+    public void onTabSelection(int position) {
+        if (isLoadingFirstTime) {
+            isLoadingFirstTime = false;
+            if (myProfileAdapter.getTrainers().isEmpty()) {
+                networkCommunicator.getFavTrainerList(AppConstants.ApiParamValue.FOLLOW_TYPE_FOLLOWED, TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_TRAINER_LIST, this, false);
+                myProfileAdapter.onTabSelection(ProfileHeaderTabViewHolder.TAB_1);
+            }
+        }
     }
 
     private void setToolBar() {
@@ -245,7 +252,6 @@ public class MyProfile extends BaseFragment implements AdapterCallbacks<Object>,
             }
             case R.id.actionEditProfile: {
                 EditProfileActivity.openActivity(context);
-                LocationListMapActivity.openActivity(context);
                 return true;
             }
             default:

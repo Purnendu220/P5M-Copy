@@ -5,8 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,16 +16,15 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.data.User;
+import www.gymhop.p5m.helper.Helper;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.storage.preferences.MyPreferences;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.ToastUtils;
-import www.gymhop.p5m.view.activity.LoginRegister.LoginActivity;
 import www.gymhop.p5m.view.activity.LoginRegister.RegistrationActivity;
 import www.gymhop.p5m.view.activity.LoginRegister.RegistrationDoneActivity;
 
@@ -114,10 +111,10 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
         buttonFemale.setOnClickListener(this);
         buttonNext.setOnClickListener(this);
 
-        setupWatcher(editTextName, textInputLayoutName);
-        setupWatcher(editTextEmail, textInputLayoutEmail);
-        setupWatcher(editTextPass, textInputLayoutPass);
-        setupWatcher(editTextConfirmPass, textInputLayoutConfirmPass);
+        Helper.setupErrorWatcher(editTextName, textInputLayoutName);
+        Helper.setupErrorWatcher(editTextEmail, textInputLayoutEmail);
+        Helper.setupErrorWatcher(editTextPass, textInputLayoutPass);
+        Helper.setupErrorWatcher(editTextConfirmPass, textInputLayoutConfirmPass);
 
         editTextName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -143,30 +140,6 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
                     onClick(buttonNext);
                 }
                 return false;
-            }
-        });
-    }
-
-    @OnClick(R.id.textViewLogin)
-    public void textViewLogin(View view) {
-        LoginActivity.open(context);
-    }
-
-    private void setupWatcher(EditText editText, final TextInputLayout textInputLayout) {
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                textInputLayout.setError("");
             }
         });
     }
@@ -252,7 +225,7 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
                     return;
                 }
 
-                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                if (!Helper.validateEmail(email)) {
                     textInputLayoutEmail.setError(context.getResources().getString(R.string.email_required_validate));
                     return;
                 }
@@ -267,6 +240,11 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
 
                 if (pass.isEmpty()) {
                     textInputLayoutPass.setError(context.getResources().getString(R.string.password_required));
+                    return;
+                }
+
+                if (Helper.validatePass(pass)) {
+                    textInputLayoutPass.setError(context.getResources().getString(R.string.password_weak));
                     return;
                 }
 
@@ -329,6 +307,7 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
                 break;
             case NetworkCommunicator.RequestCode.REGISTER:
                 ToastUtils.showFailureResponse(context, errorMessage);
+                buttonNext.setVisibility(View.VISIBLE);
                 break;
         }
     }

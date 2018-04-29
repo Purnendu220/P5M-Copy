@@ -20,7 +20,7 @@ import www.gymhop.p5m.utils.LogUtils;
 
 public class MyApplication extends MultiDexApplication implements NetworkChangeReceiver.OnNetworkChangeListener, Application.ActivityLifecycleCallbacks {
 
-    private Context context;
+    public static Context context;
 
     public final static ApiMode apiMode = ApiMode.TESTING_BETA;
     public final static boolean SHOW_LOG = true;
@@ -40,20 +40,11 @@ public class MyApplication extends MultiDexApplication implements NetworkChangeR
     @Override
     public void onCreate() {
         super.onCreate();
-        context = this;
+        context = getApplicationContext();
 
         Fresco.initialize(this);
         MultiDex.install(this);
         registerActivityLifecycleCallbacks(this);
-
-//        ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
-//                .setProgressiveJpegConfig(new SimpleProgressiveJpegConfig())
-//                .setResizeAndRotateEnabledForNetwork(true)
-//                .setDownsampleEnabled(true)
-//                .build();
-//
-//        Fresco.initialize(this, config);
-
 
         NetworkChangeReceiver.register(this);
 

@@ -7,22 +7,30 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import www.gymhop.p5m.data.ChangePasswordRequest;
 import www.gymhop.p5m.data.City;
 import www.gymhop.p5m.data.ClassActivity;
 import www.gymhop.p5m.data.Package;
 import www.gymhop.p5m.data.PackageLimitModel;
 import www.gymhop.p5m.data.PaymentUrl;
+import www.gymhop.p5m.data.Transaction;
 import www.gymhop.p5m.data.User;
 import www.gymhop.p5m.data.main.ClassModel;
 import www.gymhop.p5m.data.main.TrainerDetailModel;
 import www.gymhop.p5m.data.main.TrainerModel;
+import www.gymhop.p5m.data.request.ChooseFocusRequest;
 import www.gymhop.p5m.data.request.ClassListRequest;
+import www.gymhop.p5m.data.request.DeviceUpdate;
 import www.gymhop.p5m.data.request.JoinClassRequest;
 import www.gymhop.p5m.data.request.LoginRequest;
+import www.gymhop.p5m.data.request.LogoutRequest;
 import www.gymhop.p5m.data.request.PaymentUrlRequest;
 import www.gymhop.p5m.data.request.RegistrationRequest;
+import www.gymhop.p5m.data.request.UserInfoUpdate;
+import www.gymhop.p5m.data.request.UserUpdateRequest;
 import www.gymhop.p5m.data.temp.GymDetailModel;
 import www.gymhop.p5m.utils.AppConstants;
 
@@ -35,6 +43,10 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @POST(AppConstants.Url.REGISTER)
     Call<ResponseModel<User>> register(@Body RegistrationRequest registrationRequest);
+
+    @Headers("Content-type: application/json")
+    @POST(AppConstants.Url.LOGOUT)
+    Call<ResponseModel> logout(@Body LogoutRequest logoutRequest);
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.VALIDATE_EMAIL)
@@ -108,6 +120,11 @@ public interface ApiService {
             @Query(AppConstants.ApiParamKey.PACKAGE_TYPE) String packageType);
 
     @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.TRANSACTIONS)
+    Call<ResponseModel<List<Transaction>>> getTransactions(
+            @Query(AppConstants.ApiParamKey.USER_ID) int userId);
+
+    @Headers("Content-type: application/json")
     @GET(AppConstants.Url.PACKAGE_PURCHASE)
     Call<ResponseModel<List<PackageLimitModel>>> purchasePackageForSelf(
             @Query(AppConstants.ApiParamKey.USER_ID) int userId,
@@ -122,10 +139,38 @@ public interface ApiService {
     Call<ResponseModel<User>> joinClass(@Body JoinClassRequest joinClassRequest);
 
     @Headers("Content-type: application/json")
+    @PUT(AppConstants.Url.USER_UPDATE + "/{" + AppConstants.ApiParamKey.USER_ID + "}")
+    Call<ResponseModel<User>> userUpdate(@Path(AppConstants.ApiParamKey.USER_ID) int userId,
+                                         @Body UserUpdateRequest userUpdateRequest);
+
+    @Headers("Content-type: application/json")
+    @PUT(AppConstants.Url.USER_UPDATE + "/{" + AppConstants.ApiParamKey.USER_ID + "}")
+    Call<ResponseModel<User>> userInfoUpdate(@Path(AppConstants.ApiParamKey.USER_ID) int userId,
+                                         @Body UserInfoUpdate userInfoUpdate);
+
+    @Headers("Content-type: application/json")
     @GET(AppConstants.Url.USER + "/{" + AppConstants.ApiParamKey.USER_ID + "}")
     Call<ResponseModel<TrainerDetailModel>> getTrainer(@Path(AppConstants.ApiParamKey.USER_ID) int trainerId);
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.USER + "/{" + AppConstants.ApiParamKey.USER_ID + "}")
+    Call<ResponseModel<User>> getUser(@Path(AppConstants.ApiParamKey.USER_ID) int userId);
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.USER + "/{" + AppConstants.ApiParamKey.USER_ID + "}")
     Call<ResponseModel<GymDetailModel>> getGym(@Path(AppConstants.ApiParamKey.USER_ID) int gymId);
+
+    @Headers("Content-type: application/json")
+    @POST(AppConstants.Url.DEVICE_SAVE)
+    Call<ResponseModel<Boolean>> saveDevice(@Body DeviceUpdate deviceUpdate);
+
+    @Headers("Content-type: application/json")
+    @PUT(AppConstants.Url.USER_UPDATE + "/{" + AppConstants.ApiParamKey.USER_ID + "}")
+    Call<ResponseModel<User>> updateFocus(@Path(AppConstants.ApiParamKey.USER_ID) int userId,
+                                          @Body ChooseFocusRequest chooseFocusRequest);
+
+    @Headers("Content-type: application/json")
+    @POST(AppConstants.Url.UPDATE_PASS)
+    Call<ResponseModel<String>> changePass(@Body ChangePasswordRequest changePasswordRequest);
+
 }

@@ -7,9 +7,7 @@ public class ClassModel implements java.io.Serializable {
     private String classDate;
     private MediaModel classMedia;
     private String reminder;
-    private boolean hideClass;
     private String description;
-    private String priceModel;
     private int availableSeat;
     private String classCategory;
     private String title;
@@ -25,6 +23,12 @@ public class ClassModel implements java.io.Serializable {
     private String toTime;
     private int totalSeat;
     private GymBranchDetail gymBranchDetail;
+
+    /*************Special Class Addition****************/
+    private String priceModel;
+    private String specialClassRemark;
+    private boolean hideClass;
+    private Integer price;
 
     /********From wish list**********/
     private String classDay;
@@ -230,5 +234,21 @@ public class ClassModel implements java.io.Serializable {
 
     public void setClassImage(String classImage) {
         this.classImage = classImage;
+    }
+
+    public String getSpecialClassRemark() {
+        return specialClassRemark == null ? "" : specialClassRemark;
+    }
+
+    public void setSpecialClassRemark(String specialClassRemark) {
+        this.specialClassRemark = specialClassRemark;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 }

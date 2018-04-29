@@ -29,11 +29,9 @@ import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.AppConstants;
-import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.view.activity.Main.ClassProfileActivity;
-import www.gymhop.p5m.view.activity.custom.MyRecyclerView;
 
-public class ClassList extends BaseFragment implements ViewPagerFragmentSelection, MyRecyclerView.LoaderCallbacks, AdapterCallbacks<ClassModel>, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
+public class ClassList extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks<ClassModel>, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
 
     public static Fragment createFragment(String date, int position, int shownIn) {
         Fragment tabFragment = new ClassList();
@@ -132,11 +130,6 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
     }
 
     @Override
-    public void onShowLoader(MyRecyclerView.LoaderItem loaderItem, MyRecyclerView.Loader loader, View view, int position) {
-        LogUtils.debug("onShowLoader " + position);
-    }
-
-    @Override
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, ClassModel model, int position) {
         switch (view.getId()) {
             case R.id.textViewLocation:
@@ -155,6 +148,20 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
     @Override
     public void onShowLastItem() {
+        page++;
+        callApiClassList();
+    }
+
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        page = 0;
+        classListAdapter.loaderReset();
+        callApiClassList();
+    }
+
+    private void callApiClassList() {
+        networkCommunicator.getClassList(generateRequest(), this, false);
     }
 
     @Override
@@ -163,12 +170,18 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.CLASS_LIST:
                 swipeRefreshLayout.setRefreshing(false);
+
+                if (page == 0) {
+                    classListAdapter.clearAll();
+                }
+
                 List<ClassModel> classModels = ((ResponseModel<List<ClassModel>>) response).data;
 
                 if (!classModels.isEmpty()) {
                     classListAdapter.addAllClass(classModels);
                     classListAdapter.notifyDataSetChanged();
                 } else {
+                    classListAdapter.loaderDone();
                     checkListData();
                 }
                 break;
@@ -188,12 +201,6 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
     }
 
     private void checkListData() {
-    }
-
-    @Override
-    public void onRefresh() {
-        swipeRefreshLayout.setRefreshing(true);
-        networkCommunicator.getClassList(generateRequest(), this, false);
     }
 
     @Override

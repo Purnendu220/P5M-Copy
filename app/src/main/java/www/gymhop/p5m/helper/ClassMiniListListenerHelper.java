@@ -15,10 +15,12 @@ public class ClassMiniListListenerHelper implements AdapterCallbacks{
 
     public Context context;
     public Activity activity;
+    private final AdapterCallbacks adapterCallbacks;
 
-    public ClassMiniListListenerHelper(Context context, Activity activity) {
+    public ClassMiniListListenerHelper(Context context, Activity activity, AdapterCallbacks adapterCallbacks) {
         this.context = context;
         this.activity = activity;
+        this.adapterCallbacks = adapterCallbacks;
     }
 
     @Override
@@ -33,6 +35,6 @@ public class ClassMiniListListenerHelper implements AdapterCallbacks{
 
     @Override
     public void onShowLastItem() {
-
+        adapterCallbacks.onShowLastItem();
     }
 }

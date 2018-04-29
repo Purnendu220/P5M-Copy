@@ -10,6 +10,8 @@
 
     <string name="start_being_active">START BEING ACTIVE</string>
 
+    <string name="setting_notification_fac_details">Get notified when your favourite trainer adds a new class</string>
+
     <string name="skip">SKIP</string>
     <string name="start">GOT IT</string>
 
@@ -61,6 +63,7 @@
     <string name="login_back">LOGIN</string>
     <string name="start_journey">Start your fitness journey</string>
     <string name="donot_signup">Don\'t have an account?</string>
+    <string name="done">Done</string>
     <string name="already_account">Already have an account? </string>
     <string name="already_account_html">Already have an account? <u><b>Login!</b></u></string>
 
@@ -71,6 +74,7 @@
     <string name="trainer">Trainer</string>
     <string name="schedule">My Schedule</string>
     <string name="notification">Notification</string>
+    <string name="setting_notification_fav_title">Followed trainers activity</string>
     <string name="profile">Profile</string>
     <string name="search_title">Search..</string>
     <string name="location">Location</string>
@@ -161,13 +165,15 @@
     <string name="email_required">Email is required.</string>
 
     <string name="email_required_validate">The email you entered is incorrect.</string>
+    <string name="phone_email_required_validate">The phone and email you entered are incorrect.</string>
+    <string name="phone_required_validate">The phone number you entered is incorrect.</string>
     <string name="email_exist">Email already exist.Try with other email.</string>
     <string name="something_went_wrong">Some thing went wrong please try again.</string>
-    <string name="no_classes">No classes are available.\n Try diffrent days to find your match. </string>
+    <string name="no_classes">No classes are available.\n Try diffrent days to find your match.</string>
     <string name="password_required">Password is required.</string>
+    <string name="password_weak">Password is weak, should be of at least 6 characters.</string>
     <string name="confirm_password_required">Confirm password is required.</string>
     <string name="confirm_password_not_matched">Password is not confirmed. Please try again.</string>
-
 
     <string-array name="gender_type">
         <item>Male</item>
@@ -208,4 +214,10 @@
     <string name="registration_done">Registration completed successfully!</string>
     <string name="join_fail_date_expire">Your current plan will expire before the date of the following class. Would you like to continue and purchase a one-time visit to this class?</string>
     <string name="join_fail_limit_exhaust">You have exceeded the number of visits to this studio. Would you like to continue and purchase a one-time visit to this class, without changing your current plan?</string>
+    <string name="title_activity_continue_user">ContinueUser</string>
+    <string name="switch_account">"<u>Switch an account</u>"</string>
+    <string name="cancel">cancel</string>
+    <string name="transaction_history">Transaction History</string>
+    <string name="choose_focus">Choose your focus</string>
+    <string name="choose_nationality">Choose your Nationality</string>
 </resources>

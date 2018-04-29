@@ -16,6 +16,7 @@ import www.gymhop.p5m.adapters.viewholder.EmptyViewHolder;
 import www.gymhop.p5m.adapters.viewholder.LoaderViewHolder;
 import www.gymhop.p5m.data.ListLoader;
 import www.gymhop.p5m.data.main.ClassModel;
+import www.gymhop.p5m.utils.LogUtils;
 
 public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -39,7 +40,8 @@ public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         list = new ArrayList<>();
         this.shownInScreen = shownInScreen;
         this.showLoader = showLoader;
-        listLoader = new ListLoader();
+
+        listLoader = new ListLoader(true, "No more classes");
     }
 
     public void addClass(ClassModel model) {
@@ -52,8 +54,26 @@ public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         addLoader();
     }
 
+    public void clearAll() {
+        list.clear();
+    }
+
+    public void loaderDone() {
+        listLoader.setFinish(true);
+        try {
+            notifyItemChanged(list.indexOf(listLoader));
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
+    public void loaderReset() {
+        listLoader.setFinish(false);
+    }
+
     private void addLoader() {
-        if (showLoader && list.contains(listLoader)) {
+        if (showLoader) {
             list.remove(listLoader);
             list.add(listLoader);
         }
@@ -93,6 +113,9 @@ public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ((ClassViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
         } else if (holder instanceof LoaderViewHolder) {
             ((LoaderViewHolder) holder).bind(listLoader, adapterCallbacks);
+            if (position == getItemCount() - 1 && !listLoader.isFinish()) {
+                adapterCallbacks.onShowLastItem();
+            }
         } else if (holder instanceof EmptyViewHolder) {
             ((EmptyViewHolder) holder).bind();
         }
@@ -109,5 +132,4 @@ public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         else
             return null;
     }
-
 }

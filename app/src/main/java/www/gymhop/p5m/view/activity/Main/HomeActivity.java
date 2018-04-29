@@ -15,14 +15,25 @@ import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.HomeAdapter;
 import www.gymhop.p5m.utils.AppConstants;
+import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 import www.gymhop.p5m.view.activity.custom.BottomTapLayout;
+import www.gymhop.p5m.view.fragment.ViewPagerFragmentSelection;
 
 public class HomeActivity extends BaseActivity implements BottomTapLayout.TabListener, ViewPager.OnPageChangeListener {
 
-
     public static void open(Context context) {
-        context.startActivity(new Intent(context, HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        Intent intent = new Intent(context, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(intent);
+    }
+
+    public static void show(Context context, int tabPosition) {
+        Intent intent = new Intent(context, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(AppConstants.DataKey.HOME_TAB_POSITION, tabPosition);
+        context.startActivity(intent);
     }
 
     @BindView(R.id.viewPager)
@@ -35,6 +46,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     private HomeAdapter homeAdapter;
 
     private static final int TOTAL_TABS = 4;
+    private static int INITIAL_POSITION = AppConstants.FragmentPosition.TAB_FIND_CLASS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +62,25 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         viewPager.addOnPageChangeListener(this);
         viewPager.setOffscreenPageLimit(TOTAL_TABS);
 
-        layoutBottomTabs.post(new Runnable() {
+        viewPager.post(new Runnable() {
             @Override
             public void run() {
-                bottomTapLayout.setTab(AppConstants.FragmentPosition.TAB_FIND_CLASS);
+                onPageSelected(INITIAL_POSITION);
+            }
+        });
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        INITIAL_POSITION = intent.getIntExtra(AppConstants.DataKey.HOME_TAB_POSITION,
+                AppConstants.FragmentPosition.TAB_FIND_CLASS);
+
+        viewPager.post(new Runnable() {
+            @Override
+            public void run() {
+                onPageSelected(INITIAL_POSITION);
             }
         });
     }
@@ -94,6 +121,12 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
     @Override
     public void onPageSelected(int position) {
+        try {
+            ((ViewPagerFragmentSelection) homeAdapter.getFragments().get(position)).onTabSelection(position);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
         bottomTapLayout.setTab(position);
     }
 

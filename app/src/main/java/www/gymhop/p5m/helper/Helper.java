@@ -1,9 +1,15 @@
 package www.gymhop.p5m.helper;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.support.design.widget.TextInputLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -11,6 +17,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.stfalcon.frescoimageviewer.ImageViewer;
 
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -27,6 +34,25 @@ import www.gymhop.p5m.utils.LogUtils;
  */
 
 public class Helper {
+
+    public static void setupErrorWatcher(EditText editText, final TextInputLayout textInputLayout) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                textInputLayout.setError("");
+            }
+        });
+    }
 
     public static void setJoinButton(Context context, Button buttonJoin, ClassModel model) {
         if (model.isUserJoinStatus()) {
@@ -131,6 +157,45 @@ public class Helper {
 
         popup.setOnMenuItemClickListener(onMenuItemClickListener);
         popup.show();
+    }
+
+    public static void openMap(Context context, Double latitude, Double longitude) {
+        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                Uri.parse("http://maps.google.com/maps?saddr=" + latitude + "," + longitude + "&daddr=20.5666,45.345"));
+        context.startActivity(intent);
+    }
+
+    public static void openWebPage(Context context, String url) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        context.startActivity(browserIntent);
+    }
+
+    public static boolean validatePass(String pass) {
+        return pass.length() > 5;
+    }
+
+    public static boolean validatePhone(String phone) {
+        return phone.length() > 6 && phone.length() < 14;
+    }
+
+    public static boolean validateEmail(String email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    public static String getNationalityFileFromAsset(Context context) {
+        String json = null;
+        try {
+            InputStream is = context.getAssets().open("Nationality.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return "";
+        }
+        return json;
     }
 
 }

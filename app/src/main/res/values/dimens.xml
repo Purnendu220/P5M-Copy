@@ -50,4 +50,5 @@
     <dimen name="bottom_text_button_height">48dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="registration_title">28sp</dimen>
+    <dimen name="action_bar_elevation">2dp</dimen>
 </resources>

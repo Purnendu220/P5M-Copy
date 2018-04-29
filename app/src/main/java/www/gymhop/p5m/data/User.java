@@ -10,19 +10,22 @@ public class User implements java.io.Serializable {
     private int numberOfTrainer;
     private boolean favTrainerNotification;
     private long lastActiveDate;
-    private List<UserPackage> userPackageDetailDtoList;
     private String profileImage;
     private String firstName;
     private long dateOfJoining;
     private String nationality;
     private String userCategory;
-    private long dob;
+    private String location;
+    private Long dob;
     private int userProfileImageId;
     private int id;
     private int followerCount;
     private String email;
+    private String mobile;
     private boolean isfollow;
     private boolean status;
+    private List<UserPackage> userPackageDetailDtoList;
+    private List<ClassActivity> classCategoryList;
 
     public long getLastPasswordResetDate() {
         return this.lastPasswordResetDate;
@@ -105,26 +108,34 @@ public class User implements java.io.Serializable {
     }
 
     public String getNationality() {
-        return this.nationality  == null ? "" : nationality;
+        return this.nationality == null ? "" : nationality;
     }
 
     public void setNationality(String nationality) {
         this.nationality = nationality;
     }
 
+    public String getLocation() {
+        return location == null ? "" : location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public String getUserCategory() {
-        return this.userCategory  == null ? "" : userCategory;
+        return this.userCategory == null ? "" : userCategory;
     }
 
     public void setUserCategory(String userCategory) {
         this.userCategory = userCategory;
     }
 
-    public long getDob() {
+    public Long getDob() {
         return this.dob;
     }
 
-    public void setDob(long dob) {
+    public void setDob(Long dob) {
         this.dob = dob;
     }
 
@@ -160,6 +171,14 @@ public class User implements java.io.Serializable {
         this.email = email;
     }
 
+    public String getMobile() {
+        return mobile == null ? "" : mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
     public boolean getIsfollow() {
         return this.isfollow;
     }
@@ -174,5 +193,13 @@ public class User implements java.io.Serializable {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public List<ClassActivity> getClassCategoryList() {
+        return classCategoryList;
+    }
+
+    public void setClassCategoryList(List<ClassActivity> classCategoryList) {
+        this.classCategoryList = classCategoryList;
     }
 }

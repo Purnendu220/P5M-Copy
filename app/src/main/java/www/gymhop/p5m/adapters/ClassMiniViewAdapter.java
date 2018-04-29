@@ -16,6 +16,8 @@ import www.gymhop.p5m.adapters.viewholder.EmptyViewHolder;
 import www.gymhop.p5m.adapters.viewholder.LoaderViewHolder;
 import www.gymhop.p5m.data.ListLoader;
 import www.gymhop.p5m.data.main.ClassModel;
+import www.gymhop.p5m.utils.AppConstants;
+import www.gymhop.p5m.utils.LogUtils;
 
 public class ClassMiniViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -39,7 +41,13 @@ public class ClassMiniViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         list = new ArrayList<>();
         this.shownInScreen = shownInScreen;
         this.showLoader = showLoader;
-        listLoader = new ListLoader();
+
+        if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING ||
+                shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
+            listLoader = new ListLoader();
+        } else {
+            listLoader = new ListLoader();
+        }
     }
 
     public void addClass(ClassModel model) {
@@ -52,8 +60,26 @@ public class ClassMiniViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         addLoader();
     }
 
+    public void clearAll() {
+        list.clear();
+    }
+
+    public void loaderDone() {
+        listLoader.setFinish(true);
+        try {
+            notifyItemChanged(list.indexOf(listLoader));
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
+    public void loaderReset() {
+        listLoader.setFinish(false);
+    }
+
     private void addLoader() {
-        if (showLoader && list.contains(listLoader)) {
+        if (showLoader) {
             list.remove(listLoader);
             list.add(listLoader);
         }
@@ -94,6 +120,9 @@ public class ClassMiniViewAdapter extends RecyclerView.Adapter<RecyclerView.View
             ((ClassMiniDetailViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
         } else if (holder instanceof LoaderViewHolder) {
             ((LoaderViewHolder) holder).bind(listLoader, adapterCallbacks);
+            if (position == getItemCount() - 1 && !listLoader.isFinish()) {
+                adapterCallbacks.onShowLastItem();
+            }
         } else if (holder instanceof EmptyViewHolder) {
             ((EmptyViewHolder) holder).bind();
         }

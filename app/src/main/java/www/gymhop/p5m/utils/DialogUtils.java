@@ -4,7 +4,12 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
+
+import java.util.List;
+
+import www.gymhop.p5m.R;
 
 public class DialogUtils {
 
@@ -17,7 +22,7 @@ public class DialogUtils {
                 .cancelable(false)
                 .positiveText(positiveButtonText)
                 .onPositive(singleButtonCallbackForPositive)
-                .negativeText("Cancel")
+                .negativeText(context.getString(R.string.cancel))
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -51,7 +56,7 @@ public class DialogUtils {
                                         String buttonText,
                                         String message) {
         if (buttonText == null) {
-            buttonText = "Cancel";
+            buttonText = context.getString(R.string.cancel);
         }
 
         new MaterialDialog.Builder(context)
@@ -59,6 +64,27 @@ public class DialogUtils {
                 .content(message)
                 .positiveText(buttonText)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+    public static void showBasicList(Context context,
+                                     String title,
+                                     List<String> items,
+                                     MaterialDialog.ListCallback listCallback) {
+        new MaterialDialog.Builder(context)
+                .title(title)
+                .items(items)
+                .itemsCallback(listCallback)
+                .negativeText(context.getString(R.string.cancel))
+                .dividerColorRes(R.color.separator)
+                .itemsGravity(GravityEnum.CENTER)
+                .titleGravity(GravityEnum.CENTER)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         dialog.dismiss();

@@ -38,7 +38,7 @@ public class ScheduleAdapter extends FragmentStatePagerAdapter {
         if (position == 0) {
             shownInScreen = AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING;
         } else if (position == 1) {
-            shownInScreen = AppConstants.AppNavigation.SHOWN_IN_WISH_LIST;
+            shownInScreen = AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST;
         }
 
         Fragment tabFragment = ClassMiniViewList.getInstance(position, shownInScreen);

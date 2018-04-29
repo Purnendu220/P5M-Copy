@@ -50,6 +50,8 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
     public TextView textViewGender;
     @BindView(R.id.textViewTrainerName)
     public TextView textViewTrainerName;
+    @BindView(R.id.textViewSpecialClass)
+    public TextView textViewSpecialClass;
 
     @BindView(R.id.layoutTrainer)
     public LinearLayout layoutTrainer;
@@ -72,6 +74,19 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
             itemView.setVisibility(View.VISIBLE);
 
             final ClassModel model = (ClassModel) data;
+
+            if (model.getPrice() != null) {
+                textViewSpecialClass.setVisibility(View.VISIBLE);
+                String text = "Special Class";
+                if (!model.getSpecialClassRemark().isEmpty()) {
+                    text = model.getSpecialClassRemark();
+                }
+
+                textViewSpecialClass.setText(text);
+
+            } else {
+                textViewSpecialClass.setVisibility(View.GONE);
+            }
 
             if (model.getClassMedia() != null) {
                 ImageUtils.setImage(context,
@@ -102,7 +117,7 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
             }
 
             if (model.getGymBranchDetail() != null) {
-                textViewLocation.setText(model.getGymBranchDetail().getGymName()+", "+model.getGymBranchDetail().getBranchName());
+                textViewLocation.setText(model.getGymBranchDetail().getGymName() + ", " + model.getGymBranchDetail().getBranchName());
             }
 
             textViewClassName.setText(model.getTitle());

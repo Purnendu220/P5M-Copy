@@ -20,7 +20,7 @@ import www.gymhop.p5m.adapters.ScheduleAdapter;
 import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
-public class MySchedule extends BaseFragment implements ViewPager.OnPageChangeListener {
+public class MySchedule extends BaseFragment implements ViewPagerFragmentSelection, ViewPager.OnPageChangeListener {
 
     @BindView(R.id.viewPager)
     public ViewPager viewPager;
@@ -51,7 +51,7 @@ public class MySchedule extends BaseFragment implements ViewPager.OnPageChangeLi
 
         setToolBar();
 
-        scheduleAdapter = new ScheduleAdapter(((BaseActivity) activity).getSupportFragmentManager(), titleTabs);
+        scheduleAdapter = new ScheduleAdapter(getChildFragmentManager(), titleTabs);
         viewPager.setAdapter(scheduleAdapter);
         viewPager.setOffscreenPageLimit(1);
 
@@ -59,13 +59,21 @@ public class MySchedule extends BaseFragment implements ViewPager.OnPageChangeLi
         tabLayout.setupWithViewPager(viewPager);
 
         viewPager.addOnPageChangeListener(this);
+    }
 
-        viewPager.post(new Runnable() {
-            @Override
-            public void run() {
-                onPageSelected(0);
-            }
-        });
+    boolean isLoadingFirstTime = true;
+
+    @Override
+    public void onTabSelection(int position) {
+        if (isLoadingFirstTime) {
+            isLoadingFirstTime = false;
+            viewPager.post(new Runnable() {
+                @Override
+                public void run() {
+                    onPageSelected(0);
+                }
+            });
+        }
     }
 
     private void setToolBar() {

@@ -88,9 +88,9 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                     textViewMore.setText(Html.fromHtml("<b><u>" + more + "</u></b> "));
 
                 } else if (!userPackageInfo.haveGeneralPackage && userPackageInfo.haveDropInPackage) {
-                    textViewPackage.setText(Html.fromHtml("<b>" + userPackageInfo.userPackageGeneral.getBalanceClass() + "</b> " + " class remaining"));
+                    textViewPackage.setText(Html.fromHtml("<b>1</b>" + " class for " + userPackageInfo.userPackageReady.get(0).getGymName()));
 
-                    int daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageGeneral.getExpiryDate());
+                    int daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageReady.get(0).getExpiryDate());
 
                     textViewValidity.setText(Html.fromHtml("<b>" + daysLeftFromPackageExpiryDate + "</b> " +
                             " of " + AppConstants.plural("day", daysLeftFromPackageExpiryDate) + context.getString(R.string.profile_package_expiry)));

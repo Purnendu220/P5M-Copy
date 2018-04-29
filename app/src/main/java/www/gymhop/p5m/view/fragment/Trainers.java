@@ -26,7 +26,7 @@ import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
-public class Trainers extends BaseFragment implements ViewPager.OnPageChangeListener {
+public class Trainers extends BaseFragment implements ViewPagerFragmentSelection, ViewPager.OnPageChangeListener {
 
     @BindView(R.id.viewPager)
     public ViewPager viewPager;
@@ -59,8 +59,10 @@ public class Trainers extends BaseFragment implements ViewPager.OnPageChangeList
 
         setToolBar();
 
+        activities = new ArrayList<>();
+
         try {
-            activities = TempStorage.getActivities();
+            activities.addAll(TempStorage.getActivities());
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -80,13 +82,21 @@ public class Trainers extends BaseFragment implements ViewPager.OnPageChangeList
         tabLayout.setupWithViewPager(viewPager);
 
         viewPager.addOnPageChangeListener(this);
+    }
 
-        viewPager.post(new Runnable() {
-            @Override
-            public void run() {
-                onPageSelected(0);
-            }
-        });
+    boolean isLoadingFirstTime = true;
+
+    @Override
+    public void onTabSelection(int position) {
+        if (isLoadingFirstTime) {
+            isLoadingFirstTime = false;
+            viewPager.post(new Runnable() {
+                @Override
+                public void run() {
+                    onPageSelected(0);
+                }
+            });
+        }
     }
 
     private void setToolBar() {
@@ -110,7 +120,6 @@ public class Trainers extends BaseFragment implements ViewPager.OnPageChangeList
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
     }
 
     @Override
@@ -125,6 +134,6 @@ public class Trainers extends BaseFragment implements ViewPager.OnPageChangeList
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
     }
+
 }

@@ -44,8 +44,12 @@ public class MyPreferences {
         return myPreferences;
     }
 
+    public void clear() {
+        PreferencesManager.clear();
+    }
+
     public String getAuthToken() {
-        return PreferencesManager.getString(AppConstants.Pref.AUTH_TOKEN);
+        return PreferencesManager.getString(AppConstants.Pref.AUTH_TOKEN, null);
     }
 
     public void saveAuthToken(String authToken) {

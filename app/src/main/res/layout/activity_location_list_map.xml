@@ -12,9 +12,11 @@
 
         <FrameLayout
             android:layout_width="match_parent"
+            android:layout_height="320dp"
             android:background="@drawable/no_map"
             android:elevation="4dp"
-            android:layout_height="320dp">
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
             <fragment
                 android:id="@+id/map"
@@ -32,10 +34,10 @@
         </FrameLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerViewClass"
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/theme_bg"
+            android:background="@color/white"
             android:clipToPadding="false"
             android:scrollbars="none" />
 

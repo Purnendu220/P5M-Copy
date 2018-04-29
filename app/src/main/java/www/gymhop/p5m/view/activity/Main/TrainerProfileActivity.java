@@ -20,6 +20,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.adapters.TrainerProfileAdapter;
@@ -37,6 +38,7 @@ import www.gymhop.p5m.view.activity.base.BaseActivity;
 
 public class TrainerProfileActivity extends BaseActivity implements AdapterCallbacks, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
 
+
     public static void open(Context context, TrainerModel trainerModel) {
         context.startActivity(new Intent(context, TrainerProfileActivity.class)
                 .putExtra(AppConstants.DataKey.TRAINER_OBJECT, trainerModel));
@@ -52,7 +54,9 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
     private TrainerProfileAdapter trainerProfileAdapter;
     private TrainerModel trainerModel;
     private TrainerDetailModel trainerDetailModel;
+
     private int page;
+    private int pageSizeLimit = AppConstants.Limit.PAGE_LIMIT_INNER_CLASS_LIST;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +77,8 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
 
         trainerDetailModel = new TrainerDetailModel(trainerModel);
 
-        trainerProfileAdapter = new TrainerProfileAdapter(context, AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE, this,
-                new ClassMiniListListenerHelper(context, activity));
+        trainerProfileAdapter = new TrainerProfileAdapter(context, AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE, true, this,
+                new ClassMiniListListenerHelper(context, activity, this));
         recyclerViewTrainerProfile.setAdapter(trainerProfileAdapter);
         trainerProfileAdapter.setTrainerModel(trainerDetailModel);
 
@@ -101,13 +105,12 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
         setToolBar();
     }
 
-    @Override
-    public void onRefresh() {
-        networkCommunicator.getUpcomingClasses(TempStorage.getUser().getId(), 0, trainerModel.getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_CLASS_LIST, this, false);
-        networkCommunicator.getTrainer(trainerModel.getId(), this, false);
+    private void callApiClasses() {
+        networkCommunicator.getUpcomingClasses(TempStorage.getUser().getId(), 0, trainerModel.getId(), page, pageSizeLimit, this, false);
+    }
 
-        trainerProfileAdapter.clearClasses();
-        trainerProfileAdapter.notifyDataSetChanges();
+    private Call callApiTrainers() {
+        return networkCommunicator.getTrainer(trainerModel.getId(), this, false);
     }
 
     private void setToolBar() {
@@ -156,7 +159,18 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
 
     @Override
     public void onShowLastItem() {
+        page++;
+        callApiClasses();
+    }
 
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        page = 0;
+        trainerProfileAdapter.loaderReset();
+
+        callApiClasses();
+        callApiTrainers();
     }
 
     @Override
@@ -165,10 +179,20 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
             case NetworkCommunicator.RequestCode.UPCOMING_CLASSES:
                 List<ClassModel> classModels = ((ResponseModel<List<ClassModel>>) response).data;
 
+                if (page == 0) {
+                    trainerProfileAdapter.clearAllClasses();
+                }
+
                 if (!classModels.isEmpty()) {
                     trainerProfileAdapter.addAllClass(classModels);
+                    if (classModels.size() < pageSizeLimit) {
+                        trainerProfileAdapter.loaderDone();
+                    }
                     trainerProfileAdapter.notifyDataSetChanges();
+                } else {
+                    trainerProfileAdapter.loaderDone();
                 }
+
                 break;
 
             case NetworkCommunicator.RequestCode.TRAINER:
@@ -176,7 +200,6 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
                 TrainerDetailModel trainerDetailModel = ((ResponseModel<TrainerDetailModel>) response).data;
 
                 trainerProfileAdapter.setTrainerModel(trainerDetailModel);
-                trainerProfileAdapter.notifyDataSetChanges();
                 break;
         }
     }
@@ -184,6 +207,11 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
 
+        switch (requestCode) {
+            case NetworkCommunicator.RequestCode.TRAINER:
+                swipeRefreshLayout.setRefreshing(false);
+                break;
+        }
     }
 
 }

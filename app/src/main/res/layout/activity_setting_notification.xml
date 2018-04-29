@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/theme_bg"
+    tools:context="www.gymhop.p5m.view.activity.Main.SettingNotification">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tool_bar_height"
+            android:background="@color/colorPrimaryDark"
+            android:elevation="@dimen/action_bar_elevation"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/imageViewBack"
+                style="@style/ToolBarIcon"
+                android:layout_height="match_parent"
+                android:padding="15dp"
+                android:src="@drawable/back" />
+
+            <TextView
+                android:id="@+id/textViewTitle"
+                style="@style/ToolBarTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="@string/notification"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/view_padding_setting"
+            android:background="@color/theme_bg"
+            android:elevation="@dimen/view_separator_elevation_edit_setting"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layoutNotification"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:padding="@dimen/view_padding_setting">
+
+                <ImageView
+                    style="@style/SettingIcon"
+                    android:layout_marginTop="4dp"
+                    android:src="@drawable/notification" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/text_icon_gap_setting"
+                        android:fontFamily="sans-serif"
+                        android:letterSpacing="@dimen/text_medium_letter_spacing"
+                        android:text="@string/setting_notification_fav_title"
+                        android:textColor="@color/theme_dark_light_text"
+                        android:textSize="@dimen/text_large"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/text_icon_gap_setting"
+                        android:fontFamily="sans-serif"
+                        android:letterSpacing="@dimen/text_medium_letter_spacing"
+                        android:paddingTop="4dp"
+                        android:text="@string/setting_notification_fac_details"
+                        android:textColor="@color/theme_medium_dark_text"
+                        android:textSize="@dimen/text_medium"
+                        android:textStyle="normal" />
+
+                </LinearLayout>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/switchCompatNotifyFavClass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:checked="true"
+                    android:textOff=""
+                    android:textOn="" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
