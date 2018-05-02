@@ -73,7 +73,11 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:commons:0.9.1.0'
     implementation 'com.afollestad.material-dialogs:core:0.9.1.0'
     implementation 'com.google.android.gms:play-services:9.8.0'
+    implementation 'com.robertlevonyan.components:Picker:1.1.1'
+    implementation 'com.google.android:flexbox:0.3.2'
 }
+
+
 
 
 

@@ -1,4 +1,4 @@
-package www.gymhop.p5m.data;
+package www.gymhop.p5m.data.main;
 
 import java.util.List;
 

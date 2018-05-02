@@ -28,13 +28,21 @@ public class ClassModel implements java.io.Serializable {
     private String priceModel;
     private String specialClassRemark;
     private boolean hideClass;
-    private Integer price;
+    private int price;
 
     /********From wish list**********/
     private String classDay;
     private int wishListId;
     private String classImage;
     //////////////////////////////////
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof ClassModel && ((ClassModel) obj).getClassSessionId() == getClassSessionId()) {
+            return true;
+        }
+        return super.equals(obj);
+    }
 
     public int getNumberOfParticipants() {
         return numberOfParticipants;
@@ -82,14 +90,6 @@ public class ClassModel implements java.io.Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getPriceModel() {
-        return priceModel == null ? "" : priceModel;
-    }
-
-    public void setPriceModel(String priceModel) {
-        this.priceModel = priceModel;
     }
 
     public int getAvailableSeat() {
@@ -244,11 +244,19 @@ public class ClassModel implements java.io.Serializable {
         this.specialClassRemark = specialClassRemark;
     }
 
-    public Integer getPrice() {
+    public String getPriceModel() {
+        return priceModel;
+    }
+
+    public void setPriceModel(String priceModel) {
+        this.priceModel = priceModel;
+    }
+
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 }

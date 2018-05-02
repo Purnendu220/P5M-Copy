@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import www.gymhop.p5m.data.City;
-import www.gymhop.p5m.data.ClassActivity;
+import www.gymhop.p5m.data.main.ClassActivity;
 import www.gymhop.p5m.data.ClassesFilter;
-import www.gymhop.p5m.data.User;
+import www.gymhop.p5m.data.main.User;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
 

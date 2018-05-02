@@ -85,6 +85,13 @@ public class AppConstants {
         public static final String USER_UPDATE = "api/v1/user/update";
         public static final String DEVICE_SAVE = "api/v1/device/save";
         public static final String UPDATE_PASS = "api/v1/user/updatepassword";
+        public static final String PROMO_CODE = "api/v1/promo/apply";
+        public static final String SAVE_IN_WISH_LIST = "api/v1/wish/save";
+        public static final String FOLLOW = "api/v1/follow/followUser";
+        public static final String UN_FOLLOW = "api/v1/follow/unFollowUser";
+        public static final String WISH_DELETE = "api/v1/wish/delete";
+        public static final String MEDIA_UPDATE = "api/v1/media/mediaUpdate";
+        public static final String MEDIA_UPLOAD = "api/v1/media/upload";
     }
 
     public class ApiParamValue {
@@ -122,6 +129,15 @@ public class AppConstants {
         public static final String FAV_TRAINER_NOTIFICATION = "favTrainerNotification";
         public static final String PROMO_ID = "promoId";
         public static final String SESSION_ID = "sessionId";
+        public static final String CLASS_SESSION_ID = "classSessionId";
+
+        public static final String OBJECT_TYPE = "objectType";
+        public static final String OBJECT_DATA_ID = "objectDataId";
+        public static final String MEDIA = "media";
+        public static final String MEDIA_FOR = "mediaFor";
+        public static final String UNIQUE_CHAR = "uniqueChar";
+        public static final String MEDIA_TYPE = "mediaType";
+        public static final String MEDIA_NAME = "mediaName";
     }
 
     public class AppNavigation {
@@ -137,6 +153,7 @@ public class AppConstants {
         public static final int SHOWN_IN_CLASS_PROFILE = 9;
         public static final int SHOWN_IN_TRAINER_PROFILE = 10;
         public static final int SHOWN_IN_GYM_PROFILE = 11;
+        public static final int SHOWN_IN_GYM_PROFILE_TRAINERS = 12;
 
         public static final int NAVIGATION_FROM_RESERVE_CLASS = 51;
         public static final int NAVIGATION_FROM_MY_PROFILE = 52;
@@ -145,18 +162,19 @@ public class AppConstants {
     }
 
     public class Limit {
-        public static final int PAGE_LIMIT_MAIN_CLASS_LIST = 2;
-        public static final int PAGE_LIMIT_INNER_CLASS_LIST = 3;
-        public static final int PAGE_LIMIT_MAIN_TRAINER_LIST = 8;
-        public static final int PAGE_LIMIT_INNER_TRAINER_LIST = 8;
+        public static final int PAGE_LIMIT_MAIN_CLASS_LIST = 15;
+        public static final int PAGE_LIMIT_INNER_CLASS_LIST = 20;
+        public static final int PAGE_LIMIT_MAIN_TRAINER_LIST = 25;
+        public static final int PAGE_LIMIT_INNER_TRAINER_LIST = 25;
 
-        public static final int PACKAGE_LIMIT_SCREEN_TABS = 5;
+        public static final int PACKAGE_LIMIT_SCREEN_TABS = 6;
     }
 
     public class ResultCode {
         public static final int PAYMENT_SUCCESS = 1001;
         public static final int CHOOSE_NATIONALITY = 1002;
         public static final int CHOOSE_LOCATION = 1003;
+        public static final int IMAGE_PICKER = 1003;
 
     }
 }

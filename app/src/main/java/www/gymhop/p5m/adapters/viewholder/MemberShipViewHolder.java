@@ -13,8 +13,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
-import www.gymhop.p5m.data.Package;
-import www.gymhop.p5m.data.UserPackage;
+import www.gymhop.p5m.data.main.Package;
+import www.gymhop.p5m.data.main.UserPackage;
 import www.gymhop.p5m.data.main.ClassModel;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.DateUtils;
@@ -105,6 +105,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
                     textViewPackageName.setText(model.getPackageName());
                     textViewPageTitle.setText(model.getBalanceClass() + " class remaining");
+
                     textViewPackageValidity.setText("Valid for " + model.getGymName());
 
                     textViewViewLimit.setVisibility(View.GONE);

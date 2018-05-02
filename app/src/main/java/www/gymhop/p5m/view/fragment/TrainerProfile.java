@@ -19,7 +19,7 @@ import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.adapters.TrainerProfileAdapter;
 import www.gymhop.p5m.data.main.TrainerModel;
-import www.gymhop.p5m.helper.ClassMiniListListenerHelper;
+import www.gymhop.p5m.helper.ClassListListenerHelper;
 import www.gymhop.p5m.utils.AppConstants;
 
 public class TrainerProfile extends BaseFragment implements AdapterCallbacks {
@@ -47,8 +47,8 @@ public class TrainerProfile extends BaseFragment implements AdapterCallbacks {
 
         ButterKnife.bind(this, getView());
 
-        trainerProfileAdapter = new TrainerProfileAdapter(context, AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE, true,  this,
-                new ClassMiniListListenerHelper(context, activity, this));
+        trainerProfileAdapter = new TrainerProfileAdapter(context, AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE, true, this,
+                new ClassListListenerHelper(context, activity, AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE, this));
         recyclerViewTrainerProfile.setAdapter(trainerProfileAdapter);
 
         StickyLayoutManager layoutManager = new StickyLayoutManager(context, trainerProfileAdapter);

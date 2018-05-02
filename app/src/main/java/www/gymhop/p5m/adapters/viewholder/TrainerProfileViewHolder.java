@@ -148,6 +148,13 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
                 }
             }
 
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(TrainerProfileViewHolder.this, button, model, position);
+                }
+            });
+
             imageViewProfile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

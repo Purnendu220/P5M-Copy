@@ -2,36 +2,46 @@ package www.gymhop.p5m.restapi;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import www.gymhop.p5m.data.ChangePasswordRequest;
 import www.gymhop.p5m.data.City;
-import www.gymhop.p5m.data.ClassActivity;
-import www.gymhop.p5m.data.Package;
+import www.gymhop.p5m.data.FollowResponse;
+import www.gymhop.p5m.data.MediaResponse;
 import www.gymhop.p5m.data.PackageLimitModel;
-import www.gymhop.p5m.data.PaymentUrl;
-import www.gymhop.p5m.data.Transaction;
-import www.gymhop.p5m.data.User;
+import www.gymhop.p5m.data.PromoCode;
+import www.gymhop.p5m.data.WishListResponse;
+import www.gymhop.p5m.data.main.ClassActivity;
 import www.gymhop.p5m.data.main.ClassModel;
+import www.gymhop.p5m.data.main.GymDetailModel;
+import www.gymhop.p5m.data.main.Package;
+import www.gymhop.p5m.data.main.PaymentUrl;
 import www.gymhop.p5m.data.main.TrainerDetailModel;
 import www.gymhop.p5m.data.main.TrainerModel;
+import www.gymhop.p5m.data.main.Transaction;
+import www.gymhop.p5m.data.main.User;
+import www.gymhop.p5m.data.request.ChangePasswordRequest;
 import www.gymhop.p5m.data.request.ChooseFocusRequest;
 import www.gymhop.p5m.data.request.ClassListRequest;
 import www.gymhop.p5m.data.request.DeviceUpdate;
+import www.gymhop.p5m.data.request.FollowRequest;
 import www.gymhop.p5m.data.request.JoinClassRequest;
 import www.gymhop.p5m.data.request.LoginRequest;
 import www.gymhop.p5m.data.request.LogoutRequest;
 import www.gymhop.p5m.data.request.PaymentUrlRequest;
+import www.gymhop.p5m.data.request.PromoCodeRequest;
 import www.gymhop.p5m.data.request.RegistrationRequest;
 import www.gymhop.p5m.data.request.UserInfoUpdate;
 import www.gymhop.p5m.data.request.UserUpdateRequest;
-import www.gymhop.p5m.data.temp.GymDetailModel;
+import www.gymhop.p5m.data.request.WishListRequest;
 import www.gymhop.p5m.utils.AppConstants;
 
 public interface ApiService {
@@ -146,7 +156,7 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @PUT(AppConstants.Url.USER_UPDATE + "/{" + AppConstants.ApiParamKey.USER_ID + "}")
     Call<ResponseModel<User>> userInfoUpdate(@Path(AppConstants.ApiParamKey.USER_ID) int userId,
-                                         @Body UserInfoUpdate userInfoUpdate);
+                                             @Body UserInfoUpdate userInfoUpdate);
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.USER + "/{" + AppConstants.ApiParamKey.USER_ID + "}")
@@ -172,5 +182,50 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @POST(AppConstants.Url.UPDATE_PASS)
     Call<ResponseModel<String>> changePass(@Body ChangePasswordRequest changePasswordRequest);
+
+    @Headers("Content-type: application/json")
+    @POST(AppConstants.Url.PROMO_CODE)
+    Call<ResponseModel<PromoCode>> applyPromoCode(@Body PromoCodeRequest promoCodeRequest);
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.TRAINER_LIST)
+    Call<ResponseModel<List<TrainerModel>>> getTrainers(@Query(AppConstants.ApiParamKey.GYM_ID) int gymId,
+                                                        @Query(AppConstants.ApiParamKey.PAGE) int page,
+                                                        @Query(AppConstants.ApiParamKey.SIZE) int size);
+
+    @Headers("Content-type: application/json")
+    @POST(AppConstants.Url.SAVE_IN_WISH_LIST)
+    Call<ResponseModel<WishListResponse>> addToWishList(@Body WishListRequest wishListRequest);
+
+    @Headers("Content-type: application/json")
+    @POST(AppConstants.Url.FOLLOW)
+    Call<ResponseModel<FollowResponse>> follow(@Body FollowRequest followRequest);
+
+    @Headers("Content-type: application/json")
+    @POST(AppConstants.Url.UN_FOLLOW)
+    Call<ResponseModel<FollowResponse>> unFollow(@Body FollowRequest followRequest);
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.WISH_DELETE + "/{" + AppConstants.ApiParamKey.ID + "}")
+    Call<ResponseModel<String>> removeFromWishList(@Path(AppConstants.ApiParamKey.ID) int wishId);
+
+    @Multipart
+    @POST(AppConstants.Url.MEDIA_UPDATE + "/{" + AppConstants.ApiParamKey.ID + "}")
+    Call<ResponseModel<MediaResponse>> updateMediaImage(@Part MultipartBody.Part media,
+                                                        @Path(AppConstants.ApiParamKey.ID) int id,
+                                                        @Query(AppConstants.ApiParamKey.OBJECT_TYPE) String objectType,
+                                                        @Query(AppConstants.ApiParamKey.OBJECT_DATA_ID) int objectDataId,
+                                                        @Query(AppConstants.ApiParamKey.MEDIA_FOR) String mediaFor,
+                                                        @Query(AppConstants.ApiParamKey.MEDIA_TYPE) String mediaType,
+                                                        @Query(AppConstants.ApiParamKey.MEDIA_NAME) String mediaName);
+
+    @Multipart
+    @POST(AppConstants.Url.MEDIA_UPLOAD)
+    Call<ResponseModel<MediaResponse>> uploadMediaImage(@Part MultipartBody.Part media,
+                                                        @Query(AppConstants.ApiParamKey.OBJECT_TYPE) String objectType,
+                                                        @Query(AppConstants.ApiParamKey.OBJECT_DATA_ID) int objectDataId,
+                                                        @Query(AppConstants.ApiParamKey.MEDIA_FOR) String mediaFor,
+                                                        @Query(AppConstants.ApiParamKey.MEDIA_TYPE) String mediaType,
+                                                        @Query(AppConstants.ApiParamKey.MEDIA_NAME) String mediaName);
 
 }

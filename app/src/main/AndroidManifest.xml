@@ -37,9 +37,7 @@
 
         <activity android:name=".view.activity.LoginRegister.InfoScreen" />
         <activity android:name=".view.activity.LoginRegister.RegistrationActivity" />
-        <activity
-            android:name=".view.activity.Main.HomeActivity"
-            android:launchMode="singleTask" />
+        <activity android:name=".view.activity.Main.HomeActivity" />
         <activity android:name=".view.activity.LoginRegister.LoginActivity" />
         <activity android:name=".view.activity.Main.TrainerProfileActivity" />
         <activity android:name=".view.activity.Main.FilterActivity" />
@@ -76,7 +74,11 @@
         <activity android:name=".view.activity.Main.SettingNotification" />
         <activity android:name=".view.activity.Main.ChooseFocusActivity" />
         <activity android:name=".view.activity.Main.ChooseNationalityActivity" />
-        <activity android:name=".view.activity.Main.ChangePasswordActivity"></activity>
+        <activity android:name=".view.activity.Main.ChangePasswordActivity" />
+        <activity
+            android:name=".view.activity.Main.CheckoutActivity"
+            android:launchMode="singleTask" />
+        <activity android:name=".view.activity.Main.TrainerListActivity"></activity>
     </application>
 
 </manifest>

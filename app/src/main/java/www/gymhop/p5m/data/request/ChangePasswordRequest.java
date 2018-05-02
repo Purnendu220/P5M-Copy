@@ -1,4 +1,4 @@
-package www.gymhop.p5m.data;
+package www.gymhop.p5m.data.request;
 
 public class ChangePasswordRequest implements java.io.Serializable {
     private static final long serialVersionUID = -1355248798324517494L;

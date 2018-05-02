@@ -14,6 +14,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.adapters.NationalityAdapter;
@@ -60,6 +61,11 @@ public class ChooseNationalityActivity extends BaseActivity implements AdapterCa
 
         nationalityAdapter.addAll(nationalities);
         nationalityAdapter.notifyDataSetChanged();
+    }
+
+    @OnClick(R.id.imageViewBack)
+    public void imageViewBack(View view) {
+        finish();
     }
 
     @Override

@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import www.gymhop.p5m.data.ClassActivity;
+import www.gymhop.p5m.data.main.ClassActivity;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.view.fragment.TrainerList;
 

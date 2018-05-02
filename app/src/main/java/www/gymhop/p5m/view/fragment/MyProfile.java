@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -17,6 +19,9 @@ import android.widget.PopupMenu;
 
 import com.brandongogetap.stickyheaders.StickyLayoutManager;
 import com.brandongogetap.stickyheaders.exposed.StickyHeaderListener;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -28,24 +33,29 @@ import www.gymhop.p5m.adapters.MyProfileAdapter;
 import www.gymhop.p5m.adapters.viewholder.ProfileHeaderTabViewHolder;
 import www.gymhop.p5m.data.main.ClassModel;
 import www.gymhop.p5m.data.main.TrainerModel;
-import www.gymhop.p5m.helper.ClassMiniListListenerHelper;
+import www.gymhop.p5m.eventbus.Events;
+import www.gymhop.p5m.eventbus.GlobalBus;
+import www.gymhop.p5m.helper.ClassListListenerHelper;
 import www.gymhop.p5m.helper.Helper;
 import www.gymhop.p5m.helper.TrainerListListenerHelper;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.AppConstants;
+import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.view.activity.Main.EditProfileActivity;
 import www.gymhop.p5m.view.activity.Main.MemberShip;
 import www.gymhop.p5m.view.activity.Main.SettingActivity;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 import www.gymhop.p5m.view.activity.custom.MyRecyclerView;
 
-public class MyProfile extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks<Object>, MyRecyclerView.LoaderCallbacks, NetworkCommunicator.RequestListener, PopupMenu.OnMenuItemClickListener {
+public class MyProfile extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks<Object>, MyRecyclerView.LoaderCallbacks, NetworkCommunicator.RequestListener, PopupMenu.OnMenuItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.recyclerView)
     public RecyclerView recyclerView;
 
+    @BindView(R.id.swipeRefreshLayout)
+    public SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.appBarLayout)
     public AppBarLayout appBarLayout;
     @BindView(R.id.toolbar)
@@ -55,6 +65,60 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
     private int page;
 
     public MyProfile() {
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        GlobalBus.getBus().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        GlobalBus.getBus().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getUser(Events.UserUpdate userUpdate) {
+        try {
+            myProfileAdapter.setUser(TempStorage.getUser());
+            myProfileAdapter.notifyItemChanged(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void trainerFollowed(Events.TrainerFollowed trainerFollowed) {
+
+        try {
+            if (trainerFollowed.isFollowed) {
+                myProfileAdapter.addTrainers(trainerFollowed.data);
+                myProfileAdapter.notifyDataSetChanges();
+            } else {
+                if (myProfileAdapter.getTrainers().contains(trainerFollowed.data)) {
+                    int index = myProfileAdapter.getTrainers().indexOf(trainerFollowed.data);
+                    if (index != -1) {
+                        TrainerModel trainerModel = (TrainerModel) myProfileAdapter.getTrainers().get(index);
+                        trainerModel.setIsfollow(trainerFollowed.isFollowed);
+
+                        myProfileAdapter.removeTrainer(index);
+
+                        if (myProfileAdapter.getList().contains(trainerModel)) {
+                            int indexTrainer = myProfileAdapter.getList().indexOf(trainerFollowed.data);
+
+                            myProfileAdapter.remove(indexTrainer);
+                            myProfileAdapter.notifyItemRemoved(indexTrainer);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
     }
 
     @Override
@@ -69,8 +133,10 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
 
         ButterKnife.bind(this, getView());
 
+        swipeRefreshLayout.setOnRefreshListener(this);
+
         myProfileAdapter = new MyProfileAdapter(context, new TrainerListListenerHelper(context, activity, this),
-                new ClassMiniListListenerHelper(context, activity, this), this);
+                new ClassListListenerHelper(context, activity, AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED, this), this);
         StickyLayoutManager layoutManager = new StickyLayoutManager(context, myProfileAdapter);
         layoutManager.elevateHeaders(true);
         layoutManager.elevateHeaders((int) context.getResources().getDimension(R.dimen.view_separator_elevation));
@@ -95,7 +161,21 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
             }
         });
 
+        try {
+            ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+
         setToolBar();
+    }
+
+    @Override
+    public void onRefresh() {
+        networkCommunicator.getMyUser(this, false);
+        networkCommunicator.getFavTrainerList(AppConstants.ApiParamValue.FOLLOW_TYPE_FOLLOWED, TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_TRAINER_LIST, this, false);
+        networkCommunicator.getFinishedClassList(TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_TRAINER_LIST, this, false);
     }
 
     boolean isLoadingFirstTime = true;
@@ -191,7 +271,6 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
             case R.id.textViewRecharge:
                 MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE);
                 break;
-
         }
     }
 
@@ -209,11 +288,15 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
 
     @Override
     public void onApiSuccess(Object response, int requestCode) {
+        swipeRefreshLayout.setRefreshing(false);
+
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.CLASS_LIST:
                 List<ClassModel> classModels = ((ResponseModel<List<ClassModel>>) response).data;
 
                 if (!classModels.isEmpty()) {
+                    myProfileAdapter.clearClasses();
+
                     myProfileAdapter.addClasses(classModels);
                     myProfileAdapter.notifyDataSetChanges();
                 } else {
@@ -225,6 +308,8 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
                 List<TrainerModel> trainerModels = ((ResponseModel<List<TrainerModel>>) response).data;
 
                 if (!trainerModels.isEmpty()) {
+                    myProfileAdapter.clearTrainers();
+
                     myProfileAdapter.addTrainers(trainerModels);
                     myProfileAdapter.notifyDataSetChanges();
                 } else {
@@ -237,6 +322,7 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
 
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     private void checkListData() {
@@ -258,4 +344,5 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
                 return false;
         }
     }
+
 }

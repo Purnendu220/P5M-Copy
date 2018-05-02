@@ -9,7 +9,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
-import www.gymhop.p5m.data.Transaction;
+import www.gymhop.p5m.data.main.Transaction;
 import www.gymhop.p5m.utils.DateUtils;
 
 /**

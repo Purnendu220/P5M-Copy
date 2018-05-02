@@ -37,14 +37,38 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/no_map"
+            android:elevation="3dp">
+
+            <www.gymhop.p5m.view.activity.custom.MaxHeightScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:scrollbars="vertical">
+
+                <com.google.android.flexbox.FlexboxLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/flexBoxLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    app:alignContent="flex_start"
+                    app:alignItems="flex_start"
+                    app:flexWrap="wrap" />
+            </www.gymhop.p5m.view.activity.custom.MaxHeightScrollView>
+        </FrameLayout>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:clipToPadding="false"
+            android:paddingBottom="12dp"
+            android:paddingTop="8dp"
             android:scrollbars="none" />
 
         <LinearLayout

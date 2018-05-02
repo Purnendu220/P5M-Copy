@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,9 @@ import android.widget.TextView;
 
 import com.brandongogetap.stickyheaders.StickyLayoutManager;
 import com.brandongogetap.stickyheaders.exposed.StickyHeaderListener;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -24,15 +28,18 @@ import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.adapters.GymProfileAdapter;
 import www.gymhop.p5m.data.main.ClassModel;
+import www.gymhop.p5m.data.main.GymDetailModel;
 import www.gymhop.p5m.data.main.TrainerModel;
-import www.gymhop.p5m.data.temp.GymDetailModel;
-import www.gymhop.p5m.helper.ClassMiniListListenerHelper;
+import www.gymhop.p5m.eventbus.Events;
+import www.gymhop.p5m.eventbus.GlobalBus;
+import www.gymhop.p5m.helper.ClassListListenerHelper;
 import www.gymhop.p5m.helper.Helper;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
+import www.gymhop.p5m.utils.ToastUtils;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
 public class GymProfileActivity extends BaseActivity implements AdapterCallbacks, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
@@ -53,7 +60,48 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
     private TrainerModel trainerModel;
     private int gymId;
     private GymDetailModel gymDetailModel;
+
     private int page;
+    private int pageSizeLimit = AppConstants.Limit.PAGE_LIMIT_INNER_CLASS_LIST;
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        GlobalBus.getBus().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void classJoin(Events.ClassJoin data) {
+        handleClassJoined(data.data);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void packagePurchasedForClass(Events.PackagePurchasedForClass data) {
+        handleClassJoined(data.data);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void classPurchased(Events.ClassPurchased data) {
+        handleClassJoined(data.data);
+    }
+
+    private void handleClassJoined(ClassModel data) {
+        try {
+            int index = gymProfileAdapter.getList().indexOf(data);
+            if (index != -1) {
+                Object obj = gymProfileAdapter.getList().get(index);
+                if (obj instanceof ClassModel) {
+                    ClassModel classModel = (ClassModel) obj;
+                    classModel.setUserJoinStatus(data.isUserJoinStatus());
+
+                    gymProfileAdapter.notifyItemChanged(index);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +110,7 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
         setContentView(R.layout.activity_trainer_profile);
 
         ButterKnife.bind(activity);
+        GlobalBus.getBus().register(this);
 
 //        trainerModel = (TrainerModel) getIntent().getSerializableExtra(AppConstants.DataKey.GYM_OBJECT);
         gymId = getIntent().getIntExtra(AppConstants.DataKey.GYM_ID_INT, -1);
@@ -75,19 +124,15 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
 
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        gymProfileAdapter = new GymProfileAdapter(context, AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE, this,
-                new ClassMiniListListenerHelper(context, activity, this));
+        gymProfileAdapter = new GymProfileAdapter(context, AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE, true, this,
+                new ClassListListenerHelper(context, activity, AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE, this));
         recyclerViewTrainerProfile.setAdapter(gymProfileAdapter);
 
         if (gymDetailModel != null) {
             gymProfileAdapter.setGymDetailModel(gymDetailModel);
-            gymProfileAdapter.notifyDataSetChanges();
         } else {
             swipeRefreshLayout.setRefreshing(true);
         }
-
-        networkCommunicator.getUpcomingClasses(TempStorage.getUser().getId(), gymId, 0, page, AppConstants.Limit.PAGE_LIMIT_INNER_CLASS_LIST, this, false);
-        networkCommunicator.getGym(gymId, this, false);
 
         StickyLayoutManager layoutManager = new StickyLayoutManager(context, gymProfileAdapter);
         layoutManager.elevateHeaders(true);
@@ -106,6 +151,14 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
             }
         });
 
+        try {
+            ((SimpleItemAnimator) recyclerViewTrainerProfile.getItemAnimator()).setSupportsChangeAnimations(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+
+        onRefresh();
         setToolBar();
     }
 
@@ -141,10 +194,22 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
         switch (view.getId()) {
             case R.id.imageViewProfile:
-                if (gymDetailModel != null && !gymDetailModel.getProfileImage().isEmpty()) {
-                    Helper.openImageViewer(context, gymDetailModel.getProfileImage());
+                if (model != null && model instanceof GymDetailModel) {
+                    GymDetailModel data = (GymDetailModel) model;
+                    if (data != null && !data.getProfileImage().isEmpty()) {
+                        Helper.openImageViewer(context, gymDetailModel.getProfileImage());
+                    }
                 }
                 break;
+            case R.id.textViewTrainers:
+                if (model != null && model instanceof GymDetailModel) {
+                    GymDetailModel data = (GymDetailModel) model;
+                    if (data.getNumberOfTrainer() > 0) {
+                        TrainerListActivity.open(context, data.getId());
+                    }
+                }
+                break;
+            case R.id.layoutMap:
             case R.id.textViewMore:
                 LocationListMapActivity.openActivity(context, gymProfileAdapter.getGymDetailModel().getGymBranchResponseList());
                 break;
@@ -158,40 +223,68 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
 
     @Override
     public void onShowLastItem() {
+        page++;
+        callApiClasses();
+    }
 
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        page = 0;
+        gymProfileAdapter.loaderReset();
+
+        callApiClasses();
+        callApiGym();
+    }
+
+
+    private void callApiClasses() {
+        networkCommunicator.getUpcomingClasses(TempStorage.getUser().getId(), gymId, 0, page, pageSizeLimit, this, false);
+    }
+
+    private void callApiGym() {
+        networkCommunicator.getGym(gymId, this, false);
     }
 
     @Override
     public void onApiSuccess(Object response, int requestCode) {
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.UPCOMING_CLASSES:
-                swipeRefreshLayout.setRefreshing(false);
                 List<ClassModel> classModels = ((ResponseModel<List<ClassModel>>) response).data;
+
+                if (page == 0) {
+                    gymProfileAdapter.clearAllClasses();
+                }
 
                 if (!classModels.isEmpty()) {
                     gymProfileAdapter.addAllClass(classModels);
+
+                    if (classModels.size() < pageSizeLimit) {
+                        gymProfileAdapter.loaderDone();
+                    }
                     gymProfileAdapter.notifyDataSetChanges();
+                } else {
+                    gymProfileAdapter.loaderDone();
                 }
                 break;
 
             case NetworkCommunicator.RequestCode.GYM:
                 swipeRefreshLayout.setRefreshing(false);
 
-                GymDetailModel gymDetailModel = ((ResponseModel<GymDetailModel>) response).data;
+                gymDetailModel = ((ResponseModel<GymDetailModel>) response).data;
 
                 gymProfileAdapter.setGymDetailModel(gymDetailModel);
-                gymProfileAdapter.notifyDataSetChanges();
                 break;
         }
     }
 
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
-
-    }
-
-    @Override
-    public void onRefresh() {
-
+        switch (requestCode) {
+            case NetworkCommunicator.RequestCode.GYM:
+                swipeRefreshLayout.setRefreshing(false);
+                ToastUtils.showLong(context, errorMessage);
+                break;
+        }
     }
 }

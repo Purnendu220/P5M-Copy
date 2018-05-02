@@ -72,6 +72,18 @@ public class DialogUtils {
                 .show();
     }
 
+    public static void showBasicMessage(Context context,
+                                        String message,
+                                        String buttonText,
+                                        MaterialDialog.SingleButtonCallback singleButtonCallback) {
+
+        new MaterialDialog.Builder(context)
+                .content(message)
+                .positiveText(buttonText)
+                .onPositive(singleButtonCallback)
+                .show();
+    }
+
     public static void showBasicList(Context context,
                                      String title,
                                      List<String> items,

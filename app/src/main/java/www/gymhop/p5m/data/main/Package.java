@@ -1,11 +1,11 @@
-package www.gymhop.p5m.data;
+package www.gymhop.p5m.data.main;
 
 public class Package implements java.io.Serializable {
     private static final long serialVersionUID = -9014729511132434076L;
 
     private int duration;
     private String validityPeriod;
-    private String cost;
+    private float cost;
     private long modifiedAt;
     private int noOfClass;
     private String name;
@@ -39,11 +39,11 @@ public class Package implements java.io.Serializable {
         this.validityPeriod = validityPeriod;
     }
 
-    public String getCost() {
-        return cost == null ? "" : cost;
+    public float getCost() {
+        return cost;
     }
 
-    public void setCost(String cost) {
+    public void setCost(float cost) {
         this.cost = cost;
     }
 

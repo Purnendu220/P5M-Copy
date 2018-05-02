@@ -15,7 +15,7 @@ import www.gymhop.p5m.adapters.viewholder.EmptyViewHolder;
 import www.gymhop.p5m.adapters.viewholder.LoaderViewHolder;
 import www.gymhop.p5m.adapters.viewholder.TransactionViewHolder;
 import www.gymhop.p5m.data.ListLoader;
-import www.gymhop.p5m.data.Transaction;
+import www.gymhop.p5m.data.main.Transaction;
 
 public class TransactionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int VIEW_TYPE_ITEM = 1;

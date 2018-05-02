@@ -18,7 +18,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
-import www.gymhop.p5m.data.PaymentUrl;
+import www.gymhop.p5m.data.main.PaymentUrl;
 import www.gymhop.p5m.eventbus.EventBroadcastHelper;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.utils.AppConstants;
@@ -47,7 +47,6 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
 
         ButterKnife.bind(activity);
 
-        webView = (WebView) findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
 
         openPage(getIntent());
@@ -75,6 +74,18 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
     }
 
     private void paymentSuccessful() {
+        networkCommunicator.getMyUser(this, false);
+
+//        EventBroadcastHelper.sendPackagePurchased();
+//
+//        webView.setVisibility(View.INVISIBLE);
+//        progressBar.setVisibility(View.VISIBLE);
+//        setResult(RESULT_OK);
+//        finish();
+    }
+
+    @Override
+    public void onApiSuccess(Object response, int requestCode) {
         EventBroadcastHelper.sendPackagePurchased();
 
         webView.setVisibility(View.INVISIBLE);
@@ -84,13 +95,13 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
     }
 
     @Override
-    public void onApiSuccess(Object response, int requestCode) {
-
-    }
-
-    @Override
     public void onApiFailure(String errorMessage, int requestCode) {
+        EventBroadcastHelper.sendPackagePurchased();
 
+        webView.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
+        setResult(RESULT_OK);
+        finish();
     }
 
     class MyWebViewClient extends WebViewClient {

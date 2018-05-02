@@ -21,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.TrainersAdapter;
-import www.gymhop.p5m.data.ClassActivity;
+import www.gymhop.p5m.data.main.ClassActivity;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.view.activity.base.BaseActivity;

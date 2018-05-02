@@ -1,10 +1,6 @@
-package www.gymhop.p5m.data.temp;
+package www.gymhop.p5m.data.main;
 
 import java.util.List;
-
-import www.gymhop.p5m.data.ClassActivity;
-import www.gymhop.p5m.data.main.GymBranchDetail;
-import www.gymhop.p5m.data.main.MediaModel;
 
 public class GymDetailModel implements java.io.Serializable {
     private static final long serialVersionUID = -3539286405036295126L;

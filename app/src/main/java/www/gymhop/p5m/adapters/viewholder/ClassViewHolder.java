@@ -28,6 +28,8 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
     public ImageView imageViewClass;
     @BindView(R.id.imageViewTrainerProfile)
     public ImageView imageViewTrainerProfile;
+    @BindView(R.id.imageViewOptions)
+    public ImageView imageViewOptions;
 
     @BindView(R.id.buttonJoin)
     public Button buttonJoin;
@@ -56,6 +58,9 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.layoutTrainer)
     public LinearLayout layoutTrainer;
 
+    @BindView(R.id.layoutLocation)
+    public View layoutLocation;
+
     private final Context context;
     private int shownInScreen;
 
@@ -75,7 +80,7 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
 
             final ClassModel model = (ClassModel) data;
 
-            if (model.getPrice() != null) {
+            if (Helper.isSpecialClass(model)) {
                 textViewSpecialClass.setVisibility(View.VISIBLE);
                 String text = "Special Class";
                 if (!model.getSpecialClassRemark().isEmpty()) {
@@ -137,12 +142,26 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
             textViewInfo.setText(model.getShortDesc());
 
             textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
-            textViewGender.setText(model.getClassType());
+            textViewGender.setText(Helper.getClassTypeText(model.getClassType()));
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     adapterCallbacks.onAdapterItemClick(ClassViewHolder.this, itemView, model, position);
+                }
+            });
+
+            imageViewOptions.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ClassViewHolder.this, imageViewOptions, model, position);
+                }
+            });
+
+            layoutLocation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ClassViewHolder.this, layoutLocation, model, position);
                 }
             });
 

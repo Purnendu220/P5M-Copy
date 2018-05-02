@@ -19,7 +19,7 @@ import www.gymhop.p5m.adapters.viewholder.ProfileHeaderTabViewHolder;
 import www.gymhop.p5m.adapters.viewholder.ProfileHeaderViewHolder;
 import www.gymhop.p5m.adapters.viewholder.TrainerListViewHolder;
 import www.gymhop.p5m.data.HeaderSticky;
-import www.gymhop.p5m.data.User;
+import www.gymhop.p5m.data.main.User;
 import www.gymhop.p5m.data.main.ClassModel;
 import www.gymhop.p5m.data.main.TrainerModel;
 import www.gymhop.p5m.utils.AppConstants;
@@ -80,16 +80,33 @@ public class MyProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public void setUser(User user) {
+        list.remove(this.user);
         this.user = user;
         list.add(0, user);
+    }
+
+    public List<Object> getList() {
+        return list;
     }
 
     public List<TrainerModel> getTrainers() {
         return trainers;
     }
 
+    public void remove(int position) {
+        list.remove(position);
+    }
+
+    public void removeTrainer(int position) {
+        trainers.remove(position);
+    }
+
     public void addTrainers(List<TrainerModel> trainers) {
         this.trainers.addAll(trainers);
+    }
+
+    public void addTrainers(TrainerModel trainer) {
+        this.trainers.add(trainer);
     }
 
     public List<ClassModel> getClasses() {
@@ -98,6 +115,14 @@ public class MyProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public void addClasses(List<ClassModel> classes) {
         this.classes.addAll(classes);
+    }
+
+    public void clearTrainers(){
+        trainers.clear();
+    }
+
+    public void clearClasses(){
+        classes.clear();
     }
 
     public void setData(List<Object> data) {

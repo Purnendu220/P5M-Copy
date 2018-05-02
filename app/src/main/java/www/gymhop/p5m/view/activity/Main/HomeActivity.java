@@ -3,6 +3,8 @@ package www.gymhop.p5m.view.activity.Main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.widget.LinearLayout;
@@ -16,11 +18,13 @@ import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.HomeAdapter;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
+import www.gymhop.p5m.utils.ToastUtils;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 import www.gymhop.p5m.view.activity.custom.BottomTapLayout;
 import www.gymhop.p5m.view.fragment.ViewPagerFragmentSelection;
 
 public class HomeActivity extends BaseActivity implements BottomTapLayout.TabListener, ViewPager.OnPageChangeListener {
+
 
     public static void open(Context context) {
         Intent intent = new Intent(context, HomeActivity.class);
@@ -31,7 +35,8 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
     public static void show(Context context, int tabPosition) {
         Intent intent = new Intent(context, HomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra(AppConstants.DataKey.HOME_TAB_POSITION, tabPosition);
         context.startActivity(intent);
     }
@@ -48,6 +53,8 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     private static final int TOTAL_TABS = 4;
     private static int INITIAL_POSITION = AppConstants.FragmentPosition.TAB_FIND_CLASS;
 
+    private Handler handler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +62,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
         ButterKnife.bind(activity);
 
+        handler = new Handler(Looper.getMainLooper());
         setupBottomTabs();
 
         homeAdapter = new HomeAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_TABS);
@@ -76,6 +84,8 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
         INITIAL_POSITION = intent.getIntExtra(AppConstants.DataKey.HOME_TAB_POSITION,
                 AppConstants.FragmentPosition.TAB_FIND_CLASS);
+
+        LogUtils.debug("Home screen onNewIntent " + INITIAL_POSITION);
 
         viewPager.post(new Runnable() {
             @Override
@@ -132,5 +142,22 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
     @Override
     public void onPageScrollStateChanged(int state) {
+    }
+
+    private boolean isBackRequested;
+    @Override
+    public void onBackPressed() {
+        if (!isBackRequested) {
+            isBackRequested = true;
+            ToastUtils.show(context, getString(R.string.press_again_to_exit));
+        } else {
+            super.onBackPressed();
+        }
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                isBackRequested = false;
+            }
+        }, 2000);
     }
 }

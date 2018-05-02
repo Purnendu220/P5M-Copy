@@ -1,4 +1,4 @@
-package www.gymhop.p5m.data;
+package www.gymhop.p5m.data.main;
 
 public class UserPackage implements java.io.Serializable {
     private static final long serialVersionUID = -3233518942033233177L;

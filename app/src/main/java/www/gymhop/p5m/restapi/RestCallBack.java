@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import www.gymhop.p5m.MyApplication;
 import www.gymhop.p5m.eventbus.EventBroadcastHelper;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
@@ -28,16 +27,22 @@ public abstract class RestCallBack<T> implements Callback<T> {
         String errorMessage = "Please try again later";
 
         try {
-            switch (MyApplication.apiMode) {
-                case LIVE:
-                    if (!NetworkUtil.isInternetAvailable) {
-                        errorMessage = "Internet not available";
-                    } else {
-                        errorMessage = "Please try again later";
-                    }
-                    break;
-                default:
-                    errorMessage = t.toString();
+//            switch (MyApplication.apiMode) {
+//                case LIVE:
+//                    if (!NetworkUtil.isInternetAvailable) {
+//                        errorMessage = "Internet not available";
+//                    } else {
+//                        errorMessage = "Please try again later";
+//                    }
+//                    break;
+//                default:
+//                    errorMessage = t.toString();
+//            }
+
+            if (!NetworkUtil.isInternetAvailable) {
+                errorMessage = "Internet not available";
+            } else {
+                errorMessage = "Please try again later";
             }
         } catch (Exception e) {
             e.printStackTrace();

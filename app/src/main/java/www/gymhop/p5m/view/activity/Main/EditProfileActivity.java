@@ -23,7 +23,6 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -32,7 +31,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.data.Nationality;
-import www.gymhop.p5m.data.User;
+import www.gymhop.p5m.data.main.User;
 import www.gymhop.p5m.data.request.UserInfoUpdate;
 import www.gymhop.p5m.eventbus.EventBroadcastHelper;
 import www.gymhop.p5m.helper.Helper;
@@ -85,6 +84,11 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     public ImageView imageViewDob;
     @BindView(R.id.imageViewBack)
     public ImageView imageViewBack;
+    @BindView(R.id.imageViewStatus)
+    public ImageView imageViewStatus;
+
+    @BindView(R.id.progressBar)
+    public View progressBar;
 
     @BindView(R.id.imageViewDone)
     public ImageView imageViewDone;
@@ -142,6 +146,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         imageViewDob.setOnClickListener(this);
         buttonMale.setOnClickListener(this);
         buttonFemale.setOnClickListener(this);
+        imageViewStatus.setOnClickListener(this);
 
         setUser();
 
@@ -307,6 +312,9 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.imageViewStatus:
+                imagePicker();
+                break;
             case R.id.buttonMale:
                 selectMale();
                 break;
@@ -351,7 +359,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         int monthBirth = calendar.get(Calendar.MONTH);
         int dayBirth = calendar.get(Calendar.DAY_OF_MONTH);
 
-        if (TempStorage.getUser().getDob() == null) {
+        if (TempStorage.getUser().getDob() != null) {
             calendar.setTime(new Date(TempStorage.getUser().getDob()));
 
             yearBirth = calendar.get(Calendar.YEAR);
@@ -362,8 +370,6 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         DatePickerDialog dialog = new DatePickerDialog(activity, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                SimpleDateFormat dt1 = new SimpleDateFormat("dd-MM-yyyy");
-
                 Calendar c = Calendar.getInstance();
                 c.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
 
@@ -398,7 +404,15 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
             if (place != null) {
                 setLocation(place.getAddress().toString());
             }
+        } else if (requestCode == AppConstants.ResultCode.CHOOSE_LOCATION && resultCode == RESULT_OK) {
+
+//            Bitmap bitmap = ImagePicker.getImageFromResult(this, requestCode, resultCode, data);
+//            if (bitmap != null) {
+//                imageViewProfile.setImageBitmap(bitmap);
+//            }
         }
+
+
     }
 
     private void setNationality(String nationality) {
@@ -451,5 +465,18 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                 ToastUtils.showLong(context, errorMessage);
                 break;
         }
+    }
+
+    private void imagePicker() {
+//        ImagePicker.setMinQuality(1280, 1280);
+//        ImagePicker.pickImage(activity, "Pick your image:");
+
+//        PickerDialog pickerDialog = PickerDialog.Builder(actitvty)// Activity or Fragment
+//                .setTitle("Picke Image")          // String value or resource ID
+//                       .setTitleTextSize(...)  // Text size of title
+//                       .setTitleTextColor(...) // Color of title text
+//                       .setListType(...)       // Type of the picker, must be PickerDialog.TYPE_LIST or PickerDialog.TYPE_Grid
+//                       .setItems(...)          // List of ItemModel-s which should be in picker
+//                       .create()
     }
 }

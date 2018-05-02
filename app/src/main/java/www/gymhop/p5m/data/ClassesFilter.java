@@ -52,6 +52,11 @@ public class ClassesFilter implements Serializable {
         return super.equals(obj);
     }
 
+    @Override
+    public int hashCode() {
+        return 1029;
+    }
+
     public String getId() {
         return id == null ? "" : id;
     }

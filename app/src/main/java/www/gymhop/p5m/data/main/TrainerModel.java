@@ -18,6 +18,14 @@ public class TrainerModel implements java.io.Serializable {
     private List<String> categoryList;
     private List<GymBranchDetail> trainerBranchResponseList;
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof TrainerModel && ((TrainerModel) obj).getId() == getId()) {
+            return true;
+        }
+        return super.equals(obj);
+    }
+
     public String getFirstName() {
         return firstName == null ? "" : firstName;
     }

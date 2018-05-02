@@ -15,7 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import www.gymhop.p5m.R;
-import www.gymhop.p5m.data.User;
+import www.gymhop.p5m.data.main.User;
 import www.gymhop.p5m.data.request.LoginRequest;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;

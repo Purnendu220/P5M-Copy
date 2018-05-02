@@ -2,36 +2,47 @@ package www.gymhop.p5m.restapi;
 
 import android.content.Context;
 
+import java.io.File;
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Response;
-import www.gymhop.p5m.data.ChangePasswordRequest;
 import www.gymhop.p5m.data.City;
-import www.gymhop.p5m.data.ClassActivity;
-import www.gymhop.p5m.data.Package;
+import www.gymhop.p5m.data.FollowResponse;
+import www.gymhop.p5m.data.MediaResponse;
 import www.gymhop.p5m.data.PackageLimitModel;
-import www.gymhop.p5m.data.PaymentUrl;
-import www.gymhop.p5m.data.Transaction;
-import www.gymhop.p5m.data.User;
+import www.gymhop.p5m.data.PromoCode;
+import www.gymhop.p5m.data.WishListResponse;
+import www.gymhop.p5m.data.main.ClassActivity;
 import www.gymhop.p5m.data.main.ClassModel;
+import www.gymhop.p5m.data.main.GymDetailModel;
+import www.gymhop.p5m.data.main.Package;
+import www.gymhop.p5m.data.main.PaymentUrl;
 import www.gymhop.p5m.data.main.TrainerDetailModel;
 import www.gymhop.p5m.data.main.TrainerModel;
+import www.gymhop.p5m.data.main.Transaction;
+import www.gymhop.p5m.data.main.User;
+import www.gymhop.p5m.data.request.ChangePasswordRequest;
 import www.gymhop.p5m.data.request.ChooseFocusRequest;
 import www.gymhop.p5m.data.request.ClassListRequest;
 import www.gymhop.p5m.data.request.DeviceUpdate;
+import www.gymhop.p5m.data.request.FollowRequest;
 import www.gymhop.p5m.data.request.JoinClassRequest;
 import www.gymhop.p5m.data.request.LoginRequest;
 import www.gymhop.p5m.data.request.LogoutRequest;
 import www.gymhop.p5m.data.request.PaymentUrlRequest;
+import www.gymhop.p5m.data.request.PromoCodeRequest;
 import www.gymhop.p5m.data.request.RegistrationRequest;
 import www.gymhop.p5m.data.request.UserInfoUpdate;
 import www.gymhop.p5m.data.request.UserUpdateRequest;
-import www.gymhop.p5m.data.temp.GymDetailModel;
+import www.gymhop.p5m.data.request.WishListRequest;
+import www.gymhop.p5m.eventbus.EventBroadcastHelper;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.storage.preferences.MyPreferences;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
+import www.gymhop.p5m.utils.ToastUtils;
 
 /**
  * Created by MyU10 on 3/10/2018.
@@ -44,6 +55,13 @@ public class NetworkCommunicator {
         void onApiSuccess(T response, int requestCode);
 
         void onApiFailure(String errorMessage, int requestCode);
+    }
+
+    public abstract interface RequestListenerRequestDataModel<T> {
+
+        void onApiSuccess(Object response, int requestCode, T requestDataModel);
+
+        void onApiFailure(String errorMessage, int requestCode, T requestDataModel);
     }
 
     public class RequestCode {
@@ -76,6 +94,10 @@ public class NetworkCommunicator {
         public static final int DEVICE = 119;
         public static final int ME_USER = 120;
         public static final int CHANGE_PASS = 121;
+        public static final int PROMO_CODE = 122;
+        public static final int ADD_TO_WISH_LIST = 123;
+        public static final int FOLLOW = 124;
+        public static final int UN_FOLLOW = 125;
     }
 
     private Context context;
@@ -374,6 +396,27 @@ public class NetworkCommunicator {
         return call;
     }
 
+    public Call getGymTrainerList(int gymId, int page, int size, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.TRAINER_LIST;
+        Call<ResponseModel<List<TrainerModel>>> call = apiService.getTrainers(gymId, page, size);
+        LogUtils.debug("NetworkCommunicator hitting getGymTrainerList");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<TrainerModel>>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<List<TrainerModel>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getGymTrainerList onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<TrainerModel>>> call, Response<ResponseModel<List<TrainerModel>>> restResponse, ResponseModel<List<TrainerModel>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getGymTrainerList onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
     public Call getPackages(int userId, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.PACKAGES_FOR_USER;
         Call<ResponseModel<List<Package>>> call = apiService.getPackageList(userId);
@@ -501,7 +544,7 @@ public class NetworkCommunicator {
         return call;
     }
 
-    public Call getMyUser(final RequestListener requestListener, boolean useCache) {
+    public Call getMyUser(final RequestListener requestListener, final boolean useCache) {
         final int requestCode = RequestCode.ME_USER;
         Call<ResponseModel<User>> call = apiService.getUser(TempStorage.getUser().getId());
         LogUtils.debug("NetworkCommunicator hitting User");
@@ -517,7 +560,7 @@ public class NetworkCommunicator {
             public void onResponse(Call<ResponseModel<User>> call, Response<ResponseModel<User>> restResponse, ResponseModel<User> response) {
                 LogUtils.networkSuccess("NetworkCommunicator User onResponse data " + response);
                 if (response.data != null) {
-                    TempStorage.setUser(context, response.data);
+                    EventBroadcastHelper.sendUserUpdate(context, response.data);
                 }
                 requestListener.onApiSuccess(response, requestCode);
             }
@@ -692,4 +735,174 @@ public class NetworkCommunicator {
         });
         return call;
     }
+
+    public Call applyPromoCode(PromoCodeRequest promoCodeRequest, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.PROMO_CODE;
+        Call<ResponseModel<PromoCode>> call = apiService.applyPromoCode(promoCodeRequest);
+        LogUtils.debug("NetworkCommunicator hitting applyPromoCode");
+
+        call.enqueue(new RestCallBack<ResponseModel<PromoCode>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<PromoCode>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator applyPromoCode onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<PromoCode>> call, Response<ResponseModel<PromoCode>> restResponse, ResponseModel<PromoCode> response) {
+                LogUtils.networkSuccess("NetworkCommunicator applyPromoCode onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call uploadUserImage(int mediaId, File file, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.PROMO_CODE;
+        LogUtils.debug("NetworkCommunicator hitting uploadImage");
+
+        ProgressRequestBody fileBody = new ProgressRequestBody(file, new ProgressRequestBody.UploadCallbacks() {
+            @Override
+            public void onProgressUpdate(int percentage) {
+            }
+
+            @Override
+            public void onError() {
+            }
+
+            @Override
+            public void onFinish() {
+            }
+        });
+
+        MultipartBody.Part filePart = MultipartBody.Part.createFormData(AppConstants.ApiParamKey.MEDIA, file.getName(), fileBody);
+
+        Call<ResponseModel<MediaResponse>> call = RestServiceFactory.createService().updateMediaImage(
+                filePart,
+                mediaId,
+                "user",
+                TempStorage.getUser().getId(),
+                "UserProfile",
+                "Image",
+                file.getName());
+
+        if (mediaId == 0) {
+            call = RestServiceFactory.createService().uploadMediaImage(
+                    filePart,
+                    "user",
+                    TempStorage.getUser().getId(),
+                    "UserProfile",
+                    "Image",
+                    file.getName());
+
+        }
+
+        call.enqueue(new RestCallBack<ResponseModel<MediaResponse>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<MediaResponse>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator uploadImage onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<MediaResponse>> call, Response<ResponseModel<MediaResponse>> restResponse, ResponseModel<MediaResponse> response) {
+                LogUtils.networkSuccess("NetworkCommunicator uploadImage onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call followUnFollow(boolean follow, final TrainerModel trainerModel, final RequestListenerRequestDataModel<TrainerModel> requestListener, boolean useCache) {
+        int requestCode = 0;
+        Call<ResponseModel<FollowResponse>> call = null;
+
+        if (follow) {
+            requestCode = RequestCode.FOLLOW;
+            call = apiService.follow(new FollowRequest(TempStorage.getUser().getId(), trainerModel.getId()));
+        } else {
+            requestCode = RequestCode.UN_FOLLOW;
+            call = apiService.unFollow(new FollowRequest(TempStorage.getUser().getId(), trainerModel.getId()));
+        }
+
+        LogUtils.debug("NetworkCommunicator hitting follow");
+
+        final int finalRequestCode = requestCode;
+        call.enqueue(new RestCallBack<ResponseModel<FollowResponse>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<FollowResponse>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator follow onFailure " + message);
+                requestListener.onApiFailure(message, finalRequestCode, trainerModel);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<FollowResponse>> call, Response<ResponseModel<FollowResponse>> restResponse, ResponseModel<FollowResponse> response) {
+                LogUtils.networkSuccess("NetworkCommunicator follow onResponse data " + response);
+                requestListener.onApiSuccess(response, finalRequestCode, trainerModel);
+            }
+        });
+        return call;
+    }
+
+    public Call addToWishList(final ClassModel classModel, int classSessionId) {
+        final int requestCode = RequestCode.ADD_TO_WISH_LIST;
+        Call<ResponseModel<WishListResponse>> call = apiService.addToWishList(new WishListRequest(TempStorage.getUser().getId(), classSessionId));
+        LogUtils.debug("NetworkCommunicator hitting addToWishList");
+
+        call.enqueue(new RestCallBack<ResponseModel<WishListResponse>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<WishListResponse>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator addToWishList onFailure " + message);
+//                requestListener.onApiFailure(message, requestCode);
+                ToastUtils.showLong(context, message);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<WishListResponse>> call, Response<ResponseModel<WishListResponse>> restResponse, ResponseModel<WishListResponse> response) {
+                LogUtils.networkSuccess("NetworkCommunicator addToWishList onResponse data " + response);
+//                requestListener.onApiSuccess(response, requestCode);
+
+                try {
+                    classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
+                    EventBroadcastHelper.sendWishAdded(classModel);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    LogUtils.exception(e);
+                }
+                ToastUtils.show(context, "Added to your Wish list");
+            }
+        });
+        return call;
+    }
+
+    public Call removeFromWishList(final ClassModel classModel) {
+        final int requestCode = RequestCode.ADD_TO_WISH_LIST;
+        Call<ResponseModel<String>> call = apiService.removeFromWishList(classModel.getWishListId());
+        LogUtils.debug("NetworkCommunicator hitting addToWishList");
+
+        call.enqueue(new RestCallBack<ResponseModel<String>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<String>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator addToWishList onFailure " + message);
+//                requestListener.onApiFailure(message, requestCode);
+                ToastUtils.showLong(context, message);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<String>> call, Response<ResponseModel<String>> restResponse, ResponseModel<String> response) {
+                LogUtils.networkSuccess("NetworkCommunicator addToWishList onResponse data " + response);
+//                requestListener.onApiSuccess(response, requestCode);
+                try {
+                    ToastUtils.show(context, ((ResponseModel<String>) response).data);
+                    EventBroadcastHelper.sendWishRemoved(classModel);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    LogUtils.exception(e);
+                }
+            }
+        });
+        return call;
+    }
+
 }
+

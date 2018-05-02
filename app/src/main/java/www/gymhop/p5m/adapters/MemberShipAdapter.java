@@ -21,8 +21,8 @@ import www.gymhop.p5m.adapters.viewholder.MemberShipHeaderViewHolder;
 import www.gymhop.p5m.adapters.viewholder.MemberShipViewHolder;
 import www.gymhop.p5m.data.HeaderSticky;
 import www.gymhop.p5m.data.ListLoader;
-import www.gymhop.p5m.data.Package;
-import www.gymhop.p5m.data.UserPackage;
+import www.gymhop.p5m.data.main.Package;
+import www.gymhop.p5m.data.main.UserPackage;
 import www.gymhop.p5m.data.main.ClassModel;
 
 public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

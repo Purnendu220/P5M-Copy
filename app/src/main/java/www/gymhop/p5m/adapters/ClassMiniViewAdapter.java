@@ -50,6 +50,19 @@ public class ClassMiniViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
     }
 
+    public List<Object> getList() {
+        return list;
+    }
+
+    public void addClassTop(ClassModel model) {
+        list.add(0, model);
+        addLoader();
+    }
+
+    public void remove(int position) {
+        list.remove(position);
+    }
+
     public void addClass(ClassModel model) {
         list.add(model);
         addLoader();

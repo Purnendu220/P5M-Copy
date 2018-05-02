@@ -23,10 +23,11 @@ import java.util.List;
 
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.data.main.ClassModel;
+import www.gymhop.p5m.data.main.GymDetailModel;
 import www.gymhop.p5m.data.main.MediaModel;
 import www.gymhop.p5m.data.main.TrainerDetailModel;
 import www.gymhop.p5m.data.main.TrainerModel;
-import www.gymhop.p5m.data.temp.GymDetailModel;
+import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
 
 /**
@@ -81,6 +82,10 @@ public class Helper {
             view.setBackgroundResource(R.drawable.theme_bottom_text_button_book);
             view.setEnabled(true);
         }
+    }
+
+    public static void setFavButtonTemp(Context context, Button buttonFav, boolean isFollow) {
+        setFavButton(context, buttonFav, isFollow);
     }
 
     public static void setFavButton(Context context, Button buttonFav, TrainerModel model) {
@@ -160,6 +165,10 @@ public class Helper {
     }
 
     public static void openMap(Context context, Double latitude, Double longitude) {
+        if (longitude == null || latitude == null) {
+            return;
+        }
+
         Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
                 Uri.parse("http://maps.google.com/maps?saddr=" + latitude + "," + longitude + "&daddr=20.5666,45.345"));
         context.startActivity(intent);
@@ -198,4 +207,29 @@ public class Helper {
         return json;
     }
 
+    public static boolean isSpecialClass(ClassModel model) {
+        return model.getPriceModel().equals("SPECIAL") || model.getPriceModel().equals("FOC");
+    }
+
+    public static boolean isFreeClass(ClassModel model) {
+        return model.getPriceModel().equals("FOC");
+    }
+
+    public static boolean isFemalesAllowed(ClassModel classModel) {
+        return classModel.getClassType().equals(AppConstants.ApiParamValue.GENDER_BOTH) || classModel.getClassType().equals(AppConstants.ApiParamValue.GENDER_FEMALE);
+    }
+
+    public static boolean isMalesAllowed(ClassModel classModel) {
+        return classModel.getClassType().equals(AppConstants.ApiParamValue.GENDER_BOTH) || classModel.getClassType().equals(AppConstants.ApiParamValue.GENDER_MALE);
+    }
+
+    public static String getClassTypeText(String classType) {
+        if (classType.equals(AppConstants.ApiParamValue.GENDER_MALE)) {
+            return "Male";
+        } else if (classType.equals(AppConstants.ApiParamValue.GENDER_FEMALE)) {
+            return "Female";
+        } else {
+            return "Both";
+        }
+    }
 }

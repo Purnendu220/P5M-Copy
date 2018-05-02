@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,9 @@ import android.widget.TextView;
 
 import com.brandongogetap.stickyheaders.StickyLayoutManager;
 import com.brandongogetap.stickyheaders.exposed.StickyHeaderListener;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -24,19 +28,25 @@ import retrofit2.Call;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.adapters.TrainerProfileAdapter;
+import www.gymhop.p5m.adapters.viewholder.TrainerProfileViewHolder;
+import www.gymhop.p5m.data.FollowResponse;
 import www.gymhop.p5m.data.main.ClassModel;
 import www.gymhop.p5m.data.main.TrainerDetailModel;
 import www.gymhop.p5m.data.main.TrainerModel;
-import www.gymhop.p5m.helper.ClassMiniListListenerHelper;
+import www.gymhop.p5m.eventbus.EventBroadcastHelper;
+import www.gymhop.p5m.eventbus.Events;
+import www.gymhop.p5m.eventbus.GlobalBus;
+import www.gymhop.p5m.helper.ClassListListenerHelper;
 import www.gymhop.p5m.helper.Helper;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
+import www.gymhop.p5m.utils.ToastUtils;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
-public class TrainerProfileActivity extends BaseActivity implements AdapterCallbacks, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
+public class TrainerProfileActivity extends BaseActivity implements AdapterCallbacks, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener, NetworkCommunicator.RequestListenerRequestDataModel<TrainerModel> {
 
 
     public static void open(Context context, TrainerModel trainerModel) {
@@ -59,12 +69,65 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
     private int pageSizeLimit = AppConstants.Limit.PAGE_LIMIT_INNER_CLASS_LIST;
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        GlobalBus.getBus().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void trainerFollowed(Events.TrainerFollowed trainerFollowed) {
+        try {
+
+            trainerProfileAdapter.getTrainerModel().setIsfollow(trainerFollowed.isFollowed);
+            trainerProfileAdapter.notifyItemChanged(0);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void classJoin(Events.ClassJoin data) {
+        handleClassJoined(data.data);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void packagePurchasedForClass(Events.PackagePurchasedForClass data) {
+        handleClassJoined(data.data);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void classPurchased(Events.ClassPurchased data) {
+        handleClassJoined(data.data);
+    }
+
+    private void handleClassJoined(ClassModel data) {
+        try {
+            int index = trainerProfileAdapter.getList().indexOf(data);
+            if (index != -1) {
+                Object obj = trainerProfileAdapter.getList().get(index);
+                if (obj instanceof ClassModel) {
+                    ClassModel classModel = (ClassModel) obj;
+                    classModel.setUserJoinStatus(data.isUserJoinStatus());
+
+                    trainerProfileAdapter.notifyItemChanged(index);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         showActionBar = false;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_profile);
 
         ButterKnife.bind(activity);
+        GlobalBus.getBus().register(this);
 
         trainerModel = (TrainerModel) getIntent().getSerializableExtra(AppConstants.DataKey.TRAINER_OBJECT);
 
@@ -78,11 +141,9 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
         trainerDetailModel = new TrainerDetailModel(trainerModel);
 
         trainerProfileAdapter = new TrainerProfileAdapter(context, AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE, true, this,
-                new ClassMiniListListenerHelper(context, activity, this));
+                new ClassListListenerHelper(context, activity, AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE, this));
         recyclerViewTrainerProfile.setAdapter(trainerProfileAdapter);
         trainerProfileAdapter.setTrainerModel(trainerDetailModel);
-
-        trainerProfileAdapter.notifyDataSetChanges();
 
         StickyLayoutManager layoutManager = new StickyLayoutManager(context, trainerProfileAdapter);
         layoutManager.elevateHeaders(true);
@@ -100,6 +161,13 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
                 LogUtils.debug("Listener Detached with position: " + adapterPosition);
             }
         });
+
+        try {
+            ((SimpleItemAnimator) recyclerViewTrainerProfile.getItemAnimator()).setSupportsChangeAnimations(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
 
         onRefresh();
         setToolBar();
@@ -147,6 +215,13 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
             case R.id.imageViewProfile:
                 if (trainerDetailModel != null && !trainerDetailModel.getProfileImage().isEmpty()) {
                     Helper.openImageViewer(context, trainerDetailModel.getProfileImage());
+                }
+                break;
+            case R.id.button:
+                ((BaseActivity) activity).networkCommunicator.followUnFollow(!trainerModel.isIsfollow(), trainerModel, this, false);
+
+                if (viewHolder instanceof TrainerProfileViewHolder) {
+                    Helper.setFavButtonTemp(context, ((TrainerProfileViewHolder) viewHolder).button, !trainerModel.isIsfollow());
                 }
                 break;
         }
@@ -210,8 +285,32 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.TRAINER:
                 swipeRefreshLayout.setRefreshing(false);
+                ToastUtils.showLong(context, errorMessage);
                 break;
         }
     }
 
+
+    @Override
+    public void onApiSuccess(Object response, int requestCode, TrainerModel requestDataModel) {
+        switch (requestCode) {
+            case NetworkCommunicator.RequestCode.FOLLOW:
+            case NetworkCommunicator.RequestCode.UN_FOLLOW:
+                FollowResponse data = ((ResponseModel<FollowResponse>) response).data;
+
+                requestDataModel.setIsfollow(data.getFollow());
+                EventBroadcastHelper.trainerFollowUnFollow(requestDataModel, data.getFollow());
+                break;
+        }
+    }
+
+    @Override
+    public void onApiFailure(String errorMessage, int requestCode, TrainerModel requestDataModel) {
+        switch (requestCode) {
+            case NetworkCommunicator.RequestCode.FOLLOW:
+            case NetworkCommunicator.RequestCode.UN_FOLLOW:
+                ToastUtils.showLong(context, errorMessage);
+                break;
+        }
+    }
 }

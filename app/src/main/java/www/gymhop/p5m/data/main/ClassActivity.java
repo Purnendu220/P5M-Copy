@@ -1,4 +1,4 @@
-package www.gymhop.p5m.data;
+package www.gymhop.p5m.data.main;
 
 public class ClassActivity implements java.io.Serializable {
     private static final long serialVersionUID = 1044920637082958253L;

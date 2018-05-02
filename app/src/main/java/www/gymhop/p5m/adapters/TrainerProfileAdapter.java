@@ -60,6 +60,10 @@ public class TrainerProfileAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         listLoader = new ListLoader(true, "No more upcoming classes");
     }
 
+    public List<Object> getList() {
+        return list;
+    }
+
     public TrainerDetailModel getTrainerModel() {
         return trainerDetailModel;
     }
@@ -190,4 +194,5 @@ public class TrainerProfileAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public List<?> getAdapterData() {
         return list;
     }
+
 }

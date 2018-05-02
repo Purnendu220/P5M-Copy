@@ -16,7 +16,7 @@ import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.adapters.ImageListAdapter;
 import www.gymhop.p5m.data.main.GymBranchDetail;
-import www.gymhop.p5m.data.temp.GymDetailModel;
+import www.gymhop.p5m.data.main.GymDetailModel;
 import www.gymhop.p5m.helper.Helper;
 import www.gymhop.p5m.helper.TrainerListListenerHelper;
 import www.gymhop.p5m.utils.ImageUtils;
@@ -97,12 +97,14 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
                 textViewLocation.setText(gymBranchDetail.getBranchName());
                 textViewLocationSub.setText(gymBranchDetail.getAddress());
 
-                if (!gymBranchDetail.getPhoneNumber().isEmpty()) {
-                    layoutLocationPhone.setVisibility(View.VISIBLE);
-                    textViewLocationPhone.setText(gymBranchDetail.getPhoneNumber());
-                } else {
-                    layoutLocationPhone.setVisibility(View.INVISIBLE);
-                }
+//                if (!gymBranchDetail.getPhoneNumber().isEmpty()) {
+//                    layoutLocationPhone.setVisibility(View.VISIBLE);
+//                    textViewLocationPhone.setText(gymBranchDetail.getPhoneNumber());
+//                } else {
+//                    layoutLocationPhone.setVisibility(View.INVISIBLE);
+//                }
+
+                layoutLocationPhone.setVisibility(View.INVISIBLE);
 
                 if (model.getGymBranchResponseList().size() > 1) {
                     textViewMore.setText(Html.fromHtml("<b>+" + (model.getGymBranchResponseList().size() - 1) + " more</b>"));
@@ -115,9 +117,9 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
                 layoutMap.setVisibility(View.GONE);
             }
 
-            if (model.getFollowerCount() == -1) {
+            if (model.getNumberOfTrainer() == -1) {
                 textViewTrainers.setText(Html.fromHtml("trainers"));
-            } else if (model.getFollowerCount() == 0) {
+            } else if (model.getNumberOfTrainer() == 0) {
                 textViewTrainers.setText(Html.fromHtml("No trainers"));
             } else {
                 textViewTrainers.setText(Html.fromHtml("<b>" + (model.getNumberOfTrainer() + "</b>" + " trainers")));
@@ -153,7 +155,7 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
                 textViewInfo.setText(model.getBio());
             }
 
-            textViewName.setText(model.getFirstName());
+            textViewName.setText(model.getStudioName());
 
 //            String categoryList = TrainerListListenerHelper.getCategoryList(model.getClassCategoryList());
 
@@ -168,6 +170,20 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
             } else {
                 textViewClassCategory.setText("");
             }
+
+            textViewTrainers.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(GymProfileViewHolder.this, textViewTrainers, model, position);
+                }
+            });
+
+            layoutMap.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(GymProfileViewHolder.this, layoutMap, model, position);
+                }
+            });
 
             imageViewProfile.setOnClickListener(new View.OnClickListener() {
                 @Override

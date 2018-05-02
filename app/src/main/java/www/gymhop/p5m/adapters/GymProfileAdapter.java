@@ -21,7 +21,8 @@ import www.gymhop.p5m.adapters.viewholder.LoaderViewHolder;
 import www.gymhop.p5m.data.HeaderSticky;
 import www.gymhop.p5m.data.ListLoader;
 import www.gymhop.p5m.data.main.ClassModel;
-import www.gymhop.p5m.data.temp.GymDetailModel;
+import www.gymhop.p5m.data.main.GymDetailModel;
+import www.gymhop.p5m.utils.LogUtils;
 
 public class GymProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements StickyHeaderHandler {
 
@@ -41,7 +42,10 @@ public class GymProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private List<ClassModel> classModels;
     private HeaderSticky headerSticky;
 
-    public GymProfileAdapter(Context context, int shownIn, AdapterCallbacks adapterCallbacksTrainerProfile, AdapterCallbacks adapterCallbacksClasses) {
+    private boolean showLoader;
+    private ListLoader listLoader;
+
+    public GymProfileAdapter(Context context, int shownIn, boolean showLoader, AdapterCallbacks adapterCallbacksTrainerProfile, AdapterCallbacks adapterCallbacksClasses) {
         this.adapterCallbacksTrainerProfile = adapterCallbacksTrainerProfile;
         this.adapterCallbacksClasses = adapterCallbacksClasses;
 
@@ -50,6 +54,9 @@ public class GymProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         list = new ArrayList<>();
         classModels = new ArrayList<>();
         headerSticky = new HeaderSticky(context.getString(R.string.upcoming_classes));
+        this.showLoader = showLoader;
+
+        listLoader = new ListLoader(true, "No more upcoming classes");
     }
 
     public GymDetailModel getGymDetailModel() {
@@ -58,6 +65,46 @@ public class GymProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public void setGymDetailModel(GymDetailModel gymDetailModel) {
         this.gymDetailModel = gymDetailModel;
+
+        try {
+            list.set(0, gymDetailModel);
+            notifyItemChanged(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addAllClass(List<ClassModel> classModels) {
+        this.classModels.addAll(classModels);
+    }
+
+    public void clearAllClasses() {
+        classModels.clear();
+    }
+
+    public void loaderDone() {
+        listLoader.setFinish(true);
+        try {
+            notifyItemChanged(list.indexOf(listLoader));
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
+    public void loaderReset() {
+        listLoader.setFinish(false);
+    }
+
+    private void addLoader() {
+        if (showLoader) {
+            list.remove(listLoader);
+            list.add(listLoader);
+        }
+    }
+
+    public List<Object> getList() {
+        return list;
     }
 
     public void notifyDataSetChanges() {
@@ -69,6 +116,7 @@ public class GymProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (!classModels.isEmpty()) {
             list.add(headerSticky);
             list.addAll(classModels);
+            addLoader();
         }
 
         notifyDataSetChanged();
@@ -119,6 +167,11 @@ public class GymProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             ((ClassMiniDetailViewHolder) holder).bind(list.get(position), adapterCallbacksClasses, position);
         } else if (holder instanceof HeaderViewHolder) {
             ((HeaderViewHolder) holder).bind(list.get(position), adapterCallbacksTrainerProfile, position);
+        } else if (holder instanceof LoaderViewHolder) {
+            ((LoaderViewHolder) holder).bind(listLoader, adapterCallbacksClasses);
+            if (position == getItemCount() - 1 && !listLoader.isFinish()) {
+                adapterCallbacksClasses.onShowLastItem();
+            }
         } else if (holder instanceof EmptyViewHolder) {
             ((EmptyViewHolder) holder).bind();
         }
@@ -139,10 +192,6 @@ public class GymProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public List<?> getAdapterData() {
         return list;
-    }
-
-    public void addAllClass(List<ClassModel> classModels) {
-        this.classModels = classModels;
     }
 
 }

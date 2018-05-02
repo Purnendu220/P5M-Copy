@@ -14,7 +14,7 @@ import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.viewholder.ChooseFocusViewHolder;
 import www.gymhop.p5m.adapters.viewholder.EmptyViewHolder;
 import www.gymhop.p5m.adapters.viewholder.LoaderViewHolder;
-import www.gymhop.p5m.data.ClassActivity;
+import www.gymhop.p5m.data.main.ClassActivity;
 import www.gymhop.p5m.data.ListLoader;
 
 /**

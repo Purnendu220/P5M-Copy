@@ -42,6 +42,14 @@ public class TrainerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         listLoader = new ListLoader(true, "No more trainers");
     }
 
+    public List<Object> getList() {
+        return list;
+    }
+
+    public void remove(int index) {
+        list.remove(index);
+    }
+
     public void add(TrainerModel model) {
         list.add(model);
         addLoader();
@@ -129,5 +137,4 @@ public class TrainerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         else
             return null;
     }
-
 }

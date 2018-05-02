@@ -44,6 +44,10 @@ public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         listLoader = new ListLoader(true, "No more classes");
     }
 
+    public List<Object> getList() {
+        return list;
+    }
+
     public void addClass(ClassModel model) {
         list.add(model);
         addLoader();

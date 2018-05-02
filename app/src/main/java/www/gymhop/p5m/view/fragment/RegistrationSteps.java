@@ -17,7 +17,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
-import www.gymhop.p5m.data.User;
+import www.gymhop.p5m.data.main.User;
 import www.gymhop.p5m.helper.Helper;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
@@ -243,7 +243,7 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
                     return;
                 }
 
-                if (Helper.validatePass(pass)) {
+                if (!Helper.validatePass(pass)) {
                     textInputLayoutPass.setError(context.getResources().getString(R.string.password_weak));
                     return;
                 }

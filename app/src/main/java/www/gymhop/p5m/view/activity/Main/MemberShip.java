@@ -23,14 +23,12 @@ import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.adapters.MemberShipAdapter;
-import www.gymhop.p5m.adapters.viewholder.MemberShipViewHolder;
-import www.gymhop.p5m.data.Package;
-import www.gymhop.p5m.data.PaymentUrl;
-import www.gymhop.p5m.data.User;
-import www.gymhop.p5m.data.UserPackage;
+import www.gymhop.p5m.data.main.Package;
+import www.gymhop.p5m.data.main.PaymentUrl;
+import www.gymhop.p5m.data.main.User;
+import www.gymhop.p5m.data.main.UserPackage;
 import www.gymhop.p5m.data.UserPackageInfo;
 import www.gymhop.p5m.data.main.ClassModel;
-import www.gymhop.p5m.data.request.PaymentUrlRequest;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
@@ -195,21 +193,29 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
             break;
             case R.id.button: {
 
-                if (viewHolder instanceof MemberShipViewHolder) {
-                    ((MemberShipViewHolder) viewHolder).button.setText(context.getResources().getString(R.string.please_wait));
-                    ((MemberShipViewHolder) viewHolder).button.setEnabled(false);
-                }
+//                if (viewHolder instanceof MemberShipViewHolder) {
+//                    ((MemberShipViewHolder) viewHolder).button.setText(context.getResources().getString(R.string.please_wait));
+//                    ((MemberShipViewHolder) viewHolder).button.setEnabled(false);
+//                }
+//
+//                Package aPackage = (Package) model;
+//                if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS) {
+//                    networkCommunicator.purchasePackageForClass(new PaymentUrlRequest(TempStorage.getUser().getId(),
+//                            aPackage.getId(), classModel.getClassSessionId(),
+//                            classModel.getGymBranchDetail().getGymId()), this, false);
+//
+//                } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SETTING ||
+//                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE) {
+//                    networkCommunicator.purchasePackageForClass(new PaymentUrlRequest(TempStorage.getUser().getId(),
+//                            aPackage.getId()), this, false);
+//                }
 
                 Package aPackage = (Package) model;
                 if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS) {
-                    networkCommunicator.purchasePackageForClass(new PaymentUrlRequest(TempStorage.getUser().getId(),
-                            aPackage.getId(), classModel.getClassSessionId(),
-                            classModel.getGymBranchDetail().getGymId()), this, false);
-
+                    CheckoutActivity.openActivity(context, aPackage, classModel);
                 } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SETTING ||
                         navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE) {
-                    networkCommunicator.purchasePackageForClass(new PaymentUrlRequest(TempStorage.getUser().getId(),
-                            aPackage.getId()), this, false);
+                    CheckoutActivity.openActivity(context, aPackage);
                 }
             }
             break;

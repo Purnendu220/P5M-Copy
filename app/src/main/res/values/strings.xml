@@ -31,6 +31,7 @@
     <string name="terms_of_service">"By login you are agree to our <u>terms of service</u>\nand <u>privacy policy</u>"</string>
 
     <string name="whats_your_name">What\'s Your Name</string>
+    <string name="your_order_details">Your order details</string>
     <string name="and_your_email">And, Your Email ?</string>
     <string name="next">NEXT</string>
     <string name="enter_name">Enter your name</string>
@@ -109,6 +110,8 @@
     <string name="joined">JOINED</string>
     <string name="gender">pls!select gender</string>
     <string name="addInWishList">Added in your wish List</string>
+    <string name="add_to_WishList">Add to wishlist</string>
+    <string name="remove_WishList">Remove from wishlist</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="settings">Settings</string>
     <string name="dob">Date of  birth</string>
@@ -136,7 +139,7 @@
     <string name="gyms">GYMS</string>
     <string name="gym">Gym</string>
     <string name="kwd"> KWD total price</string>
-    <string name="currency">kwd</string>
+    <string name="currency">KWD</string>
     <string name="valid">Valid for </string>
     <string name="clean_filter">Clean All</string>
     <string name="filter">Filter</string>
@@ -162,6 +165,7 @@
     <string name="email_required_error">We need email for login.</string>
     <string name="name_required_error">Your name is required.</string>
     <string name="gender_required">Your gender is required.</string>
+    <string name="promo_code_required">Promo code is required.</string>
     <string name="email_required">Email is required.</string>
 
     <string name="email_required_validate">The email you entered is incorrect.</string>
@@ -220,4 +224,10 @@
     <string name="transaction_history">Transaction History</string>
     <string name="choose_focus">Choose your focus</string>
     <string name="choose_nationality">Choose your Nationality</string>
+    <string name="checkout">checkout</string>
+    <string name="promo_code">Promo Code</string>
+    <string name="apply_promo_code">Apply Promo Code</string>
+    <string name="remove_promo_code">Remove Promo Code</string>
+    <string name="cancellation_policy">Cancellation Policy</string>
+    <string name="press_again_to_exit">Press back again to exit</string>
 </resources>

@@ -19,6 +19,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -27,6 +30,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.FindClassAdapter;
+import www.gymhop.p5m.eventbus.Events;
+import www.gymhop.p5m.eventbus.GlobalBus;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.DateUtils;
 import www.gymhop.p5m.utils.LogUtils;
@@ -55,6 +60,28 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
     private List<String> calendarList;
 
     public FindClass() {
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        GlobalBus.getBus().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        GlobalBus.getBus().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void newFilter(Events.NewFilter newFilter) {
+        viewPager.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                onPageSelected(0);
+            }
+        }, 200);
     }
 
     @Override

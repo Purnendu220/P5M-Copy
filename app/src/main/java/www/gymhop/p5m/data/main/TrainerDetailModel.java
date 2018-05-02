@@ -2,7 +2,6 @@ package www.gymhop.p5m.data.main;
 
 import java.util.List;
 
-import www.gymhop.p5m.data.ClassActivity;
 import www.gymhop.p5m.utils.LogUtils;
 
 public class TrainerDetailModel implements java.io.Serializable {

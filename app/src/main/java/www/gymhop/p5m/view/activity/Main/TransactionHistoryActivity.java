@@ -16,7 +16,7 @@ import butterknife.OnClick;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.adapters.TransactionsAdapter;
-import www.gymhop.p5m.data.Transaction;
+import www.gymhop.p5m.data.main.Transaction;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;

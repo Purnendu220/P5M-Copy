@@ -1,5 +1,5 @@
 
-package www.gymhop.p5m.data;
+package www.gymhop.p5m.data.main;
 
 public class PaymentUrl implements java.io.Serializable {
     private static final long serialVersionUID = 6865989894929977201L;

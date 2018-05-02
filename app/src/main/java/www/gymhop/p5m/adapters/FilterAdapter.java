@@ -70,6 +70,10 @@ public class FilterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return classesFiltersSelected;
     }
 
+    public void removeSelected(ClassesFilter classesFilter) {
+        classesFiltersSelected.remove(classesFilter);
+    }
+
     public void refreshList() {
         list.clear();
         setList(classesFilterList);

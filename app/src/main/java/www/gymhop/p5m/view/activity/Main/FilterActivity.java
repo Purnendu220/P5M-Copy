@@ -13,8 +13,14 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayout;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -24,14 +30,15 @@ import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.adapters.FilterAdapter;
 import www.gymhop.p5m.data.City;
 import www.gymhop.p5m.data.CityLocality;
-import www.gymhop.p5m.data.ClassActivity;
 import www.gymhop.p5m.data.ClassesFilter;
 import www.gymhop.p5m.data.Filter;
+import www.gymhop.p5m.data.main.ClassActivity;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
-import www.gymhop.p5m.utils.AppConstants;
+import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
+import www.gymhop.p5m.view.activity.custom.MaxHeightScrollView;
 
 public class FilterActivity extends BaseActivity implements NetworkCommunicator.RequestListener<ResponseModel>, AdapterCallbacks, View.OnClickListener {
 
@@ -49,7 +56,14 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
     @BindView(R.id.textViewFindClasses)
     public View textViewFindClasses;
 
+    @BindView(R.id.flexBoxLayout)
+    public FlexboxLayout flexBoxLayout;
+    @BindView(R.id.scrollView)
+    public MaxHeightScrollView scrollView;
+
     private FilterAdapter filterAdapter;
+    private HashMap<ClassesFilter, View> classesFilterViewHashMap;
+    private HashMap<View, ClassesFilter> viewClassesFilterHashMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +71,10 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
         setContentView(R.layout.activity_filter);
 
         ButterKnife.bind(activity);
+
+        flexBoxLayout.setFlexDirection(FlexDirection.ROW);
+        classesFilterViewHashMap = new HashMap<>();
+        viewClassesFilterHashMap = new HashMap<>();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setHasFixedSize(false);
@@ -73,13 +91,111 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
         networkCommunicator.getCities(this, true);
         networkCommunicator.getActivities(this, true);
 
-        setToolBar();
 
+        setToolBar();
+    }
+
+    public void checkTags() {
+        if (filterAdapter.getClassesFiltersSelected().isEmpty()) {
+            if (scrollView.getVisibility() != View.GONE) {
+                scrollView.setVisibility(View.GONE);
+            }
+        } else {
+            if (scrollView.getVisibility() != View.VISIBLE) {
+                scrollView.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    private void addTag(final ClassesFilter classesFilter) {
+        final View view = LayoutInflater.from(context).inflate(R.layout.view_filter_tag, flexBoxLayout, false);
+        ImageView imageLeft = view.findViewById(R.id.imageLeft);
+        ImageView imageRight = view.findViewById(R.id.imageRight);
+        TextView textView = view.findViewById(R.id.textView);
+
+        if (classesFilter.getName().length() > 33) {
+            textView.setText(classesFilter.getName().substring(0, 33) + "...");
+        } else {
+            textView.setText(classesFilter.getName());
+        }
+
+        classesFilterViewHashMap.put(classesFilter, view);
+        viewClassesFilterHashMap.put(view, classesFilter);
+
+        imageRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View imageRight) {
+                removeTag(view);
+            }
+        });
+
+        checkTags();
+
+        flexBoxLayout.addView(view);
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(View.FOCUS_DOWN);
+            }
+        });
+    }
+
+    private void removeTag(ClassesFilter classesFilter) {
+
+        try {
+            View view = classesFilterViewHashMap.get(classesFilter);
+            classesFilterViewHashMap.remove(classesFilter);
+            viewClassesFilterHashMap.remove(view);
+
+            flexBoxLayout.removeView(view);
+
+            classesFilter.setSelected(false);
+            filterAdapter.removeSelection(classesFilter);
+            checkTags();
+
+            int index = filterAdapter.getList().indexOf(classesFilter);
+            if (index != -1) {
+                filterAdapter.getList().get(index).setSelected(false);
+                filterAdapter.notifyItemChanged(index);
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
+    private void removeTag(View view) {
+
+        try {
+            ClassesFilter classesFilter = viewClassesFilterHashMap.get(view);
+            classesFilterViewHashMap.remove(classesFilter);
+            viewClassesFilterHashMap.remove(view);
+
+            flexBoxLayout.removeView(view);
+
+            classesFilter.setSelected(false);
+            filterAdapter.removeSelection(classesFilter);
+            checkTags();
+            int index = filterAdapter.getList().indexOf(classesFilter);
+            if (index != -1) {
+                filterAdapter.getList().get(index).setSelected(false);
+                filterAdapter.notifyItemChanged(index);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
     }
 
     private void loaderFilters() {
         if (!TempStorage.getFilters().isEmpty()) {
             filterAdapter.addSelection(TempStorage.getFilters());
+
+            for (ClassesFilter classesFilter : TempStorage.getFilters()) {
+                addTag(classesFilter);
+            }
         }
     }
 
@@ -110,7 +226,7 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
         classesFilterList.add(new ClassesFilter("Location", R.drawable.location, ClassesFilter.TYPE_HEADER));
         classesFilterList.add(new ClassesFilter("Activity", R.drawable.class_icon, ClassesFilter.TYPE_HEADER));
         classesFilterList.add(new ClassesFilter("Time", R.drawable.time, ClassesFilter.TYPE_HEADER));
-        classesFilterList.add(new ClassesFilter("Gender", R.drawable.gender, ClassesFilter.TYPE_HEADER));
+//        classesFilterList.add(new ClassesFilter("Gender", R.drawable.gender, ClassesFilter.TYPE_HEADER));
 
         filterAdapter.setClassesFilterList(classesFilterList);
 
@@ -121,12 +237,12 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
 
         filterAdapter.getClassesFilterList().get(2).setList(timeList);
 
-        List<ClassesFilter> genderList = new ArrayList<>(4);
-        addClassFilterGender(genderList, new Filter.Gender(AppConstants.ApiParamValue.GENDER_MALE, "Males Only"));
-        addClassFilterGender(genderList, new Filter.Gender(AppConstants.ApiParamValue.GENDER_FEMALE, "Females Only"));
-        addClassFilterGender(genderList, new Filter.Gender(AppConstants.ApiParamValue.GENDER_BOTH, "Both"));
-
-        filterAdapter.getClassesFilterList().get(3).setList(genderList);
+//        List<ClassesFilter> genderList = new ArrayList<>(4);
+//        addClassFilterGender(genderList, new Filter.Gender(AppConstants.ApiParamValue.GENDER_MALE, "Males Only"));
+//        addClassFilterGender(genderList, new Filter.Gender(AppConstants.ApiParamValue.GENDER_FEMALE, "Females Only"));
+//        addClassFilterGender(genderList, new Filter.Gender(AppConstants.ApiParamValue.GENDER_BOTH, "Both"));
+//
+//        filterAdapter.getClassesFilterList().get(3).setList(genderList);
 
         filterAdapter.refreshList();
         filterAdapter.notifyDataSetChanged();
@@ -250,8 +366,10 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
 
             if (classesFilter.isSelected()) {
                 filterAdapter.addSelection(classesFilter);
+                addTag(classesFilter);
             } else {
                 filterAdapter.removeSelection(classesFilter);
+                removeTag(classesFilter);
             }
 
             int index = filterAdapter.getList().indexOf(classesFilter);
@@ -278,13 +396,17 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
         switch (view.getId()) {
             case R.id.textViewClear:
                 filterAdapter.clearExpansionAndSelection();
-                TempStorage.setFilterList(new ArrayList<ClassesFilter>());
+//                TempStorage.setFilterList(new ArrayList<ClassesFilter>());
+                flexBoxLayout.removeAllViews();
+                checkTags();
                 break;
             case R.id.imageViewBack:
                 finish();
                 break;
             case R.id.textViewFindClasses:
                 TempStorage.setFilterList(filterAdapter.getClassesFiltersSelected());
+//                EventBroadcastHelper.sendNewFilterSet();
+                HomeActivity.open(context);
                 finish();
                 break;
         }

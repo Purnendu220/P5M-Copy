@@ -13,6 +13,7 @@ import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.data.main.ClassModel;
+import www.gymhop.p5m.helper.Helper;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.DateUtils;
 import www.gymhop.p5m.utils.ImageUtils;
@@ -48,6 +49,8 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
     public TextView textViewGender;
     @BindView(R.id.textViewTrainerName)
     public TextView textViewTrainerName;
+    @BindView(R.id.textViewSpecialClass)
+    public TextView textViewSpecialClass;
 
     @BindView(R.id.textViewMap)
     public TextView textViewMap;
@@ -62,6 +65,9 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
     public LinearLayout layoutMoreDetails;
     @BindView(R.id.layoutTrainer)
     public LinearLayout layoutTrainer;
+
+    @BindView(R.id.layoutLocation)
+    public View layoutLocation;
 
     private final Context context;
     private int shownInScreen;
@@ -79,6 +85,19 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
             itemView.setVisibility(View.VISIBLE);
 
             final ClassModel model = (ClassModel) data;
+
+            if (Helper.isSpecialClass(model)) {
+                textViewSpecialClass.setVisibility(View.VISIBLE);
+                String text = "Special Class";
+                if (!model.getSpecialClassRemark().isEmpty()) {
+                    text = model.getSpecialClassRemark();
+                }
+
+                textViewSpecialClass.setText(text);
+
+            } else {
+                textViewSpecialClass.setVisibility(View.GONE);
+            }
 
             if (model.getGymBranchDetail() != null) {
 
@@ -103,13 +122,29 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
             } else {
                 layoutMoreDetails.setVisibility(View.VISIBLE);
 
-                if (!model.getSpecialNote().isEmpty() && !model.getReminder().isEmpty()) {
-                    textViewMoreDetails.setText(Html.fromHtml("<b>REMINDERS:</b>   " + model.getReminder() + "<br/><b>STUDIO INSTRUCTION:</b> " + model.getSpecialNote()));
-                } else if (model.getSpecialNote().isEmpty() && !model.getReminder().isEmpty()) {
-                    textViewMoreDetails.setText(Html.fromHtml("<b>REMINDERS:</b>   " + model.getReminder()));
-                } else if (!model.getSpecialNote().isEmpty() && model.getReminder().isEmpty()) {
-                    textViewMoreDetails.setText(Html.fromHtml("<b>STUDIO INSTRUCTION:</b>   " + model.getSpecialNote()));
+                StringBuffer stringBuffer = new StringBuffer("");
+
+                if (!model.getReminder().isEmpty()) {
+                    stringBuffer.append("<b>REMINDERS:</b>   " + model.getReminder());
                 }
+
+                if (!model.getGymBranchDetail().getStudioInstruction().isEmpty()) {
+                    stringBuffer.append("<br/><br/><b>STUDIO INSTRUCTION:</b> " + model.getGymBranchDetail().getStudioInstruction());
+                }
+
+                if (!model.getSpecialNote().isEmpty()) {
+                    stringBuffer.append("<br/><br/><b>SPECIAL NOTES BY TRAINER:</b> " + model.getSpecialNote());
+                }
+
+                textViewMoreDetails.setText(Html.fromHtml(stringBuffer.toString()));
+
+//                if (!model.getSpecialNote().isEmpty() && !model.getReminder().isEmpty()) {
+//                    textViewMoreDetails.setText(Html.fromHtml("<b>REMINDERS:</b>   " + model.getReminder() + "<br/><b>STUDIO INSTRUCTION:</b> " + model.getSpecialNote()));
+//                } else if (model.getSpecialNote().isEmpty() && !model.getReminder().isEmpty()) {
+//                    textViewMoreDetails.setText(Html.fromHtml("<b>REMINDERS:</b>   " + model.getReminder()));
+//                } else if (!model.getSpecialNote().isEmpty() && model.getReminder().isEmpty()) {
+//                    textViewMoreDetails.setText(Html.fromHtml("<b>STUDIO INSTRUCTION:</b>   " + model.getSpecialNote()));
+//                }
             }
 
             if (model.getClassMedia() != null) {
@@ -157,7 +192,14 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
             }
 
             textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
-            textViewGender.setText(model.getClassType());
+            textViewGender.setText(Helper.getClassTypeText(model.getClassType()));
+
+            layoutLocation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ClassProfileViewHolder.this, layoutLocation, model, position);
+                }
+            });
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -170,6 +212,20 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
                 @Override
                 public void onClick(View view) {
                     adapterCallbacks.onAdapterItemClick(ClassProfileViewHolder.this, imageViewClass, model, position);
+                }
+            });
+
+            imageViewMap.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ClassProfileViewHolder.this, imageViewMap, model, position);
+                }
+            });
+
+            layoutMap.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ClassProfileViewHolder.this, layoutMap, model, position);
                 }
             });
 

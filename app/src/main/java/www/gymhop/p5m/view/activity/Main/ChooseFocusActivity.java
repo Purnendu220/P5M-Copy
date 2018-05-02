@@ -18,7 +18,7 @@ import butterknife.OnClick;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.adapters.ChooseFocusAdapter;
-import www.gymhop.p5m.data.ClassActivity;
+import www.gymhop.p5m.data.main.ClassActivity;
 import www.gymhop.p5m.data.request.ChooseFocusRequest;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.storage.TempStorage;

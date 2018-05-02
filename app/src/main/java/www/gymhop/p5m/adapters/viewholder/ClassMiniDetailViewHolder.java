@@ -153,6 +153,26 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
 
             textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
 
+            buttonJoin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ClassMiniDetailViewHolder.this, buttonJoin, model, position);
+                }
+            });
+
+            imageViewOptions2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ClassMiniDetailViewHolder.this, imageViewOptions2, model, position);
+                }
+            });
+
+            imageViewOptions1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ClassMiniDetailViewHolder.this, imageViewOptions1, model, position);
+                }
+            });
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
