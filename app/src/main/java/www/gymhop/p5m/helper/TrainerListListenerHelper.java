@@ -2,20 +2,25 @@ package www.gymhop.p5m.helper;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.List;
 
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.adapters.viewholder.TrainerListViewHolder;
-import www.gymhop.p5m.data.main.ClassActivity;
 import www.gymhop.p5m.data.FollowResponse;
+import www.gymhop.p5m.data.main.ClassActivity;
 import www.gymhop.p5m.data.main.TrainerModel;
 import www.gymhop.p5m.eventbus.EventBroadcastHelper;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
+import www.gymhop.p5m.utils.DialogUtils;
 import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.utils.ToastUtils;
 import www.gymhop.p5m.view.activity.Main.TrainerProfileActivity;
@@ -85,10 +90,15 @@ public class TrainerListListenerHelper implements AdapterCallbacks, NetworkCommu
             case R.id.buttonFav:
                 if (model instanceof TrainerModel) {
                     TrainerModel trainerModel = (TrainerModel) model;
-                    ((BaseActivity) activity).networkCommunicator.followUnFollow(!trainerModel.isIsfollow(), trainerModel, this, false);
 
-                    if (viewHolder instanceof TrainerListViewHolder) {
-                        Helper.setFavButtonTemp(context, ((TrainerListViewHolder) viewHolder).buttonFav, !trainerModel.isIsfollow());
+                    if (trainerModel.isIsfollow()) {
+                        dialogUnFollow(viewHolder, trainerModel);
+                    } else {
+                        ((BaseActivity) activity).networkCommunicator.followUnFollow(!trainerModel.isIsfollow(), trainerModel, this, false);
+
+                        if (viewHolder instanceof TrainerListViewHolder) {
+                            Helper.setFavButtonTemp(context, ((TrainerListViewHolder) viewHolder).buttonFav, !trainerModel.isIsfollow());
+                        }
                     }
                 }
                 break;
@@ -96,7 +106,20 @@ public class TrainerListListenerHelper implements AdapterCallbacks, NetworkCommu
                 TrainerProfileActivity.open(context, (TrainerModel) model);
                 break;
         }
+    }
 
+    private void dialogUnFollow(final RecyclerView.ViewHolder viewHolder, final TrainerModel trainerModel) {
+
+        DialogUtils.showBasic(context, "Are you sure want to unfollow \"" + trainerModel.getFirstName() + "\" ?", "Unfollow", new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                ((BaseActivity) activity).networkCommunicator.followUnFollow(!trainerModel.isIsfollow(), trainerModel, TrainerListListenerHelper.this, false);
+
+                if (viewHolder instanceof TrainerListViewHolder) {
+                    Helper.setFavButtonTemp(context, ((TrainerListViewHolder) viewHolder).buttonFav, !trainerModel.isIsfollow());
+                }
+            }
+        });
     }
 
     @Override

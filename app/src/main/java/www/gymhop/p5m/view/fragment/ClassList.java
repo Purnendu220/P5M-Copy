@@ -71,6 +71,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
     private boolean shouldRefresh = false;
 
     private int shownInScreen;
+    private int currentPosition;
 
     public ClassList() {
     }
@@ -102,13 +103,14 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
         handleClassJoined(data.data);
     }
 
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void newFilter(Events.NewFilter newFilter) {
         if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_HOME_FIND_CLASSES) {
             shouldRefresh = true;
             classListAdapter.clearAll();
             classListAdapter.notifyDataSetChanged();
+
+            onTabSelection(FindClass.SELECTED_POSITION);
         }
     }
 
@@ -214,7 +216,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, ClassModel model, int position) {
         switch (view.getId()) {
             case R.id.imageViewOptions:
-                ClassListListenerHelper.dialogOptionsAdd(context, networkCommunicator, view, model);
+                ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, model);
             case R.id.textViewLocation:
                 break;
             case R.id.layoutLocation:
@@ -300,7 +302,11 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
     @Override
     public void onTabSelection(int position) {
-        if (shouldRefresh || (fragmentPositionInViewPager == position && isShownFirstTime)) {
+        LogUtils.debug("varun f "+ fragmentPositionInViewPager + " onTabSelection "+position+ " vp position "+FindClass.SELECTED_POSITION);
+
+        currentPosition = position;
+        if ((shouldRefresh && (fragmentPositionInViewPager == position))
+                || ((fragmentPositionInViewPager == position) && isShownFirstTime)) {
             isShownFirstTime = false;
             shouldRefresh = false;
 

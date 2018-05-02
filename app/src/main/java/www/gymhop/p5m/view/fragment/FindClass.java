@@ -53,7 +53,8 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
 
     private FindClassAdapter findClassAdapter;
     private int TOTAL_DATE_TABS = 45;
-//    private int TOTAL_DATE_TABS = 7;
+
+    public static int SELECTED_POSITION = 0;
 
     private int dp;
 
@@ -76,12 +77,7 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void newFilter(Events.NewFilter newFilter) {
-        viewPager.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                onPageSelected(0);
-            }
-        }, 200);
+        checkFilterCount();
     }
 
     @Override
@@ -113,6 +109,17 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
         viewPager.setOffscreenPageLimit(TOTAL_DATE_TABS);
 
         viewPager.addOnPageChangeListener(this);
+
+        checkFilterCount();
+    }
+
+    private void checkFilterCount() {
+        if (TempStorage.getFilters().isEmpty()) {
+            textViewNotificationMessageCounter.setVisibility(View.INVISIBLE);
+        } else {
+            textViewNotificationMessageCounter.setVisibility(View.VISIBLE);
+            textViewNotificationMessageCounter.setText(String.valueOf(TempStorage.getFilters().size()));
+        }
     }
 
     boolean isLoadingFirstTime = true;
@@ -133,12 +140,6 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
     @Override
     public void onResume() {
         super.onResume();
-        if (TempStorage.getFilters().isEmpty()) {
-            textViewNotificationMessageCounter.setVisibility(View.INVISIBLE);
-        } else {
-            textViewNotificationMessageCounter.setVisibility(View.VISIBLE);
-            textViewNotificationMessageCounter.setText(String.valueOf(TempStorage.getFilters().size()));
-        }
     }
 
     private void generateTabs() {
@@ -229,11 +230,11 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
     }
 
     @Override
     public void onPageSelected(int position) {
+        SELECTED_POSITION = position;
         try {
             ((ViewPagerFragmentSelection) findClassAdapter.getFragments().get(position)).onTabSelection(position);
         } catch (Exception e) {

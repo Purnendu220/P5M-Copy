@@ -3,7 +3,9 @@ package www.gymhop.p5m.view.activity.LoginRegister;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -18,12 +20,15 @@ import www.gymhop.p5m.data.InfoScreenData;
 import www.gymhop.p5m.utils.ViewPagerIndicator;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
-public class InfoScreen extends BaseActivity {
+public class InfoScreen extends BaseActivity implements ViewPager.OnPageChangeListener {
 
     @BindView(R.id.viewPager)
     public ViewPager viewPager;
     @BindView(R.id.layoutIndicator)
     public LinearLayout layoutIndicator;
+
+    @BindView(R.id.buttonRegister)
+    public Button buttonRegister;
 
     private InfoScreenAdapter infoScreenAdapter;
 
@@ -40,6 +45,8 @@ public class InfoScreen extends BaseActivity {
         ButterKnife.bind(activity);
 
         setViewPagerAdapter();
+
+        viewPager.addOnPageChangeListener(this);
     }
 
     private void setViewPagerAdapter() {
@@ -68,4 +75,24 @@ public class InfoScreen extends BaseActivity {
         SignUpOptions.open(context);
     }
 
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        if (position == viewPager.getAdapter().getCount() - 1) {
+            buttonRegister.setBackgroundResource(R.drawable.join_rect);
+            buttonRegister.setTextColor(ContextCompat.getColor(context, R.color.white));
+        } else {
+            buttonRegister.setBackgroundResource(R.drawable.button_white);
+            buttonRegister.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
 }

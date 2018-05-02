@@ -33,6 +33,7 @@ import www.gymhop.p5m.data.CityLocality;
 import www.gymhop.p5m.data.ClassesFilter;
 import www.gymhop.p5m.data.Filter;
 import www.gymhop.p5m.data.main.ClassActivity;
+import www.gymhop.p5m.eventbus.EventBroadcastHelper;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
@@ -130,6 +131,16 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
         });
 
         checkTags();
+
+        if (classesFilter.getObject() instanceof CityLocality) {
+            imageLeft.setImageResource(R.drawable.filter_location);
+        } else if (classesFilter.getObject() instanceof ClassActivity) {
+            imageLeft.setImageResource(R.drawable.filter_activity);
+        } else if (classesFilter.getObject() instanceof Filter.Time) {
+            imageLeft.setImageResource(R.drawable.filter_time);
+        } else {
+            imageLeft.setImageResource(R.drawable.filter_activity);
+        }
 
         flexBoxLayout.addView(view);
         scrollView.post(new Runnable() {
@@ -405,8 +416,8 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
                 break;
             case R.id.textViewFindClasses:
                 TempStorage.setFilterList(filterAdapter.getClassesFiltersSelected());
-//                EventBroadcastHelper.sendNewFilterSet();
-                HomeActivity.open(context);
+                EventBroadcastHelper.sendNewFilterSet();
+//                HomeActivity.open(context);
                 finish();
                 break;
         }

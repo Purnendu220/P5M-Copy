@@ -87,7 +87,7 @@
     <string name="after_Noon">After Noon</string>
     <string name="evening">Evening</string>
     <string name="login_facebook">ENTER WITH FACEBOOK</string>
-    <string name="login">Log in</string>
+    <string name="login">"<b><u>Log in</u></b>"</string>
     <string name="login_gamil">ENTER WITH GOOGLE</string>
     <string name="sign_up_email">SIGN UP WITH EMAIL</string>
 
@@ -141,7 +141,7 @@
     <string name="kwd"> KWD total price</string>
     <string name="currency">KWD</string>
     <string name="valid">Valid for </string>
-    <string name="clean_filter">Clean All</string>
+    <string name="clean_filter">Clear All</string>
     <string name="filter">Filter</string>
     <string name="our_class">Our classes:</string>
     <string name="empty_text">No data available</string>
@@ -188,7 +188,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="upcoming_classes">Upcoming Classes</string>
     <string name="today">Today</string>
-    <string name="sign_up">Sign Up</string>
+    <string name="sign_up">"<b><u>Sign Up</u></b>"</string>
     <string name="no_more_data">No more data</string>
     <string name="loading">Loading</string>
     <string name="profile_package_expiry">" remaining until your classes expire."</string>
@@ -230,4 +230,6 @@
     <string name="remove_promo_code">Remove Promo Code</string>
     <string name="cancellation_policy">Cancellation Policy</string>
     <string name="press_again_to_exit">Press back again to exit</string>
+    <string name="cancel_class">Unjoin Class</string>
+    <string name="forgot_password">"<b><u>Forgot password</u>?</b>"</string>
 </resources>

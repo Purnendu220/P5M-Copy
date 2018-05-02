@@ -81,6 +81,7 @@ public class AppConstants {
         public static final String PACKAGE_PURCHASE = "api/v1/payment/package-purchase/";
 
         public static final String JOIN_CLASS = "api/v1/user/class/join";
+        public static final String UN_JOIN_CLASS = "api/v1/user/class/unjoin";
         public static final String TRANSACTIONS = "api/v1/payment";
         public static final String USER_UPDATE = "api/v1/user/update";
         public static final String DEVICE_SAVE = "api/v1/device/save";

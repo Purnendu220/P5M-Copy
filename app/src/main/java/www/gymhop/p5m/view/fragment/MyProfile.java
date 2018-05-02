@@ -184,10 +184,13 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
     public void onTabSelection(int position) {
         if (isLoadingFirstTime) {
             isLoadingFirstTime = false;
-            if (myProfileAdapter.getTrainers().isEmpty()) {
-                networkCommunicator.getFavTrainerList(AppConstants.ApiParamValue.FOLLOW_TYPE_FOLLOWED, TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_TRAINER_LIST, this, false);
-                myProfileAdapter.onTabSelection(ProfileHeaderTabViewHolder.TAB_1);
-            }
+            networkCommunicator.getFavTrainerList(AppConstants.ApiParamValue.FOLLOW_TYPE_FOLLOWED, TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_TRAINER_LIST, this, false);
+            networkCommunicator.getFinishedClassList(TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_TRAINER_LIST, this, false);
+            
+            myProfileAdapter.onTabSelection(ProfileHeaderTabViewHolder.TAB_1);
+            myProfileAdapter.clearTrainers();
+            myProfileAdapter.clearClasses();
+            myProfileAdapter.notifyDataSetChanges();
         }
     }
 
@@ -250,18 +253,18 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
         switch (view.getId()) {
             case R.id.header1: {
-                if (myProfileAdapter.getTrainers().isEmpty()) {
-                    networkCommunicator.getFavTrainerList(AppConstants.ApiParamValue.FOLLOW_TYPE_FOLLOWED, TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_TRAINER_LIST, this, false);
-                }
+//                if (myProfileAdapter.getTrainers().isEmpty()) {
+//                    networkCommunicator.getFavTrainerList(AppConstants.ApiParamValue.FOLLOW_TYPE_FOLLOWED, TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_TRAINER_LIST, this, false);
+//                }
 
                 myProfileAdapter.onTabSelection(ProfileHeaderTabViewHolder.TAB_1);
                 myProfileAdapter.notifyDataSetChanges();
             }
             break;
             case R.id.header2: {
-                if (myProfileAdapter.getClasses().isEmpty()) {
-                    networkCommunicator.getFinishedClassList(TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_TRAINER_LIST, this, false);
-                }
+//                if (myProfileAdapter.getClasses().isEmpty()) {
+//                    networkCommunicator.getFinishedClassList(TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_TRAINER_LIST, this, false);
+//                }
 
                 myProfileAdapter.onTabSelection(ProfileHeaderTabViewHolder.TAB_2);
                 myProfileAdapter.notifyDataSetChanges();

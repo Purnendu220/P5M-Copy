@@ -30,6 +30,9 @@ public class ClassModel implements java.io.Serializable {
     private boolean hideClass;
     private int price;
 
+    /********From Joined class**********/
+    private int joinClassId;
+
     /********From wish list**********/
     private String classDay;
     private int wishListId;
@@ -258,5 +261,13 @@ public class ClassModel implements java.io.Serializable {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public int getJoinClassId() {
+        return joinClassId;
+    }
+
+    public void setJoinClassId(int joinClassId) {
+        this.joinClassId = joinClassId;
     }
 }

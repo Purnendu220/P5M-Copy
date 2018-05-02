@@ -111,6 +111,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
     public void classJoin(Events.ClassJoin data) {
         if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
             shouldRefresh = true;
+            onTabSelection(fragmentPositionInViewPager);
         }
 
         handleClassJoined(data.data);
@@ -124,10 +125,21 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void packagePurchasedForClass(Events.PackagePurchasedForClass data) {
+        if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
+            shouldRefresh = true;
+            onTabSelection(fragmentPositionInViewPager);
+        }
+
         handleClassJoined(data.data);
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void classPurchased(Events.ClassPurchased data) {
+        if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
+            shouldRefresh = true;
+            onTabSelection(fragmentPositionInViewPager);
+        }
+
         handleClassJoined(data.data);
     }
 
@@ -154,6 +166,16 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_class_mini_view_list, container, false);
     }
+
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//
+//        if (shouldRefresh) {
+//            shouldRefresh = false;
+//            onRefresh();
+//        }
+//    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -245,12 +267,13 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
                     if (classModels.size() < pageSizeLimit) {
                         classListAdapter.loaderDone();
                     }
-                    classListAdapter.notifyDataSetChanged();
 
                 } else {
                     checkListData();
                     classListAdapter.loaderDone();
                 }
+
+                classListAdapter.notifyDataSetChanged();
                 break;
         }
     }

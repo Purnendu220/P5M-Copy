@@ -1,6 +1,7 @@
 package www.gymhop.p5m.utils;
 
 import java.text.DateFormatSymbols;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -35,7 +36,7 @@ public class DateUtils {
     private static SimpleDateFormat classTime = new SimpleDateFormat("HH:mm:ss");
     private static SimpleDateFormat classTimeFormat = new SimpleDateFormat("h:mma");
     private static SimpleDateFormat classDate = new SimpleDateFormat("yyyy-MM-dd");
-    private static SimpleDateFormat classDateExpiry = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private static SimpleDateFormat classDateExpiry = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static SimpleDateFormat classDateFormat = new SimpleDateFormat("EEE, MMM d, yyyy");
 
     public static String getFormattedDobFromServer(Date date) {
@@ -60,7 +61,7 @@ public class DateUtils {
 
     public static int getDaysLeftFromPackageExpiryDate(String date) {
         try {
-            date = date + " 23:59";
+            date = date + " 23:59:00";
             Date expiryDate = classDateExpiry.parse(date);
 
             Date today = Calendar.getInstance().getTime();
@@ -118,4 +119,16 @@ public class DateUtils {
     }
 
 
+    public static int hoursLeft(String date) {
+        try {
+            Date expiryTime = classDateExpiry.parse(date);
+            Date today = Calendar.getInstance().getTime();
+            long diff = expiryTime.getTime() - today.getTime();
+            return (int) TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return 3;
+    }
 }

@@ -4,9 +4,11 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,7 +24,11 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.robertlevonyan.components.picker.ItemModel;
+import com.robertlevonyan.components.picker.OnPickerCloseListener;
+import com.robertlevonyan.components.picker.PickerDialog;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -411,8 +417,6 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
 //                imageViewProfile.setImageBitmap(bitmap);
 //            }
         }
-
-
     }
 
     private void setNationality(String nationality) {
@@ -467,16 +471,47 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
+    private PickerDialog pickerDialog;
+
     private void imagePicker() {
 //        ImagePicker.setMinQuality(1280, 1280);
 //        ImagePicker.pickImage(activity, "Pick your image:");
 
-//        PickerDialog pickerDialog = PickerDialog.Builder(actitvty)// Activity or Fragment
-//                .setTitle("Picke Image")          // String value or resource ID
-//                       .setTitleTextSize(...)  // Text size of title
-//                       .setTitleTextColor(...) // Color of title text
-//                       .setListType(...)       // Type of the picker, must be PickerDialog.TYPE_LIST or PickerDialog.TYPE_Grid
-//                       .setItems(...)          // List of ItemModel-s which should be in picker
-//                       .create()
+
+        ArrayList<ItemModel> itemModels = new ArrayList<>();
+        itemModels.add(new ItemModel(ItemModel.ITEM_CAMERA, "", 0, false, 0, 0));
+        itemModels.add(new ItemModel(ItemModel.ITEM_GALLERY, "", 0, false, 0, 0));
+        itemModels.add(new ItemModel(ItemModel.ITEM_FILES, "", 0, false, 0, 0));
+
+        pickerDialog = new PickerDialog.Builder((BaseActivity) activity)// Activity or Fragment
+                .setTitle("Pick Image")          // String value or resource ID
+                .setTitleTextColor(ContextCompat.getColor(context, R.color.theme_dark_text)) // Color of title text
+                .setListType(PickerDialog.TYPE_LIST, 3)       // Type of the picker, must be PickerDialog.TYPE_LIST or PickerDialog.TYPE_Grid
+                .setItems(itemModels)
+                .create();
+
+        pickerDialog.setOnPickerCloseListener(new OnPickerCloseListener() {
+            @Override
+            public void onPickerClosed(long type, Uri uri) {
+
+                if (type == ItemModel.ITEM_CAMERA) {
+                    imageViewProfile.setImageURI(uri);
+                } else if (type == ItemModel.ITEM_GALLERY) {
+                    imageViewProfile.setImageURI(uri);
+                } else if (type == ItemModel.ITEM_FILES) {
+                    imageViewProfile.setImageURI(uri);
+                }
+            }
+        });
+
+        pickerDialog.show();
+
+//        uploadUserImage
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        pickerDialog.onPermissionsResult(requestCode, permissions, grantResults);
     }
 }

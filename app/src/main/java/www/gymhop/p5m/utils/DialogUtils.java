@@ -17,12 +17,20 @@ public class DialogUtils {
                                  String message,
                                  String positiveButtonText,
                                  MaterialDialog.SingleButtonCallback singleButtonCallbackForPositive) {
+        showBasic(context, message, positiveButtonText, context.getString(R.string.cancel), singleButtonCallbackForPositive);
+    }
+
+    public static void showBasic(Context context,
+                                 String message,
+                                 String positiveButtonText,
+                                 String negativeButtonText,
+                                 MaterialDialog.SingleButtonCallback singleButtonCallbackForPositive) {
         new MaterialDialog.Builder(context)
                 .content(message)
                 .cancelable(false)
                 .positiveText(positiveButtonText)
                 .onPositive(singleButtonCallbackForPositive)
-                .negativeText(context.getString(R.string.cancel))
+                .negativeText(negativeButtonText)
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {

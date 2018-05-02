@@ -5,6 +5,7 @@ import java.util.List;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
@@ -208,6 +209,10 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.WISH_DELETE + "/{" + AppConstants.ApiParamKey.ID + "}")
     Call<ResponseModel<String>> removeFromWishList(@Path(AppConstants.ApiParamKey.ID) int wishId);
+
+    @Headers("Content-type: application/json")
+    @DELETE(AppConstants.Url.UN_JOIN_CLASS + "/{" + AppConstants.ApiParamKey.ID + "}")
+    Call<ResponseModel<User>> unJoinClass(@Path(AppConstants.ApiParamKey.ID) int classSessionId);
 
     @Multipart
     @POST(AppConstants.Url.MEDIA_UPDATE + "/{" + AppConstants.ApiParamKey.ID + "}")

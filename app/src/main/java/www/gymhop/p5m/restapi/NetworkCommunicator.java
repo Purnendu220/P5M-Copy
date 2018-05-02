@@ -875,7 +875,45 @@ public class NetworkCommunicator {
         return call;
     }
 
+    public Call unJoinClass(final ClassModel classModel, int joinClassId) {
+
+        classModel.setUserJoinStatus(false);
+        EventBroadcastHelper.sendClassJoin(context, classModel);
+
+        final int requestCode = RequestCode.ADD_TO_WISH_LIST;
+        Call<ResponseModel<User>> call = apiService.unJoinClass(joinClassId);
+        LogUtils.debug("NetworkCommunicator hitting unJoinClass");
+
+        call.enqueue(new RestCallBack<ResponseModel<User>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<User>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator unJoinClass onFailure " + message);
+//                requestListener.onApiFailure(message, requestCode);
+                ToastUtils.showLong(context, message);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<User>> call, Response<ResponseModel<User>> restResponse, ResponseModel<User> response) {
+                LogUtils.networkSuccess("NetworkCommunicator unJoinClass onResponse data " + response);
+//                requestListener.onApiSuccess(response, requestCode);
+
+                try {
+                    EventBroadcastHelper.sendUserUpdate(context, response.data);
+//                    classModel.setUserJoinStatus(false);
+//                    EventBroadcastHelper.sendClassJoin(context, classModel);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    LogUtils.exception(e);
+                }
+            }
+        });
+        return call;
+    }
+
     public Call removeFromWishList(final ClassModel classModel) {
+
+        EventBroadcastHelper.sendWishRemoved(classModel);
+
         final int requestCode = RequestCode.ADD_TO_WISH_LIST;
         Call<ResponseModel<String>> call = apiService.removeFromWishList(classModel.getWishListId());
         LogUtils.debug("NetworkCommunicator hitting addToWishList");
@@ -894,7 +932,7 @@ public class NetworkCommunicator {
 //                requestListener.onApiSuccess(response, requestCode);
                 try {
                     ToastUtils.show(context, ((ResponseModel<String>) response).data);
-                    EventBroadcastHelper.sendWishRemoved(classModel);
+//                    EventBroadcastHelper.sendWishRemoved(classModel);
                 } catch (Exception e) {
                     e.printStackTrace();
                     LogUtils.exception(e);

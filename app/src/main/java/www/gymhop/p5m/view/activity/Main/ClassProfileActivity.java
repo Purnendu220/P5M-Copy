@@ -279,7 +279,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 finish();
                 break;
             case R.id.imageViewOptions:
-                ClassListListenerHelper.dialogOptionsAdd(context, networkCommunicator, view, classModel);
+                ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, classModel);
                 break;
         }
     }

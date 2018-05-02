@@ -21,6 +21,7 @@ import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.data.main.ClassModel;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.utils.AppConstants;
+import www.gymhop.p5m.utils.DateUtils;
 import www.gymhop.p5m.utils.DialogUtils;
 import www.gymhop.p5m.view.activity.Main.ClassProfileActivity;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
@@ -51,9 +52,11 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                 if (model instanceof ClassModel) {
                     ClassModel classModel = (ClassModel) model;
                     if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
-                        dialogOptionsRemove(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
+                        popupOptionsRemove(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
+                    } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
+                        popupOptionsCancelClass(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
                     } else {
-                        dialogOptionsAdd(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
+                        popupOptionsAdd(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
                     }
                 }
                 break;
@@ -67,7 +70,28 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         }
     }
 
-    public static void dialogOptionsAdd(Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model) {
+    public static void popupOptionsCancelClass(final Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model) {
+        final View viewRoot = LayoutInflater.from(context).inflate(R.layout.popup_options, null);
+        TextView textView = (TextView) viewRoot.findViewById(R.id.textViewOption1);
+        textView.setText(context.getString(R.string.cancel_class));
+
+        final PopupWindow popupWindow = new PopupWindow(viewRoot, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindow.dismiss();
+                dialogConfirmUnJoin(context, networkCommunicator, model);
+            }
+        });
+
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        popupWindow.showAtLocation(view, Gravity.NO_GRAVITY, location[0], location[1]);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    }
+
+    public static void popupOptionsAdd(Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model) {
         final View viewRoot = LayoutInflater.from(context).inflate(R.layout.popup_options, null);
         TextView textView = (TextView) viewRoot.findViewById(R.id.textViewOption1);
         textView.setText(context.getString(R.string.add_to_WishList));
@@ -88,7 +112,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
-    public static void dialogOptionsRemove(final Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model) {
+    public static void popupOptionsRemove(final Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model) {
         final View viewRoot = LayoutInflater.from(context).inflate(R.layout.popup_options, null);
         TextView textView = (TextView) viewRoot.findViewById(R.id.textViewOption1);
         textView.setText(context.getString(R.string.remove_WishList));
@@ -109,9 +133,31 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
+    private static void dialogConfirmUnJoin(Context context, final NetworkCommunicator networkCommunicator, final ClassModel model) {
+
+        String message = "Are you sure want to unjoin ?";
+
+        if (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) < 2) {
+
+            message = "The following class starts in less than 2 hours. Cancelling your registration will result in no refund. Are you sure you want to cancel your booking?";
+            if (Helper.isSpecialClass(model)) {
+                if (Helper.isFreeClass(model)) {
+                    message = "Are you sure want to unjoin ?";
+                }
+            }
+        }
+
+        DialogUtils.showBasic(context, message, "Cancel My Registration", "No, Thanks", new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                networkCommunicator.unJoinClass(model, model.getJoinClassId());
+            }
+        });
+    }
+
     private static void dialogConfirmDelete(Context context, final NetworkCommunicator networkCommunicator, final ClassModel model) {
 
-        DialogUtils.showBasic(context, "Are you sure want to remove \"" + model.getTitle() + "\" from your WishList", "Delete", new MaterialDialog.SingleButtonCallback() {
+        DialogUtils.showBasic(context, "Are you sure want to remove \"" + model.getTitle() + "\" from your WishList ?", "Delete", new MaterialDialog.SingleButtonCallback() {
             @Override
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                 networkCommunicator.removeFromWishList(model);

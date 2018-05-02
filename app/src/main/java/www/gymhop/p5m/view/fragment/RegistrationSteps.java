@@ -221,7 +221,7 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
             case AppConstants.FragmentPosition.REGISTRATION_STEP_EMAIL:
                 email = editTextEmail.getText().toString();
                 if (email.isEmpty()) {
-                    textInputLayoutEmail.setError(context.getResources().getString(R.string.name_required_error));
+                    textInputLayoutEmail.setError(context.getResources().getString(R.string.email_required_error));
                     return;
                 }
 
