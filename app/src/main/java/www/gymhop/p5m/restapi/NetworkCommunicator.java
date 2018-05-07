@@ -17,6 +17,7 @@ import www.gymhop.p5m.data.WishListResponse;
 import www.gymhop.p5m.data.main.ClassActivity;
 import www.gymhop.p5m.data.main.ClassModel;
 import www.gymhop.p5m.data.main.GymDetailModel;
+import www.gymhop.p5m.data.main.NotificationModel;
 import www.gymhop.p5m.data.main.Package;
 import www.gymhop.p5m.data.main.PaymentUrl;
 import www.gymhop.p5m.data.main.TrainerDetailModel;
@@ -98,6 +99,7 @@ public class NetworkCommunicator {
         public static final int ADD_TO_WISH_LIST = 123;
         public static final int FOLLOW = 124;
         public static final int UN_FOLLOW = 125;
+        public static final int NOTIFICATIONS = 126;
     }
 
     private Context context;
@@ -411,6 +413,27 @@ public class NetworkCommunicator {
             @Override
             public void onResponse(Call<ResponseModel<List<TrainerModel>>> call, Response<ResponseModel<List<TrainerModel>>> restResponse, ResponseModel<List<TrainerModel>> response) {
                 LogUtils.networkSuccess("NetworkCommunicator getGymTrainerList onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call getNotifications(int page, int size, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.NOTIFICATIONS;
+        Call<ResponseModel<List<NotificationModel>>> call = apiService.getNotifications(TempStorage.getUser().getId(), page, size);
+        LogUtils.debug("NetworkCommunicator hitting getNotifications");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<NotificationModel>>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<List<NotificationModel>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getNotifications onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<NotificationModel>>> call, Response<ResponseModel<List<NotificationModel>>> restResponse, ResponseModel<List<NotificationModel>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getNotifications onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
             }
         });

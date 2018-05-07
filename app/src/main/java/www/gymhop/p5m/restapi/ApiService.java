@@ -23,6 +23,7 @@ import www.gymhop.p5m.data.WishListResponse;
 import www.gymhop.p5m.data.main.ClassActivity;
 import www.gymhop.p5m.data.main.ClassModel;
 import www.gymhop.p5m.data.main.GymDetailModel;
+import www.gymhop.p5m.data.main.NotificationModel;
 import www.gymhop.p5m.data.main.Package;
 import www.gymhop.p5m.data.main.PaymentUrl;
 import www.gymhop.p5m.data.main.TrainerDetailModel;
@@ -193,6 +194,12 @@ public interface ApiService {
     Call<ResponseModel<List<TrainerModel>>> getTrainers(@Query(AppConstants.ApiParamKey.GYM_ID) int gymId,
                                                         @Query(AppConstants.ApiParamKey.PAGE) int page,
                                                         @Query(AppConstants.ApiParamKey.SIZE) int size);
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.NOTIFICATIONS)
+    Call<ResponseModel<List<NotificationModel>>> getNotifications(@Query(AppConstants.ApiParamKey.USER_ID) int userId,
+                                                                  @Query(AppConstants.ApiParamKey.PAGE) int page,
+                                                                  @Query(AppConstants.ApiParamKey.SIZE) int size);
 
     @Headers("Content-type: application/json")
     @POST(AppConstants.Url.SAVE_IN_WISH_LIST)

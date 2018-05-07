@@ -36,6 +36,7 @@ public class DateUtils {
     private static SimpleDateFormat classTime = new SimpleDateFormat("HH:mm:ss");
     private static SimpleDateFormat classTimeFormat = new SimpleDateFormat("h:mma");
     private static SimpleDateFormat classDate = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat classDateSec = new SimpleDateFormat("dd-mm-yyyy");
     private static SimpleDateFormat classDateExpiry = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static SimpleDateFormat classDateFormat = new SimpleDateFormat("EEE, MMM d, yyyy");
 
@@ -99,6 +100,16 @@ public class DateUtils {
     public static String getClassDate(String date) {
         try {
             return classDateFormat.format(classDate.parse(date));
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+        return "";
+    }
+
+    public static String getClassDateNotification(String date) {
+        try {
+            return classDateFormat.format(classDateSec.parse(date));
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);

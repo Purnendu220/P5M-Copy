@@ -12,15 +12,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.ScheduleAdapter;
 import www.gymhop.p5m.utils.LogUtils;
+import www.gymhop.p5m.view.activity.Main.NotificationActivity;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
-public class MySchedule extends BaseFragment implements ViewPagerFragmentSelection, ViewPager.OnPageChangeListener {
+public class MySchedule extends BaseFragment implements ViewPagerFragmentSelection, ViewPager.OnPageChangeListener, View.OnClickListener {
 
     @BindView(R.id.viewPager)
     public ViewPager viewPager;
@@ -30,6 +33,9 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
     public AppBarLayout appBarLayout;
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
+
+    public ImageView imageViewNotification;
+    public TextView textViewNotificationMessageCounter;
 
     private ScheduleAdapter scheduleAdapter;
     private String[] titleTabs = new String[]{"Upcoming", "Wish List"};
@@ -89,6 +95,10 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
         activity.getSupportActionBar().setDisplayUseLogoEnabled(true);
 
         View v = LayoutInflater.from(context).inflate(R.layout.view_tool_bar_my_schedule, null);
+        imageViewNotification =  v.findViewById(R.id.imageViewNotification);
+        textViewNotificationMessageCounter =  v.findViewById(R.id.textViewNotificationMessageCounter);
+
+        imageViewNotification.setOnClickListener(this);
 
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT));
@@ -113,5 +123,14 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.imageViewNotification:
+                NotificationActivity.openActivity(context);
+            break;
+        }
     }
 }

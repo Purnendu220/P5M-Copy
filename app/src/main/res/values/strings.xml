@@ -232,4 +232,6 @@
     <string name="press_again_to_exit">Press back again to exit</string>
     <string name="cancel_class">Unjoin Class</string>
     <string name="forgot_password">"<b><u>Forgot password</u>?</b>"</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+
 </resources>

@@ -67,6 +67,7 @@ public class AppConstants {
 
         public static final String CLASS_LIST = "api/v1/class/getClassList";
         public static final String TRAINER_LIST = "api/v1/user/getTrainerList";
+        public static final String NOTIFICATIONS = "api/v1/notification";
         public static final String WISH_LIST = "api/v1/wish/getWishList";
         public static final String SCHEDULE_LIST = "api/v1/user/upcomingClasses";
         public static final String UPCOMING_CLASSES = "api/v1/class/upcomingClasses";
@@ -167,6 +168,7 @@ public class AppConstants {
         public static final int PAGE_LIMIT_INNER_CLASS_LIST = 20;
         public static final int PAGE_LIMIT_MAIN_TRAINER_LIST = 25;
         public static final int PAGE_LIMIT_INNER_TRAINER_LIST = 25;
+        public static final int PAGE_LIMIT_NOTIFICATIONS = 10;
 
         public static final int PACKAGE_LIMIT_SCREEN_TABS = 6;
     }
