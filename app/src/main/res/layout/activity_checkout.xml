@@ -201,6 +201,7 @@
                             android:id="@+id/textViewCancellationPolicy"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:animateLayoutChanges="true"
                             android:fontFamily="sans-serif"
                             android:letterSpacing="@dimen/text_medium_letter_spacing"
                             android:lineSpacingExtra="@dimen/line_spacing_extra_title"

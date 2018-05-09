@@ -11,10 +11,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
-import www.gymhop.p5m.data.main.User;
 import www.gymhop.p5m.data.UserPackageInfo;
+import www.gymhop.p5m.data.main.User;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.DateUtils;
+import www.gymhop.p5m.utils.ImageUtils;
 
 /**
  * Created by MyU10 on 3/10/2018.
@@ -22,8 +23,8 @@ import www.gymhop.p5m.utils.DateUtils;
 
 public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
 
-    @BindView(R.id.imageViewClass)
-    public ImageView imageViewClass;
+    @BindView(R.id.imageView)
+    public ImageView imageView;
 
     @BindView(R.id.textViewName)
     public TextView textViewName;
@@ -54,6 +55,10 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
 
             textViewName.setText(user.getFirstName());
             UserPackageInfo userPackageInfo = new UserPackageInfo(user);
+
+            ImageUtils.setImage(context,
+                    user.getProfileImage(),
+                    R.drawable.profile_holder_big, imageView);
 
             if (userPackageInfo.havePackages) {
                 textViewRecharge.setVisibility(View.GONE);

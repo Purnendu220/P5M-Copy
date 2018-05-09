@@ -1,7 +1,7 @@
 package www.gymhop.p5m.data;
 
 public class CityLocality implements java.io.Serializable {
-    private static final long serialVersionUID = -2589124252287934828L;
+    private static final long serialVersionUID = -2589290259287934828L;
     private double latitude;
     private String name;
     private int id;

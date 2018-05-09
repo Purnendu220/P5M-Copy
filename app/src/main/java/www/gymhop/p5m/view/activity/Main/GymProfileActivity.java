@@ -29,7 +29,6 @@ import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.adapters.GymProfileAdapter;
 import www.gymhop.p5m.data.main.ClassModel;
 import www.gymhop.p5m.data.main.GymDetailModel;
-import www.gymhop.p5m.data.main.TrainerModel;
 import www.gymhop.p5m.eventbus.Events;
 import www.gymhop.p5m.eventbus.GlobalBus;
 import www.gymhop.p5m.helper.ClassListListenerHelper;
@@ -57,7 +56,6 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
     public SwipeRefreshLayout swipeRefreshLayout;
 
     private GymProfileAdapter gymProfileAdapter;
-    private TrainerModel trainerModel;
     private int gymId;
     private GymDetailModel gymDetailModel;
 
@@ -112,15 +110,14 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
         ButterKnife.bind(activity);
         GlobalBus.getBus().register(this);
 
-//        trainerModel = (TrainerModel) getIntent().getSerializableExtra(AppConstants.DataKey.GYM_OBJECT);
         gymId = getIntent().getIntExtra(AppConstants.DataKey.GYM_ID_INT, -1);
 
-        if (trainerModel == null && gymId == -1) {
+        if (gymId == -1) {
             finish();
             return;
         }
 
-//        gymDetailModel = new GymDetailModel();
+//        gymDetailModel = new GymDetailModel(gymId);
 
         swipeRefreshLayout.setOnRefreshListener(this);
 

@@ -11,6 +11,8 @@ import android.support.v7.widget.SimpleItemAnimator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -37,6 +39,7 @@ import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
+import www.gymhop.p5m.utils.ToastUtils;
 import www.gymhop.p5m.view.activity.Main.ClassProfileActivity;
 import www.gymhop.p5m.view.activity.Main.GymProfileActivity;
 import www.gymhop.p5m.view.activity.Main.TrainerProfileActivity;
@@ -58,6 +61,13 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
     public RecyclerView recyclerViewClass;
     @BindView(R.id.swipeRefreshLayout)
     public SwipeRefreshLayout swipeRefreshLayout;
+
+    @BindView(R.id.layoutNoData)
+    public View layoutNoData;
+    @BindView(R.id.imageViewEmptyLayoutImage)
+    public ImageView imageViewEmptyLayoutImage;
+    @BindView(R.id.textViewEmptyLayoutText)
+    public TextView textViewEmptyLayoutText;
 
     private String date;
     private int page;
@@ -217,8 +227,8 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
         switch (view.getId()) {
             case R.id.imageViewOptions:
                 ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, model);
-            case R.id.textViewLocation:
                 break;
+            case R.id.textViewLocation:
             case R.id.layoutLocation:
                 GymProfileActivity.open(context, model.getGymBranchDetail().getGymId());
                 break;
@@ -279,8 +289,10 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                     classListAdapter.notifyDataSetChanged();
                 } else {
                     classListAdapter.loaderDone();
-                    checkListData();
                 }
+
+                checkListData();
+
                 break;
         }
     }
@@ -291,6 +303,8 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
             case NetworkCommunicator.RequestCode.CLASS_LIST:
 
                 swipeRefreshLayout.setRefreshing(false);
+                ToastUtils.showLong(context, errorMessage);
+
                 checkListData();
 
                 break;
@@ -298,11 +312,19 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
     }
 
     private void checkListData() {
+        if (classListAdapter.getList().isEmpty()) {
+            layoutNoData.setVisibility(View.VISIBLE);
+
+            textViewEmptyLayoutText.setText(R.string.no_data_class_list_main);
+            imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_class);
+        } else {
+            layoutNoData.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onTabSelection(int position) {
-        LogUtils.debug("varun f "+ fragmentPositionInViewPager + " onTabSelection "+position+ " vp position "+FindClass.SELECTED_POSITION);
+        LogUtils.debug("varun f " + fragmentPositionInViewPager + " onTabSelection " + position + " vp position " + FindClass.SELECTED_POSITION);
 
         currentPosition = position;
         if ((shouldRefresh && (fragmentPositionInViewPager == position))

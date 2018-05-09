@@ -32,7 +32,7 @@ public class ImageViewHolder extends RecyclerView.ViewHolder {
             itemView.setVisibility(View.VISIBLE);
 
             ImageUtils.setImage(context,
-                    item.getMediaThumbNailUrl(),
+                    item.getMediaUrl(),
                     R.drawable.image_holder, imageView);
 
             itemView.setOnClickListener(new View.OnClickListener() {

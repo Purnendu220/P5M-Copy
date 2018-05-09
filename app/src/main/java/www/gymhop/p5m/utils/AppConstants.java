@@ -45,14 +45,15 @@ public class AppConstants {
         public static final String PAYMENT_URL_OBJECT = "payment_url_object";
         public static final String GYM_OBJECT = "gym_object";
         public static final String GYM_ID_INT = "gym_id_int";
+        public static final String TRAINER_ID_INT = "trainer_id_int";
         public static final String HOME_TAB_POSITION = "home_tab_position";
     }
 
     public class Url {
 //        public static final String BASE_SERVICE_BETA = "http://192.168.0.39:8080/profive-midl/";
         public static final String WEBSITE = "http://www.p5m.me/";
-        public static final String BASE_SERVICE_BETA = "http://qa-api.profive.co/profive-midl/";
-        public static final String BASE_SERVICE_ALPHA = "http://qa-api.profive.co/dev-midl/";
+        public static final String BASE_SERVICE_ALPHA = "http://qa-api.profive.co/profive-midl/";
+        public static final String BASE_SERVICE_BETA = "http://qa-api.profive.co/dev-midl/";
         public static final String BASE_SERVICE_LIVE = "http://api.p5m.me/profive-midl/";
 
         public static final String LOGIN = "api/v1/user/login";
@@ -161,6 +162,7 @@ public class AppConstants {
         public static final int NAVIGATION_FROM_MY_PROFILE = 52;
         public static final int NAVIGATION_FROM_SETTING = 53;
         public static final int NAVIGATION_FROM_CONTINUE_USER = 54;
+        public static final int NAVIGATION_FROM_NOTIFICATION = 55;
     }
 
     public class Limit {

@@ -15,6 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,12 +26,14 @@ import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.adapters.MemberShipAdapter;
+import www.gymhop.p5m.data.UserPackageInfo;
+import www.gymhop.p5m.data.main.ClassModel;
 import www.gymhop.p5m.data.main.Package;
 import www.gymhop.p5m.data.main.PaymentUrl;
 import www.gymhop.p5m.data.main.User;
 import www.gymhop.p5m.data.main.UserPackage;
-import www.gymhop.p5m.data.UserPackageInfo;
-import www.gymhop.p5m.data.main.ClassModel;
+import www.gymhop.p5m.eventbus.Events;
+import www.gymhop.p5m.eventbus.GlobalBus;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
@@ -73,9 +78,10 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
         setContentView(R.layout.activity_member_ship);
 
         ButterKnife.bind(activity);
+        GlobalBus.getBus().register(this);
 
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.setEnabled(false);
+        swipeRefreshLayout.setEnabled(true);
 
         navigatedFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
         classModel = (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_OBJECT);
@@ -86,11 +92,30 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
         memberShipAdapter = new MemberShipAdapter(context, navigatedFrom, false, this);
         recyclerView.setAdapter(memberShipAdapter);
 
-        user = TempStorage.getUser();
-
         onRefresh();
 
         setToolBar();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        GlobalBus.getBus().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void classJoin(Events.ClassJoin data) {
+        onRefresh();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getPackagePurchased(Events.PackagePurchased packagePurchased) {
+        onRefresh();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void packagePurchasedForClass(Events.PackagePurchasedForClass data) {
+        onRefresh();
     }
 
     private void setToolBar() {
@@ -124,6 +149,8 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     private void checkPackages() {
         userPackageInfo = new UserPackageInfo(user);
 
+        swipeRefreshLayout.setRefreshing(false);
+
         if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS) {
             memberShipAdapter.setClassModel(classModel);
 
@@ -143,15 +170,15 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
             } else {
                 // User have no packages
                 // Show offered packages
-                memberShipAdapter.setHeaderText(context.getString(R.string.membership_no_package_heading_1),
-                        context.getString(R.string.membership_no_package_heading_2));
+                memberShipAdapter.setHeaderText(context.getString(R.string.membership_no_package_heading_1), context.getString(R.string.membership_no_package_heading_2));
             }
 
             swipeRefreshLayout.setRefreshing(true);
             networkCommunicator.getPackagesForClass(user.getId(), classModel.getGymBranchDetail().getGymId(), classModel.getClassSessionId(), this, false);
 
         } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SETTING ||
-                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE) {
+                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE ||
+                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION) {
 
             if (userPackageInfo.havePackages) {
 
@@ -214,7 +241,8 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                 if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS) {
                     CheckoutActivity.openActivity(context, aPackage, classModel);
                 } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SETTING ||
-                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE) {
+                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE ||
+                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION) {
                     CheckoutActivity.openActivity(context, aPackage);
                 }
             }
@@ -256,7 +284,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
             case NetworkCommunicator.RequestCode.PACKAGES_LIMIT:
             case NetworkCommunicator.RequestCode.PACKAGES_FOR_USER:
 
-                swipeRefreshLayout.setEnabled(false);
+                swipeRefreshLayout.setEnabled(true);
 
                 List<Package> packagesTemp = ((ResponseModel<List<Package>>) response).data;
 
@@ -302,25 +330,11 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
     @Override
     public void onRefresh() {
+        user = TempStorage.getUser();
+        memberShipAdapter.clearAll();
+        memberShipAdapter.notifyDataSetChanges();
+
         checkPackages();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == AppConstants.ResultCode.PAYMENT_SUCCESS && resultCode == RESULT_OK) {
-
-            if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS) {
-                HomeActivity.show(context, AppConstants.FragmentPosition.TAB_SCHEDULE);
-
-            } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SETTING ||
-                    navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE) {
-
-                memberShipAdapter.clearAll();
-                memberShipAdapter.notifyDataSetChanges();
-                onRefresh();
-            }
-        }
-    }
 }

@@ -144,7 +144,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"
                         android:fontFamily="sans-serif"
-                        android:text="Please Wait"
+                        android:text="@string/please_wait_no_dots"
                         android:textColor="@color/theme_dark_text"
                         android:textSize="@dimen/text_large" />
 

@@ -40,13 +40,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clickable="true"
+                android:tint="@color/white"
                 android:padding="18dp"
                 android:src="@drawable/notification" />
 
             <TextView
                 android:id="@+id/textViewNotificationMessageCounter"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_alignParentRight="true"
                 android:layout_gravity="center"
                 android:layout_marginBottom="12dp"

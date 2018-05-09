@@ -22,6 +22,7 @@ import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.DialogUtils;
+import www.gymhop.p5m.utils.ToastUtils;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener, NetworkCommunicator.RequestListener {
@@ -156,6 +157,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case NetworkCommunicator.RequestCode.LOGOUT:
                 imageViewLogout.setVisibility(View.VISIBLE);
                 progressBarLogout.setVisibility(View.GONE);
+
+                ToastUtils.showLong(context, errorMessage);
+
                 break;
         }
     }

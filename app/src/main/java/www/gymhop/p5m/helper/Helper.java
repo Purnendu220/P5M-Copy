@@ -22,6 +22,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import www.gymhop.p5m.R;
+import www.gymhop.p5m.data.main.ClassActivity;
 import www.gymhop.p5m.data.main.ClassModel;
 import www.gymhop.p5m.data.main.GymDetailModel;
 import www.gymhop.p5m.data.main.MediaModel;
@@ -53,6 +54,56 @@ public class Helper {
                 textInputLayout.setError("");
             }
         });
+    }
+
+    public static String getCategoryListFromClassActivity(List<ClassActivity> list) {
+        String name = "";
+
+        if (list != null && !list.isEmpty()) {
+
+            try {
+                for (int index = 0; index < list.size(); index++) {
+                    String value = list.get(index).getName();
+                    if (!name.contains(value)) {
+                        name = index == 0 ? (name += value) : (name += ", " + value);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                LogUtils.exception(e);
+            }
+        }
+
+        if (name.isEmpty()) {
+            name = "No activities";
+        }
+
+        return name;
+    }
+
+    public static String getCategoryList(List<String> list) {
+        String name = "";
+
+        if (list != null && !list.isEmpty()) {
+
+            try {
+                for (int index = 0; index < list.size(); index++) {
+                    String value = list.get(index);
+                    if (!name.contains(value)) {
+                        name = index == 0 ? (name += value) : (name += ", " + value);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                LogUtils.exception(e);
+            }
+        }
+
+        if (name.isEmpty()) {
+            name = "No activities";
+        }
+
+        return name;
     }
 
     public static void setJoinButton(Context context, Button buttonJoin, ClassModel model) {
@@ -184,7 +235,7 @@ public class Helper {
     }
 
     public static boolean validatePhone(String phone) {
-        return phone.length() > 6 && phone.length() < 14;
+        return phone.length() > 7 && phone.length() < 15;
     }
 
     public static boolean validateEmail(String email) {

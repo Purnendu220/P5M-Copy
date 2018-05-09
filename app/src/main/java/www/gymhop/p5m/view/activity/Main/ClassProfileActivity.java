@@ -123,7 +123,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         layoutManager.elevateHeaders((int) context.getResources().getDimension(R.dimen.view_separator_elevation));
         layoutManager.setAutoMeasureEnabled(false);
 
-
         recyclerView.setLayoutManager(layoutManager);
 
         recyclerView.setAdapter(classProfileAdapter);

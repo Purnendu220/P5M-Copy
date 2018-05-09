@@ -31,13 +31,16 @@ public class ImageUtils {
                     .placeholder(placeHolder)
                     .into(imageView);
         } else {
-            Glide.with(context)
-                    .load(placeHolder)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .crossFade()
-                    .placeholder(placeHolder)
-                    .into(imageView);
+            Glide.clear(imageView);
         }
+    }
+
+    public static void clearImage(Context context, ImageView imageView, int placeHolder) {
+
+    }
+
+    public static void clearImage(Context context, ImageView imageView) {
+        Glide.clear(imageView);
     }
 
     public static void setImage(Context context, int url, int placeHolder, ImageView imageView) {

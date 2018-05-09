@@ -39,6 +39,7 @@ public class DateUtils {
     private static SimpleDateFormat classDateSec = new SimpleDateFormat("dd-mm-yyyy");
     private static SimpleDateFormat classDateExpiry = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static SimpleDateFormat classDateFormat = new SimpleDateFormat("EEE, MMM d, yyyy");
+    private static SimpleDateFormat notificationDate = new SimpleDateFormat("h:mm a, MMM d");
 
     public static String getFormattedDobFromServer(Date date) {
         try {
@@ -107,9 +108,14 @@ public class DateUtils {
         return "";
     }
 
-    public static String getClassDateNotification(String date) {
+    public static String getClassDateNotification(long time) {
+        if (time < 1000000000000L) {
+            // if timestamp given in seconds, convert to millis
+            time *= 1000;
+        }
+
         try {
-            return classDateFormat.format(classDateSec.parse(date));
+            return notificationDate.format(new Date(time));
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);

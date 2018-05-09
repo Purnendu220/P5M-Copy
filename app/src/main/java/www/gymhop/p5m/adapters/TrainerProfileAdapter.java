@@ -45,7 +45,7 @@ public class TrainerProfileAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private boolean showLoader;
     private ListLoader listLoader;
 
-    public TrainerProfileAdapter(Context context, int shownIn,  boolean showLoader, AdapterCallbacks adapterCallbacksTrainerProfile, AdapterCallbacks adapterCallbacksClasses) {
+    public TrainerProfileAdapter(Context context, int shownIn, boolean showLoader, AdapterCallbacks adapterCallbacksTrainerProfile, AdapterCallbacks adapterCallbacksClasses) {
         this.adapterCallbacksTrainerProfile = adapterCallbacksTrainerProfile;
         this.adapterCallbacksClasses = adapterCallbacksClasses;
 
@@ -72,8 +72,12 @@ public class TrainerProfileAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         this.trainerDetailModel = trainerDetailModel;
 
         try {
-            list.set(0, trainerDetailModel);
-            notifyItemChanged(0);
+            if (list.isEmpty()) {
+                notifyDataSetChanges();
+            } else {
+                list.set(0, trainerDetailModel);
+                notifyItemChanged(0);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -173,7 +177,7 @@ public class TrainerProfileAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             if (position == getItemCount() - 1 && !listLoader.isFinish()) {
                 adapterCallbacksClasses.onShowLastItem();
             }
-        }  else if (holder instanceof EmptyViewHolder) {
+        } else if (holder instanceof EmptyViewHolder) {
             ((EmptyViewHolder) holder).bind();
         }
     }

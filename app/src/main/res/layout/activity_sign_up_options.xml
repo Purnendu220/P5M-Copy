@@ -141,13 +141,15 @@
                 android:background="@color/separator" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/textViewBottom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="16dp"
                 android:text="@string/terms_of_service"
-                android:textColor="@color/theme_medium_text" />
+                android:textColor="@color/theme_dark_text"
+                android:textColorHighlight="@color/float_transparent"
+                android:textColorLink="@color/float_transparent" />
 
         </LinearLayout>
     </LinearLayout>

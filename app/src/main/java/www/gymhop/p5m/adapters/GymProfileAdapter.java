@@ -67,8 +67,12 @@ public class GymProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.gymDetailModel = gymDetailModel;
 
         try {
-            list.set(0, gymDetailModel);
-            notifyItemChanged(0);
+            if (list.isEmpty()) {
+                notifyDataSetChanges();
+            } else {
+                list.set(0, gymDetailModel);
+                notifyItemChanged(0);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

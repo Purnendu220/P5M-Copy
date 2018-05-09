@@ -173,11 +173,11 @@
     <string name="phone_required_validate">The phone number you entered is incorrect.</string>
     <string name="email_exist">Email already exist.Try with other email.</string>
     <string name="something_went_wrong">Some thing went wrong please try again.</string>
-    <string name="no_classes">No classes are available.\n Try diffrent days to find your match.</string>
-    <string name="password_required">Password is required.</string>
-    <string name="password_weak">Password is weak, should be of at least 6 characters.</string>
-    <string name="confirm_password_required">Confirm password is required.</string>
-    <string name="confirm_password_not_matched">Password is not confirmed. Please try again.</string>
+    <string name="no_classes">No classes are available.\n Try different days to find your match.</string>
+    <string name="password_required">Please enter your password</string>
+    <string name="password_weak">Your password must be 6 characters or more</string>
+    <string name="confirm_password_required">Please enter your confirm password</string>
+    <string name="confirm_password_not_matched">Password does not match</string>
 
     <string-array name="gender_type">
         <item>Male</item>
@@ -228,10 +228,20 @@
     <string name="promo_code">Promo Code</string>
     <string name="apply_promo_code">Apply Promo Code</string>
     <string name="remove_promo_code">Remove Promo Code</string>
-    <string name="cancellation_policy">Cancellation Policy</string>
+    <string name="cancellation_policy">"<u>Cancellation Policy</u>"</string>
     <string name="press_again_to_exit">Press back again to exit</string>
     <string name="cancel_class">Unjoin Class</string>
     <string name="forgot_password">"<b><u>Forgot password</u>?</b>"</string>
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="gaping">"&#160;&#160;"</string>
+    <string name="current_pass_new_pass_same">Your new password and current password is same</string>
+    <string name="unjoin_class">Cancel My Registration</string>
+    <string name="no_thanks">No, Thanks</string>
+    <string name="please_wait_no_dots">Please Wait</string>
+    <string name="no_data_class_list_main">No classes are available. Try different filters or days to find your match.</string>
+    <string name="no_data_trainer_list_main">No trainers are available that match your search.</string>
+    <string name="no_data_schedule_upcoming_list">"You haven't joined any classes yet. Let's book a class!"</string>
+    <string name="no_data_schedule_wishist_list">"You haven't added any classes to your wishlist yet. Tap of the save icon on classes you want to join later."</string>
+    <string name="no_data_notifications">No notifications yet.</string>
 
 </resources>

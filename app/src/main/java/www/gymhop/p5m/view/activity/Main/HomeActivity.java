@@ -25,7 +25,6 @@ import www.gymhop.p5m.view.fragment.ViewPagerFragmentSelection;
 
 public class HomeActivity extends BaseActivity implements BottomTapLayout.TabListener, ViewPager.OnPageChangeListener {
 
-
     public static void open(Context context) {
         Intent intent = new Intent(context, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -50,8 +49,8 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     private BottomTapLayout bottomTapLayout;
     private HomeAdapter homeAdapter;
 
-    private static final int TOTAL_TABS = 4;
-    private static int INITIAL_POSITION = AppConstants.FragmentPosition.TAB_FIND_CLASS;
+    private final int TOTAL_TABS = 4;
+    private int INITIAL_POSITION = AppConstants.FragmentPosition.TAB_FIND_CLASS;
 
     private Handler handler;
 
@@ -76,6 +75,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
                 onPageSelected(INITIAL_POSITION);
             }
         });
+
     }
 
     @Override

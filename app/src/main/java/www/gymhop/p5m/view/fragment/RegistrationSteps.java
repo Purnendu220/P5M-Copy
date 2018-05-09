@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.data.main.User;
 import www.gymhop.p5m.helper.Helper;
@@ -25,6 +26,7 @@ import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.storage.preferences.MyPreferences;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.ToastUtils;
+import www.gymhop.p5m.view.activity.LoginRegister.LoginActivity;
 import www.gymhop.p5m.view.activity.LoginRegister.RegistrationActivity;
 import www.gymhop.p5m.view.activity.LoginRegister.RegistrationDoneActivity;
 
@@ -104,6 +106,12 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
         setupViews();
 
         checkSteps();
+    }
+
+
+    @OnClick(R.id.textViewLogin)
+    public void textViewLogin(View view) {
+        LoginActivity.open(context);
     }
 
     private void setupViews() {
@@ -208,7 +216,7 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
 
         switch (stepPosition) {
             case AppConstants.FragmentPosition.REGISTRATION_STEP_NAME:
-                String name = editTextName.getText().toString();
+                String name = editTextName.getText().toString().trim();
                 if (name.isEmpty()) {
                     textInputLayoutName.setError(context.getResources().getString(R.string.name_required_error));
                     return;
@@ -219,7 +227,7 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
                 break;
 
             case AppConstants.FragmentPosition.REGISTRATION_STEP_EMAIL:
-                email = editTextEmail.getText().toString();
+                email = editTextEmail.getText().toString().trim();
                 if (email.isEmpty()) {
                     textInputLayoutEmail.setError(context.getResources().getString(R.string.email_required_error));
                     return;

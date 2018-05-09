@@ -13,6 +13,7 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:theme="@style/AppTheme">
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@mipmap/app_icon" />
@@ -48,8 +49,16 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC36Oyf3q-4pO0HC7ZCydtu6OFFgUFxens" />
 
+        <receiver android:name=".receivers.NetworkChangeReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".view.activity.Splash"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeSplash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -58,58 +67,95 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".receivers.NetworkChangeReceiver">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
-            </intent-filter>
-        </receiver>
-
-        <activity android:name=".view.activity.LoginRegister.InfoScreen" />
-        <activity android:name=".view.activity.LoginRegister.RegistrationActivity" />
-        <activity android:name=".view.activity.Main.HomeActivity" />
-        <activity android:name=".view.activity.LoginRegister.LoginActivity" />
-        <activity android:name=".view.activity.Main.TrainerProfileActivity" />
-        <activity android:name=".view.activity.Main.FilterActivity" />
-        <activity android:name=".view.activity.Main.MemberShip" />
         <activity
-            android:name=".view.activity.Main.ClassProfileActivity"
-            android:label="@string/title_activity_class_profile"
-            android:theme="@style/AppTheme" />
+            android:name=".view.activity.LoginRegister.InfoScreen"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activity.Main.GymProfileActivity"
-            android:label="@string/title_activity_gym_profile"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".view.activity.Main.PackageLimitsActivity" />
+            android:name=".view.activity.LoginRegister.RegistrationActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activity.Main.SearchActivity"
-            android:label="@string/title_activity_search"
-            android:theme="@style/AppTheme" />
+            android:name=".view.activity.Main.HomeActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activity.Main.PaymentWebViewActivity"
-            android:launchMode="singleInstance" />
+            android:name=".view.activity.LoginRegister.LoginActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".view.activity.LoginRegister.SignUpOptions"
             android:label="@string/title_activity_sign_up_options"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".view.activity.LoginRegister.RegistrationDoneActivity" />
-        <activity android:name=".view.activity.Main.EditProfileActivity" />
-        <activity android:name=".view.activity.Main.SettingActivity" />
-        <activity android:name=".view.activity.Main.LocationListMapActivity" />
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".view.activity.Main.TrainerProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Main.FilterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Main.MemberShip"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Main.ClassProfileActivity"
+            android:label="@string/title_activity_class_profile"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Main.GymProfileActivity"
+            android:label="@string/title_activity_gym_profile"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Main.PackageLimitsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Main.SearchActivity"
+            android:label="@string/title_activity_search"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Main.PaymentWebViewActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.LoginRegister.RegistrationDoneActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Main.EditProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Main.SettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Main.LocationListMapActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.LoginRegister.ContinueUser"
             android:label="@string/title_activity_continue_user"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".view.activity.Main.TransactionHistoryActivity" />
-        <activity android:name=".view.activity.Main.SettingNotification" />
-        <activity android:name=".view.activity.Main.ChooseFocusActivity" />
-        <activity android:name=".view.activity.Main.ChooseNationalityActivity" />
-        <activity android:name=".view.activity.Main.ChangePasswordActivity" />
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Main.TransactionHistoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Main.SettingNotification"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Main.ChooseFocusActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Main.ChooseNationalityActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Main.ChangePasswordActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.Main.CheckoutActivity"
-            android:launchMode="singleTask" />
-        <activity android:name=".view.activity.Main.TrainerListActivity" />
-        <activity android:name=".view.activity.Main.NotificationActivity"></activity>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Main.TrainerListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Main.NotificationActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

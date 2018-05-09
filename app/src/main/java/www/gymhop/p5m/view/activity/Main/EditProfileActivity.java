@@ -150,8 +150,8 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         textViewLocation.setOnClickListener(this);
         textViewNationality.setOnClickListener(this);
         imageViewDob.setOnClickListener(this);
-        buttonMale.setOnClickListener(this);
-        buttonFemale.setOnClickListener(this);
+//        buttonMale.setOnClickListener(this);
+//        buttonFemale.setOnClickListener(this);
         imageViewStatus.setOnClickListener(this);
 
         setUser();

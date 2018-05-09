@@ -65,22 +65,27 @@ public class ChangePasswordActivity extends BaseActivity implements NetworkCommu
         String confirmPass = editTextConfirmPass.getText().toString().trim();
 
         if (curPass.isEmpty()) {
-            textInputLayoutCurrPass.setError("Current password is required");
+            textInputLayoutCurrPass.setError("Please enter your current password");
             return;
         }
 
         if (newPass.isEmpty()) {
-            textInputLayoutNewPass.setError("New password is required");
+            textInputLayoutNewPass.setError("Please enter a new password");
             return;
         }
 
         if (confirmPass.isEmpty()) {
-            textInputConfirmPass.setError("Confirm password is required");
+            textInputConfirmPass.setError(context.getString(R.string.confirm_password_required));
             return;
         }
 
         if (!Helper.validatePass(newPass)) {
             textInputLayoutNewPass.setError(context.getResources().getString(R.string.password_weak));
+            return;
+        }
+
+        if (newPass.equals(curPass)) {
+            textInputLayoutNewPass.setError(context.getResources().getString(R.string.current_pass_new_pass_same));
             return;
         }
 

@@ -3,6 +3,7 @@ package www.gymhop.p5m;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.multidex.MultiDex;
@@ -22,7 +23,7 @@ public class MyApplication extends MultiDexApplication implements NetworkChangeR
 
     public static Context context;
 
-    public final static ApiMode apiMode = ApiMode.TESTING_BETA;
+    public final static ApiMode apiMode = ApiMode.TESTING_ALPHA ;
     public final static boolean SHOW_LOG = true;
     public final static boolean RETROFIT_SHOW_LOG = true;
     public final static boolean USE_CRASH_ANALYTICS = false;
@@ -61,6 +62,10 @@ public class MyApplication extends MultiDexApplication implements NetworkChangeR
         }
 
         TempStorage.version = myVersionName;
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(android.net.ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(new NetworkChangeReceiver(), filter);
     }
 
     @Override

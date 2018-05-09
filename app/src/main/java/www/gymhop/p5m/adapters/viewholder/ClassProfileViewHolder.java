@@ -99,22 +99,22 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
                 textViewSpecialClass.setVisibility(View.GONE);
             }
 
-            if (model.getGymBranchDetail() != null) {
-
-                layoutMap.setVisibility(View.VISIBLE);
-                ImageUtils.setImage(context, ImageUtils.generateMapImageUrlClassDetail(model.getGymBranchDetail().getLatitude(), model.getGymBranchDetail().getLongitude()),
-                        R.drawable.no_map, imageViewMap);
-                textViewMap.setText(Html.fromHtml("<b>ADDRESS:</b>   " + model.getGymBranchDetail().getAddress()));
-            } else {
-                layoutMap.setVisibility(View.GONE);
-            }
-
             if (!model.getDescription().isEmpty()) {
 
                 layoutDesc.setVisibility(View.VISIBLE);
                 textViewInfo.setText(model.getDescription());
             } else {
                 layoutDesc.setVisibility(View.GONE);
+            }
+
+            if (model.getGymBranchDetail() != null) {
+
+                layoutMap.setVisibility(View.VISIBLE);
+                ImageUtils.setImage(context, ImageUtils.generateMapImageUrlClassDetail(model.getGymBranchDetail().getLatitude(), model.getGymBranchDetail().getLongitude()),
+                        R.drawable.no_map, imageViewMap);
+                textViewMap.setText(Html.fromHtml("<b>ADDRESS:</b>" + context.getString(R.string.gaping) + model.getGymBranchDetail().getAddress()));
+            } else {
+                layoutMap.setVisibility(View.GONE);
             }
 
             if (model.getSpecialNote().isEmpty() && model.getReminder().isEmpty()) {
@@ -125,15 +125,15 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
                 StringBuffer stringBuffer = new StringBuffer("");
 
                 if (!model.getReminder().isEmpty()) {
-                    stringBuffer.append("<b>REMINDERS:</b>   " + model.getReminder());
+                    stringBuffer.append("<b>REMINDERS:</b>" + context.getString(R.string.gaping) + model.getReminder());
                 }
 
                 if (!model.getGymBranchDetail().getStudioInstruction().isEmpty()) {
-                    stringBuffer.append("<br/><br/><b>STUDIO INSTRUCTION:</b> " + model.getGymBranchDetail().getStudioInstruction());
+                    stringBuffer.append("<br/><br/><b>STUDIO INSTRUCTION:</b>" + context.getString(R.string.gaping) + model.getGymBranchDetail().getStudioInstruction());
                 }
 
                 if (!model.getSpecialNote().isEmpty()) {
-                    stringBuffer.append("<br/><br/><b>SPECIAL NOTES BY TRAINER:</b> " + model.getSpecialNote());
+                    stringBuffer.append("<br/><br/><b>SPECIAL NOTES BY TRAINER:</b>" + context.getString(R.string.gaping) + model.getSpecialNote());
                 }
 
                 textViewMoreDetails.setText(Html.fromHtml(stringBuffer.toString()));
@@ -151,6 +151,8 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
                 ImageUtils.setImage(context,
                         model.getClassMedia().getMediaUrl(),
                         R.drawable.class_holder, imageViewClass);
+            } else {
+                ImageUtils.clearImage(context, imageViewClass);
             }
 
             if (model.getTrainerDetail() != null) {
@@ -168,15 +170,14 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
                         R.drawable.profile_holder, imageViewTrainerProfile);
 
             } else {
-
-                ImageUtils.setImage(context,
-                        R.drawable.profile_holder,
-                        R.drawable.profile_holder, imageViewTrainerProfile);
+                ImageUtils.clearImage(context, imageViewTrainerProfile);
                 textViewLocation.setText("");
             }
 
             if (model.getGymBranchDetail() != null) {
                 textViewLocation.setText(model.getGymBranchDetail().getGymName() + ", " + model.getGymBranchDetail().getBranchName());
+            } else {
+                textViewLocation.setText("");
             }
 
             textViewClassName.setText(model.getTitle());
@@ -186,9 +187,8 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
             if (model.getAvailableSeat() == 0) {
                 textViewAvailable.setText("No seats available");
             } else {
-                textViewAvailable.setText(model.getAvailableSeat() + " " +
-                        AppConstants.plural("seat", model.getAvailableSeat())
-                        + "  available");
+                textViewAvailable.setText(model.getAvailableSeat() + " available " +
+                        AppConstants.plural("seat", model.getAvailableSeat()));
             }
 
             textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));

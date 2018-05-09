@@ -11,6 +11,8 @@ import android.support.v7.widget.SimpleItemAnimator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -50,6 +52,13 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
     @BindView(R.id.swipeRefreshLayout)
     public SwipeRefreshLayout swipeRefreshLayout;
 
+    @BindView(R.id.layoutNoData)
+    public View layoutNoData;
+    @BindView(R.id.imageViewEmptyLayoutImage)
+    public ImageView imageViewEmptyLayoutImage;
+    @BindView(R.id.textViewEmptyLayoutText)
+    public TextView textViewEmptyLayoutText;
+
     private ClassMiniViewAdapter classListAdapter;
 
     private int fragmentPositionInViewPager;
@@ -79,7 +88,6 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
     public void wishAdded(Events.WishAdded wishAdded) {
         if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
             shouldRefresh = true;
-//            shouldRefresh = false;
             try {
                 classListAdapter.addClassTop(wishAdded.data);
                 classListAdapter.notifyItemInserted(0);
@@ -88,6 +96,8 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
                 LogUtils.exception(e);
             }
         }
+
+        checkListData();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -105,6 +115,8 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
                 LogUtils.exception(e);
             }
         }
+
+        checkListData();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -115,6 +127,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
         }
 
         handleClassJoined(data.data);
+        checkListData();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -131,6 +144,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
         }
 
         handleClassJoined(data.data);
+        checkListData();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -141,13 +155,16 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
         }
 
         handleClassJoined(data.data);
+        checkListData();
     }
 
     private void handleClassJoined(ClassModel data) {
         try {
             int index = classListAdapter.getList().indexOf(data);
+
             if (index != -1) {
                 Object obj = classListAdapter.getList().get(index);
+
                 if (obj instanceof ClassModel) {
                     ClassModel classModel = (ClassModel) obj;
                     classModel.setUserJoinStatus(data.isUserJoinStatus());
@@ -159,6 +176,20 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
             e.printStackTrace();
             LogUtils.exception(e);
         }
+
+        if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
+            try {
+                int index = classListAdapter.getList().indexOf(data);
+
+                if (index != -1) {
+                    classListAdapter.remove(index);
+                    classListAdapter.notifyItemRemoved(index);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                LogUtils.exception(e);
+            }
+        }
     }
 
     @Override
@@ -166,16 +197,6 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_class_mini_view_list, container, false);
     }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//
-//        if (shouldRefresh) {
-//            shouldRefresh = false;
-//            onRefresh();
-//        }
-//    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -262,6 +283,13 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
                 }
 
                 if (!classModels.isEmpty()) {
+
+                    if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
+                        for (ClassModel classModel : classModels) {
+                            classModel.setUserJoinStatus(true);
+                        }
+                    }
+
                     classListAdapter.addAllClass(classModels);
 
                     if (classModels.size() < pageSizeLimit) {
@@ -269,9 +297,10 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
                     }
 
                 } else {
-                    checkListData();
                     classListAdapter.loaderDone();
                 }
+
+                checkListData();
 
                 classListAdapter.notifyDataSetChanged();
                 break;
@@ -291,5 +320,20 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
     }
 
     private void checkListData() {
+        if (classListAdapter.getList().isEmpty()) {
+            layoutNoData.setVisibility(View.VISIBLE);
+
+            if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
+                textViewEmptyLayoutText.setText(R.string.no_data_schedule_wishist_list);
+            } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
+                textViewEmptyLayoutText.setText(R.string.no_data_schedule_upcoming_list);
+            } else {
+                textViewEmptyLayoutText.setText("");
+            }
+
+            imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_class);
+        } else {
+            layoutNoData.setVisibility(View.GONE);
+        }
     }
 }

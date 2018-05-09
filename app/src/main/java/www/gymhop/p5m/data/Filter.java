@@ -1,10 +1,12 @@
 package www.gymhop.p5m.data;
 
+import java.io.Serializable;
+
 /**
  * Created by Varun John on 4/5/2018.
  */
 
-public class Filter {
+public class Filter implements Serializable {
 
     public static class Time {
         public String id;
@@ -32,7 +34,7 @@ public class Filter {
         }
     }
 
-    public static class Gender {
+    public static class Gender implements Serializable {
         public String id;
         public String name;
 

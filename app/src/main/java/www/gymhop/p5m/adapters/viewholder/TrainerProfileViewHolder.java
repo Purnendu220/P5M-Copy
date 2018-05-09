@@ -21,7 +21,6 @@ import www.gymhop.p5m.adapters.ImageListAdapter;
 import www.gymhop.p5m.data.main.GymBranchDetail;
 import www.gymhop.p5m.data.main.TrainerDetailModel;
 import www.gymhop.p5m.helper.Helper;
-import www.gymhop.p5m.helper.TrainerListListenerHelper;
 import www.gymhop.p5m.utils.ImageUtils;
 import www.gymhop.p5m.view.activity.Main.GymProfileActivity;
 
@@ -106,10 +105,10 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
 
             textViewName.setText(model.getFirstName());
 
-            String categoryList = TrainerListListenerHelper.getCategoryList(model.getCategoryList());
+            String categoryList = Helper.getCategoryList(model.getCategoryList());
 
             if (categoryList.isEmpty()) {
-                categoryList = TrainerListListenerHelper.getCategoryListFromClassActivity(model.getClassCategoryList());
+                categoryList = Helper.getCategoryListFromClassActivity(model.getClassCategoryList());
             }
 
             if (!categoryList.isEmpty()) {

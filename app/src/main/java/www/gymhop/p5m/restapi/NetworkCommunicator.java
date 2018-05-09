@@ -135,9 +135,8 @@ public class NetworkCommunicator {
             @Override
             public void onResponse(Call<ResponseModel<User>> call, Response<ResponseModel<User>> restResponse, ResponseModel<User> response) {
                 LogUtils.networkSuccess("NetworkCommunicator login onResponse data " + response);
-                requestListener.onApiSuccess(response, requestCode);
-
                 TempStorage.setAuthToken(restResponse.headers().get(AppConstants.ApiParamKey.MYU_AUTH_TOKEN));
+                requestListener.onApiSuccess(response, requestCode);
             }
         });
         return call;
@@ -158,6 +157,7 @@ public class NetworkCommunicator {
             @Override
             public void onResponse(Call<ResponseModel<User>> call, Response<ResponseModel<User>> restResponse, ResponseModel<User> response) {
                 LogUtils.networkSuccess("NetworkCommunicator validateEmail onResponse data " + response);
+
                 requestListener.onApiSuccess(response, requestCode);
             }
         });
@@ -898,10 +898,7 @@ public class NetworkCommunicator {
         return call;
     }
 
-    public Call unJoinClass(final ClassModel classModel, int joinClassId) {
-
-        classModel.setUserJoinStatus(false);
-        EventBroadcastHelper.sendClassJoin(context, classModel);
+    public Call unJoinClass(final ClassModel classModel, int joinClassId, final RequestListener requestListener) {
 
         final int requestCode = RequestCode.ADD_TO_WISH_LIST;
         Call<ResponseModel<User>> call = apiService.unJoinClass(joinClassId);
@@ -911,23 +908,13 @@ public class NetworkCommunicator {
             @Override
             public void onFailure(Call<ResponseModel<User>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator unJoinClass onFailure " + message);
-//                requestListener.onApiFailure(message, requestCode);
-                ToastUtils.showLong(context, message);
+                requestListener.onApiFailure(message, requestCode);
             }
 
             @Override
             public void onResponse(Call<ResponseModel<User>> call, Response<ResponseModel<User>> restResponse, ResponseModel<User> response) {
                 LogUtils.networkSuccess("NetworkCommunicator unJoinClass onResponse data " + response);
-//                requestListener.onApiSuccess(response, requestCode);
-
-                try {
-                    EventBroadcastHelper.sendUserUpdate(context, response.data);
-//                    classModel.setUserJoinStatus(false);
-//                    EventBroadcastHelper.sendClassJoin(context, classModel);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    LogUtils.exception(e);
-                }
+                requestListener.onApiSuccess(response, requestCode);
             }
         });
         return call;

@@ -2,6 +2,7 @@ package www.gymhop.p5m.adapters.viewholder;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.data.main.NotificationModel;
 import www.gymhop.p5m.utils.DateUtils;
+import www.gymhop.p5m.utils.LogUtils;
 
 /**
  * Created by MyU10 on 3/10/2018.
@@ -54,11 +56,81 @@ public class NotificationsViewHolder extends RecyclerView.ViewHolder {
             final NotificationModel model = (NotificationModel) data;
 
             Map<String, String> message = new Gson().fromJson(
-                    model.getMessage(), new TypeToken<HashMap<String, String>>() {}.getType()
+                    model.getMessage(), new TypeToken<HashMap<String, String>>() {
+                    }.getType()
             );
 
-            textViewTime.setText(DateUtils.getClassDateNotification(message.get("classDate")));
-            textViewDetails.setText(message.get("activityMsg"));
+            String info = message.get("activityMsg");
+
+            for (Map.Entry<String, String> entry : message.entrySet()) {
+
+                try {
+                    if (!entry.getValue().equals("activityMsg")) {
+                        if (info.contains("$" + entry.getKey() + "$")) {
+                            info = info.replace("$" + entry.getKey() + "$", "<b>" + entry.getValue() + "</b>");
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    LogUtils.debug(" message.get(\"activityMsg\") " + info);
+                    LogUtils.exception(e);
+                }
+            }
+
+            textViewTime.setText(DateUtils.getClassDateNotification(model.getCreatedAt()));
+            textViewDetails.setText(Html.fromHtml(info));
+
+            switch (model.getNotificationType()) {
+                case "FollowUser":
+                case "OnUserComingClass":
+                case "OnUserWishListComing":
+                    imageViewProfileStatus.setImageResource(R.drawable.heart_icon);
+                    break;
+
+                case "CustomerJoinClassOfTrainer":
+                case "CustomerJoinClassOfGym":
+                case "OnClassCreation":
+                case "OnSessionUpdateByTrainer":
+                case "OnSessionUpdateByGYM":
+                case "OnSessionUpdateByTrainerOfGym":
+                case "OnSessionUpdateByGymOfTrainer":
+                case "OnPaymentSuccess":
+                case "OnClassRefund":
+                case "OnClassUpdateByTrainer":
+                case "OnClassUpdateByGYM":
+                case "OnClassUpdateByTrainerOfGym":
+                case "OnClassUpdateByGYMOfTrainer":
+                case "OnClassCreationNotifyGym":
+                case "OnClassUpdateByCms":
+                case "OnNewTrainerAssign":
+                case "OnGroupClassUpdateByCms":
+                    imageViewProfileStatus.setImageResource(R.drawable.add_icon);
+                    break;
+
+                case "CustomerCancelClass":
+                case "CustomerCancelClassOfTrainer":
+                case "CustomerCancelClassOfGym":
+                case "OnClassDeleteByGym":
+                case "OnClassDeleteByTrainer":
+                case "OnClassDeleteByTrainerOfGym":
+                case "OnClassDeleteByGymOfTrainer":
+                case "OnSessionDeleteByTrainer":
+                case "OnSessionDeleteByGYM":
+                case "OnSessionDeleteByTrainerOfGym":
+                case "OnSessionDeleteByGymOfTrainer":
+                case "OnFinishedPackage":
+                case "OnSlotDeleteByTrainer":
+                case "OnSlotDeleteByGym":
+                case "OnSlotDeletByTrainerOfGym":
+                case "OnSlotDeleteByGymOfTrainer":
+                case "OnClassInActive":
+                case "OnClassCancelByCMS":
+                case "OnBookingCancelToCustomerByCMS":
+                case "OnBookingCancelToGymByCMS":
+                case "OnBookingCancelToTrainerByCMS":
+                    imageViewProfileStatus.setImageResource(R.drawable.delete_red);
+                    break;
+            }
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

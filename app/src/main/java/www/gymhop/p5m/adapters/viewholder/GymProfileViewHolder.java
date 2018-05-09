@@ -18,7 +18,6 @@ import www.gymhop.p5m.adapters.ImageListAdapter;
 import www.gymhop.p5m.data.main.GymBranchDetail;
 import www.gymhop.p5m.data.main.GymDetailModel;
 import www.gymhop.p5m.helper.Helper;
-import www.gymhop.p5m.helper.TrainerListListenerHelper;
 import www.gymhop.p5m.utils.ImageUtils;
 
 /**
@@ -148,7 +147,7 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
                 layoutGallery.setVisibility(View.GONE);
             }
 
-            if (model.getBio().isEmpty()) {
+            if (model.getBio().trim().isEmpty()) {
                 layoutDesc.setVisibility(View.GONE);
             } else {
                 layoutDesc.setVisibility(View.VISIBLE);
@@ -163,7 +162,7 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
 //                categoryList = TrainerListListenerHelper.getCategoryListFromClassActivity(model.getClassCategoryList());
 //            }
 
-            String categoryList = TrainerListListenerHelper.getCategoryListFromClassActivity(model.getClassCategoryList());
+            String categoryList = Helper.getCategoryListFromClassActivity(model.getClassCategoryList());
 
             if (!categoryList.isEmpty()) {
                 textViewClassCategory.setText(categoryList);

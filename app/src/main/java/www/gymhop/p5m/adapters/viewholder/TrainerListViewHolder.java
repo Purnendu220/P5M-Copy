@@ -13,7 +13,6 @@ import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.data.main.TrainerModel;
 import www.gymhop.p5m.helper.Helper;
-import www.gymhop.p5m.helper.TrainerListListenerHelper;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.ImageUtils;
 import www.gymhop.p5m.utils.LogUtils;
@@ -93,7 +92,7 @@ public class TrainerListViewHolder extends RecyclerView.ViewHolder {
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FAV_TRAINERS ||
                     shownInScreen == AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE_TRAINERS) {
 
-                String categoryList = TrainerListListenerHelper.getCategoryList(model.getCategoryList());
+                String categoryList = Helper.getCategoryList(model.getCategoryList());
 
                 if (!categoryList.isEmpty()) {
                     imageViewSubtitle.setVisibility(View.VISIBLE);

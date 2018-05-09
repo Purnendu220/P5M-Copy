@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -34,7 +35,6 @@ public class NotificationActivity extends BaseActivity implements SwipeRefreshLa
         context.startActivity(new Intent(context, NotificationActivity.class));
     }
 
-
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
     @BindView(R.id.recyclerView)
@@ -44,9 +44,15 @@ public class NotificationActivity extends BaseActivity implements SwipeRefreshLa
     @BindView(R.id.swipeRefreshLayout)
     public SwipeRefreshLayout swipeRefreshLayout;
 
+    @BindView(R.id.layoutNoData)
+    public View layoutNoData;
+    @BindView(R.id.imageViewEmptyLayoutImage)
+    public ImageView imageViewEmptyLayoutImage;
+    @BindView(R.id.textViewEmptyLayoutText)
+    public TextView textViewEmptyLayoutText;
 
     private int page;
-    private int pageSizeLimit = AppConstants.Limit.PAGE_LIMIT_MAIN_TRAINER_LIST;
+    private int pageSizeLimit = AppConstants.Limit.PAGE_LIMIT_NOTIFICATIONS;
 
     private NotificationsAdapter notificationsAdapter;
 
@@ -98,9 +104,85 @@ public class NotificationActivity extends BaseActivity implements SwipeRefreshLa
         activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
     }
 
+    @Override
+    public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
+        switch (view.getId()) {
+            default:
+                if (model instanceof NotificationModel) {
+                    NotificationModel notificationModel = (NotificationModel) model;
+
+                    // Navigation..
+                    switch (notificationModel.getNotificationType()) {
+
+                        case "OnClassUpdateByGYM":
+                        case "OnClassUpdateByTrainer":
+                        case "OnSessionUpdateByGYM":
+                        case "OnSessionUpdateByTrainerOfGym":
+                        case "OnSessionUpdateByTrainer":
+                        case "OnSessionUpdateByGymOfTrainer":
+                        case "OnClassUpdateByCms":
+                        case "OnGroupClassUpdateByCms":
+                            // Class Details..
+//                            ClassProfileActivity.open();
+                            break;
+
+                        case "OnClassCreation":
+                            //Trainer Profile..
+                            TrainerProfileActivity.open(context, notificationModel.getObjectDataId());
+                            break;
+
+                        case "OnClassRefund":
+                            //Membership..
+                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
+                            break;
+
+                        case "OnSessionDeleteByGYM":
+                        case "OnClassDeleteByTrainer":
+                        case "OnSessionDeleteByGymOfTrainer":
+                        case "OnSessionDeleteByTrainerOfGym":
+                        case "OnSessionDeleteByTrainer":
+                        case "OnClassDeleteByGym":
+                        case "OnClassDeleteByTrainerOfGym":
+                        case "OnClassInActive":
+                        case "OnSlotDeleteByTrainer":
+                        case "OnSlotDeleteByGymOfTrainer":
+                        case "OnSlotDeleteByGym":
+                        case "OnSlotDeletByTrainerOfGym":
+                        case "OnPaymentSuccess":
+                        case "OnClassCancelByCMS":
+                        case "OnBookingCancelToCustomerByCMS":
+                        case "OnBookingCancelToGymByCMS":
+                        case "OnBookingCancelToTrainerByCMS":
+                            // Find my class..
+                            HomeActivity.open(context);
+                            break;
+
+                    }
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onAdapterItemLongClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
+
+    }
+
+    @Override
+    public void onShowLastItem() {
+        page++;
+        callApiNotifications();
+    }
 
     @Override
     public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        page = 0;
+        notificationsAdapter.loaderReset();
+        callApiNotifications();
+    }
+
+    private void callApiNotifications() {
         networkCommunicator.getNotifications(page, pageSizeLimit, this, false);
     }
 
@@ -125,8 +207,9 @@ public class NotificationActivity extends BaseActivity implements SwipeRefreshLa
                     notificationsAdapter.notifyDataSetChanged();
                 } else {
                     notificationsAdapter.loaderDone();
-                    checkListData();
                 }
+
+                checkListData();
                 break;
         }
     }
@@ -149,20 +232,14 @@ public class NotificationActivity extends BaseActivity implements SwipeRefreshLa
     }
 
     private void checkListData() {
+        if (notificationsAdapter.getList().isEmpty()) {
+            layoutNoData.setVisibility(View.VISIBLE);
+
+            textViewEmptyLayoutText.setText(R.string.no_data_notifications);
+            imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_notification);
+        } else {
+            layoutNoData.setVisibility(View.GONE);
+        }
     }
 
-    @Override
-    public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
-
-    }
-
-    @Override
-    public void onAdapterItemLongClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
-
-    }
-
-    @Override
-    public void onShowLastItem() {
-
-    }
 }

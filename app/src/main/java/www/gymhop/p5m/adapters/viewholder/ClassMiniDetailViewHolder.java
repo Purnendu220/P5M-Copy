@@ -120,6 +120,8 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 ImageUtils.setImage(context,
                         model.getClassMedia().getMediaThumbNailUrl(),
                         R.drawable.image_holder, imageViewClass);
+            } else {
+                ImageUtils.clearImage(context, imageViewClass);
             }
 
             if (model.getTrainerDetail() != null) {
@@ -135,13 +137,14 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 ImageUtils.setImage(context,
                         model.getGymBranchDetail().getMediaThumbNailUrl(),
                         R.drawable.profile_holder, imageViewTrainerProfile);
-                textViewLocation.setText(model.getGymBranchDetail().getAddress());
 
             } else {
+                ImageUtils.clearImage(context, imageViewTrainerProfile);
+            }
 
-                ImageUtils.setImage(context,
-                        R.drawable.profile_holder,
-                        R.drawable.profile_holder, imageViewTrainerProfile);
+            if (model.getGymBranchDetail() != null) {
+                textViewLocation.setText(model.getGymBranchDetail().getGymName() + ", " + model.getGymBranchDetail().getBranchName());
+            } else {
                 textViewLocation.setText("");
             }
 

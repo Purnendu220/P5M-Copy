@@ -19,10 +19,15 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.data.main.ClassModel;
+import www.gymhop.p5m.data.main.User;
+import www.gymhop.p5m.eventbus.EventBroadcastHelper;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
+import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.DateUtils;
 import www.gymhop.p5m.utils.DialogUtils;
+import www.gymhop.p5m.utils.LogUtils;
+import www.gymhop.p5m.utils.ToastUtils;
 import www.gymhop.p5m.view.activity.Main.ClassProfileActivity;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
@@ -49,6 +54,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         switch (view.getId()) {
             case R.id.imageViewOptions1:
             case R.id.imageViewOptions2:
+
                 if (model instanceof ClassModel) {
                     ClassModel classModel = (ClassModel) model;
                     if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
@@ -92,6 +98,10 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
     }
 
     public static void popupOptionsAdd(Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model) {
+        if (model.isUserJoinStatus()) {
+            return;
+        }
+
         final View viewRoot = LayoutInflater.from(context).inflate(R.layout.popup_options, null);
         TextView textView = (TextView) viewRoot.findViewById(R.id.textViewOption1);
         textView.setText(context.getString(R.string.add_to_WishList));
@@ -133,7 +143,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
-    private static void dialogConfirmUnJoin(Context context, final NetworkCommunicator networkCommunicator, final ClassModel model) {
+    private static void dialogConfirmUnJoin(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model) {
 
         String message = "Are you sure want to unjoin ?";
 
@@ -147,10 +157,57 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             }
         }
 
-        DialogUtils.showBasic(context, message, "Cancel My Registration", "No, Thanks", new MaterialDialog.SingleButtonCallback() {
+        final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
+                .cancelable(false)
+                .customView(R.layout.dialog_unjoin_class, false)
+                .build();
+        materialDialog.show();
+
+        final TextView textViewMessage = (TextView) materialDialog.findViewById(R.id.textViewMessage);
+        final TextView textViewUnJoin = (TextView) materialDialog.findViewById(R.id.textViewOk);
+        final TextView textViewClose = (TextView) materialDialog.findViewById(R.id.textViewCancel);
+
+        textViewMessage.setText(message);
+
+        textViewClose.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                networkCommunicator.unJoinClass(model, model.getJoinClassId());
+            public void onClick(View view) {
+                materialDialog.dismiss();
+            }
+        });
+
+        textViewUnJoin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                textViewUnJoin.setVisibility(View.GONE);
+                networkCommunicator.unJoinClass(model, model.getJoinClassId(), new NetworkCommunicator.RequestListener() {
+                    @Override
+                    public void onApiSuccess(Object response, int requestCode) {
+
+                        try {
+                            model.setUserJoinStatus(false);
+                            EventBroadcastHelper.sendClassJoin(context, model);
+                            EventBroadcastHelper.sendUserUpdate(context, ((ResponseModel<User>) response).data);
+                            materialDialog.dismiss();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            LogUtils.exception(e);
+                        }
+
+                        textViewUnJoin.setVisibility(View.VISIBLE);
+                        materialDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onApiFailure(String errorMessage, int requestCode) {
+                        textViewUnJoin.setVisibility(View.VISIBLE);
+
+                        ToastUtils.showLong(context, errorMessage);
+                        materialDialog.dismiss();
+                    }
+                });
             }
         });
     }
@@ -167,7 +224,6 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
     @Override
     public void onAdapterItemLongClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
-
     }
 
     @Override
