@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -25,6 +26,7 @@ import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.storage.preferences.MyPreferences;
 import www.gymhop.p5m.utils.AppConstants;
+import www.gymhop.p5m.utils.KeyboardUtils;
 import www.gymhop.p5m.utils.ToastUtils;
 import www.gymhop.p5m.view.activity.LoginRegister.LoginActivity;
 import www.gymhop.p5m.view.activity.LoginRegister.RegistrationActivity;
@@ -81,6 +83,9 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
     @BindView(R.id.buttonNext)
     public Button buttonNext;
 
+    @BindView(R.id.layoutContainer)
+    public View layoutContainer;
+
     private int stepPosition;
     private RegistrationActivity registrationActivity;
 
@@ -106,8 +111,15 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
         setupViews();
 
         checkSteps();
-    }
 
+        layoutContainer.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                KeyboardUtils.close(layoutContainer, context);
+                return false;
+            }
+        });
+    }
 
     @OnClick(R.id.textViewLogin)
     public void textViewLogin(View view) {
@@ -123,6 +135,11 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
         Helper.setupErrorWatcher(editTextEmail, textInputLayoutEmail);
         Helper.setupErrorWatcher(editTextPass, textInputLayoutPass);
         Helper.setupErrorWatcher(editTextConfirmPass, textInputLayoutConfirmPass);
+
+//        Helper.setupEditTextFocusHideKeyboard(editTextName);
+//        Helper.setupEditTextFocusHideKeyboard(editTextEmail);
+//        Helper.setupEditTextFocusHideKeyboard(editTextPass);
+//        Helper.setupEditTextFocusHideKeyboard(editTextConfirmPass);
 
         editTextName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {

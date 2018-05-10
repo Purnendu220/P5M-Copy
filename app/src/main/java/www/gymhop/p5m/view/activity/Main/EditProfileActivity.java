@@ -20,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -28,6 +30,7 @@ import com.robertlevonyan.components.picker.ItemModel;
 import com.robertlevonyan.components.picker.OnPickerCloseListener;
 import com.robertlevonyan.components.picker.PickerDialog;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -36,6 +39,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import www.gymhop.p5m.R;
+import www.gymhop.p5m.data.MediaResponse;
 import www.gymhop.p5m.data.Nationality;
 import www.gymhop.p5m.data.main.User;
 import www.gymhop.p5m.data.request.UserInfoUpdate;
@@ -46,11 +50,14 @@ import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.DateUtils;
+import www.gymhop.p5m.utils.DialogUtils;
+import www.gymhop.p5m.utils.ImageUtils;
 import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.utils.ToastUtils;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
 public class EditProfileActivity extends BaseActivity implements View.OnClickListener, NetworkCommunicator.RequestListener {
+
 
     public static void openActivity(Context context) {
         context.startActivity(new Intent(context, EditProfileActivity.class));
@@ -90,8 +97,8 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     public ImageView imageViewDob;
     @BindView(R.id.imageViewBack)
     public ImageView imageViewBack;
-    @BindView(R.id.imageViewStatus)
-    public ImageView imageViewStatus;
+    @BindView(R.id.imageViewCamera)
+    public ImageView imageViewCamera;
 
     @BindView(R.id.progressBar)
     public View progressBar;
@@ -152,7 +159,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         imageViewDob.setOnClickListener(this);
 //        buttonMale.setOnClickListener(this);
 //        buttonFemale.setOnClickListener(this);
-        imageViewStatus.setOnClickListener(this);
+        imageViewCamera.setOnClickListener(this);
 
         setUser();
 
@@ -199,6 +206,8 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
             textViewDob.setVisibility(View.GONE);
             imageViewDob.setVisibility(View.VISIBLE);
         }
+
+        ImageUtils.setImage(context, TempStorage.getUser().getProfileImage(), imageViewProfile);
 
         setNationality(TempStorage.getUser().getNationality());
         setLocation(TempStorage.getUser().getLocation());
@@ -312,13 +321,13 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
 
     @OnClick(R.id.imageViewBack)
     public void imageViewBack(View view) {
-        finish();
+        onBackPressed();
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.imageViewStatus:
+            case R.id.imageViewCamera:
                 imagePicker();
                 break;
             case R.id.buttonMale:
@@ -410,12 +419,6 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
             if (place != null) {
                 setLocation(place.getAddress().toString());
             }
-        } else if (requestCode == AppConstants.ResultCode.CHOOSE_LOCATION && resultCode == RESULT_OK) {
-
-//            Bitmap bitmap = ImagePicker.getImageFromResult(this, requestCode, resultCode, data);
-//            if (bitmap != null) {
-//                imageViewProfile.setImageBitmap(bitmap);
-//            }
         }
     }
 
@@ -448,11 +451,31 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         progressBarDone.setVisibility(View.GONE);
 
         switch (requestCode) {
-            case NetworkCommunicator.RequestCode.UPDATE_USER:
+            case NetworkCommunicator.RequestCode.UPDATE_USER: {
 
                 User user = ((ResponseModel<User>) response).data;
                 EventBroadcastHelper.sendUserUpdate(context, user);
                 finish();
+            }
+            break;
+            case NetworkCommunicator.RequestCode.PHOTO_UPLOAD:
+
+
+                MediaResponse mediaResponse = ((ResponseModel<MediaResponse>) response).data;
+
+                ImageUtils.setImage(context, mediaResponse.getMediaPath(), imageViewProfile);
+
+                User user = TempStorage.getUser();
+                user.setUserProfileImageId(mediaResponse.getId());
+                user.setProfileImage(mediaResponse.getMediaPath());
+                user.setProfileImageThumbnail(mediaResponse.getThumbnailPath());
+
+                EventBroadcastHelper.sendUserUpdate(context, user);
+
+                if (activity != null && !activity.isFinishing()) {
+                    progressBar.setVisibility(View.GONE);
+                    imageViewCamera.setVisibility(View.VISIBLE);
+                }
 
                 break;
         }
@@ -467,6 +490,19 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.UPDATE_USER:
                 ToastUtils.showLong(context, errorMessage);
+
+                break;
+            case NetworkCommunicator.RequestCode.PHOTO_UPLOAD:
+
+                ToastUtils.showLong(context, errorMessage);
+
+                if (activity != null && !activity.isFinishing()) {
+                    progressBar.setVisibility(View.GONE);
+                    imageViewCamera.setVisibility(View.VISIBLE);
+
+                    ImageUtils.clearImage(context, imageViewProfile);
+                    imageViewProfile.setImageResource(0);
+                }
                 break;
         }
     }
@@ -477,11 +513,10 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
 //        ImagePicker.setMinQuality(1280, 1280);
 //        ImagePicker.pickImage(activity, "Pick your image:");
 
-
         ArrayList<ItemModel> itemModels = new ArrayList<>();
         itemModels.add(new ItemModel(ItemModel.ITEM_CAMERA, "", 0, false, 0, 0));
         itemModels.add(new ItemModel(ItemModel.ITEM_GALLERY, "", 0, false, 0, 0));
-        itemModels.add(new ItemModel(ItemModel.ITEM_FILES, "", 0, false, 0, 0));
+//        itemModels.add(new ItemModel(ItemModel.ITEM_FILES, "", 0, false, 0, 0));
 
         pickerDialog = new PickerDialog.Builder((BaseActivity) activity)// Activity or Fragment
                 .setTitle("Pick Image")          // String value or resource ID
@@ -494,13 +529,23 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onPickerClosed(long type, Uri uri) {
 
-                if (type == ItemModel.ITEM_CAMERA) {
+                String path = ImageUtils.getImagePathFromUri(context, uri);
+
+                if (path != null && !path.isEmpty()) {
+
+                    progressBar.setVisibility(View.VISIBLE);
+                    imageViewCamera.setVisibility(View.GONE);
                     imageViewProfile.setImageURI(uri);
-                } else if (type == ItemModel.ITEM_GALLERY) {
-                    imageViewProfile.setImageURI(uri);
-                } else if (type == ItemModel.ITEM_FILES) {
-                    imageViewProfile.setImageURI(uri);
+                    networkCommunicator.uploadUserImage(context, new File(path), EditProfileActivity.this, false);
                 }
+
+//                if (type == ItemModel.ITEM_CAMERA) {
+//                    imageViewProfile.setImageURI(uri);
+//                } else if (type == ItemModel.ITEM_GALLERY) {
+//                    imageViewProfile.setImageURI(uri);
+//                } else if (type == ItemModel.ITEM_FILES) {
+//                    imageViewProfile.setImageURI(uri);
+//                }
             }
         });
 
@@ -514,4 +559,15 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         pickerDialog.onPermissionsResult(requestCode, permissions, grantResults);
     }
+
+    @Override
+    public void onBackPressed() {
+        DialogUtils.showBasic(context, "Are you sure want to exit?", "Exit", new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                EditProfileActivity.super.onBackPressed();
+            }
+        });
+    }
+
 }

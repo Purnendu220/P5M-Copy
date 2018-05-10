@@ -125,6 +125,13 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                 }
             });
 
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ProfileHeaderViewHolder.this, imageView, user, position);
+                }
+            });
+
             textViewMore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

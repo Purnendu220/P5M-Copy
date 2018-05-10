@@ -68,9 +68,11 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                 break;
             case R.id.buttonJoin:
             default:
-                if (model instanceof ClassModel) {
-                    ClassModel classModel = (ClassModel) model;
-                    ClassProfileActivity.open(context, classModel);
+                if (shownIn != AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED) {
+                    if (model instanceof ClassModel) {
+                        ClassModel classModel = (ClassModel) model;
+                        ClassProfileActivity.open(context, classModel);
+                    }
                 }
                 break;
         }

@@ -163,12 +163,12 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
 //            }
 
             String categoryList = Helper.getCategoryListFromClassActivity(model.getClassCategoryList());
+            textViewClassCategory.setText(categoryList);
 
-            if (!categoryList.isEmpty()) {
-                textViewClassCategory.setText(categoryList);
-            } else {
-                textViewClassCategory.setText("");
-            }
+//            if (!categoryList.isEmpty()) {
+//            } else {
+//                textViewClassCategory.setText("");
+//            }
 
             textViewTrainers.setOnClickListener(new View.OnClickListener() {
                 @Override

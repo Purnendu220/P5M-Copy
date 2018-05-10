@@ -107,15 +107,16 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
 
             String categoryList = Helper.getCategoryList(model.getCategoryList());
 
-            if (categoryList.isEmpty()) {
+            if (model.getClassCategoryList() != null) {
                 categoryList = Helper.getCategoryListFromClassActivity(model.getClassCategoryList());
             }
 
-            if (!categoryList.isEmpty()) {
-                textViewClassCategory.setText(categoryList);
-            } else {
-                textViewClassCategory.setText("");
-            }
+            textViewClassCategory.setText(categoryList);
+
+//            if (!categoryList.isEmpty()) {
+//            } else {
+//                textViewClassCategory.setText("");
+//            }
 
             layoutLocation.removeAllViews();
             if (model.getTrainerBranchResponseList() != null && !model.getTrainerBranchResponseList().isEmpty()) {

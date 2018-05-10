@@ -8,7 +8,6 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
-import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.data.HeaderSticky;
 
 /**
@@ -30,7 +29,7 @@ public class HeaderViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void bind(Object data, AdapterCallbacks adapterCallbacksClasses, int position) {
+    public void bind(Object data, int position) {
         if (data != null && data instanceof HeaderSticky) {
             itemView.setVisibility(View.VISIBLE);
             HeaderSticky text = (HeaderSticky) data;

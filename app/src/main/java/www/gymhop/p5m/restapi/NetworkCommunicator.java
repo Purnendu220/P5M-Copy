@@ -1,10 +1,12 @@
 package www.gymhop.p5m.restapi;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 
 import java.io.File;
 import java.util.List;
 
+import id.zelory.compressor.Compressor;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -20,6 +22,7 @@ import www.gymhop.p5m.data.main.GymDetailModel;
 import www.gymhop.p5m.data.main.NotificationModel;
 import www.gymhop.p5m.data.main.Package;
 import www.gymhop.p5m.data.main.PaymentUrl;
+import www.gymhop.p5m.data.main.SearchResults;
 import www.gymhop.p5m.data.main.TrainerDetailModel;
 import www.gymhop.p5m.data.main.TrainerModel;
 import www.gymhop.p5m.data.main.Transaction;
@@ -100,6 +103,8 @@ public class NetworkCommunicator {
         public static final int FOLLOW = 124;
         public static final int UN_FOLLOW = 125;
         public static final int NOTIFICATIONS = 126;
+        public static final int SEARCH_ALL = 127;
+        public static final int PHOTO_UPLOAD = 128;
     }
 
     private Context context;
@@ -137,6 +142,8 @@ public class NetworkCommunicator {
                 LogUtils.networkSuccess("NetworkCommunicator login onResponse data " + response);
                 TempStorage.setAuthToken(restResponse.headers().get(AppConstants.ApiParamKey.MYU_AUTH_TOKEN));
                 requestListener.onApiSuccess(response, requestCode);
+
+                EventBroadcastHelper.sendDeviceUpdate(context);
             }
         });
         return call;
@@ -157,8 +164,10 @@ public class NetworkCommunicator {
             @Override
             public void onResponse(Call<ResponseModel<User>> call, Response<ResponseModel<User>> restResponse, ResponseModel<User> response) {
                 LogUtils.networkSuccess("NetworkCommunicator validateEmail onResponse data " + response);
-
+                TempStorage.setAuthToken(restResponse.headers().get(AppConstants.ApiParamKey.MYU_AUTH_TOKEN));
                 requestListener.onApiSuccess(response, requestCode);
+
+                EventBroadcastHelper.sendDeviceUpdate(context);
             }
         });
         return call;
@@ -275,18 +284,18 @@ public class NetworkCommunicator {
     public Call deviceUpdate(DeviceUpdate deviceUpdate, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.DEVICE;
         Call<ResponseModel<Boolean>> call = apiService.saveDevice(deviceUpdate);
-        LogUtils.debug("NetworkCommunicator hitting deviceUpdate");
+        LogUtils.debug("NetworkCommunicator hitting sendDeviceUpdate");
 
         call.enqueue(new RestCallBack<ResponseModel<Boolean>>() {
             @Override
             public void onFailure(Call<ResponseModel<Boolean>> call, String message) {
-                LogUtils.networkError("NetworkCommunicator deviceUpdate onFailure " + message);
+                LogUtils.networkError("NetworkCommunicator sendDeviceUpdate onFailure " + message);
                 requestListener.onApiFailure(message, requestCode);
             }
 
             @Override
             public void onResponse(Call<ResponseModel<Boolean>> call, Response<ResponseModel<Boolean>> restResponse, ResponseModel<Boolean> response) {
-                LogUtils.networkSuccess("NetworkCommunicator deviceUpdate onResponse data " + response);
+                LogUtils.networkSuccess("NetworkCommunicator sendDeviceUpdate onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
             }
         });
@@ -780,9 +789,27 @@ public class NetworkCommunicator {
         return call;
     }
 
-    public Call uploadUserImage(int mediaId, File file, final RequestListener requestListener, boolean useCache) {
-        final int requestCode = RequestCode.PROMO_CODE;
+    public Call uploadUserImage(Context context, File file, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.PHOTO_UPLOAD;
         LogUtils.debug("NetworkCommunicator hitting uploadImage");
+
+        int mediaId = TempStorage.getUser().getUserProfileImageId();
+
+        try {
+            file = new Compressor.Builder(context)
+                    .setMaxWidth(AppConstants.Values.IMAGE_RESOLUTION_COMPRESSION)
+                    .setMaxHeight(AppConstants.Values.IMAGE_RESOLUTION_COMPRESSION)
+                    .setQuality(AppConstants.Values.IMAGE_QUALITY)
+                    .setCompressFormat(Bitmap.CompressFormat.JPEG)
+                    .setDestinationDirectoryPath(context.getCacheDir().getPath())
+                    .build()
+                    .compressToFile(file);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+
 
         ProgressRequestBody fileBody = new ProgressRequestBody(file, new ProgressRequestBody.UploadCallbacks() {
             @Override
@@ -820,17 +847,22 @@ public class NetworkCommunicator {
 
         }
 
+        final File finalFile = file;
         call.enqueue(new RestCallBack<ResponseModel<MediaResponse>>() {
             @Override
             public void onFailure(Call<ResponseModel<MediaResponse>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator uploadImage onFailure " + message);
                 requestListener.onApiFailure(message, requestCode);
+
+                finalFile.delete();
             }
 
             @Override
             public void onResponse(Call<ResponseModel<MediaResponse>> call, Response<ResponseModel<MediaResponse>> restResponse, ResponseModel<MediaResponse> response) {
                 LogUtils.networkSuccess("NetworkCommunicator uploadImage onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
+
+                finalFile.delete();
             }
         });
         return call;
@@ -952,5 +984,25 @@ public class NetworkCommunicator {
         return call;
     }
 
+    public Call search(String queryString, String searchFor, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.SEARCH_ALL;
+        Call<ResponseModel<SearchResults>> call = apiService.search(TempStorage.getUser().getId(), queryString, searchFor);
+        LogUtils.debug("NetworkCommunicator hitting search");
+
+        call.enqueue(new RestCallBack<ResponseModel<SearchResults>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<SearchResults>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator search onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<SearchResults>> call, Response<ResponseModel<SearchResults>> restResponse, ResponseModel<SearchResults> response) {
+                LogUtils.networkSuccess("NetworkCommunicator search onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
 }
 

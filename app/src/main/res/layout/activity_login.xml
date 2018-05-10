@@ -12,11 +12,14 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/layoutContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="12dp"
             android:layout_marginTop="12dp"
+            android:clickable="true"
+            android:focusableInTouchMode="true"
             android:orientation="vertical">
 
             <ImageView
@@ -89,6 +92,7 @@
                     android:hint="@string/email"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
+                    android:nextFocusForward="@+id/editTextPassword"
                     android:textSize="@dimen/text_large" />
 
             </android.support.design.widget.TextInputLayout>

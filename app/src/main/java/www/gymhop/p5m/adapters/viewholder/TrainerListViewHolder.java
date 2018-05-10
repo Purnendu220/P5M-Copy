@@ -47,6 +47,12 @@ public class TrainerListViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
 
         this.shownInScreen = shownInScreen;
+
+        if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SEARCH) {
+            buttonFav.setVisibility(View.GONE);
+        } else {
+            buttonFav.setVisibility(View.VISIBLE);
+        }
     }
 
     public void bind(final Object data, final AdapterCallbacks adapterCallbacks, final int position) {

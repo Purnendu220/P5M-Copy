@@ -69,6 +69,14 @@ public class MyPreferences {
         PreferencesManager.putBoolean(AppConstants.Pref.LOGIN, isLogin);
     }
 
+    public String getDeviceToken() {
+        return PreferencesManager.getString(AppConstants.Pref.DEVICE_TOKEN, null);
+    }
+
+    public void saveDeviceToken(String deviceToken) {
+        PreferencesManager.putString(AppConstants.Pref.DEVICE_TOKEN, deviceToken);
+    }
+
     public List<City> getCities() {
         try {
             return gson.fromJson(PreferencesManager.getString(AppConstants.Pref.CITIES), new TypeToken<List<City>>() {

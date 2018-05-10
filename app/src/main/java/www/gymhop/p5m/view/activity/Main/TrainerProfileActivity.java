@@ -225,7 +225,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
             }
         });
 
-        ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.trainer));
+        ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.trainer_profile));
 
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT));

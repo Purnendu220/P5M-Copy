@@ -139,7 +139,7 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
                 "\nyour transaction will be lost", "Exit", new MaterialDialog.SingleButtonCallback() {
             @Override
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                finish();
+                PaymentWebViewActivity.super.onBackPressed();
             }
         });
     }

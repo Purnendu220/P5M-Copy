@@ -19,8 +19,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.ScheduleAdapter;
+import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.view.activity.Main.NotificationActivity;
+import www.gymhop.p5m.view.activity.Main.SearchActivity;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
 public class MySchedule extends BaseFragment implements ViewPagerFragmentSelection, ViewPager.OnPageChangeListener, View.OnClickListener {
@@ -95,9 +97,10 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
         activity.getSupportActionBar().setDisplayUseLogoEnabled(true);
 
         View v = LayoutInflater.from(context).inflate(R.layout.view_tool_bar_my_schedule, null);
-        imageViewNotification =  v.findViewById(R.id.imageViewNotification);
-        textViewNotificationMessageCounter =  v.findViewById(R.id.textViewNotificationMessageCounter);
+        imageViewNotification = v.findViewById(R.id.imageViewNotification);
+        textViewNotificationMessageCounter = v.findViewById(R.id.textViewNotificationMessageCounter);
 
+        v.findViewById(R.id.imageViewSearch).setOnClickListener(this);
         imageViewNotification.setOnClickListener(this);
 
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
@@ -130,7 +133,10 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
         switch (view.getId()) {
             case R.id.imageViewNotification:
                 NotificationActivity.openActivity(context);
-            break;
+                break;
+            case R.id.imageViewSearch:
+                SearchActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_SCHEDULE);
+                break;
         }
     }
 }

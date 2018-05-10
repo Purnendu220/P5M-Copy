@@ -186,7 +186,7 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
             isLoadingFirstTime = false;
             networkCommunicator.getFavTrainerList(AppConstants.ApiParamValue.FOLLOW_TYPE_FOLLOWED, TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_TRAINER_LIST, this, false);
             networkCommunicator.getFinishedClassList(TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_TRAINER_LIST, this, false);
-            
+
             myProfileAdapter.onTabSelection(ProfileHeaderTabViewHolder.TAB_1);
             myProfileAdapter.clearTrainers();
             myProfileAdapter.clearClasses();
@@ -273,6 +273,11 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
             case R.id.textViewMore:
             case R.id.textViewRecharge:
                 MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE);
+                break;
+            case R.id.imageView:
+                if (!myProfileAdapter.getUser().getProfileImage().isEmpty()) {
+                    Helper.openImageViewer(context, myProfileAdapter.getUser().getProfileImage());
+                }
                 break;
         }
     }

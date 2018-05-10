@@ -180,7 +180,7 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
             }
         });
 
-        ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.gym));
+        ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.gym_profile));
 
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT));

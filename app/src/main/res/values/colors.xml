@@ -26,6 +26,7 @@
     <color name="theme_dark_light_text">#262626</color>
     <color name="theme_error_text">#d50000</color>
     <color name="theme_accent_text">#007fe7</color>
+    <color name="theme_search">#fafafa</color>
 
     <color name="float_transparent">#00000000</color>
 

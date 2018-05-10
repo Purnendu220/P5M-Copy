@@ -73,6 +73,7 @@
     <string name="ok">OK</string>
     <string name="find_class">Find a class</string>
     <string name="trainer">Trainer</string>
+    <string name="trainer_profile">Trainer Profile</string>
     <string name="schedule">My Schedule</string>
     <string name="notification">Notification</string>
     <string name="setting_notification_fav_title">Followed trainers activity</string>
@@ -138,6 +139,7 @@
     <string name="myProfile">My Profile</string>
     <string name="gyms">GYMS</string>
     <string name="gym">Gym</string>
+    <string name="gym_profile">Gym Profile</string>
     <string name="kwd"> KWD total price</string>
     <string name="currency">KWD</string>
     <string name="valid">Valid for </string>
@@ -243,5 +245,6 @@
     <string name="no_data_schedule_upcoming_list">"You haven't joined any classes yet. Let's book a class!"</string>
     <string name="no_data_schedule_wishist_list">"You haven't added any classes to your wishlist yet. Tap of the save icon on classes you want to join later."</string>
     <string name="no_data_notifications">No notifications yet.</string>
+    <string name="search_hint">Search…</string>
 
 </resources>

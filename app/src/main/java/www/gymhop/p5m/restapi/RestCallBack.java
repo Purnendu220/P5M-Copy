@@ -8,7 +8,6 @@ import retrofit2.Response;
 import www.gymhop.p5m.eventbus.EventBroadcastHelper;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
-import www.gymhop.p5m.utils.NetworkUtil;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
 /**
@@ -24,32 +23,33 @@ public abstract class RestCallBack<T> implements Callback<T> {
     @Override
     public void onFailure(Call<T> call, Throwable t) {
 
-        String errorMessage = "Please try again later";
-
-        try {
-//            switch (MyApplication.apiMode) {
-//                case LIVE:
-//                    if (!NetworkUtil.isInternetAvailable) {
-//                        errorMessage = "Internet not available";
-//                    } else {
-//                        errorMessage = "Please try again later";
-//                    }
-//                    break;
-//                default:
-//                    errorMessage = t.toString();
+//        String errorMessage = "Please try again later";
+//
+//        try {
+////            switch (MyApplication.apiMode) {
+////                case LIVE:
+////                    if (!NetworkUtil.isInternetAvailable) {
+////                        errorMessage = "Internet not available";
+////                    } else {
+////                        errorMessage = "Please try again later";
+////                    }
+////                    break;
+////                default:
+////                    errorMessage = t.toString();
+////            }
+//
+//            if (!NetworkUtil.isInternetAvailable) {
+//                errorMessage = "Internet not available";
+//            } else {
+//                errorMessage = "Please try again later";
 //            }
-
-            if (!NetworkUtil.isInternetAvailable) {
-                errorMessage = "Internet not available";
-            } else {
-                errorMessage = "Please try again later";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            LogUtils.exception(e);
-        }
-
-        onFailure(call, errorMessage);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            LogUtils.exception(e);
+//        }
+//
+//        onFailure(call, errorMessage);
+        onFailure(call, t.toString());
     }
 
     @Override

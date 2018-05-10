@@ -4,8 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,11 +16,13 @@ import butterknife.OnClick;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.data.main.User;
 import www.gymhop.p5m.data.request.LoginRequest;
+import www.gymhop.p5m.helper.Helper;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.storage.preferences.MyPreferences;
 import www.gymhop.p5m.utils.AppConstants;
+import www.gymhop.p5m.utils.KeyboardUtils;
 import www.gymhop.p5m.view.activity.Main.HomeActivity;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
@@ -56,6 +57,9 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
     @BindView(R.id.buttonLogin)
     public Button buttonLogin;
 
+    @BindView(R.id.layoutContainer)
+    public View layoutContainer;
+
     private int navigatedFrom;
 
     @Override
@@ -73,43 +77,23 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
         }
 
         setEditWatcher();
+
+        layoutContainer.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                KeyboardUtils.close(layoutContainer, context);
+                return false;
+            }
+        });
     }
 
     private void setEditWatcher() {
 
-        editTextPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        Helper.setupErrorWatcher(editTextPassword, textInputLayoutPassword);
+        Helper.setupErrorWatcher(editTextEmail, textInputLayoutEmail);
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                textInputLayoutPassword.setError("");
-            }
-        });
-
-        editTextEmail.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                textInputLayoutEmail.setError("");
-            }
-        });
+//        Helper.setupEditTextFocusHideKeyboard(editTextEmail);
+//        Helper.setupEditTextFocusHideKeyboard(editTextPassword);
     }
 
     @OnClick(R.id.textViewSignUp)

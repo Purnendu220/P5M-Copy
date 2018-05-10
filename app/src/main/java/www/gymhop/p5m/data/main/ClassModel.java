@@ -28,7 +28,7 @@ public class ClassModel implements java.io.Serializable {
     private String priceModel;
     private String specialClassRemark;
     private boolean hideClass;
-    private int price;
+    private float price;
 
     /********From Joined class**********/
     private int joinClassId;
@@ -255,11 +255,11 @@ public class ClassModel implements java.io.Serializable {
         this.priceModel = priceModel;
     }
 
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 

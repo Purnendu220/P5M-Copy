@@ -170,7 +170,7 @@ public class GymProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         } else if (holder instanceof ClassMiniDetailViewHolder) {
             ((ClassMiniDetailViewHolder) holder).bind(list.get(position), adapterCallbacksClasses, position);
         } else if (holder instanceof HeaderViewHolder) {
-            ((HeaderViewHolder) holder).bind(list.get(position), adapterCallbacksTrainerProfile, position);
+            ((HeaderViewHolder) holder).bind(list.get(position), position);
         } else if (holder instanceof LoaderViewHolder) {
             ((LoaderViewHolder) holder).bind(listLoader, adapterCallbacksClasses);
             if (position == getItemCount() - 1 && !listLoader.isFinish()) {

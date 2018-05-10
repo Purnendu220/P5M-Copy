@@ -3,7 +3,9 @@ package www.gymhop.p5m.notifications;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
+import www.gymhop.p5m.eventbus.EventBroadcastHelper;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
+import www.gymhop.p5m.storage.preferences.MyPreferences;
 import www.gymhop.p5m.utils.LogUtils;
 
 /**
@@ -18,11 +20,8 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService imple
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         LogUtils.debug("Notifications onTokenRefresh " + refreshedToken);
 
-//        Device device = MyPreferences.getDevice();
-//        if (device != null) {
-//            device.UUID = refreshedToken;
-//            NetworkCommunicator.getInstance(this).addDevice(device, this);
-//        }
+        MyPreferences.getInstance().saveDeviceToken(refreshedToken);
+        EventBroadcastHelper.sendDeviceUpdate(this);
     }
 
     @Override

@@ -26,6 +26,7 @@ import www.gymhop.p5m.data.main.GymDetailModel;
 import www.gymhop.p5m.data.main.NotificationModel;
 import www.gymhop.p5m.data.main.Package;
 import www.gymhop.p5m.data.main.PaymentUrl;
+import www.gymhop.p5m.data.main.SearchResults;
 import www.gymhop.p5m.data.main.TrainerDetailModel;
 import www.gymhop.p5m.data.main.TrainerModel;
 import www.gymhop.p5m.data.main.Transaction;
@@ -220,6 +221,12 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @DELETE(AppConstants.Url.UN_JOIN_CLASS + "/{" + AppConstants.ApiParamKey.ID + "}")
     Call<ResponseModel<User>> unJoinClass(@Path(AppConstants.ApiParamKey.ID) int classSessionId);
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.SEARCH)
+    Call<ResponseModel<SearchResults>> search(@Query(AppConstants.ApiParamKey.ID) int userId,
+                                              @Query(AppConstants.ApiParamKey.QUERY_STRING) String queryString,
+                                              @Query(AppConstants.ApiParamKey.SEARCH_FOR) String searchFor);
 
     @Multipart
     @POST(AppConstants.Url.MEDIA_UPDATE + "/{" + AppConstants.ApiParamKey.ID + "}")

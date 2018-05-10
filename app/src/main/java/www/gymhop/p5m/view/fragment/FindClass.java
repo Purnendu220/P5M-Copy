@@ -33,9 +33,11 @@ import www.gymhop.p5m.adapters.FindClassAdapter;
 import www.gymhop.p5m.eventbus.Events;
 import www.gymhop.p5m.eventbus.GlobalBus;
 import www.gymhop.p5m.storage.TempStorage;
+import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.DateUtils;
 import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.view.activity.Main.FilterActivity;
+import www.gymhop.p5m.view.activity.Main.SearchActivity;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
 public class FindClass extends BaseFragment implements ViewPagerFragmentSelection, View.OnClickListener, ViewPager.OnPageChangeListener {
@@ -220,6 +222,7 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imageViewSearch:
+                SearchActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
                 break;
 
             case R.id.imageViewFilterer:

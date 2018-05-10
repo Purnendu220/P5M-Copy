@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuInflater;
@@ -29,6 +30,7 @@ import www.gymhop.p5m.data.main.MediaModel;
 import www.gymhop.p5m.data.main.TrainerDetailModel;
 import www.gymhop.p5m.data.main.TrainerModel;
 import www.gymhop.p5m.utils.AppConstants;
+import www.gymhop.p5m.utils.KeyboardUtils;
 import www.gymhop.p5m.utils.LogUtils;
 
 /**
@@ -36,6 +38,19 @@ import www.gymhop.p5m.utils.LogUtils;
  */
 
 public class Helper {
+
+    public static void setupEditTextFocusHideKeyboard(EditText editText){
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    KeyboardUtils.close(v, v.getContext());
+                } else{
+                    KeyboardUtils.open(v, v.getContext());
+                }
+            }
+        });
+    }
 
     public static void setupErrorWatcher(EditText editText, final TextInputLayout textInputLayout) {
         editText.addTextChangedListener(new TextWatcher() {
@@ -154,10 +169,12 @@ public class Helper {
     private static void setFavButton(Context context, Button buttonFav, boolean isFollow) {
         if (isFollow) {
             buttonFav.setText(context.getString(R.string.favorited));
-            buttonFav.setBackgroundResource(R.drawable.joined_rect);
+            buttonFav.setTextColor(ContextCompat.getColor(context, R.color.white));
+            buttonFav.setBackgroundResource(R.drawable.join_rect);
         } else {
             buttonFav.setText(context.getString(R.string.favourite));
-            buttonFav.setBackgroundResource(R.drawable.join_rect);
+            buttonFav.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
+            buttonFav.setBackgroundResource(R.drawable.button_white);
         }
     }
 

@@ -1,6 +1,9 @@
 package www.gymhop.p5m.utils;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -35,6 +38,18 @@ public class ImageUtils {
         }
     }
 
+    public static void setImage(Context context, String url, ImageView imageView) {
+        if (url != null && !url.isEmpty()) {
+            Glide.with(context)
+                    .load(url)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .crossFade()
+                    .into(imageView);
+        } else {
+            Glide.clear(imageView);
+        }
+    }
+
     public static void clearImage(Context context, ImageView imageView, int placeHolder) {
 
     }
@@ -51,5 +66,20 @@ public class ImageUtils {
                 .crossFade()
                 .placeholder(placeHolder)
                 .into(imageView);
+    }
+
+    public static String getImagePathFromUri(Context context, Uri uri) {
+
+        if (uri != null) {
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            Cursor cursor = context.getContentResolver().query(uri, filePathColumn, null, null, null);
+
+            if (cursor.moveToFirst()) {
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                return cursor.getString(columnIndex);
+            }
+            cursor.close();
+        }
+        return "";
     }
 }

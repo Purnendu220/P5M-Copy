@@ -23,6 +23,12 @@ public class AppConstants {
         public static final int TAB_MY_PROFILE = 3;
     }
 
+    public static class Values {
+        public static final int IMAGE_RESOLUTION_COMPRESSION = 1280;
+        public static final int IMAGE_THUMBNAIL_RESOLUTION_COMPRESSION = 256;
+        public static final int IMAGE_QUALITY = 90;
+    }
+
     public static class Pref {
         public static final String NAME = "p5m_pref_main";
         public static final String LOGIN = "pref_login";
@@ -31,6 +37,7 @@ public class AppConstants {
         public static final String FILTERS = "pref_filters";
         public static final String USER = "pref_user";
         public static final String AUTH_TOKEN = "pref_auth_token";
+        public static final String DEVICE_TOKEN = "pref_device_token";
     }
 
     public class DataKey {
@@ -50,7 +57,8 @@ public class AppConstants {
     }
 
     public class Url {
-//        public static final String BASE_SERVICE_BETA = "http://192.168.0.39:8080/profive-midl/";
+        //        public static final String BASE_SERVICE_ALPHA = "http://192.168.0.39:8080/profive-midl/";
+//        public static final String BASE_SERVICE_ALPHA = "http://192.168.100.17:8080/profive-midl/";
         public static final String WEBSITE = "http://www.p5m.me/";
         public static final String BASE_SERVICE_ALPHA = "http://qa-api.profive.co/profive-midl/";
         public static final String BASE_SERVICE_BETA = "http://qa-api.profive.co/dev-midl/";
@@ -95,6 +103,7 @@ public class AppConstants {
         public static final String WISH_DELETE = "api/v1/wish/delete";
         public static final String MEDIA_UPDATE = "api/v1/media/mediaUpdate";
         public static final String MEDIA_UPLOAD = "api/v1/media/upload";
+        public static final String SEARCH = "api/v1/gym/searchCriteria?";
     }
 
     public class ApiParamValue {
@@ -141,6 +150,16 @@ public class AppConstants {
         public static final String UNIQUE_CHAR = "uniqueChar";
         public static final String MEDIA_TYPE = "mediaType";
         public static final String MEDIA_NAME = "mediaName";
+        public static final String QUERY_STRING = "queryString";
+        public static final String SEARCH_FOR = "searchFor";
+    }
+
+    public static final class Notification {
+        public static final String TYPE = "type";
+        public static final String MESSAGE = "message";
+        public static final String BODY = "body";
+        public static final String OBJECT_DATA_ID = "objectDataId";
+        public static final String NOTIFICATION_TYPE = "notificationCategory";
     }
 
     public class AppNavigation {
@@ -163,6 +182,10 @@ public class AppConstants {
         public static final int NAVIGATION_FROM_SETTING = 53;
         public static final int NAVIGATION_FROM_CONTINUE_USER = 54;
         public static final int NAVIGATION_FROM_NOTIFICATION = 55;
+
+        public static final int NAVIGATION_FROM_FIND_CLASS = 56;
+        public static final int NAVIGATION_FROM_TRAINERS = 57;
+        public static final int NAVIGATION_FROM_SCHEDULE = 58;
     }
 
     public class Limit {

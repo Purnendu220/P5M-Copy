@@ -2,14 +2,20 @@ package www.gymhop.p5m.eventbus;
 
 import android.content.Context;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import java.util.List;
 
 import www.gymhop.p5m.data.main.ClassActivity;
-import www.gymhop.p5m.data.main.User;
 import www.gymhop.p5m.data.main.ClassModel;
 import www.gymhop.p5m.data.main.TrainerModel;
+import www.gymhop.p5m.data.main.User;
+import www.gymhop.p5m.data.request.DeviceUpdate;
+import www.gymhop.p5m.restapi.NetworkCommunicator;
+import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.storage.preferences.MyPreferences;
+import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.view.activity.LoginRegister.ContinueUser;
 
 public class EventBroadcastHelper {
@@ -69,5 +75,45 @@ public class EventBroadcastHelper {
 
     public static void sendNewFilterSet() {
         GlobalBus.getBus().post(new Events.NewFilter());
+    }
+
+    public static void sendDeviceUpdate(Context context) {
+
+        if (!MyPreferences.getInstance().isLogin()) {
+            return;
+        }
+
+        String deviceToken = MyPreferences.getInstance().getDeviceToken();
+
+        if (deviceToken == null) {
+            String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+            LogUtils.debug("Notifications onTokenRefresh " + refreshedToken);
+            MyPreferences.getInstance().saveDeviceToken(refreshedToken);
+        }
+
+        if (deviceToken == null) {
+            return;
+        }
+
+        NetworkCommunicator.getInstance(context).deviceUpdate(
+                new DeviceUpdate(TempStorage.version, TempStorage.getUser().getId(), deviceToken),
+                new NetworkCommunicator.RequestListener() {
+                    @Override
+                    public void onApiSuccess(Object response, int requestCode) {
+                        try {
+                            Boolean forceUpdate = ((ResponseModel<Boolean>) response).data;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            LogUtils.exception(e);
+                        }
+                    }
+
+                    @Override
+                    public void onApiFailure(String errorMessage, int requestCode) {
+                    }
+                }, false);
+    }
+
+    public static void notificationReceived() {
     }
 }

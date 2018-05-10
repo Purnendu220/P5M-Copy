@@ -23,10 +23,12 @@ import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.TrainersAdapter;
 import www.gymhop.p5m.data.main.ClassActivity;
 import www.gymhop.p5m.storage.TempStorage;
+import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
+import www.gymhop.p5m.view.activity.Main.SearchActivity;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
-public class Trainers extends BaseFragment implements ViewPagerFragmentSelection, ViewPager.OnPageChangeListener {
+public class Trainers extends BaseFragment implements ViewPagerFragmentSelection, ViewPager.OnPageChangeListener, View.OnClickListener {
 
     @BindView(R.id.viewPager)
     public ViewPager viewPager;
@@ -84,6 +86,15 @@ public class Trainers extends BaseFragment implements ViewPagerFragmentSelection
         viewPager.addOnPageChangeListener(this);
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.imageViewSearch:
+                SearchActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_TRAINERS);
+                break;
+        }
+    }
+
     boolean isLoadingFirstTime = true;
 
     @Override
@@ -112,6 +123,7 @@ public class Trainers extends BaseFragment implements ViewPagerFragmentSelection
         activity.getSupportActionBar().setDisplayUseLogoEnabled(true);
 
         View v = LayoutInflater.from(context).inflate(R.layout.view_tool_bar_trainers, null);
+        v.findViewById(R.id.imageViewSearch).setOnClickListener(this);
 
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT));

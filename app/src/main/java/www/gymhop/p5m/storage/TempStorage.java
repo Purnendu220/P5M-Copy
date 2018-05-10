@@ -23,9 +23,9 @@ public class TempStorage {
     private static List<ClassesFilter> filterList;
 
     public static List<City> getCities() {
-//        if (cities == null) {
-//            cities = MyPreferences.createFragment().getCities();
-//        }
+        if (cities == null) {
+            cities = MyPreferences.getInstance().getCities();
+        }
         return cities;
     }
 
@@ -34,9 +34,9 @@ public class TempStorage {
     }
 
     public static List<ClassActivity> getActivities() {
-//        if (activities == null) {
-//            activities = MyPreferences.createFragment().getActivities();
-//        }
+        if (activities == null) {
+            activities = MyPreferences.getInstance().getActivities();
+        }
         return activities;
     }
 
@@ -57,12 +57,12 @@ public class TempStorage {
     }
 
     public static List<ClassesFilter> getFilters() {
-//        if (filterList == null) {
-        filterList = MyPreferences.getInstance().getFilters();
         if (filterList == null) {
-            filterList = new ArrayList<ClassesFilter>();
+            filterList = MyPreferences.getInstance().getFilters();
+            if (filterList == null) {
+                filterList = new ArrayList<ClassesFilter>();
+            }
         }
-//        }
         return filterList;
     }
 
