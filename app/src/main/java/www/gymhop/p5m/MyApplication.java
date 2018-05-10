@@ -23,7 +23,7 @@ public class MyApplication extends MultiDexApplication implements NetworkChangeR
 
     public static Context context;
 
-    public final static ApiMode apiMode = ApiMode.TESTING_ALPHA ;
+    public final static ApiMode apiMode = ApiMode.TESTING_ALPHA;
     public final static boolean SHOW_LOG = true;
     public final static boolean RETROFIT_SHOW_LOG = true;
     public final static boolean USE_CRASH_ANALYTICS = false;

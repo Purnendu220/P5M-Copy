@@ -7,7 +7,7 @@ import java.util.List;
  * Created by Varun John on 4/5/2018.
  */
 
-public class ClassesFilter implements Serializable {
+public class ClassesFilter<T> implements Serializable {
 
     public static int TYPE_ITEM = 1;
     public static int TYPE_HEADER = 2;
@@ -23,16 +23,16 @@ public class ClassesFilter implements Serializable {
     private boolean isLoading;
 
     private List<ClassesFilter> list;
-    private Object object;
+    private T object;
+    private String objectClassName;
 
-    public ClassesFilter(String id, String name, int iconResource, int type) {
-        this.id = id;
-        this.name = name;
-        this.iconResource = iconResource;
-        this.type = type;
-    }
-
-    public ClassesFilter(String name, int iconResource, int type) {
+    public ClassesFilter(String id, boolean createUniqueId, String objectClassName, String name, int iconResource, int type) {
+        if (createUniqueId) {
+            this.id = id + objectClassName + name;
+        } else {
+            this.id = id;
+        }
+        this.objectClassName = objectClassName;
         this.name = name;
         this.iconResource = iconResource;
         this.type = type;
@@ -44,7 +44,7 @@ public class ClassesFilter implements Serializable {
         if (obj instanceof ClassesFilter) {
             ClassesFilter filter = (ClassesFilter) obj;
 
-            if (filter.getObject() != null && filter.getName().equals(this.getName())) {
+            if (filter.getObject() != null && filter.getId().equals(this.getId())) {
                 return true;
             }
         }
@@ -73,11 +73,11 @@ public class ClassesFilter implements Serializable {
         this.list = list;
     }
 
-    public Object getObject() {
+    public T getObject() {
         return object;
     }
 
-    public void setObject(Object object) {
+    public void setObject(T object) {
         this.object = object;
     }
 
@@ -127,5 +127,13 @@ public class ClassesFilter implements Serializable {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
+    }
+
+    public String getObjectClassName() {
+        return objectClassName;
+    }
+
+    public void setObjectClassName(String objectClassName) {
+        this.objectClassName = objectClassName;
     }
 }

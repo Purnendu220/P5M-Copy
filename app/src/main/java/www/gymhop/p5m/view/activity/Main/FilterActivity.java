@@ -234,10 +234,10 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
     private void setListAdapter() {
         List<ClassesFilter> classesFilterList = new ArrayList<>(4);
 
-        classesFilterList.add(new ClassesFilter("Location", R.drawable.location, ClassesFilter.TYPE_HEADER));
-        classesFilterList.add(new ClassesFilter("Activity", R.drawable.class_icon, ClassesFilter.TYPE_HEADER));
-        classesFilterList.add(new ClassesFilter("Time", R.drawable.time, ClassesFilter.TYPE_HEADER));
-//        classesFilterList.add(new ClassesFilter("Gender", R.drawable.gender, ClassesFilter.TYPE_HEADER));
+        classesFilterList.add(new ClassesFilter<CityLocality>("", true, "CityLocality", "Location", R.drawable.location, ClassesFilter.TYPE_HEADER));
+        classesFilterList.add(new ClassesFilter<ClassActivity>("", true, "ClassActivity", "Activity", R.drawable.class_icon, ClassesFilter.TYPE_HEADER));
+        classesFilterList.add(new ClassesFilter<Filter.Time>("", true, "Time", "Time", R.drawable.time, ClassesFilter.TYPE_HEADER));
+//        classesFilterList.add(new ClassesFilter<Filter.Gender>("", true,"Gender", "Gender", R.drawable.gender, ClassesFilter.TYPE_HEADER));
 
         filterAdapter.setClassesFilterList(classesFilterList);
 
@@ -260,14 +260,14 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
     }
 
     public void addClassFilterTime(List<ClassesFilter> classesFilters, Filter.Time time) {
-        ClassesFilter filter = new ClassesFilter(time.getName(), 0, ClassesFilter.TYPE_ITEM);
+        ClassesFilter filter = new ClassesFilter<Filter.Time>("", true, "Time", time.getName(), 0, ClassesFilter.TYPE_ITEM);
         filter.setObject(time);
 
         classesFilters.add(filter);
     }
 
     public void addClassFilterGender(List<ClassesFilter> classesFilters, Filter.Gender gender) {
-        ClassesFilter filter = new ClassesFilter(gender.getName(), 0, ClassesFilter.TYPE_ITEM);
+        ClassesFilter filter = new ClassesFilter<Filter.Gender>("", true, "Gender", gender.getName(), 0, ClassesFilter.TYPE_ITEM);
         filter.setObject(gender);
 
         classesFilters.add(filter);
@@ -285,7 +285,7 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
 
                         if (city.isStatus()) {
 
-                            ClassesFilter classesFilter = new ClassesFilter(city.getName(), 0, ClassesFilter.TYPE_SUB_HEADER);
+                            ClassesFilter classesFilter = new ClassesFilter<City>("", true, "City", city.getName(), 0, ClassesFilter.TYPE_SUB_HEADER);
                             classesFilter.setObject(city);
                             classesFilters.add(classesFilter);
 
@@ -293,7 +293,7 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
                             if (city.getLocality() != null && !city.getLocality().isEmpty()) {
                                 for (CityLocality cityLocality : city.getLocality()) {
 
-                                    ClassesFilter filter = new ClassesFilter(cityLocality.getName(), 0, ClassesFilter.TYPE_ITEM);
+                                    ClassesFilter filter = new ClassesFilter<CityLocality>(cityLocality.getId() + "", true, "CityLocality", cityLocality.getName(), 0, ClassesFilter.TYPE_ITEM);
                                     filter.setObject(cityLocality);
                                     filter.setList(null);
                                     filters.add(filter);
@@ -314,7 +314,7 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
                 if (!list.isEmpty()) {
                     List<ClassesFilter> classesFilters = new ArrayList<>();
                     for (ClassActivity activity : list) {
-                        ClassesFilter classesFilter = new ClassesFilter(activity.getName(), 0, ClassesFilter.TYPE_ITEM);
+                        ClassesFilter classesFilter = new ClassesFilter(activity.getId() + "", true, "ClassActivity", activity.getName(), 0, ClassesFilter.TYPE_ITEM);
                         classesFilter.setObject(activity);
                         classesFilters.add(classesFilter);
                     }
@@ -407,7 +407,6 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
         switch (view.getId()) {
             case R.id.textViewClear:
                 filterAdapter.clearExpansionAndSelection();
-//                TempStorage.setFilterList(new ArrayList<ClassesFilter>());
                 flexBoxLayout.removeAllViews();
                 checkTags();
                 break;
@@ -417,7 +416,6 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
             case R.id.textViewFindClasses:
                 TempStorage.setFilterList(filterAdapter.getClassesFiltersSelected());
                 EventBroadcastHelper.sendNewFilterSet();
-//                HomeActivity.open(context);
                 finish();
                 break;
         }

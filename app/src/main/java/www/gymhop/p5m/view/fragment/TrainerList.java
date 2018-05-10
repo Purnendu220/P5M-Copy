@@ -32,6 +32,7 @@ import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
+import www.gymhop.p5m.utils.ToastUtils;
 import www.gymhop.p5m.view.activity.custom.MyRecyclerView;
 
 public class TrainerList extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks<TrainerModel>, MyRecyclerView.LoaderCallbacks, SwipeRefreshLayout.OnRefreshListener, NetworkCommunicator.RequestListener {
@@ -232,6 +233,8 @@ public class TrainerList extends BaseFragment implements ViewPagerFragmentSelect
             case NetworkCommunicator.RequestCode.TRAINER_LIST:
 
                 swipeRefreshLayout.setRefreshing(false);
+                ToastUtils.showLong(context, errorMessage);
+
                 checkListData();
 
                 break;

@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import www.gymhop.p5m.data.City;
-import www.gymhop.p5m.data.main.ClassActivity;
 import www.gymhop.p5m.data.ClassesFilter;
+import www.gymhop.p5m.data.main.ClassActivity;
 import www.gymhop.p5m.data.main.User;
 import www.gymhop.p5m.storage.preferences.MyPreferences;
 
@@ -57,12 +57,12 @@ public class TempStorage {
     }
 
     public static List<ClassesFilter> getFilters() {
+//        if (filterList == null) {
+        filterList = MyPreferences.getInstance().getFilters();
         if (filterList == null) {
-            filterList = MyPreferences.getInstance().getFilters();
-            if (filterList == null) {
-                filterList = new ArrayList<ClassesFilter>();
-            }
+            filterList = new ArrayList<ClassesFilter>();
         }
+//        }
         return filterList;
     }
 

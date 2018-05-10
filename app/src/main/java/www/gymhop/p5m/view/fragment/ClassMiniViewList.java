@@ -33,6 +33,7 @@ import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
+import www.gymhop.p5m.utils.ToastUtils;
 import www.gymhop.p5m.view.activity.custom.MyRecyclerView;
 
 public class ClassMiniViewList extends BaseFragment implements ViewPagerFragmentSelection, MyRecyclerView.LoaderCallbacks, SwipeRefreshLayout.OnRefreshListener, AdapterCallbacks<ClassModel>, NetworkCommunicator.RequestListener {
@@ -313,6 +314,8 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
             case NetworkCommunicator.RequestCode.CLASS_LIST:
 
                 swipeRefreshLayout.setRefreshing(false);
+                ToastUtils.showLong(context, errorMessage);
+
                 checkListData();
 
                 break;
