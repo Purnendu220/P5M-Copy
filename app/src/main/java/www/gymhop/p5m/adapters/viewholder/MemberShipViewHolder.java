@@ -16,6 +16,7 @@ import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.data.main.Package;
 import www.gymhop.p5m.data.main.UserPackage;
 import www.gymhop.p5m.data.main.ClassModel;
+import www.gymhop.p5m.helper.Helper;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.DateUtils;
 
@@ -84,6 +85,8 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                 button.setBackgroundResource(R.drawable.button_disabled);
                 button.setTextColor(ContextCompat.getColor(context, R.color.theme_light_text));
 
+                Helper.setPackageImage(imageViewHeader, model.getPackageName());
+
                 if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
 
                     textViewPackageName.setText(model.getPackageName());
@@ -118,6 +121,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     textViewPackagePrice.setVisibility(View.VISIBLE);
                     button.setText(R.string.select_plan);
                     button.setBackgroundResource(R.drawable.join_rect);
+                    Helper.setPackageImage(imageViewHeader, model.getName());
 
                     if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
 

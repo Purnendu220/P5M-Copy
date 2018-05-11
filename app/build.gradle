@@ -8,7 +8,7 @@ allprojects {
 
 android {
     compileSdkVersion COMPILE_SDK_VERSION as int
-    buildToolsVersion SUPPORT_PACKAGE_VERSION
+    buildToolsVersion BUILD_TOOL_VERSION
 
     defaultConfig {
         applicationId "www.gymhop.p5m"
@@ -40,6 +40,10 @@ android {
 }
 
 dependencies {
+    configurations {
+        all*.exclude group: 'com.android.support', module: 'support-v13'
+    }
+
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     /////////////////////////////////SUPPORT////////////////////////////////////////
     implementation 'com.android.support:multidex:1.0.3'
@@ -61,6 +65,7 @@ dependencies {
     /////////////////////////////////EXTRA//////////////////////////////////////////
     implementation 'com.shawnlin:PreferencesManager:1.0.3'
     implementation 'com.jakewharton:butterknife:8.8.1'
+    implementation 'com.android.support:support-v4:27.1.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.brandongogetap:stickyheaders:0.5.0'
     implementation 'org.greenrobot:eventbus:3.0.0'
@@ -74,9 +79,13 @@ dependencies {
     implementation 'com.google.android.gms:play-services:12.0.1'
     implementation 'id.zelory:compressor:1.0.4'
 
+    implementation 'com.facebook.android:facebook-android-sdk:4.24.0'
+    implementation 'com.facebook.fresco:fresco:1.2.0'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
+
 
 
 

@@ -38,6 +38,11 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.buttonJoin)
     public Button buttonJoin;
 
+    @BindView(R.id.layoutGender)
+    public View layoutGender;
+    @BindView(R.id.textViewClassGender)
+    public TextView textViewClassGender;
+
     @BindView(R.id.textViewClassName)
     public TextView textViewClassName;
     @BindView(R.id.textViewClassCategory)
@@ -69,6 +74,8 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
 
             final ClassModel model = (ClassModel) data;
 
+            layoutGender.setVisibility(View.GONE);
+
             if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
                 trainerImage.setVisibility(View.VISIBLE);
                 textViewTrainerName.setVisibility(View.VISIBLE);
@@ -91,6 +98,9 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 imageViewOptions1.setVisibility(View.GONE);
                 imageViewOptions2.setVisibility(View.VISIBLE);
 
+                layoutGender.setVisibility(View.VISIBLE);
+                textViewClassGender.setText(Helper.getClassGenderText(model.getClassType()));
+
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE) {
                 trainerImage.setVisibility(View.VISIBLE);
                 textViewTrainerName.setVisibility(View.VISIBLE);
@@ -98,6 +108,9 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 buttonJoin.setVisibility(View.VISIBLE);
                 imageViewOptions1.setVisibility(View.GONE);
                 imageViewOptions2.setVisibility(View.VISIBLE);
+
+                layoutGender.setVisibility(View.VISIBLE);
+                textViewClassGender.setText(Helper.getClassGenderText(model.getClassType()));
 
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED) {
                 trainerImage.setVisibility(View.VISIBLE);

@@ -141,7 +141,7 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
             textViewInfo.setText(model.getShortDesc());
 
             textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
-            textViewGender.setText(Helper.getClassTypeText(model.getClassType()));
+            textViewGender.setText(Helper.getClassGenderText(model.getClassType()));
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

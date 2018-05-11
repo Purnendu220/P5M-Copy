@@ -128,6 +128,7 @@ public class NotificationsViewHolder extends RecyclerView.ViewHolder {
                 case "OnBookingCancelToCustomerByCMS":
                 case "OnBookingCancelToGymByCMS":
                 case "OnBookingCancelToTrainerByCMS":
+                case "OnBookingCancelByCMS":
                     imageViewProfileStatus.setImageResource(R.drawable.delete_red);
                     break;
             }

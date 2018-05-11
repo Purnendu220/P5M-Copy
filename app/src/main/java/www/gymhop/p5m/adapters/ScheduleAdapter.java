@@ -41,7 +41,7 @@ public class ScheduleAdapter extends FragmentStatePagerAdapter {
             shownInScreen = AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST;
         }
 
-        Fragment tabFragment = ClassMiniViewList.getInstance(position, shownInScreen);
+        Fragment tabFragment = ClassMiniViewList.createFragment(position, shownInScreen);
 
         fragments.set(position, tabFragment);
         return tabFragment;

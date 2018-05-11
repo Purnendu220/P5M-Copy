@@ -135,7 +135,7 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
                 NotificationActivity.openActivity(context);
                 break;
             case R.id.imageViewSearch:
-                SearchActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_SCHEDULE);
+                SearchActivity.openActivity(context, activity, view, AppConstants.AppNavigation.NAVIGATION_FROM_SCHEDULE);
                 break;
         }
     }

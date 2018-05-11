@@ -61,7 +61,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //             .OnSlotDeleteByGymOfTrainer, .OnClassCreationNotifyGym, .OnEmailVerification, .onMappedTrainerToTrainer,
 //             .onMappedTrainerToGym, .OnClassInActive, .OnClassCancelByCMS, .OnBookingCancelToCustomerByCMS,
 //             .OnBookingCancelToGymByCMS, .OnBookingCancelToTrainerByCMS, .OnClassUpdateByCms, .OnNewTrainerAssign,
-//             .OnGroupClassUpdateByCms, .OnAssignPackageFromCMS:
+//             .OnGroupClassUpdateByCms, .OnAssignPackageFromCMS: OnBookingCancelByCMS
 
             switch (type) {
                 case "CustomerCancelClass":

@@ -74,7 +74,9 @@
 
                             <ImageView
                                 style="@style/SettingIcon"
-                                android:src="@drawable/class_icon" />
+                                android:padding="1dp"
+                                android:src="@drawable/notification"
+                                android:tint="@color/theme_medium_text" />
 
                             <TextView
                                 android:layout_width="0dp"
@@ -116,7 +118,9 @@
 
                             <ImageView
                                 style="@style/SettingIcon"
-                                android:src="@drawable/class_icon" />
+                                android:padding="2dp"
+                                android:src="@drawable/membership"
+                                android:tint="@color/theme_medium_text" />
 
                             <TextView
                                 android:layout_width="0dp"
@@ -158,7 +162,9 @@
 
                             <ImageView
                                 style="@style/SettingIcon"
-                                android:src="@drawable/class_icon" />
+                                android:padding="2dp"
+                                android:src="@drawable/transaction"
+                                android:tint="@color/theme_medium_text" />
 
                             <TextView
                                 android:layout_width="0dp"
@@ -209,7 +215,8 @@
 
                             <ImageView
                                 style="@style/SettingIcon"
-                                android:src="@drawable/class_icon" />
+                                android:src="@drawable/contact_us"
+                                android:tint="@color/theme_medium_text" />
 
                             <TextView
                                 android:layout_width="0dp"
@@ -251,7 +258,8 @@
 
                             <ImageView
                                 style="@style/SettingIcon"
-                                android:src="@drawable/class_icon" />
+                                android:src="@drawable/privacy"
+                                android:tint="@color/theme_medium_text" />
 
                             <TextView
                                 android:layout_width="0dp"
@@ -293,7 +301,8 @@
 
                             <ImageView
                                 style="@style/SettingIcon"
-                                android:src="@drawable/class_icon" />
+                                android:src="@drawable/terms"
+                                android:tint="@color/theme_medium_text" />
 
                             <TextView
                                 android:layout_width="0dp"
@@ -335,7 +344,9 @@
 
                             <ImageView
                                 style="@style/SettingIcon"
-                                android:src="@drawable/class_icon" />
+                                android:src="@drawable/about_us"
+                                android:padding="2dp"
+                                android:tint="@color/theme_medium_text" />
 
                             <TextView
                                 android:layout_width="0dp"
@@ -386,7 +397,9 @@
 
                             <ImageView
                                 style="@style/SettingIcon"
-                                android:src="@drawable/class_icon" />
+                                android:src="@drawable/logout"
+                                android:padding="1dp"
+                                android:tint="@color/theme_medium_text" />
 
                             <TextView
                                 android:layout_width="0dp"

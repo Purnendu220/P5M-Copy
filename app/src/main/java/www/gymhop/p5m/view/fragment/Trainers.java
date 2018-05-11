@@ -90,7 +90,7 @@ public class Trainers extends BaseFragment implements ViewPagerFragmentSelection
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imageViewSearch:
-                SearchActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_TRAINERS);
+                SearchActivity.openActivity(context, activity, view, AppConstants.AppNavigation.NAVIGATION_FROM_TRAINERS);
                 break;
         }
     }

@@ -105,6 +105,8 @@ public class NetworkCommunicator {
         public static final int NOTIFICATIONS = 126;
         public static final int SEARCH_ALL = 127;
         public static final int PHOTO_UPLOAD = 128;
+        public static final int GYM_LIST = 129;
+
     }
 
     private Context context;
@@ -317,6 +319,69 @@ public class NetworkCommunicator {
             @Override
             public void onResponse(Call<ResponseModel<List<TrainerModel>>> call, Response<ResponseModel<List<TrainerModel>>> restResponse, ResponseModel<List<TrainerModel>> response) {
                 LogUtils.networkSuccess("NetworkCommunicator getTrainerList onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call getSearchTrainerList(String queryString, int page, int size, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.TRAINER_LIST;
+        Call<ResponseModel<List<TrainerModel>>> call = apiService.getSearchedTrainerList(TempStorage.getUser().getId(),queryString, "user", "trainer", page, size);
+        LogUtils.debug("NetworkCommunicator hitting getSearchTrainerList");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<TrainerModel>>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<List<TrainerModel>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getSearchTrainerList onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<TrainerModel>>> call, Response<ResponseModel<List<TrainerModel>>> restResponse, ResponseModel<List<TrainerModel>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getSearchTrainerList onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call getSearchGymList(String queryString, int page, int size, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.GYM_LIST;
+        Call<ResponseModel<List<GymDetailModel>>> call = apiService.getSearchedGymList(TempStorage.getUser().getId(),queryString, "user", "gym", page, size);
+        LogUtils.debug("NetworkCommunicator hitting getSearchTrainerList");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<GymDetailModel>>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<List<GymDetailModel>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getSearchTrainerList onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<GymDetailModel>>> call, Response<ResponseModel<List<GymDetailModel>>> restResponse, ResponseModel<List<GymDetailModel>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getSearchTrainerList onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call getSearchClassList(String queryString, int page, int size, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.CLASS_LIST;
+        Call<ResponseModel<List<ClassModel>>> call = apiService.getSearchedClassesList(TempStorage.getUser().getId(),queryString, "1", page, size);
+        LogUtils.debug("NetworkCommunicator hitting getSearchClassList");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<List<ClassModel>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getSearchClassList onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<ClassModel>>> call, Response<ResponseModel<List<ClassModel>>> restResponse, ResponseModel<List<ClassModel>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getSearchClassList onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
             }
         });

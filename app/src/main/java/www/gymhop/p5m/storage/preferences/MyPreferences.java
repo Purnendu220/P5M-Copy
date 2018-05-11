@@ -24,7 +24,7 @@ import www.gymhop.p5m.utils.LogUtils;
 
 public class MyPreferences {
 
-    private Context context;
+    public static Context context;
     private static MyPreferences myPreferences;
     private Gson gson;
 

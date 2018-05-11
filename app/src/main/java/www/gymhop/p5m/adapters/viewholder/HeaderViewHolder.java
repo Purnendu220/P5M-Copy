@@ -2,6 +2,7 @@ package www.gymhop.p5m.adapters.viewholder;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
@@ -35,7 +36,7 @@ public class HeaderViewHolder extends RecyclerView.ViewHolder {
             HeaderSticky text = (HeaderSticky) data;
 
             if (!text.getTitle().isEmpty()) {
-                textView.setText(text.getTitle());
+                textView.setText(Html.fromHtml(text.getTitle()));
                 textView.setVisibility(View.VISIBLE);
             } else {
                 textView.setVisibility(View.GONE);

@@ -44,34 +44,34 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_gravity="center"
-                            android:visibility="visible" />
+                            android:visibility="invisible" />
 
                         <ImageView
                             android:id="@+id/imageViewImageSearch"
                             style="@style/ToolBarButton"
                             android:layout_width="40dp"
                             android:layout_height="match_parent"
-                            android:background="@color/theme_search"
                             android:padding="12dp"
                             android:src="@drawable/search_white"
                             android:tint="@color/theme_medium_dark_text"
+                            android:transitionName="searchIcon"
                             android:visibility="visible" />
 
                     </FrameLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="1">
 
                         <EditText
                             android:id="@+id/editTextSearch"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:background="@null"
                             android:hint="@string/search_hint"
-                            android:inputType="none"
+                            android:inputType="text"
                             android:maxLines="1"
                             android:textColor="@color/theme_dark_text"
                             android:textColorHint="@color/theme_medium_dark_text"
@@ -101,25 +101,18 @@
                 android:id="@+id/layoutSearchDetails"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="invisible"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="invisible">
 
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tabs"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/tool_bar_height"
-                    android:background="?attr/colorPrimary"
-                    android:contentInsetEnd="0dp"
-                    android:contentInsetLeft="0dp"
-                    android:contentInsetRight="0dp"
-                    android:contentInsetStart="0dp"
+                    android:layout_height="@dimen/tab_layout_height_find_class"
+                    android:background="@color/colorPrimaryDark"
                     android:elevation="4dp"
-                    app:contentInsetEnd="0dp"
-                    app:contentInsetLeft="0dp"
-                    app:contentInsetRight="0dp"
-                    app:contentInsetStart="0dp"
-                    app:layout_scrollFlags="scroll|enterAlways"
-                    app:tabIndicatorColor="@color/date_tabs" />
+                    app:tabGravity="fill"
+                    app:tabIndicatorColor="@color/white"
+                    app:tabMode="fixed" />
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/viewPager"
@@ -128,14 +121,26 @@
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
             </LinearLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerViewSearch"
+            <LinearLayout
+                android:id="@+id/layoutSearch"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:clipToPadding="false"
-                android:elevation="3dp"
-                android:scrollbars="none" />
+                android:layout_height="match_parent"
+                android:background="@drawable/layer"
+                android:clickable="true"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerViewSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:clipToPadding="false"
+                    android:elevation="3dp"
+                    android:scrollbars="none"
+                    android:visibility="visible" />
+
+            </LinearLayout>
 
         </FrameLayout>
 

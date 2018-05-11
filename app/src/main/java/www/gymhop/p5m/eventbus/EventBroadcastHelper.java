@@ -44,19 +44,34 @@ public class EventBroadcastHelper {
 
     /********************** CLASS JOINED OR PURCHASED ******************************/
 
-    public static void sendClassJoin(Context context, ClassModel classModel) {
-        GlobalBus.getBus().post(new Events.ClassJoin(classModel));
-    }
-
     public static void sendPackagePurchased() {
         GlobalBus.getBus().post(new Events.PackagePurchased());
     }
 
+    public static void sendClassJoin(Context context, ClassModel classModel) {
+        if (classModel.isUserJoinStatus()) {
+            classModel.setAvailableSeat(classModel.getAvailableSeat() - 1);
+        } else {
+            classModel.setAvailableSeat(classModel.getAvailableSeat() + 1);
+        }
+        GlobalBus.getBus().post(new Events.ClassJoin(classModel));
+    }
+
     public static void sendPackagePurchasedForClass(ClassModel classModel) {
+        if (classModel.isUserJoinStatus()) {
+            classModel.setAvailableSeat(classModel.getAvailableSeat() - 1);
+        } else {
+            classModel.setAvailableSeat(classModel.getAvailableSeat() + 1);
+        }
         GlobalBus.getBus().post(new Events.PackagePurchasedForClass(classModel));
     }
 
     public static void sendClassPurchased(ClassModel classModel) {
+        if (classModel.isUserJoinStatus()) {
+            classModel.setAvailableSeat(classModel.getAvailableSeat() - 1);
+        } else {
+            classModel.setAvailableSeat(classModel.getAvailableSeat() + 1);
+        }
         GlobalBus.getBus().post(new Events.ClassPurchased(classModel));
     }
     /////////////////////////////////////////////////////////////////////////////

@@ -25,6 +25,7 @@ import www.gymhop.p5m.data.main.ClassModel;
 import www.gymhop.p5m.data.request.PaymentUrlRequest;
 import www.gymhop.p5m.data.request.PromoCodeRequest;
 import www.gymhop.p5m.eventbus.EventBroadcastHelper;
+import www.gymhop.p5m.helper.Helper;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
@@ -160,6 +161,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 textViewPackageInfo.setText(aPackage.getDescription());
                 textViewPackageClasses.setText(aPackage.getNoOfClass() + " classes");
                 buttonPromoCode.setVisibility(View.VISIBLE);
+                Helper.setPackageImage(imageViewPackageImage, aPackage.getName());
 
                 setPrice();
 
@@ -174,6 +176,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 textViewPrice.setText(classModel.getPrice() + " " + context.getString(R.string.currency));
 
                 textViewCancellationPolicy.setText(classModel.getReminder());
+                Helper.setPackageImage(imageViewPackageImage, "Ready");
 
                 setPrice();
 

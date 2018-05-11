@@ -45,6 +45,7 @@ public class PackageLimitAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         list = new ArrayList<>();
         packageLimitListItems = new ArrayList<>();
         this.adapterCallbacks = adapterCallbacks;
+
         dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
     }
 

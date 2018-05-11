@@ -90,7 +90,7 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
                 Object obj = gymProfileAdapter.getList().get(index);
                 if (obj instanceof ClassModel) {
                     ClassModel classModel = (ClassModel) obj;
-                    classModel.setUserJoinStatus(data.isUserJoinStatus());
+                    Helper.setClassJoinEventData(classModel, data);
 
                     gymProfileAdapter.notifyItemChanged(index);
                 }

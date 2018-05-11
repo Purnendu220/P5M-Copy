@@ -94,6 +94,13 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     private void handleClassJoined(ClassModel data) {
         try {
             classModel.setUserJoinStatus(data.isUserJoinStatus());
+            try {
+                classProfileAdapter.getClassModel().setAvailableSeat(data.getAvailableSeat());
+                classProfileAdapter.notifyItemChanged(0);
+            } catch (Exception e) {
+                e.printStackTrace();
+                LogUtils.exception(e);
+            }
             Helper.setJoinStatusProfile(context, textViewBook, classModel);
 
         } catch (Exception e) {
@@ -294,7 +301,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 classModel.setUserJoinStatus(true);
                 EventBroadcastHelper.sendClassJoin(context, classModel);
 
-                classModel.setAvailableSeat(classModel.getAvailableSeat() - 1);
                 classModel.setUserJoinStatus(true);
 
                 Helper.setJoinStatusProfile(context, textViewBook, classModel);

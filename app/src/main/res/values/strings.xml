@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">P5M</string>
     <string name="no_internet">No internet connection</string>
+
+    <string name="facebook_app_id">496906260680338</string>
+    <string name="fb_login_protocol_scheme">fb496906260680338</string>
+
     <string name="please_try_later">Please try later</string>
 
     <string name="info_screen_desc_1">Explore and join fitness classes around you with one plan.</string>
@@ -147,8 +151,6 @@
     <string name="filter">Filter</string>
     <string name="our_class">Our classes:</string>
     <string name="empty_text">No data available</string>
-    <string name="facebook_app_id">496906260680338</string>
-    <string name="fb_login_protocol_scheme">fb[496906260680338]</string>
     <string name="your_current_plan">YOUR CURRENT PLAN</string>
     <string name="select">SELECT</string>
     <string name="of"><b>of</b></string>
@@ -228,7 +230,7 @@
     <string name="choose_nationality">Choose your Nationality</string>
     <string name="checkout">checkout</string>
     <string name="promo_code">Promo Code</string>
-    <string name="apply_promo_code">Apply Promo Code</string>
+    <string name="apply_promo_code">Enter Promo Code</string>
     <string name="remove_promo_code">Remove Promo Code</string>
     <string name="cancellation_policy">"<u>Cancellation Policy</u>"</string>
     <string name="press_again_to_exit">Press back again to exit</string>
@@ -242,6 +244,9 @@
     <string name="please_wait_no_dots">Please Wait</string>
     <string name="no_data_class_list_main">No classes are available. Try different filters or days to find your match.</string>
     <string name="no_data_trainer_list_main">No trainers are available that match your search.</string>
+    <string name="no_data_search_trainer_list">No trainers are available that match your search.</string>
+    <string name="no_data_search_gym_list">No gym are available that match your search.</string>
+    <string name="no_data_search_class_list">No classes are available. Make a different search to find more results.</string>
     <string name="no_data_schedule_upcoming_list">"You haven't joined any classes yet. Let's book a class!"</string>
     <string name="no_data_schedule_wishist_list">"You haven't added any classes to your wishlist yet. Tap of the save icon on classes you want to join later."</string>
     <string name="no_data_notifications">No notifications yet.</string>

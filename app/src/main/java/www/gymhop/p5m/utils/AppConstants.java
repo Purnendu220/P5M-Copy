@@ -44,6 +44,7 @@ public class AppConstants {
         public static final String TAB_POSITION_INT = "tab_position_int";
         public static final String TAB_SHOWN_IN_INT = "tab_shown_in";
         public static final String NAVIGATED_FROM_INT = "navigated_from";
+        public static final String QUERY_STRING = "query_string";
         public static final String CLASS_DATE_STRING = "class_date_string";
         public static final String TAB_ACTIVITY_ID_INT = "tab_activity_id";
         public static final String CLASS_OBJECT = "class_object";
@@ -104,6 +105,8 @@ public class AppConstants {
         public static final String MEDIA_UPDATE = "api/v1/media/mediaUpdate";
         public static final String MEDIA_UPLOAD = "api/v1/media/upload";
         public static final String SEARCH = "api/v1/gym/searchCriteria?";
+        public static final String SEARCH_USER_LIST = "api/v1/user/showAllUsers";
+        public static final String SEARCH_CLASS_LIST = "api/v1/class/getClasses";
     }
 
     public class ApiParamValue {
@@ -135,6 +138,7 @@ public class AppConstants {
         public static final String EMAIL = "email";
         public static final String VALUE = "value";
         public static final String TYPE = "type";
+        public static final String USER_CATEGORY_ID= "userCategoryId";
         public static final String GYM_ID = "gymId";
         public static final String TRAINER_ID = "trainerId";
         public static final String PACKAGE_ID = "packageId";
@@ -176,6 +180,7 @@ public class AppConstants {
         public static final int SHOWN_IN_TRAINER_PROFILE = 10;
         public static final int SHOWN_IN_GYM_PROFILE = 11;
         public static final int SHOWN_IN_GYM_PROFILE_TRAINERS = 12;
+        public static final int SHOWN_IN_SEARCH_RESULTS = 13;
 
         public static final int NAVIGATION_FROM_RESERVE_CLASS = 51;
         public static final int NAVIGATION_FROM_MY_PROFILE = 52;

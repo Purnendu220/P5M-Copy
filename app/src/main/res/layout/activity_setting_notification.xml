@@ -49,15 +49,17 @@
                 android:id="@+id/layoutNotification"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="top"
                 android:background="@color/white"
+                android:gravity="top"
                 android:orientation="horizontal"
                 android:padding="@dimen/view_padding_setting">
 
                 <ImageView
                     style="@style/SettingIcon"
-                    android:layout_marginTop="4dp"
-                    android:src="@drawable/notification" />
+                    android:layout_marginTop="2dp"
+                    android:padding="1dp"
+                    android:src="@drawable/notification"
+                    android:tint="@color/theme_medium_text" />
 
                 <LinearLayout
                     android:layout_width="0dp"

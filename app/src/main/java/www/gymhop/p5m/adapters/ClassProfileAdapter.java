@@ -41,6 +41,10 @@ public class ClassProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         list.addAll(data);
     }
 
+    public ClassModel getClassModel() {
+        return classModel;
+    }
+
     @Override
     public int getItemViewType(int position) {
         return CLASS_INFO;

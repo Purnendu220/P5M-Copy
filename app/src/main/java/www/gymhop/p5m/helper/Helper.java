@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -39,13 +40,13 @@ import www.gymhop.p5m.utils.LogUtils;
 
 public class Helper {
 
-    public static void setupEditTextFocusHideKeyboard(EditText editText){
+    public static void setupEditTextFocusHideKeyboard(EditText editText) {
         editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     KeyboardUtils.close(v, v.getContext());
-                } else{
+                } else {
                     KeyboardUtils.open(v, v.getContext());
                 }
             }
@@ -291,13 +292,38 @@ public class Helper {
         return classModel.getClassType().equals(AppConstants.ApiParamValue.GENDER_BOTH) || classModel.getClassType().equals(AppConstants.ApiParamValue.GENDER_MALE);
     }
 
-    public static String getClassTypeText(String classType) {
+    public static String getClassGenderText(String classType) {
         if (classType.equals(AppConstants.ApiParamValue.GENDER_MALE)) {
             return "Male";
         } else if (classType.equals(AppConstants.ApiParamValue.GENDER_FEMALE)) {
             return "Female";
         } else {
             return "Both";
+        }
+    }
+
+    public static void setClassJoinEventData(ClassModel classModel, ClassModel joinedData) {
+        classModel.setUserJoinStatus(joinedData.isUserJoinStatus());
+        classModel.setAvailableSeat(joinedData.getAvailableSeat());
+    }
+
+    public static void setPackageImage(ImageView imageView, String packageName) {
+        switch (packageName.toLowerCase()) {
+            case "ready":
+                imageView.setImageResource(R.drawable.ready_icon);
+                break;
+            case "visit":
+                imageView.setImageResource(R.drawable.star);
+                break;
+            case "get set":
+                imageView.setImageResource(R.drawable.set);
+                break;
+            case "pro":
+                imageView.setImageResource(R.drawable.pro_icon);
+                break;
+            default:
+                imageView.setImageResource(R.drawable.ready_icon);
+                break;
         }
     }
 }

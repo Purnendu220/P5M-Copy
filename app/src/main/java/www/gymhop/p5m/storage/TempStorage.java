@@ -10,6 +10,7 @@ import www.gymhop.p5m.data.ClassesFilter;
 import www.gymhop.p5m.data.main.ClassActivity;
 import www.gymhop.p5m.data.main.User;
 import www.gymhop.p5m.storage.preferences.MyPreferences;
+import www.gymhop.p5m.view.activity.Splash;
 
 public class TempStorage {
 
@@ -75,6 +76,12 @@ public class TempStorage {
         if (user == null) {
             user = MyPreferences.getInstance().getUser();
         }
+
+        if (user == null) {
+            MyPreferences.getInstance().clear();
+            Splash.open(MyPreferences.context);
+        }
+
         return user;
     }
 

@@ -192,7 +192,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
             }
 
             textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
-            textViewGender.setText(Helper.getClassTypeText(model.getClassType()));
+            textViewGender.setText(Helper.getClassGenderText(model.getClassType()));
 
             layoutLocation.setOnClickListener(new View.OnClickListener() {
                 @Override

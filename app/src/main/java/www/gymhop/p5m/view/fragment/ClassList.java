@@ -34,6 +34,7 @@ import www.gymhop.p5m.data.request.ClassListRequest;
 import www.gymhop.p5m.eventbus.Events;
 import www.gymhop.p5m.eventbus.GlobalBus;
 import www.gymhop.p5m.helper.ClassListListenerHelper;
+import www.gymhop.p5m.helper.Helper;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
@@ -131,7 +132,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                 Object obj = classListAdapter.getList().get(index);
                 if (obj instanceof ClassModel) {
                     ClassModel classModel = (ClassModel) obj;
-                    classModel.setUserJoinStatus(data.isUserJoinStatus());
+                    Helper.setClassJoinEventData(classModel, data);
 
                     classListAdapter.notifyItemChanged(index);
                 }

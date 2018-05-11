@@ -121,7 +121,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
                 Object obj = trainerProfileAdapter.getList().get(index);
                 if (obj instanceof ClassModel) {
                     ClassModel classModel = (ClassModel) obj;
-                    classModel.setUserJoinStatus(data.isUserJoinStatus());
+                    Helper.setClassJoinEventData(classModel, data);
 
                     trainerProfileAdapter.notifyItemChanged(index);
                 }

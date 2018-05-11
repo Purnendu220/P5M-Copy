@@ -26,7 +26,8 @@
             style="@style/ToolBarIcon"
             android:layout_height="match_parent"
             android:padding="15dp"
-            android:src="@drawable/search_white" />
+            android:src="@drawable/search_white"
+            android:transitionName="searchIcon" />
 
         <FrameLayout
             android:id="@+id/layoutFilter"

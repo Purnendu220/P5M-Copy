@@ -28,6 +28,7 @@ import www.gymhop.p5m.data.main.ClassModel;
 import www.gymhop.p5m.eventbus.Events;
 import www.gymhop.p5m.eventbus.GlobalBus;
 import www.gymhop.p5m.helper.ClassListListenerHelper;
+import www.gymhop.p5m.helper.Helper;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
@@ -38,10 +39,21 @@ import www.gymhop.p5m.view.activity.custom.MyRecyclerView;
 
 public class ClassMiniViewList extends BaseFragment implements ViewPagerFragmentSelection, MyRecyclerView.LoaderCallbacks, SwipeRefreshLayout.OnRefreshListener, AdapterCallbacks<ClassModel>, NetworkCommunicator.RequestListener {
 
-    public static Fragment getInstance(int position, int shownIn) {
+    public static Fragment createFragment(int position, int shownIn) {
         Fragment tabFragment = new ClassMiniViewList();
         Bundle bundle = new Bundle();
         bundle.putInt(AppConstants.DataKey.TAB_POSITION_INT, position);
+        bundle.putInt(AppConstants.DataKey.TAB_SHOWN_IN_INT, shownIn);
+        tabFragment.setArguments(bundle);
+
+        return tabFragment;
+    }
+
+    public static Fragment createFragment(String queryString, int position, int shownIn) {
+        Fragment tabFragment = new ClassMiniViewList();
+        Bundle bundle = new Bundle();
+        bundle.putInt(AppConstants.DataKey.TAB_POSITION_INT, position);
+        bundle.putString(AppConstants.DataKey.QUERY_STRING, queryString);
         bundle.putInt(AppConstants.DataKey.TAB_SHOWN_IN_INT, shownIn);
         tabFragment.setArguments(bundle);
 
@@ -67,6 +79,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
     private boolean shouldRefresh = false;
     private int page;
     private int pageSizeLimit = AppConstants.Limit.PAGE_LIMIT_INNER_CLASS_LIST;
+    private String searchedKeywords;
 
     private int shownInScreen;
 
@@ -168,7 +181,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
 
                 if (obj instanceof ClassModel) {
                     ClassModel classModel = (ClassModel) obj;
-                    classModel.setUserJoinStatus(data.isUserJoinStatus());
+                    Helper.setClassJoinEventData(classModel, data);
 
                     classListAdapter.notifyItemChanged(index);
                 }
@@ -207,6 +220,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
 
         fragmentPositionInViewPager = getArguments().getInt(AppConstants.DataKey.TAB_POSITION_INT);
         shownInScreen = getArguments().getInt(AppConstants.DataKey.TAB_SHOWN_IN_INT);
+        searchedKeywords = getArguments().getString(AppConstants.DataKey.QUERY_STRING, "");
 
         swipeRefreshLayout.setOnRefreshListener(this);
 
@@ -258,6 +272,8 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
 
         } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
             networkCommunicator.getWishList(TempStorage.getUser().getId(), page, pageSizeLimit, this, false);
+        } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SEARCH_RESULTS) {
+            networkCommunicator.getSearchClassList(searchedKeywords, page, pageSizeLimit, this, false);
         }
     }
 
@@ -328,13 +344,18 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
 
             if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
                 textViewEmptyLayoutText.setText(R.string.no_data_schedule_wishist_list);
+                imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_class);
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
                 textViewEmptyLayoutText.setText(R.string.no_data_schedule_upcoming_list);
+                imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_class);
+            } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SEARCH_RESULTS) {
+                textViewEmptyLayoutText.setText(R.string.no_data_search_class_list);
+                imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_search);
             } else {
                 textViewEmptyLayoutText.setText("");
+                imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_class);
             }
 
-            imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_class);
         } else {
             layoutNoData.setVisibility(View.GONE);
         }

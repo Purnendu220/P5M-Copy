@@ -58,6 +58,17 @@ public class TrainerList extends BaseFragment implements ViewPagerFragmentSelect
         return tabFragment;
     }
 
+    public static Fragment createFragment(String queryString, int position, int shownIn) {
+        Fragment tabFragment = new TrainerList();
+        Bundle bundle = new Bundle();
+        bundle.putInt(AppConstants.DataKey.TAB_POSITION_INT, position);
+        bundle.putString(AppConstants.DataKey.QUERY_STRING, queryString);
+        bundle.putInt(AppConstants.DataKey.TAB_SHOWN_IN_INT, shownIn);
+        tabFragment.setArguments(bundle);
+
+        return tabFragment;
+    }
+
     @BindView(R.id.recyclerViewClass)
     public RecyclerView recyclerViewTrainers;
     @BindView(R.id.swipeRefreshLayout)
@@ -79,6 +90,7 @@ public class TrainerList extends BaseFragment implements ViewPagerFragmentSelect
     private int activityId;
     private int gymId;
     private int shownInScreen;
+    private String searchedKeywords;
 
     public TrainerList() {
     }
@@ -97,6 +109,7 @@ public class TrainerList extends BaseFragment implements ViewPagerFragmentSelect
 
         fragmentPositionInViewPager = getArguments().getInt(AppConstants.DataKey.TAB_POSITION_INT);
         activityId = getArguments().getInt(AppConstants.DataKey.TAB_ACTIVITY_ID_INT);
+        searchedKeywords = getArguments().getString(AppConstants.DataKey.QUERY_STRING, "");
         shownInScreen = getArguments().getInt(AppConstants.DataKey.TAB_SHOWN_IN_INT);
         gymId = getArguments().getInt(AppConstants.DataKey.GYM_ID_INT);
 
@@ -182,6 +195,8 @@ public class TrainerList extends BaseFragment implements ViewPagerFragmentSelect
             networkCommunicator.getGymTrainerList(gymId, page, pageSizeLimit, this, false);
         } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_HOME_TRAINERS) {
             networkCommunicator.getTrainerList(activityId, page, pageSizeLimit, this, false);
+        } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SEARCH_RESULTS) {
+            networkCommunicator.getSearchTrainerList(searchedKeywords , page, pageSizeLimit, this, false);
         }
     }
 
@@ -244,9 +259,13 @@ public class TrainerList extends BaseFragment implements ViewPagerFragmentSelect
     private void checkListData() {
         if (trainerListAdapter.getList().isEmpty()) {
             layoutNoData.setVisibility(View.VISIBLE);
-
-            textViewEmptyLayoutText.setText(R.string.no_data_trainer_list_main);
-            imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_trainer);
+            if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
+                textViewEmptyLayoutText.setText(R.string.no_data_search_trainer_list);
+                imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_search);
+            } else {
+                textViewEmptyLayoutText.setText(R.string.no_data_trainer_list_main);
+                imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_trainer);
+            }
         } else {
             layoutNoData.setVisibility(View.GONE);
         }

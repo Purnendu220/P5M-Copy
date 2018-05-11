@@ -222,7 +222,7 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imageViewSearch:
-                SearchActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
+                SearchActivity.openActivity(context, activity, view, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
                 break;
 
             case R.id.imageViewFilterer:

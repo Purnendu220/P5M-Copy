@@ -39,6 +39,7 @@
 
     <drawable name="transparent">#00000000</drawable>
     <drawable name="highlight">#1A000000</drawable>
+    <drawable name="layer">#80000000</drawable>
 
     <drawable name="no_map">#c7cfd4</drawable>
 

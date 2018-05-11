@@ -1,5 +1,7 @@
 package www.gymhop.p5m.view.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.animation.BounceInterpolator;
@@ -17,6 +19,13 @@ import www.gymhop.p5m.view.activity.Main.HomeActivity;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
 public class Splash extends BaseActivity implements NetworkCommunicator.RequestListener {
+
+    public static void open(Context context) {
+        Intent intent = new Intent(context, Splash.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(intent);
+    }
 
     private Handler handler;
     private Runnable nextScreenRunnable;
