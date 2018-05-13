@@ -88,12 +88,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
 
             if (Helper.isSpecialClass(model)) {
                 textViewSpecialClass.setVisibility(View.VISIBLE);
-                String text = "Special Class";
-                if (!model.getSpecialClassRemark().isEmpty()) {
-                    text = model.getSpecialClassRemark();
-                }
-
-                textViewSpecialClass.setText(text);
+                textViewSpecialClass.setText(Helper.getSpecialClassText(model));
 
             } else {
                 textViewSpecialClass.setVisibility(View.GONE);
@@ -129,22 +124,21 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
                 }
 
                 if (!model.getGymBranchDetail().getStudioInstruction().isEmpty()) {
-                    stringBuffer.append("<br/><br/><b>STUDIO INSTRUCTION:</b>" + context.getString(R.string.gaping) + model.getGymBranchDetail().getStudioInstruction());
+                    if (!stringBuffer.toString().isEmpty()) {
+                        stringBuffer.append("<br/><br/>");
+                    }
+                    stringBuffer.append("<b>STUDIO INSTRUCTION:</b>" + context.getString(R.string.gaping) + model.getGymBranchDetail().getStudioInstruction());
                 }
 
                 if (!model.getSpecialNote().isEmpty()) {
-                    stringBuffer.append("<br/><br/><b>SPECIAL NOTES BY TRAINER:</b>" + context.getString(R.string.gaping) + model.getSpecialNote());
+                    if (!stringBuffer.toString().isEmpty()) {
+                        stringBuffer.append("<br/><br/>");
+                    }
+                    stringBuffer.append("<b>SPECIAL NOTES BY TRAINER:</b>" + context.getString(R.string.gaping) + model.getSpecialNote());
                 }
 
                 textViewMoreDetails.setText(Html.fromHtml(stringBuffer.toString()));
 
-//                if (!model.getSpecialNote().isEmpty() && !model.getReminder().isEmpty()) {
-//                    textViewMoreDetails.setText(Html.fromHtml("<b>REMINDERS:</b>   " + model.getReminder() + "<br/><b>STUDIO INSTRUCTION:</b> " + model.getSpecialNote()));
-//                } else if (model.getSpecialNote().isEmpty() && !model.getReminder().isEmpty()) {
-//                    textViewMoreDetails.setText(Html.fromHtml("<b>REMINDERS:</b>   " + model.getReminder()));
-//                } else if (!model.getSpecialNote().isEmpty() && model.getReminder().isEmpty()) {
-//                    textViewMoreDetails.setText(Html.fromHtml("<b>STUDIO INSTRUCTION:</b>   " + model.getSpecialNote()));
-//                }
             }
 
             if (model.getClassMedia() != null) {

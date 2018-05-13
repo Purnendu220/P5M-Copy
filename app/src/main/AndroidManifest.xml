@@ -16,9 +16,7 @@
         android:largeHeap="true"
         android:theme="@style/AppTheme">
 
-        <!--
-           /////////////////////// FACEBOOK LOGIN ///////////////////////
-        -->
+        <!--            /////////////////////// FACEBOOK LOGIN /////////////////////// -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -39,9 +37,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <!--
-           ////////////////////////////////////////////////////////////
-       -->
+        <!--            //////////////////////////////////////////////////////////// -->
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
@@ -95,7 +91,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.activity.LoginRegister.InfoScreen"
             android:screenOrientation="portrait" />
@@ -186,7 +181,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.Main.NotificationActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.custom.GalleryActivity"
+            android:theme="@style/AppThemeTranslucent"></activity>
     </application>
 
 </manifest>

@@ -183,8 +183,9 @@ public class Helper {
         Fresco.initialize(context);
 
         GenericDraweeHierarchyBuilder hierarchyBuilder = GenericDraweeHierarchyBuilder.newInstance(context.getResources())
-                .setFailureImage(R.drawable.image_holder)
-                .setPlaceholderImage(R.drawable.loading);
+                .setFailureImage(R.drawable.class_holder)
+//                .setPlaceholderImage(R.drawable.loading)
+                ;
 
         new ImageViewer.Builder<>(context, list)
                 .setStartPosition(position)
@@ -203,8 +204,9 @@ public class Helper {
         Fresco.initialize(context);
 
         GenericDraweeHierarchyBuilder hierarchyBuilder = GenericDraweeHierarchyBuilder.newInstance(context.getResources())
-                .setFailureImage(R.drawable.image_holder)
-                .setPlaceholderImage(R.drawable.loading);
+                .setFailureImage(R.drawable.class_holder)
+//                .setPlaceholderImage(R.drawable.loading)
+                ;
 
         new ImageViewer.Builder<>(context, new String[]{url})
                 .hideStatusBar(false)

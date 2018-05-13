@@ -44,8 +44,9 @@ public class MyApplication extends MultiDexApplication implements NetworkChangeR
         super.onCreate();
         context = getApplicationContext();
 
-        Fresco.initialize(this);
         MultiDex.install(this);
+
+        Fresco.initialize(this);
         registerActivityLifecycleCallbacks(this);
 
         NetworkChangeReceiver.register(this);
