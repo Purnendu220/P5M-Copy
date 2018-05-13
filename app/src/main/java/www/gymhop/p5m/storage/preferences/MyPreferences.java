@@ -17,6 +17,7 @@ import www.gymhop.p5m.data.CityLocality;
 import www.gymhop.p5m.data.ClassesFilter;
 import www.gymhop.p5m.data.Filter;
 import www.gymhop.p5m.data.main.ClassActivity;
+import www.gymhop.p5m.data.main.DefaultSettingServer;
 import www.gymhop.p5m.data.main.User;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
@@ -193,6 +194,25 @@ public class MyPreferences {
     public void saveUser(User user) {
         try {
             PreferencesManager.putString(AppConstants.Pref.USER, gson.toJson(user).toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
+    public DefaultSettingServer getDefaultSettingServer() {
+        try {
+            return gson.fromJson(PreferencesManager.getString(AppConstants.Pref.DEFAULT_SETTING_SERVER), new TypeToken<DefaultSettingServer>() {
+            }.getType());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void saveDefaultSettingServer(DefaultSettingServer defaultSettingServer) {
+        try {
+            PreferencesManager.putString(AppConstants.Pref.DEFAULT_SETTING_SERVER, gson.toJson(defaultSettingServer).toString());
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);

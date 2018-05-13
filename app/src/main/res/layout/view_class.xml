@@ -47,7 +47,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom"
-                            android:background="@color/colorPrimaryDarkHighLight"
+                            android:background="@color/specialClassBg"
                             android:ellipsize="end"
                             android:fontFamily="sans-serif"
                             android:letterSpacing="@dimen/text_medium_letter_spacing"

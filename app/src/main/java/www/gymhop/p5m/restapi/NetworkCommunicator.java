@@ -18,6 +18,7 @@ import www.gymhop.p5m.data.PromoCode;
 import www.gymhop.p5m.data.WishListResponse;
 import www.gymhop.p5m.data.main.ClassActivity;
 import www.gymhop.p5m.data.main.ClassModel;
+import www.gymhop.p5m.data.main.DefaultSettingServer;
 import www.gymhop.p5m.data.main.GymDetailModel;
 import www.gymhop.p5m.data.main.NotificationModel;
 import www.gymhop.p5m.data.main.Package;
@@ -70,6 +71,7 @@ public class NetworkCommunicator {
 
     public class RequestCode {
 
+        public static final int LOGIN_FB = 97;
         public static final int VALIDATE_EMAIL = 98;
         public static final int REGISTER = 99;
         public static final int LOGIN = 100;
@@ -142,6 +144,30 @@ public class NetworkCommunicator {
             @Override
             public void onResponse(Call<ResponseModel<User>> call, Response<ResponseModel<User>> restResponse, ResponseModel<User> response) {
                 LogUtils.networkSuccess("NetworkCommunicator login onResponse data " + response);
+                TempStorage.setAuthToken(restResponse.headers().get(AppConstants.ApiParamKey.MYU_AUTH_TOKEN));
+                requestListener.onApiSuccess(response, requestCode);
+
+                EventBroadcastHelper.sendDeviceUpdate(context);
+            }
+        });
+        return call;
+    }
+
+    public Call loginFb(LoginRequest loginRequest, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.LOGIN_FB;
+        Call<ResponseModel<User>> call = apiService.loginFB(loginRequest);
+        LogUtils.debug("NetworkCommunicator hitting loginFB");
+
+        call.enqueue(new RestCallBack<ResponseModel<User>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<User>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator loginFB onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<User>> call, Response<ResponseModel<User>> restResponse, ResponseModel<User> response) {
+                LogUtils.networkSuccess("NetworkCommunicator loginFB onResponse data " + response);
                 TempStorage.setAuthToken(restResponse.headers().get(AppConstants.ApiParamKey.MYU_AUTH_TOKEN));
                 requestListener.onApiSuccess(response, requestCode);
 
@@ -257,6 +283,28 @@ public class NetworkCommunicator {
                 LogUtils.networkSuccess("NetworkCommunicator getActivities onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
                 TempStorage.setActivities(response.data);
+            }
+        });
+        return call;
+    }
+
+    public Call getDefault(final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.ALL_CLASS_ACTIVITY;
+        Call<ResponseModel<DefaultSettingServer>> call = apiService.getDefault();
+        LogUtils.debug("NetworkCommunicator hitting getActivities");
+
+        call.enqueue(new RestCallBack<ResponseModel<DefaultSettingServer>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<DefaultSettingServer>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getActivities onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<DefaultSettingServer>> call, Response<ResponseModel<DefaultSettingServer>> restResponse, ResponseModel<DefaultSettingServer> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getActivities onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+                TempStorage.setDefault(response.data);
             }
         });
         return call;

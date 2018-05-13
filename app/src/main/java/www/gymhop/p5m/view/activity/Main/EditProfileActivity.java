@@ -460,10 +460,9 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
             break;
             case NetworkCommunicator.RequestCode.PHOTO_UPLOAD:
 
-
                 MediaResponse mediaResponse = ((ResponseModel<MediaResponse>) response).data;
 
-                ImageUtils.setImage(context, mediaResponse.getMediaPath(), imageViewProfile);
+                ImageUtils.setImageDelay(context, mediaResponse.getMediaPath(), imageViewProfile);
 
                 User user = TempStorage.getUser();
                 user.setUserProfileImageId(mediaResponse.getId());

@@ -215,7 +215,17 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
         switch (view.getId()) {
             case R.id.textViewViewLimit: {
-                PackageLimitsActivity.openActivity(context);
+
+                String name = "";
+                if (model instanceof Package) {
+                    Package aPackage = (Package) model;
+                    name = aPackage.getName();
+
+                } else if (model instanceof UserPackage) {
+                    UserPackage aPackage = (UserPackage) model;
+                    name = aPackage.getPackageName();
+                }
+                PackageLimitsActivity.openActivity(context, name);
             }
             break;
             case R.id.button: {

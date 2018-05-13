@@ -34,6 +34,8 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.trainerImage)
     public View trainerImage;
+    @BindView(R.id.layoutSpecial)
+    public View layoutSpecial;
 
     @BindView(R.id.buttonJoin)
     public Button buttonJoin;
@@ -42,6 +44,8 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
     public View layoutGender;
     @BindView(R.id.textViewClassGender)
     public TextView textViewClassGender;
+    @BindView(R.id.textViewSpecialClass)
+    public TextView textViewSpecialClass;
 
     @BindView(R.id.textViewClassName)
     public TextView textViewClassName;
@@ -75,6 +79,13 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
             final ClassModel model = (ClassModel) data;
 
             layoutGender.setVisibility(View.GONE);
+
+            if (Helper.isSpecialClass(model)) {
+                layoutSpecial.setVisibility(View.VISIBLE);
+                textViewSpecialClass.setText(Helper.getSpecialClassText(model));
+            } else {
+                layoutSpecial.setVisibility(View.GONE);
+            }
 
             if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
                 trainerImage.setVisibility(View.VISIBLE);

@@ -20,6 +20,11 @@ import www.gymhop.p5m.view.activity.LoginRegister.ContinueUser;
 
 public class EventBroadcastHelper {
 
+    public static void sendLogin(Context context, User user) {
+        TempStorage.setUser(context, user);
+        MyPreferences.getInstance().setLogin(true);
+    }
+
     public static void logout(Context context) {
         try {
             User user = MyPreferences.getInstance().getUser();
@@ -131,4 +136,5 @@ public class EventBroadcastHelper {
 
     public static void notificationReceived() {
     }
+
 }

@@ -326,4 +326,12 @@ public class Helper {
                 break;
         }
     }
+
+    public static String getSpecialClassText(ClassModel model) {
+        String text = "Special Class";
+        if (!model.getSpecialClassRemark().isEmpty()) {
+            text = model.getSpecialClassRemark();
+        }
+        return text.trim();
+    }
 }

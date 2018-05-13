@@ -33,8 +33,8 @@ import www.gymhop.p5m.view.activity.base.BaseActivity;
 
 public class PackageLimitsActivity extends BaseActivity implements NetworkCommunicator.RequestListener, AdapterCallbacks, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-    public static void openActivity(Context context) {
-        context.startActivity(new Intent(context, PackageLimitsActivity.class));
+    public static void openActivity(Context context, String packageName) {
+        context.startActivity(new Intent(context, PackageLimitsActivity.class).putExtra(AppConstants.DataKey.PACKAGE_NAME_STRING, packageName));
     }
 
     @BindView(R.id.toolbar)
@@ -46,7 +46,8 @@ public class PackageLimitsActivity extends BaseActivity implements NetworkCommun
     @BindView(R.id.swipeRefreshLayout)
     public SwipeRefreshLayout swipeRefreshLayout;
 
-    public PackageLimitAdapter packageLimitAdapter;
+    private PackageLimitAdapter packageLimitAdapter;
+    private String packageName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,12 @@ public class PackageLimitsActivity extends BaseActivity implements NetworkCommun
         setContentView(R.layout.activity_package_limits);
 
         ButterKnife.bind(activity);
+
+        packageName = getIntent().getStringExtra(AppConstants.DataKey.PACKAGE_NAME_STRING);
+
+        if (packageName == null) {
+            packageName = "";
+        }
 
         swipeRefreshLayout.setOnRefreshListener(this);
 
@@ -64,7 +71,6 @@ public class PackageLimitsActivity extends BaseActivity implements NetworkCommun
         recyclerView.setAdapter(packageLimitAdapter);
 
         onRefresh();
-
         setToolBar();
     }
 
@@ -102,6 +108,10 @@ public class PackageLimitsActivity extends BaseActivity implements NetworkCommun
                         PackageLimitListItem packageLimitListItem = new PackageLimitListItem(
                                 model.getPackageType() + model.getPackageName(),
                                 model.getPackageName(), PackageLimitListItem.TYPE_HEADER);
+
+                        if (packageLimitListItem.getName().equals(packageName)) {
+                            packageLimitListItem.setExpanded(true);
+                        }
 
                         if (packageLimitListItems.contains(packageLimitListItem)) {
                             packageLimitListItem = packageLimitListItems.get(packageLimitListItems.indexOf(packageLimitListItem));

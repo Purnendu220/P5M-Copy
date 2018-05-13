@@ -19,6 +19,7 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
@@ -27,14 +28,21 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import www.gymhop.p5m.R;
+import www.gymhop.p5m.data.FaceBookUser;
+import www.gymhop.p5m.data.main.User;
+import www.gymhop.p5m.data.request.LoginRequest;
+import www.gymhop.p5m.eventbus.EventBroadcastHelper;
 import www.gymhop.p5m.helper.Helper;
 import www.gymhop.p5m.helper.MyClickSpan;
+import www.gymhop.p5m.restapi.NetworkCommunicator;
+import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.utils.ToastUtils;
+import www.gymhop.p5m.view.activity.Main.HomeActivity;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
-public class SignUpOptions extends BaseActivity {
+public class SignUpOptions extends BaseActivity implements NetworkCommunicator.RequestListener {
 
 
     public static void open(Context context) {
@@ -45,8 +53,11 @@ public class SignUpOptions extends BaseActivity {
     TextView textViewBottom;
     @BindView(R.id.buttonLoginFacebook)
     Button buttonLoginFacebook;
+    @BindView(R.id.layoutProgress)
+    View layoutProgress;
 
     private CallbackManager callbackManager;
+    private FaceBookUser faceBookUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +107,8 @@ public class SignUpOptions extends BaseActivity {
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(final LoginResult loginResult) {
-                        ToastUtils.showLong(context, loginResult.getAccessToken().getToken());
+//                        ToastUtils.showLong(context, loginResult.getAccessToken().getToken());
+                        LogUtils.debug("Facebook Token : " + loginResult.getAccessToken().toString());
 
                         GraphRequest request = GraphRequest.newMeRequest(
                                 loginResult.getAccessToken(),
@@ -104,13 +116,32 @@ public class SignUpOptions extends BaseActivity {
                                     @Override
                                     public void onCompleted(JSONObject object, GraphResponse response) {
 
-                                        ToastUtils.showLong(context, object.toString());
-                                        LogUtils.debug("Facebook Token : " + loginResult.getAccessToken().toString());
+//                                        ToastUtils.showLong(context, object.toString());
                                         LogUtils.debug("Facebook newMeRequest : " + object.toString());
+
+                                        String name = "";
+                                        String gender = "";
+                                        String email = "";
+                                        String id = "";
+
+                                        try {
+                                            id = object.getString("id");
+                                            name = object.getString("name");
+                                            gender = object.getString("gender").toUpperCase();
+                                            email = object.getString("email");
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                            LogUtils.exception(e);
+                                        }
+
+                                        faceBookUser = new FaceBookUser(id, name, gender, email);
+
+                                        networkCommunicator.loginFb(new LoginRequest(id, name, email, gender), SignUpOptions.this, false);
                                     }
                                 });
                         Bundle parameters = new Bundle();
-                        parameters.putString("fields", "id,name,birthday,gender,location");
+                        parameters.putString("fields", "id,name,birthday,gender,email,location");
                         request.setParameters(parameters);
                         request.executeAsync();
                     }
@@ -118,11 +149,13 @@ public class SignUpOptions extends BaseActivity {
                     @Override
                     public void onCancel() {
                         ToastUtils.showLong(context, "Cancelled");
+                        layoutProgress.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
                         ToastUtils.showLong(context, "Exception: " + exception.getMessage());
+                        layoutProgress.setVisibility(View.GONE);
                     }
                 });
 
@@ -130,6 +163,7 @@ public class SignUpOptions extends BaseActivity {
             @Override
             public void onClick(View view) {
                 LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile", "email"));
+                layoutProgress.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -142,5 +176,39 @@ public class SignUpOptions extends BaseActivity {
     @OnClick(R.id.textViewLogin)
     public void textViewLogin(View view) {
         LoginActivity.open(context);
+    }
+
+    @Override
+    public void onApiSuccess(Object response, int requestCode) {
+        switch (requestCode) {
+
+            case NetworkCommunicator.RequestCode.LOGIN_FB:
+
+                if (response != null) {
+                    User user = ((ResponseModel<User>) response).data;
+
+                    EventBroadcastHelper.sendLogin(context, user);
+                    HomeActivity.open(context);
+                    finish();
+                }
+
+                layoutProgress.setVisibility(View.GONE);
+
+                break;
+        }
+
+    }
+
+    @Override
+    public void onApiFailure(String errorMessage, int requestCode) {
+
+        switch (requestCode) {
+
+            case NetworkCommunicator.RequestCode.LOGIN_FB:
+                RegistrationActivity.open(context, faceBookUser);
+
+                break;
+        }
+        layoutProgress.setVisibility(View.GONE);
     }
 }

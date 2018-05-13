@@ -104,7 +104,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.Main.HomeActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".view.activity.LoginRegister.LoginActivity"
             android:launchMode="singleInstance"
@@ -139,7 +140,8 @@
         <activity
             android:name=".view.activity.Main.SearchActivity"
             android:label="@string/title_activity_search"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeTranslucent" />
         <activity
             android:name=".view.activity.Main.PaymentWebViewActivity"
             android:launchMode="singleInstance"

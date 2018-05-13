@@ -22,6 +22,7 @@ import www.gymhop.p5m.data.PromoCode;
 import www.gymhop.p5m.data.WishListResponse;
 import www.gymhop.p5m.data.main.ClassActivity;
 import www.gymhop.p5m.data.main.ClassModel;
+import www.gymhop.p5m.data.main.DefaultSettingServer;
 import www.gymhop.p5m.data.main.GymDetailModel;
 import www.gymhop.p5m.data.main.NotificationModel;
 import www.gymhop.p5m.data.main.Package;
@@ -51,7 +52,10 @@ public interface ApiService {
 
     @Headers("Content-type: application/json")
     @POST(AppConstants.Url.LOGIN)
-    Call<ResponseModel<User>> login(@Body LoginRequest classListRequest);
+    Call<ResponseModel<User>> login(@Body LoginRequest loginRequest);
+
+    @POST(AppConstants.Url.LOGIN)
+    Call<ResponseModel<User>> loginFB(@Body LoginRequest classListRequest);
 
     @Headers("Content-type: application/json")
     @POST(AppConstants.Url.REGISTER)
@@ -69,6 +73,10 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.ALL_CITY)
     Call<ResponseModel<List<City>>> getCityList();
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.DEFAULT_SETTING)
+    Call<ResponseModel<DefaultSettingServer>> getDefault();
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.ALL_CLASS_CATEGORY)

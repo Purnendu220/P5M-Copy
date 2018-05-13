@@ -141,7 +141,7 @@
     <string name="classes">Classes</string>
     <string name="trainers">Trainers</string>
     <string name="myProfile">My Profile</string>
-    <string name="gyms">GYMS</string>
+    <string name="gyms">Gyms</string>
     <string name="gym">Gym</string>
     <string name="gym_profile">Gym Profile</string>
     <string name="kwd"> KWD total price</string>
@@ -213,7 +213,7 @@
     <string name="membership_drop_in_info">"You can only access the following gym with this purchase. In case of cancellation, you have 7 days from the date of cancellation to attend a class at the same facility."</string>
     <string name="membership_package_limit_info">"You can't purchase this package. It's validity is less than your selected class."</string>
 
-    <string name="package_limit_header">Under each plan, there are limits to the number of times you can visit each gym. Once the limit is reached, you may still visit your favorite gym by purchasing a single visit pass. Check below for the number of times you can visit a gym per plan.</string>
+    <string name="package_limit_header">Under each plan, there are limits to the number of times you can visit each gym. Check below for the number of time you can visit a gym per plan. Once the limit is reached, you may still visit your favorite gym by purchasing a single visit pass. </string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="memebership_price_postfix">total price</string>
     <string name="profile_validiy_no_package">Fuel your workout</string>

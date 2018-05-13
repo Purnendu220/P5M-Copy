@@ -128,7 +128,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         StickyLayoutManager layoutManager = new StickyLayoutManager(context, classProfileAdapter);
         layoutManager.elevateHeaders(true);
         layoutManager.elevateHeaders((int) context.getResources().getDimension(R.dimen.view_separator_elevation));
-        layoutManager.setAutoMeasureEnabled(false);
 
         recyclerView.setLayoutManager(layoutManager);
 

@@ -54,7 +54,8 @@ public abstract class RestCallBack<T> implements Callback<T> {
 
     @Override
     public void onResponse(Call<T> call, Response<T> response) {
-        if (response.isSuccessful()) {
+//        if (response.isSuccessful()) {
+        if (isSuccessFull(response.body())) {
             onResponse(call, response, response.body());
         } else {
             Gson gson = new Gson();
@@ -80,10 +81,23 @@ public abstract class RestCallBack<T> implements Callback<T> {
         }
     }
 
-    public static boolean isSuccessFull(ResponseModel responseModel) {
-        if (responseModel.statusCode.equals(AppConstants.ApiParamValue.SUCCESS_RESPONSE_CODE))
-            return true;
-        else
-            return false;
+//        else {
+//            try {
+//                onFailure(call, response.errorBody().string());
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                LogUtils.exception(e);
+//                onFailure(call, "Unknown");
+//            }
+//        }
+//}
+
+    private boolean isSuccessFull(T t) {
+        if (t instanceof ResponseModel) {
+            ResponseModel responseModel = (ResponseModel) t;
+            if (responseModel.statusCode.equals(AppConstants.ApiParamValue.SUCCESS_RESPONSE_CODE))
+                return true;
+        }
+        return false;
     }
 }

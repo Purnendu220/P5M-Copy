@@ -20,11 +20,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.data.main.User;
+import www.gymhop.p5m.eventbus.EventBroadcastHelper;
 import www.gymhop.p5m.helper.Helper;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
-import www.gymhop.p5m.storage.TempStorage;
-import www.gymhop.p5m.storage.preferences.MyPreferences;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.KeyboardUtils;
 import www.gymhop.p5m.utils.ToastUtils;
@@ -141,6 +140,22 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
 //        Helper.setupEditTextFocusHideKeyboard(editTextPass);
 //        Helper.setupEditTextFocusHideKeyboard(editTextConfirmPass);
 
+        if (registrationActivity.navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FB_LOGIN) {
+            if (!registrationActivity.getRegistrationRequest().getFirstName().isEmpty()) {
+                editTextName.setText(registrationActivity.getRegistrationRequest().getFirstName());
+            }
+            if (!registrationActivity.getRegistrationRequest().getEmail().isEmpty()) {
+                editTextEmail.setText(registrationActivity.getRegistrationRequest().getEmail());
+            }
+            if (!registrationActivity.getRegistrationRequest().getGender().isEmpty()) {
+                if (registrationActivity.getRegistrationRequest().getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)) {
+                    buttonFemale.performClick();
+                } else if (registrationActivity.getRegistrationRequest().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)) {
+                    buttonMale.performClick();
+                }
+            }
+        }
+
         editTextName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
@@ -171,16 +186,16 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
 
     private void checkSteps() {
         switch (stepPosition) {
-            case AppConstants.FragmentPosition.REGISTRATION_STEP_NAME:
+            case AppConstants.Tab.REGISTRATION_STEP_NAME:
                 viewStep(layoutName);
                 break;
-            case AppConstants.FragmentPosition.REGISTRATION_STEP_EMAIL:
+            case AppConstants.Tab.REGISTRATION_STEP_EMAIL:
                 viewStep(layoutEmail);
                 break;
-            case AppConstants.FragmentPosition.REGISTRATION_STEP_PASSWORD:
+            case AppConstants.Tab.REGISTRATION_STEP_PASSWORD:
                 viewStep(layoutPassword);
                 break;
-            case AppConstants.FragmentPosition.REGISTRATION_STEP_GENDER:
+            case AppConstants.Tab.REGISTRATION_STEP_GENDER:
                 viewStep(layoutGender);
                 break;
         }
@@ -232,7 +247,7 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
     public void handleSteps() {
 
         switch (stepPosition) {
-            case AppConstants.FragmentPosition.REGISTRATION_STEP_NAME:
+            case AppConstants.Tab.REGISTRATION_STEP_NAME:
                 String name = editTextName.getText().toString().trim();
                 if (name.isEmpty()) {
                     textInputLayoutName.setError(context.getResources().getString(R.string.name_required_error));
@@ -243,7 +258,7 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
                 registrationActivity.next();
                 break;
 
-            case AppConstants.FragmentPosition.REGISTRATION_STEP_EMAIL:
+            case AppConstants.Tab.REGISTRATION_STEP_EMAIL:
                 email = editTextEmail.getText().toString().trim();
                 if (email.isEmpty()) {
                     textInputLayoutEmail.setError(context.getResources().getString(R.string.email_required_error));
@@ -259,7 +274,7 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
                 networkCommunicator.validateEmail(email, this, false);
                 break;
 
-            case AppConstants.FragmentPosition.REGISTRATION_STEP_PASSWORD:
+            case AppConstants.Tab.REGISTRATION_STEP_PASSWORD:
                 String pass = editTextPass.getText().toString();
                 String confirmPass = editTextConfirmPass.getText().toString();
 
@@ -287,7 +302,7 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
                 registrationActivity.next();
                 break;
 
-            case AppConstants.FragmentPosition.REGISTRATION_STEP_GENDER:
+            case AppConstants.Tab.REGISTRATION_STEP_GENDER:
 
                 if (gender == null) {
                     textViewGenderError.setVisibility(View.VISIBLE);
@@ -315,9 +330,15 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
                 break;
             case NetworkCommunicator.RequestCode.REGISTER:
                 buttonNext.setVisibility(View.VISIBLE);
-                TempStorage.setUser(context, ((ResponseModel<User>) response).data);
-                MyPreferences.getInstance().setLogin(true);
-                RegistrationDoneActivity.open(context);
+
+                if (response != null) {
+
+                    User user = ((ResponseModel<User>) response).data;
+
+                    EventBroadcastHelper.sendLogin(context, user);
+                    RegistrationDoneActivity.open(context);
+                }
+
                 break;
         }
     }

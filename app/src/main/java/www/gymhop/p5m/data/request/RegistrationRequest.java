@@ -9,7 +9,16 @@ public class RegistrationRequest implements java.io.Serializable {
     private int userType = 1;
     private String email;
 
+    private String facebookId;
+    private String loginThrough;
+
     public RegistrationRequest() {
+    }
+
+    public RegistrationRequest(String facebookId, String firstName) {
+        this.firstName = firstName;
+        this.facebookId = facebookId;
+        loginThrough = "facebook";
     }
 
     public RegistrationRequest(String firstName, String password, String gender, int userType, String email) {
@@ -21,7 +30,7 @@ public class RegistrationRequest implements java.io.Serializable {
     }
 
     public String getFirstName() {
-        return this.firstName;
+        return this.firstName == null ? "" : firstName;
     }
 
     public void setFirstName(String firstName) {
@@ -29,7 +38,7 @@ public class RegistrationRequest implements java.io.Serializable {
     }
 
     public String getPassword() {
-        return this.password;
+        return this.password == null ? "" : password;
     }
 
     public void setPassword(String password) {
@@ -37,7 +46,7 @@ public class RegistrationRequest implements java.io.Serializable {
     }
 
     public String getGender() {
-        return this.gender;
+        return this.gender == null ? "" : gender;
     }
 
     public void setGender(String gender) {
@@ -53,7 +62,7 @@ public class RegistrationRequest implements java.io.Serializable {
     }
 
     public String getEmail() {
-        return this.email;
+        return this.email == null ? "" : email;
     }
 
     public void setEmail(String email) {

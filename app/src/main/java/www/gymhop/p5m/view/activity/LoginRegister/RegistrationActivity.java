@@ -14,8 +14,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.RegistrationStepsAdapter;
+import www.gymhop.p5m.data.FaceBookUser;
 import www.gymhop.p5m.data.request.RegistrationRequest;
 import www.gymhop.p5m.utils.AppConstants;
+import www.gymhop.p5m.utils.DialogUtils;
 import www.gymhop.p5m.utils.ViewPagerIndicator;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
@@ -25,8 +27,16 @@ import www.gymhop.p5m.view.activity.base.BaseActivity;
 
 public class RegistrationActivity extends BaseActivity {
 
+    public static FaceBookUser faceBookUser;
+
     public static void open(Context context) {
+        RegistrationActivity.faceBookUser = null;
         context.startActivity(new Intent(context, RegistrationActivity.class));
+    }
+
+    public static void open(Context context, FaceBookUser faceBookUser) {
+        RegistrationActivity.faceBookUser = faceBookUser;
+        context.startActivity(new Intent(context, RegistrationActivity.class).putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, AppConstants.AppNavigation.NAVIGATION_FROM_FB_LOGIN));
     }
 
     @BindView(R.id.imageViewBack)
@@ -36,9 +46,11 @@ public class RegistrationActivity extends BaseActivity {
     @BindView(R.id.layoutIndicator)
     public LinearLayout layoutIndicator;
 
-    private int TOTAL_STEPS = 4;
-    private RegistrationStepsAdapter registrationStepsAdapter;
+    public int navigatedFrom;
+    private int TOTAL_STEPS = AppConstants.Tab.COUNT_NORMAL_REGISTRATION;
+    private int INITIAL_STEP = 0;
 
+    private RegistrationStepsAdapter registrationStepsAdapter;
     private RegistrationRequest registrationRequest;
 
     @Override
@@ -49,7 +61,43 @@ public class RegistrationActivity extends BaseActivity {
 
         ButterKnife.bind(activity);
 
-        registrationRequest = new RegistrationRequest();
+        navigatedFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
+
+        if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FB_LOGIN) {
+//            TOTAL_STEPS = AppConstants.Tab.COUNT_FB_REGISTRATION;
+            String message = "";
+            registrationRequest = new RegistrationRequest(faceBookUser.getId(), faceBookUser.getName());
+
+            if (faceBookUser.getEmail().isEmpty()) {
+
+                INITIAL_STEP = AppConstants.Tab.REGISTRATION_STEP_EMAIL;
+
+                if (faceBookUser.getGender().isEmpty()) {
+                    message = "P5M needs your Email and Gender";
+                } else {
+                    message = "P5M needs your Email";
+                    registrationRequest.setGender(faceBookUser.getGender());
+                }
+
+            } else {
+                if (faceBookUser.getGender().isEmpty()) {
+                    INITIAL_STEP = AppConstants.Tab.REGISTRATION_STEP_GENDER;
+
+                    message = "P5M needs your Gender";
+                } else {
+                    registrationRequest.setGender(faceBookUser.getGender());
+                }
+
+                registrationRequest.setEmail(faceBookUser.getEmail());
+            }
+
+            if (!message.isEmpty()) {
+                DialogUtils.showBasicMessage(context, context.getString(R.string.app_name), "ok", message);
+            }
+        } else {
+//            TOTAL_STEPS = AppConstants.Tab.COUNT_NORMAL_REGISTRATION;
+        }
+
         setViewPagerAdapter();
     }
 
@@ -67,6 +115,13 @@ public class RegistrationActivity extends BaseActivity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 return true;
+            }
+        });
+
+        viewPager.post(new Runnable() {
+            @Override
+            public void run() {
+                viewPager.setCurrentItem(INITIAL_STEP);
             }
         });
     }
@@ -95,14 +150,14 @@ public class RegistrationActivity extends BaseActivity {
     }
 
     public void next() {
-        if (viewPager.getCurrentItem() != AppConstants.FragmentPosition.REGISTRATION_STEP_GENDER) {
+        if (viewPager.getCurrentItem() != AppConstants.Tab.REGISTRATION_STEP_GENDER) {
             viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
         }
     }
 
     @OnClick(R.id.imageViewBack)
     public void imageViewBack(View view) {
-        if (viewPager.getCurrentItem() != AppConstants.FragmentPosition.REGISTRATION_STEP_NAME) {
+        if (viewPager.getCurrentItem() != AppConstants.Tab.REGISTRATION_STEP_NAME) {
             viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
         } else {
             onBackPressed();
@@ -111,7 +166,7 @@ public class RegistrationActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (viewPager.getCurrentItem() != AppConstants.FragmentPosition.REGISTRATION_STEP_NAME) {
+        if (viewPager.getCurrentItem() != AppConstants.Tab.REGISTRATION_STEP_NAME) {
             viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
         } else {
             super.onBackPressed();

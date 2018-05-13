@@ -15,15 +15,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import www.gymhop.p5m.receivers.NetworkChangeReceiver;
+import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.storage.preferences.MyPreferences;
 import www.gymhop.p5m.utils.LogUtils;
 
-public class MyApplication extends MultiDexApplication implements NetworkChangeReceiver.OnNetworkChangeListener, Application.ActivityLifecycleCallbacks {
+public class MyApplication extends MultiDexApplication implements NetworkChangeReceiver.OnNetworkChangeListener, Application.ActivityLifecycleCallbacks, NetworkCommunicator.RequestListener {
 
     public static Context context;
 
-    public final static ApiMode apiMode = ApiMode.TESTING_BETA;
+    public final static ApiMode apiMode = ApiMode.TESTING_ALPHA;
     public final static boolean SHOW_LOG = true;
     public final static boolean RETROFIT_SHOW_LOG = true;
     public final static boolean USE_CRASH_ANALYTICS = false;
@@ -66,6 +67,8 @@ public class MyApplication extends MultiDexApplication implements NetworkChangeR
         IntentFilter filter = new IntentFilter();
         filter.addAction(android.net.ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(new NetworkChangeReceiver(), filter);
+
+        NetworkCommunicator.getInstance(context).getDefault(this, false);
     }
 
     @Override
@@ -127,5 +130,15 @@ public class MyApplication extends MultiDexApplication implements NetworkChangeR
 
     private void onAppBackground() {
         // ToastUtils.show(this, "AppBackground");
+    }
+
+    @Override
+    public void onApiSuccess(Object response, int requestCode) {
+
+    }
+
+    @Override
+    public void onApiFailure(String errorMessage, int requestCode) {
+
     }
 }

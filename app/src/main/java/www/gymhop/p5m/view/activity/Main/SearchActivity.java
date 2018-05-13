@@ -16,11 +16,14 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.transition.Transition;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,6 +33,8 @@ import android.widget.TextView;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -38,7 +43,9 @@ import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.adapters.SearchAdapter;
 import www.gymhop.p5m.adapters.SearchPagerAdapter;
 import www.gymhop.p5m.data.main.ClassModel;
+import www.gymhop.p5m.data.main.GymDetailModel;
 import www.gymhop.p5m.data.main.SearchResults;
+import www.gymhop.p5m.data.main.TrainerModel;
 import www.gymhop.p5m.eventbus.Events;
 import www.gymhop.p5m.eventbus.GlobalBus;
 import www.gymhop.p5m.helper.Helper;
@@ -80,6 +87,8 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
     public View layoutSearchDetails;
     @BindView(R.id.layoutSearch)
     public View layoutSearch;
+    @BindView(R.id.layoutSearchBar)
+    public View layoutSearchBar;
 
     private Handler handlerUI;
     private Handler handlerBG;
@@ -124,9 +133,6 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
         imageViewSearchCancel.setOnClickListener(this);
         layoutSearch.setOnClickListener(this);
 
-        editTextSearch.requestFocus();
-        KeyboardUtils.open(editTextSearch, context);
-
         tabLayout.setTabTextColors(ContextCompat.getColorStateList(context, R.color.date_tabs));
 
         viewPager.addOnPageChangeListener(this);
@@ -137,6 +143,58 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
             e.printStackTrace();
             LogUtils.exception(e);
         }
+
+        editTextSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE) || (actionId == EditorInfo.IME_ACTION_SEARCH)) {
+                    viewResults();
+                }
+                return false;
+            }
+        });
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            Transition sharedElementEnterTransition = getWindow().getSharedElementEnterTransition();
+            sharedElementEnterTransition.addListener(new Transition.TransitionListener() {
+                @Override
+                public void onTransitionStart(Transition transition) {
+
+                }
+
+                @Override
+                public void onTransitionEnd(Transition transition) {
+                    handlerUI.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            editTextSearch.setVisibility(View.VISIBLE);
+                            editTextSearch.requestFocus();
+                            KeyboardUtils.open(editTextSearch, context);
+
+                        }
+                    }, 100);
+                }
+
+                @Override
+                public void onTransitionCancel(Transition transition) {
+
+                }
+
+                @Override
+                public void onTransitionPause(Transition transition) {
+
+                }
+
+                @Override
+                public void onTransitionResume(Transition transition) {
+
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onEnterAnimationComplete() {
+        super.onEnterAnimationComplete();
     }
 
     @Override
@@ -216,7 +274,7 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
 
             @Override
             public void afterTextChanged(final Editable editable) {
-                if (editable.toString().length() > 1) {
+                if (editable.toString().length() > 2) {
 
                     if (runnableSearch != null) {
                         handlerBG.removeCallbacks(runnableSearch);
@@ -331,44 +389,55 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
 
         switch (view.getId()) {
             case 1: //View All Results
-                SearchResults searchResult = searchAdapter.getSearchResult();
-
-                titleTabs = new String[]{
-                        "Classes\n(" + searchResult.getClassCount() + ")",
-                        "Trainers\n(" + searchResult.getTrainerCount() + ")",
-                        "Gyms\n(" + searchResult.getGymCount() + ")"
-                };
-
-                searchPagerAdapter = new SearchPagerAdapter(getSupportFragmentManager(), titleTabs);
-                searchPagerAdapter.setSearchKeywords(editTextSearch.getText().toString());
-
-                viewPager.setAdapter(searchPagerAdapter);
-
-                tabLayout.setupWithViewPager(viewPager);
-                viewPager.addOnPageChangeListener(this);
-
-//                generateTabs(searchResult);
-
-                searchPagerAdapter.notifyDataSetChanged();
-                layoutSearchDetails.setVisibility(View.VISIBLE);
-
-//                recyclerViewSearch.setVisibility(View.GONE);
-                layoutSearch.setVisibility(View.GONE);
-
-                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerViewSearch.getLayoutManager();
-                layoutManager.scrollToPositionWithOffset(0, 0);
-
-                KeyboardUtils.close(editTextSearch, context);
-
-                viewPager.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        onPageSelected(0);
-                    }
-                });
+                viewResults();
 
                 break;
         }
+    }
+
+    private void viewResults() {
+        SearchResults searchResult = searchAdapter.getSearchResult();
+
+        if (searchResult == null) {
+            searchResult = new SearchResults();
+            searchResult.setGymDetailList(new ArrayList<GymDetailModel>());
+            searchResult.setClassDetailList(new ArrayList<ClassModel>());
+            searchResult.setTrainerDetailList(new ArrayList<TrainerModel>());
+        }
+
+        titleTabs = new String[]{
+                "Classes\n(" + searchResult.getClassCount() + ")",
+                "Trainers\n(" + searchResult.getTrainerCount() + ")",
+                "Gyms\n(" + searchResult.getGymCount() + ")"
+        };
+
+        searchPagerAdapter = new SearchPagerAdapter(getSupportFragmentManager(), titleTabs);
+        searchPagerAdapter.setSearchKeywords(editTextSearch.getText().toString());
+
+        viewPager.setAdapter(searchPagerAdapter);
+
+        tabLayout.setupWithViewPager(viewPager);
+        viewPager.addOnPageChangeListener(this);
+
+//                generateTabs(searchResult);
+
+        searchPagerAdapter.notifyDataSetChanged();
+        layoutSearchDetails.setVisibility(View.VISIBLE);
+
+//                recyclerViewSearch.setVisibility(View.GONE);
+        layoutSearch.setVisibility(View.GONE);
+
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerViewSearch.getLayoutManager();
+        layoutManager.scrollToPositionWithOffset(0, 0);
+
+        KeyboardUtils.close(editTextSearch, context);
+
+        viewPager.post(new Runnable() {
+            @Override
+            public void run() {
+                onPageSelected(0);
+            }
+        });
     }
 
     private void generateTabs(SearchResults searchResult) {
@@ -444,6 +513,11 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
             case R.id.layoutSearch:
                 layoutSearch.setVisibility(View.GONE);
                 KeyboardUtils.close(editTextSearch, context);
+
+                if (searchAdapter.isEmpty() && searchPagerAdapter == null) {
+                    onBackPressed();
+                }
+
                 break;
         }
     }

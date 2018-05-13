@@ -105,13 +105,13 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
             try {
                 classListAdapter.addClassTop(wishAdded.data);
                 classListAdapter.notifyItemInserted(0);
+
+                checkListData();
             } catch (Exception e) {
                 e.printStackTrace();
                 LogUtils.exception(e);
             }
         }
-
-        checkListData();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -124,13 +124,13 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
                     classListAdapter.remove(index);
                     classListAdapter.notifyItemRemoved(index);
                 }
+
+                checkListData();
             } catch (Exception e) {
                 e.printStackTrace();
                 LogUtils.exception(e);
             }
         }
-
-        checkListData();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -339,7 +339,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
     }
 
     private void checkListData() {
-        if (classListAdapter.getList().isEmpty()) {
+        if (classListAdapter.isEmpty()) {
             layoutNoData.setVisibility(View.VISIBLE);
 
             if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {

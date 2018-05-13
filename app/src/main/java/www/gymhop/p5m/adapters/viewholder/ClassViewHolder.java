@@ -82,12 +82,7 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
 
             if (Helper.isSpecialClass(model)) {
                 textViewSpecialClass.setVisibility(View.VISIBLE);
-                String text = "Special Class";
-                if (!model.getSpecialClassRemark().isEmpty()) {
-                    text = model.getSpecialClassRemark();
-                }
-
-                textViewSpecialClass.setText(text);
+                textViewSpecialClass.setText(Helper.getSpecialClassText(model));
 
             } else {
                 textViewSpecialClass.setVisibility(View.GONE);
@@ -97,6 +92,8 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
                 ImageUtils.setImage(context,
                         model.getClassMedia().getMediaUrl(),
                         R.drawable.class_holder, imageViewClass);
+            } else {
+                ImageUtils.clearImage(context, imageViewClass);
             }
 
             if (model.getTrainerDetail() != null) {

@@ -153,4 +153,10 @@ public class ClassMiniViewAdapter extends RecyclerView.Adapter<RecyclerView.View
             return null;
     }
 
+    public boolean isEmpty() {
+        if (list.isEmpty() || (list.size() == 1 && list.contains(listLoader))) {
+            return true;
+        }
+        return false;
+    }
 }

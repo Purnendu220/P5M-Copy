@@ -50,7 +50,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     private HomeAdapter homeAdapter;
 
     private final int TOTAL_TABS = 4;
-    private int INITIAL_POSITION = AppConstants.FragmentPosition.TAB_FIND_CLASS;
+    private int INITIAL_POSITION = AppConstants.Tab.TAB_FIND_CLASS;
 
     private Handler handler;
 
@@ -83,7 +83,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         super.onNewIntent(intent);
 
         INITIAL_POSITION = intent.getIntExtra(AppConstants.DataKey.HOME_TAB_POSITION,
-                AppConstants.FragmentPosition.TAB_FIND_CLASS);
+                AppConstants.Tab.TAB_FIND_CLASS);
 
         LogUtils.debug("Home screen onNewIntent " + INITIAL_POSITION);
 
@@ -97,23 +97,23 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
     private void setupBottomTabs() {
         List<BottomTapLayout.Tab> tabList = new ArrayList<>();
-        tabList.add(new BottomTapLayout.Tab(AppConstants.FragmentPosition.TAB_FIND_CLASS, R.drawable.find_a_class, R.drawable.find_a_class,
+        tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_FIND_CLASS, R.drawable.find_a_class, R.drawable.find_a_class,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
                 context.getString(R.string.find_class), context.getString(R.string.find_class)));
-        tabList.add(new BottomTapLayout.Tab(AppConstants.FragmentPosition.TAB_TRAINER, R.drawable.trainers, R.drawable.trainers,
+        tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_TRAINER, R.drawable.trainers, R.drawable.trainers,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
                 context.getString(R.string.trainer), context.getString(R.string.trainer)));
-        tabList.add(new BottomTapLayout.Tab(AppConstants.FragmentPosition.TAB_SCHEDULE, R.drawable.schedule, R.drawable.schedule,
+        tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_SCHEDULE, R.drawable.schedule, R.drawable.schedule,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
                 context.getString(R.string.schedule), context.getString(R.string.schedule)));
-        tabList.add(new BottomTapLayout.Tab(AppConstants.FragmentPosition.TAB_MY_PROFILE, R.drawable.profile, R.drawable.profile,
+        tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_MY_PROFILE, R.drawable.profile, R.drawable.profile,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
                 context.getString(R.string.profile), context.getString(R.string.profile)));
 
         bottomTapLayout = new BottomTapLayout();
         bottomTapLayout.setup(context, layoutBottomTabs, tabList, this);
 
-        bottomTapLayout.setTab(AppConstants.FragmentPosition.TAB_FIND_CLASS);
+        bottomTapLayout.setTab(AppConstants.Tab.TAB_FIND_CLASS);
     }
 
     @Override

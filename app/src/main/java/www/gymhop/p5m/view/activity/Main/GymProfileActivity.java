@@ -215,7 +215,6 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
 
     @Override
     public void onAdapterItemLongClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
-
     }
 
     @Override

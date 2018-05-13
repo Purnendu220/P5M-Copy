@@ -8,6 +8,7 @@ import java.util.List;
 import www.gymhop.p5m.data.City;
 import www.gymhop.p5m.data.ClassesFilter;
 import www.gymhop.p5m.data.main.ClassActivity;
+import www.gymhop.p5m.data.main.DefaultSettingServer;
 import www.gymhop.p5m.data.main.User;
 import www.gymhop.p5m.storage.preferences.MyPreferences;
 import www.gymhop.p5m.view.activity.Splash;
@@ -20,6 +21,7 @@ public class TempStorage {
     private static List<ClassActivity> activities;
     private static List<City> cities;
     private static User user;
+    private static DefaultSettingServer defaultSettingServer;
 
     private static List<ClassesFilter> filterList;
 
@@ -43,6 +45,19 @@ public class TempStorage {
 
     public static void setActivities(List<ClassActivity> activities) {
         TempStorage.activities = activities;
+        MyPreferences.getInstance().saveActivities(activities);
+    }
+
+    public static DefaultSettingServer getDefault() {
+        if (defaultSettingServer == null) {
+            defaultSettingServer = MyPreferences.getInstance().getDefaultSettingServer();
+        }
+        return defaultSettingServer;
+    }
+
+    public static void setDefault(DefaultSettingServer defaultSettingServer) {
+        TempStorage.defaultSettingServer = defaultSettingServer;
+        MyPreferences.getInstance().saveDefaultSettingServer(defaultSettingServer);
     }
 
     public static String getAuthToken() {

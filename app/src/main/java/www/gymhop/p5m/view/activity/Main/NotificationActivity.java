@@ -155,7 +155,7 @@ public class NotificationActivity extends BaseActivity implements SwipeRefreshLa
                         case "OnBookingCancelToTrainerByCMS":
                         case "OnBookingCancelByCMS":
                             // Find my class..
-                            HomeActivity.show(context, AppConstants.FragmentPosition.TAB_FIND_CLASS);
+                            HomeActivity.show(context, AppConstants.Tab.TAB_FIND_CLASS);
                             break;
                     }
                 }

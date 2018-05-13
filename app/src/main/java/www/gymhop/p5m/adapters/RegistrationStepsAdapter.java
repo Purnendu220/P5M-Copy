@@ -35,14 +35,24 @@ public class RegistrationStepsAdapter extends FragmentStatePagerAdapter {
 
         Fragment frag = null;
 
-        if (position == 0) {
-            frag = RegistrationSteps.createFragment(AppConstants.FragmentPosition.REGISTRATION_STEP_NAME);
-        } else if (position == 1) {
-            frag = RegistrationSteps.createFragment(AppConstants.FragmentPosition.REGISTRATION_STEP_EMAIL);
-        } else if (position == 2) {
-            frag = RegistrationSteps.createFragment(AppConstants.FragmentPosition.REGISTRATION_STEP_PASSWORD);
-        } else if (position == 3) {
-            frag = RegistrationSteps.createFragment(AppConstants.FragmentPosition.REGISTRATION_STEP_GENDER);
+        if (tabsCount == AppConstants.Tab.COUNT_NORMAL_REGISTRATION) {
+            if (position == 0) {
+                frag = RegistrationSteps.createFragment(AppConstants.Tab.REGISTRATION_STEP_NAME);
+            } else if (position == 1) {
+                frag = RegistrationSteps.createFragment(AppConstants.Tab.REGISTRATION_STEP_EMAIL);
+            } else if (position == 2) {
+                frag = RegistrationSteps.createFragment(AppConstants.Tab.REGISTRATION_STEP_PASSWORD);
+            } else if (position == 3) {
+                frag = RegistrationSteps.createFragment(AppConstants.Tab.REGISTRATION_STEP_GENDER);
+            }
+        } else if (tabsCount == AppConstants.Tab.COUNT_FB_REGISTRATION) {
+            if (position == 0) {
+                frag = RegistrationSteps.createFragment(AppConstants.Tab.REGISTRATION_STEP_NAME);
+            } else if (position == 1) {
+                frag = RegistrationSteps.createFragment(AppConstants.Tab.REGISTRATION_STEP_EMAIL);
+            } else if (position == 2) {
+                frag = RegistrationSteps.createFragment(AppConstants.Tab.REGISTRATION_STEP_GENDER);
+            }
         }
 
         fragments.set(position, frag);

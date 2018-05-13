@@ -18,10 +18,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import www.gymhop.p5m.R;
-import www.gymhop.p5m.data.main.Package;
-import www.gymhop.p5m.data.main.PaymentUrl;
 import www.gymhop.p5m.data.PromoCode;
 import www.gymhop.p5m.data.main.ClassModel;
+import www.gymhop.p5m.data.main.Package;
+import www.gymhop.p5m.data.main.PaymentUrl;
 import www.gymhop.p5m.data.request.PaymentUrlRequest;
 import www.gymhop.p5m.data.request.PromoCodeRequest;
 import www.gymhop.p5m.eventbus.EventBroadcastHelper;
@@ -200,7 +200,12 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 }
                 break;
             case R.id.textViewLimit:
-                PackageLimitsActivity.openActivity(context);
+                try {
+                    PackageLimitsActivity.openActivity(context, aPackage.getName());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    LogUtils.exception(e);
+                }
                 break;
             case R.id.textViewPay:
                 handlePayment();
@@ -413,12 +418,12 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 case CLASS_PURCHASE_WITH_PACKAGE:
                     classModel.setUserJoinStatus(true);
                     EventBroadcastHelper.sendPackagePurchasedForClass(classModel);
-                    HomeActivity.show(context, AppConstants.FragmentPosition.TAB_SCHEDULE);
+                    HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE);
                     break;
                 case SPECIAL_CLASS:
                     classModel.setUserJoinStatus(true);
                     EventBroadcastHelper.sendClassPurchased(classModel);
-                    HomeActivity.show(context, AppConstants.FragmentPosition.TAB_SCHEDULE);
+                    HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE);
                     break;
             }
         }

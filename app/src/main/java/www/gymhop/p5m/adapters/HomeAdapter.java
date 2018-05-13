@@ -38,13 +38,13 @@ public class HomeAdapter extends FragmentStatePagerAdapter {
 
         Fragment frag = null;
 
-        if (position == AppConstants.FragmentPosition.TAB_FIND_CLASS) {
+        if (position == AppConstants.Tab.TAB_FIND_CLASS) {
             frag = new FindClass();
-        } else if (position == AppConstants.FragmentPosition.TAB_TRAINER) {
+        } else if (position == AppConstants.Tab.TAB_TRAINER) {
             frag = new Trainers();
-        } else if (position == AppConstants.FragmentPosition.TAB_SCHEDULE) {
+        } else if (position == AppConstants.Tab.TAB_SCHEDULE) {
             frag = new MySchedule();
-        } else if (position == AppConstants.FragmentPosition.TAB_MY_PROFILE) {
+        } else if (position == AppConstants.Tab.TAB_MY_PROFILE) {
             frag = new MyProfile();
         }
 

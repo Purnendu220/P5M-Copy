@@ -10,7 +10,7 @@ public class AppConstants {
         return number == 1 ? word : word + "s";
     }
 
-    public static class FragmentPosition {
+    public static class Tab {
 
         public static final int REGISTRATION_STEP_NAME = 0;
         public static final int REGISTRATION_STEP_EMAIL = 1;
@@ -21,6 +21,9 @@ public class AppConstants {
         public static final int TAB_TRAINER = 1;
         public static final int TAB_SCHEDULE = 2;
         public static final int TAB_MY_PROFILE = 3;
+
+        public static final int COUNT_FB_REGISTRATION = 3;
+        public static final int COUNT_NORMAL_REGISTRATION = 4;
     }
 
     public static class Values {
@@ -36,6 +39,7 @@ public class AppConstants {
         public static final String ACTIVITIES = "pref_activities";
         public static final String FILTERS = "pref_filters";
         public static final String USER = "pref_user";
+        public static final String DEFAULT_SETTING_SERVER = "pref_default_setting_server";
         public static final String AUTH_TOKEN = "pref_auth_token";
         public static final String DEVICE_TOKEN = "pref_device_token";
     }
@@ -55,6 +59,7 @@ public class AppConstants {
         public static final String GYM_ID_INT = "gym_id_int";
         public static final String TRAINER_ID_INT = "trainer_id_int";
         public static final String HOME_TAB_POSITION = "home_tab_position";
+        public static final String PACKAGE_NAME_STRING = "package_name";
     }
 
     public class Url {
@@ -69,6 +74,8 @@ public class AppConstants {
         public static final String LOGOUT = "api/v1/device/logout";
         public static final String REGISTER = "api/v1/user/register";
         public static final String VALIDATE_EMAIL = "api/v1/user/validate";
+
+        public static final String DEFAULT_SETTING = "api/v1/user/default";
 
         public static final String ALL_CITY = "api/v1/country/getAllCity";
         public static final String ALL_CLASS_CATEGORY = "api/v1/class/getAllClassCategory";
@@ -138,7 +145,7 @@ public class AppConstants {
         public static final String EMAIL = "email";
         public static final String VALUE = "value";
         public static final String TYPE = "type";
-        public static final String USER_CATEGORY_ID= "userCategoryId";
+        public static final String USER_CATEGORY_ID = "userCategoryId";
         public static final String GYM_ID = "gymId";
         public static final String TRAINER_ID = "trainerId";
         public static final String PACKAGE_ID = "packageId";
@@ -191,6 +198,7 @@ public class AppConstants {
         public static final int NAVIGATION_FROM_FIND_CLASS = 56;
         public static final int NAVIGATION_FROM_TRAINERS = 57;
         public static final int NAVIGATION_FROM_SCHEDULE = 58;
+        public static final int NAVIGATION_FROM_FB_LOGIN = 59;
     }
 
     public class Limit {

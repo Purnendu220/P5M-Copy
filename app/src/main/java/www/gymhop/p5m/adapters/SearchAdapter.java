@@ -93,67 +93,67 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             if (navigationFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS) {
 
                 if (searchResult.getClassDetailList() != null && !searchResult.getClassDetailList().isEmpty()) {
-                    list.add(new HeaderSticky("<b>" + context.getString(R.string.classes).toUpperCase() + "</b>"));
+                    list.add(new HeaderSticky(context.getString(R.string.classes)));
                     list.addAll(searchResult.getClassDetailList());
                 }
 
                 if (searchResult.getTrainerDetailList() != null && !searchResult.getTrainerDetailList().isEmpty()) {
-                    list.add(new HeaderSticky("<b>" + context.getString(R.string.trainers).toUpperCase() + "</b>"));
+                    list.add(new HeaderSticky(context.getString(R.string.trainers)));
                     list.addAll(searchResult.getTrainerDetailList());
                 }
 
                 if (searchResult.getGymDetailList() != null && !searchResult.getGymDetailList().isEmpty()) {
-                    list.add(new HeaderSticky("<b>" + context.getString(R.string.gyms).toUpperCase() + "</b>"));
+                    list.add(new HeaderSticky(context.getString(R.string.gyms)));
                     list.addAll(searchResult.getGymDetailList());
                 }
             } else if (navigationFrom == AppConstants.AppNavigation.NAVIGATION_FROM_TRAINERS) {
 
                 if (searchResult.getTrainerDetailList() != null && !searchResult.getTrainerDetailList().isEmpty()) {
-                    list.add(new HeaderSticky("<b>" + context.getString(R.string.trainers).toUpperCase() + "</b>"));
+                    list.add(new HeaderSticky(context.getString(R.string.trainers)));
                     list.addAll(searchResult.getTrainerDetailList());
                 }
 
                 if (searchResult.getGymDetailList() != null && !searchResult.getGymDetailList().isEmpty()) {
-                    list.add(new HeaderSticky("<b>" + context.getString(R.string.gyms).toUpperCase() + "</b>"));
+                    list.add(new HeaderSticky(context.getString(R.string.gyms)));
                     list.addAll(searchResult.getGymDetailList());
                 }
 
                 if (searchResult.getClassDetailList() != null && !searchResult.getClassDetailList().isEmpty()) {
-                    list.add(new HeaderSticky("<b>" + context.getString(R.string.classes).toUpperCase() + "</b>"));
+                    list.add(new HeaderSticky(context.getString(R.string.classes)));
                     list.addAll(searchResult.getClassDetailList());
                 }
 
             } else if (navigationFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SCHEDULE) {
 
                 if (searchResult.getGymDetailList() != null && !searchResult.getGymDetailList().isEmpty()) {
-                    list.add(new HeaderSticky("<b>" + context.getString(R.string.gyms).toUpperCase() + "</b>"));
+                    list.add(new HeaderSticky(context.getString(R.string.gyms)));
                     list.addAll(searchResult.getGymDetailList());
                 }
 
                 if (searchResult.getClassDetailList() != null && !searchResult.getClassDetailList().isEmpty()) {
-                    list.add(new HeaderSticky("<b>" + context.getString(R.string.classes).toUpperCase() + "</b>"));
+                    list.add(new HeaderSticky(context.getString(R.string.classes)));
                     list.addAll(searchResult.getClassDetailList());
                 }
 
                 if (searchResult.getTrainerDetailList() != null && !searchResult.getTrainerDetailList().isEmpty()) {
-                    list.add(new HeaderSticky("<b>" + context.getString(R.string.trainers).toUpperCase() + "</b>"));
+                    list.add(new HeaderSticky(context.getString(R.string.trainers)));
                     list.addAll(searchResult.getTrainerDetailList());
                 }
 
             } else {
 
                 if (searchResult.getClassDetailList() != null && !searchResult.getClassDetailList().isEmpty()) {
-                    list.add(new HeaderSticky("<b>" + context.getString(R.string.classes).toUpperCase() + "</b>"));
+                    list.add(new HeaderSticky(context.getString(R.string.classes)));
                     list.addAll(searchResult.getClassDetailList());
                 }
 
                 if (searchResult.getTrainerDetailList() != null && !searchResult.getTrainerDetailList().isEmpty()) {
-                    list.add(new HeaderSticky("<b>" + context.getString(R.string.trainers).toUpperCase() + "</b>"));
+                    list.add(new HeaderSticky(context.getString(R.string.trainers)));
                     list.addAll(searchResult.getTrainerDetailList());
                 }
 
                 if (searchResult.getGymDetailList() != null && !searchResult.getGymDetailList().isEmpty()) {
-                    list.add(new HeaderSticky("<b>" + context.getString(R.string.gyms).toUpperCase() + "</b>"));
+                    list.add(new HeaderSticky(context.getString(R.string.gyms)));
                     list.addAll(searchResult.getGymDetailList());
                 }
             }
@@ -251,7 +251,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             textView.setId(1);
             textView.setGravity(Gravity.RIGHT);
             textView.setPadding(dp * 16, dp * 16, dp * 16, dp * 16);
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             textView.setBackgroundResource(R.drawable.click_highlight);
             textView.setClickable(true);
             textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
@@ -306,5 +306,9 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public List<?> getAdapterData() {
         return list;
+    }
+
+    public boolean isEmpty() {
+        return list.isEmpty();
     }
 }
