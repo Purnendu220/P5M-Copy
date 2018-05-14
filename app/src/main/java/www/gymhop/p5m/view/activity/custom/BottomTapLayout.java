@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -50,12 +51,14 @@ public class BottomTapLayout implements View.OnClickListener {
         public LinearLayout linearLayout;
         public TextView textView;
         public ImageView imageView;
+        public TextView textViewNotificationCounter;
 
-        public TabView(Tab tab, LinearLayout linearLayout, TextView textView, ImageView imageView) {
+        public TabView(Tab tab, LinearLayout linearLayout, TextView textView, ImageView imageView, TextView textViewNotificationCounter) {
             this.tab = tab;
             this.linearLayout = linearLayout;
             this.textView = textView;
             this.imageView = imageView;
+            this.textViewNotificationCounter = textViewNotificationCounter;
         }
     }
 
@@ -77,7 +80,7 @@ public class BottomTapLayout implements View.OnClickListener {
         this.tabListener = tabListener;
         tabViewList = new ArrayList<>(tabList.size());
 
-        final int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
+        final int dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
         int iconSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 28, context.getResources().getDisplayMetrics());
         int tabSize = (int) context.getResources().getDimension(R.dimen.bottom_tab_bar_height);
 
@@ -102,9 +105,24 @@ public class BottomTapLayout implements View.OnClickListener {
 //            linearLayout.setBackgroundResource(outValue.resourceId);
 
             ImageView imageView = new ImageView(context);
-            imageView.setLayoutParams(new LinearLayout.LayoutParams(iconSize, iconSize));
-            imageView.setPadding(padding, padding * 4, padding, padding);
+            imageView.setLayoutParams(new FrameLayout.LayoutParams(iconSize, iconSize, Gravity.CENTER));
+            imageView.setPadding(dp, dp * 4, dp, dp);
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
+            TextView textViewNotificationCounter = new TextView(context);
+            textViewNotificationCounter.setLayoutParams(new FrameLayout.LayoutParams(14 * dp, 14 * dp, Gravity.RIGHT));
+            textViewNotificationCounter.setBackgroundResource(R.drawable.notification_counter);
+            textViewNotificationCounter.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 8);
+            textViewNotificationCounter.setTextColor(Color.WHITE);
+            textViewNotificationCounter.setGravity(Gravity.CENTER);
+            textViewNotificationCounter.setVisibility(View.INVISIBLE);
+            textViewNotificationCounter.setText("99");
+
+            FrameLayout frameLayout = new FrameLayout(context);
+            frameLayout.setLayoutParams(new FrameLayout.LayoutParams(iconSize + dp * 8, iconSize));
+
+            frameLayout.addView(imageView);
+            frameLayout.addView(textViewNotificationCounter);
 
             TextView textView = new TextView(context);
             textView.setGravity(Gravity.CENTER);
@@ -112,12 +130,12 @@ public class BottomTapLayout implements View.OnClickListener {
             textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 11);
             textView.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
 
-            linearLayout.addView(imageView);
+            linearLayout.addView(frameLayout);
             linearLayout.addView(textView);
 
             linearLayoutMain.addView(linearLayout);
 
-            tabViewList.add(new TabView(tab, linearLayout, textView, imageView));
+            tabViewList.add(new TabView(tab, linearLayout, textView, imageView, textViewNotificationCounter));
             linearLayout.setOnClickListener(this);
         }
 
@@ -145,7 +163,17 @@ public class BottomTapLayout implements View.OnClickListener {
                     tabListener.onReselection(currentlySelectedId, tab, tabList);
                 }
             }
-            ;
+        }
+    }
+
+    public void getTabViewNotification(int id, int count) {
+        for (int index = 0; index < tabViewList.size(); index++) {
+            TabView tabView = tabViewList.get(index);
+
+            if (tabView.tab.id == id) {
+                tabView.textViewNotificationCounter.setVisibility(count != 0 ? View.VISIBLE : View.GONE);
+                tabView.textViewNotificationCounter.setText(String.valueOf(count));
+            }
         }
     }
 

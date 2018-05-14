@@ -24,6 +24,7 @@ public class TrainerDetailModel implements java.io.Serializable {
     private String nationality;
     private String userCategory;
     private String certificates;
+    private String bio;
     private int userProfileImageId;
     private int id;
     private int followerCount = -1;
@@ -262,5 +263,13 @@ public class TrainerDetailModel implements java.io.Serializable {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public String getBio() {
+        return bio == null ? "" : bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 }

@@ -78,6 +78,14 @@ public class MyPreferences {
         PreferencesManager.putString(AppConstants.Pref.DEVICE_TOKEN, deviceToken);
     }
 
+    public int getNotificationCount() {
+        return PreferencesManager.getInt(AppConstants.Pref.NOTIFICATION_COUNT, 0);
+    }
+
+    public void saveNotificationCount(int notificationCount) {
+        PreferencesManager.putInt(AppConstants.Pref.NOTIFICATION_COUNT, notificationCount);
+    }
+
     public List<City> getCities() {
         try {
             return gson.fromJson(PreferencesManager.getString(AppConstants.Pref.CITIES), new TypeToken<List<City>>() {

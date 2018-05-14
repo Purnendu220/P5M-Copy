@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -22,13 +23,16 @@ import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.TrainersAdapter;
 import www.gymhop.p5m.data.main.ClassActivity;
+import www.gymhop.p5m.restapi.NetworkCommunicator;
+import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
+import www.gymhop.p5m.utils.ToastUtils;
 import www.gymhop.p5m.view.activity.Main.SearchActivity;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
-public class Trainers extends BaseFragment implements ViewPagerFragmentSelection, ViewPager.OnPageChangeListener, View.OnClickListener {
+public class Trainers extends BaseFragment implements ViewPagerFragmentSelection, ViewPager.OnPageChangeListener, View.OnClickListener, NetworkCommunicator.RequestListener {
 
     @BindView(R.id.viewPager)
     public ViewPager viewPager;
@@ -72,9 +76,22 @@ public class Trainers extends BaseFragment implements ViewPagerFragmentSelection
 
         if (activities == null) {
             activities = new ArrayList<>();
+            networkCommunicator.getActivities(this, true);
+        } else {
+            setUpPager();
         }
+    }
 
+    private void setUpPager() {
         activities.add(0, new ClassActivity("ALL", 0));
+
+        Iterator<ClassActivity> carsIterator = activities.iterator();
+        while (carsIterator.hasNext()) {
+            ClassActivity c = carsIterator.next();
+            if (!c.getStatus()) {
+                carsIterator.remove();
+            }
+        }
 
         trainersAdapter = new TrainersAdapter(getChildFragmentManager(), activities);
         viewPager.setAdapter(trainersAdapter);
@@ -148,4 +165,22 @@ public class Trainers extends BaseFragment implements ViewPagerFragmentSelection
     public void onPageScrollStateChanged(int state) {
     }
 
+    @Override
+    public void onApiSuccess(Object response, int requestCode) {
+        switch (requestCode) {
+            case NetworkCommunicator.RequestCode.ALL_CITY: {
+                final List<ClassActivity> list = ((ResponseModel<List<ClassActivity>>) response).data;
+                if (!list.isEmpty()) {
+                    activities.addAll(list);
+                    setUpPager();
+                }
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onApiFailure(String errorMessage, int requestCode) {
+        ToastUtils.showLong(context, errorMessage);
+    }
 }

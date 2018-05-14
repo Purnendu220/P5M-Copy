@@ -22,6 +22,9 @@ public class AppConstants {
         public static final int TAB_SCHEDULE = 2;
         public static final int TAB_MY_PROFILE = 3;
 
+        public static final int TAB_MY_SCHEDULE_UPCOMING = 0;
+        public static final int TAB_MY_SCHEDULE_WISH_LIST = 1;
+
         public static final int COUNT_FB_REGISTRATION = 3;
         public static final int COUNT_NORMAL_REGISTRATION = 4;
     }
@@ -42,6 +45,7 @@ public class AppConstants {
         public static final String DEFAULT_SETTING_SERVER = "pref_default_setting_server";
         public static final String AUTH_TOKEN = "pref_auth_token";
         public static final String DEVICE_TOKEN = "pref_device_token";
+        public static final String NOTIFICATION_COUNT = "pref_notification_count";
     }
 
     public class DataKey {
@@ -60,7 +64,9 @@ public class AppConstants {
         public static final String GYM_ID_INT = "gym_id_int";
         public static final String TRAINER_ID_INT = "trainer_id_int";
         public static final String HOME_TAB_POSITION = "home_tab_position";
+        public static final String HOME_TABS_INNER_TAB_POSITION = "home_tabs_inner_tab_position";
         public static final String PACKAGE_NAME_STRING = "package_name";
+        public static final String IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN = "is_from_notification_stack_builder_boolean";
     }
 
     public class Url {
@@ -173,6 +179,7 @@ public class AppConstants {
         public static final String BODY = "body";
         public static final String OBJECT_DATA_ID = "objectDataId";
         public static final String NOTIFICATION_TYPE = "notificationCategory";
+        public static final String USER_ID_TO_NOTIFY = "userIdToNotify";
     }
 
     public class AppNavigation {

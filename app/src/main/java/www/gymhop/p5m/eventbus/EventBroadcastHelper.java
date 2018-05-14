@@ -97,6 +97,11 @@ public class EventBroadcastHelper {
         GlobalBus.getBus().post(new Events.NewFilter());
     }
 
+    public static void notificationReceived(Context context) {
+        MyPreferences.initialize(context).saveNotificationCount(MyPreferences.initialize(context).getNotificationCount() + 1);
+        GlobalBus.getBus().post(new Events.NotificationReceived());
+    }
+
     public static void sendDeviceUpdate(Context context) {
 
         if (!MyPreferences.getInstance().isLogin()) {
@@ -132,9 +137,6 @@ public class EventBroadcastHelper {
                     public void onApiFailure(String errorMessage, int requestCode) {
                     }
                 }, false);
-    }
-
-    public static void notificationReceived() {
     }
 
 }

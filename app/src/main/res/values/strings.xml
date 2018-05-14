@@ -251,5 +251,6 @@
     <string name="no_data_schedule_wishist_list">"You haven't added any classes to your wishlist yet. Tap of the save icon on classes you want to join later."</string>
     <string name="no_data_notifications">No notifications yet.</string>
     <string name="search_hint">Search…</string>
+    <string name="title_activity_demo">Demo</string>
 
 </resources>

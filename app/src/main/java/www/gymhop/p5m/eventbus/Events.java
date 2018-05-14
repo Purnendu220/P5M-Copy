@@ -28,6 +28,9 @@ public class Events {
     public static class NewFilter {
     }
 
+    public static class NotificationReceived {
+    }
+
     public static class PackagePurchasedForClass {
         public ClassModel data;
 

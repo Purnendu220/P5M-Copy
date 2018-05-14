@@ -9,6 +9,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.widget.LinearLayout;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +19,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.HomeAdapter;
+import www.gymhop.p5m.eventbus.Events;
+import www.gymhop.p5m.eventbus.GlobalBus;
+import www.gymhop.p5m.storage.preferences.MyPreferences;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.utils.ToastUtils;
@@ -40,6 +46,15 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         context.startActivity(intent);
     }
 
+    public static Intent createIntent(Context context, int tabPosition, int innerTabPosition) {
+        Intent intent = new Intent(context, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra(AppConstants.DataKey.HOME_TAB_POSITION, tabPosition);
+        intent.putExtra(AppConstants.DataKey.HOME_TABS_INNER_TAB_POSITION, innerTabPosition);
+        return intent;
+    }
+
     @BindView(R.id.viewPager)
     public ViewPager viewPager;
 
@@ -60,6 +75,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         setContentView(R.layout.activity_home);
 
         ButterKnife.bind(activity);
+        GlobalBus.getBus().register(this);
 
         handler = new Handler(Looper.getMainLooper());
         setupBottomTabs();
@@ -76,6 +92,22 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             }
         });
 
+        setNotificationIcon();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        GlobalBus.getBus().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void notificationReceived(Events.NotificationReceived notificationReceived) {
+        setNotificationIcon();
+    }
+
+    private void setNotificationIcon() {
+        bottomTapLayout.getTabViewNotification(AppConstants.Tab.TAB_SCHEDULE, MyPreferences.initialize(context).getNotificationCount());
     }
 
     @Override
@@ -145,6 +177,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     }
 
     private boolean isBackRequested;
+
     @Override
     public void onBackPressed() {
         if (!isBackRequested) {

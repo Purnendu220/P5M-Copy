@@ -56,6 +56,11 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
         context.startActivity(intent);
     }
 
+    public static Intent createIntent(Context context, int navigationFrom) {
+        return new Intent(context, MemberShip.class)
+                .putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom);
+    }
+
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
     @BindView(R.id.recyclerView)

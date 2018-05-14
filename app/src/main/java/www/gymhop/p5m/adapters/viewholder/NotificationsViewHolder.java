@@ -19,6 +19,7 @@ import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.data.main.NotificationModel;
 import www.gymhop.p5m.utils.DateUtils;
+import www.gymhop.p5m.utils.ImageUtils;
 import www.gymhop.p5m.utils.LogUtils;
 
 /**
@@ -59,6 +60,12 @@ public class NotificationsViewHolder extends RecyclerView.ViewHolder {
                     model.getMessage(), new TypeToken<HashMap<String, String>>() {
                     }.getType()
             );
+
+            if (((NotificationModel) data).getUserWhoFiredEvent() != null) {
+                ImageUtils.setImage(context, ((NotificationModel) data).getUserWhoFiredEvent().getProfileImage(), R.drawable.profile_holder, imageViewProfile);
+            } else {
+                ImageUtils.clearImage(context, imageViewProfile);
+            }
 
             String info = message.get("activityMsg");
 

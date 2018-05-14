@@ -50,8 +50,8 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
 
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
-    @BindView(R.id.recyclerViewTrainerProfile)
-    public RecyclerView recyclerViewTrainerProfile;
+    @BindView(R.id.recyclerViewProfile)
+    public RecyclerView recyclerViewProfile;
     @BindView(R.id.swipeRefreshLayout)
     public SwipeRefreshLayout swipeRefreshLayout;
 
@@ -105,7 +105,7 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
     protected void onCreate(Bundle savedInstanceState) {
         showActionBar = false;
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trainer_profile);
+        setContentView(R.layout.activity_trainer_gym_profile);
 
         ButterKnife.bind(activity);
         GlobalBus.getBus().register(this);
@@ -123,7 +123,7 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
 
         gymProfileAdapter = new GymProfileAdapter(context, AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE, true, this,
                 new ClassListListenerHelper(context, activity, AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE, this));
-        recyclerViewTrainerProfile.setAdapter(gymProfileAdapter);
+        recyclerViewProfile.setAdapter(gymProfileAdapter);
 
         if (gymDetailModel != null) {
             gymProfileAdapter.setGymDetailModel(gymDetailModel);
@@ -135,7 +135,7 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
         layoutManager.elevateHeaders(true);
         layoutManager.elevateHeaders((int) context.getResources().getDimension(R.dimen.view_separator_elevation));
 
-        recyclerViewTrainerProfile.setLayoutManager(layoutManager);
+        recyclerViewProfile.setLayoutManager(layoutManager);
         layoutManager.setStickyHeaderListener(new StickyHeaderListener() {
             @Override
             public void headerAttached(View headerView, int adapterPosition) {
@@ -149,7 +149,7 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
         });
 
         try {
-            ((SimpleItemAnimator) recyclerViewTrainerProfile.getItemAnimator()).setSupportsChangeAnimations(false);
+            ((SimpleItemAnimator) recyclerViewProfile.getItemAnimator()).setSupportsChangeAnimations(false);
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);

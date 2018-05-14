@@ -1,62 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayout"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <FrameLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_marginBottom="@dimen/bottom_text_button_height"
+            android:background="@color/theme_bg"
+            android:clipToPadding="false"
+            android:scrollbars="none" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/bottom_text_button_height"
-                android:background="@color/theme_bg"
-                android:clipToPadding="false"
-                android:scrollbars="none" />
+    </FrameLayout>
 
-            <LinearLayout
-                android:id="@+id/layoutButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="4dp"
-                    android:background="@drawable/bg_shadow_dark" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white">
-
-                    <TextView
-                        android:id="@+id/textViewBook"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/bottom_text_button_height"
-                        android:background="@drawable/theme_bottom_text_button_book"
-                        android:clickable="true"
-                        android:fontFamily="sans-serif-medium"
-                        android:gravity="center"
-                        android:letterSpacing="@dimen/button_letter_spacing"
-                        android:text="@string/reserve_class"
-                        android:textAllCaps="true"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_large" />
-                </RelativeLayout>
-            </LinearLayout>
-
-        </FrameLayout>
-
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-</android.support.constraint.ConstraintLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

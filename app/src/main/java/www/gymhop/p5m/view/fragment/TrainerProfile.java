@@ -24,7 +24,7 @@ import www.gymhop.p5m.utils.AppConstants;
 
 public class TrainerProfile extends BaseFragment implements AdapterCallbacks {
 
-    @BindView(R.id.recyclerViewTrainerProfile)
+    @BindView(R.id.recyclerViewProfile)
     public RecyclerView recyclerViewTrainerProfile;
     @BindView(R.id.swipeRefreshLayout)
     public SwipeRefreshLayout swipeRefreshLayout;

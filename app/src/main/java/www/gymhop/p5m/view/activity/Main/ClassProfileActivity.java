@@ -61,6 +61,11 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 .putExtra(AppConstants.DataKey.CLASS_SESSION_ID_INT, classId));
     }
 
+    public static Intent createIntent(Context context, int classId) {
+        return new Intent(context, ClassProfileActivity.class)
+                .putExtra(AppConstants.DataKey.CLASS_SESSION_ID_INT, classId);
+    }
+
     @BindView(R.id.recyclerView)
     public RecyclerView recyclerView;
 

@@ -63,10 +63,15 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
                 .putExtra(AppConstants.DataKey.TRAINER_ID_INT, trainerId));
     }
 
+    public static Intent createIntent(Context context, int trainerId) {
+        return new Intent(context, TrainerProfileActivity.class)
+                .putExtra(AppConstants.DataKey.TRAINER_ID_INT, trainerId);
+    }
+
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
-    @BindView(R.id.recyclerViewTrainerProfile)
-    public RecyclerView recyclerViewTrainerProfile;
+    @BindView(R.id.recyclerViewProfile)
+    public RecyclerView recyclerViewProfile;
     @BindView(R.id.swipeRefreshLayout)
     public SwipeRefreshLayout swipeRefreshLayout;
 
@@ -135,7 +140,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
     protected void onCreate(Bundle savedInstanceState) {
         showActionBar = false;
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trainer_profile);
+        setContentView(R.layout.activity_trainer_gym_profile);
 
         ButterKnife.bind(activity);
         GlobalBus.getBus().register(this);
@@ -158,7 +163,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
 
         trainerProfileAdapter = new TrainerProfileAdapter(context, AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE, true, this,
                 new ClassListListenerHelper(context, activity, AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE, this));
-        recyclerViewTrainerProfile.setAdapter(trainerProfileAdapter);
+        recyclerViewProfile.setAdapter(trainerProfileAdapter);
         trainerProfileAdapter.setTrainerModel(trainerDetailModel);
 
         if (trainerDetailModel != null) {
@@ -171,7 +176,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
         layoutManager.elevateHeaders(true);
         layoutManager.elevateHeaders((int) context.getResources().getDimension(R.dimen.view_separator_elevation));
 
-        recyclerViewTrainerProfile.setLayoutManager(layoutManager);
+        recyclerViewProfile.setLayoutManager(layoutManager);
         layoutManager.setStickyHeaderListener(new StickyHeaderListener() {
             @Override
             public void headerAttached(View headerView, int adapterPosition) {
@@ -185,7 +190,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
         });
 
         try {
-            ((SimpleItemAnimator) recyclerViewTrainerProfile.getItemAnimator()).setSupportsChangeAnimations(false);
+            ((SimpleItemAnimator) recyclerViewProfile.getItemAnimator()).setSupportsChangeAnimations(false);
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);

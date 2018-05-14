@@ -16,7 +16,7 @@
         android:largeHeap="true"
         android:theme="@style/AppTheme">
 
-        <!--            /////////////////////// FACEBOOK LOGIN /////////////////////// -->
+        <!-- /////////////////////// FACEBOOK LOGIN /////////////////////// -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -37,7 +37,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <!--            //////////////////////////////////////////////////////////// -->
+        <!-- //////////////////////////////////////////////////////////// -->
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
@@ -93,41 +93,48 @@
         </activity>
         <activity
             android:name=".view.activity.LoginRegister.InfoScreen"
+            android:parentActivityName=".view.activity.Splash"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.LoginRegister.RegistrationActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.Main.HomeActivity"
+            android:parentActivityName=".view.activity.Splash"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".view.activity.LoginRegister.LoginActivity"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".view.activity.LoginRegister.SignUpOptions"
             android:label="@string/title_activity_sign_up_options"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".view.activity.Main.TrainerProfileActivity"
+            android:parentActivityName=".view.activity.Main.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.Main.FilterActivity"
+            android:parentActivityName=".view.activity.Main.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.Main.MemberShip"
+            android:parentActivityName=".view.activity.Main.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.Main.ClassProfileActivity"
             android:label="@string/title_activity_class_profile"
+            android:parentActivityName=".view.activity.Main.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.Main.GymProfileActivity"
             android:label="@string/title_activity_gym_profile"
+            android:parentActivityName=".view.activity.Main.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.Main.PackageLimitsActivity"
@@ -184,7 +191,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.custom.GalleryActivity"
-            android:theme="@style/AppThemeTranslucent"></activity>
+            android:theme="@style/AppThemeTranslucent" />
+        <activity
+            android:name=".view.activity.Demo"
+            android:label="@string/title_activity_demo"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

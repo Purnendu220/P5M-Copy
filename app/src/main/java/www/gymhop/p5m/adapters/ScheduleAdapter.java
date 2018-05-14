@@ -35,9 +35,9 @@ public class ScheduleAdapter extends FragmentStatePagerAdapter {
 
         int shownInScreen = AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING;
 
-        if (position == 0) {
+        if (position == AppConstants.Tab.TAB_MY_SCHEDULE_UPCOMING) {
             shownInScreen = AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING;
-        } else if (position == 1) {
+        } else if (position == AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST) {
             shownInScreen = AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST;
         }
 

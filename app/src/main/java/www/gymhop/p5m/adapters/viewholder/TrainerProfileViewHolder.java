@@ -44,7 +44,11 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
     public TextView textViewFollowers;
     @BindView(R.id.textViewGallery)
     public TextView textViewGallery;
+    @BindView(R.id.textViewInfo)
+    public TextView textViewInfo;
 
+    @BindView(R.id.layoutDesc)
+    public View layoutDesc;
     @BindView(R.id.layoutGallery)
     public View layoutGallery;
     @BindView(R.id.layoutLocation)
@@ -101,6 +105,13 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
 
             } else {
                 layoutGallery.setVisibility(View.GONE);
+            }
+
+            if (model.getBio().trim().isEmpty()) {
+                layoutDesc.setVisibility(View.GONE);
+            } else {
+                layoutDesc.setVisibility(View.VISIBLE);
+                textViewInfo.setText(model.getBio());
             }
 
             textViewName.setText(model.getFirstName());

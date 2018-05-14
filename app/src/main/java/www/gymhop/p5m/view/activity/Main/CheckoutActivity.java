@@ -339,13 +339,19 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     private void handlePayment() {
 
         switch (checkoutFor) {
-            case PACKAGE:
+            case PACKAGE: {
                 textViewPay.setText(context.getResources().getString(R.string.please_wait));
                 textViewPay.setEnabled(false);
-                networkCommunicator.purchasePackageForClass(new PaymentUrlRequest(TempStorage.getUser().getId(),
-                        aPackage.getId()), this, false);
-                break;
-            case CLASS_PURCHASE_WITH_PACKAGE:
+                PaymentUrlRequest paymentUrlRequest = new PaymentUrlRequest(TempStorage.getUser().getId(),
+                        aPackage.getId());
+                networkCommunicator.purchasePackageForClass(paymentUrlRequest, this, false);
+
+                if (promoCode != null) {
+                    paymentUrlRequest.setPromoId(promoCode.getId());
+                }
+            }
+            break;
+            case CLASS_PURCHASE_WITH_PACKAGE: {
                 textViewPay.setText(context.getResources().getString(R.string.please_wait));
                 textViewPay.setEnabled(false);
                 PaymentUrlRequest paymentUrlRequest = new PaymentUrlRequest(TempStorage.getUser().getId(),
@@ -357,13 +363,15 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 }
 
                 networkCommunicator.purchasePackageForClass(paymentUrlRequest, this, false);
-                break;
-            case SPECIAL_CLASS:
+            }
+            break;
+            case SPECIAL_CLASS: {
                 textViewPay.setText(context.getResources().getString(R.string.please_wait));
                 textViewPay.setEnabled(false);
                 networkCommunicator.purchasePackageForClass(new PaymentUrlRequest(TempStorage.getUser().getId(),
                         classModel.getClassSessionId(), classModel.getGymBranchDetail().getGymId()), this, false);
-                break;
+            }
+            break;
         }
     }
 

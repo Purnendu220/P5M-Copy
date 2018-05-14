@@ -15,10 +15,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.ScheduleAdapter;
+import www.gymhop.p5m.eventbus.Events;
+import www.gymhop.p5m.eventbus.GlobalBus;
+import www.gymhop.p5m.storage.preferences.MyPreferences;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.view.activity.Main.NotificationActivity;
@@ -46,6 +52,31 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        GlobalBus.getBus().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        GlobalBus.getBus().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void notificationReceived(Events.NotificationReceived notificationReceived) {
+
+        setNotificationIcon();
+    }
+
+    private void setNotificationIcon() {
+        int count = MyPreferences.initialize(context).getNotificationCount();
+
+        textViewNotificationMessageCounter.setVisibility(count != 0 ? View.VISIBLE : View.GONE);
+        textViewNotificationMessageCounter.setText(String.valueOf(count));
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_my_schedule, container, false);
@@ -67,6 +98,8 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
         tabLayout.setupWithViewPager(viewPager);
 
         viewPager.addOnPageChangeListener(this);
+
+        setNotificationIcon();
     }
 
     boolean isLoadingFirstTime = true;
