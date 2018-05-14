@@ -27,7 +27,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.adapters.TrainerProfileAdapter;
@@ -200,8 +199,8 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
         networkCommunicator.getUpcomingClasses(TempStorage.getUser().getId(), 0, trainerId, page, pageSizeLimit, this, false);
     }
 
-    private Call callApiTrainers() {
-        return networkCommunicator.getTrainer(trainerId, this, false);
+    private void callApiTrainers() {
+        networkCommunicator.getTrainer(trainerId, this, false);
     }
 
     private void setToolBar() {

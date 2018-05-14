@@ -121,9 +121,10 @@ public class NotificationActivity extends BaseActivity implements SwipeRefreshLa
                         case "OnSessionUpdateByTrainer":
                         case "OnSessionUpdateByGymOfTrainer":
                         case "OnClassUpdateByCms":
+                        case "OnClassUpdateByCMS":
                         case "OnGroupClassUpdateByCms":
                             // Class Details..
-//                            ClassProfileActivity.open();
+                            ClassProfileActivity.open(context,  notificationModel.getObjectDataId());
                             break;
 
                         case "OnClassCreation":

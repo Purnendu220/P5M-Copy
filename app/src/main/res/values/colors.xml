@@ -2,9 +2,9 @@
 <resources>
     <color name="colorPrimary">#031d22</color>
     <color name="colorPrimaryDark">#031d22</color>
-    <color name="colorAccent">#007fe7</color>
+    <color name="colorAccent">#3d85ea</color>
 
-    <color name="colorAccentHighlight">#CC007FE7</color>
+    <color name="colorAccentHighlight">#CC3d85ea</color>
     <color name="specialClassBg">#99000000</color>
     <color name="imageGalleryBg">#99000000</color>
 
@@ -26,7 +26,7 @@
     <color name="theme_dark_text">#031d22</color>
     <color name="theme_dark_light_text">#262626</color>
     <color name="theme_error_text">#d50000</color>
-    <color name="theme_accent_text">#007fe7</color>
+    <color name="theme_accent_text">#3d85ea</color>
     <color name="theme_search">#fafafa</color>
 
     <color name="float_transparent">#00000000</color>
@@ -35,7 +35,7 @@
     <color name="theme_full_highlight">#CCFF0000</color>
     <color name="theme_booked">#FF8C00</color>
     <color name="theme_booked_highlight">#CCFF8C00</color>
-    <color name="theme_book">#007fe7</color>
+    <color name="theme_book">#3d85ea</color>
     <color name="theme_select_disable">#f5f9fc</color>
 
     <drawable name="transparent">#00000000</drawable>
@@ -43,6 +43,5 @@
     <drawable name="layer">#80000000</drawable>
 
     <drawable name="no_map">#c7cfd4</drawable>
-
 
 </resources>

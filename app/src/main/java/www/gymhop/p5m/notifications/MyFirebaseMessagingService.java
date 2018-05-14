@@ -96,6 +96,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 case "OnSessionUpdateByTrainer":
                 case "OnSessionUpdateByGymOfTrainer":
                 case "OnClassUpdateByCms":
+                case "OnClassUpdateByCMS":
                 case "OnGroupClassUpdateByCms":
                 case "OnNewTrainerAssign":
                     // Class Details..

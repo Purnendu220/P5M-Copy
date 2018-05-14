@@ -52,6 +52,7 @@ public class AppConstants {
         public static final String CLASS_DATE_STRING = "class_date_string";
         public static final String TAB_ACTIVITY_ID_INT = "tab_activity_id";
         public static final String CLASS_OBJECT = "class_object";
+        public static final String CLASS_SESSION_ID_INT = "class_id_int";
         public static final String NATIONALITY_OBJECT = "nationality_object";
         public static final String TRAINER_OBJECT = "trainer_object";
         public static final String PAYMENT_URL_OBJECT = "payment_url_object";
@@ -81,6 +82,7 @@ public class AppConstants {
         public static final String ALL_CLASS_CATEGORY = "api/v1/class/getAllClassCategory";
 
         public static final String USER = "api/v1/user/find";
+        public static final String CLASS_DETAILS = "api/v1/class";
 
         public static final String CLASS_LIST = "api/v1/class/getClassList";
         public static final String TRAINER_LIST = "api/v1/user/getTrainerList";

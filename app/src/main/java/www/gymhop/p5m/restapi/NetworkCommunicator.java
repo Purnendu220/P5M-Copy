@@ -108,7 +108,7 @@ public class NetworkCommunicator {
         public static final int SEARCH_ALL = 127;
         public static final int PHOTO_UPLOAD = 128;
         public static final int GYM_LIST = 129;
-
+        public static final int CLASS_DETAIL = 130;
     }
 
     private Context context;
@@ -683,6 +683,27 @@ public class NetworkCommunicator {
             @Override
             public void onResponse(Call<ResponseModel<TrainerDetailModel>> call, Response<ResponseModel<TrainerDetailModel>> restResponse, ResponseModel<TrainerDetailModel> response) {
                 LogUtils.networkSuccess("NetworkCommunicator getTrainer onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call getClassDetail(int sessionId, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.CLASS_DETAIL;
+        Call<ResponseModel<ClassModel>> call = apiService.getClassDetails(TempStorage.getUser().getId(), sessionId);
+        LogUtils.debug("NetworkCommunicator hitting getClassDetail");
+
+        call.enqueue(new RestCallBack<ResponseModel<ClassModel>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<ClassModel>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getClassDetail onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<ClassModel>> call, Response<ResponseModel<ClassModel>> restResponse, ResponseModel<ClassModel> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getClassDetail onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
             }
         });

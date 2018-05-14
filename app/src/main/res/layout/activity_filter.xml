@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:transitionName="filter"
     tools:context="www.gymhop.p5m.view.activity.Main.FilterActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -47,8 +48,8 @@
                 android:id="@+id/scrollView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:scrollbars="vertical">
+                android:scrollbars="vertical"
+                android:visibility="gone">
 
                 <com.google.android.flexbox.FlexboxLayout xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/flexBoxLayout"

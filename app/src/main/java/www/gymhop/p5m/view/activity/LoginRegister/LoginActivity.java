@@ -40,7 +40,6 @@ import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.KeyboardUtils;
 import www.gymhop.p5m.utils.LogUtils;
-import www.gymhop.p5m.utils.ToastUtils;
 import www.gymhop.p5m.view.activity.Main.HomeActivity;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
@@ -108,6 +107,8 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                 return false;
             }
         });
+
+        SetupFBLogin();
     }
 
     private void setEditWatcher() {
@@ -153,6 +154,12 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
         networkCommunicator.login(new LoginRequest(user, pass), this, false);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     private void SetupFBLogin() {
         callbackManager = CallbackManager.Factory.create();
 
@@ -160,16 +167,14 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(final LoginResult loginResult) {
-//                        ToastUtils.showLong(context, loginResult.getAccessToken().getToken());
                         LogUtils.debug("Facebook Token : " + loginResult.getAccessToken().toString());
 
                         GraphRequest request = GraphRequest.newMeRequest(
                                 loginResult.getAccessToken(),
                                 new GraphRequest.GraphJSONObjectCallback() {
+
                                     @Override
                                     public void onCompleted(JSONObject object, GraphResponse response) {
-
-//                                        ToastUtils.showLong(context, object.toString());
                                         LogUtils.debug("Facebook newMeRequest : " + object.toString());
 
                                         String name = "";
@@ -201,13 +206,13 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
 
                     @Override
                     public void onCancel() {
-                        ToastUtils.showLong(context, "Cancelled");
+                        LogUtils.debug("Facebook onCancel");
                         layoutProgressRoot.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
-                        ToastUtils.showLong(context, "Exception: " + exception.getMessage());
+                        LogUtils.debug("Facebook onError: " + exception.getMessage());
                         layoutProgressRoot.setVisibility(View.GONE);
                     }
                 });

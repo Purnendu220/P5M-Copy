@@ -104,19 +104,19 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.SEARCH_USER_LIST)
     Call<ResponseModel<List<GymDetailModel>>> getSearchedGymList(@Query(AppConstants.ApiParamKey.ID) int userId,
-                                                                   @Query(AppConstants.ApiParamKey.QUERY_STRING) String queryString,
-                                                                   @Query(AppConstants.ApiParamKey.SEARCH_FOR) String searchFor,
-                                                                   @Query(AppConstants.ApiParamKey.TYPE) String type,
-                                                                   @Query(AppConstants.ApiParamKey.PAGE) int page,
-                                                                   @Query(AppConstants.ApiParamKey.SIZE) int size);
+                                                                 @Query(AppConstants.ApiParamKey.QUERY_STRING) String queryString,
+                                                                 @Query(AppConstants.ApiParamKey.SEARCH_FOR) String searchFor,
+                                                                 @Query(AppConstants.ApiParamKey.TYPE) String type,
+                                                                 @Query(AppConstants.ApiParamKey.PAGE) int page,
+                                                                 @Query(AppConstants.ApiParamKey.SIZE) int size);
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.SEARCH_CLASS_LIST)
     Call<ResponseModel<List<ClassModel>>> getSearchedClassesList(@Query(AppConstants.ApiParamKey.ID) int userId,
-                                                                   @Query(AppConstants.ApiParamKey.QUERY_STRING) String queryString,
-                                                                   @Query(AppConstants.ApiParamKey.USER_CATEGORY_ID) String userCategoryId,
-                                                                   @Query(AppConstants.ApiParamKey.PAGE) int page,
-                                                                   @Query(AppConstants.ApiParamKey.SIZE) int size);
+                                                                 @Query(AppConstants.ApiParamKey.QUERY_STRING) String queryString,
+                                                                 @Query(AppConstants.ApiParamKey.USER_CATEGORY_ID) String userCategoryId,
+                                                                 @Query(AppConstants.ApiParamKey.PAGE) int page,
+                                                                 @Query(AppConstants.ApiParamKey.SIZE) int size);
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.WISH_LIST + "/{" + AppConstants.ApiParamKey.USER_ID + "}")
@@ -198,6 +198,11 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.USER + "/{" + AppConstants.ApiParamKey.USER_ID + "}")
     Call<ResponseModel<TrainerDetailModel>> getTrainer(@Path(AppConstants.ApiParamKey.USER_ID) int trainerId);
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.CLASS_DETAILS)
+    Call<ResponseModel<ClassModel>> getClassDetails(@Query(AppConstants.ApiParamKey.USER_ID) int userId,
+                                                    @Query(AppConstants.ApiParamKey.CLASS_SESSION_ID) int sessionId);
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.USER + "/{" + AppConstants.ApiParamKey.USER_ID + "}")

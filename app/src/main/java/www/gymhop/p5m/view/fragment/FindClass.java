@@ -226,7 +226,7 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
                 break;
 
             case R.id.imageViewFilterer:
-                FilterActivity.openActivity(context);
+                FilterActivity.openActivity(context, activity, view);
                 break;
         }
     }

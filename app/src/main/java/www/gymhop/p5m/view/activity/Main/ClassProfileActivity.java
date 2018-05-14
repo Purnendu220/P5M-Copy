@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
@@ -48,11 +49,16 @@ import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.utils.ToastUtils;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
-public class ClassProfileActivity extends BaseActivity implements AdapterCallbacks, View.OnClickListener, NetworkCommunicator.RequestListener {
+public class ClassProfileActivity extends BaseActivity implements AdapterCallbacks, View.OnClickListener, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
 
     public static void open(Context context, ClassModel classModel) {
         context.startActivity(new Intent(context, ClassProfileActivity.class)
                 .putExtra(AppConstants.DataKey.CLASS_OBJECT, classModel));
+    }
+
+    public static void open(Context context, int classId) {
+        context.startActivity(new Intent(context, ClassProfileActivity.class)
+                .putExtra(AppConstants.DataKey.CLASS_SESSION_ID_INT, classId));
     }
 
     @BindView(R.id.recyclerView)
@@ -63,11 +69,16 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
 
+    @BindView(R.id.layoutButton)
+    public View layoutButton;
     @BindView(R.id.textViewBook)
     public TextView textViewBook;
+    @BindView(R.id.swipeRefreshLayout)
+    public SwipeRefreshLayout swipeRefreshLayout;
 
     private ClassProfileAdapter classProfileAdapter;
     private ClassModel classModel;
+    private int classSessionId;
     private int page;
 
     @Override
@@ -118,11 +129,15 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         GlobalBus.getBus().register(this);
 
         classModel = (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_OBJECT);
+        classSessionId = getIntent().getIntExtra(AppConstants.DataKey.CLASS_SESSION_ID_INT, -1);
 
-        if (classModel == null) {
+        if (classModel == null && classSessionId == -1) {
             finish();
             return;
         }
+
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setEnabled(false);
 
         classProfileAdapter = new ClassProfileAdapter(context, AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE, this);
         StickyLayoutManager layoutManager = new StickyLayoutManager(context, classProfileAdapter);
@@ -130,10 +145,19 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         layoutManager.elevateHeaders((int) context.getResources().getDimension(R.dimen.view_separator_elevation));
 
         recyclerView.setLayoutManager(layoutManager);
-
-        recyclerView.setAdapter(classProfileAdapter);
-        classProfileAdapter.setClass(classModel);
         recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(classProfileAdapter);
+
+        if (classModel != null) {
+            classSessionId = classModel.getClassSessionId();
+            classProfileAdapter.setClass(classModel);
+            classProfileAdapter.notifyDataSetChanged();
+
+            Helper.setJoinStatusProfile(context, textViewBook, classModel);
+        } else {
+            layoutButton.setVisibility(View.GONE);
+            onRefresh();
+        }
 
         try {
             ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
@@ -142,9 +166,13 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             LogUtils.exception(e);
         }
 
-        Helper.setJoinStatusProfile(context, textViewBook, classModel);
-
         setToolBar();
+    }
+
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        networkCommunicator.getClassDetail(classSessionId, this, false);
     }
 
     @OnClick(R.id.textViewBook)
@@ -313,6 +341,22 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             }
                         });
                 break;
+
+            case NetworkCommunicator.RequestCode.CLASS_DETAIL:
+
+                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setEnabled(false);
+                classModel = ((ResponseModel<ClassModel>) response).data;
+
+                if (classModel != null) {
+                    classProfileAdapter.setClass(classModel);
+                    classProfileAdapter.notifyDataSetChanged();
+                }
+
+                layoutButton.setVisibility(View.VISIBLE);
+                Helper.setJoinStatusProfile(context, textViewBook, classModel);
+
+                break;
         }
     }
 
@@ -343,6 +387,14 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 }
 
                 Helper.setJoinStatusProfile(context, textViewBook, classModel);
+
+                break;
+            case NetworkCommunicator.RequestCode.CLASS_DETAIL:
+
+                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setEnabled(true);
+
+                ToastUtils.showLong(context, errorMessage);
 
                 break;
         }

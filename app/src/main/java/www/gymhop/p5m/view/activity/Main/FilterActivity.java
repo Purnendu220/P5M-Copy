@@ -1,5 +1,6 @@
 package www.gymhop.p5m.view.activity.Main;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -43,7 +44,11 @@ import www.gymhop.p5m.view.activity.custom.MaxHeightScrollView;
 
 public class FilterActivity extends BaseActivity implements NetworkCommunicator.RequestListener<ResponseModel>, AdapterCallbacks, View.OnClickListener {
 
-    public static void openActivity(Context context) {
+    public static void openActivity(Context context, Activity activity, View sharedElement) {
+
+//        ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, sharedElement, "filter");
+//        context.startActivity(new Intent(context, FilterActivity.class), activityOptionsCompat.toBundle());
+
         context.startActivity(new Intent(context, FilterActivity.class));
     }
 

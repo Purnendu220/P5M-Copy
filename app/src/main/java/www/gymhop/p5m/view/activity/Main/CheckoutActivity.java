@@ -2,11 +2,14 @@ package www.gymhop.p5m.view.activity.Main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
+import android.transition.TransitionManager;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -120,7 +123,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     @BindView(R.id.layoutPromoCode)
     View layoutPromoCode;
     @BindView(R.id.layoutSpecialClassDetails)
-    View layoutSpecialClassDetails;
+    ViewGroup layoutSpecialClassDetails;
     @BindView(R.id.layoutNormalClassDetails)
     View layoutNormalClassDetails;
 
@@ -152,8 +155,11 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
                 if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
                     textViewPackageValidity.setText("Valid for " + aPackage.getDuration() + " " + aPackage.getValidityPeriod().toLowerCase());
+                    textViewLimit.setVisibility(View.VISIBLE);
+
                 } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                     textViewPackageValidity.setText("Valid for " + aPackage.getGymName());
+                    textViewLimit.setVisibility(View.GONE);
                 }
 
                 textViewPackageName.setText(Html.fromHtml("1X <b>" + aPackage.getName() + "</b>"));
@@ -193,6 +199,11 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.textViewCancellationPolicyToggle:
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    TransitionManager.beginDelayedTransition(layoutSpecialClassDetails);
+                }
+
                 if (textViewCancellationPolicy.getVisibility() == View.VISIBLE) {
                     textViewCancellationPolicy.setVisibility(View.GONE);
                 } else {

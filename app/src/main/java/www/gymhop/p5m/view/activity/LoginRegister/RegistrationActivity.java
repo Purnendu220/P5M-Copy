@@ -21,10 +21,6 @@ import www.gymhop.p5m.utils.DialogUtils;
 import www.gymhop.p5m.utils.ViewPagerIndicator;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
-/**
- * Created by bittu on 31/8/17.
- */
-
 public class RegistrationActivity extends BaseActivity {
 
     public static FaceBookUser faceBookUser;
@@ -51,7 +47,7 @@ public class RegistrationActivity extends BaseActivity {
     private int INITIAL_STEP = 0;
 
     private RegistrationStepsAdapter registrationStepsAdapter;
-    private RegistrationRequest registrationRequest;
+    private RegistrationRequest registrationRequest = new RegistrationRequest();
 
     @Override
     public void onCreate(Bundle bundle) {

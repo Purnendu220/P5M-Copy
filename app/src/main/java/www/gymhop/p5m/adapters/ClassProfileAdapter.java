@@ -87,8 +87,6 @@ public class ClassProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public void setClass(ClassModel classModel) {
         this.classModel = classModel;
-
         list.add(classModel);
-        notifyDataSetChanged();
     }
 }

@@ -38,7 +38,6 @@ import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
-import www.gymhop.p5m.utils.ToastUtils;
 import www.gymhop.p5m.view.activity.Main.HomeActivity;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
@@ -107,7 +106,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(final LoginResult loginResult) {
-//                        ToastUtils.showLong(context, loginResult.getAccessToken().getToken());
+
                         LogUtils.debug("Facebook Token : " + loginResult.getAccessToken().toString());
 
                         GraphRequest request = GraphRequest.newMeRequest(
@@ -116,7 +115,6 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                                     @Override
                                     public void onCompleted(JSONObject object, GraphResponse response) {
 
-//                                        ToastUtils.showLong(context, object.toString());
                                         LogUtils.debug("Facebook newMeRequest : " + object.toString());
 
                                         String name = "";
@@ -148,13 +146,13 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
 
                     @Override
                     public void onCancel() {
-                        ToastUtils.showLong(context, "Cancelled");
+                        LogUtils.debug("Facebook onCancel");
                         layoutProgress.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
-                        ToastUtils.showLong(context, "Exception: " + exception.getMessage());
+                        LogUtils.debug("Facebook onError: " + exception.getMessage());
                         layoutProgress.setVisibility(View.GONE);
                     }
                 });
