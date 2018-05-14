@@ -20,8 +20,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -50,14 +48,12 @@ import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.DateUtils;
-import www.gymhop.p5m.utils.DialogUtils;
 import www.gymhop.p5m.utils.ImageUtils;
 import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.utils.ToastUtils;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
 public class EditProfileActivity extends BaseActivity implements View.OnClickListener, NetworkCommunicator.RequestListener {
-
 
     public static void openActivity(Context context) {
         context.startActivity(new Intent(context, EditProfileActivity.class));
@@ -559,14 +555,14 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         pickerDialog.onPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    @Override
-    public void onBackPressed() {
-        DialogUtils.showBasic(context, "Are you sure want to exit?", "Exit", new MaterialDialog.SingleButtonCallback() {
-            @Override
-            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                EditProfileActivity.super.onBackPressed();
-            }
-        });
-    }
+//    @Override
+//    public void onBackPressed() {
+//        DialogUtils.showBasic(context, "Are you sure want to exit?", "Exit", new MaterialDialog.SingleButtonCallback() {
+//            @Override
+//            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                EditProfileActivity.super.onBackPressed();
+//            }
+//        });
+//    }
 
 }

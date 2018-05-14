@@ -239,9 +239,9 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
     private void setListAdapter() {
         List<ClassesFilter> classesFilterList = new ArrayList<>(4);
 
-        classesFilterList.add(new ClassesFilter<CityLocality>("", true, "CityLocality", "Location", R.drawable.location, ClassesFilter.TYPE_HEADER));
-        classesFilterList.add(new ClassesFilter<ClassActivity>("", true, "ClassActivity", "Activity", R.drawable.class_icon, ClassesFilter.TYPE_HEADER));
-        classesFilterList.add(new ClassesFilter<Filter.Time>("", true, "Time", "Time", R.drawable.time, ClassesFilter.TYPE_HEADER));
+        classesFilterList.add(new ClassesFilter<CityLocality>("", true, "CityLocality", "Location", R.drawable.filter_location_main, ClassesFilter.TYPE_HEADER));
+        classesFilterList.add(new ClassesFilter<ClassActivity>("", true, "ClassActivity", "Activity", R.drawable.filter_activity_main, ClassesFilter.TYPE_HEADER));
+        classesFilterList.add(new ClassesFilter<Filter.Time>("", true, "Time", "Time", R.drawable.filter_time_main, ClassesFilter.TYPE_HEADER));
 //        classesFilterList.add(new ClassesFilter<Filter.Gender>("", true,"Gender", "Gender", R.drawable.gender, ClassesFilter.TYPE_HEADER));
 
         filterAdapter.setClassesFilterList(classesFilterList);

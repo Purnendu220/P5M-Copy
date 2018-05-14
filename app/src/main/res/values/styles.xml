@@ -79,8 +79,8 @@
     </style>
 
     <style name="ClassIconSmall">
-        <item name="android:layout_width">20dp</item>
-        <item name="android:layout_height">20dp</item>
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
         <item name="android:scaleType">fitCenter</item>
     </style>
 
@@ -91,14 +91,14 @@
     </style>
 
     <style name="ClassIconSmaller">
-        <item name="android:layout_width">16dp</item>
-        <item name="android:layout_height">16dp</item>
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">20dp</item>
         <item name="android:scaleType">fitCenter</item>
     </style>
 
     <style name="ClassIconMedium">
-        <item name="android:layout_width">24dp</item>
-        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_width">32dp</item>
+        <item name="android:layout_height">32dp</item>
         <item name="android:scaleType">fitCenter</item>
     </style>
 

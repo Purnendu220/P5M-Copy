@@ -27,6 +27,7 @@ import www.gymhop.p5m.data.main.NotificationModel;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.utils.AppConstants;
+import www.gymhop.p5m.utils.ToastUtils;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
 public class NotificationActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, NetworkCommunicator.RequestListener, AdapterCallbacks {
@@ -220,7 +221,9 @@ public class NotificationActivity extends BaseActivity implements SwipeRefreshLa
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.NOTIFICATIONS:
 
+                ToastUtils.showLong(context, errorMessage);
                 swipeRefreshLayout.setRefreshing(false);
+
                 if (page == 0) {
                     notificationsAdapter.clearAll();
                     notificationsAdapter.notifyDataSetChanged();

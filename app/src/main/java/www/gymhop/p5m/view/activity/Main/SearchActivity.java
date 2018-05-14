@@ -94,6 +94,7 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
     private Handler handlerBG;
     private int navigatedFrom;
     private SearchAdapter searchAdapter;
+    private int SEARCH_DELAY = 400;
 
     private SearchPagerAdapter searchPagerAdapter;
     private String[] titleTabs = new String[]{
@@ -316,7 +317,7 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
             }
         };
 
-        handlerBG.post(runnableSearch);
+        handlerBG.postDelayed(runnableSearch, SEARCH_DELAY);
     }
 
     private void clearSearch() {

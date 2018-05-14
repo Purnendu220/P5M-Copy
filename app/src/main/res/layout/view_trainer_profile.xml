@@ -146,7 +146,7 @@
                     <ImageView
                         android:id="@+id/imageViewLocation"
                         style="@style/ClassIconSmall"
-                        android:src="@drawable/location" />
+                        android:src="@drawable/location_small" />
 
                     <LinearLayout
                         android:id="@+id/layoutLocation"

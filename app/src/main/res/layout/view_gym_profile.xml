@@ -213,7 +213,7 @@
                             <ImageView
                                 android:id="@+id/imageViewLocation"
                                 style="@style/ClassIconSmall"
-                                android:src="@drawable/location" />
+                                android:src="@drawable/location_small" />
 
                             <TextView
                                 android:id="@+id/textViewLocation"
@@ -221,6 +221,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
                                 android:layout_marginLeft="@dimen/text_icon_gap"
+                                android:layout_marginTop="@dimen/text_drawable_adjustment"
                                 android:layout_toEndOf="@+id/imageViewLocation"
                                 android:fontFamily="sans-serif-medium"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"

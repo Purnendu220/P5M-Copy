@@ -29,7 +29,7 @@
                     android:layout_height="24dp"
                     android:layout_marginRight="12dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/class_icon" />
+                    android:src="@drawable/filter_activity_main" />
 
                 <RelativeLayout
                     android:layout_width="0dp"
@@ -39,6 +39,7 @@
                     <TextView
                         android:id="@+id/textView"
                         android:layout_width="match_parent"
+                        android:layout_marginTop="1dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:fontFamily="sans-serif"
