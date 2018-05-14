@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
@@ -12,6 +13,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -102,6 +104,11 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
     }
 
     public void checkTags() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            TransitionManager.beginDelayedTransition(scrollView);
+        }
+
         if (filterAdapter.getClassesFiltersSelected().isEmpty()) {
             if (scrollView.getVisibility() != View.GONE) {
                 scrollView.setVisibility(View.GONE);
@@ -348,6 +355,7 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
                 classesFilter.setExpanded(!classesFilter.isExpanded());
 
                 filterAdapter.refreshList();
+
                 filterAdapter.notifyDataSetChanged();
 
 //                int index = filterAdapter.getList().indexOf(classesFilter);
@@ -355,8 +363,8 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
 //                if (index == -1) {
 //                    filterAdapter.notifyDataSetChanged();
 //                } else {
-////                    filterAdapter.notifyItemChanged(index);
-//                    filterAdapter.notifyItemRangeRemoved(index + 1, index + classesFilter.getList().size());
+//                    filterAdapter.notifyItemChanged(index);
+//                    filterAdapter.notifyItemRangeRemoved(index + 1, index + classesFilter.getList().size() - 1);
 //                }
 //                LogUtils.debug("FilterActivity onAdapterItemClick " + (index + 1) + " " + (index + classesFilter.getList().size()));
 
@@ -364,15 +372,16 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
                 classesFilter.setExpanded(!classesFilter.isExpanded());
 
                 filterAdapter.refreshList();
+
                 filterAdapter.notifyDataSetChanged();
 
 //                int index = filterAdapter.getList().indexOf(classesFilter);
-
+//
 //                if (index == -1) {
 //                    filterAdapter.notifyDataSetChanged();
 //                } else {
-////                    filterAdapter.notifyItemChanged(index);
-//                    filterAdapter.notifyItemRangeInserted(index + 1, index + classesFilter.getList().size());
+//                    filterAdapter.notifyItemRangeInserted(index + 1, index + classesFilter.getList().size() - 1);
+//                    filterAdapter.notifyItemChanged(index);
 //                }
 //                LogUtils.debug("FilterActivity onAdapterItemClick " + (index + 1) + " " + (index + classesFilter.getList().size()));
             }
