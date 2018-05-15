@@ -97,9 +97,8 @@ public class EventBroadcastHelper {
         GlobalBus.getBus().post(new Events.NewFilter());
     }
 
-    public static void notificationReceived(Context context) {
-        MyPreferences.initialize(context).saveNotificationCount(MyPreferences.initialize(context).getNotificationCount() + 1);
-        GlobalBus.getBus().post(new Events.NotificationReceived());
+    public static void notificationCountUpdated(Context context) {
+        GlobalBus.getBus().post(new Events.NotificationCountUpdated());
     }
 
     public static void sendDeviceUpdate(Context context) {

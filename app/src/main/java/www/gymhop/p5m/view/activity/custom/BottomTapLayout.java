@@ -171,7 +171,7 @@ public class BottomTapLayout implements View.OnClickListener {
             TabView tabView = tabViewList.get(index);
 
             if (tabView.tab.id == id) {
-                tabView.textViewNotificationCounter.setVisibility(count != 0 ? View.VISIBLE : View.GONE);
+                tabView.textViewNotificationCounter.setVisibility(count == 0 ? View.GONE : View.VISIBLE);
                 tabView.textViewNotificationCounter.setText(String.valueOf(count));
             }
         }

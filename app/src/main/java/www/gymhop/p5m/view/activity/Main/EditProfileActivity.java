@@ -449,6 +449,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.UPDATE_USER: {
 
+                ToastUtils.show(context, "Changes to your profile have been saved!");
                 User user = ((ResponseModel<User>) response).data;
                 EventBroadcastHelper.sendUserUpdate(context, user);
                 finish();

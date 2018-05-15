@@ -337,7 +337,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
                 Helper.setJoinStatusProfile(context, textViewBook, classModel);
 
-                DialogUtils.showBasicMessage(context, "You have successfully joined \"" + classModel.getTitle() + "\" class",
+                DialogUtils.showBasicMessage(context, "Successfully joined " + classModel.getTitle(),
                         "OK", new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {

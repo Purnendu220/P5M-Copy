@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import www.gymhop.p5m.adapters.PackageLimitAdapter;
 import www.gymhop.p5m.data.PackageLimitListItem;
+import www.gymhop.p5m.helper.Helper;
 
 /**
  * Created by MyU10 on 3/10/2018.
@@ -26,7 +27,9 @@ public class PackageLimitHeaderViewHolder extends RecyclerView.ViewHolder {
             itemView.setVisibility(View.VISIBLE);
             final PackageLimitListItem model = (PackageLimitListItem) data;
 
-            textView.setText(Html.fromHtml("<b>" + model.getPackageLimitModel().getPackageName() + "</b>" +
+            String packageName = Helper.capitalize(model.getPackageLimitModel().getPackageName());
+
+            textView.setText(Html.fromHtml("<b>" + packageName + "</b>" +
                     " (" + model.getPackageLimitModel().getTotalClassPerPackage() + " Classes)"));
 
             textView.setOnClickListener(new View.OnClickListener() {

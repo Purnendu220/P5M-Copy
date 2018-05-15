@@ -18,6 +18,7 @@ import www.gymhop.p5m.adapters.ImageListAdapter;
 import www.gymhop.p5m.data.main.GymBranchDetail;
 import www.gymhop.p5m.data.main.GymDetailModel;
 import www.gymhop.p5m.helper.Helper;
+import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.ImageUtils;
 
 /**
@@ -118,15 +119,13 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
 
             if (model.getNumberOfTrainer() == -1) {
                 textViewTrainers.setText(Html.fromHtml("trainers"));
-            } else if (model.getNumberOfTrainer() == 0) {
-                textViewTrainers.setText(Html.fromHtml("No trainers"));
             } else {
-                textViewTrainers.setText(Html.fromHtml("<b>" + (model.getNumberOfTrainer() + "</b>" + " trainers")));
+                textViewTrainers.setText(Html.fromHtml("<b>" + (model.getNumberOfTrainer() + "</b>" + AppConstants.plural(" trainers", model.getNumberOfTrainer()))));
             }
 
             ImageUtils.setImage(context,
                     model.getProfileImage(),
-                    R.drawable.class_holder, imageViewProfile);
+                    R.drawable.profile_holder_big, imageViewProfile);
 
             Helper.setFavButton(context, button, model);
 

@@ -28,7 +28,7 @@ public class Events {
     public static class NewFilter {
     }
 
-    public static class NotificationReceived {
+    public static class NotificationCountUpdated {
     }
 
     public static class PackagePurchasedForClass {

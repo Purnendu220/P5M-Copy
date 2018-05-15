@@ -14,7 +14,7 @@
 
     <string name="start_being_active">START BEING ACTIVE</string>
 
-    <string name="setting_notification_fac_details">Get notified when your favourite trainer adds a new class</string>
+    <string name="setting_notification_fac_details">Get notified when the trainer adds new classes</string>
 
     <string name="skip">SKIP</string>
     <string name="start">GOT IT</string>
@@ -242,7 +242,7 @@
     <string name="unjoin_class">Cancel My Registration</string>
     <string name="no_thanks">No, Thanks</string>
     <string name="please_wait_no_dots">Please Wait</string>
-    <string name="no_data_class_list_main">No classes are available. Try different filters or days to find your match.</string>
+    <string name="no_data_class_list_main">No classes are available. Try a different date to join your class.</string>
     <string name="no_data_trainer_list_main">No trainers are available that match your search.</string>
     <string name="no_data_search_trainer_list">No trainers are available that match your search.</string>
     <string name="no_data_search_gym_list">No gym are available that match your search.</string>

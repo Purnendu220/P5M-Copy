@@ -64,15 +64,14 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void notificationReceived(Events.NotificationReceived notificationReceived) {
-
+    public void notificationReceived(Events.NotificationCountUpdated notificationCountUpdated) {
         setNotificationIcon();
     }
 
     private void setNotificationIcon() {
         int count = MyPreferences.initialize(context).getNotificationCount();
 
-        textViewNotificationMessageCounter.setVisibility(count != 0 ? View.VISIBLE : View.GONE);
+        textViewNotificationMessageCounter.setVisibility(count == 0 ? View.GONE : View.VISIBLE);
         textViewNotificationMessageCounter.setText(String.valueOf(count));
     }
 

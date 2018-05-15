@@ -276,7 +276,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
-                                android:layout_marginLeft="@dimen/text_icon_gap"
+                                android:layout_marginLeft="6dp"
                                 android:layout_marginTop="@dimen/text_drawable_adjustment"
                                 android:layout_toEndOf="@+id/imageViewClassTime"
                                 android:fontFamily="sans-serif"

@@ -79,11 +79,13 @@ public class MyPreferences {
     }
 
     public int getNotificationCount() {
+        LogUtils.debug("Notification getNotificationCount" + PreferencesManager.getInt(AppConstants.Pref.NOTIFICATION_COUNT, 0));
         return PreferencesManager.getInt(AppConstants.Pref.NOTIFICATION_COUNT, 0);
     }
 
     public void saveNotificationCount(int notificationCount) {
         PreferencesManager.putInt(AppConstants.Pref.NOTIFICATION_COUNT, notificationCount);
+        LogUtils.debug("Notification saveNotificationCount" + getNotificationCount());
     }
 
     public List<City> getCities() {

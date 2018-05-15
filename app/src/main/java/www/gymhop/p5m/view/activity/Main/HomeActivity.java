@@ -102,7 +102,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void notificationReceived(Events.NotificationReceived notificationReceived) {
+    public void notificationReceived(Events.NotificationCountUpdated notificationCountUpdated) {
         setNotificationIcon();
     }
 
@@ -134,7 +134,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
                 context.getString(R.string.find_class), context.getString(R.string.find_class)));
         tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_TRAINER, R.drawable.trainers, R.drawable.trainers,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
-                context.getString(R.string.trainer), context.getString(R.string.trainer)));
+                context.getString(R.string.trainer), context.getString(R.string.trainers)));
         tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_SCHEDULE, R.drawable.schedule, R.drawable.schedule,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
                 context.getString(R.string.schedule), context.getString(R.string.schedule)));

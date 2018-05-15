@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.eventbus.EventBroadcastHelper;
+import www.gymhop.p5m.storage.preferences.MyPreferences;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.view.activity.Main.ClassProfileActivity;
@@ -38,18 +39,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         LogUtils.debug("Notifications Received");
 
-        EventBroadcastHelper.notificationReceived(context);
-
         if (remoteMessage == null)
             return;
 
         try {
 
-//            LogUtils.debug("Notifications Data: " + remoteMessage.getData());
+            LogUtils.debug("Notifications Data: " + remoteMessage.getData());
             String message = remoteMessage.getData().get("message");
 
             if (message != null) {
-                LogUtils.debug("Notifications Message: " + message);
 
                 JSONObject json = new JSONObject(message);
                 handleDataMessage(json);
@@ -61,17 +59,80 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void handleDataMessage(JSONObject json) {
-        LogUtils.debug("Notifications Data: " + json.toString());
 
         try {
             JSONObject jsonObject = json;
-            String type = jsonObject.getString(AppConstants.Notification.TYPE);
+            String type = jsonObject.optString(AppConstants.Notification.TYPE);
             String message = jsonObject.optString(AppConstants.Notification.BODY);
-            String userIdToNotify = jsonObject.getString(AppConstants.Notification.USER_ID_TO_NOTIFY);
+            String userIdToNotify = jsonObject.optString(AppConstants.Notification.USER_ID_TO_NOTIFY);
 
             long dataID = 0;
             if (!jsonObject.getString(AppConstants.Notification.OBJECT_DATA_ID).equalsIgnoreCase("null")) {
                 dataID = jsonObject.getLong(AppConstants.Notification.OBJECT_DATA_ID);
+            }
+
+            Intent navigationIntent = null;
+
+            /****************************Notification Batch Count********************************/
+            switch (type) {
+
+                case "CustomerCancelClass":
+                case "FollowUser":
+                case "CustomerCancelClassOfTrainer":
+                case "CustomerCancelClassOfGym":
+
+                case "CustomerJoinClassOfTrainer":
+                case "CustomerJoinClassOfGym":
+                case "OnClassCreation":
+                case "OnClassDeleteByTrainer":
+
+                case "OnClassDeleteByGym":
+                case "OnClassDeleteByTrainerOfGym":
+                case "OnClassDeleteByGymOfTrainer":
+                case "OnSessionDeleteByTrainer":
+
+                case "OnSessionDeleteByGYM":
+                case "OnSessionDeleteByTrainerOfGym":
+                case "OnSessionDeleteByGymOfTrainer":
+
+                case "OnSessionUpdateByTrainer":
+                case "OnSessionUpdateByGYM":
+                case "OnSessionUpdateByTrainerOfGym":
+                case "OnSessionUpdateByGymOfTrainer":
+
+                case "OnPaymentSuccess":
+                case "OnClassRefund":
+                case "OnClassUpdateByTrainer":
+                case "OnClassUpdateByGYM":
+                case "OnClassUpdateByTrainerOfGym":
+
+                case "OnClassUpdateByGYMOfTrainer":
+                case "OnSlotDeleteByGym":
+                case "OnSlotDeletByTrainerOfGym":
+
+                case "OnSlotDeleteByGymOfTrainer":
+                case "OnClassCreationNotifyGym":
+                case "OnEmailVerification":
+                case "onMappedTrainerToTrainer":
+
+                case "onMappedTrainerToGym":
+                case "OnClassInActive":
+                case "OnClassCancelByCMS":
+                case "OnBookingCancelToCustomerByCMS":
+
+                case "OnBookingCancelToGymByCMS":
+                case "OnBookingCancelToTrainerByCMS":
+                case "OnClassUpdateByCms":
+                case "OnNewTrainerAssign":
+
+                case "OnGroupClassUpdateByCms":
+                case "OnAssignPackageFromCMS":
+                case "OnClassUpdateByCMS":
+
+                    MyPreferences.initialize(context).saveNotificationCount(MyPreferences.initialize(context).getNotificationCount() + 1);
+                    EventBroadcastHelper.notificationCountUpdated(context);
+
+                    break;
             }
 
             String title = "P5M";
@@ -81,10 +142,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 return;
             }
 
-            Intent navigationIntent = null;
-
             switch (type) {
-
                 //********************UPCOMING CLASS TAB********************//
                 case "OnUserComingClass":
                     navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_UPCOMING);
@@ -175,26 +233,26 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 case "OnClassRefund":
                 case "CustomerCancelClass":
                 case "OnEmailVerification":
-                    /////////////////////////////////////////////////////
-                    break;
+                case "FollowUser":
 
-                //******************** UNUSED **************************//
-             /*   case "FollowUser":
                 case "CustomerCancelClassOfTrainer":
+                case "CustomerJoinClassOfGym":
                 case "CustomerCancelClassOfGym":
                 case "CustomerJoinClassOfTrainer":
-                case "CustomerJoinClassOfGym":
                 case "OnClassDeleteByGymOfTrainer":
                 case "OnClassUpdateByTrainerOfGym":
                 case "OnClassUpdateByGYMOfTrainer":
                 case "OnClassCreationNotifyGym":
                 case "onMappedTrainerToTrainer":
                 case "onMappedTrainerToGym":
-                case "OnClassApprovalToTrainer":
-                case "OnClassApprovalToGym":
-                case "OnClassApprovedToTrainer":
-                case "OnClassApprovedToGym":
-                    break;*/
+                    /////////////////////////////////////////////////////
+                    break;
+
+                //******************** UNUSED **************************//
+//                case "OnClassApprovalToTrainer":
+//                case "OnClassApprovalToGym":
+//                case "OnClassApprovedToTrainer":
+//                case "OnClassApprovedToGym":
                 /////////////////////////////////////////////////////////////
             }
 

@@ -13,9 +13,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
+import www.gymhop.p5m.data.main.ClassModel;
 import www.gymhop.p5m.data.main.Package;
 import www.gymhop.p5m.data.main.UserPackage;
-import www.gymhop.p5m.data.main.ClassModel;
 import www.gymhop.p5m.helper.Helper;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.DateUtils;
@@ -127,8 +127,18 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
                         textViewPackageName.setText(model.getName());
                         textViewPageTitle.setText(model.getNoOfClass() + " " + context.getString(R.string.classes));
-                        textViewPackageValidity.setText("Valid for " + model.getDuration() + " " + model.getValidityPeriod().toLowerCase());
-                        textViewPackagePrice.setText(model.getCost() + " " + context.getString(R.string.currency).toUpperCase() + " " + context.getString(R.string.memebership_price_postfix));
+
+                        String validityPeriod = model.getValidityPeriod();
+                        validityPeriod = Helper.capitalize(validityPeriod);
+
+                        // Removing s from last
+                        if (validityPeriod.charAt(validityPeriod.length() - 1) == 's') {
+                            validityPeriod = validityPeriod.substring(0, validityPeriod.length() - 1);
+                        }
+
+                        textViewPackageValidity.setText("Valid for " + model.getDuration() + " " + AppConstants.plural(validityPeriod, model.getDuration()));
+
+                        textViewPackagePrice.setText(model.getCost() + " " + context.getString(R.string.currency).toUpperCase());
 
                         textViewViewLimit.setVisibility(View.VISIBLE);
 
@@ -163,7 +173,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                         textViewPackageName.setText(model.getName());
                         textViewPageTitle.setText(model.getNoOfClass() + " " + context.getString(R.string.classes));
                         textViewPackageValidity.setText("Valid for " + model.getGymName());
-                        textViewPackagePrice.setText(model.getCost() + " " + context.getString(R.string.currency).toUpperCase() + " " + context.getString(R.string.memebership_price_postfix));
+                        textViewPackagePrice.setText(model.getCost() + " " + context.getString(R.string.currency).toUpperCase());
 
                         textViewViewLimit.setVisibility(View.GONE);
 

@@ -24,8 +24,10 @@ import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.adapters.NotificationsAdapter;
 import www.gymhop.p5m.data.main.NotificationModel;
+import www.gymhop.p5m.eventbus.EventBroadcastHelper;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
+import www.gymhop.p5m.storage.preferences.MyPreferences;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.ToastUtils;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
@@ -75,6 +77,9 @@ public class NotificationActivity extends BaseActivity implements SwipeRefreshLa
         onRefresh();
 
         setToolBar();
+
+        MyPreferences.initialize(context).saveNotificationCount(0);
+        EventBroadcastHelper.notificationCountUpdated(context);
     }
 
     private void setToolBar() {
