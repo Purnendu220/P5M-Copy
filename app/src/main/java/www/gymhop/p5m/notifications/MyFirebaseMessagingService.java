@@ -11,7 +11,6 @@ import android.support.v4.app.TaskStackBuilder;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import www.gymhop.p5m.R;
@@ -65,11 +64,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String type = jsonObject.optString(AppConstants.Notification.TYPE);
             String message = jsonObject.optString(AppConstants.Notification.BODY);
             String userIdToNotify = jsonObject.optString(AppConstants.Notification.USER_ID_TO_NOTIFY);
-
-            long dataID = 0;
-            if (!jsonObject.getString(AppConstants.Notification.OBJECT_DATA_ID).equalsIgnoreCase("null")) {
-                dataID = jsonObject.getLong(AppConstants.Notification.OBJECT_DATA_ID);
-            }
+            long dataID  = jsonObject.optLong(AppConstants.Notification.OBJECT_DATA_ID);
 
             Intent navigationIntent = null;
 
@@ -262,11 +257,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             handleNotification(navigationIntent, title, message);
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
         }
-
     }
 
     private void handleNotification(Intent navigationIntent, String title, String message) {

@@ -56,6 +56,35 @@
                     android:textColor="@color/theme_dark_text"
                     android:textSize="@dimen/text_large" />
 
+                <LinearLayout
+                    android:id="@+id/layoutLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingTop="6dp">
+
+                    <ImageView
+                        android:id="@+id/imageViewSubtitle"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginRight="4dp"
+                        android:src="@drawable/location_small" />
+
+                    <TextView
+                        android:id="@+id/textViewSubtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/imageViewClassCategory"
+                        android:fontFamily="sans-serif-medium"
+                        android:letterSpacing="@dimen/button_letter_spacing_very_little"
+                        android:lineSpacingExtra="@dimen/line_spacing_extra"
+                        android:text="East American Yoga Club"
+                        android:textColor="@color/theme_medium_dark_text"
+                        android:textSize="@dimen/text_small" />
+                </LinearLayout>
+
+
             </LinearLayout>
         </RelativeLayout>
 

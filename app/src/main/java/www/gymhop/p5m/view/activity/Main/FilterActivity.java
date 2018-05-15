@@ -99,7 +99,6 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
         networkCommunicator.getCities(this, true);
         networkCommunicator.getActivities(this, true);
 
-
         setToolBar();
     }
 

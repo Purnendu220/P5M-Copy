@@ -288,22 +288,22 @@ public class NetworkCommunicator {
         return call;
     }
 
-    public Call getDefault(final RequestListener requestListener, boolean useCache) {
-        final int requestCode = RequestCode.ALL_CLASS_ACTIVITY;
+    public Call getDefault() {
+//        final int requestCode = RequestCode.ALL_CLASS_ACTIVITY;
         Call<ResponseModel<DefaultSettingServer>> call = apiService.getDefault();
-        LogUtils.debug("NetworkCommunicator hitting getActivities");
+        LogUtils.debug("NetworkCommunicator hitting getDefault");
 
         call.enqueue(new RestCallBack<ResponseModel<DefaultSettingServer>>() {
             @Override
             public void onFailure(Call<ResponseModel<DefaultSettingServer>> call, String message) {
-                LogUtils.networkError("NetworkCommunicator getActivities onFailure " + message);
-                requestListener.onApiFailure(message, requestCode);
+                LogUtils.networkError("NetworkCommunicator getDefault onFailure " + message);
+//                requestListener.onApiFailure(message, requestCode);
             }
 
             @Override
             public void onResponse(Call<ResponseModel<DefaultSettingServer>> call, Response<ResponseModel<DefaultSettingServer>> restResponse, ResponseModel<DefaultSettingServer> response) {
-                LogUtils.networkSuccess("NetworkCommunicator getActivities onResponse data " + response);
-                requestListener.onApiSuccess(response, requestCode);
+                LogUtils.networkSuccess("NetworkCommunicator getDefault onResponse data " + response);
+//                requestListener.onApiSuccess(response, requestCode);
                 TempStorage.setDefault(response.data);
             }
         });
@@ -1059,7 +1059,6 @@ public class NetworkCommunicator {
                     e.printStackTrace();
                     LogUtils.exception(e);
                 }
-                ToastUtils.show(context, "Added to your Wish list");
             }
         });
         return call;

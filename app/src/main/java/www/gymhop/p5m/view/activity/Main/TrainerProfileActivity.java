@@ -241,7 +241,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
         switch (view.getId()) {
             case R.id.imageViewProfile:
                 if (trainerDetailModel != null && !trainerDetailModel.getProfileImage().isEmpty()) {
-                    Helper.openImageViewer(context, trainerDetailModel.getProfileImage());
+                    Helper.openImageViewer(context, activity, view, trainerDetailModel.getProfileImage());
                 }
                 break;
             case R.id.button:
@@ -315,6 +315,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
                 break;
 
             case NetworkCommunicator.RequestCode.TRAINER:
+
                 swipeRefreshLayout.setRefreshing(false);
                 TrainerDetailModel trainerDetailModel = ((ResponseModel<TrainerDetailModel>) response).data;
 
@@ -328,6 +329,9 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
 
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.TRAINER:
+
+                trainerProfileAdapter.notifyDataSetChanges();
+
                 swipeRefreshLayout.setRefreshing(false);
                 ToastUtils.showLong(context, errorMessage);
                 break;

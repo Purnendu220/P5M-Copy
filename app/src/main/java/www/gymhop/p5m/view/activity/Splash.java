@@ -9,13 +9,16 @@ import android.widget.ImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import www.gymhop.p5m.MyApplication;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.eventbus.EventBroadcastHelper;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
+import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.preferences.MyPreferences;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.view.activity.LoginRegister.ContinueUser;
 import www.gymhop.p5m.view.activity.LoginRegister.InfoScreen;
+import www.gymhop.p5m.view.activity.Main.ForceUpdateActivity;
 import www.gymhop.p5m.view.activity.Main.HomeActivity;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
@@ -53,8 +56,12 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
 
         imageViewImage.animate().scaleXBy(0.3f).scaleYBy(0.3f).setDuration(1000).setInterpolator(new BounceInterpolator()).start();
 
-        startTimerForGoToNextScreen();
+        if (MyPreferences.getInstance().isLogin()) {
+            networkCommunicator.getMyUser(Splash.this, false);
+            EventBroadcastHelper.sendDeviceUpdate(context);
+        }
 
+        startTimerForGoToNextScreen();
         networkCommunicator.getActivities(this, false);
     }
 
@@ -66,9 +73,6 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
                 if (MyPreferences.getInstance().isLogin()) {
                     /////////// HomeActivity Screen ////////////
                     HomeActivity.open(context);
-
-                    EventBroadcastHelper.sendDeviceUpdate(context);
-                    networkCommunicator.getMyUser(Splash.this, false);
 
                 } else {
                     /////////// LoginActivity Page ////////////
@@ -94,13 +98,17 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
 
     @Override
     public void onApiSuccess(Object response, int requestCode) {
-//        switch (requestCode) {
-//            case NetworkCommunicator.RequestCode.DEVICE:
-//
-//                Boolean forceUpdate = ((ResponseModel<Boolean>) response).data;
-//
-//                break;
-//        }
+        switch (requestCode) {
+            case NetworkCommunicator.RequestCode.DEVICE:
+
+                Boolean forceUpdate = ((ResponseModel<Boolean>) response).data;
+
+                if (forceUpdate) {
+                    ForceUpdateActivity.openActivity(MyApplication.context, "", "");
+                }
+
+                break;
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package www.gymhop.p5m.helper;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,12 +16,9 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
-import com.stfalcon.frescoimageviewer.ImageViewer;
-
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,6 +26,7 @@ import java.util.regex.Pattern;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.data.main.ClassActivity;
 import www.gymhop.p5m.data.main.ClassModel;
+import www.gymhop.p5m.data.main.GymBranchDetail;
 import www.gymhop.p5m.data.main.GymDetailModel;
 import www.gymhop.p5m.data.main.MediaModel;
 import www.gymhop.p5m.data.main.TrainerDetailModel;
@@ -35,6 +34,7 @@ import www.gymhop.p5m.data.main.TrainerModel;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.KeyboardUtils;
 import www.gymhop.p5m.utils.LogUtils;
+import www.gymhop.p5m.view.custom.GalleryActivity;
 
 /**
  * Created by Varun John on 4/20/2018.
@@ -133,6 +133,27 @@ public class Helper {
         return name;
     }
 
+    public static String getBranchList(List<GymBranchDetail> list) {
+        String name = "";
+
+        if (list != null && !list.isEmpty()) {
+
+            try {
+                for (int index = 0; index < list.size(); index++) {
+                    String value = list.get(index).getBranchName();
+                    if (!name.contains(value)) {
+                        name = index == 0 ? (name += value) : (name += ", " + value);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                LogUtils.exception(e);
+            }
+        }
+
+        return name;
+    }
+
     public static void setJoinButton(Context context, Button buttonJoin, ClassModel model) {
         if (model.isUserJoinStatus()) {
             buttonJoin.setText(context.getString(R.string.booked));
@@ -191,38 +212,53 @@ public class Helper {
     }
 
     public static void openImageListViewer(Context context, List<MediaModel> list, int position) {
-        Fresco.initialize(context);
 
-        GenericDraweeHierarchyBuilder hierarchyBuilder = GenericDraweeHierarchyBuilder.newInstance(context.getResources())
-                .setFailureImage(R.drawable.class_holder)
-//                .setPlaceholderImage(R.drawable.loading)
-                ;
+        List<String> images = new ArrayList<>(list.size());
+        for (MediaModel mediaModel : list) {
+            images.add(mediaModel.getMediaUrl());
+        }
 
-        new ImageViewer.Builder<>(context, list)
-                .setStartPosition(position)
-                .hideStatusBar(false)
-                .setCustomDraweeHierarchyBuilder(hierarchyBuilder)
-                .setFormatter(new ImageViewer.Formatter<MediaModel>() {
-                    @Override
-                    public String format(MediaModel model) {
-                        return model.getMediaUrl();
-                    }
-                })
-                .show();
+        GalleryActivity.openActivity(context, null,  null, position, images);
+
+
+//        Fresco.initialize(context);
+//
+//        GenericDraweeHierarchyBuilder hierarchyBuilder = GenericDraweeHierarchyBuilder.newInstance(context.getResources())
+//                .setFailureImage(R.drawable.class_holder)
+////                .setPlaceholderImage(R.drawable.loading)
+//                ;
+//
+//        new ImageViewer.Builder<>(context, list)
+//                .setStartPosition(position)
+//                .hideStatusBar(false)
+//                .setCustomDraweeHierarchyBuilder(hierarchyBuilder)
+//                .setFormatter(new ImageViewer.Formatter<MediaModel>() {
+//                    @Override
+//                    public String format(MediaModel model) {
+//                        return model.getMediaUrl();
+//                    }
+//                })
+//                .show();
     }
 
-    public static void openImageViewer(Context context, String url) {
-        Fresco.initialize(context);
+    public static void openImageViewer(Context context, Activity activity, View sharedElement, String url) {
 
-        GenericDraweeHierarchyBuilder hierarchyBuilder = GenericDraweeHierarchyBuilder.newInstance(context.getResources())
-                .setFailureImage(R.drawable.class_holder)
-//                .setPlaceholderImage(R.drawable.loading)
-                ;
+        List<String> images = new ArrayList<>(1);
+        images.add(url);
 
-        new ImageViewer.Builder<>(context, new String[]{url})
-                .hideStatusBar(false)
-                .setCustomDraweeHierarchyBuilder(hierarchyBuilder)
-                .show();
+        GalleryActivity.openActivity(context, activity,  sharedElement, 0, images);
+
+//        Fresco.initialize(context);
+//
+//        GenericDraweeHierarchyBuilder hierarchyBuilder = GenericDraweeHierarchyBuilder.newInstance(context.getResources())
+//                .setFailureImage(R.drawable.class_holder)
+////                .setPlaceholderImage(R.drawable.loading)
+//                ;
+//
+//        new ImageViewer.Builder<>(context, new String[]{url})
+//                .hideStatusBar(false)
+//                .setCustomDraweeHierarchyBuilder(hierarchyBuilder)
+//                .show();
     }
 
     public static void showPopMenu(Context context, View view, PopupMenu.OnMenuItemClickListener onMenuItemClickListener) {

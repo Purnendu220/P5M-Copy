@@ -194,7 +194,7 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
                 if (model != null && model instanceof GymDetailModel) {
                     GymDetailModel data = (GymDetailModel) model;
                     if (data != null && !data.getProfileImage().isEmpty()) {
-                        Helper.openImageViewer(context, gymDetailModel.getProfileImage());
+                        Helper.openImageViewer(context, activity,  view, gymDetailModel.getProfileImage());
                     }
                 }
                 break;
@@ -278,6 +278,8 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
     public void onApiFailure(String errorMessage, int requestCode) {
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.GYM:
+                gymProfileAdapter.notifyDataSetChanges();
+
                 swipeRefreshLayout.setRefreshing(false);
                 ToastUtils.showLong(context, errorMessage);
                 break;

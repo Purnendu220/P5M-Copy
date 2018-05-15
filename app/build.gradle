@@ -85,10 +85,13 @@ dependencies {
 
     implementation 'com.facebook.android:facebook-android-sdk:4.24.0'
     implementation 'com.facebook.fresco:fresco:1.2.0'
+    implementation 'com.bogdwellers:pinchtozoom:0.1'
 
 }
 
 apply plugin: 'com.google.gms.google-services'
+
+
 
 
 

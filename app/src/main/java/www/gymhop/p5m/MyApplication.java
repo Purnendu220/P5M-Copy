@@ -69,7 +69,7 @@ public class MyApplication extends MultiDexApplication implements NetworkChangeR
         filter.addAction(android.net.ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(new NetworkChangeReceiver(), filter);
 
-        NetworkCommunicator.getInstance(context).getDefault(this, false);
+        NetworkCommunicator.getInstance(context).getDefault();
     }
 
     @Override

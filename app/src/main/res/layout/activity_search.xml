@@ -50,6 +50,7 @@
                             style="@style/ToolBarButton"
                             android:layout_width="40dp"
                             android:layout_height="match_parent"
+                            android:background="@null"
                             android:padding="12dp"
                             android:src="@drawable/search_white"
                             android:tint="@color/theme_medium_dark_text"

@@ -1,6 +1,7 @@
 package www.gymhop.p5m.adapters.viewholder;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -29,7 +30,7 @@ public class HeaderViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void bind(Object data, int position) {
+    public void bind(Object data, boolean isNoUpcomingClasses) {
         if (data != null && data instanceof HeaderSticky) {
             itemView.setVisibility(View.VISIBLE);
             HeaderSticky text = (HeaderSticky) data;
@@ -40,6 +41,14 @@ public class HeaderViewHolder extends RecyclerView.ViewHolder {
             } else {
                 textView.setVisibility(View.GONE);
             }
+
+            if (isNoUpcomingClasses) {
+                textView.setTextColor(ContextCompat.getColor(context, R.color.theme_medium_dark_text));
+                textView.setText("No Upcoming Classes");
+            } else {
+                textView.setTextColor(ContextCompat.getColor(context, R.color.theme_accent_text));
+            }
+
         } else {
             itemView.setVisibility(View.GONE);
 

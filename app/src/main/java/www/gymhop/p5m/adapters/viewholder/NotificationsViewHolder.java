@@ -112,6 +112,7 @@ public class NotificationsViewHolder extends RecyclerView.ViewHolder {
                 case "OnClassUpdateByCMS":
                 case "OnNewTrainerAssign":
                 case "OnGroupClassUpdateByCms":
+                case "OnEmailVerification":
                     imageViewProfileStatus.setImageResource(R.drawable.add_icon);
                     break;
 

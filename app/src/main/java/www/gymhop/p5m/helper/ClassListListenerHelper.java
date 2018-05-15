@@ -19,10 +19,12 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.data.main.ClassModel;
+import www.gymhop.p5m.data.main.DefaultSettingServer;
 import www.gymhop.p5m.data.main.User;
 import www.gymhop.p5m.eventbus.EventBroadcastHelper;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.restapi.ResponseModel;
+import www.gymhop.p5m.storage.preferences.MyPreferences;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.DateUtils;
 import www.gymhop.p5m.utils.DialogUtils;
@@ -149,14 +151,23 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
         String message = "Are you sure want to unjoin ?";
 
-        if (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) < 2) {
+        String serverMessageNormalClass = message;
+        String serverMessageSpecialClass = message;
+        float cancelTime = 2;
 
-            message = "The following class starts in less than 2 hours. Cancelling your registration will result in no refund. Are you sure you want to cancel your booking?";
-            if (Helper.isSpecialClass(model)) {
-                if (Helper.isFreeClass(model)) {
-                    message = "Are you sure want to unjoin ?";
-                }
-            }
+        DefaultSettingServer defaultSettingServer = MyPreferences.getInstance().getDefaultSettingServer();
+        if (defaultSettingServer != null) {
+            cancelTime = defaultSettingServer.getRefundAllowedbefore();
+            serverMessageNormalClass = defaultSettingServer.getCancellationPolicy();
+            serverMessageSpecialClass = defaultSettingServer.getSpecialClassCancellationPolicy();
+
+        }
+
+        if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model)) {
+            message = serverMessageSpecialClass;
+
+        } else if (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) <= cancelTime) {
+            message = serverMessageNormalClass;
         }
 
         final MaterialDialog materialDialog = new MaterialDialog.Builder(context)

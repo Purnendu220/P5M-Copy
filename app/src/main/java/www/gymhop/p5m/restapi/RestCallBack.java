@@ -5,9 +5,11 @@ import com.google.gson.Gson;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import www.gymhop.p5m.MyApplication;
 import www.gymhop.p5m.eventbus.EventBroadcastHelper;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
+import www.gymhop.p5m.view.activity.Main.ForceUpdateActivity;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
 /**
@@ -63,13 +65,19 @@ public abstract class RestCallBack<T> implements Callback<T> {
             try {
                 ResponseModel responseModel = gson.fromJson(response.errorBody().string(), ResponseModel.class);
 
+                // Unauthorized User..
                 if (responseModel.statusCode.equals("401")) {
-
                     EventBroadcastHelper.logout(BaseActivity.contextRef);
                     return;
 
+                    // While joining class..
                 } else if (responseModel.statusCode.equals("498") || responseModel.statusCode.equals("402")) {
                     onFailure(call, responseModel.statusCode);
+
+                    // Force Update..
+                } else if (responseModel.statusCode.equals("426")) {
+                    ForceUpdateActivity.openActivity(MyApplication.context, "", responseModel.updateInfoText);
+
                 } else {
                     onFailure(call, responseModel.errorMessage);
                 }

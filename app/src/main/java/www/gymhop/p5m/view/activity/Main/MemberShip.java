@@ -327,6 +327,12 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                 PaymentWebViewActivity.open(activity, ((ResponseModel<PaymentUrl>) response).data);
                 memberShipAdapter.notifyDataSetChanges();
                 break;
+
+            case NetworkCommunicator.RequestCode.ME_USER:
+                user = TempStorage.getUser();
+                checkPackages();
+
+                break;
         }
     }
 
@@ -339,17 +345,17 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
             case NetworkCommunicator.RequestCode.BUY_PACKAGE:
                 ToastUtils.showFailureResponse(context, errorMessage);
                 memberShipAdapter.notifyDataSetChanges();
+
                 break;
         }
     }
 
     @Override
     public void onRefresh() {
-        user = TempStorage.getUser();
         memberShipAdapter.clearAll();
         memberShipAdapter.notifyDataSetChanges();
 
-        checkPackages();
+        networkCommunicator.getMyUser(this, false);
     }
 
 }

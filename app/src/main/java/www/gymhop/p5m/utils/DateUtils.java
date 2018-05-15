@@ -136,16 +136,17 @@ public class DateUtils {
     }
 
 
-    public static int hoursLeft(String date) {
+    public static float hoursLeft(String date) {
         try {
             Date expiryTime = classDateExpiry.parse(date);
             Date today = Calendar.getInstance().getTime();
             long diff = expiryTime.getTime() - today.getTime();
-            return (int) TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS);
+            float minute = TimeUnit.MINUTES.convert(diff, TimeUnit.MILLISECONDS);
+            return minute/60f;
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        return 3;
+        return 2;
     }
 }

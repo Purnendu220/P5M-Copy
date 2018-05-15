@@ -344,11 +344,12 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 textViewPay.setEnabled(false);
                 PaymentUrlRequest paymentUrlRequest = new PaymentUrlRequest(TempStorage.getUser().getId(),
                         aPackage.getId());
-                networkCommunicator.purchasePackageForClass(paymentUrlRequest, this, false);
 
                 if (promoCode != null) {
                     paymentUrlRequest.setPromoId(promoCode.getId());
                 }
+
+                networkCommunicator.purchasePackageForClass(paymentUrlRequest, this, false);
             }
             break;
             case CLASS_PURCHASE_WITH_PACKAGE: {

@@ -278,7 +278,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         } else if (holder instanceof GymListViewHolder) {
             ((GymListViewHolder) holder).bind(getItem(position), gymListListenerHelper, position);
         } else if (holder instanceof HeaderViewHolder) {
-            ((HeaderViewHolder) holder).bind(list.get(position), position);
+            ((HeaderViewHolder) holder).bind(list.get(position), false);
         } else if (holder instanceof SearchViewMoreViewHolder) {
             ((SearchViewMoreViewHolder) holder).bind(list.get(position), adapterCallbacks, position);
         } else if (holder instanceof LoaderViewHolder) {

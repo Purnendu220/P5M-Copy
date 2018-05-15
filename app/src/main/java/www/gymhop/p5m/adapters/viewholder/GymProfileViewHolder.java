@@ -120,7 +120,7 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
             if (model.getNumberOfTrainer() == -1) {
                 textViewTrainers.setText(Html.fromHtml("trainers"));
             } else {
-                textViewTrainers.setText(Html.fromHtml("<b>" + (model.getNumberOfTrainer() + "</b>" + AppConstants.plural(" trainers", model.getNumberOfTrainer()))));
+                textViewTrainers.setText(Html.fromHtml("<b>" + (model.getNumberOfTrainer() + "</b>" + AppConstants.plural(" trainer", model.getNumberOfTrainer()))));
             }
 
             ImageUtils.setImage(context,

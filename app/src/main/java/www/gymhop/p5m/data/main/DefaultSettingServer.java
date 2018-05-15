@@ -2,8 +2,9 @@ package www.gymhop.p5m.data.main;
 
 public class DefaultSettingServer implements java.io.Serializable {
     private static final long serialVersionUID = 6871393648272342621L;
+
     private String specialClassCancellationPolicy;
-    private int refundAllowedbefore;
+    private float refundAllowedbefore;
     private String cancellationPolicy;
 
     public String getSpecialClassCancellationPolicy() {
@@ -14,7 +15,7 @@ public class DefaultSettingServer implements java.io.Serializable {
         this.specialClassCancellationPolicy = specialClassCancellationPolicy;
     }
 
-    public int getRefundAllowedbefore() {
+    public float getRefundAllowedbefore() {
         return this.refundAllowedbefore;
     }
 

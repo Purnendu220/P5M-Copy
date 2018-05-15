@@ -191,11 +191,16 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.custom.GalleryActivity"
-            android:theme="@style/AppThemeTranslucent" />
+            android:theme="@style/AppThemeGallery" />
         <activity
             android:name=".view.activity.Demo"
             android:label="@string/title_activity_demo"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".view.activity.Main.ForceUpdateActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeDialog"></activity>
     </application>
 
 </manifest>

@@ -238,7 +238,6 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
             e.printStackTrace();
             LogUtils.exception(e);
         }
-
     }
 
     private void setupSearch() {
@@ -286,8 +285,8 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
                     }
 
                     startSearching(editable.toString());
-                } else {
 
+                } else if (editable.toString().length() == 0) {
                     if (runnableSearch != null) {
                         handlerBG.removeCallbacks(runnableSearch);
                     }
@@ -297,6 +296,8 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
                     }
 
                     clearSearch();
+                } else {
+
                 }
             }
         });
@@ -397,6 +398,11 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
     }
 
     private void viewResults() {
+
+        if (editTextSearch.getText().toString().trim().isEmpty()) {
+            return;
+        }
+
         SearchResults searchResult = searchAdapter.getSearchResult();
 
         if (searchResult == null) {

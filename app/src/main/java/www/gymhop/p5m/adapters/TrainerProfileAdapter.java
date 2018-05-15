@@ -122,6 +122,8 @@ public class TrainerProfileAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             list.add(headerSticky);
             list.addAll(classModels);
             addLoader();
+        } else {
+            list.add(headerSticky);
         }
 
         notifyDataSetChanged();
@@ -171,7 +173,7 @@ public class TrainerProfileAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         } else if (holder instanceof ClassMiniDetailViewHolder) {
             ((ClassMiniDetailViewHolder) holder).bind(list.get(position), adapterCallbacksClasses, position);
         } else if (holder instanceof HeaderViewHolder) {
-            ((HeaderViewHolder) holder).bind(list.get(position), position);
+            ((HeaderViewHolder) holder).bind(list.get(position), classModels.isEmpty());
         } else if (holder instanceof LoaderViewHolder) {
             ((LoaderViewHolder) holder).bind(listLoader, adapterCallbacksClasses);
             if (position == getItemCount() - 1 && !listLoader.isFinish()) {

@@ -37,6 +37,7 @@
     <color name="theme_booked_highlight">#CCFF8C00</color>
     <color name="theme_book">#3d85ea</color>
     <color name="theme_select_disable">#f5f9fc</color>
+    <color name="layer">#80000000</color>
 
     <drawable name="transparent">#00000000</drawable>
     <drawable name="highlight">#1A000000</drawable>

@@ -23,6 +23,7 @@ public class EventBroadcastHelper {
     public static void sendLogin(Context context, User user) {
         TempStorage.setUser(context, user);
         MyPreferences.getInstance().setLogin(true);
+        NetworkCommunicator.getInstance(context).getDefault();
     }
 
     public static void logout(Context context) {

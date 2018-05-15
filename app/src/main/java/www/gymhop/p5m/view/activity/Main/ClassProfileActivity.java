@@ -161,8 +161,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             Helper.setJoinStatusProfile(context, textViewBook, classModel);
         } else {
             layoutButton.setVisibility(View.GONE);
-            onRefresh();
         }
+
+        onRefresh();
 
         try {
             ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
@@ -273,7 +274,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         switch (view.getId()) {
             case R.id.imageViewClass:
                 if (classModel.getClassMedia() != null) {
-                    Helper.openImageViewer(context, classModel.getClassMedia().getMediaUrl());
+                    Helper.openImageViewer(context, activity, view, classModel.getClassMedia().getMediaUrl());
                 }
                 break;
             case R.id.layoutTrainer:

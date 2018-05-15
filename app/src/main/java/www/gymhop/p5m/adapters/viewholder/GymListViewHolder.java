@@ -11,6 +11,7 @@ import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.adapters.AdapterCallbacks;
 import www.gymhop.p5m.data.main.GymDetailModel;
+import www.gymhop.p5m.helper.Helper;
 import www.gymhop.p5m.utils.ImageUtils;
 
 /**
@@ -21,6 +22,11 @@ public class GymListViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.textViewName)
     public TextView textViewName;
+    @BindView(R.id.textViewSubtitle)
+    public TextView textViewSubtitle;
+
+    @BindView(R.id.layoutLocation)
+    public View layoutLocation;
 
     @BindView(R.id.imageViewProfile)
     public ImageView imageViewProfile;
@@ -51,6 +57,11 @@ public class GymListViewHolder extends RecyclerView.ViewHolder {
                         model.getProfileImageThumbnail(),
                         R.drawable.profile_holder, imageViewProfile);
             }
+
+            String branchList = Helper.getBranchList(model.getGymBranchResponseList());
+
+            layoutLocation.setVisibility(branchList.isEmpty() ? View.GONE : View.VISIBLE);
+            textViewSubtitle.setText(branchList);
 
             textViewName.setText(model.getStudioName());
 
