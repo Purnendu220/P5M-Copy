@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import www.gymhop.p5m.MyApplication;
+import www.gymhop.p5m.MyApp;
 import www.gymhop.p5m.eventbus.EventBroadcastHelper;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
@@ -28,7 +28,7 @@ public abstract class RestCallBack<T> implements Callback<T> {
 //        String errorMessage = "Please try again later";
 //
 //        try {
-////            switch (MyApplication.apiMode) {
+////            switch (MyApp.apiMode) {
 ////                case LIVE:
 ////                    if (!NetworkUtil.isInternetAvailable) {
 ////                        errorMessage = "Internet not available";
@@ -76,7 +76,7 @@ public abstract class RestCallBack<T> implements Callback<T> {
 
                     // Force Update..
                 } else if (responseModel.statusCode.equals("426")) {
-                    ForceUpdateActivity.openActivity(MyApplication.context, "", responseModel.updateInfoText);
+                    ForceUpdateActivity.openActivity(MyApp.context, "", responseModel.updateInfoText);
 
                 } else {
                     onFailure(call, responseModel.errorMessage);

@@ -1,7 +1,9 @@
 package www.gymhop.p5m.view.custom;
 
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,15 +11,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bogdwellers.pinchtozoom.ImageMatrixTouchHandler;
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.gymhop.p5m.R;
+import www.gymhop.p5m.helper.GlideApp;
 import www.gymhop.p5m.view.fragment.BaseFragment;
 import www.gymhop.p5m.view.fragment.ViewPagerFragmentSelection;
 
@@ -52,32 +53,22 @@ public class MediaGalleryFragment extends BaseFragment implements ViewPagerFragm
         }
 
         imageViewImageLoader.setVisibility(View.VISIBLE);
-        Glide.with(context)
+
+        GlideApp.with(context)
                 .load(R.drawable.placeholder_glide)
-                .asGif()
-                .crossFade()
                 .into(imageViewImageLoader);
 
-        Glide.with(context).load(uri)
-                .crossFade()
+        GlideApp.with(context).load(uri)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .fitCenter()
-                .listener(new RequestListener<String, GlideDrawable>() {
+                .into(new SimpleTarget<Drawable>() {
                     @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                         imageViewImageLoader.setVisibility(View.GONE);
                         imageViewImage.setImageDrawable(resource);
-                        return true;
+                        imageViewImage.setOnTouchListener(new ImageMatrixTouchHandler(context));
                     }
-                })
-                .into(imageViewImage);
-
-        imageViewImage.setOnTouchListener(new ImageMatrixTouchHandler(context));
+                });
     }
 
 //    public void setTransitionName(String imageViewTransition) {

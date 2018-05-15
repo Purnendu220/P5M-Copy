@@ -2,7 +2,7 @@ package www.gymhop.p5m.utils;
 
 import android.util.Log;
 
-import www.gymhop.p5m.MyApplication;
+import www.gymhop.p5m.MyApp;
 
 /**
  * Created by MyU10 on 1/18/2017.
@@ -34,7 +34,7 @@ public class LogUtils {
     }
 
     private static void log(String tag, String msg) {
-        if (MyApplication.SHOW_LOG) {
+        if (MyApp.SHOW_LOG) {
             Log.d(tag, msg);
         }
     }

@@ -11,7 +11,7 @@ import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import www.gymhop.p5m.MyApplication;
+import www.gymhop.p5m.MyApp;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.LogUtils;
@@ -28,7 +28,7 @@ public class RestServiceFactory {
     private static <S> S createService(Class<S> serviceClass) {
         if (apiService == null) {
 
-            if (MyApplication.RETROFIT_SHOW_LOG) {
+            if (MyApp.RETROFIT_SHOW_LOG) {
                 HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
                 logging.setLevel(HttpLoggingInterceptor.Level.BODY);
                 httpClient.addInterceptor(logging);
@@ -55,7 +55,7 @@ public class RestServiceFactory {
 
             String baseUrl = "";
 
-            switch (MyApplication.apiMode) {
+            switch (MyApp.apiMode) {
                 case TESTING_BETA:
                     baseUrl = AppConstants.Url.BASE_SERVICE_BETA;
                     break;

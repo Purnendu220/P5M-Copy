@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import www.gymhop.p5m.MyApplication;
+import www.gymhop.p5m.MyApp;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.eventbus.EventBroadcastHelper;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
@@ -104,7 +104,7 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
                 Boolean forceUpdate = ((ResponseModel<Boolean>) response).data;
 
                 if (forceUpdate) {
-                    ForceUpdateActivity.openActivity(MyApplication.context, "", "");
+                    ForceUpdateActivity.openActivity(MyApp.context, "", "");
                 }
 
                 break;
