@@ -234,8 +234,6 @@ public class NotificationActivity extends BaseActivity implements SwipeRefreshLa
                     notificationsAdapter.notifyDataSetChanged();
                 }
 
-                checkListData();
-
                 break;
         }
     }

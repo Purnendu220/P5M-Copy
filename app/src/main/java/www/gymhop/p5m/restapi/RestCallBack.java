@@ -63,7 +63,13 @@ public abstract class RestCallBack<T> implements Callback<T> {
             Gson gson = new Gson();
 
             try {
-                ResponseModel responseModel = gson.fromJson(response.errorBody().string(), ResponseModel.class);
+                ResponseModel responseModel = null;
+
+                if (response.body() != null && response.body() instanceof ResponseModel) {
+                    responseModel = (ResponseModel) response.body();
+                } else {
+                    responseModel = gson.fromJson(response.errorBody().string(), ResponseModel.class);
+                }
 
                 // Unauthorized User..
                 if (responseModel.statusCode.equals("401")) {

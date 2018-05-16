@@ -204,6 +204,26 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             return;
         }
 
+        textViewBook.setText(context.getResources().getString(R.string.please_wait));
+        textViewBook.setEnabled(false);
+
+        networkCommunicator.getMyUser(new NetworkCommunicator.RequestListener() {
+            @Override
+            public void onApiSuccess(Object response, int requestCode) {
+                performJoinProcess();
+                Helper.setJoinStatusProfile(context, textViewBook, classModel);
+            }
+
+            @Override
+            public void onApiFailure(String errorMessage, int requestCode) {
+                ToastUtils.show(context, errorMessage);
+                Helper.setJoinStatusProfile(context, textViewBook, classModel);
+            }
+        }, false);
+    }
+
+    private void performJoinProcess() {
+
         UserPackageInfo userPackageInfo = new UserPackageInfo(TempStorage.getUser());
 
         if (userPackageInfo.havePackages) {
@@ -230,6 +250,15 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     if (DateUtils.canJoinClass(classModel.getClassDate(), userPackageInfo.userPackageGeneral.getExpiryDate()) >= 0) {
                         joinClass();
                         return;
+                    } else {
+                        DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), "Purchase", new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                dialog.dismiss();
+                                MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+                            }
+                        });
+                        return;
                     }
                 }
             }
@@ -242,9 +271,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     }
 
     private void joinClass() {
-        networkCommunicator.joinClass(new JoinClassRequest(TempStorage.getUser().getId(), classModel.getClassSessionId()), this, false);
         textViewBook.setText(context.getResources().getString(R.string.please_wait));
         textViewBook.setEnabled(false);
+        networkCommunicator.joinClass(new JoinClassRequest(TempStorage.getUser().getId(), classModel.getClassSessionId()), this, false);
     }
 
     private void setToolBar() {
@@ -372,7 +401,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             case NetworkCommunicator.RequestCode.JOIN_CLASS:
 
                 if (errorMessage.equals("498")) {
-                    DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), "Purchase", new MaterialDialog.SingleButtonCallback() {
+                    DialogUtils.showBasic(context, getString(R.string.join_fail_limit_exhaust), "Purchase", new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             dialog.dismiss();
@@ -381,13 +410,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     });
 
                 } else if (errorMessage.equals("402")) {
-                    DialogUtils.showBasic(context, getString(R.string.join_fail_limit_exhaust), "Purchase", new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            dialog.dismiss();
-                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
-                        }
-                    });
+                    MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+
                 } else {
                     ToastUtils.showLong(context, errorMessage);
                 }

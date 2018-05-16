@@ -218,7 +218,7 @@ public class Helper {
             images.add(mediaModel.getMediaUrl());
         }
 
-        GalleryActivity.openActivity(context, null,  null, position, images);
+        GalleryActivity.openActivity(context, null, null, position, images);
 
 
 //        Fresco.initialize(context);
@@ -246,7 +246,7 @@ public class Helper {
         List<String> images = new ArrayList<>(1);
         images.add(url);
 
-        GalleryActivity.openActivity(context, activity,  sharedElement, 0, images);
+        GalleryActivity.openActivity(context, activity, sharedElement, 0, images);
 
 //        Fresco.initialize(context);
 //
@@ -369,6 +369,9 @@ public class Helper {
                 break;
             case "pro":
                 imageView.setImageResource(R.drawable.pro_icon);
+                break;
+            case "special":
+                imageView.setImageResource(R.drawable.set_icon);
                 break;
             default:
                 imageView.setImageResource(R.drawable.ready_icon);

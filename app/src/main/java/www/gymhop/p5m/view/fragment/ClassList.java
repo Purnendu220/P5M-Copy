@@ -306,8 +306,6 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                 swipeRefreshLayout.setRefreshing(false);
                 ToastUtils.showLong(context, errorMessage);
 
-                checkListData();
-
                 break;
         }
     }

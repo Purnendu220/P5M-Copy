@@ -399,7 +399,7 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
 
     private void viewResults() {
 
-        if (editTextSearch.getText().toString().trim().isEmpty()) {
+        if (editTextSearch.getText().toString().trim().isEmpty() || searchAdapter.getSearchResult() == null) {
             return;
         }
 
@@ -518,10 +518,10 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
                 break;
 
             case R.id.layoutSearch:
-                layoutSearch.setVisibility(View.GONE);
                 KeyboardUtils.close(editTextSearch, context);
 
-                if (searchAdapter.isEmpty() && searchPagerAdapter == null) {
+                if (searchAdapter.isEmpty() && (searchPagerAdapter == null || searchAdapter.getSearchResult() == null)) {
+                    layoutSearch.setVisibility(View.GONE);
                     onBackPressed();
                 }
 

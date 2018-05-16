@@ -172,13 +172,14 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:orientation="horizontal"
-                    android:paddingBottom="12dp"
+                    android:paddingBottom="8dp"
                     android:visibility="visible">
 
                     <ImageView
                         android:id="@+id/imageViewClassSpecial"
                         style="@style/ClassIconSmall"
-                        android:padding="3dp"
+                        android:padding="4dp"
+                        android:paddingTop="1dp"
                         android:src="@drawable/special" />
 
                     <TextView
@@ -234,13 +235,13 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <RelativeLayout
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="12dp"
+                            android:layout_marginBottom="8dp"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="48dp"
-                            android:layout_marginTop="12dp"
+                            android:layout_marginTop="8dp"
                             android:orientation="horizontal">
 
                             <ImageView
@@ -263,6 +264,18 @@
                                 android:textColor="@color/theme_dark_text"
                                 android:textSize="@dimen/text_medium" />
 
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/text_drawable_adjustment"
+                                android:layout_toEndOf="@+id/imageViewClassDate"
+                                android:fontFamily="sans-serif"
+                                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                                android:lineSpacingExtra="@dimen/line_spacing_extra"
+                                android:text="."
+                                android:textColor="@color/theme_dark_text"
+                                android:textSize="@dimen/text_medium" />
+
                             <ImageView
                                 android:id="@+id/imageViewClassTime"
                                 style="@style/ClassIconSmall"
@@ -276,7 +289,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
-                                android:layout_marginLeft="6dp"
+                                android:layout_marginLeft="4dp"
                                 android:layout_marginTop="@dimen/text_drawable_adjustment"
                                 android:layout_toEndOf="@+id/imageViewClassTime"
                                 android:fontFamily="sans-serif"
@@ -287,12 +300,12 @@
                                 android:textSize="@dimen/text_medium"
                                 android:textStyle="bold" />
 
-                        </RelativeLayout>
+                        </LinearLayout>
 
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="12dp"
+                            android:layout_marginBottom="8dp"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="48dp"
                             android:orientation="horizontal">
@@ -333,7 +346,7 @@
                             <ImageView
                                 android:id="@+id/imageViewClassGender"
                                 style="@style/ClassIconSmall"
-                                android:src="@drawable/gender" />
+                                android:src="@drawable/gender_dark" />
 
                             <TextView
                                 android:id="@+id/textViewClassGender"

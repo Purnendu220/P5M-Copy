@@ -66,7 +66,7 @@ public class ContinueUser extends BaseActivity implements View.OnClickListener {
                 LoginActivity.open(context);
                 break;
             case R.id.buttonRegister:
-                RegistrationActivity.open(context);
+                SignUpOptions.open(context);
                 break;
             case R.id.textViewSwitch:
                 LoginActivity.open(context);

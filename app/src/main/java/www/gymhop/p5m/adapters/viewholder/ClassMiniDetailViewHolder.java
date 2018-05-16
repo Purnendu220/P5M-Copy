@@ -31,6 +31,8 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
     public ImageView imageViewOptions1;
     @BindView(R.id.imageViewOptions2)
     public ImageView imageViewOptions2;
+    @BindView(R.id.imageViewClassGender)
+    public ImageView imageViewClassGender;
 
     @BindView(R.id.trainerImage)
     public View trainerImage;

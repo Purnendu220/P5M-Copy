@@ -39,6 +39,7 @@ public class DateUtils {
     private static SimpleDateFormat classDateSec = new SimpleDateFormat("dd-mm-yyyy");
     private static SimpleDateFormat classDateExpiry = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static SimpleDateFormat classDateFormat = new SimpleDateFormat("EEE, MMM d, yyyy");
+    private static SimpleDateFormat packageDateFormat = new SimpleDateFormat("MMM d, yyyy");
     private static SimpleDateFormat notificationDate = new SimpleDateFormat("h:mm a, MMM d");
 
     public static String getFormattedDobFromServer(Date date) {
@@ -108,6 +109,16 @@ public class DateUtils {
         return "";
     }
 
+    public static String getPackageClassDate(String date) {
+        try {
+            return packageDateFormat.format(classDate.parse(date));
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+        return "";
+    }
+
     public static String getClassDateNotification(long time) {
         if (time < 1000000000000L) {
             // if timestamp given in seconds, convert to millis
@@ -142,7 +153,7 @@ public class DateUtils {
             Date today = Calendar.getInstance().getTime();
             long diff = expiryTime.getTime() - today.getTime();
             float minute = TimeUnit.MINUTES.convert(diff, TimeUnit.MILLISECONDS);
-            return minute/60f;
+            return minute / 60f;
         } catch (ParseException e) {
             e.printStackTrace();
         }

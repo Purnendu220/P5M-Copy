@@ -85,14 +85,15 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                 button.setBackgroundResource(R.drawable.button_disabled);
                 button.setTextColor(ContextCompat.getColor(context, R.color.theme_light_text));
 
-                Helper.setPackageImage(imageViewHeader, model.getPackageName());
+//                Helper.setPackageImage(imageViewHeader, model.getPackageName());
+                imageViewHeader.setImageResource(R.drawable.set_icon);
 
                 if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
 
                     textViewPackageName.setText(model.getPackageName());
                     textViewPageTitle.setText(Html.fromHtml(model.getBalanceClass() +
                             " of " + model.getTotalNumberOfClass() + " " + "classes remaining"));
-                    textViewPackageValidity.setText("Valid till " + DateUtils.getClassDate(model.getExpiryDate()));
+                    textViewPackageValidity.setText("Valid till " + DateUtils.getPackageClassDate(model.getExpiryDate()));
 
                     textViewViewLimit.setVisibility(View.VISIBLE);
 
@@ -107,9 +108,9 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                 } else if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
 
                     textViewPackageName.setText(model.getPackageName());
-                    textViewPageTitle.setText(model.getBalanceClass() + " class remaining");
+                    textViewPageTitle.setText(model.getBalanceClass() + " class remaining for " + model.getGymName());
 
-                    textViewPackageValidity.setText("Valid for " + model.getGymName());
+                    textViewPackageValidity.setText("Valid till " + DateUtils.getPackageClassDate(model.getExpiryDate()));
 
                     textViewViewLimit.setVisibility(View.GONE);
                     imageViewInfo.setVisibility(View.VISIBLE);

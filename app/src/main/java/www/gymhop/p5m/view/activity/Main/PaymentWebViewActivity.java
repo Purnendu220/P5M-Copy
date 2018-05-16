@@ -3,6 +3,7 @@ package www.gymhop.p5m.view.activity.Main;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -106,25 +107,48 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
 
     class MyWebViewClient extends WebViewClient {
         @Override
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+
+            LogUtils.debug("Payment shouldOverrideUrlLoading " + request.toString());
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if (request.getUrl().toString().contains("profive-midl/api/v1/paymentsuccesspage")) {
+                    webView.setVisibility(View.INVISIBLE);
+                } else {
+                    webView.setVisibility(View.VISIBLE);
+                }
+
+                if (request.getUrl().toString().equalsIgnoreCase("intent://com.profive.android.view.activity.SplashScreenActivity")) {
+                    paymentSuccessful();
+                    return true;
+                }
+            }
+
+            return super.shouldOverrideUrlLoading(view, request);
+        }
+
+        @Override
         public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
             progressBar.setVisibility(View.GONE);
             LogUtils.debug("Payment onPageFinished " + url);
 
             if (url.equalsIgnoreCase("intent://com.profive.android.view.activity.SplashScreenActivity")) {
                 paymentSuccessful();
+                return;
             }
+            super.onPageFinished(view, url);
         }
 
         @Override
         public void onLoadResource(WebView view, String url) {
-            super.onLoadResource(view, url);
             Uri uri = Uri.parse(url);
             LogUtils.debug("Payment onLoadResource" + url);
 
             if (url.equalsIgnoreCase("intent://com.profive.android.view.activity.SplashScreenActivity")) {
                 paymentSuccessful();
+                return;
             }
+            super.onLoadResource(view, url);
         }
 
         @Override

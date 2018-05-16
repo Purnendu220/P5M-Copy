@@ -184,10 +184,10 @@ public class GymList extends BaseFragment implements ViewPagerFragmentSelection,
             layoutNoData.setVisibility(View.VISIBLE);
             if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SEARCH_RESULTS) {
                 textViewEmptyLayoutText.setText(R.string.no_data_search_gym_list);
-                imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_search);
+                imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_class);
             } else {
                 textViewEmptyLayoutText.setText(R.string.no_data_search_gym_list);
-                imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_search);
+                imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_class);
             }
         } else {
             layoutNoData.setVisibility(View.GONE);

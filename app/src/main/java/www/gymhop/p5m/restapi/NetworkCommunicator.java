@@ -71,6 +71,7 @@ public class NetworkCommunicator {
 
     public class RequestCode {
 
+        public static final int FORGOT_PASSWORD = 96;
         public static final int LOGIN_FB = 97;
         public static final int VALIDATE_EMAIL = 98;
         public static final int REGISTER = 99;
@@ -196,6 +197,28 @@ public class NetworkCommunicator {
                 requestListener.onApiSuccess(response, requestCode);
 
                 EventBroadcastHelper.sendDeviceUpdate(context);
+            }
+        });
+        return call;
+    }
+
+    public Call forgotPassword(String email, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.FORGOT_PASSWORD;
+        Call<ResponseModel<String>> call = apiService.forgotPassword(email);
+        LogUtils.debug("NetworkCommunicator hitting forgotPassword");
+
+        call.enqueue(new RestCallBack<ResponseModel<String>>() {
+            @Override
+            public void onFailure(Call<ResponseModel<String>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator forgotPassword onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<String>> call, Response<ResponseModel<String>> restResponse, ResponseModel<String> response) {
+                LogUtils.networkSuccess("NetworkCommunicator forgotPassword onResponse data " + response);
+                TempStorage.setAuthToken(restResponse.headers().get(AppConstants.ApiParamKey.MYU_AUTH_TOKEN));
+                requestListener.onApiSuccess(response, requestCode);
             }
         });
         return call;

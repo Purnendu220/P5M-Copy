@@ -236,6 +236,7 @@
     <string name="press_again_to_exit">Press back again to exit</string>
     <string name="cancel_class">Unjoin Class</string>
     <string name="forgot_password">"<b><u>Forgot password</u>?</b>"</string>
+    <string name="forgot_password_no_bold">"Forgot password?"</string>
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <string name="gaping">"&#160;&#160;"</string>
     <string name="current_pass_new_pass_same">Your new password and current password is same</string>
@@ -252,5 +253,7 @@
     <string name="no_data_notifications">No notifications yet.</string>
     <string name="search_hint">Search…</string>
     <string name="title_activity_demo">Demo</string>
+    <string name="reset_pass">Reset Password</string>
+    <string name="apply_filter">Apply Filter</string>
 
 </resources>

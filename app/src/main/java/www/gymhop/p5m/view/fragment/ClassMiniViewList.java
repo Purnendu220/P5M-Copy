@@ -138,10 +138,12 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
         if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
             shouldRefresh = true;
             onTabSelection(fragmentPositionInViewPager);
+            classListAdapter.getList().clear();
+            classListAdapter.notifyDataSetChanged();
+        } else {
+            handleClassJoined(data.data);
+            checkListData();
         }
-
-        handleClassJoined(data.data);
-        checkListData();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -350,7 +352,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
                 imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_class);
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SEARCH_RESULTS) {
                 textViewEmptyLayoutText.setText(R.string.no_data_search_class_list);
-                imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_search);
+                imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_class);
             } else {
                 textViewEmptyLayoutText.setText("");
                 imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_class);

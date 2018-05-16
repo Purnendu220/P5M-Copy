@@ -71,10 +71,10 @@ public class GalleryActivity extends BaseActivity implements ViewPager.OnPageCha
         ButterKnife.bind(activity);
 
         slideUpAnimation = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.slide_up_animation);
+                android.R.anim.fade_in);
 
         slideDownAnimation = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.slide_down_animation);
+                android.R.anim.fade_out);
 
         startSlideUpAnimation();
 
@@ -199,27 +199,51 @@ public class GalleryActivity extends BaseActivity implements ViewPager.OnPageCha
         });
     }
 
+    boolean isPerformingSlideDownAnimation;
+
     public void startSlideDownAnimation() {
+        if (isPerformingSlideDownAnimation) {
+            return;
+        }
+
+        finish();
+        overridePendingTransition(0, 0);
+
+        isPerformingSlideDownAnimation = true;
         textViewCounter.setVisibility(View.INVISIBLE);
 
-        root.setBackgroundColor(ContextCompat.getColor(context, R.color.layer));
-        viewPager.startAnimation(slideDownAnimation);
+//        int colorTo = ContextCompat.getColor(context, R.color.layer);
+//        int colorFrom = Color.BLACK;
+//        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+//        colorAnimation.setDuration(300);
+//        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator animator) {
+//                root.setBackgroundColor((int) animator.getAnimatedValue());
+//            }
+//
+//        });
+//        colorAnimation.start();
 
-        slideDownAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                GalleryActivity.super.onBackPressed();
-                overridePendingTransition(0, 0);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
+//        root.setBackgroundColor(ContextCompat.getColor(context, R.color.layer));
+//        viewPager.startAnimation(slideDownAnimation);
+//
+//        slideDownAnimation.setAnimationListener(new Animation.AnimationListener() {
+//            @Override
+//            public void onAnimationStart(Animation animation) {
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animation animation) {
+//                GalleryActivity.super.onBackPressed();
+//                overridePendingTransition(0, 0);
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animation animation) {
+//
+//            }
+//        });
     }
 }

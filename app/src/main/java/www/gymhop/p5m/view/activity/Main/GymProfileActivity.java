@@ -194,7 +194,7 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
                 if (model != null && model instanceof GymDetailModel) {
                     GymDetailModel data = (GymDetailModel) model;
                     if (data != null && !data.getProfileImage().isEmpty()) {
-                        Helper.openImageViewer(context, activity,  view, gymDetailModel.getProfileImage());
+                        Helper.openImageViewer(context, activity, view, gymDetailModel.getProfileImage());
                     }
                 }
                 break;
@@ -229,8 +229,9 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
         page = 0;
         gymProfileAdapter.loaderReset();
 
-        callApiClasses();
         callApiGym();
+        callApiClasses();
+
     }
 
 

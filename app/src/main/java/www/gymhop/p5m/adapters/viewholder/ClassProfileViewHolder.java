@@ -134,7 +134,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
                     if (!stringBuffer.toString().isEmpty()) {
                         stringBuffer.append("<br/><br/>");
                     }
-                    stringBuffer.append("<b>SPECIAL NOTES BY TRAINER:</b>" + context.getString(R.string.gaping) + model.getSpecialNote());
+                    stringBuffer.append("<b>SPECIAL NOTE BY TRAINER:</b>" + context.getString(R.string.gaping) + model.getSpecialNote());
                 }
 
                 textViewMoreDetails.setText(Html.fromHtml(stringBuffer.toString()));

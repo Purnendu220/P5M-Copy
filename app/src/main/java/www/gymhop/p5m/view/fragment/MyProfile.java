@@ -191,6 +191,8 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
             myProfileAdapter.clearTrainers();
             myProfileAdapter.clearClasses();
             myProfileAdapter.notifyDataSetChanges();
+        } else {
+            networkCommunicator.getMyUser(this, false);
         }
     }
 

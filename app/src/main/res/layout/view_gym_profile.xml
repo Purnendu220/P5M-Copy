@@ -319,13 +319,10 @@
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
                         android:lineSpacingExtra="@dimen/line_spacing_extra"
                         android:padding="8dp"
-                        android:shadowColor="@color/text_shadow"
-                        android:shadowDx="2"
-                        android:shadowDy="2"
-                        android:shadowRadius="2"
+                        android:layout_marginRight="2dp"
                         android:text="+3 more"
-                        android:textColor="@color/theme_accent_text"
-                        android:textSize="@dimen/text_medium"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_large"
                         android:textStyle="bold" />
                 </FrameLayout>
             </FrameLayout>

@@ -70,7 +70,7 @@ public class AppConstants {
     }
 
     public class Url {
-        //        public static final String BASE_SERVICE_ALPHA = "http://192.168.0.39:8080/profive-midl/";
+//        public static final String BASE_SERVICE_ALPHA = "http://192.168.0.39:8080/profive-midl/";
 //        public static final String BASE_SERVICE_ALPHA = "http://192.168.100.17:8080/profive-midl/";
         public static final String WEBSITE = "http://www.p5m.me/";
         public static final String BASE_SERVICE_ALPHA = "http://qa-api.profive.co/profive-midl/";
@@ -80,6 +80,7 @@ public class AppConstants {
         public static final String LOGIN = "api/v1/user/login";
         public static final String LOGOUT = "api/v1/device/logout";
         public static final String REGISTER = "api/v1/user/register";
+        public static final String FORGOT_PASSWORD = "api/v1/user/forgotPassword";
         public static final String VALIDATE_EMAIL = "api/v1/user/validate";
 
         public static final String DEFAULT_SETTING = "api/v1/user/default";
@@ -171,6 +172,7 @@ public class AppConstants {
         public static final String MEDIA_NAME = "mediaName";
         public static final String QUERY_STRING = "queryString";
         public static final String SEARCH_FOR = "searchFor";
+        public static final String EMAIL_ID = "emailId";
     }
 
     public static final class Notification {

@@ -250,8 +250,6 @@ public class TrainerList extends BaseFragment implements ViewPagerFragmentSelect
                 swipeRefreshLayout.setRefreshing(false);
                 ToastUtils.showLong(context, errorMessage);
 
-                checkListData();
-
                 break;
         }
     }

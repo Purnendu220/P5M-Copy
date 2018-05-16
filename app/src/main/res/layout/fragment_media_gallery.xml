@@ -19,12 +19,13 @@
             android:layout_gravity="center"
             android:scaleType="fitCenter" />
 
-        <ImageView
-            android:id="@+id/imageViewImageLoader"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+        <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:id="@+id/progressBar"
             android:layout_gravity="center"
-            android:scaleType="fitCenter" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
     </FrameLayout>
 
 </RelativeLayout>

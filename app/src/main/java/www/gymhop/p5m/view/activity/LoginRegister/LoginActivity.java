@@ -135,6 +135,11 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
         finish();
     }
 
+    @OnClick(R.id.textViewForgetPassword)
+    public void textViewForgetPassword(View view) {
+        ForgotPasswordActivity.open(context);
+    }
+
     @OnClick(R.id.buttonLogin)
     public void buttonLogin(View view) {
         String user = editTextEmail.getText().toString().trim();

@@ -288,8 +288,8 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
         page = 0;
         trainerProfileAdapter.loaderReset();
 
-        callApiClasses();
         callApiTrainers();
+        callApiClasses();
     }
 
     @Override

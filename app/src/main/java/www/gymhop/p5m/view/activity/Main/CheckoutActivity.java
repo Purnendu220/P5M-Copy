@@ -2,12 +2,10 @@ package www.gymhop.p5m.view.activity.Main;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
-import android.transition.TransitionManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -92,6 +90,8 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
     @BindView(R.id.textViewPackageName)
     TextView textViewPackageName;
+    @BindView(R.id.textViewTopTitle)
+    TextView textViewTopTitle;
     @BindView(R.id.textViewPrice)
     TextView textViewPrice;
     @BindView(R.id.textViewPackageClasses)
@@ -164,7 +164,10 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
                 textViewPackageName.setText(Html.fromHtml("1X <b>" + aPackage.getName() + "</b>"));
                 textViewPrice.setText(aPackage.getCost() + " " + context.getString(R.string.currency));
+
+                textViewPackageInfo.setVisibility(aPackage.getDescription().isEmpty() ? View.GONE : View.VISIBLE);
                 textViewPackageInfo.setText(aPackage.getDescription());
+
                 textViewPackageClasses.setText(aPackage.getNoOfClass() + " classes");
                 buttonPromoCode.setVisibility(View.VISIBLE);
                 Helper.setPackageImage(imageViewPackageImage, aPackage.getName());
@@ -177,12 +180,13 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 layoutNormalClassDetails.setVisibility(View.GONE);
                 layoutPromoCode.setVisibility(View.GONE);
                 buttonPromoCode.setVisibility(View.GONE);
+                textViewTopTitle.setVisibility(View.GONE);
 
                 textViewPackageName.setText(Html.fromHtml("<b>" + classModel.getTitle() + "</b>"));
                 textViewPrice.setText(classModel.getPrice() + " " + context.getString(R.string.currency));
 
                 textViewCancellationPolicy.setText(classModel.getReminder());
-                Helper.setPackageImage(imageViewPackageImage, "Ready");
+                Helper.setPackageImage(imageViewPackageImage, "special");
 
                 setPrice();
 
@@ -199,10 +203,6 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.textViewCancellationPolicyToggle:
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    TransitionManager.beginDelayedTransition(layoutSpecialClassDetails);
-                }
 
                 if (textViewCancellationPolicy.getVisibility() == View.VISIBLE) {
                     textViewCancellationPolicy.setVisibility(View.GONE);

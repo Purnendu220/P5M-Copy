@@ -54,8 +54,13 @@ public interface ApiService {
     @POST(AppConstants.Url.LOGIN)
     Call<ResponseModel<User>> login(@Body LoginRequest loginRequest);
 
+    @Headers("Content-type: application/json")
     @POST(AppConstants.Url.LOGIN)
     Call<ResponseModel<User>> loginFB(@Body LoginRequest classListRequest);
+
+    @Headers("Content-type: application/json")
+    @POST(AppConstants.Url.FORGOT_PASSWORD)
+    Call<ResponseModel<String>> forgotPassword(@Query(AppConstants.ApiParamKey.EMAIL_ID) String email);
 
     @Headers("Content-type: application/json")
     @POST(AppConstants.Url.REGISTER)

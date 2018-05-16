@@ -76,7 +76,7 @@
 
         <receiver android:name=".receivers.NetworkChangeReceiver">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.conn.CONNECTIVITY_ACTION" />
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
             </intent-filter>
         </receiver>
@@ -200,7 +200,8 @@
             android:name=".view.activity.Main.ForceUpdateActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeDialog"></activity>
+            android:theme="@style/AppThemeDialog" />
+        <activity android:name=".view.activity.LoginRegister.ForgotPasswordActivity"></activity>
     </application>
 
 </manifest>

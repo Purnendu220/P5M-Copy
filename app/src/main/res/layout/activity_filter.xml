@@ -93,7 +93,7 @@
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center"
                 android:letterSpacing="@dimen/button_letter_spacing"
-                android:text="@string/find_classes"
+                android:text="@string/apply_filter"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_large" />

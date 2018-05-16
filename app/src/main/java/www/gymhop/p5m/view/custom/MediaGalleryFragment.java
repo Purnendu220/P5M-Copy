@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.bogdwellers.pinchtozoom.ImageMatrixTouchHandler;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -26,8 +27,8 @@ public class MediaGalleryFragment extends BaseFragment implements ViewPagerFragm
 
     @BindView(R.id.imageViewImage)
     ImageView imageViewImage;
-    @BindView(R.id.imageViewImageLoader)
-    ImageView imageViewImageLoader;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
 
     public MediaGalleryFragment() {
     }
@@ -52,11 +53,11 @@ public class MediaGalleryFragment extends BaseFragment implements ViewPagerFragm
             return;
         }
 
-        imageViewImageLoader.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
 
-        GlideApp.with(context)
-                .load(R.drawable.placeholder_glide)
-                .into(imageViewImageLoader);
+//        GlideApp.with(context)
+//                .load(R.drawable.placeholder_glide)
+//                .into(imageViewImageLoader);
 
         GlideApp.with(context).load(uri)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -64,7 +65,7 @@ public class MediaGalleryFragment extends BaseFragment implements ViewPagerFragm
                 .into(new SimpleTarget<Drawable>() {
                     @Override
                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                        imageViewImageLoader.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.GONE);
                         imageViewImage.setImageDrawable(resource);
                         imageViewImage.setOnTouchListener(new ImageMatrixTouchHandler(context));
                     }

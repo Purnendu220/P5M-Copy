@@ -2,11 +2,17 @@ package www.gymhop.p5m.utils;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
+
+import www.gymhop.p5m.helper.GlideApp;
 
 /**
  * Created by Varun John on 4/11/2018.
@@ -25,60 +31,57 @@ public class ImageUtils {
     }
 
     public static void setImage(Context context, String url, int placeHolder, ImageView imageView) {
-//        if (url != null && !url.isEmpty()) {
-//            Glide.with(context)
-//                    .load(url)
-//                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                    .crossFade()
-//                    .placeholder(placeHolder)
-//                    .into(imageView);
-//        } else {
-//            clearImage(context, imageView);
-//        }
+        if (url != null && !url.isEmpty()) {
+            GlideApp.with(context)
+                    .load(url)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(placeHolder)
+                    .into(imageView);
+        } else {
+            clearImage(context, imageView);
+        }
     }
 
     public static void setImage(Context context, String url, ImageView imageView) {
-//        if (url != null && !url.isEmpty()) {
-//            Glide.with(context)
-//                    .load(url)
-//                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                    .crossFade()
-//                    .into(imageView);
-//        } else {
-//            clearImage(context, imageView);
-//        }
+        if (url != null && !url.isEmpty()) {
+            GlideApp.with(context)
+                    .load(url)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(imageView);
+        } else {
+            clearImage(context, imageView);
+        }
     }
 
     public static void setImageDelay(final Context context, String url, final ImageView imageView) {
-//        if (url != null && !url.isEmpty()) {
-//            Glide.with(context)
-//                    .load(url)
-//                    .fitCenter()
-//                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                    .into(new SimpleTarget<Drawable>() {
-//
-//                        @Override
-//                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-//                            imageView.setImageDrawable(resource);
-//                        }
-//                    });
-//        } else {
-//            clearImage(context, imageView);
-//        }
+        if (url != null && !url.isEmpty()) {
+            GlideApp.with(context)
+                    .load(url)
+                    .fitCenter()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(new SimpleTarget<Drawable>() {
+
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, Transition<? super Drawable> transition) {
+                            imageView.setImageDrawable(resource);
+                        }
+                    });
+        } else {
+            clearImage(context, imageView);
+        }
     }
 
     public static void clearImage(Context context, ImageView imageView) {
-        Glide.with(context).clear(imageView);
+        GlideApp.with(context).clear(imageView);
     }
 
     public static void setImage(Context context, int url, int placeHolder, ImageView imageView) {
-//        Glide.with(context)
-//                .load(url)
-//                .centerCrop()
-//                .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                .crossFade()
-//                .placeholder(placeHolder)
-//                .into(imageView);
+        GlideApp.with(context)
+                .load(url)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(placeHolder)
+                .into(imageView);
     }
 
     public static String getImagePathFromUri(Context context, Uri uri) {
