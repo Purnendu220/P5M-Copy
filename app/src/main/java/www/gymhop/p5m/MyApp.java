@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
-import www.gymhop.p5m.eventbus.EventBroadcastHelper;
 import www.gymhop.p5m.receivers.NetworkChangeReceiver;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.storage.TempStorage;
@@ -50,7 +49,6 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         MultiDex.install(this);
         Fresco.initialize(this);
 
-        NetworkCommunicator.getInstance(context).getDefault();
         Fabric.with(this, new Crashlytics());
 
         registerActivityLifecycleCallbacks(this);
@@ -71,7 +69,7 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
 
         TempStorage.version = myVersionName;
 
-        LogUtils.debug("version : "+TempStorage.version);
+        LogUtils.debug("version : " + TempStorage.version);
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(android.net.ConnectivityManager.CONNECTIVITY_ACTION);
@@ -135,7 +133,7 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
 
     private void onAppForeground() {
         //ToastUtils.show(this, "AppForeground");
-        EventBroadcastHelper.sendDeviceUpdate(this);
+//        EventBroadcastHelper.sendDeviceUpdate(this);
     }
 
     private void onAppBackground() {
