@@ -365,6 +365,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
                             android:background="@color/white"
+                            android:digits="0123456789"
                             android:fontFamily="sans-serif"
                             android:hint="Mobile No"
                             android:inputType="numberDecimal"

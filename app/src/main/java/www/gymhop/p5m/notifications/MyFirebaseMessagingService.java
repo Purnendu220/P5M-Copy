@@ -68,6 +68,53 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             Intent navigationIntent = null;
 
+            /**************************** Refresh ********************************/
+            switch (type) {
+
+                case "OnSessionDeleteByGYM":
+                case "OnClassDeleteByTrainer":
+                case "OnSessionDeleteByGymOfTrainer":
+                case "OnSessionDeleteByTrainerOfGym":
+                case "OnSessionDeleteByTrainer":
+                case "OnClassDeleteByGym":
+                case "OnClassDeleteByTrainerOfGym":
+                case "OnClassInActive":
+                case "OnSlotDeleteByTrainer":
+                case "OnSlotDeleteByGymOfTrainer":
+                case "OnSlotDeleteByGym":
+                case "OnSlotDeletByTrainerOfGym":
+                case "OnPaymentSuccess":
+                case "OnClassCancelByCMS":
+                case "OnBookingCancelToCustomerByCMS":
+                case "OnBookingCancelToGymByCMS":
+                case "OnBookingCancelToTrainerByCMS":
+                case "OnBookingCancelByCMS":
+                case "OnClassUpdateByGYM":
+                case "OnClassUpdateByTrainer":
+                case "OnSessionUpdateByGYM":
+                case "OnSessionUpdateByTrainerOfGym":
+                case "OnSessionUpdateByTrainer":
+                case "OnSessionUpdateByGymOfTrainer":
+                case "OnClassUpdateByCms":
+                case "OnClassUpdateByCMS":
+                case "OnGroupClassUpdateByCms":
+                case "OnNewTrainerAssign":
+
+                    EventBroadcastHelper.updateUpcomingList();
+
+                    break;
+
+                case "onPackageExpired":
+                case "OnFinishedPackage":
+                case "OnLowBalance":
+                case "OnAssignPackageFromCMS":
+                case "OnClassRefund":
+
+                    EventBroadcastHelper.updatePackage(this);
+
+                    break;
+            }
+
             /****************************Notification Batch Count********************************/
             switch (type) {
 

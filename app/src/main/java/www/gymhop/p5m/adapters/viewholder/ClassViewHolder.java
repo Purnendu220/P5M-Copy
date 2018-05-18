@@ -80,6 +80,12 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
 
             final ClassModel model = (ClassModel) data;
 
+            if (model.isUserJoinStatus()) {
+                imageViewOptions.setVisibility(View.GONE);
+            } else {
+                imageViewOptions.setVisibility(View.VISIBLE);
+            }
+
             if (Helper.isSpecialClass(model)) {
                 textViewSpecialClass.setVisibility(View.VISIBLE);
                 textViewSpecialClass.setText(Helper.getSpecialClassText(model));

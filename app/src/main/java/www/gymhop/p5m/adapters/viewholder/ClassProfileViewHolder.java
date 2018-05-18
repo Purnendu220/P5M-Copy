@@ -112,7 +112,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
                 layoutMap.setVisibility(View.GONE);
             }
 
-            if (model.getSpecialNote().isEmpty() && model.getReminder().isEmpty()) {
+            if (model.getSpecialNote().isEmpty() && model.getReminder().isEmpty() && model.getGymBranchDetail().getStudioInstruction().isEmpty()) {
                 layoutMoreDetails.setVisibility(View.GONE);
             } else {
                 layoutMoreDetails.setVisibility(View.VISIBLE);
@@ -123,11 +123,13 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
                     stringBuffer.append("<b>REMINDERS:</b>" + context.getString(R.string.gaping) + model.getReminder());
                 }
 
-                if (!model.getGymBranchDetail().getStudioInstruction().isEmpty()) {
-                    if (!stringBuffer.toString().isEmpty()) {
-                        stringBuffer.append("<br/><br/>");
+                if (model.getGymBranchDetail() != null) {
+                    if (!model.getGymBranchDetail().getStudioInstruction().isEmpty()) {
+                        if (!stringBuffer.toString().isEmpty()) {
+                            stringBuffer.append("<br/><br/>");
+                        }
+                        stringBuffer.append("<b>STUDIO INSTRUCTION:</b>" + context.getString(R.string.gaping) + model.getGymBranchDetail().getStudioInstruction());
                     }
-                    stringBuffer.append("<b>STUDIO INSTRUCTION:</b>" + context.getString(R.string.gaping) + model.getGymBranchDetail().getStudioInstruction());
                 }
 
                 if (!model.getSpecialNote().isEmpty()) {

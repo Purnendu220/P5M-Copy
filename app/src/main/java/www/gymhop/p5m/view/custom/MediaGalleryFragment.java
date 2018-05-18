@@ -12,7 +12,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.bogdwellers.pinchtozoom.ImageMatrixTouchHandler;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 
@@ -59,10 +61,23 @@ public class MediaGalleryFragment extends BaseFragment implements ViewPagerFragm
 //                .load(R.drawable.placeholder_glide)
 //                .into(imageViewImageLoader);
 
-        GlideApp.with(context).load(uri)
+//        GlideApp.with(context).load(uri)
+//                .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                .fitCenter().transition(DrawableTransitionOptions.withCrossFade())
+//                .into(new SimpleTarget<Drawable>() {
+//                    @Override
+//                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+//                        progressBar.setVisibility(View.GONE);
+//                        imageViewImage.setImageDrawable(resource);
+//                        imageViewImage.setOnTouchListener(new ImageMatrixTouchHandler(context));
+//                    }
+//                });
+
+        RequestBuilder<Drawable> requestBuilder = GlideApp.with(context).asDrawable().load(uri)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .fitCenter()
-                .into(new SimpleTarget<Drawable>() {
+                .fitCenter().transition(DrawableTransitionOptions.withCrossFade());
+        requestBuilder.preload(1080, 1080);
+        requestBuilder.into(new SimpleTarget<Drawable>() {
                     @Override
                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                         progressBar.setVisibility(View.GONE);

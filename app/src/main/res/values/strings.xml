@@ -255,5 +255,6 @@
     <string name="title_activity_demo">Demo</string>
     <string name="reset_pass">Reset Password</string>
     <string name="apply_filter">Apply Filter</string>
+    <string name="please_enter_your_email">Please enter your email</string>
 
 </resources>

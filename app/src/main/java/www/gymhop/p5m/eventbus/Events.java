@@ -31,6 +31,12 @@ public class Events {
     public static class NotificationCountUpdated {
     }
 
+    public static class UpdateUpcomingClasses {
+    }
+
+    public static class UpdatePackage {
+    }
+
     public static class PackagePurchasedForClass {
         public ClassModel data;
 

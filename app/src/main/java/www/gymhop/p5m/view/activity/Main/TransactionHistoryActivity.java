@@ -24,7 +24,6 @@ import www.gymhop.p5m.view.activity.base.BaseActivity;
 
 public class TransactionHistoryActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, AdapterCallbacks, NetworkCommunicator.RequestListener {
 
-
     public static void openActivity(Context context) {
         context.startActivity(new Intent(context, TransactionHistoryActivity.class));
     }
@@ -33,6 +32,8 @@ public class TransactionHistoryActivity extends BaseActivity implements SwipeRef
     public RecyclerView recyclerView;
     @BindView(R.id.swipeRefreshLayout)
     public SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.textViewEmptyLayoutText)
+    public View textViewEmptyLayoutText;
 
     private TransactionsAdapter transactionsAdapter;
 
@@ -93,6 +94,8 @@ public class TransactionHistoryActivity extends BaseActivity implements SwipeRef
                     transactionsAdapter.notifyDataSetChanged();
                 }
 
+                checkListData();
+
                 break;
         }
     }
@@ -105,6 +108,14 @@ public class TransactionHistoryActivity extends BaseActivity implements SwipeRef
             case NetworkCommunicator.RequestCode.TRANSACTION:
                 transactionsAdapter.notifyDataSetChanged();
                 break;
+        }
+    }
+
+    private void checkListData() {
+        if (transactionsAdapter.getList().isEmpty()) {
+            textViewEmptyLayoutText.setVisibility(View.VISIBLE);
+        } else {
+            textViewEmptyLayoutText.setVisibility(View.GONE);
         }
     }
 }

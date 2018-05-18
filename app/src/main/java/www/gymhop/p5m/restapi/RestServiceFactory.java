@@ -34,8 +34,8 @@ public class RestServiceFactory {
                 httpClient.addInterceptor(logging);
             }
 
-            httpClient.readTimeout(15, TimeUnit.SECONDS);
-            httpClient.connectTimeout(15, TimeUnit.SECONDS);
+            httpClient.readTimeout(30, TimeUnit.SECONDS);
+            httpClient.connectTimeout(30, TimeUnit.SECONDS);
 
             httpClient.addInterceptor(new Interceptor() {
                 @Override

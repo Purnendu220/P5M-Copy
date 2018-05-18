@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +41,7 @@ import www.gymhop.p5m.restapi.ResponseModel;
 import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.DialogUtils;
+import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.utils.ToastUtils;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
 
@@ -75,6 +78,10 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     private MemberShipAdapter memberShipAdapter;
     private UserPackageInfo userPackageInfo;
 
+    private Handler handler;
+    private Runnable runnable;
+    private int delay = 500;
+
     private User user;
 
     @Override
@@ -84,6 +91,8 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
         ButterKnife.bind(activity);
         GlobalBus.getBus().register(this);
+
+        handler = new Handler();
 
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setEnabled(true);
@@ -97,6 +106,13 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
         memberShipAdapter = new MemberShipAdapter(context, navigatedFrom, false, this);
         recyclerView.setAdapter(memberShipAdapter);
 
+        try {
+            ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+
         onRefresh();
 
         setToolBar();
@@ -108,19 +124,43 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
         GlobalBus.getBus().unregister(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void classJoin(Events.ClassJoin data) {
-        onRefresh();
+    public void updatePackage(Events.UpdatePackage data) {
+        refreshFromEvent();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getPackagePurchased(Events.PackagePurchased packagePurchased) {
-        onRefresh();
+        refreshFromEvent();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void packagePurchasedForClass(Events.PackagePurchasedForClass data) {
-        onRefresh();
+        refreshFromEvent();
+    }
+
+    private void refreshFromEvent() {
+        if (runnable != null) {
+            handler.removeCallbacks(runnable);
+        }
+
+        swipeRefreshLayout.setRefreshing(true);
+        memberShipAdapter.clearAll();
+        memberShipAdapter.notifyDataSetChanges();
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                onRefresh();
+            }
+        }, delay);
+
+//        onRefresh();
     }
 
     private void setToolBar() {
@@ -293,12 +333,12 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
     @Override
     public void onApiSuccess(Object response, int requestCode) {
-        swipeRefreshLayout.setRefreshing(false);
 
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.PACKAGES_LIMIT:
             case NetworkCommunicator.RequestCode.PACKAGES_FOR_USER:
 
+                swipeRefreshLayout.setRefreshing(false);
                 swipeRefreshLayout.setEnabled(true);
 
                 List<Package> packagesTemp = ((ResponseModel<List<Package>>) response).data;
@@ -324,6 +364,8 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
             case NetworkCommunicator.RequestCode.BUY_PACKAGE:
 
+                swipeRefreshLayout.setRefreshing(false);
+
                 PaymentWebViewActivity.open(activity, ((ResponseModel<PaymentUrl>) response).data);
                 memberShipAdapter.notifyDataSetChanges();
                 break;
@@ -338,6 +380,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
+
         swipeRefreshLayout.setRefreshing(false);
         swipeRefreshLayout.setEnabled(true);
 
@@ -352,6 +395,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
     @Override
     public void onRefresh() {
+
         memberShipAdapter.clearAll();
         memberShipAdapter.notifyDataSetChanges();
 

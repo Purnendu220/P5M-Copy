@@ -27,6 +27,7 @@ public class NetworkUtil {
             networkUtil = new NetworkUtil(context);
             NetworkUtil.context = context;
         }
+        NetworkUtil.context = context;
         return networkUtil;
     }
 
@@ -35,7 +36,7 @@ public class NetworkUtil {
         return networkUtil;
     }
 
-    private int getConnectivityStatus() {
+    private static int getConnectivityStatus() {
         ConnectivityManager cm = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -50,7 +51,7 @@ public class NetworkUtil {
         return TYPE_NOT_CONNECTED;
     }
 
-    private boolean isConnected() {
+    public static boolean isConnected() {
         int connectivityStatus = getConnectivityStatus();
         if(connectivityStatus == TYPE_WIFI || connectivityStatus == TYPE_MOBILE) {
             return true;

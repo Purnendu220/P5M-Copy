@@ -22,7 +22,7 @@ public class ForceUpdateActivity extends BaseActivity {
     public static void openActivity(Context context, String title, String message) {
         ForceUpdateActivity.title = title;
         ForceUpdateActivity.message = message;
-        context.startActivity(new Intent(context, SettingActivity.class));
+        context.startActivity(new Intent(context, ForceUpdateActivity.class));
     }
 
     @BindView(R.id.textViewTitle)

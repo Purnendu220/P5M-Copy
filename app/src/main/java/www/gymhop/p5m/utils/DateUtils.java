@@ -90,8 +90,8 @@ public class DateUtils {
 
     public static String getClassTime(String from, String till) {
         try {
-            return "  " + classTimeFormat.format(classTime.parse(from)) + " - " +
-                    classTimeFormat.format(classTime.parse(till));
+            return "  " + classTimeFormat.format(classTime.parse(from)).replace(".","").toUpperCase() + " - " +
+                    classTimeFormat.format(classTime.parse(till)).replace(".","").toUpperCase();
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -126,7 +126,7 @@ public class DateUtils {
         }
 
         try {
-            return notificationDate.format(new Date(time));
+            return notificationDate.format(new Date(time)).replace(".","").toUpperCase();
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);

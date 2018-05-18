@@ -9,11 +9,14 @@ import android.os.Bundle;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
+import com.crashlytics.android.Crashlytics;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.fabric.sdk.android.Fabric;
+import www.gymhop.p5m.eventbus.EventBroadcastHelper;
 import www.gymhop.p5m.receivers.NetworkChangeReceiver;
 import www.gymhop.p5m.restapi.NetworkCommunicator;
 import www.gymhop.p5m.storage.TempStorage;
@@ -26,7 +29,7 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
 
     public final static ApiMode apiMode = ApiMode.TESTING_ALPHA;
     public final static boolean SHOW_LOG = true;
-    public final static boolean RETROFIT_SHOW_LOG = true;
+    public final static boolean RETROFIT_SHOW_LOG = false;
     public final static boolean USE_CRASH_ANALYTICS = false;
 
     public final static List<Activity> ACTIVITIES = new ArrayList<>();
@@ -45,8 +48,11 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         context = getApplicationContext();
 
         MultiDex.install(this);
-
         Fresco.initialize(this);
+
+        NetworkCommunicator.getInstance(context).getDefault();
+        Fabric.with(this, new Crashlytics());
+
         registerActivityLifecycleCallbacks(this);
 
         NetworkChangeReceiver.register(this);
@@ -64,6 +70,8 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         }
 
         TempStorage.version = myVersionName;
+
+        LogUtils.debug("version : "+TempStorage.version);
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(android.net.ConnectivityManager.CONNECTIVITY_ACTION);
@@ -127,6 +135,7 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
 
     private void onAppForeground() {
         //ToastUtils.show(this, "AppForeground");
+        EventBroadcastHelper.sendDeviceUpdate(this);
     }
 
     private void onAppBackground() {

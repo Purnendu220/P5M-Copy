@@ -34,6 +34,7 @@ import www.gymhop.p5m.data.main.TrainerModel;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.KeyboardUtils;
 import www.gymhop.p5m.utils.LogUtils;
+import www.gymhop.p5m.view.activity.Main.LocationActivity;
 import www.gymhop.p5m.view.custom.GalleryActivity;
 
 /**
@@ -282,14 +283,16 @@ public class Helper {
         popup.show();
     }
 
-    public static void openMap(Context context, Double latitude, Double longitude) {
+    public static void openMap(Context context, Double latitude, Double longitude, String label) {
         if (longitude == null || latitude == null) {
             return;
         }
 
-        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                Uri.parse("http://maps.google.com/maps?saddr=" + latitude + "," + longitude + "&daddr=20.5666,45.345"));
-        context.startActivity(intent);
+        LocationActivity.openActivity(context, latitude, longitude, label);
+
+//        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+//                Uri.parse("http://maps.google.com/maps?saddr=" + latitude + "," + longitude + "&daddr=20.5666,45.345"));
+//        context.startActivity(intent);
     }
 
     public static void openWebPage(Context context, String url) {

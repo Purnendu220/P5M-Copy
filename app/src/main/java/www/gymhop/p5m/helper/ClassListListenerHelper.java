@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -94,6 +95,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
         int[] location = new int[2];
         view.getLocationOnScreen(location);
+        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.transparent));
+        popupWindow.setOutsideTouchable(true);
         popupWindow.showAtLocation(view, Gravity.NO_GRAVITY, location[0], location[1]);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
@@ -119,6 +122,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
         int[] location = new int[2];
         view.getLocationOnScreen(location);
+        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.transparent));
+        popupWindow.setOutsideTouchable(true);
         popupWindow.showAtLocation(view, Gravity.NO_GRAVITY, location[0], location[1]);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
@@ -140,6 +145,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
         int[] location = new int[2];
         view.getLocationOnScreen(location);
+        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.transparent));
+        popupWindow.setOutsideTouchable(true);
         popupWindow.showAtLocation(view, Gravity.NO_GRAVITY, location[0], location[1]);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
@@ -162,6 +169,9 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
         if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model)) {
             message = serverMessageSpecialClass;
+
+        } else if (Helper.isSpecialClass(model) && Helper.isFreeClass(model)) {
+            message = "Are you sure want to unjoin ?";
 
         } else if (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) <= cancelTime) {
             message = serverMessageNormalClass;

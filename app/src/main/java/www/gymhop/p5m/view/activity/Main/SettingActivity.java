@@ -159,7 +159,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 progressBarLogout.setVisibility(View.GONE);
 
                 ToastUtils.showLong(context, errorMessage);
-
                 break;
         }
     }

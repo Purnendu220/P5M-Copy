@@ -49,6 +49,7 @@ import www.gymhop.p5m.storage.TempStorage;
 import www.gymhop.p5m.utils.AppConstants;
 import www.gymhop.p5m.utils.DateUtils;
 import www.gymhop.p5m.utils.ImageUtils;
+import www.gymhop.p5m.utils.KeyboardUtils;
 import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.utils.ToastUtils;
 import www.gymhop.p5m.view.activity.base.BaseActivity;
@@ -109,6 +110,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     public Handler handler;
     private boolean haveNationality;
     private boolean haveLocation;
+    private UserInfoUpdate userInfoUpdate;
 
     public Runnable runnableEmailValidation, runnablePhoneValidation;
 
@@ -260,6 +262,18 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         boolean isEmailValid = true;
         boolean isPhoneValid = true;
 
+        if (editTextNameFirst.getText().toString().trim().isEmpty()) {
+            ToastUtils.show(context, "Please enter your first name");
+            editTextNameFirst.requestFocus();
+            return;
+        }
+
+        if (editTextEmail.getText().toString().trim().isEmpty()) {
+            ToastUtils.show(context, getString(R.string.please_enter_your_email));
+            editTextEmail.requestFocus();
+            return;
+        }
+
         if (!email.isEmpty() && !Helper.validateEmail(email)) {
             editTextEmail.setTextColor(ContextCompat.getColor(context, R.color.theme_error_text));
             editTextEmail.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD);
@@ -287,7 +301,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         imageViewDone.setVisibility(View.GONE);
         progressBarDone.setVisibility(View.VISIBLE);
 
-        UserInfoUpdate userInfoUpdate = new UserInfoUpdate(TempStorage.getUser().getId());
+        userInfoUpdate = new UserInfoUpdate(TempStorage.getUser().getId());
 
         if (gender != null) {
             userInfoUpdate.setGender(gender);
@@ -312,7 +326,12 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
 //        userInfoUpdate.setLastName(editTextNameLast.getText().toString().trim());
         userInfoUpdate.setFirstName(editTextNameFirst.getText().toString().trim() + " " + editTextNameLast.getText().toString().trim());
 
-        networkCommunicator.userInfoUpdate(TempStorage.getUser().getId(), userInfoUpdate, this, false);
+
+        if (!TempStorage.getUser().getEmail().equals(email)) {
+            networkCommunicator.validateEmail(email, this, false);
+        } else {
+            networkCommunicator.userInfoUpdate(TempStorage.getUser().getId(), userInfoUpdate, this, false);
+        }
     }
 
     @OnClick(R.id.imageViewBack)
@@ -474,6 +493,10 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                 }
 
                 break;
+            case NetworkCommunicator.RequestCode.VALIDATE_EMAIL:
+                networkCommunicator.userInfoUpdate(TempStorage.getUser().getId(), userInfoUpdate, this, false);
+
+                break;
         }
     }
 
@@ -500,6 +523,14 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                     imageViewProfile.setImageResource(0);
                 }
                 break;
+            case NetworkCommunicator.RequestCode.VALIDATE_EMAIL:
+
+                editTextEmail.requestFocus();
+                KeyboardUtils.open(editTextEmail, context);
+                ToastUtils.show(context, errorMessage);
+
+                break;
+
         }
     }
 

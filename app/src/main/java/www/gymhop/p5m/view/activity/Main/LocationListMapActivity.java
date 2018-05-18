@@ -124,7 +124,7 @@ public class LocationListMapActivity extends BaseActivity implements OnMapReadyC
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                         gymBranchDetailLatLngHashMap.get(gymBranchDetail), 15));
 
-                Helper.openMap(context, gymBranchDetail.getLatitude(), gymBranchDetail.getLongitude());
+                Helper.openMap(context, gymBranchDetail.getLatitude(), gymBranchDetail.getLongitude(), gymBranchDetail.getBranchName());
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -106,11 +106,11 @@ public class BottomTapLayout implements View.OnClickListener {
 
             ImageView imageView = new ImageView(context);
             imageView.setLayoutParams(new FrameLayout.LayoutParams(iconSize, iconSize, Gravity.CENTER));
-            imageView.setPadding(dp, dp * 4, dp, dp);
+            imageView.setPadding(dp, dp * 4, dp, dp * 2);
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
             TextView textViewNotificationCounter = new TextView(context);
-            textViewNotificationCounter.setLayoutParams(new FrameLayout.LayoutParams(14 * dp, 14 * dp, Gravity.RIGHT));
+            textViewNotificationCounter.setLayoutParams(new FrameLayout.LayoutParams(15 * dp, 15 * dp, Gravity.RIGHT));
             textViewNotificationCounter.setBackgroundResource(R.drawable.notification_counter);
             textViewNotificationCounter.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 8);
             textViewNotificationCounter.setTextColor(Color.WHITE);

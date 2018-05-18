@@ -135,7 +135,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<User>> call = apiService.login(loginRequest);
         LogUtils.debug("NetworkCommunicator hitting login");
 
-        call.enqueue(new RestCallBack<ResponseModel<User>>() {
+        call.enqueue(new RestCallBack<ResponseModel<User>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<User>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator login onFailure " + message);
@@ -159,7 +159,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<User>> call = apiService.loginFB(loginRequest);
         LogUtils.debug("NetworkCommunicator hitting loginFB");
 
-        call.enqueue(new RestCallBack<ResponseModel<User>>() {
+        call.enqueue(new RestCallBack<ResponseModel<User>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<User>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator loginFB onFailure " + message);
@@ -183,7 +183,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<User>> call = apiService.register(registrationRequest);
         LogUtils.debug("NetworkCommunicator hitting register");
 
-        call.enqueue(new RestCallBack<ResponseModel<User>>() {
+        call.enqueue(new RestCallBack<ResponseModel<User>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<User>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator register onFailure " + message);
@@ -207,7 +207,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<String>> call = apiService.forgotPassword(email);
         LogUtils.debug("NetworkCommunicator hitting forgotPassword");
 
-        call.enqueue(new RestCallBack<ResponseModel<String>>() {
+        call.enqueue(new RestCallBack<ResponseModel<String>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<String>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator forgotPassword onFailure " + message);
@@ -229,7 +229,7 @@ public class NetworkCommunicator {
         Call<ResponseModel> call = apiService.validateEmail(AppConstants.ApiParamValue.EMAIL, email);
         LogUtils.debug("NetworkCommunicator hitting validateEmail");
 
-        call.enqueue(new RestCallBack<ResponseModel>() {
+        call.enqueue(new RestCallBack<ResponseModel>(context) {
             @Override
             public void onFailure(Call<ResponseModel> call, String message) {
                 LogUtils.networkError("NetworkCommunicator validateEmail onFailure " + message);
@@ -261,7 +261,7 @@ public class NetworkCommunicator {
             }
         }
 
-        call.enqueue(new RestCallBack<ResponseModel<List<City>>>() {
+        call.enqueue(new RestCallBack<ResponseModel<List<City>>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<List<City>>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator getCities onFailure " + message);
@@ -294,7 +294,7 @@ public class NetworkCommunicator {
             }
         }
 
-        call.enqueue(new RestCallBack<ResponseModel<List<ClassActivity>>>() {
+        call.enqueue(new RestCallBack<ResponseModel<List<ClassActivity>>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<List<ClassActivity>>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator getActivities onFailure " + message);
@@ -316,7 +316,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<DefaultSettingServer>> call = apiService.getDefault();
         LogUtils.debug("NetworkCommunicator hitting getDefault");
 
-        call.enqueue(new RestCallBack<ResponseModel<DefaultSettingServer>>() {
+        call.enqueue(new RestCallBack<ResponseModel<DefaultSettingServer>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<DefaultSettingServer>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator getDefault onFailure " + message);
@@ -338,7 +338,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<List<ClassModel>>> call = apiService.getClassList(classListRequest);
         LogUtils.debug("NetworkCommunicator hitting getClassList");
 
-        call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>() {
+        call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<List<ClassModel>>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator getClassList onFailure " + message);
@@ -359,7 +359,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<Boolean>> call = apiService.saveDevice(deviceUpdate);
         LogUtils.debug("NetworkCommunicator hitting sendDeviceUpdate");
 
-        call.enqueue(new RestCallBack<ResponseModel<Boolean>>() {
+        call.enqueue(new RestCallBack<ResponseModel<Boolean>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<Boolean>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator sendDeviceUpdate onFailure " + message);
@@ -380,7 +380,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<List<TrainerModel>>> call = apiService.getTrainerList(categoryId, page, size);
         LogUtils.debug("NetworkCommunicator hitting getTrainerList");
 
-        call.enqueue(new RestCallBack<ResponseModel<List<TrainerModel>>>() {
+        call.enqueue(new RestCallBack<ResponseModel<List<TrainerModel>>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<List<TrainerModel>>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator getTrainerList onFailure " + message);
@@ -401,7 +401,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<List<TrainerModel>>> call = apiService.getSearchedTrainerList(TempStorage.getUser().getId(), queryString, "user", "trainer", page, size);
         LogUtils.debug("NetworkCommunicator hitting getSearchTrainerList");
 
-        call.enqueue(new RestCallBack<ResponseModel<List<TrainerModel>>>() {
+        call.enqueue(new RestCallBack<ResponseModel<List<TrainerModel>>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<List<TrainerModel>>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator getSearchTrainerList onFailure " + message);
@@ -422,7 +422,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<List<GymDetailModel>>> call = apiService.getSearchedGymList(TempStorage.getUser().getId(), queryString, "user", "gym", page, size);
         LogUtils.debug("NetworkCommunicator hitting getSearchTrainerList");
 
-        call.enqueue(new RestCallBack<ResponseModel<List<GymDetailModel>>>() {
+        call.enqueue(new RestCallBack<ResponseModel<List<GymDetailModel>>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<List<GymDetailModel>>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator getSearchTrainerList onFailure " + message);
@@ -443,7 +443,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<List<ClassModel>>> call = apiService.getSearchedClassesList(TempStorage.getUser().getId(), queryString, "1", page, size);
         LogUtils.debug("NetworkCommunicator hitting getSearchClassList");
 
-        call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>() {
+        call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<List<ClassModel>>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator getSearchClassList onFailure " + message);
@@ -464,7 +464,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<List<ClassModel>>> call = apiService.getWishList(userId, page, size);
         LogUtils.debug("NetworkCommunicator hitting getWishList");
 
-        call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>() {
+        call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<List<ClassModel>>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator getWishList onFailure " + message);
@@ -485,7 +485,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<List<ClassModel>>> call = apiService.getScheduleList(userId, page, size);
         LogUtils.debug("NetworkCommunicator hitting getScheduleList");
 
-        call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>() {
+        call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<List<ClassModel>>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator getScheduleList onFailure " + message);
@@ -503,10 +503,10 @@ public class NetworkCommunicator {
 
     public Call getFinishedClassList(int userId, int page, int size, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.CLASS_LIST;
-        Call<ResponseModel<List<ClassModel>>> call = apiService.getFinishedClassList(userId, page, size);
+        Call<ResponseModel<List<ClassModel>>> call = apiService.getFinishedClassList(userId);
         LogUtils.debug("NetworkCommunicator hitting getFinishedClassList");
 
-        call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>() {
+        call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<List<ClassModel>>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator getFinishedClassList onFailure " + message);
@@ -524,10 +524,10 @@ public class NetworkCommunicator {
 
     public Call getFavTrainerList(String followType, int userId, int page, int size, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.TRAINER_LIST;
-        Call<ResponseModel<List<TrainerModel>>> call = apiService.getFavTrainerList(followType, userId, page, size);
+        Call<ResponseModel<List<TrainerModel>>> call = apiService.getFavTrainerList(followType, userId);
         LogUtils.debug("NetworkCommunicator hitting getFavTrainerList");
 
-        call.enqueue(new RestCallBack<ResponseModel<List<TrainerModel>>>() {
+        call.enqueue(new RestCallBack<ResponseModel<List<TrainerModel>>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<List<TrainerModel>>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator getFavTrainerList onFailure " + message);
@@ -548,7 +548,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<List<TrainerModel>>> call = apiService.getTrainers(gymId, page, size);
         LogUtils.debug("NetworkCommunicator hitting getGymTrainerList");
 
-        call.enqueue(new RestCallBack<ResponseModel<List<TrainerModel>>>() {
+        call.enqueue(new RestCallBack<ResponseModel<List<TrainerModel>>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<List<TrainerModel>>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator getGymTrainerList onFailure " + message);
@@ -569,7 +569,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<List<NotificationModel>>> call = apiService.getNotifications(TempStorage.getUser().getId(), page, size);
         LogUtils.debug("NetworkCommunicator hitting getNotifications");
 
-        call.enqueue(new RestCallBack<ResponseModel<List<NotificationModel>>>() {
+        call.enqueue(new RestCallBack<ResponseModel<List<NotificationModel>>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<List<NotificationModel>>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator getNotifications onFailure " + message);
@@ -590,7 +590,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<List<Package>>> call = apiService.getPackageList(userId);
         LogUtils.debug("NetworkCommunicator hitting getPackages");
 
-        call.enqueue(new RestCallBack<ResponseModel<List<Package>>>() {
+        call.enqueue(new RestCallBack<ResponseModel<List<Package>>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<List<Package>>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator getPackages onFailure " + message);
@@ -611,7 +611,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<List<Package>>> call = apiService.getClassPackageList(userId, gymId, sessionId);
         LogUtils.debug("NetworkCommunicator hitting getPackagesForClass");
 
-        call.enqueue(new RestCallBack<ResponseModel<List<Package>>>() {
+        call.enqueue(new RestCallBack<ResponseModel<List<Package>>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<List<Package>>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator getPackagesForClass onFailure " + message);
@@ -632,7 +632,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<List<PackageLimitModel>>> call = apiService.getPackageLimitList(packageType);
         LogUtils.debug("NetworkCommunicator hitting getPackagesLimit");
 
-        call.enqueue(new RestCallBack<ResponseModel<List<PackageLimitModel>>>() {
+        call.enqueue(new RestCallBack<ResponseModel<List<PackageLimitModel>>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<List<PackageLimitModel>>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator getPackagesLimit onFailure " + message);
@@ -654,7 +654,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<PaymentUrl>> call = apiService.purchasePackageForClass(paymentUrlRequest);
         LogUtils.debug("NetworkCommunicator hitting getPackagesLimit");
 
-        call.enqueue(new RestCallBack<ResponseModel<PaymentUrl>>() {
+        call.enqueue(new RestCallBack<ResponseModel<PaymentUrl>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<PaymentUrl>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator getPackagesLimit onFailure " + message);
@@ -675,7 +675,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<List<ClassModel>>> call = apiService.getUpcomingClasses(userId, gymId, trainerId, page, size);
         LogUtils.debug("NetworkCommunicator hitting getUpcomingClasses");
 
-        call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>() {
+        call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<List<ClassModel>>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator getUpcomingClasses onFailure " + message);
@@ -696,7 +696,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<TrainerDetailModel>> call = apiService.getTrainer(trainerId);
         LogUtils.debug("NetworkCommunicator hitting getTrainer");
 
-        call.enqueue(new RestCallBack<ResponseModel<TrainerDetailModel>>() {
+        call.enqueue(new RestCallBack<ResponseModel<TrainerDetailModel>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<TrainerDetailModel>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator getTrainer onFailure " + message);
@@ -717,7 +717,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<ClassModel>> call = apiService.getClassDetails(TempStorage.getUser().getId(), sessionId);
         LogUtils.debug("NetworkCommunicator hitting getClassDetail");
 
-        call.enqueue(new RestCallBack<ResponseModel<ClassModel>>() {
+        call.enqueue(new RestCallBack<ResponseModel<ClassModel>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<ClassModel>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator getClassDetail onFailure " + message);
@@ -738,7 +738,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<User>> call = apiService.getUser(TempStorage.getUser().getId());
         LogUtils.debug("NetworkCommunicator hitting User");
 
-        call.enqueue(new RestCallBack<ResponseModel<User>>() {
+        call.enqueue(new RestCallBack<ResponseModel<User>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<User>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator User onFailure " + message);
@@ -762,7 +762,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<GymDetailModel>> call = apiService.getGym(gymId);
         LogUtils.debug("NetworkCommunicator hitting getGym");
 
-        call.enqueue(new RestCallBack<ResponseModel<GymDetailModel>>() {
+        call.enqueue(new RestCallBack<ResponseModel<GymDetailModel>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<GymDetailModel>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator getGym onFailure " + message);
@@ -783,7 +783,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<User>> call = apiService.joinClass(joinClassRequest);
         LogUtils.debug("NetworkCommunicator hitting joinClass");
 
-        call.enqueue(new RestCallBack<ResponseModel<User>>() {
+        call.enqueue(new RestCallBack<ResponseModel<User>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<User>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator joinClass onFailure " + message);
@@ -804,7 +804,7 @@ public class NetworkCommunicator {
         Call<ResponseModel> call = apiService.logout(logoutRequest);
         LogUtils.debug("NetworkCommunicator hitting joinClass");
 
-        call.enqueue(new RestCallBack<ResponseModel>() {
+        call.enqueue(new RestCallBack<ResponseModel>(context) {
             @Override
             public void onFailure(Call<ResponseModel> call, String message) {
                 LogUtils.networkError("NetworkCommunicator joinClass onFailure " + message);
@@ -825,7 +825,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<List<Transaction>>> call = apiService.getTransactions(userId);
         LogUtils.debug("NetworkCommunicator hitting getTransactions");
 
-        call.enqueue(new RestCallBack<ResponseModel<List<Transaction>>>() {
+        call.enqueue(new RestCallBack<ResponseModel<List<Transaction>>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<List<Transaction>>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator getTransactions onFailure " + message);
@@ -846,7 +846,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<User>> call = apiService.userUpdate(userId, userUpdateRequest);
         LogUtils.debug("NetworkCommunicator hitting updateUser");
 
-        call.enqueue(new RestCallBack<ResponseModel<User>>() {
+        call.enqueue(new RestCallBack<ResponseModel<User>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<User>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator updateUser onFailure " + message);
@@ -867,7 +867,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<User>> call = apiService.userInfoUpdate(userId, userInfoUpdate);
         LogUtils.debug("NetworkCommunicator hitting updateUser");
 
-        call.enqueue(new RestCallBack<ResponseModel<User>>() {
+        call.enqueue(new RestCallBack<ResponseModel<User>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<User>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator updateUser onFailure " + message);
@@ -888,7 +888,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<User>> call = apiService.updateFocus(userId, chooseFocusRequest);
         LogUtils.debug("NetworkCommunicator hitting updateUser");
 
-        call.enqueue(new RestCallBack<ResponseModel<User>>() {
+        call.enqueue(new RestCallBack<ResponseModel<User>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<User>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator updateUser onFailure " + message);
@@ -909,7 +909,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<String>> call = apiService.changePass(changePasswordRequest);
         LogUtils.debug("NetworkCommunicator hitting changePass");
 
-        call.enqueue(new RestCallBack<ResponseModel<String>>() {
+        call.enqueue(new RestCallBack<ResponseModel<String>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<String>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator changePass onFailure " + message);
@@ -930,7 +930,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<PromoCode>> call = apiService.applyPromoCode(promoCodeRequest);
         LogUtils.debug("NetworkCommunicator hitting applyPromoCode");
 
-        call.enqueue(new RestCallBack<ResponseModel<PromoCode>>() {
+        call.enqueue(new RestCallBack<ResponseModel<PromoCode>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<PromoCode>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator applyPromoCode onFailure " + message);
@@ -1005,7 +1005,7 @@ public class NetworkCommunicator {
         }
 
         final File finalFile = file;
-        call.enqueue(new RestCallBack<ResponseModel<MediaResponse>>() {
+        call.enqueue(new RestCallBack<ResponseModel<MediaResponse>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<MediaResponse>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator uploadImage onFailure " + message);
@@ -1040,7 +1040,7 @@ public class NetworkCommunicator {
         LogUtils.debug("NetworkCommunicator hitting follow");
 
         final int finalRequestCode = requestCode;
-        call.enqueue(new RestCallBack<ResponseModel<FollowResponse>>() {
+        call.enqueue(new RestCallBack<ResponseModel<FollowResponse>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<FollowResponse>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator follow onFailure " + message);
@@ -1061,7 +1061,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<WishListResponse>> call = apiService.addToWishList(new WishListRequest(TempStorage.getUser().getId(), classSessionId));
         LogUtils.debug("NetworkCommunicator hitting addToWishList");
 
-        call.enqueue(new RestCallBack<ResponseModel<WishListResponse>>() {
+        call.enqueue(new RestCallBack<ResponseModel<WishListResponse>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<WishListResponse>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator addToWishList onFailure " + message);
@@ -1093,7 +1093,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<User>> call = apiService.unJoinClass(joinClassId);
         LogUtils.debug("NetworkCommunicator hitting unJoinClass");
 
-        call.enqueue(new RestCallBack<ResponseModel<User>>() {
+        call.enqueue(new RestCallBack<ResponseModel<User>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<User>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator unJoinClass onFailure " + message);
@@ -1117,7 +1117,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<String>> call = apiService.removeFromWishList(classModel.getWishListId());
         LogUtils.debug("NetworkCommunicator hitting addToWishList");
 
-        call.enqueue(new RestCallBack<ResponseModel<String>>() {
+        call.enqueue(new RestCallBack<ResponseModel<String>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<String>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator addToWishList onFailure " + message);
@@ -1130,8 +1130,8 @@ public class NetworkCommunicator {
                 LogUtils.networkSuccess("NetworkCommunicator addToWishList onResponse data " + response);
 //                requestListener.onApiSuccess(response, requestCode);
                 try {
-                    ToastUtils.show(context, ((ResponseModel<String>) response).data);
-//                    EventBroadcastHelper.sendWishRemoved(classModel);
+//                    ToastUtils.show(context, ((ResponseModel<String>) response).data);
+                    EventBroadcastHelper.sendWishRemoved(classModel);
                 } catch (Exception e) {
                     e.printStackTrace();
                     LogUtils.exception(e);
@@ -1146,7 +1146,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<SearchResults>> call = apiService.search(TempStorage.getUser().getId(), queryString, searchFor);
         LogUtils.debug("NetworkCommunicator hitting search");
 
-        call.enqueue(new RestCallBack<ResponseModel<SearchResults>>() {
+        call.enqueue(new RestCallBack<ResponseModel<SearchResults>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<SearchResults>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator search onFailure " + message);

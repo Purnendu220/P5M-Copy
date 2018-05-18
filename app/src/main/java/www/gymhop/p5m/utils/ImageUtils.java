@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.widget.ImageView;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 
@@ -33,7 +34,7 @@ public class ImageUtils {
     public static void setImage(Context context, String url, int placeHolder, ImageView imageView) {
         if (url != null && !url.isEmpty()) {
             GlideApp.with(context)
-                    .load(url)
+                    .load(url).transition(DrawableTransitionOptions.withCrossFade())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(placeHolder)
                     .into(imageView);
@@ -45,7 +46,7 @@ public class ImageUtils {
     public static void setImage(Context context, String url, ImageView imageView) {
         if (url != null && !url.isEmpty()) {
             GlideApp.with(context)
-                    .load(url)
+                    .load(url).transition(DrawableTransitionOptions.withCrossFade())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(imageView);
         } else {
@@ -57,7 +58,7 @@ public class ImageUtils {
         if (url != null && !url.isEmpty()) {
             GlideApp.with(context)
                     .load(url)
-                    .fitCenter()
+                    .fitCenter().transition(DrawableTransitionOptions.withCrossFade())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(new SimpleTarget<Drawable>() {
 
@@ -78,7 +79,7 @@ public class ImageUtils {
     public static void setImage(Context context, int url, int placeHolder, ImageView imageView) {
         GlideApp.with(context)
                 .load(url)
-                .centerCrop()
+                .centerCrop().transition(DrawableTransitionOptions.withCrossFade())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(placeHolder)
                 .into(imageView);

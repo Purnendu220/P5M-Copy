@@ -67,7 +67,7 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
     private void sendRequest(String email) {
 
         if (email.isEmpty()) {
-            textInputLayoutEmail.setError(context.getResources().getString(R.string.email_required_error));
+            textInputLayoutEmail.setError(getString(R.string.please_enter_your_email));
             return;
         }
 

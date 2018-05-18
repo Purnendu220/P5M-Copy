@@ -134,6 +134,16 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updateUpcomingClasses(Events.UpdateUpcomingClasses data) {
+        if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING ||
+                shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
+            classListAdapter.getList().clear();
+            classListAdapter.notifyDataSetChanged();
+            onRefresh();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void classJoin(Events.ClassJoin data) {
         if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
             shouldRefresh = true;
@@ -286,6 +296,16 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
             shouldRefresh = false;
 
             onRefresh();
+        } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST ||
+                shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
+            classListAdapter.getList().clear();
+            classListAdapter.notifyDataSetChanged();
+            onRefresh();
+
+        } else {
+            if (classListAdapter.getList().isEmpty()) {
+                onRefresh();
+            }
         }
     }
 

@@ -1,8 +1,14 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
 
 allprojects {
     repositories {
         maven { url "https://jitpack.io" }
+        maven { url 'https://maven.fabric.io/public' }
     }
 }
 
@@ -88,6 +94,11 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:4.24.0'
     implementation 'com.facebook.fresco:fresco:1.2.0'
     implementation 'com.bogdwellers:pinchtozoom:0.1'
+
+    /////////////////////////////////FABRIC//////////////////////////////////////////
+    implementation('com.crashlytics.sdk.android:crashlytics:2.9.2@aar') {
+        transitive = true;
+    }
 
 }
 

@@ -80,6 +80,11 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updatePackage(Events.UpdatePackage data) {
+        onTabSelection(-1);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void getUser(Events.UserUpdate userUpdate) {
         try {
             myProfileAdapter.setUser(TempStorage.getUser());

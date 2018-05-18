@@ -7,8 +7,11 @@ import android.os.Handler;
 import android.view.animation.BounceInterpolator;
 import android.widget.ImageView;
 
+import com.crashlytics.android.Crashlytics;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.fabric.sdk.android.Fabric;
 import www.gymhop.p5m.MyApp;
 import www.gymhop.p5m.R;
 import www.gymhop.p5m.eventbus.EventBroadcastHelper;
@@ -42,6 +45,8 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
     protected void onCreate(Bundle savedInstanceState) {
         showActionBar = false;
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
+
         setContentView(R.layout.activity_splash);
 
         boolean booleanExtra = getIntent().getBooleanExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, false);
@@ -63,6 +68,7 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
 
         startTimerForGoToNextScreen();
         networkCommunicator.getActivities(this, false);
+
     }
 
     private void startTimerForGoToNextScreen() {

@@ -168,7 +168,7 @@ public class GalleryActivity extends BaseActivity implements ViewPager.OnPageCha
         int colorFrom = ContextCompat.getColor(context, R.color.layer);
         int colorTo = Color.BLACK;
         ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-        colorAnimation.setDuration(600);
+        colorAnimation.setDuration(800);
         colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
             @Override

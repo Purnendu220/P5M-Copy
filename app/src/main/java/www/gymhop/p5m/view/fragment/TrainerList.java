@@ -211,6 +211,10 @@ public class TrainerList extends BaseFragment implements ViewPagerFragmentSelect
             isShownFirstTime = false;
 
             onRefresh();
+        } else {
+            if (trainerListAdapter.getList().isEmpty()) {
+                onRefresh();
+            }
         }
     }
 

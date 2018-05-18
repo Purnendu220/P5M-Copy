@@ -190,6 +190,10 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
 
                 }
             });
+        } else {
+            editTextSearch.setVisibility(View.VISIBLE);
+            editTextSearch.requestFocus();
+            KeyboardUtils.open(editTextSearch, context);
         }
     }
 
@@ -274,7 +278,7 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
 
             @Override
             public void afterTextChanged(final Editable editable) {
-                if (editable.toString().length() > 2) {
+                if (editable.toString().length() > 1) {
 
                     if (runnableSearch != null) {
                         handlerBG.removeCallbacks(runnableSearch);
@@ -425,6 +429,7 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
 
         tabLayout.setupWithViewPager(viewPager);
         viewPager.addOnPageChangeListener(this);
+        viewPager.setOffscreenPageLimit(3);
 
 //                generateTabs(searchResult);
 

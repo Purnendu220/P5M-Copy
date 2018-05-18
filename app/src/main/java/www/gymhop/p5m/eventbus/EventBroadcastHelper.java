@@ -24,6 +24,7 @@ public class EventBroadcastHelper {
         TempStorage.setUser(context, user);
         MyPreferences.getInstance().setLogin(true);
         NetworkCommunicator.getInstance(context).getDefault();
+        EventBroadcastHelper.sendDeviceUpdate(context);
     }
 
     public static void logout(Context context) {
@@ -41,6 +42,23 @@ public class EventBroadcastHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void updatePackage(Context context) {
+        NetworkCommunicator.getInstance(context).getMyUser(new NetworkCommunicator.RequestListener() {
+            @Override
+            public void onApiSuccess(Object response, int requestCode) {
+            }
+
+            @Override
+            public void onApiFailure(String errorMessage, int requestCode) {
+            }
+        }, false);
+        GlobalBus.getBus().post(new Events.UpdatePackage());
+    }
+
+    public static void updateUpcomingList() {
+        GlobalBus.getBus().post(new Events.UpdateUpcomingClasses());
     }
 
     public static void sendUserUpdate(Context context, User user) {
@@ -104,39 +122,46 @@ public class EventBroadcastHelper {
 
     public static void sendDeviceUpdate(Context context) {
 
-        if (!MyPreferences.getInstance().isLogin()) {
-            return;
-        }
+        try {
+            if (!MyPreferences.getInstance().isLogin()) {
+                return;
+            }
 
-        String deviceToken = MyPreferences.getInstance().getDeviceToken();
+            String deviceToken = MyPreferences.getInstance().getDeviceToken();
 
-        if (deviceToken == null) {
-            String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-            LogUtils.debug("Notifications onTokenRefresh " + refreshedToken);
-            MyPreferences.getInstance().saveDeviceToken(refreshedToken);
-        }
+            if (deviceToken == null) {
+                String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+                LogUtils.debug("Notifications onTokenRefresh " + refreshedToken);
+                MyPreferences.getInstance().saveDeviceToken(refreshedToken);
+            }
 
-        if (deviceToken == null) {
-            return;
-        }
+            if (deviceToken == null) {
+                return;
+            }
 
-        NetworkCommunicator.getInstance(context).deviceUpdate(
-                new DeviceUpdate(TempStorage.version, TempStorage.getUser().getId(), deviceToken),
-                new NetworkCommunicator.RequestListener() {
-                    @Override
-                    public void onApiSuccess(Object response, int requestCode) {
-                        try {
-                            Boolean forceUpdate = ((ResponseModel<Boolean>) response).data;
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            LogUtils.exception(e);
+            NetworkCommunicator.getInstance(context).deviceUpdate(
+                    new DeviceUpdate(TempStorage.version, TempStorage.getUser().getId(), deviceToken),
+                    new NetworkCommunicator.RequestListener() {
+                        @Override
+                        public void onApiSuccess(Object response, int requestCode) {
+                            try {
+                                Boolean forceUpdate = ((ResponseModel<Boolean>) response).data;
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                LogUtils.exception(e);
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onApiFailure(String errorMessage, int requestCode) {
-                    }
-                }, false);
+                        @Override
+                        public void onApiFailure(String errorMessage, int requestCode) {
+                        }
+                    }, false);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
     }
+
 
 }

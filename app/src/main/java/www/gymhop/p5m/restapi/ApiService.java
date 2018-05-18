@@ -145,16 +145,12 @@ public interface ApiService {
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.FINISHED_CLASS_LIST + "/{" + AppConstants.ApiParamKey.USER_ID + "}")
-    Call<ResponseModel<List<ClassModel>>> getFinishedClassList(@Path(AppConstants.ApiParamKey.USER_ID) int userId,
-                                                               @Query(AppConstants.ApiParamKey.PAGE) int page,
-                                                               @Query(AppConstants.ApiParamKey.SIZE) int size);
+    Call<ResponseModel<List<ClassModel>>> getFinishedClassList(@Path(AppConstants.ApiParamKey.USER_ID) int userId);
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.FAV_TRAINER_LIST)
     Call<ResponseModel<List<TrainerModel>>> getFavTrainerList(@Query(AppConstants.ApiParamKey.TYPE) String followType,
-                                                              @Query(AppConstants.ApiParamKey.ID) int userId,
-                                                              @Query(AppConstants.ApiParamKey.PAGE) int page,
-                                                              @Query(AppConstants.ApiParamKey.SIZE) int size);
+                                                              @Query(AppConstants.ApiParamKey.ID) int userId);
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.PACKAGE_LIST)

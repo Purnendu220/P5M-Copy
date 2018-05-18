@@ -43,6 +43,10 @@ public class TransactionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         addLoader();
     }
 
+    public List<Transaction> getList() {
+        return list;
+    }
+
     public void addAll(List<Transaction> models) {
         list.addAll(models);
         addLoader();

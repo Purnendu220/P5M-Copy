@@ -81,6 +81,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     @BindView(R.id.swipeRefreshLayout)
     public SwipeRefreshLayout swipeRefreshLayout;
 
+    public View imageViewOptions;
     private ClassProfileAdapter classProfileAdapter;
     private ClassModel classModel;
     private int classSessionId;
@@ -173,6 +174,12 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         }
 
         setToolBar();
+
+        if (classModel != null) {
+            if (classModel.isUserJoinStatus()) {
+                imageViewOptions.setVisibility(View.GONE);
+            }
+        }
     }
 
     @Override
@@ -291,7 +298,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         View v = LayoutInflater.from(context).inflate(R.layout.view_tool_bar_class_profile, null);
 
         v.findViewById(R.id.imageViewBack).setOnClickListener(this);
-        v.findViewById(R.id.imageViewOptions).setOnClickListener(this);
+        imageViewOptions = v.findViewById(R.id.imageViewOptions);
+        imageViewOptions.setOnClickListener(this);
 
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT));
@@ -325,8 +333,17 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             case R.id.layoutMap:
             case R.id.imageViewMap:
                 if (model instanceof ClassModel) {
+
                     ClassModel data = (ClassModel) model;
-                    Helper.openMap(context, data.getGymBranchDetail().getLatitude(), data.getGymBranchDetail().getLongitude());
+
+                    String label = "";
+                    try {
+                        label = data.getGymBranchDetail().getBranchName();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    Helper.openMap(context, data.getGymBranchDetail().getLatitude(), data.getGymBranchDetail().getLongitude(), label);
                 }
                 break;
         }
@@ -367,14 +384,21 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
                 Helper.setJoinStatusProfile(context, textViewBook, classModel);
 
-                DialogUtils.showBasicMessage(context, "Successfully joined " + classModel.getTitle(),
-                        "OK", new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                dialog.dismiss();
-                                finish();
-                            }
-                        });
+                if (classModel != null) {
+                    if (classModel.isUserJoinStatus()) {
+                        imageViewOptions.setVisibility(View.GONE);
+                    }
+                }
+                if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
+                    DialogUtils.showBasicMessage(context, "Successfully joined " + classModel.getTitle(),
+                            "OK", new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    dialog.dismiss();
+                                    finish();
+                                }
+                            });
+                }
                 break;
 
             case NetworkCommunicator.RequestCode.CLASS_DETAIL:
@@ -401,13 +425,15 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             case NetworkCommunicator.RequestCode.JOIN_CLASS:
 
                 if (errorMessage.equals("498")) {
-                    DialogUtils.showBasic(context, getString(R.string.join_fail_limit_exhaust), "Purchase", new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            dialog.dismiss();
-                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
-                        }
-                    });
+                    if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
+                        DialogUtils.showBasic(context, getString(R.string.join_fail_limit_exhaust), "Purchase", new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                dialog.dismiss();
+                                MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+                            }
+                        });
+                    }
 
                 } else if (errorMessage.equals("402")) {
                     MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
@@ -424,7 +450,14 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 swipeRefreshLayout.setRefreshing(false);
                 swipeRefreshLayout.setEnabled(true);
 
-                ToastUtils.showLong(context, errorMessage);
+                if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
+                    DialogUtils.showBasicMessage(context, errorMessage, "ok", new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            finish();
+                        }
+                    });
+                }
 
                 break;
         }

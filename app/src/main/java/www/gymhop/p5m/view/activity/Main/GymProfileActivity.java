@@ -230,8 +230,6 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
         gymProfileAdapter.loaderReset();
 
         callApiGym();
-        callApiClasses();
-
     }
 
 
@@ -262,10 +260,15 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
                     gymProfileAdapter.notifyDataSetChanges();
                 } else {
                     gymProfileAdapter.loaderDone();
+                    gymProfileAdapter.addAllClass(classModels);
+
+                    gymProfileAdapter.notifyDataSetChanges();
                 }
                 break;
 
             case NetworkCommunicator.RequestCode.GYM:
+
+                callApiClasses();
                 swipeRefreshLayout.setRefreshing(false);
 
                 gymDetailModel = ((ResponseModel<GymDetailModel>) response).data;

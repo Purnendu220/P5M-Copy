@@ -48,6 +48,24 @@ public class DialogUtils {
 
     public static void showBasicMessage(Context context,
                                         String title,
+                                        String message,
+                                        String buttonText1,
+                                        MaterialDialog.SingleButtonCallback singleButtonCallback1,
+                                        String buttonText2,
+                                        MaterialDialog.SingleButtonCallback singleButtonCallback2) {
+
+        new MaterialDialog.Builder(context)
+                .content(message)
+                .cancelable(false)
+                .positiveText(buttonText1)
+                .onPositive(singleButtonCallback1)
+                .negativeText(buttonText2)
+                .onNegative(singleButtonCallback2)
+                .show();
+    }
+
+    public static void showBasicMessage(Context context,
+                                        String title,
                                         int text) {
         showBasicMessage(context, title, null, context.getString(text));
     }
@@ -86,6 +104,22 @@ public class DialogUtils {
                                         MaterialDialog.SingleButtonCallback singleButtonCallback) {
 
         new MaterialDialog.Builder(context)
+                .content(message)
+                .cancelable(true)
+                .positiveText(buttonText)
+                .onPositive(singleButtonCallback)
+                .show();
+    }
+
+    public static void showBasicMessage(Context context,
+                                        String title,
+                                        String message,
+                                        String buttonText,
+                                        MaterialDialog.SingleButtonCallback singleButtonCallback) {
+
+        new MaterialDialog.Builder(context)
+                .cancelable(false)
+                .title(title)
                 .content(message)
                 .positiveText(buttonText)
                 .onPositive(singleButtonCallback)

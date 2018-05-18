@@ -259,7 +259,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
 
     private void dialogUnFollow(final RecyclerView.ViewHolder viewHolder, final TrainerModel trainerModel) {
 
-        DialogUtils.showBasic(context, "Are you sure want to unfavourite \"" + trainerModel.getFirstName() + "\" ?", "unfavourite", new MaterialDialog.SingleButtonCallback() {
+        DialogUtils.showBasic(context, "Are you sure want to unfavourite " + trainerModel.getFirstName() + "?", "unfavourite", new MaterialDialog.SingleButtonCallback() {
             @Override
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                 networkCommunicator.followUnFollow(!trainerModel.isIsfollow(), trainerModel, TrainerProfileActivity.this, false);
@@ -289,7 +289,6 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
         trainerProfileAdapter.loaderReset();
 
         callApiTrainers();
-        callApiClasses();
     }
 
     @Override
@@ -310,12 +309,16 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
                     trainerProfileAdapter.notifyDataSetChanges();
                 } else {
                     trainerProfileAdapter.loaderDone();
+                    trainerProfileAdapter.addAllClass(classModels);
+
+                    trainerProfileAdapter.notifyDataSetChanges();
                 }
 
                 break;
 
             case NetworkCommunicator.RequestCode.TRAINER:
 
+                callApiClasses();
                 swipeRefreshLayout.setRefreshing(false);
                 TrainerDetailModel trainerDetailModel = ((ResponseModel<TrainerDetailModel>) response).data;
 

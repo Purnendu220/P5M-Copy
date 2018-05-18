@@ -2,11 +2,11 @@ package www.gymhop.p5m.view.activity.Main;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
@@ -38,17 +38,20 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
     WebView webView;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
+    @BindView(R.id.layoutProgress)
+    View layoutProgress;
+    @BindView(R.id.layoutHide)
+    View layoutHide;
 
     private PaymentUrl paymentUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        overridePendingTransition(0, 0);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_web_view);
 
         ButterKnife.bind(activity);
-
-        webView.getSettings().setJavaScriptEnabled(true);
 
         openPage(getIntent());
     }
@@ -69,18 +72,38 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
             return;
         }
 
-        progressBar.setVisibility(View.VISIBLE);
+        webView.getSettings().setDomStorageEnabled(true);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setSupportZoom(true);
+        webView.getSettings().setUseWideViewPort(true);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            // chromium, enable hardware acceleration
+            webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        } else {
+            // older android version, disable hardware acceleration
+            webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
+
+        webView.getSettings().setLoadWithOverviewMode(true);
+
+        layoutProgress.setVisibility(View.VISIBLE);
         webView.loadUrl(paymentUrl.getPaymentURL());
         webView.setWebViewClient(new MyWebViewClient());
     }
 
     private void paymentSuccessful() {
-        networkCommunicator.getMyUser(this, false);
+//        networkCommunicator.getMyUser(this, false);
+        setResult(RESULT_OK);
+        overridePendingTransition(0, 0);
+        finish();
+        overridePendingTransition(0, 0);
 
 //        EventBroadcastHelper.sendPackagePurchased();
 //
 //        webView.setVisibility(View.INVISIBLE);
-//        progressBar.setVisibility(View.VISIBLE);
+//        layoutProgress.setVisibility(View.VISIBLE);
 //        setResult(RESULT_OK);
 //        finish();
     }
@@ -90,9 +113,12 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
         EventBroadcastHelper.sendPackagePurchased();
 
         webView.setVisibility(View.INVISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
+        layoutProgress.setVisibility(View.VISIBLE);
         setResult(RESULT_OK);
+        overridePendingTransition(0, 0);
         finish();
+        overridePendingTransition(0, 0);
+
     }
 
     @Override
@@ -100,60 +126,99 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
         EventBroadcastHelper.sendPackagePurchased();
 
         webView.setVisibility(View.INVISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
+        layoutProgress.setVisibility(View.VISIBLE);
         setResult(RESULT_OK);
+        overridePendingTransition(0, 0);
         finish();
+        overridePendingTransition(0, 0);
+
     }
 
     class MyWebViewClient extends WebViewClient {
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+            LogUtils.debug("Payment shouldOverrideUrlLoading " + url);
+
+            if( url.startsWith("http:") || url.startsWith("https:") ) {
+                return false;
+            }
+
+            return true;
+        }
+
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
 
             LogUtils.debug("Payment shouldOverrideUrlLoading " + request.toString());
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                if (request.getUrl().toString().contains("profive-midl/api/v1/paymentsuccesspage")) {
-                    webView.setVisibility(View.INVISIBLE);
-                } else {
-                    webView.setVisibility(View.VISIBLE);
-                }
-
-                if (request.getUrl().toString().equalsIgnoreCase("intent://com.profive.android.view.activity.SplashScreenActivity")) {
-                    paymentSuccessful();
-                    return true;
+                if( request.getUrl().toString().startsWith("http:") || request.getUrl().toString().startsWith("https:") ) {
+                    return false;
                 }
             }
 
-            return super.shouldOverrideUrlLoading(view, request);
+            return true;
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            progressBar.setVisibility(View.GONE);
+            super.onPageFinished(view, url);
+            layoutProgress.setVisibility(View.GONE);
             LogUtils.debug("Payment onPageFinished " + url);
+
+            if (url.toString().contains("profive-midl/api/v1/paymentsuccesspage")) {
+                webView.setVisibility(View.INVISIBLE);
+                layoutProgress.setVisibility(View.VISIBLE);
+            } else {
+                webView.setVisibility(View.VISIBLE);
+                layoutProgress.setVisibility(View.GONE);
+            }
 
             if (url.equalsIgnoreCase("intent://com.profive.android.view.activity.SplashScreenActivity")) {
                 paymentSuccessful();
                 return;
             }
-            super.onPageFinished(view, url);
         }
 
         @Override
         public void onLoadResource(WebView view, String url) {
-            Uri uri = Uri.parse(url);
-            LogUtils.debug("Payment onLoadResource" + url);
-
-            if (url.equalsIgnoreCase("intent://com.profive.android.view.activity.SplashScreenActivity")) {
-                paymentSuccessful();
-                return;
-            }
             super.onLoadResource(view, url);
+            LogUtils.debug("Payment onLoadResource" + url);
+//            layoutProgress.setVisibility(View.VISIBLE);
+
+
+//            if (url.toString().contains("profive-midl/api/v1/paymentsuccesspage")) {
+//                webView.setVisibility(View.INVISIBLE);
+//                layoutProgress.setVisibility(View.VISIBLE);
+//            } else {
+//                webView.setVisibility(View.VISIBLE);
+//                layoutProgress.setVisibility(View.GONE);
+//            }
+
+//            if (url.equalsIgnoreCase("intent://com.profive.android.view.activity.SplashScreenActivity")) {
+//                paymentSuccessful();
+//                return;
+//            }
         }
 
         @Override
         public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
             super.onReceivedHttpError(view, request, errorResponse);
+//            layoutProgress.setVisibility(View.GONE);
+
+            LogUtils.debug("Payment onReceivedHttpError");
+        }
+
+        @Override
+        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+//            webView.setVisibility(View.INVISIBLE);
+            LogUtils.debug("Payment onReceivedError");
+//            layoutProgress.setVisibility(View.VISIBLE);
+//            layoutHide.setVisibility(View.VISIBLE);
+
+            super.onReceivedError(view, request, error);
         }
     }
 
@@ -163,7 +228,9 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
                 "\nyour transaction will be lost", "Exit", new MaterialDialog.SingleButtonCallback() {
             @Override
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                overridePendingTransition(0, 0);
                 PaymentWebViewActivity.super.onBackPressed();
+                overridePendingTransition(0, 0);
             }
         });
     }

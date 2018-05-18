@@ -25,7 +25,7 @@ public class ToastUtils {
         if (showServerMessage && !message.isEmpty()) {
             showToast(context, message, Toast.LENGTH_SHORT);
         } else {
-            showToast(context, context.getResources().getString(R.string.please_try_later), Toast.LENGTH_SHORT);
+//            showToast(context, context.getResources().getString(R.string.please_try_later), Toast.LENGTH_SHORT);
         }
     }
 

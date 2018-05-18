@@ -240,7 +240,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="8dp"
                             android:layout_marginLeft="16dp"
-                            android:layout_marginRight="48dp"
+                            android:layout_marginRight="16dp"
                             android:layout_marginTop="8dp"
                             android:orientation="horizontal">
 
@@ -286,10 +286,9 @@
 
                             <TextView
                                 android:id="@+id/textViewTime"
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
-                                android:layout_marginLeft="4dp"
                                 android:layout_marginTop="@dimen/text_drawable_adjustment"
                                 android:layout_toEndOf="@+id/imageViewClassTime"
                                 android:fontFamily="sans-serif"
@@ -340,6 +339,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="12dp"
                             android:layout_marginLeft="16dp"
+                            android:visibility="gone"
                             android:layout_marginRight="48dp"
                             android:orientation="horizontal">
 

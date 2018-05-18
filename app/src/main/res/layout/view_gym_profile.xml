@@ -196,8 +196,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingTop="16dp">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -225,9 +225,11 @@
                                 android:layout_marginLeft="@dimen/text_icon_gap"
                                 android:layout_marginTop="@dimen/text_drawable_adjustment"
                                 android:layout_toEndOf="@+id/imageViewLocation"
+                                android:ellipsize="end"
                                 android:fontFamily="sans-serif-medium"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
                                 android:lineSpacingExtra="@dimen/line_spacing_extra"
+                                android:maxLines="2"
                                 android:text="Fikra Edutech"
                                 android:textColor="@color/theme_dark_text"
                                 android:textSize="@dimen/text_medium" />
@@ -252,10 +254,12 @@
                                 android:layout_alignParentTop="true"
                                 android:layout_marginLeft="@dimen/text_icon_gap"
                                 android:layout_toEndOf="@+id/imageViewLocationSub"
+                                android:ellipsize="end"
                                 android:fontFamily="sans-serif"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
                                 android:lineSpacingExtra="@dimen/line_spacing_extra"
-                                android:text="Fikra Edutech Fikra Edutech Fikra Edutech"
+                                android:maxLines="2"
+                                android:text="Fikra Edutech Fikra Edutech Fikra Edutech Edutech Fikra Edutech "
                                 android:textColor="@color/theme_dark_light_text"
                                 android:textSize="@dimen/text_small" />
                         </RelativeLayout>
@@ -264,7 +268,8 @@
                             android:id="@+id/layoutLocationPhone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:visibility="gone">
 
                             <RelativeLayout
                                 android:layout_width="0dp"
@@ -315,11 +320,11 @@
                         android:id="@+id/textViewMore"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="2dp"
                         android:fontFamily="sans-serif"
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
                         android:lineSpacingExtra="@dimen/line_spacing_extra"
                         android:padding="8dp"
-                        android:layout_marginRight="2dp"
                         android:text="+3 more"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/text_large"

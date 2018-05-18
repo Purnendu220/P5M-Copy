@@ -8,8 +8,11 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
+        android:name=".MyApp"
         android:allowBackup="true"
         android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
@@ -37,6 +40,13 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+        <!-- //////////////////////////////////////////////////////////// -->
+
+
+        <!-- /////////////////////// FABRIC /////////////////////// -->
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="81e25498c1638dbcb2017cc88dba175c5d44a1a6" />
         <!-- //////////////////////////////////////////////////////////// -->
 
         <meta-data
@@ -74,12 +84,14 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC36Oyf3q-4pO0HC7ZCydtu6OFFgUFxens" />
 
-        <receiver android:name=".receivers.NetworkChangeReceiver">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_ACTION" />
-                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
-            </intent-filter>
-        </receiver>
+        <!--<receiver-->
+        <!--android:name=".receivers.NetworkChangeReceiver"-->
+        <!--android:enabled="true">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />-->
+        <!--<action android:name="android.net.wifi.WIFI_STATE_CHANGED" />-->
+        <!--</intent-filter>-->
+        <!--</receiver>-->
 
         <activity
             android:name=".view.activity.Splash"
@@ -147,7 +159,8 @@
         <activity
             android:name=".view.activity.Main.PaymentWebViewActivity"
             android:launchMode="singleInstance"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemePayment" />
         <activity
             android:name=".view.activity.LoginRegister.RegistrationDoneActivity"
             android:screenOrientation="portrait" />
@@ -201,7 +214,13 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeDialog" />
-        <activity android:name=".view.activity.LoginRegister.ForgotPasswordActivity"></activity>
+        <activity
+            android:name=".view.activity.LoginRegister.ForgotPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Main.LocationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeGallery"></activity>
     </application>
 
 </manifest>

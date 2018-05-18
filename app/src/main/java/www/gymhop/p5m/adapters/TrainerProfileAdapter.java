@@ -53,7 +53,6 @@ public class TrainerProfileAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         this.shownIn = shownIn;
 
         list = new ArrayList<>();
-        classModels = new ArrayList<>();
         headerSticky = new HeaderSticky(context.getString(R.string.upcoming_classes));
         this.showLoader = showLoader;
 
@@ -84,11 +83,16 @@ public class TrainerProfileAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public void addAllClass(List<ClassModel> classModels) {
+        if (this.classModels == null) {
+            this.classModels = new ArrayList<>();
+        }
         this.classModels.addAll(classModels);
     }
 
     public void clearAllClasses() {
-        classModels.clear();
+        if (classModels != null) {
+            classModels.clear();
+        }
     }
 
     public void loaderDone() {
@@ -118,12 +122,16 @@ public class TrainerProfileAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         list.add(trainerDetailModel);
 
-        if (!classModels.isEmpty()) {
-            list.add(headerSticky);
-            list.addAll(classModels);
-            addLoader();
+        if (classModels == null) {
+//            addLoader();
         } else {
-            list.add(headerSticky);
+            if (!classModels.isEmpty()) {
+                list.add(headerSticky);
+                list.addAll(classModels);
+                addLoader();
+            } else {
+                list.add(headerSticky);
+            }
         }
 
         notifyDataSetChanged();
@@ -173,12 +181,19 @@ public class TrainerProfileAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         } else if (holder instanceof ClassMiniDetailViewHolder) {
             ((ClassMiniDetailViewHolder) holder).bind(list.get(position), adapterCallbacksClasses, position);
         } else if (holder instanceof HeaderViewHolder) {
-            ((HeaderViewHolder) holder).bind(list.get(position), classModels.isEmpty());
+            boolean isEmpty = true;
+            if (classModels != null) {
+                isEmpty = classModels.isEmpty();
+            }
+            ((HeaderViewHolder) holder).bind(list.get(position), isEmpty);
         } else if (holder instanceof LoaderViewHolder) {
             ((LoaderViewHolder) holder).bind(listLoader, adapterCallbacksClasses);
-            if (position == getItemCount() - 1 && !listLoader.isFinish()) {
-                adapterCallbacksClasses.onShowLastItem();
-            }
+
+//            if (classModels != null && !classModels.isEmpty()) {
+                if (position == getItemCount() - 1 && !listLoader.isFinish()) {
+                    adapterCallbacksClasses.onShowLastItem();
+                }
+//            }
         } else if (holder instanceof EmptyViewHolder) {
             ((EmptyViewHolder) holder).bind();
         }

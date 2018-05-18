@@ -96,7 +96,9 @@ public class TrainerListViewHolder extends RecyclerView.ViewHolder {
                     textViewSubtitle.setVisibility(View.GONE);
                 }
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FAV_TRAINERS ||
-                    shownInScreen == AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE_TRAINERS) {
+                    shownInScreen == AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE_TRAINERS||
+                    shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SEARCH||
+                    shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SEARCH_RESULTS) {
 
                 String categoryList = Helper.getCategoryList(model.getCategoryList());
 

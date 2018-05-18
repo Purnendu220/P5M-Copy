@@ -7,6 +7,7 @@ import android.content.Intent;
 import java.util.ArrayList;
 import java.util.List;
 
+import www.gymhop.p5m.utils.LogUtils;
 import www.gymhop.p5m.utils.NetworkUtil;
 
 /**
@@ -19,8 +20,12 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, final Intent intent) {
+
+        LogUtils.debug("NetworkChangeReceiver onReceive");
+
         try {
             NetworkUtil.getInstance(context).initialize();
+            LogUtils.debug("NetworkChangeReceiver " + NetworkUtil.isInternetAvailable);
 
 //        if (BaseActivity.isForeground) {
 //            MyuApplication.startXmpp(context);
