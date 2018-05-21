@@ -37,7 +37,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -148,7 +147,7 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
 
     private void generateTabs() {
         calendarList.clear();
-        GregorianCalendar gregorianCalendar = new GregorianCalendar(Locale.ENGLISH);
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
         for (int index = 0; index < TOTAL_DATE_TABS; index++) {
 
             if (index != 0) {

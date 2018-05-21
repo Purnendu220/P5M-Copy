@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.p5m.me">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -18,9 +17,7 @@
         android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:supportsRtl="false"
-        android:theme="@style/AppTheme"
-        tools:replace="android:supportsRtl">
+        android:theme="@style/AppTheme">
 
         <!-- /////////////////////// FACEBOOK LOGIN /////////////////////// -->
         <meta-data
@@ -97,7 +94,7 @@
         <!--</receiver>-->
 
         <activity
-            android:name="com.p5m.me.view.activity.Splash"
+            android:name=".view.activity.Splash"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeSplash">
             <intent-filter>
@@ -107,120 +104,124 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.p5m.me.view.activity.LoginRegister.InfoScreen"
-            android:parentActivityName="com.p5m.me.view.activity.Splash"
+            android:name=".view.activity.LoginRegister.InfoScreen"
+            android:parentActivityName=".view.activity.Splash"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.p5m.me.view.activity.LoginRegister.RegistrationActivity"
+            android:name=".view.activity.LoginRegister.RegistrationActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.p5m.me.view.activity.Main.HomeActivity"
-            android:parentActivityName="com.p5m.me.view.activity.Splash"
+            android:name=".view.activity.Main.HomeActivity"
+            android:parentActivityName=".view.activity.Splash"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name="com.p5m.me.view.activity.LoginRegister.LoginActivity"
+            android:name=".view.activity.LoginRegister.LoginActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.p5m.me.view.activity.LoginRegister.SignUpOptions"
+            android:name=".view.activity.LoginRegister.SignUpOptions"
             android:label="@string/title_activity_sign_up_options"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.p5m.me.view.activity.Main.TrainerProfileActivity"
-            android:parentActivityName="com.p5m.me.view.activity.Main.HomeActivity"
+            android:name=".view.activity.Main.TrainerProfileActivity"
+            android:parentActivityName=".view.activity.Main.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.p5m.me.view.activity.Main.FilterActivity"
-            android:parentActivityName="com.p5m.me.view.activity.Main.HomeActivity"
+            android:name=".view.activity.Main.FilterActivity"
+            android:parentActivityName=".view.activity.Main.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.p5m.me.view.activity.Main.MemberShip"
-            android:parentActivityName="com.p5m.me.view.activity.Main.HomeActivity"
+            android:name=".view.activity.Main.MemberShip"
+            android:parentActivityName=".view.activity.Main.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.p5m.me.view.activity.Main.ClassProfileActivity"
+            android:name=".view.activity.Main.ClassProfileActivity"
             android:label="@string/title_activity_class_profile"
-            android:parentActivityName="com.p5m.me.view.activity.Main.HomeActivity"
+            android:parentActivityName=".view.activity.Main.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.p5m.me.view.activity.Main.GymProfileActivity"
+            android:name=".view.activity.Main.GymProfileActivity"
             android:label="@string/title_activity_gym_profile"
-            android:parentActivityName="com.p5m.me.view.activity.Main.HomeActivity"
+            android:parentActivityName=".view.activity.Main.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.p5m.me.view.activity.Main.PackageLimitsActivity"
+            android:name=".view.activity.Main.PackageLimitsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.p5m.me.view.activity.Main.SearchActivity"
+            android:name=".view.activity.Main.SearchActivity"
             android:label="@string/title_activity_search"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeTranslucent" />
         <activity
-            android:name="com.p5m.me.view.activity.Main.PaymentWebViewActivity"
+            android:name=".view.activity.Main.PaymentWebViewActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemePayment" />
         <activity
-            android:name="com.p5m.me.view.activity.LoginRegister.RegistrationDoneActivity"
+            android:name=".view.activity.LoginRegister.RegistrationDoneActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.p5m.me.view.activity.Main.EditProfileActivity"
+            android:name=".view.activity.Main.EditProfileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.p5m.me.view.activity.Main.SettingActivity"
+            android:name=".view.activity.Main.SettingActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.p5m.me.view.activity.Main.LocationListMapActivity"
+            android:name=".view.activity.Main.LocationListMapActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.p5m.me.view.activity.LoginRegister.ContinueUser"
+            android:name=".view.activity.LoginRegister.ContinueUser"
             android:label="@string/title_activity_continue_user"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.p5m.me.view.activity.Main.TransactionHistoryActivity"
+            android:name=".view.activity.Main.TransactionHistoryActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.p5m.me.view.activity.Main.SettingNotification"
+            android:name=".view.activity.Main.SettingNotification"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.p5m.me.view.activity.Main.ChooseFocusActivity"
+            android:name=".view.activity.Main.ChooseFocusActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.p5m.me.view.activity.Main.ChooseNationalityActivity"
+            android:name=".view.activity.Main.ChooseNationalityActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.p5m.me.view.activity.Main.ChangePasswordActivity"
+            android:name=".view.activity.Main.ChangePasswordActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.p5m.me.view.activity.Main.CheckoutActivity"
+            android:name=".view.activity.Main.CheckoutActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.p5m.me.view.activity.Main.TrainerListActivity"
+            android:name=".view.activity.Main.TrainerListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.p5m.me.view.activity.Main.NotificationActivity"
+            android:name=".view.activity.Main.NotificationActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.p5m.me.view.custom.GalleryActivity"
+            android:name=".view.custom.GalleryActivity"
             android:theme="@style/AppThemeGallery" />
         <activity
-            android:name="com.p5m.me.view.activity.Demo"
+            android:name=".view.activity.Demo"
             android:label="@string/title_activity_demo"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="com.p5m.me.view.activity.Main.ForceUpdateActivity"
+            android:name=".view.activity.Main.ForceUpdateActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeDialog" />
         <activity
-            android:name="com.p5m.me.view.activity.LoginRegister.ForgotPasswordActivity"
+            android:name=".view.activity.LoginRegister.ForgotPasswordActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.p5m.me.view.activity.Main.LocationActivity"
+            android:name=".view.activity.Main.LocationActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeGallery"></activity>
+
     </application>
 
 </manifest>
