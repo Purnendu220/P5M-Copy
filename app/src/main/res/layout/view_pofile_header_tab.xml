@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/header1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:gravity="center"
+                android:padding="12dp"
+                android:text="@string/favorite_trainer"
+                android:textColor="@color/theme_accent_text"
+                android:textSize="@dimen/text_list_header" />
+
+            <View
+                android:id="@+id/header1Indicator"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/indicator_list_header_tab"
+                android:background="@color/colorAccent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/header2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:gravity="center"
+                android:padding="12dp"
+                android:text="@string/finished"
+                android:textColor="@color/theme_medium_text"
+                android:textSize="@dimen/text_list_header" />
+
+            <View
+                android:id="@+id/header2Indicator"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/indicator_list_header_tab"
+                android:background="@color/separator" />
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
