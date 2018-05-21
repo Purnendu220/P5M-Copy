@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="www.gymhop.p5m.view.activity.Demo"
+    tools:context="www.gymhop.p5m.www.gymhop.me.view.activity.Demo"
     tools:showIn="@layout/activity_demo">
 
     <LinearLayout

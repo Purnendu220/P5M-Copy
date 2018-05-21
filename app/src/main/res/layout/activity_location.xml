@@ -5,6 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/root"
-    tools:context="www.gymhop.p5m.view.activity.Main.LocationActivity">
+    tools:context="www.gymhop.p5m.www.gymhop.me.view.activity.Main.LocationActivity">
 
 </android.support.constraint.ConstraintLayout>

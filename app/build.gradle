@@ -17,7 +17,7 @@ android {
     buildToolsVersion BUILD_TOOL_VERSION
 
     defaultConfig {
-        applicationId "www.gymhop.p5m"
+        applicationId "com.p5m.me"
         minSdkVersion MIN_SDK_VERSION as int
         targetSdkVersion TARGET_SDK_VERSION as int
         versionCode VERSION_CODE as int
