@@ -424,7 +424,7 @@
                     android:layout_height="120dp"
                     android:background="@drawable/click_highlight">
 
-                    <www.gymhop.p5m.view.activity.custom.SquareImageView
+                    <com.p5m.me.view.activity.custom.SquareImageView
                         android:id="@+id/imageViewMap"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"

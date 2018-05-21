@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:transitionName="filter"
-    tools:context="www.gymhop.p5m.view.activity.Main.FilterActivity">
+    tools:context="www.gymhop.p5m.www.gymhop.me.view.activity.Main.FilterActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -44,7 +44,7 @@
             android:background="@drawable/no_map"
             android:elevation="3dp">
 
-            <www.gymhop.p5m.view.activity.custom.MaxHeightScrollView
+            <com.p5m.me.view.activity.custom.MaxHeightScrollView
                 android:id="@+id/scrollView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
                     app:alignContent="flex_start"
                     app:alignItems="flex_start"
                     app:flexWrap="wrap" />
-            </www.gymhop.p5m.view.activity.custom.MaxHeightScrollView>
+            </com.p5m.me.view.activity.custom.MaxHeightScrollView>
         </FrameLayout>
 
         <android.support.v7.widget.RecyclerView

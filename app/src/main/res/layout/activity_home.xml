@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/theme_bg"
-    tools:context="www.gymhop.p5m.view.activity.Main.HomeActivity">
+    tools:context="www.gymhop.p5m.www.gymhop.me.view.activity.Main.HomeActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
