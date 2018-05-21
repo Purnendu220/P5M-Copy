@@ -128,7 +128,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
 
                         textViewPackageName.setText(model.getName());
-                        textViewPageTitle.setText(model.getNoOfClass() + " " + context.getString(R.string.classes));
+                        textViewPageTitle.setText(model.getNoOfClass() + " " + AppConstants.pluralES("Class", model.getNoOfClass()));
 
                         String validityPeriod = model.getValidityPeriod();
                         validityPeriod = Helper.capitalize(validityPeriod);
@@ -173,7 +173,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     } else if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
 
                         textViewPackageName.setText(model.getName());
-                        textViewPageTitle.setText(model.getNoOfClass() + " " + context.getString(R.string.classes));
+                        textViewPageTitle.setText(model.getNoOfClass() + " " + AppConstants.pluralES("Class", model.getNoOfClass()));
                         textViewPackageValidity.setText("Valid for " + model.getGymName());
                         textViewPackagePrice.setText(model.getCost() + " " + context.getString(R.string.currency).toUpperCase());
 

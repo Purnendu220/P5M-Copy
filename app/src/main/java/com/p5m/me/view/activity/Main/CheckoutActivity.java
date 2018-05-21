@@ -168,7 +168,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 textViewPackageInfo.setVisibility(aPackage.getDescription().isEmpty() ? View.GONE : View.VISIBLE);
                 textViewPackageInfo.setText(aPackage.getDescription());
 
-                textViewPackageClasses.setText(aPackage.getNoOfClass() + " classes");
+                textViewPackageClasses.setText(aPackage.getNoOfClass() + " " + AppConstants.pluralES("Class", aPackage.getNoOfClass()));
                 buttonPromoCode.setVisibility(View.VISIBLE);
                 Helper.setPackageImage(imageViewPackageImage, aPackage.getName());
 
