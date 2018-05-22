@@ -1,5 +1,6 @@
 package com.p5m.me.eventbus;
 
+import android.app.NotificationManager;
 import android.content.Context;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -36,6 +37,11 @@ public class EventBroadcastHelper {
             MyPreferences.getInstance().saveActivities(activities);
 
             TempStorage.setAuthToken(null);
+//            TempStorage.setFilterList(new ArrayList<ClassesFilter>());
+
+            NotificationManager notificationManager = (NotificationManager) context
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancelAll();
 
             ContinueUser.open(context);
         } catch (Exception e) {

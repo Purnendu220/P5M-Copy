@@ -1,6 +1,7 @@
 package com.p5m.me.utils;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.widget.Toast;
 
 import com.p5m.me.R;
@@ -53,7 +54,9 @@ public class ToastUtils {
         if (message.isEmpty()) {
             return;
         }
-        Toast.makeText(context, message, duration).show();
+        Toast toast = Toast.makeText(context, message, duration);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 }
 

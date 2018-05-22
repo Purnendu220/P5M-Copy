@@ -7,12 +7,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 
+import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.p5m.me.restapi.NetworkCommunicator;
 
 
 public class BaseActivity extends AppCompatActivity {

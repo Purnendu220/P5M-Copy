@@ -34,6 +34,7 @@
                 android:layout_alignParentTop="true"
                 android:ellipsize="end"
                 android:fontFamily="sans-serif"
+                android:gravity="left"
                 android:letterSpacing="@dimen/text_medium_letter_spacing"
                 android:lineSpacingExtra="@dimen/line_spacing_extra"
                 android:maxLines="1"
@@ -44,9 +45,9 @@
             <ImageView
                 android:id="@+id/imageRight"
                 android:layout_width="32dp"
-                android:padding="7dp"
-                android:clickable="true"
                 android:layout_height="32dp"
+                android:clickable="true"
+                android:padding="7dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/filter_cancel" />
         </LinearLayout>

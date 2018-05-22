@@ -26,6 +26,7 @@
                 android:layout_weight="1"
                 android:fontFamily="sans-serif"
                 android:letterSpacing="@dimen/text_medium_letter_spacing"
+                android:gravity="left"
                 android:padding="16dp"
                 android:paddingTop="16dp"
                 android:text="Activity"

@@ -18,6 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
+            android:gravity="left"
             android:text="@string/your_fitness_freedom"
             android:textColor="@color/theme_dark_text"
             android:textSize="@dimen/registration_title" />
@@ -34,17 +35,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
+            android:gravity="left"
             android:text="@string/registration_done"
             android:textColor="@color/theme_dark_light_text"
             android:textSize="@dimen/text_large" />
 
         <Button
-            android:layout_marginTop="28dp"
             android:id="@+id/buttonDone"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height_normal"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
+            android:layout_marginTop="28dp"
             android:background="@drawable/button_white"
             android:fontFamily="sans-serif"
             android:gravity="center"

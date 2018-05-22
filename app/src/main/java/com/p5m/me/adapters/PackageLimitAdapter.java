@@ -74,6 +74,7 @@ public class PackageLimitAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             TextView textView = new TextView(context);
             textView.setPadding(dp * 16, dp * 12, dp * 16, dp * 12);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            textView.setGravity(Gravity.LEFT);
             textView.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
 
             linearLayout.addView(textView);

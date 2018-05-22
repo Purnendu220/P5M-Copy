@@ -70,6 +70,7 @@
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:background="@null"
+                            android:gravity="left|center_vertical"
                             android:hint="@string/search_hint"
                             android:imeOptions="actionSearch"
                             android:inputType="text"
