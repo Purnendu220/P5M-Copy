@@ -259,7 +259,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
 
     private void dialogUnFollow(final RecyclerView.ViewHolder viewHolder, final TrainerModel trainerModel) {
 
-        DialogUtils.showBasic(context, "Are you sure want to unfavourite " + trainerModel.getFirstName() + "?", "unfavourite", new MaterialDialog.SingleButtonCallback() {
+        DialogUtils.showBasic(context, "Are you sure you want to remove " + trainerModel.getFirstName() + "?", "Yes", new MaterialDialog.SingleButtonCallback() {
             @Override
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                 networkCommunicator.followUnFollow(!trainerModel.isIsfollow(), trainerModel, TrainerProfileActivity.this, false);

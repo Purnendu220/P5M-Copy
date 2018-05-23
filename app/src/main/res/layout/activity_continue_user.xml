@@ -100,7 +100,7 @@
                 android:background="@drawable/button_white"
                 android:fontFamily="sans-serif"
                 android:gravity="center"
-                android:text="@string/login"
+                android:text="@string/login_no_lines"
                 android:textColor="@color/black" />
 
             <Button

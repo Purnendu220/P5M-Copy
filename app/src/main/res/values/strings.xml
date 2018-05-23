@@ -93,6 +93,7 @@
     <string name="evening">Evening</string>
     <string name="login_facebook">ENTER WITH FACEBOOK</string>
     <string name="login">"<b><u>Log in</u></b>"</string>
+    <string name="login_no_lines">"Log in"</string>
     <string name="login_gamil">ENTER WITH GOOGLE</string>
     <string name="sign_up_email">SIGN UP WITH EMAIL</string>
 

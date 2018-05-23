@@ -136,6 +136,7 @@
                                 android:fontFamily="sans-serif"
                                 android:hint="First Name"
                                 android:inputType="textPersonName"
+                                android:layoutDirection="ltr"
                                 android:maxLines="1"
                                 android:textColor="@color/theme_dark_text"
                                 android:textColorHint="@color/theme_medium_light_text"
