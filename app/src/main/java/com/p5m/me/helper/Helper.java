@@ -244,6 +244,10 @@ public class Helper {
 
     public static void openImageViewer(Context context, Activity activity, View sharedElement, String url) {
 
+        if (url == null || url.isEmpty()) {
+            return;
+        }
+
         List<String> images = new ArrayList<>(1);
         images.add(url);
 
