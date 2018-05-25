@@ -14,12 +14,6 @@
         <item name="md_neutral_color">@color/colorAccent</item>
         <item name="md_negative_color">@color/colorAccent</item>
 
-        <item name="md_title_gravity">start</item>
-        <item name="md_content_gravity">start</item>
-        <item name="md_items_gravity">start</item>
-        <item name="md_buttons_gravity">end</item>
-        <item name="md_btnstacked_gravity">end</item>
-
         <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
         <item name="android:windowActivityTransitions" tools:targetApi="lollipop">true</item>
     </style>

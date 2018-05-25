@@ -96,6 +96,8 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
     private int navigatedFrom;
     private SearchAdapter searchAdapter;
     private int SEARCH_DELAY = 400;
+    private int SEARCH_LIMIT = 2;
+    private boolean isSearching = false;
 
     private SearchPagerAdapter searchPagerAdapter;
     private String[] titleTabs = new String[]{
@@ -149,7 +151,10 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
         editTextSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE) || (actionId == EditorInfo.IME_ACTION_SEARCH)) {
-                    viewResults();
+                    if (!isSearching) {
+                        viewResults();
+                        return true;
+                    }
                 }
                 return false;
             }
@@ -279,7 +284,7 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
 
             @Override
             public void afterTextChanged(final Editable editable) {
-                if (editable.toString().length() > 1) {
+                if (editable.toString().length() >= SEARCH_LIMIT) {
 
                     if (runnableSearch != null) {
                         handlerBG.removeCallbacks(runnableSearch);
@@ -302,14 +307,23 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
 
                     clearSearch();
                 } else {
+                    if (runnableSearch != null) {
+                        handlerBG.removeCallbacks(runnableSearch);
+                    }
 
+                    if (searchCall != null) {
+                        searchCall.cancel();
+                    }
+
+                    clearSearch();
                 }
             }
         });
     }
 
-    private void startSearching(final String searchText) {
+    private void startSearching(final String search) {
         runnableSearch = new Runnable() {
+
             @Override
             public void run() {
                 handlerUI.post(new Runnable() {
@@ -319,10 +333,12 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
                         progressBarDone.setVisibility(View.VISIBLE);
                     }
                 });
-                searchCall = networkCommunicator.search(searchText, "user", SearchActivity.this, false);
+
+                searchCall = networkCommunicator.search(search, "user", SearchActivity.this, false);
             }
         };
 
+        isSearching = true;
         handlerBG.postDelayed(runnableSearch, SEARCH_DELAY);
     }
 
@@ -333,6 +349,7 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
         handlerUI.post(new Runnable() {
             @Override
             public void run() {
+
                 searchAdapter.notifyDataSetChanges();
 //                layoutSearch.setVisibility(View.GONE);
                 imageViewImageSearch.setVisibility(View.VISIBLE);
@@ -359,6 +376,7 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
 
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.SEARCH_ALL:
+                isSearching = false;
 
                 SearchResults data = ((ResponseModel<SearchResults>) response).data;
 
@@ -382,6 +400,7 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
 
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.SEARCH_ALL:
+                isSearching = false;
 
                 clearSearch();
 
@@ -404,7 +423,12 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
 
     private void viewResults() {
 
-        if (editTextSearch.getText().toString().trim().isEmpty() || searchAdapter.getSearchResult() == null) {
+//        if (editTextSearch.getText().toString().trim().isEmpty() || searchAdapter.getSearchResult() == null) {
+//            return;
+//        }
+
+        if (searchAdapter.getSearchResult() == null) {
+            editTextSearch.requestFocus();
             return;
         }
 
@@ -424,7 +448,7 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
         };
 
         searchPagerAdapter = new SearchPagerAdapter(getSupportFragmentManager(), titleTabs);
-        searchPagerAdapter.setSearchKeywords(editTextSearch.getText().toString());
+        searchPagerAdapter.setSearchKeywords(searchAdapter.getSearchResult().searchText);
 
         viewPager.setAdapter(searchPagerAdapter);
 

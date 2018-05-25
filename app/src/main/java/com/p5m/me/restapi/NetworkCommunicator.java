@@ -1142,7 +1142,7 @@ public class NetworkCommunicator {
         return call;
     }
 
-    public Call search(String queryString, String searchFor, final RequestListener requestListener, boolean useCache) {
+    public Call search(final String queryString, String searchFor, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.SEARCH_ALL;
         Call<ResponseModel<SearchResults>> call = apiService.search(TempStorage.getUser().getId(), queryString, searchFor);
         LogUtils.debug("NetworkCommunicator hitting search");
@@ -1157,6 +1157,9 @@ public class NetworkCommunicator {
             @Override
             public void onResponse(Call<ResponseModel<SearchResults>> call, Response<ResponseModel<SearchResults>> restResponse, ResponseModel<SearchResults> response) {
                 LogUtils.networkSuccess("NetworkCommunicator search onResponse data " + response);
+                if (response.data != null) {
+                    response.data.searchText = queryString;
+                }
                 requestListener.onApiSuccess(response, requestCode);
             }
         });
