@@ -19,6 +19,7 @@
             android:layout_marginLeft="8dp"
             android:ellipsize="end"
             android:fontFamily="sans-serif-medium"
+            android:gravity="left"
             android:lineSpacingExtra="@dimen/line_spacing_extra_title"
             android:maxLines="2"
             android:padding="12dp"

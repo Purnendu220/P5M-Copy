@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height"
@@ -26,7 +25,7 @@
             android:layout_marginLeft="16dp"
             android:layout_weight="1"
             android:gravity="left"
-            android:text="@string/gym_visit_limits"
+            android:text="@string/gym_visit_limits_no_lines"
             android:textColor="@color/white" />
 
     </LinearLayout>

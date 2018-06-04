@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="www.gymhop.p5m">
+    package="com.p5m.me">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
-        android:name=".MyApp"
+        android:name="com.p5m.me.MyApp"
         android:allowBackup="true"
         android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
@@ -66,12 +66,12 @@
             android:value="@string/default_notification_channel_id" />
         <!-- [END fcm_default_channel] -->
 
-        <service android:name=".notifications.MyFirebaseMessagingService">
+        <service android:name="com.p5m.me.notifications.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".notifications.MyFirebaseInstanceIDService">
+        <service android:name="com.p5m.me.notifications.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
@@ -221,6 +221,7 @@
             android:name=".view.activity.Main.LocationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeGallery"></activity>
+
     </application>
 
 </manifest>

@@ -93,6 +93,7 @@
     <string name="evening">Evening</string>
     <string name="login_facebook">ENTER WITH FACEBOOK</string>
     <string name="login">"<b><u>Log in</u></b>"</string>
+    <string name="login_no_lines">"Log in"</string>
     <string name="login_gamil">ENTER WITH GOOGLE</string>
     <string name="sign_up_email">SIGN UP WITH EMAIL</string>
 
@@ -198,6 +199,7 @@
     <string name="profile_package_expiry">" remaining until your classes expire."</string>
     <string name="view_gym_visit_limits"><u>View gym visit limits</u></string>
     <string name="gym_visit_limits"><u>gym visit limits</u></string>
+    <string name="gym_visit_limits_no_lines">gym visit limits</string>
     <string name="select_plan">Select Plan</string>
     <string name="membership_no_package_heading_1">Pick a plan that suits your fitness needs. The ‘Get Set’ and ‘Pro’ options will allow you to visit all the gyms available on P5M. Be sure to check each gym visit limits to find the plan that works best for you.</string>
     <string name="membership_no_package_heading_2"></string>

@@ -32,6 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="sans-serif"
+                android:gravity="left"
                 android:letterSpacing="@dimen/text_medium_letter_spacing"
                 android:paddingBottom="16dp"
                 android:paddingRight="16dp"

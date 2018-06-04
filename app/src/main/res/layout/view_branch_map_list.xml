@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
-                    android:letterSpacing="@dimen/text_title_letter_spacing"
+                    android:gravity="left"
                     android:text="Branch Name"
                     android:textAllCaps="true"
                     android:textColor="@color/theme_dark_light_text"
@@ -41,7 +41,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
-                    android:letterSpacing="@dimen/text_title_letter_spacing"
+                    android:gravity="left"
                     android:paddingTop="4dp"
                     android:text="132 sector noda"
                     android:textColor="@color/theme_medium_dark_text"

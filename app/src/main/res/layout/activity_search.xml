@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="www.gymhop.p5m.view.activity.Main.SearchActivity">
+    tools:context="www.gymhop.p5m.www.gymhop.me.view.activity.Main.SearchActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -70,6 +70,7 @@
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:background="@null"
+                            android:gravity="left|center_vertical"
                             android:hint="@string/search_hint"
                             android:imeOptions="actionSearch"
                             android:inputType="text"
