@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:109210713388:android:55195b8c2aa06d69",
+        "mobilesdk_app_id": "1:109210713388:android:e83033ee42a596eb",
         "android_client_info": {
-          "package_name": "www.gymhop.p5m"
+          "package_name": "com.p5m.me"
         }
       },
       "oauth_client": [
