@@ -2,25 +2,25 @@ package com.p5m.me.data;
 
 public class PromoCode implements java.io.Serializable {
     private static final long serialVersionUID = -2039591090530829458L;
-    private double price;
-    private double discount;
+    private float price;
+    private float discount;
     private String discountType;
     private int id;
-    private double priceAfterDiscount;
+    private float priceAfterDiscount;
 
-    public double getPrice() {
+    public float getPrice() {
         return this.price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 
-    public double getDiscount() {
+    public float getDiscount() {
         return this.discount;
     }
 
-    public void setDiscount(double discount) {
+    public void setDiscount(float discount) {
         this.discount = discount;
     }
 
@@ -40,11 +40,11 @@ public class PromoCode implements java.io.Serializable {
         this.id = id;
     }
 
-    public double getPriceAfterDiscount() {
+    public float getPriceAfterDiscount() {
         return this.priceAfterDiscount;
     }
 
-    public void setPriceAfterDiscount(double priceAfterDiscount) {
+    public void setPriceAfterDiscount(float priceAfterDiscount) {
         this.priceAfterDiscount = priceAfterDiscount;
     }
 }

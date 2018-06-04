@@ -1,6 +1,10 @@
 package com.p5m.me.utils;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.p5m.me.R;
@@ -53,7 +57,21 @@ public class ToastUtils {
         if (message.isEmpty()) {
             return;
         }
-        Toast.makeText(context, message, duration).show();
+        Toast toast = Toast.makeText(context, message, duration);
+
+        TextView textView = new TextView(context);
+        int dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
+
+        textView.setPadding(dp * 16, dp * 12, dp * 16, dp * 12);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
+        textView.setGravity(Gravity.LEFT);
+        textView.setTextColor(ContextCompat.getColor(context, R.color.white));
+        textView.setText(message);
+        textView.setBackgroundResource(R.drawable.toast_rect);
+
+        toast.setView(textView);
+//        toast.setGravity(Gravity.BOTTOM, 0, 0);
+        toast.show();
     }
 }
 

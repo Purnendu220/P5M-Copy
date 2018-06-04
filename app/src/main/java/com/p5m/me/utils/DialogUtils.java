@@ -1,7 +1,12 @@
 package com.p5m.me.utils;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.GravityEnum;
@@ -25,9 +30,20 @@ public class DialogUtils {
                                  String positiveButtonText,
                                  String negativeButtonText,
                                  MaterialDialog.SingleButtonCallback singleButtonCallbackForPositive) {
+
+        TextView textView = new TextView(context);
+        int dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
+
+        textView.setPadding(dp * 20, dp * 20, dp * 16, dp * 8);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        textView.setGravity(Gravity.LEFT);
+        textView.setTextColor(ContextCompat.getColor(context, R.color.theme_medium_dark_text));
+        textView.setText(message);
+        textView.setBackgroundColor(Color.WHITE);
+
         new MaterialDialog.Builder(context)
-                .content(message)
                 .cancelable(false)
+                .customView(textView, false)
                 .positiveText(positiveButtonText)
                 .onPositive(singleButtonCallbackForPositive)
                 .negativeText(negativeButtonText)
@@ -54,9 +70,19 @@ public class DialogUtils {
                                         String buttonText2,
                                         MaterialDialog.SingleButtonCallback singleButtonCallback2) {
 
+        TextView textView = new TextView(context);
+        int dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
+
+        textView.setPadding(dp * 20, dp * 20, dp * 16, dp * 8);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        textView.setGravity(Gravity.LEFT);
+        textView.setTextColor(ContextCompat.getColor(context, R.color.theme_medium_dark_text));
+        textView.setText(message);
+        textView.setBackgroundColor(Color.WHITE);
+
         new MaterialDialog.Builder(context)
-                .content(message)
                 .cancelable(false)
+                .customView(textView, false)
                 .positiveText(buttonText1)
                 .onPositive(singleButtonCallback1)
                 .negativeText(buttonText2)
@@ -85,9 +111,19 @@ public class DialogUtils {
             buttonText = context.getString(R.string.cancel);
         }
 
+        TextView textView = new TextView(context);
+        int dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
+
+        textView.setPadding(dp * 20, dp * 20, dp * 16, dp * 8);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        textView.setGravity(Gravity.LEFT);
+        textView.setTextColor(ContextCompat.getColor(context, R.color.theme_medium_dark_text));
+        textView.setText(message);
+        textView.setBackgroundColor(Color.WHITE);
+
         new MaterialDialog.Builder(context)
                 .title(title)
-                .content(message)
+                .customView(textView, false)
                 .positiveText(buttonText)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -103,8 +139,18 @@ public class DialogUtils {
                                         String buttonText,
                                         MaterialDialog.SingleButtonCallback singleButtonCallback) {
 
+        TextView textView = new TextView(context);
+        int dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
+
+        textView.setPadding(dp * 20, dp * 20, dp * 16, dp * 8);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        textView.setGravity(Gravity.LEFT);
+        textView.setTextColor(ContextCompat.getColor(context, R.color.theme_medium_dark_text));
+        textView.setText(message);
+        textView.setBackgroundColor(Color.WHITE);
+
         new MaterialDialog.Builder(context)
-                .content(message)
+                .customView(textView, false)
                 .cancelable(true)
                 .positiveText(buttonText)
                 .onPositive(singleButtonCallback)
@@ -117,10 +163,20 @@ public class DialogUtils {
                                         String buttonText,
                                         MaterialDialog.SingleButtonCallback singleButtonCallback) {
 
+        TextView textView = new TextView(context);
+        int dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
+
+        textView.setPadding(dp * 20, dp * 20, dp * 16, dp * 8);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        textView.setGravity(Gravity.LEFT);
+        textView.setTextColor(ContextCompat.getColor(context, R.color.theme_medium_dark_text));
+        textView.setText(message);
+        textView.setBackgroundColor(Color.WHITE);
+
         new MaterialDialog.Builder(context)
                 .cancelable(false)
                 .title(title)
-                .content(message)
+                .customView(textView, false)
                 .positiveText(buttonText)
                 .onPositive(singleButtonCallback)
                 .show();
@@ -130,6 +186,7 @@ public class DialogUtils {
                                      String title,
                                      List<String> items,
                                      MaterialDialog.ListCallback listCallback) {
+
         new MaterialDialog.Builder(context)
                 .title(title)
                 .items(items)

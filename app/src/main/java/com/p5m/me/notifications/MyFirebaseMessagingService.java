@@ -1,17 +1,20 @@
 package com.p5m.me.notifications;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.p5m.me.R;
 import com.p5m.me.eventbus.EventBroadcastHelper;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
@@ -62,8 +65,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             JSONObject jsonObject = json;
             String type = jsonObject.optString(AppConstants.Notification.TYPE);
             String message = jsonObject.optString(AppConstants.Notification.BODY);
-            String userIdToNotify = jsonObject.optString(AppConstants.Notification.USER_ID_TO_NOTIFY);
-            long dataID  = jsonObject.optLong(AppConstants.Notification.OBJECT_DATA_ID);
+
+            long dataID = jsonObject.optLong(AppConstants.Notification.OBJECT_DATA_ID);
+
+            try {
+                String userIdToNotify = jsonObject.optString(AppConstants.Notification.USER_ID_TO_NOTIFY);
+                int userId = Integer.parseInt(userIdToNotify);
+
+                if (TempStorage.getUser() != null && TempStorage.getUser().getId() != userId) {
+                    return;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                LogUtils.exception(e);
+            }
 
             Intent navigationIntent = null;
 
@@ -320,23 +335,49 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Notification.BigTextStyle bigTextStyle = new Notification.BigTextStyle();
-        bigTextStyle.bigText(message);
-
-        Notification notification = new Notification.Builder(this)
-                .setSmallIcon(R.mipmap.app_icon_small)
-                .setContentTitle(title)
-                .setAutoCancel(true)
-                .setStyle(bigTextStyle)
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
-                        R.mipmap.app_icon))
-                .setPriority(Notification.PRIORITY_MAX)
-                .setDefaults(Notification.DEFAULT_VIBRATE)
-                .setContentIntent(resultPendingIntent)
-                .setContentText(message)
-                .build();
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify((int) (System.currentTimeMillis() - 10000000), notification);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            String CHANNEL_ID = "p5m_channel_" + System.currentTimeMillis(); // The id of the channel.
+            CharSequence name = "p5m"; // The user-visible name of the channel.
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
+            notificationManager.createNotificationChannel(mChannel);
+
+            Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setSmallIcon(R.mipmap.app_icon_small)
+                    .setContentTitle(title)
+                    .setAutoCancel(true)
+                    .setDefaults(Notification.DEFAULT_VIBRATE)
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+                    .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
+                            R.mipmap.app_icon))
+                    .setContentIntent(resultPendingIntent)
+                    .setChannelId(CHANNEL_ID)
+                    .setContentText(message)
+                    .build();
+            notificationManager.notify((int) (System.currentTimeMillis() - 10000000), notification);
+
+        } else {
+
+            Notification.BigTextStyle bigTextStyle = new Notification.BigTextStyle();
+            bigTextStyle.bigText(message);
+
+            Notification notification = new Notification.Builder(this)
+                    .setSmallIcon(R.mipmap.app_icon_small)
+                    .setContentTitle(title)
+                    .setAutoCancel(true)
+                    .setStyle(bigTextStyle)
+                    .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
+                            R.mipmap.app_icon))
+                    .setPriority(Notification.PRIORITY_MAX)
+                    .setDefaults(Notification.DEFAULT_VIBRATE)
+                    .setContentIntent(resultPendingIntent)
+                    .setContentText(message)
+                    .build();
+            notificationManager.notify((int) (System.currentTimeMillis() - 10000000), notification);
+
+        }
     }
 }

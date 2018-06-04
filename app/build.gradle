@@ -58,6 +58,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${SUPPORT_PACKAGE_VERSION}"
     implementation "com.android.support:recyclerview-v7:${SUPPORT_PACKAGE_VERSION}"
     implementation "com.android.support:design:${SUPPORT_PACKAGE_VERSION}"
+    implementation "com.android.support:support-v4:${SUPPORT_PACKAGE_VERSION}"
     implementation "com.android.support:cardview-v7:${SUPPORT_PACKAGE_VERSION}"
     /////////////////////////////////HTTP API////////////////////////////////////////
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
@@ -74,7 +75,6 @@ dependencies {
     /////////////////////////////////EXTRA//////////////////////////////////////////
     implementation 'com.shawnlin:PreferencesManager:1.0.3'
     implementation 'com.jakewharton:butterknife:8.8.1'
-    implementation 'com.android.support:support-v4:27.1.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.brandongogetap:stickyheaders:0.5.0'
     implementation 'org.greenrobot:eventbus:3.0.0'

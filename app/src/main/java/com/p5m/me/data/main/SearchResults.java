@@ -12,6 +12,9 @@ public class SearchResults implements java.io.Serializable {
     private List<GymDetailModel> gymDetailList;
     private List<TrainerModel> trainerDetailList;
 
+    //Own Use
+    public String searchText;
+
     public int getClassCount() {
         return classCount;
     }

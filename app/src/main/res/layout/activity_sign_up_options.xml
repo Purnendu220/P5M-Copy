@@ -113,6 +113,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="sans-serif"
+                                android:gravity="left"
                                 android:text="@string/already_account"
                                 android:textColor="@color/black" />
 
@@ -121,6 +122,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:clickable="true"
+                                android:gravity="left"
                                 android:fontFamily="sans-serif"
                                 android:padding="4dp"
                                 android:text="@string/login"

@@ -152,7 +152,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
     private static void dialogConfirmUnJoin(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model) {
 
-        String message = "Are you sure want to unjoin ?";
+        String message = "Are you sure you want to unjoin ?";
 
         String serverMessageNormalClass = message;
         String serverMessageSpecialClass = message;
@@ -170,7 +170,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             message = serverMessageSpecialClass;
 
         } else if (Helper.isSpecialClass(model) && Helper.isFreeClass(model)) {
-            message = "Are you sure want to unjoin ?";
+            message = "Are you sure you want to unjoin ?";
 
         } else if (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) <= cancelTime) {
             message = serverMessageNormalClass;

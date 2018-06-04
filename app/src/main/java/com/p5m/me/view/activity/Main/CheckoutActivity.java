@@ -168,7 +168,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 textViewPackageInfo.setVisibility(aPackage.getDescription().isEmpty() ? View.GONE : View.VISIBLE);
                 textViewPackageInfo.setText(aPackage.getDescription());
 
-                textViewPackageClasses.setText(aPackage.getNoOfClass() + " classes");
+                textViewPackageClasses.setText(aPackage.getNoOfClass() + " " + AppConstants.pluralES("Class", aPackage.getNoOfClass()));
                 buttonPromoCode.setVisibility(View.VISIBLE);
                 Helper.setPackageImage(imageViewPackageImage, aPackage.getName());
 
@@ -245,7 +245,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 if (promoCode != null) {
                     textViewTotal.setText(promoCode.getPriceAfterDiscount() + " " + context.getString(R.string.currency));
                     textViewPay.setText("Pay " + promoCode.getPriceAfterDiscount() + " " + context.getString(R.string.currency));
-                    textViewPromoCodePrice.setText("- " + (aPackage.getCost() - promoCode.getPriceAfterDiscount()) + " " + context.getString(R.string.currency));
+                    textViewPromoCodePrice.setText("- " + String.format("%.2f", (aPackage.getCost() - promoCode.getPriceAfterDiscount())) + " " + context.getString(R.string.currency));
                     layoutPromoCode.setVisibility(View.VISIBLE);
                     buttonPromoCode.setText(context.getString(R.string.remove_promo_code));
 

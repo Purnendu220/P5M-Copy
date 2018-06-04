@@ -141,7 +141,7 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
 
             LogUtils.debug("Payment shouldOverrideUrlLoading " + url);
 
-            if( url.startsWith("http:") || url.startsWith("https:") ) {
+            if (url.startsWith("http:") || url.startsWith("https:")) {
                 return false;
             }
 
@@ -154,7 +154,7 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
             LogUtils.debug("Payment shouldOverrideUrlLoading " + request.toString());
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                if( request.getUrl().toString().startsWith("http:") || request.getUrl().toString().startsWith("https:") ) {
+                if (request.getUrl().toString().startsWith("http:") || request.getUrl().toString().startsWith("https:")) {
                     return false;
                 }
             }
@@ -224,15 +224,20 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
 
     @Override
     public void onBackPressed() {
-        DialogUtils.showBasic(context, "Are you sure want to exit?" +
-                "\nyour transaction will be lost", "Exit", new MaterialDialog.SingleButtonCallback() {
-            @Override
-            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                overridePendingTransition(0, 0);
-                PaymentWebViewActivity.super.onBackPressed();
-                overridePendingTransition(0, 0);
-            }
-        });
+        DialogUtils.showBasicMessage(context, "Are you sure?", "To complete the payment you should stay on this page",
+                "Stay on this page", new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                }, "Leave this page", new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        overridePendingTransition(0, 0);
+                        PaymentWebViewActivity.super.onBackPressed();
+                        overridePendingTransition(0, 0);
+                    }
+                });
     }
 
     @Override

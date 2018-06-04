@@ -10,6 +10,10 @@ public class AppConstants {
         return number == 1 ? word : word + "s";
     }
 
+    public static String pluralES(String word, int number) {
+        return number == 1 ? word : word + "es";
+    }
+
     public static class Tab {
 
         public static final int REGISTRATION_STEP_NAME = 0;

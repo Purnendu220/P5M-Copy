@@ -177,7 +177,6 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
     }
 
     private ClassListRequest generateRequest() {
-        List<ClassesFilter> filters = TempStorage.getFilters();
 
         if (classListRequest == null) {
             classListRequest = new ClassListRequest();
