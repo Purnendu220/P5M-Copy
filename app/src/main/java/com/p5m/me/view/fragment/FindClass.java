@@ -28,6 +28,7 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.Main.FilterActivity;
+import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.Main.SearchActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 
@@ -35,6 +36,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
@@ -63,6 +65,7 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
     private int dp;
 
     private List<String> calendarList;
+    private Calendar todayDate;
 
     public FindClass() {
     }
@@ -115,6 +118,8 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
         viewPager.addOnPageChangeListener(this);
 
         checkFilterCount();
+
+        todayDate = Calendar.getInstance();
     }
 
     private void checkFilterCount() {
@@ -144,6 +149,29 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
     @Override
     public void onResume() {
         super.onResume();
+
+        try {
+            Calendar currentDate = Calendar.getInstance();
+
+            if (!(todayDate.get(Calendar.YEAR) == currentDate.get(Calendar.YEAR) &&
+                    todayDate.get(Calendar.MONTH) == currentDate.get(Calendar.MONTH) &&
+                    todayDate.get(Calendar.DAY_OF_MONTH) == currentDate.get(Calendar.DATE))) {
+
+                activity.overridePendingTransition(0, 0);
+                HomeActivity.open(context);
+                activity.overridePendingTransition(0, 0);
+            }
+
+            if (findClassAdapter.getFragments().get(0) == null) {
+
+                activity.overridePendingTransition(0, 0);
+                HomeActivity.open(context);
+                activity.overridePendingTransition(0, 0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
     }
 
     private void generateTabs() {

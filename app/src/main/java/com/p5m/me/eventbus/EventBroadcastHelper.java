@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.TrainerModel;
@@ -16,14 +17,27 @@ import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.LoginRegister.ContinueUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EventBroadcastHelper {
 
     public static void sendLogin(Context context, User user) {
+
+        try {
+            if (user.getId() != TempStorage.getUser().getId()) {
+                //Reset Filter..
+                MyPreferences.getInstance().saveFilters(new ArrayList<ClassesFilter>());
+                TempStorage.setFilterList(new ArrayList<ClassesFilter>());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         TempStorage.setUser(context, user);
         MyPreferences.getInstance().setLogin(true);
         NetworkCommunicator.getInstance(context).getDefault();
+
         EventBroadcastHelper.sendDeviceUpdate(context);
     }
 
@@ -37,7 +51,6 @@ public class EventBroadcastHelper {
             MyPreferences.getInstance().saveActivities(activities);
 
             TempStorage.setAuthToken(null);
-//            TempStorage.setFilterList(new ArrayList<ClassesFilter>());
 
             NotificationManager notificationManager = (NotificationManager) context
                     .getSystemService(Context.NOTIFICATION_SERVICE);

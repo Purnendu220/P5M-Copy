@@ -221,13 +221,6 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
                 }
             });
 
-            layoutMap.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    adapterCallbacks.onAdapterItemClick(ClassProfileViewHolder.this, layoutMap, model, position);
-                }
-            });
-
             textViewLocation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -236,13 +229,6 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
             });
 
             layoutTrainer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    adapterCallbacks.onAdapterItemClick(ClassProfileViewHolder.this, layoutTrainer, model, position);
-                }
-            });
-
-            layoutMap.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     adapterCallbacks.onAdapterItemClick(ClassProfileViewHolder.this, layoutTrainer, model, position);

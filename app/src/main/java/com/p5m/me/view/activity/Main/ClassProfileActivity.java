@@ -330,7 +330,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     GymProfileActivity.open(context, ((ClassModel) model).getGymBranchDetail().getGymId());
                 }
                 break;
-            case R.id.layoutMap:
             case R.id.imageViewMap:
                 if (model instanceof ClassModel) {
 

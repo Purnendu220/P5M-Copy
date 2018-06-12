@@ -27,11 +27,11 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
 
     public static Context context;
 
-    public final static ApiMode apiMode = ApiMode.LIVE;
-    public final static boolean USE_CRASH_ANALYTICS = true;
+    public final static ApiMode apiMode = ApiMode.TESTING_ALPHA;
+    public final static boolean USE_CRASH_ANALYTICS = false;
 
-    public final static boolean SHOW_LOG = false;
-    public final static boolean RETROFIT_SHOW_LOG = false;
+    public final static boolean SHOW_LOG = true;
+    public final static boolean RETROFIT_SHOW_LOG = true;
 
     public final static List<Activity> ACTIVITIES = new ArrayList<>();
 
