@@ -67,6 +67,9 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.layoutTrainer)
     public LinearLayout layoutTrainer;
 
+    @BindView(R.id.layoutMapClick)
+    public View layoutMapClick;
+
     @BindView(R.id.layoutLocation)
     public View layoutLocation;
 
@@ -218,6 +221,13 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
                 @Override
                 public void onClick(View view) {
                     adapterCallbacks.onAdapterItemClick(ClassProfileViewHolder.this, imageViewMap, model, position);
+                }
+            });
+
+            layoutMapClick.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ClassProfileViewHolder.this, layoutMapClick, model, position);
                 }
             });
 

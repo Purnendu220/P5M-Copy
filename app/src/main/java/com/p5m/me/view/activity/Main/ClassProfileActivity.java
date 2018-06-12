@@ -331,6 +331,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 }
                 break;
             case R.id.imageViewMap:
+            case R.id.layoutMapClick:
                 if (model instanceof ClassModel) {
 
                     ClassModel data = (ClassModel) model;

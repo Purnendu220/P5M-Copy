@@ -436,14 +436,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/no_map"
-                        android:clickable="false"
+                        android:clickable="true"
                         android:scaleType="centerCrop" />
 
                     <FrameLayout
+                        android:id="@+id/layoutMapClick"
                         android:layout_width="match_parent"
-                        android:clickable="true"
                         android:layout_height="match_parent"
-                        android:background="@drawable/click_highlight" />
+                        android:background="@drawable/click_highlight"
+                        android:clickable="true" />
                 </FrameLayout>
             </LinearLayout>
         </LinearLayout>
