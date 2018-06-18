@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="view_separator_size">8dp</dimen>
+    <dimen name="view_separator_size">6dp</dimen>
     <dimen name="view_separator_elevation">1dp</dimen>
     <dimen name="view_separator_elevation_edit_profile">1dp</dimen>
     <dimen name="view_separator_elevation_edit_setting">1dp</dimen>
@@ -51,4 +51,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="registration_title">28sp</dimen>
     <dimen name="action_bar_elevation">2dp</dimen>
+    <dimen name="text_drawable_adjustment">2dp</dimen>
 </resources>

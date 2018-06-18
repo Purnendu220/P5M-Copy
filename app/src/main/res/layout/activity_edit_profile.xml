@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/theme_bg"
-    tools:context="www.gymhop.p5m.view.activity.Main.EditProfileActivity">
+    tools:context="www.gymhop.p5m.www.gymhop.me.view.activity.Main.EditProfileActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -88,11 +88,12 @@
                                 android:id="@+id/imageViewProfile"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/no_map" />
+                                android:background="@drawable/no_map"
+                                android:gravity="left"
+                                android:scaleType="centerCrop" />
 
                             <ImageView
-                                android:id="@+id/imageViewStatus"
+                                android:id="@+id/imageViewCamera"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
                                 android:layout_gravity="center"
@@ -106,7 +107,7 @@
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:layout_gravity="center"
-                                android:visibility="visible" />
+                                android:visibility="gone" />
 
                         </FrameLayout>
                     </android.support.v7.widget.CardView>
@@ -129,12 +130,13 @@
                                 android:id="@+id/editTextNameFirst"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
-                                android:layout_gravity="center_vertical"
+                                android:layout_gravity="center_vertical|left"
                                 android:layout_weight="1"
                                 android:background="@color/white"
                                 android:fontFamily="sans-serif"
                                 android:hint="First Name"
                                 android:inputType="textPersonName"
+                                android:layoutDirection="ltr"
                                 android:maxLines="1"
                                 android:textColor="@color/theme_dark_text"
                                 android:textColorHint="@color/theme_medium_light_text"
@@ -149,7 +151,7 @@
                                 android:id="@+id/editTextNameLast"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
-                                android:layout_gravity="center_vertical"
+                                android:layout_gravity="center_vertical|left"
                                 android:layout_weight="1"
                                 android:background="@color/white"
                                 android:fontFamily="sans-serif"
@@ -229,6 +231,7 @@
                             android:background="@drawable/click_highlight"
                             android:clickable="true"
                             android:fontFamily="sans-serif"
+                            android:gravity="left"
                             android:letterSpacing="@dimen/text_medium_letter_spacing"
                             android:lineSpacingExtra="@dimen/line_spacing_extra"
                             android:padding="@dimen/view_padding_edit_profile"
@@ -251,6 +254,7 @@
                             android:background="@drawable/click_highlight"
                             android:clickable="true"
                             android:fontFamily="sans-serif"
+                            android:gravity="left"
                             android:letterSpacing="@dimen/text_medium_letter_spacing"
                             android:lineSpacingExtra="@dimen/line_spacing_extra"
                             android:padding="@dimen/view_padding_edit_profile"
@@ -292,6 +296,7 @@
                                 android:layout_marginRight="@dimen/view_padding_edit_profile"
                                 android:layout_weight="1"
                                 android:fontFamily="sans-serif"
+                                android:gravity="left"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
                                 android:text="Date of birth"
                                 android:textColor="@color/theme_dark_light_text"
@@ -303,6 +308,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="sans-serif"
+                                android:gravity="left"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
                                 android:text="29 Jan 1990"
                                 android:textColor="@color/theme_medium_light_text"
@@ -339,7 +345,7 @@
                             android:id="@+id/editTextEmail"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
-                            android:layout_gravity="center_vertical"
+                            android:layout_gravity="center_vertical|left"
                             android:layout_weight="1"
                             android:background="@color/white"
                             android:fontFamily="sans-serif"
@@ -362,9 +368,10 @@
                             android:id="@+id/editTextMobile"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
-                            android:layout_gravity="center_vertical"
+                            android:layout_gravity="center_vertical|left"
                             android:layout_weight="1"
                             android:background="@color/white"
+                            android:digits="0123456789"
                             android:fontFamily="sans-serif"
                             android:hint="Mobile No"
                             android:inputType="numberDecimal"
@@ -404,6 +411,7 @@
                                     android:layout_marginRight="@dimen/view_padding_edit_profile"
                                     android:layout_weight="1"
                                     android:fontFamily="sans-serif"
+                                    android:gravity="left"
                                     android:letterSpacing="@dimen/text_medium_letter_spacing"
                                     android:text="Choose your focus"
                                     android:textColor="@color/theme_dark_light_text"
@@ -443,6 +451,7 @@
                                     android:layout_marginRight="@dimen/view_padding_edit_profile"
                                     android:layout_weight="1"
                                     android:fontFamily="sans-serif"
+                                    android:gravity="left"
                                     android:letterSpacing="@dimen/text_medium_letter_spacing"
                                     android:text="Change password"
                                     android:textColor="@color/theme_dark_light_text"

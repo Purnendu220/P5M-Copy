@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="@color/white"
-    tools:context="www.gymhop.p5m.view.activity.Main.CheckoutActivity">
+    tools:context="www.gymhop.p5m.www.gymhop.me.view.activity.Main.CheckoutActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,14 +52,17 @@
                 android:paddingTop="16dp">
 
                 <TextView
+                    android:id="@+id/textViewTopTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="64dp"
                     android:layout_marginTop="8dp"
                     android:fontFamily="sans-serif-medium"
+                    android:gravity="left"
                     android:text="@string/your_order_details"
                     android:textColor="@color/theme_dark_text"
-                    android:textSize="@dimen/registration_title" />
+                    android:textSize="@dimen/registration_title"
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -81,6 +85,7 @@
                         android:layout_weight="1"
                         android:ellipsize="end"
                         android:fontFamily="sans-serif"
+                        android:gravity="left"
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
                         android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                         android:maxLines="1"
@@ -96,6 +101,7 @@
                         android:layout_marginRight="16dp"
                         android:ellipsize="end"
                         android:fontFamily="sans-serif"
+                        android:gravity="left"
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
                         android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                         android:maxLines="1"
@@ -119,7 +125,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:visibility="visible">
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/textViewPackageClasses"
@@ -127,6 +133,7 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:fontFamily="sans-serif"
+                            android:gravity="left"
                             android:letterSpacing="@dimen/text_medium_letter_spacing"
                             android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                             android:maxLines="1"
@@ -142,6 +149,7 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:fontFamily="sans-serif"
+                            android:gravity="left"
                             android:letterSpacing="@dimen/text_medium_letter_spacing"
                             android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                             android:maxLines="1"
@@ -156,6 +164,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif"
+                            android:gravity="left"
                             android:letterSpacing="@dimen/text_medium_letter_spacing"
                             android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                             android:paddingBottom="16dp"
@@ -170,6 +179,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="16dp"
                             android:fontFamily="sans-serif"
+                            android:gravity="left"
                             android:letterSpacing="@dimen/text_medium_letter_spacing"
                             android:lineSpacingExtra="@dimen/line_spacing_extra"
                             android:text="@string/view_gym_visit_limits"
@@ -185,11 +195,27 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="sans-serif"
+                            android:gravity="left"
+                            android:letterSpacing="@dimen/text_medium_letter_spacing"
+                            android:lineSpacingExtra="@dimen/line_spacing_extra_title"
+                            android:maxLines="1"
+                            android:paddingBottom="12dp"
+                            android:text="1 Class"
+                            android:textColor="@color/theme_light_text"
+                            android:textSize="@dimen/text_extra_large"
+                            android:textStyle="normal" />
+
+                        <TextView
                             android:id="@+id/textViewCancellationPolicyToggle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="16dp"
                             android:fontFamily="sans-serif"
+                            android:gravity="left"
                             android:letterSpacing="@dimen/text_medium_letter_spacing"
                             android:lineSpacingExtra="@dimen/line_spacing_extra"
                             android:text="@string/cancellation_policy"
@@ -201,8 +227,8 @@
                             android:id="@+id/textViewCancellationPolicy"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:animateLayoutChanges="true"
                             android:fontFamily="sans-serif"
+                            android:gravity="left"
                             android:letterSpacing="@dimen/text_medium_letter_spacing"
                             android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                             android:paddingBottom="16dp"
@@ -242,6 +268,7 @@
                             android:layout_marginRight="@dimen/view_padding_edit_profile"
                             android:layout_weight="1"
                             android:fontFamily="sans-serif"
+                            android:gravity="left"
                             android:letterSpacing="@dimen/text_medium_letter_spacing"
                             android:text="Promo Code Applied"
                             android:textColor="@color/colorAccent"
@@ -253,6 +280,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif"
+                            android:gravity="left"
                             android:letterSpacing="@dimen/text_medium_letter_spacing"
                             android:text="- 2 KWD"
                             android:textColor="@color/colorAccent"
@@ -283,6 +311,7 @@
                         android:layout_marginRight="@dimen/view_padding_edit_profile"
                         android:layout_weight="1"
                         android:fontFamily="sans-serif"
+                        android:gravity="left"
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
                         android:text="Total : "
                         android:textColor="@color/theme_dark_light_text"
@@ -294,6 +323,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
+                        android:gravity="left"
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
                         android:text="12 KWD"
                         android:textColor="@color/theme_dark_text"

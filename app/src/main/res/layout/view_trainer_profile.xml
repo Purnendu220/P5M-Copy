@@ -40,6 +40,7 @@
 
                     <TextView
                         android:id="@+id/textViewName"
+                        android:gravity="left"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
@@ -97,6 +98,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_marginLeft="@dimen/text_icon_gap"
+                        android:layout_marginTop="@dimen/text_drawable_adjustment"
+                        android:gravity="left"
                         android:layout_toEndOf="@+id/imageViewFollowers"
                         android:fontFamily="sans-serif"
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
@@ -126,6 +129,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_marginLeft="@dimen/text_icon_gap"
+                        android:layout_marginTop="@dimen/text_drawable_adjustment"
+                        android:gravity="left"
                         android:layout_toEndOf="@+id/imageViewProfileCategory"
                         android:fontFamily="sans-serif"
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
@@ -146,7 +151,7 @@
                     <ImageView
                         android:id="@+id/imageViewLocation"
                         style="@style/ClassIconSmall"
-                        android:src="@drawable/location" />
+                        android:src="@drawable/location_small" />
 
                     <LinearLayout
                         android:id="@+id/layoutLocation"
@@ -154,10 +159,45 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_marginLeft="@dimen/text_icon_gap"
+                        android:layout_marginTop="@dimen/text_drawable_adjustment"
                         android:layout_toEndOf="@+id/imageViewLocation"
                         android:orientation="vertical" />
 
                 </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/view_separator_size"
+            android:background="@color/theme_bg"
+            android:elevation="@dimen/view_separator_elevation"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textViewInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:gravity="left"
+                    android:fontFamily="sans-serif"
+                    android:letterSpacing="@dimen/text_medium_letter_spacing"
+                    android:lineSpacingExtra="@dimen/line_spacing_extra"
+                    android:paddingBottom="12dp"
+                    android:paddingTop="12dp"
+                    android:text="We have provided you with the tools you can use to create your personalized workout at your"
+                    android:textColor="@color/theme_medium_dark_text"
+                    android:textSize="@dimen/text_medium"
+                    android:textStyle="normal" />
             </LinearLayout>
         </LinearLayout>
 
@@ -180,6 +220,7 @@
                     android:id="@+id/textViewGallery"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="left"
                     android:fontFamily="sans-serif"
                     android:paddingLeft="12dp"
                     android:paddingTop="8dp"

@@ -2,12 +2,12 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/theme_bg">
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@drawable/click_highlight"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -48,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:fontFamily="sans-serif-medium"
-                    android:gravity="center_vertical"
+                    android:gravity="center_vertical|left"
                     android:letterSpacing="@dimen/button_letter_spacing_very_little"
                     android:maxLines="2"
                     android:text="STrainer Name"
@@ -71,6 +71,7 @@
 
                     <TextView
                         android:id="@+id/textViewSubtitle"
+                        android:gravity="left"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"

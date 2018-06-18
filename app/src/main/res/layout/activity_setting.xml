@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/theme_bg"
-    tools:context="www.gymhop.p5m.view.activity.Main.SettingActivity">
+    android:layoutDirection="ltr"
+    tools:context="www.gymhop.p5m.www.gymhop.me.view.activity.Main.SettingActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,10 +29,10 @@
             <TextView
                 android:id="@+id/textViewTitle"
                 style="@style/ToolBarTitle"
+                android:gravity="left"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="left"
                 android:text="@string/settings"
                 android:textColor="@color/white" />
 
@@ -74,10 +75,13 @@
 
                             <ImageView
                                 style="@style/SettingIcon"
-                                android:src="@drawable/class_icon" />
+                                android:padding="1dp"
+                                android:src="@drawable/notification"
+                                android:tint="@color/theme_medium_text" />
 
                             <TextView
                                 android:layout_width="0dp"
+                                android:gravity="left"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/text_icon_gap_setting"
                                 android:layout_marginRight="12dp"
@@ -116,10 +120,13 @@
 
                             <ImageView
                                 style="@style/SettingIcon"
-                                android:src="@drawable/class_icon" />
+                                android:padding="2dp"
+                                android:src="@drawable/membership"
+                                android:tint="@color/theme_medium_text" />
 
                             <TextView
                                 android:layout_width="0dp"
+                                android:gravity="left"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/text_icon_gap_setting"
                                 android:layout_marginRight="12dp"
@@ -158,7 +165,9 @@
 
                             <ImageView
                                 style="@style/SettingIcon"
-                                android:src="@drawable/class_icon" />
+                                android:padding="2dp"
+                                android:src="@drawable/transaction"
+                                android:tint="@color/theme_medium_text" />
 
                             <TextView
                                 android:layout_width="0dp"
@@ -166,6 +175,7 @@
                                 android:layout_marginLeft="@dimen/text_icon_gap_setting"
                                 android:layout_marginRight="12dp"
                                 android:layout_weight="1"
+                                android:gravity="left"
                                 android:fontFamily="sans-serif"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
                                 android:text="Transaction History"
@@ -209,7 +219,8 @@
 
                             <ImageView
                                 style="@style/SettingIcon"
-                                android:src="@drawable/class_icon" />
+                                android:src="@drawable/contact_us"
+                                android:tint="@color/theme_medium_text" />
 
                             <TextView
                                 android:layout_width="0dp"
@@ -217,6 +228,7 @@
                                 android:layout_marginLeft="@dimen/text_icon_gap_setting"
                                 android:layout_marginRight="12dp"
                                 android:layout_weight="1"
+                                android:gravity="left"
                                 android:fontFamily="sans-serif"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
                                 android:text="Contact Us"
@@ -251,7 +263,8 @@
 
                             <ImageView
                                 style="@style/SettingIcon"
-                                android:src="@drawable/class_icon" />
+                                android:src="@drawable/privacy"
+                                android:tint="@color/theme_medium_text" />
 
                             <TextView
                                 android:layout_width="0dp"
@@ -260,6 +273,7 @@
                                 android:layout_marginRight="12dp"
                                 android:layout_weight="1"
                                 android:fontFamily="sans-serif"
+                                android:gravity="left"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
                                 android:text="Privacy Policy"
                                 android:textColor="@color/theme_dark_light_text"
@@ -293,7 +307,8 @@
 
                             <ImageView
                                 style="@style/SettingIcon"
-                                android:src="@drawable/class_icon" />
+                                android:src="@drawable/terms"
+                                android:tint="@color/theme_medium_text" />
 
                             <TextView
                                 android:layout_width="0dp"
@@ -301,6 +316,7 @@
                                 android:layout_marginLeft="@dimen/text_icon_gap_setting"
                                 android:layout_marginRight="12dp"
                                 android:layout_weight="1"
+                                android:gravity="left"
                                 android:fontFamily="sans-serif"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
                                 android:text="Terms &amp; Condition"
@@ -335,7 +351,9 @@
 
                             <ImageView
                                 style="@style/SettingIcon"
-                                android:src="@drawable/class_icon" />
+                                android:padding="2dp"
+                                android:src="@drawable/about_us"
+                                android:tint="@color/theme_medium_text" />
 
                             <TextView
                                 android:layout_width="0dp"
@@ -343,6 +361,7 @@
                                 android:layout_marginLeft="@dimen/text_icon_gap_setting"
                                 android:layout_marginRight="12dp"
                                 android:layout_weight="1"
+                                android:gravity="left"
                                 android:fontFamily="sans-serif"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
                                 android:text="About Us"
@@ -386,7 +405,9 @@
 
                             <ImageView
                                 style="@style/SettingIcon"
-                                android:src="@drawable/class_icon" />
+                                android:padding="1dp"
+                                android:src="@drawable/logout"
+                                android:tint="@color/theme_medium_text" />
 
                             <TextView
                                 android:layout_width="0dp"
@@ -396,6 +417,7 @@
                                 android:layout_weight="1"
                                 android:fontFamily="sans-serif"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
+                                android:gravity="left"
                                 android:text="Logout"
                                 android:textColor="@color/theme_dark_light_text"
                                 android:textSize="@dimen/text_large"

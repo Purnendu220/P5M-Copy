@@ -47,9 +47,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom"
-                            android:background="@color/colorPrimaryDarkHighLight"
+                            android:background="@color/specialClassBg"
                             android:ellipsize="end"
                             android:fontFamily="sans-serif"
+                            android:gravity="left"
                             android:letterSpacing="@dimen/text_medium_letter_spacing"
                             android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                             android:maxLines="1"
@@ -76,6 +77,7 @@
                         android:layout_toStartOf="@+id/buttonJoin"
                         android:ellipsize="end"
                         android:fontFamily="sans-serif"
+                        android:gravity="left"
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
                         android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                         android:maxLines="2"
@@ -106,8 +108,10 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_marginLeft="@dimen/text_icon_gap"
+                        android:layout_marginTop="@dimen/text_drawable_adjustment"
                         android:layout_toEndOf="@+id/imageViewClassCategory"
                         android:fontFamily="sans-serif"
+                        android:gravity="left"
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
                         android:lineSpacingExtra="@dimen/line_spacing_extra"
                         android:text="Class A: fitness, strength training and cardio"
@@ -136,8 +140,10 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_marginLeft="@dimen/text_icon_gap"
+                        android:layout_marginTop="@dimen/text_drawable_adjustment"
                         android:layout_toEndOf="@+id/imageViewClassDate"
                         android:fontFamily="sans-serif"
+                        android:gravity="left"
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
                         android:lineSpacingExtra="@dimen/line_spacing_extra"
                         android:text="January 11, 2018"
@@ -165,8 +171,10 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_marginLeft="@dimen/text_icon_gap"
+                        android:layout_marginTop="@dimen/text_drawable_adjustment"
                         android:layout_toEndOf="@+id/imageViewClassAvailable"
                         android:fontFamily="sans-serif"
+                        android:gravity="left"
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
                         android:lineSpacingExtra="@dimen/line_spacing_extra"
                         android:text="6 available seats"
@@ -197,7 +205,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingBottom="4dp"
-                    android:paddingTop="12dp">
+                    android:paddingTop="8dp">
 
                     <RelativeLayout
                         android:layout_width="0dp"
@@ -226,7 +234,7 @@
                             android:gravity="center"
                             android:letterSpacing="@dimen/text_medium_letter_spacing"
                             android:lineSpacingExtra="@dimen/line_spacing_extra"
-                            android:paddingTop="8dp"
+                            android:paddingTop="2dp"
                             android:text="  11:20AM - 12:50AM"
                             android:textColor="@color/theme_dark_text"
                             android:textSize="@dimen/text_small" />
@@ -260,7 +268,7 @@
                             android:gravity="center"
                             android:letterSpacing="@dimen/text_medium_letter_spacing"
                             android:lineSpacingExtra="@dimen/line_spacing_extra"
-                            android:paddingTop="8dp"
+                            android:paddingTop="2dp"
                             android:text="Noida Sector 132"
                             android:textColor="@color/theme_dark_text"
                             android:textSize="@dimen/text_small" />
@@ -293,7 +301,7 @@
                             android:gravity="center"
                             android:letterSpacing="@dimen/text_medium_letter_spacing"
                             android:lineSpacingExtra="@dimen/line_spacing_extra"
-                            android:paddingTop="8dp"
+                            android:paddingTop="2dp"
                             android:text="Only girls"
                             android:textColor="@color/theme_dark_text"
                             android:textSize="@dimen/text_small" />
@@ -334,6 +342,7 @@
                         android:layout_toEndOf="@+id/imageViewClassCategory"
                         android:layout_weight="1"
                         android:fontFamily="sans-serif"
+                        android:gravity="left"
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
                         android:lineSpacingExtra="@dimen/line_spacing_extra"
                         android:text="Varun John"
@@ -373,6 +382,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:fontFamily="sans-serif"
+                    android:gravity="left"
                     android:letterSpacing="@dimen/text_medium_letter_spacing"
                     android:lineSpacingExtra="@dimen/line_spacing_extra"
                     android:paddingBottom="12dp"
@@ -407,6 +417,7 @@
                     android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:fontFamily="sans-serif"
+                    android:gravity="left"
                     android:letterSpacing="@dimen/text_medium_letter_spacing"
                     android:lineSpacingExtra="@dimen/line_spacing_extra"
                     android:paddingBottom="12dp"
@@ -418,20 +429,22 @@
 
                 <FrameLayout
                     android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:background="@drawable/click_highlight">
+                    android:layout_height="120dp">
 
-                    <www.gymhop.p5m.view.activity.custom.SquareImageView
+                    <com.p5m.me.view.activity.custom.SquareImageView
                         android:id="@+id/imageViewMap"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/no_map"
+                        android:clickable="true"
                         android:scaleType="centerCrop" />
 
                     <FrameLayout
+                        android:id="@+id/layoutMapClick"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/click_highlight" />
+                        android:background="@drawable/click_highlight"
+                        android:clickable="true" />
                 </FrameLayout>
             </LinearLayout>
         </LinearLayout>
@@ -458,6 +471,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:fontFamily="sans-serif"
+                    android:gravity="left"
                     android:letterSpacing="@dimen/text_medium_letter_spacing"
                     android:lineSpacingExtra="@dimen/line_spacing_extra"
                     android:paddingBottom="12dp"

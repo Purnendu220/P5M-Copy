@@ -2,12 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <FrameLayout
+        android:id="@+id/layoutContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusableInTouchMode="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,6 +31,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
+                    android:gravity="left"
                     android:text="@string/whats_your_name"
                     android:textColor="@color/theme_dark_text"
                     android:textSize="@dimen/registration_title" />
@@ -38,6 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/txt_name_title"
                     android:layout_marginTop="12dp"
+                    android:gravity="left"
                     app:errorEnabled="true">
 
                     <EditText
@@ -45,6 +50,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
+                        android:gravity="left"
                         android:inputType="textPersonName"
                         android:maxLines="1"
                         android:textSize="@dimen/text_large" />
@@ -54,6 +60,7 @@
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="left"
                     android:visibility="invisible"
                     app:errorEnabled="true">
 
@@ -61,6 +68,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
+                        android:gravity="left"
                         android:hint="@string/confirm_your_password"
                         android:inputType="textPassword"
                         android:maxLines="1"
@@ -87,6 +95,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:fontFamily="sans-serif-medium"
+                        android:gravity="left"
                         android:text="@string/and_your_email"
                         android:textColor="@color/theme_dark_text"
                         android:textSize="@dimen/registration_title" />
@@ -96,6 +105,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
+                        android:gravity="left"
                         app:errorEnabled="true">
 
                         <EditText
@@ -103,6 +113,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif"
+                            android:gravity="left"
                             android:inputType="textEmailAddress"
                             android:maxLines="1"
                             android:textSize="@dimen/text_large" />
@@ -112,6 +123,7 @@
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="left"
                         android:visibility="invisible"
                         app:errorEnabled="true">
 
@@ -119,6 +131,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif"
+                            android:gravity="left"
                             android:hint="@string/confirm_your_password"
                             android:inputType="textPassword"
                             android:maxLines="1"
@@ -140,6 +153,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:fontFamily="sans-serif-medium"
+                    android:gravity="left"
                     android:text="@string/create_a_password"
                     android:textColor="@color/theme_dark_text"
                     android:textSize="@dimen/registration_title" />
@@ -149,6 +163,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
+                    android:gravity="left"
                     app:errorEnabled="true">
 
                     <EditText
@@ -156,6 +171,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
+                        android:gravity="left"
                         android:hint="@string/create_your_password"
                         android:inputType="textPassword"
                         android:maxLines="1"
@@ -168,6 +184,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/text_input_password"
+                    android:gravity="left"
                     app:errorEnabled="true">
 
                     <EditText
@@ -175,6 +192,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
+                        android:gravity="left"
                         android:hint="@string/confirm_your_password"
                         android:inputType="textPassword"
                         android:maxLines="1"
@@ -188,13 +206,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:fontFamily="sans-serif-medium"
+                    android:gravity="left"
                     android:text="@string/gender_string"
                     android:textColor="@color/theme_dark_text"
                     android:textSize="@dimen/registration_title" />
@@ -235,6 +254,7 @@
                     android:id="@+id/textViewGenderError"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="left"
                     android:text="@string/gender_required"
                     android:textColor="@color/theme_error_text"
                     android:visibility="invisible" />
@@ -249,6 +269,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
+                        android:gravity="left"
                         android:hint="@string/confirm_your_password"
                         android:inputType="textPassword"
                         android:maxLines="1"
@@ -275,6 +296,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"
                         android:fontFamily="sans-serif"
+                        android:gravity="left"
                         android:text="Please Wait"
                         android:textColor="@color/theme_dark_text"
                         android:textSize="@dimen/text_large" />
@@ -308,6 +330,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
+                    android:gravity="left"
                     android:text="@string/already_account"
                     android:textColor="@color/black" />
 
@@ -317,6 +340,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:fontFamily="sans-serif"
+                    android:gravity="left"
                     android:padding="4dp"
                     android:text="@string/login"
                     android:textColor="@color/black"

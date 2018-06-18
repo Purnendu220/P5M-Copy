@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="www.gymhop.p5m.www.gymhop.me.view.activity.Demo"
+    tools:showIn="@layout/activity_demo">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/bottom_text_button_height"
+                        android:layout_marginBottom="50dp"
+                        android:background="@drawable/theme_bottom_text_button_book"
+                        android:clickable="true"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center"
+                        android:letterSpacing="@dimen/button_letter_spacing"
+                        android:text="@string/reserve_class"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_large" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/bottom_text_button_height"
+                        android:layout_marginBottom="50dp"
+                        android:background="@drawable/theme_bottom_text_button_book"
+                        android:clickable="true"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center"
+                        android:letterSpacing="@dimen/button_letter_spacing"
+                        android:text="@string/reserve_class"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_large" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/bottom_text_button_height"
+                        android:layout_marginBottom="50dp"
+                        android:background="@drawable/theme_bottom_text_button_book"
+                        android:clickable="true"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center"
+                        android:letterSpacing="@dimen/button_letter_spacing"
+                        android:text="@string/reserve_class"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_large" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/bottom_text_button_height"
+                        android:layout_marginBottom="50dp"
+                        android:background="@drawable/theme_bottom_text_button_book"
+                        android:clickable="true"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center"
+                        android:letterSpacing="@dimen/button_letter_spacing"
+                        android:text="@string/reserve_class"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_large" />
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/bottom_text_button_height"
+                        android:layout_marginBottom="50dp"
+                        android:background="@drawable/theme_bottom_text_button_book"
+                        android:clickable="true"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center"
+                        android:letterSpacing="@dimen/button_letter_spacing"
+                        android:text="@string/reserve_class"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_large" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/bottom_text_button_height"
+                        android:layout_marginBottom="50dp"
+                        android:background="@drawable/theme_bottom_text_button_book"
+                        android:clickable="true"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center"
+                        android:letterSpacing="@dimen/button_letter_spacing"
+                        android:text="@string/reserve_class"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_large" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/bottom_text_button_height"
+                        android:layout_marginBottom="50dp"
+                        android:background="@drawable/theme_bottom_text_button_book"
+                        android:clickable="true"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center"
+                        android:letterSpacing="@dimen/button_letter_spacing"
+                        android:text="@string/reserve_class"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_large" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/bottom_text_button_height"
+                        android:layout_marginBottom="50dp"
+                        android:background="@drawable/theme_bottom_text_button_book"
+                        android:clickable="true"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center"
+                        android:letterSpacing="@dimen/button_letter_spacing"
+                        android:text="@string/reserve_class"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_large" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/bottom_text_button_height"
+            android:background="@drawable/theme_bottom_text_button_book"
+            android:clickable="true"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:letterSpacing="@dimen/button_letter_spacing"
+            android:text="I AM HERE BO"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_large" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

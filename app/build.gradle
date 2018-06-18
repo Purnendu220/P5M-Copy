@@ -1,17 +1,23 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
 
 allprojects {
     repositories {
         maven { url "https://jitpack.io" }
+        maven { url 'https://maven.fabric.io/public' }
     }
 }
 
 android {
     compileSdkVersion COMPILE_SDK_VERSION as int
-    buildToolsVersion SUPPORT_PACKAGE_VERSION
+    buildToolsVersion BUILD_TOOL_VERSION
 
     defaultConfig {
-        applicationId "www.gymhop.p5m"
+        applicationId "com.p5m.me"
         minSdkVersion MIN_SDK_VERSION as int
         targetSdkVersion TARGET_SDK_VERSION as int
         versionCode VERSION_CODE as int
@@ -40,6 +46,11 @@ android {
 }
 
 dependencies {
+    configurations {
+        all*.exclude group: 'com.android.support', module: 'support-v13'
+        all*.exclude group: 'com.android.support', module: 'support-v7'
+    }
+
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     /////////////////////////////////SUPPORT////////////////////////////////////////
     implementation 'com.android.support:multidex:1.0.3'
@@ -47,6 +58,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${SUPPORT_PACKAGE_VERSION}"
     implementation "com.android.support:recyclerview-v7:${SUPPORT_PACKAGE_VERSION}"
     implementation "com.android.support:design:${SUPPORT_PACKAGE_VERSION}"
+    implementation "com.android.support:support-v4:${SUPPORT_PACKAGE_VERSION}"
     implementation "com.android.support:cardview-v7:${SUPPORT_PACKAGE_VERSION}"
     /////////////////////////////////HTTP API////////////////////////////////////////
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
@@ -55,7 +67,9 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
     implementation 'com.google.code.gson:gson:2.8.1'
     /////////////////////////////////IMAGE//////////////////////////////////////////
-    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
+
     implementation 'com.github.stfalcon:frescoimageviewer:0.5.0'
     implementation 'com.facebook.fresco:fresco:1.2.0'
     /////////////////////////////////EXTRA//////////////////////////////////////////
@@ -69,12 +83,32 @@ dependencies {
     implementation 'com.robertlevonyan.components:Picker:1.1.1'
     implementation 'com.google.android:flexbox:0.3.2'
 
-    implementation 'com.google.firebase:firebase-core:12.0.1'
-    implementation 'com.google.firebase:firebase-messaging:12.0.1'
-    implementation 'com.google.android.gms:play-services:12.0.1'
+    implementation 'com.google.firebase:firebase-core:15.0.2'
+    implementation 'com.google.firebase:firebase-messaging:15.0.2'
+    implementation 'com.google.android.gms:play-services-location:15.0.1'
+    implementation 'com.google.android.gms:play-services-maps:15.0.1'
+    implementation 'com.google.android.gms:play-services-places:15.0.1'
+
+    implementation 'id.zelory:compressor:1.0.4'
+
+    implementation 'com.facebook.android:facebook-android-sdk:4.24.0'
+    implementation 'com.facebook.fresco:fresco:1.2.0'
+    implementation 'com.bogdwellers:pinchtozoom:0.1'
+
+    /////////////////////////////////FABRIC//////////////////////////////////////////
+    implementation('com.crashlytics.sdk.android:crashlytics:2.9.2@aar') {
+        transitive = true;
+    }
+
 }
 
 apply plugin: 'com.google.gms.google-services'
+
+
+
+
+
+
 
 
 

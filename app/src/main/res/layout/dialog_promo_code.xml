@@ -19,30 +19,38 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
-                android:text="@string/apply_promo_code"
+                android:gravity="left"
+                android:text="@string/promo_code"
+                android:textAllCaps="true"
                 android:textColor="@color/theme_dark_text"
-                android:textSize="@dimen/registration_title" />
+                android:textSize="@dimen/text_extra_extra_large" />
+
+            <EditText
+                android:id="@+id/editTextPromoCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="sans-serif"
+                android:gravity="left"
+                android:hint="Enter promo code"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:paddingBottom="12dp"
+                android:paddingTop="12dp"
+                android:textAllCaps="false"
+                android:textSize="@dimen/text_extra_large" />
 
             <TextView
                 android:id="@+id/textViewError"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="8dp"
+                android:gravity="left"
+                android:text="Invalied Code"
                 android:textColor="@color/theme_error_text"
                 android:visibility="visible" />
 
-            <EditText
-                android:id="@+id/editTextPromoCode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:hint="@string/promo_code"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:paddingBottom="12dp"
-                android:paddingTop="12dp"
-                android:textSize="@dimen/text_extra_large" />
         </LinearLayout>
 
         <LinearLayout
@@ -50,7 +58,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_marginBottom="12dp"
-            android:layout_marginTop="16dp"
             android:orientation="horizontal">
 
             <TextView
@@ -62,6 +69,7 @@
                 android:background="@drawable/click_highlight_white"
                 android:clickable="true"
                 android:fontFamily="sans-serif"
+                android:gravity="left"
                 android:letterSpacing="@dimen/text_medium_letter_spacing"
                 android:paddingBottom="12dp"
                 android:paddingLeft="20dp"
@@ -86,19 +94,19 @@
 
                 <TextView
                     android:id="@+id/textViewOk"
-                    android:layout_width="100dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="16dp"
                     android:background="@drawable/click_highlight_white"
                     android:clickable="true"
                     android:fontFamily="sans-serif"
-                    android:gravity="center"
+                    android:gravity="left"
                     android:letterSpacing="@dimen/text_medium_letter_spacing"
                     android:paddingBottom="12dp"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:paddingTop="12dp"
-                    android:text="Done"
+                    android:text="Apply"
                     android:textAllCaps="true"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/text_large"

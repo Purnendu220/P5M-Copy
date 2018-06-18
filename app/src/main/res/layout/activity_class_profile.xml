@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/theme_bg"
-    tools:context="www.gymhop.p5m.view.activity.Main.ClassProfileActivity">
+    android:fitsSystemWindows="true"
+    tools:context="www.gymhop.p5m.www.gymhop.me.view.activity.Main.ClassProfileActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -26,26 +27,35 @@
             app:contentInsetLeft="0dp"
             app:contentInsetRight="0dp"
             app:contentInsetStart="0dp"
-            app:layout_scrollFlags="scroll|enterAlways"
+            app:layout_scrollFlags="enterAlways|scroll"
             app:tabIndicatorColor="@color/date_tabs" />
     </android.support.design.widget.AppBarLayout>
 
-    <FrameLayout
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/bottom_text_button_height"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/theme_bg"
-            android:clipToPadding="false"
-            android:scrollbars="none" />
-    </FrameLayout>
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/bottom_text_button_height"
+                android:background="@color/theme_bg"
+                android:clipToPadding="false"
+                android:scrollbars="none" />
+
+        </FrameLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <LinearLayout
+        android:id="@+id/layoutButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -76,4 +86,6 @@
                 android:textSize="@dimen/text_large" />
         </RelativeLayout>
     </LinearLayout>
+
+
 </android.support.design.widget.CoordinatorLayout>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/theme_bg"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/theme_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -64,7 +64,7 @@
                             android:layout_marginLeft="4dp"
                             android:ellipsize="end"
                             android:fontFamily="sans-serif"
-                            android:gravity="center_vertical"
+                            android:gravity="center_vertical|left"
                             android:letterSpacing="@dimen/text_title_letter_spacing"
                             android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                             android:paddingRight="4dp"
@@ -84,18 +84,18 @@
                             <android.support.v7.widget.CardView
                                 android:id="@+id/trainerImage"
                                 style="@style/CardViewCircularProfileSmallest"
+                                android:layout_marginBottom="4dp"
                                 android:layout_marginLeft="4dp"
                                 android:layout_marginRight="4dp"
                                 android:layout_marginTop="6dp"
-                                android:layout_marginBottom="4dp"
                                 android:visibility="visible">
 
                                 <ImageView
                                     android:id="@+id/imageViewTrainerProfile"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:src="@drawable/profile_holder"
-                                    android:scaleType="centerCrop" />
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/profile_holder" />
 
                             </android.support.v7.widget.CardView>
 
@@ -106,6 +106,7 @@
                                 android:layout_alignParentTop="true"
                                 android:layout_toEndOf="@+id/imageViewClassCategory"
                                 android:fontFamily="sans-serif"
+                                android:gravity="left"
                                 android:letterSpacing="@dimen/text_title_letter_spacing"
                                 android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                                 android:paddingLeft="4dp"
@@ -166,6 +167,40 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/layoutSpecial"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:orientation="horizontal"
+                    android:paddingBottom="8dp"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/imageViewClassSpecial"
+                        style="@style/ClassIconSmall"
+                        android:padding="4dp"
+                        android:paddingTop="1dp"
+                        android:src="@drawable/special" />
+
+                    <TextView
+                        android:id="@+id/textViewSpecialClass"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="@dimen/text_icon_gap"
+                        android:layout_marginTop="@dimen/text_drawable_adjustment"
+                        android:layout_toEndOf="@+id/imageViewClassSpecial"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left"
+                        android:letterSpacing="@dimen/text_title_letter_spacing"
+                        android:lineSpacingExtra="@dimen/line_spacing_extra"
+                        android:text="Class A: Boxing, "
+                        android:textColor="@color/theme_accent_text"
+                        android:textSize="@dimen/text_medium" />
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
@@ -174,7 +209,7 @@
 
                     <ImageView
                         android:id="@+id/imageViewClassCategory"
-                        style="@style/ClassIconSmaller"
+                        style="@style/ClassIconSmall"
                         android:src="@drawable/class_icon" />
 
                     <TextView
@@ -183,8 +218,10 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_marginLeft="@dimen/text_icon_gap"
+                        android:layout_marginTop="@dimen/text_drawable_adjustment"
                         android:layout_toEndOf="@+id/imageViewClassCategory"
                         android:fontFamily="sans-serif"
+                        android:gravity="left"
                         android:letterSpacing="@dimen/text_title_letter_spacing"
                         android:lineSpacingExtra="@dimen/line_spacing_extra"
                         android:text="Class A: Boxing, strength training and cardio"
@@ -201,18 +238,18 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <RelativeLayout
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="12dp"
+                            android:layout_marginBottom="8dp"
                             android:layout_marginLeft="16dp"
-                            android:layout_marginRight="48dp"
-                            android:layout_marginTop="12dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginTop="8dp"
                             android:orientation="horizontal">
 
                             <ImageView
                                 android:id="@+id/imageViewClassDate"
-                                style="@style/ClassIconSmaller"
+                                style="@style/ClassIconSmall"
                                 android:src="@drawable/calendar" />
 
                             <TextView
@@ -221,17 +258,32 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
                                 android:layout_marginLeft="@dimen/text_icon_gap"
+                                android:layout_marginTop="@dimen/text_drawable_adjustment"
                                 android:layout_toEndOf="@+id/imageViewClassDate"
                                 android:fontFamily="sans-serif"
+                                android:gravity="left"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
                                 android:lineSpacingExtra="@dimen/line_spacing_extra"
                                 android:text="January 11, 2018"
                                 android:textColor="@color/theme_dark_text"
                                 android:textSize="@dimen/text_medium" />
 
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/text_drawable_adjustment"
+                                android:layout_toEndOf="@+id/imageViewClassDate"
+                                android:fontFamily="sans-serif"
+                                android:gravity="left"
+                                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                                android:lineSpacingExtra="@dimen/line_spacing_extra"
+                                android:text="."
+                                android:textColor="@color/theme_dark_text"
+                                android:textSize="@dimen/text_medium" />
+
                             <ImageView
                                 android:id="@+id/imageViewClassTime"
-                                style="@style/ClassIconSmaller"
+                                style="@style/ClassIconSmall"
                                 android:layout_alignParentTop="true"
                                 android:layout_toEndOf="@+id/textViewClassDate"
                                 android:src="@drawable/time"
@@ -239,12 +291,13 @@
 
                             <TextView
                                 android:id="@+id/textViewTime"
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
-                                android:layout_marginLeft="@dimen/text_icon_gap"
+                                android:layout_marginTop="@dimen/text_drawable_adjustment"
                                 android:layout_toEndOf="@+id/imageViewClassTime"
                                 android:fontFamily="sans-serif"
+                                android:gravity="left"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
                                 android:lineSpacingExtra="@dimen/line_spacing_extra"
                                 android:text="7:00 - 8:00 PM"
@@ -252,20 +305,20 @@
                                 android:textSize="@dimen/text_medium"
                                 android:textStyle="bold" />
 
-                        </RelativeLayout>
+                        </LinearLayout>
 
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
+                            android:layout_marginBottom="8dp"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="48dp"
                             android:orientation="horizontal">
 
                             <ImageView
                                 android:id="@+id/imageViewLocation"
-                                style="@style/ClassIconSmaller"
-                                android:src="@drawable/location" />
+                                style="@style/ClassIconSmall"
+                                android:src="@drawable/location_small" />
 
                             <TextView
                                 android:id="@+id/textViewLocation"
@@ -273,9 +326,11 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
                                 android:layout_marginLeft="@dimen/text_icon_gap"
+                                android:layout_marginTop="@dimen/text_drawable_adjustment"
                                 android:layout_toEndOf="@+id/imageViewLocation"
                                 android:ellipsize="end"
                                 android:fontFamily="sans-serif"
+                                android:gravity="left"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
                                 android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                                 android:maxLines="3"
@@ -284,6 +339,40 @@
                                 android:textSize="@dimen/text_medium" />
 
                         </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/layoutGender"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="12dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="48dp"
+                            android:orientation="horizontal"
+                            android:visibility="visible">
+
+                            <ImageView
+                                android:id="@+id/imageViewClassGender"
+                                style="@style/ClassIconSmall"
+                                android:src="@drawable/gender_dark" />
+
+                            <TextView
+                                android:id="@+id/textViewClassGender"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginLeft="@dimen/text_icon_gap"
+                                android:layout_marginTop="@dimen/text_drawable_adjustment"
+                                android:layout_toEndOf="@+id/imageViewClassGender"
+                                android:fontFamily="sans-serif"
+                                android:gravity="left"
+                                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                                android:lineSpacingExtra="@dimen/line_spacing_extra"
+                                android:text="Female only"
+                                android:textColor="@color/theme_dark_text"
+                                android:textSize="@dimen/text_medium" />
+
+                        </RelativeLayout>
+
                     </LinearLayout>
 
                     <ImageView
@@ -300,6 +389,7 @@
                     android:layout_height="1dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
+                    android:layout_marginTop="4dp"
                     android:background="@color/separator" />
             </LinearLayout>
         </LinearLayout>

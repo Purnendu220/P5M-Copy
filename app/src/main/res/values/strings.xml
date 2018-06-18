@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">P5M</string>
     <string name="no_internet">No internet connection</string>
+
+    <string name="facebook_app_id">496906260680338</string>
+    <string name="fb_login_protocol_scheme">fb496906260680338</string>
+
     <string name="please_try_later">Please try later</string>
 
     <string name="info_screen_desc_1">Explore and join fitness classes around you with one plan.</string>
@@ -10,7 +14,7 @@
 
     <string name="start_being_active">START BEING ACTIVE</string>
 
-    <string name="setting_notification_fac_details">Get notified when your favourite trainer adds a new class</string>
+    <string name="setting_notification_fac_details">Get notified when the trainer adds new classes</string>
 
     <string name="skip">SKIP</string>
     <string name="start">GOT IT</string>
@@ -73,6 +77,7 @@
     <string name="ok">OK</string>
     <string name="find_class">Find a class</string>
     <string name="trainer">Trainer</string>
+    <string name="trainer_profile">Trainer Profile</string>
     <string name="schedule">My Schedule</string>
     <string name="notification">Notification</string>
     <string name="setting_notification_fav_title">Followed trainers activity</string>
@@ -88,6 +93,7 @@
     <string name="evening">Evening</string>
     <string name="login_facebook">ENTER WITH FACEBOOK</string>
     <string name="login">"<b><u>Log in</u></b>"</string>
+    <string name="login_no_lines">"Log in"</string>
     <string name="login_gamil">ENTER WITH GOOGLE</string>
     <string name="sign_up_email">SIGN UP WITH EMAIL</string>
 
@@ -136,8 +142,9 @@
     <string name="classes">Classes</string>
     <string name="trainers">Trainers</string>
     <string name="myProfile">My Profile</string>
-    <string name="gyms">GYMS</string>
+    <string name="gyms">Gyms</string>
     <string name="gym">Gym</string>
+    <string name="gym_profile">Gym Profile</string>
     <string name="kwd"> KWD total price</string>
     <string name="currency">KWD</string>
     <string name="valid">Valid for </string>
@@ -145,8 +152,6 @@
     <string name="filter">Filter</string>
     <string name="our_class">Our classes:</string>
     <string name="empty_text">No data available</string>
-    <string name="facebook_app_id">496906260680338</string>
-    <string name="fb_login_protocol_scheme">fb[496906260680338]</string>
     <string name="your_current_plan">YOUR CURRENT PLAN</string>
     <string name="select">SELECT</string>
     <string name="of"><b>of</b></string>
@@ -155,7 +160,7 @@
     <string name="coach_at">Coach at </string>
     <string name="remaing_day"><b>days</b> remaining until your classes expire.</string>
     <string name="fuel_your_workout">Fuel your workout.</string>
-    <string name="recharge">"<u>Recharge</u>"</string>
+    <string name="recharge">"<u>Buy Classes</u>"</string>
     <string name="login_error">The email and password combination is incorrect.\n Please try again.</string>
     <string name="password_error">The password you entered is incorrect. \n Please Try again</string>
     <string name="password_error_text">Password must be 6 to 14 character long.</string>
@@ -194,6 +199,7 @@
     <string name="profile_package_expiry">" remaining until your classes expire."</string>
     <string name="view_gym_visit_limits"><u>View gym visit limits</u></string>
     <string name="gym_visit_limits"><u>gym visit limits</u></string>
+    <string name="gym_visit_limits_no_lines">gym visit limits</string>
     <string name="select_plan">Select Plan</string>
     <string name="membership_no_package_heading_1">Pick a plan that suits your fitness needs. The ‘Get Set’ and ‘Pro’ options will allow you to visit all the gyms available on P5M. Be sure to check each gym visit limits to find the plan that works best for you.</string>
     <string name="membership_no_package_heading_2"></string>
@@ -209,7 +215,7 @@
     <string name="membership_drop_in_info">"You can only access the following gym with this purchase. In case of cancellation, you have 7 days from the date of cancellation to attend a class at the same facility."</string>
     <string name="membership_package_limit_info">"You can't purchase this package. It's validity is less than your selected class."</string>
 
-    <string name="package_limit_header">Under each plan, there are limits to the number of times you can visit each gym. Once the limit is reached, you may still visit your favorite gym by purchasing a single visit pass. Check below for the number of times you can visit a gym per plan.</string>
+    <string name="package_limit_header">Under each plan, there are limits to the number of times you can visit each gym. Check below for the number of time you can visit a gym per plan. Once the limit is reached, you may still visit your favorite gym by purchasing a single visit pass. </string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="memebership_price_postfix">total price</string>
     <string name="profile_validiy_no_package">Fuel your workout</string>
@@ -226,22 +232,33 @@
     <string name="choose_nationality">Choose your Nationality</string>
     <string name="checkout">checkout</string>
     <string name="promo_code">Promo Code</string>
-    <string name="apply_promo_code">Apply Promo Code</string>
+    <string name="apply_promo_code">Enter Promo Code</string>
     <string name="remove_promo_code">Remove Promo Code</string>
     <string name="cancellation_policy">"<u>Cancellation Policy</u>"</string>
     <string name="press_again_to_exit">Press back again to exit</string>
     <string name="cancel_class">Unjoin Class</string>
     <string name="forgot_password">"<b><u>Forgot password</u>?</b>"</string>
+    <string name="forgot_password_no_bold">"Forgot password?"</string>
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <string name="gaping">"&#160;&#160;"</string>
     <string name="current_pass_new_pass_same">Your new password and current password is same</string>
     <string name="unjoin_class">Cancel My Registration</string>
     <string name="no_thanks">No, Thanks</string>
     <string name="please_wait_no_dots">Please Wait</string>
-    <string name="no_data_class_list_main">No classes are available. Try different filters or days to find your match.</string>
+    <string name="no_data_class_list_main">No classes are available. Try a different date to join your class.</string>
     <string name="no_data_trainer_list_main">No trainers are available that match your search.</string>
+    <string name="no_data_search_trainer_list">No trainers are available that match your search.</string>
+    <string name="no_data_search_gym_list">No gym are available that match your search.</string>
+    <string name="no_data_search_class_list">No classes are available. Make a different search to find more results.</string>
     <string name="no_data_schedule_upcoming_list">"You haven't joined any classes yet. Let's book a class!"</string>
     <string name="no_data_schedule_wishist_list">"You haven't added any classes to your wishlist yet. Tap of the save icon on classes you want to join later."</string>
     <string name="no_data_notifications">No notifications yet.</string>
+    <string name="search_hint">Search…</string>
+    <string name="title_activity_demo">Demo</string>
+    <string name="reset_pass">Reset Password</string>
+    <string name="apply_filter">Apply Filter</string>
+    <string name="please_enter_your_email">Please enter your email</string>
+    <string name="p5m_app">P5M App</string>
+    <string name="share">Share</string>
 
 </resources>

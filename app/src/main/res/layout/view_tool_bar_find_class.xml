@@ -26,7 +26,8 @@
             style="@style/ToolBarIcon"
             android:layout_height="match_parent"
             android:padding="15dp"
-            android:src="@drawable/search_white" />
+            android:src="@drawable/search_white"
+            android:transitionName="searchIcon" />
 
         <FrameLayout
             android:id="@+id/layoutFilter"
@@ -40,6 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clickable="true"
+                android:transitionName="filter"
                 android:padding="18dp"
                 android:src="@drawable/filter_icon" />
 
@@ -51,7 +53,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="12dp"
                 android:layout_marginLeft="8dp"
-                android:background="@drawable/item_count"
+                android:background="@drawable/notification_counter"
                 android:gravity="center"
                 android:text="99"
                 android:textColor="@color/white"

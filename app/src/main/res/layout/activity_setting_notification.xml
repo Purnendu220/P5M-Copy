@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/theme_bg"
-    tools:context="www.gymhop.p5m.view.activity.Main.SettingNotification">
+    android:layoutDirection="ltr"
+    tools:context="www.gymhop.p5m.www.gymhop.me.view.activity.Main.SettingNotification">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,15 +50,17 @@
                 android:id="@+id/layoutNotification"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="top"
                 android:background="@color/white"
+                android:gravity="top"
                 android:orientation="horizontal"
                 android:padding="@dimen/view_padding_setting">
 
                 <ImageView
                     style="@style/SettingIcon"
-                    android:layout_marginTop="4dp"
-                    android:src="@drawable/notification" />
+                    android:layout_marginTop="2dp"
+                    android:padding="1dp"
+                    android:src="@drawable/notification"
+                    android:tint="@color/theme_medium_text" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -71,6 +74,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/text_icon_gap_setting"
                         android:fontFamily="sans-serif"
+                        android:gravity="left"
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
                         android:text="@string/setting_notification_fav_title"
                         android:textColor="@color/theme_dark_light_text"
@@ -82,6 +86,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/text_icon_gap_setting"
                         android:fontFamily="sans-serif"
+                        android:gravity="left"
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
                         android:paddingTop="4dp"
                         android:text="@string/setting_notification_fac_details"
