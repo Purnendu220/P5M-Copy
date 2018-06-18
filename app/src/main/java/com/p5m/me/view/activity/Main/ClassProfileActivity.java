@@ -86,6 +86,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     private ClassModel classModel;
     private int classSessionId;
     private int page;
+    private boolean isNavigationFromSharing;
 
     @Override
     public void onDestroy() {
@@ -137,6 +138,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         classModel = (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_OBJECT);
         classSessionId = getIntent().getIntExtra(AppConstants.DataKey.CLASS_SESSION_ID_INT, -1);
 
+
         if (classModel == null && classSessionId == -1) {
             finish();
             return;
@@ -175,11 +177,11 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
         setToolBar();
 
-        if (classModel != null) {
-            if (classModel.isUserJoinStatus()) {
-                imageViewOptions.setVisibility(View.GONE);
-            }
-        }
+//        if (classModel != null) {
+//            if (classModel.isUserJoinStatus()) {
+//                imageViewOptions.setVisibility(View.GONE);
+//            }
+//        }
     }
 
     @Override
@@ -361,7 +363,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imageViewBack:
-                finish();
+                onBackPressed();
                 break;
             case R.id.imageViewOptions:
                 ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, classModel);
@@ -384,11 +386,12 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
                 Helper.setJoinStatusProfile(context, textViewBook, classModel);
 
-                if (classModel != null) {
-                    if (classModel.isUserJoinStatus()) {
-                        imageViewOptions.setVisibility(View.GONE);
-                    }
-                }
+//                if (classModel != null) {
+//                    if (classModel.isUserJoinStatus()) {
+//                        imageViewOptions.setVisibility(View.GONE);
+//                    }
+//                }
+
                 if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
                     DialogUtils.showBasicMessage(context, "Successfully joined " + classModel.getTitle(),
                             "OK", new MaterialDialog.SingleButtonCallback() {
@@ -461,5 +464,10 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

@@ -134,6 +134,10 @@ public class EventBroadcastHelper {
         GlobalBus.getBus().post(new Events.NewFilter());
     }
 
+    public static void sendRefreshClassList() {
+        GlobalBus.getBus().post(new Events.RefreshClassList());
+    }
+
     public static void notificationCountUpdated(Context context) {
         GlobalBus.getBus().post(new Events.NotificationCountUpdated());
     }

@@ -13,6 +13,7 @@ import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -51,7 +52,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TrainerProfileActivity extends BaseActivity implements AdapterCallbacks, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener, NetworkCommunicator.RequestListenerRequestDataModel<TrainerModel> {
-
 
     public static void open(Context context, TrainerModel trainerModel) {
         context.startActivity(new Intent(context, TrainerProfileActivity.class)
@@ -230,6 +230,21 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
         });
 
         ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.trainer_profile));
+
+        ImageView imageViewShare = v.findViewById(R.id.imageViewShare);
+
+        imageViewShare.setVisibility(View.VISIBLE);
+        imageViewShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Helper.shareTrainer(context, trainerId, trainerModel.getFirstName());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    LogUtils.exception(e);
+                }
+            }
+        });
 
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT));

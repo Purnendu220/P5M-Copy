@@ -75,6 +75,14 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        // If coming from a shared link, then open that link after login..
+        if (DeepLinkActivity.url != null) {
+            overridePendingTransition(0 ,0 );
+            DeepLinkActivity.open(context, DeepLinkActivity.url);
+            finish();
+            return;
+        }
+
         ButterKnife.bind(activity);
         GlobalBus.getBus().register(this);
 

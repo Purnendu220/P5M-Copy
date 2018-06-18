@@ -82,6 +82,38 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
         GlobalBus.getBus().unregister(this);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        boolean shouldRefreshPage = false;
+
+        try {
+            Calendar currentDate = Calendar.getInstance();
+
+            if (!(todayDate.get(Calendar.YEAR) == currentDate.get(Calendar.YEAR) &&
+                    todayDate.get(Calendar.MONTH) == currentDate.get(Calendar.MONTH) &&
+                    todayDate.get(Calendar.DAY_OF_MONTH) == currentDate.get(Calendar.DATE))) {
+
+                shouldRefreshPage = true;
+            }
+
+            if (findClassAdapter.getFragments().get(0) == null) {
+                shouldRefreshPage = true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+
+        if (shouldRefreshPage) {
+            activity.overridePendingTransition(0, 0);
+            HomeActivity.open(context);
+            activity.overridePendingTransition(0, 0);
+        }
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void newFilter(Events.NewFilter newFilter) {
         checkFilterCount();
@@ -143,34 +175,6 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
                     onPageSelected(0);
                 }
             });
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        try {
-            Calendar currentDate = Calendar.getInstance();
-
-            if (!(todayDate.get(Calendar.YEAR) == currentDate.get(Calendar.YEAR) &&
-                    todayDate.get(Calendar.MONTH) == currentDate.get(Calendar.MONTH) &&
-                    todayDate.get(Calendar.DAY_OF_MONTH) == currentDate.get(Calendar.DATE))) {
-
-                activity.overridePendingTransition(0, 0);
-                HomeActivity.open(context);
-                activity.overridePendingTransition(0, 0);
-            }
-
-            if (findClassAdapter.getFragments().get(0) == null) {
-
-                activity.overridePendingTransition(0, 0);
-                HomeActivity.open(context);
-                activity.overridePendingTransition(0, 0);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            LogUtils.exception(e);
         }
     }
 

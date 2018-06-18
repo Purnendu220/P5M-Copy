@@ -122,7 +122,22 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
             classListAdapter.clearAll();
             classListAdapter.notifyDataSetChanged();
 
-            onTabSelection(FindClass.SELECTED_POSITION);
+            if ((fragmentPositionInViewPager == FindClass.SELECTED_POSITION)) {
+                onTabSelection(FindClass.SELECTED_POSITION);
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void newFilter(Events.RefreshClassList refreshClassList) {
+        if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_HOME_FIND_CLASSES) {
+            shouldRefresh = true;
+            classListAdapter.clearAll();
+            classListAdapter.notifyDataSetChanged();
+
+            if ((fragmentPositionInViewPager == FindClass.SELECTED_POSITION)) {
+                onTabSelection(FindClass.SELECTED_POSITION);
+            }
         }
     }
 

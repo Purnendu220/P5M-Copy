@@ -7,7 +7,11 @@ import com.google.gson.reflect.TypeToken;
 import com.p5m.me.data.City;
 import com.p5m.me.data.CityLocality;
 import com.p5m.me.data.ClassesFilter;
+import com.p5m.me.data.Filter;
 import com.p5m.me.data.main.ClassActivity;
+import com.p5m.me.data.main.DefaultSettingServer;
+import com.p5m.me.data.main.User;
+import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
 import com.shawnlin.preferencesmanager.PreferencesManager;
 
@@ -16,11 +20,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.p5m.me.data.Filter;
-import com.p5m.me.data.main.DefaultSettingServer;
-import com.p5m.me.data.main.User;
-import com.p5m.me.utils.AppConstants;
 
 
 public class MyPreferences {
@@ -55,10 +54,13 @@ public class MyPreferences {
     }
 
     public String getAuthToken() {
-        return PreferencesManager.getString(AppConstants.Pref.AUTH_TOKEN, null);
+        return PreferencesManager.getString(AppConstants.Pref.AUTH_TOKEN, "");
     }
 
     public void saveAuthToken(String authToken) {
+        if (authToken == null) {
+            authToken = "";
+        }
         PreferencesManager.putString(AppConstants.Pref.AUTH_TOKEN, authToken);
     }
 
