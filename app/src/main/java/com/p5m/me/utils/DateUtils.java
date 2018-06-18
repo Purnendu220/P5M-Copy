@@ -5,7 +5,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -14,16 +13,16 @@ import java.util.concurrent.TimeUnit;
 
 public class DateUtils {
 
-    public static DateFormatSymbols dfs = new DateFormatSymbols(Locale.ENGLISH);
+    public static DateFormatSymbols dfs = new DateFormatSymbols();
 
-    private static SimpleDateFormat classTime = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
-    private static SimpleDateFormat classTimeFormat = new SimpleDateFormat("h:mma", Locale.ENGLISH);
-    private static SimpleDateFormat classDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-    private static SimpleDateFormat classDateSec = new SimpleDateFormat("dd-mm-yyyy", Locale.ENGLISH);
-    private static SimpleDateFormat classDateExpiry = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-    private static SimpleDateFormat classDateFormat = new SimpleDateFormat("EEE, MMM d, yyyy", Locale.ENGLISH);
-    private static SimpleDateFormat packageDateFormat = new SimpleDateFormat("MMM d, yyyy", Locale.ENGLISH);
-    private static SimpleDateFormat notificationDate = new SimpleDateFormat("h:mm a, MMM d", Locale.ENGLISH);
+    private static SimpleDateFormat classTime = new SimpleDateFormat("HH:mm:ss");
+    private static SimpleDateFormat classTimeFormat = new SimpleDateFormat("h:mma");
+    private static SimpleDateFormat classDate = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat classDateSec = new SimpleDateFormat("dd-mm-yyyy");
+    private static SimpleDateFormat classDateExpiry = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static SimpleDateFormat classDateFormat = new SimpleDateFormat("EEEMMM dyyyy");
+    private static SimpleDateFormat packageDateFormat = new SimpleDateFormat("MMM dyyyy");
+    private static SimpleDateFormat notificationDate = new SimpleDateFormat("h:mm aMMM d");
 
     public static String getMonthName(int monthCode) {
         String month = "wrong";
@@ -68,7 +67,7 @@ public class DateUtils {
             date = date + " 23:59:00";
             Date expiryDate = classDateExpiry.parse(date);
 
-            Date today = Calendar.getInstance(Locale.ENGLISH).getTime();
+            Date today = Calendar.getInstance().getTime();
             long diff = expiryDate.getTime() - today.getTime();
 //            LogUtils.debug("getDaysLeftFromPackageExpiryDate hours : " + TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS));
             return (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
@@ -137,7 +136,7 @@ public class DateUtils {
 
     public static String getTransactionDate(long date) {
         try {
-            Date time = Calendar.getInstance(Locale.ENGLISH).getTime();
+            Date time = Calendar.getInstance().getTime();
             time.setTime(date);
             return classDateFormat.format(time);
         } catch (Exception e) {
@@ -151,7 +150,7 @@ public class DateUtils {
     public static float hoursLeft(String date) {
         try {
             Date expiryTime = classDateExpiry.parse(date);
-            Date today = Calendar.getInstance(Locale.ENGLISH).getTime();
+            Date today = Calendar.getInstance().getTime();
             long diff = expiryTime.getTime() - today.getTime();
             float minute = TimeUnit.MINUTES.convert(diff, TimeUnit.MILLISECONDS);
             return minute / 60f;
