@@ -30,7 +30,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
-import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.p5m.me.R;
@@ -310,7 +309,7 @@ public class LocationActivity extends BaseActivity implements LocationListener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        final LocationSettingsStates states = LocationSettingsStates.fromIntent(data);
+
         switch (requestCode) {
             case REQUEST_CHECK_SETTINGS:
                 switch (resultCode) {

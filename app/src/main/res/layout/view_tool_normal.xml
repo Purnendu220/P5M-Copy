@@ -28,6 +28,14 @@
             android:text="Title"
             android:textColor="@color/white" />
 
+        <ImageView
+            android:id="@+id/imageViewShare"
+            style="@style/ToolBarIcon"
+            android:layout_height="match_parent"
+            android:padding="14dp"
+            android:src="@drawable/share"
+            android:tint="@color/white" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

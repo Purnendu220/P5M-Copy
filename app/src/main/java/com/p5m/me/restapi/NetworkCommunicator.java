@@ -218,7 +218,6 @@ public class NetworkCommunicator {
             @Override
             public void onResponse(Call<ResponseModel<String>> call, Response<ResponseModel<String>> restResponse, ResponseModel<String> response) {
                 LogUtils.networkSuccess("NetworkCommunicator forgotPassword onResponse data " + response);
-                TempStorage.setAuthToken(restResponse.headers().get(AppConstants.ApiParamKey.MYU_AUTH_TOKEN));
                 requestListener.onApiSuccess(response, requestCode);
             }
         });

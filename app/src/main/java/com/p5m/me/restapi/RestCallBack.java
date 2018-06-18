@@ -3,17 +3,15 @@ package com.p5m.me.restapi;
 import android.content.Context;
 
 import com.google.gson.Gson;
+import com.p5m.me.eventbus.EventBroadcastHelper;
+import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.NetworkUtil;
+import com.p5m.me.view.activity.Main.ForceUpdateActivity;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import com.p5m.me.eventbus.EventBroadcastHelper;
-import com.p5m.me.utils.AppConstants;
-import com.p5m.me.utils.NetworkUtil;
-import com.p5m.me.view.activity.Main.ForceUpdateActivity;
-import com.p5m.me.view.activity.base.BaseActivity;
 
 /**
  * Created by MyU10 on 1/21/2017.
@@ -84,7 +82,7 @@ public abstract class RestCallBack<T> implements Callback<T> {
 
                 // Unauthorized User..
                 if (code.equals("401")) {
-                    EventBroadcastHelper.logout(BaseActivity.contextRef);
+                    EventBroadcastHelper.logout(context);
                     return;
 
                     // While joining class..

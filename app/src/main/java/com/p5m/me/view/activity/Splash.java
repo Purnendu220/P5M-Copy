@@ -10,13 +10,11 @@ import android.widget.ImageView;
 import com.p5m.me.MyApp;
 import com.p5m.me.R;
 import com.p5m.me.eventbus.EventBroadcastHelper;
+import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
-import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
-import com.p5m.me.view.activity.LoginRegister.ContinueUser;
-import com.p5m.me.view.activity.LoginRegister.InfoScreen;
 import com.p5m.me.view.activity.Main.ForceUpdateActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
@@ -79,12 +77,8 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
                     HomeActivity.open(context);
 
                 } else {
-                    /////////// LoginActivity Page ////////////
-                    if (TempStorage.getUser() == null) {
-                        InfoScreen.openActivity(context);
-                    } else {
-                        ContinueUser.open(context);
-                    }
+
+                    Helper.handleLogin(context);
                 }
 
                 finish();
