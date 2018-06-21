@@ -478,7 +478,9 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
 
                 MediaResponse mediaResponse = ((ResponseModel<MediaResponse>) response).data;
 
-                ImageUtils.setImageDelay(context, mediaResponse.getMediaPath(), imageViewProfile);
+                if (activity != null && !activity.isFinishing()) {
+                    ImageUtils.setImageDelay(context, mediaResponse.getMediaPath(), imageViewProfile);
+                }
 
                 User user = TempStorage.getUser();
                 user.setUserProfileImageId(mediaResponse.getId());

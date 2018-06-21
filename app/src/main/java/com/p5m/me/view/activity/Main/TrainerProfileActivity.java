@@ -261,11 +261,13 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
                 break;
             case R.id.button:
                 if (viewHolder instanceof TrainerProfileViewHolder) {
-                    if (trainerModel.isIsfollow()) {
-                        dialogUnFollow(viewHolder, trainerModel);
-                    } else {
-                        ((BaseActivity) activity).networkCommunicator.followUnFollow(!trainerModel.isIsfollow(), trainerModel, this, false);
-                        Helper.setFavButtonTemp(context, ((TrainerProfileViewHolder) viewHolder).button, !trainerModel.isIsfollow());
+                    if (trainerModel != null) {
+                        if (trainerModel.isIsfollow()) {
+                            dialogUnFollow(viewHolder, trainerModel);
+                        } else {
+                            ((BaseActivity) activity).networkCommunicator.followUnFollow(!trainerModel.isIsfollow(), trainerModel, this, false);
+                            Helper.setFavButtonTemp(context, ((TrainerProfileViewHolder) viewHolder).button, !trainerModel.isIsfollow());
+                        }
                     }
                 }
                 break;

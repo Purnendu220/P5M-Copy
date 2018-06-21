@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
@@ -24,20 +25,22 @@ public class EventBroadcastHelper {
 
     public static void sendLogin(Context context, User user) {
 
-        try {
-            if (user.getId() != TempStorage.getUser().getId()) {
-                //Reset Filter..
-                MyPreferences.getInstance().saveFilters(new ArrayList<ClassesFilter>());
-                TempStorage.setFilterList(new ArrayList<ClassesFilter>());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // Saving filters for previous user...
+//        try {
+//            if (user.getId() != TempStorage.getUser().getId()) {
+//                //Reset Filter..
+//                MyPreferences.getInstance().saveFilters(new ArrayList<ClassesFilter>());
+//                TempStorage.setFilterList(new ArrayList<ClassesFilter>());
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         TempStorage.setUser(context, user);
         MyPreferences.getInstance().setLogin(true);
         NetworkCommunicator.getInstance(context).getDefault();
 
+        MixPanel.setup(context);
         EventBroadcastHelper.sendDeviceUpdate(context);
     }
 
@@ -49,6 +52,9 @@ public class EventBroadcastHelper {
             MyPreferences.getInstance().clear();
             MyPreferences.getInstance().saveUser(user);
             MyPreferences.getInstance().saveActivities(activities);
+
+            //Remove Filters
+            MyPreferences.getInstance().saveFilters(new ArrayList<ClassesFilter>());
 
             TempStorage.setAuthToken(null);
 

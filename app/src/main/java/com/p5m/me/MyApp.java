@@ -33,6 +33,10 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
     public final static boolean SHOW_LOG = true;
     public final static boolean RETROFIT_SHOW_LOG = true;
 
+//    public static final String MIX_PANEL_TOKEN = "705daac4d807e105c1ddc350c9324ca2";
+
+//    public static MixpanelAPI mixPanel;
+
     public final static List<Activity> ACTIVITIES = new ArrayList<>();
 
     public boolean isAppForeground;
@@ -55,6 +59,8 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         if (USE_CRASH_ANALYTICS) {
             Fabric.with(this, new Crashlytics());
         }
+
+//        mixPanel = MixpanelAPI.getInstance(context, MIX_PANEL_TOKEN);
 
         registerActivityLifecycleCallbacks(this);
 
@@ -82,6 +88,8 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         if (MyPreferences.getInstance().isLogin()) {
             NetworkCommunicator.getInstance(context).getDefault();
         }
+
+//        MixPanel.setup(context);
     }
 
     @Override
@@ -159,6 +167,8 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         LogUtils.debug("App is in Background");
 
         appBackgroundTime = System.currentTimeMillis();
+
+//        mixPanel.flush();
     }
 
     @Override
