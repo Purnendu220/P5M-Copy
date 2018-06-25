@@ -338,6 +338,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
                 callApiClasses();
                 swipeRefreshLayout.setRefreshing(false);
                 TrainerDetailModel trainerDetailModel = ((ResponseModel<TrainerDetailModel>) response).data;
+                trainerModel = trainerDetailModel.getTrainer();
 
                 trainerProfileAdapter.setTrainerModel(trainerDetailModel);
                 break;

@@ -4,7 +4,6 @@ import android.app.NotificationManager;
 import android.content.Context;
 
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
@@ -40,7 +39,7 @@ public class EventBroadcastHelper {
         MyPreferences.getInstance().setLogin(true);
         NetworkCommunicator.getInstance(context).getDefault();
 
-        MixPanel.setup(context);
+//        MixPanel.setup(context);
         EventBroadcastHelper.sendDeviceUpdate(context);
     }
 

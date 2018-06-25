@@ -79,7 +79,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:paddingLeft="2dp"
-                            android:paddingTop="4dp">
+                            android:paddingTop="2dp">
 
                             <android.support.v7.widget.CardView
                                 android:id="@+id/trainerImage"
@@ -110,7 +110,7 @@
                                 android:letterSpacing="@dimen/text_title_letter_spacing"
                                 android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                                 android:paddingLeft="4dp"
-                                android:paddingTop="4dp"
+                                android:paddingTop="6dp"
                                 android:text="Varun John"
                                 android:textColor="@color/theme_dark_text"
                                 android:textSize="@dimen/text_medium" />

@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.p5m.me.MyApp;
 import com.p5m.me.R;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
@@ -407,20 +408,31 @@ public class Helper {
 
     public static void shareGym(Context context, int id, String name) {
 
-        String url = "http://qa.profive.co/share/gym/"+id+"/"+name;
+        String url = getUrlBase() + "/share/gym/" + id + "/" + name;
         shareUrl(context, url);
     }
 
     public static void shareTrainer(Context context, int id, String name) {
 
-        String url = "http://qa.profive.co/share/trainer/"+id+"/"+name;
+        String url = getUrlBase() + "/share/trainer/" + id + "/" + name;
         shareUrl(context, url);
     }
 
     public static void shareClass(Context context, int id, String name) {
 
-        String url = "http://qa.profive.co/share/classes/"+id+"/"+name;
+        String url = getUrlBase() + "/share/classes/" + id + "/" + name;
         shareUrl(context, url);
+    }
+
+    private static String getUrlBase() {
+        String urlBase = "";
+
+        if (MyApp.apiMode.equals(MyApp.ApiMode.LIVE)) {
+            urlBase = "http://www.p5m.me";
+        } else {
+            urlBase = "http://qa.profive.co";
+        }
+        return urlBase;
     }
 
     private static void shareUrl(Context context, String url) {

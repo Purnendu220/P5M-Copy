@@ -145,7 +145,7 @@
             android:name=".view.activity.Main.ClassProfileActivity"
             android:label="@string/title_activity_class_profile"
             android:parentActivityName=".view.activity.Main.HomeActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.Main.GymProfileActivity"
             android:label="@string/title_activity_gym_profile"
@@ -233,9 +233,14 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="qa.profive.co"
+                    android:host="www.p5m.me"
                     android:pathPrefix="/share"
                     android:scheme="http" />
+
+                <!--<data-->
+                <!--android:host="qa.profive.co"-->
+                <!--android:pathPrefix="/share"-->
+                <!--android:scheme="http" />-->
             </intent-filter>
 
         </activity>

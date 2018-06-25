@@ -71,6 +71,8 @@ public class DeepLinkActivity extends BaseActivity {
                     TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
                     stackBuilder.addNextIntentWithParentStack(navigationIntent);
 
+                    stackBuilder.editIntentAt(0).putExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, true);
+
                     overridePendingTransition(0,0);
                     stackBuilder.startActivities();
                 }

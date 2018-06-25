@@ -195,8 +195,7 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
             @Override
             public void onClick(View view) {
                 try {
-                    Helper.shareGym(context, gymId, gymDetailModel.getFirstName());
-                    Helper.shareClass(context, gymId, gymDetailModel.getFirstName());
+                    Helper.shareGym(context, gymId, gymDetailModel.getStudioName());
                 } catch (Exception e) {
                     e.printStackTrace();
                     LogUtils.exception(e);

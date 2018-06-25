@@ -154,6 +154,13 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
                     if (!isSearching) {
                         viewResults();
                         return true;
+                    } else {
+                        editTextSearch.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                editTextSearch.requestFocus();
+                            }
+                        });
                     }
                 }
                 return false;
@@ -306,6 +313,7 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
                     }
 
                     clearSearch();
+
                 } else {
                     if (runnableSearch != null) {
                         handlerBG.removeCallbacks(runnableSearch);
@@ -550,9 +558,12 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
             case R.id.layoutSearch:
                 KeyboardUtils.close(editTextSearch, context);
 
-                if (searchAdapter.isEmpty() && (searchPagerAdapter == null || searchAdapter.getSearchResult() == null)) {
+//                if (searchAdapter.isEmpty() && (searchPagerAdapter == null || searchAdapter.getSearchResult() == null)) {
+                if (searchAdapter.isEmpty() && searchPagerAdapter == null) {
                     layoutSearch.setVisibility(View.GONE);
                     onBackPressed();
+                } else if (searchPagerAdapter != null) {
+                    layoutSearch.setVisibility(View.GONE);
                 }
 
                 break;
