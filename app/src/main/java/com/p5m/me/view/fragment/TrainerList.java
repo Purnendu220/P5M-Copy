@@ -126,7 +126,7 @@ public class TrainerList extends BaseFragment implements ViewPagerFragmentSelect
             LogUtils.exception(e);
         }
 
-        trainerListAdapter = new TrainerListAdapter(context, shownInScreen, true, new TrainerListListenerHelper(context, activity, this));
+        trainerListAdapter = new TrainerListAdapter(context, shownInScreen, true, new TrainerListListenerHelper(context, activity, shownInScreen, this));
         recyclerViewTrainers.setAdapter(trainerListAdapter);
 
         if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE_TRAINERS) {

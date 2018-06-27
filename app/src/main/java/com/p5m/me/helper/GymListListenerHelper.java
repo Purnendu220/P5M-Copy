@@ -33,7 +33,7 @@ public class GymListListenerHelper implements AdapterCallbacks {
             default:
                 if (model instanceof GymDetailModel) {
                     GymDetailModel gymDetailModel = (GymDetailModel) model;
-                    GymProfileActivity.open(context, gymDetailModel.getId());
+                    GymProfileActivity.open(context, gymDetailModel.getId(), shownIn);
                 }
                 break;
         }

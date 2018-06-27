@@ -134,7 +134,7 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
                 layoutGallery.setVisibility(View.VISIBLE);
                 textViewGallery.setText(Html.fromHtml("Gallery" + " <b>(" + model.getMediaResponseDtoList().size() + ")</b>"));
 
-                ImageListAdapter adapter = new ImageListAdapter(context, model.getMediaResponseDtoList());
+                ImageListAdapter adapter = new ImageListAdapter(context, AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE, model.getMediaResponseDtoList());
                 recyclerViewGallery.setAdapter(adapter);
                 recyclerViewGallery.setHasFixedSize(true);
 

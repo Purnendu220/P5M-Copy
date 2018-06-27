@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.p5m.me.R;
 import com.p5m.me.adapters.ScheduleAdapter;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.storage.preferences.MyPreferences;
@@ -166,6 +167,7 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
         switch (view.getId()) {
             case R.id.imageViewNotification:
                 NotificationActivity.openActivity(context);
+                MixPanel.trackNotificationVisit(AppConstants.Tracker.FROM_MY_SCHEDULE);
                 break;
             case R.id.imageViewSearch:
                 SearchActivity.openActivity(context, activity, view, AppConstants.AppNavigation.NAVIGATION_FROM_SCHEDULE);

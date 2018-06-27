@@ -176,7 +176,7 @@ public class TrainerProfileAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof TrainerProfileViewHolder) {
-            ((TrainerProfileViewHolder) holder).bind(list.get(position), adapterCallbacksTrainerProfile, position);
+            ((TrainerProfileViewHolder) holder).bind(list.get(position), adapterCallbacksTrainerProfile, position, shownIn);
         } else if (holder instanceof ClassMiniDetailViewHolder) {
             ((ClassMiniDetailViewHolder) holder).bind(list.get(position), adapterCallbacksClasses, position);
         } else if (holder instanceof HeaderViewHolder) {

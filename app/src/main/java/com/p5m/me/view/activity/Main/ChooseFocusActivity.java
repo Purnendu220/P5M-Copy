@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.ChooseFocusAdapter;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.request.ChooseFocusRequest;
 import com.p5m.me.restapi.NetworkCommunicator;
@@ -167,6 +168,11 @@ public class ChooseFocusActivity extends BaseActivity implements AdapterCallback
             case NetworkCommunicator.RequestCode.ME_USER:
                 imageViewDone.setVisibility(View.VISIBLE);
                 progressBarDone.setVisibility(View.GONE);
+
+                if (TempStorage.getUser().getClassCategoryList() != null && !TempStorage.getUser().getClassCategoryList().isEmpty()) {
+                    MixPanel.trackEditProfileFocus(TempStorage.getUser().getClassCategoryList());
+                }
+
                 finish();
                 break;
         }

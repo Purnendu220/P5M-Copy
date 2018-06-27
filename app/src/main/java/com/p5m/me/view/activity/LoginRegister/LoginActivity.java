@@ -20,6 +20,7 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.p5m.me.R;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.FaceBookUser;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.request.LoginRequest;
@@ -243,6 +244,9 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                 if (user != null) {
                     EventBroadcastHelper.sendLogin(context, user);
                     HomeActivity.open(context);
+
+                    MixPanel.trackLogin(AppConstants.Tracker.EMAIL, TempStorage.getUser());
+
                     finish();
                 } else {
                     textInputLayoutPassword.setError("Please try again");
@@ -258,6 +262,9 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                     User user = ((ResponseModel<User>) response).data;
 
                     EventBroadcastHelper.sendLogin(context, user);
+
+                    MixPanel.trackLogin(AppConstants.Tracker.FB, TempStorage.getUser());
+
                     HomeActivity.open(context);
                     finish();
                 }

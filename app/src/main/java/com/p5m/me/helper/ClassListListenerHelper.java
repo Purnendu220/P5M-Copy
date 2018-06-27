@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.DefaultSettingServer;
 import com.p5m.me.data.main.User;
@@ -57,11 +58,11 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                 if (model instanceof ClassModel) {
                     ClassModel classModel = (ClassModel) model;
                     if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
-                        popupOptionsRemove(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
+                        popupOptionsRemove(context, ((BaseActivity) activity).networkCommunicator, view, classModel, shownIn);
                     } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
                         popupOptionsCancelClass(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
                     } else {
-                        popupOptionsAdd(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
+                        popupOptionsAdd(context, ((BaseActivity) activity).networkCommunicator, view, classModel, shownIn);
                     }
                 }
                 break;
@@ -70,7 +71,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                 if (shownIn != AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED) {
                     if (model instanceof ClassModel) {
                         ClassModel classModel = (ClassModel) model;
-                        ClassProfileActivity.open(context, classModel);
+                        ClassProfileActivity.open(context, classModel, shownIn);
                     }
                 }
                 break;
@@ -111,7 +112,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
-    public static void popupOptionsAdd(final Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model) {
+    public static void popupOptionsAdd(final Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model, final int shownIn) {
 
         final View viewRoot = LayoutInflater.from(context).inflate(R.layout.popup_options, null);
         TextView textView = viewRoot.findViewById(R.id.textViewOption1);
@@ -124,6 +125,27 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             public void onClick(View view) {
                 popupWindow.dismiss();
                 networkCommunicator.addToWishList(model, model.getClassSessionId());
+
+                String origin = "";
+                if (shownIn == AppConstants.AppNavigation.SHOWN_IN_HOME_FIND_CLASSES) {
+                    origin = AppConstants.Tracker.FIND_CLASS;
+                } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SEARCH) {
+                    origin = AppConstants.Tracker.SEARCH;
+                } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SEARCH_RESULTS) {
+                    origin = AppConstants.Tracker.VIEW_ALL_RESULTS;
+                } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE) {
+                    origin = AppConstants.Tracker.GYM_PROFILE;
+                } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE) {
+                    origin = AppConstants.Tracker.TRAINER_PROFILE;
+                } else if (shownIn == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION) {
+                    origin = AppConstants.Tracker.NOTIFICATION;
+                } else if (shownIn == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN) {
+                    origin = AppConstants.Tracker.PUSH_NOTIFICATION;
+                } else if (shownIn == AppConstants.AppNavigation.NAVIGATION_FROM_SHARE) {
+                    origin = AppConstants.Tracker.SHARED_CLASS;
+                }
+
+                MixPanel.trackAddWishList(origin, model);
             }
         });
 
@@ -150,7 +172,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
-    public static void popupOptionsRemove(final Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model) {
+    public static void popupOptionsRemove(final Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model, final int shownIn) {
         final View viewRoot = LayoutInflater.from(context).inflate(R.layout.popup_options, null);
         TextView textView = viewRoot.findViewById(R.id.textViewOption1);
         textView.setText(context.getString(R.string.remove_WishList));
@@ -161,7 +183,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             @Override
             public void onClick(View view) {
                 popupWindow.dismiss();
-                dialogConfirmDelete(context, networkCommunicator, model);
+                dialogConfirmDelete(context, networkCommunicator, model, shownIn);
             }
         });
 
@@ -186,7 +208,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
     private static void dialogConfirmUnJoin(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model) {
 
-        String message = "Are you sure you want to unjoin ?";
+        String message = context.getString(R.string.sure_unjoin);
 
         String serverMessageNormalClass = message;
         String serverMessageSpecialClass = message;
@@ -204,7 +226,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             message = serverMessageSpecialClass;
 
         } else if (Helper.isSpecialClass(model) && Helper.isFreeClass(model)) {
-            message = "Are you sure you want to unjoin ?";
+            message = context.getString(R.string.sure_unjoin);
 
         } else if (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) <= cancelTime) {
             message = serverMessageNormalClass;
@@ -265,8 +287,15 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         });
     }
 
-    private static void dialogConfirmDelete(Context context, final NetworkCommunicator networkCommunicator, final ClassModel model) {
+    private static void dialogConfirmDelete(Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, int shownIn) {
         networkCommunicator.removeFromWishList(model);
+
+        String origin = "";
+        if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
+            origin = AppConstants.Tracker.WISH_LIST;
+        }
+
+        MixPanel.trackRemoveWishList(origin, model);
 
 //        DialogUtils.showBasic(context, "Are you sure you want to remove " + model.getTitle() + " from your WishList?", "Delete", new MaterialDialog.SingleButtonCallback() {
 //            @Override

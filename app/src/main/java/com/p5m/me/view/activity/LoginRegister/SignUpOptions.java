@@ -19,6 +19,7 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.p5m.me.R;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.FaceBookUser;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.request.LoginRequest;
@@ -27,6 +28,7 @@ import com.p5m.me.helper.Helper;
 import com.p5m.me.helper.MyClickSpan;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.Main.HomeActivity;
@@ -186,6 +188,9 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                     User user = ((ResponseModel<User>) response).data;
 
                     EventBroadcastHelper.sendLogin(context, user);
+
+                    MixPanel.trackLogin(AppConstants.Tracker.FB, TempStorage.getUser());
+
                     HomeActivity.open(context);
                     finish();
                 }
@@ -203,6 +208,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
         switch (requestCode) {
 
             case NetworkCommunicator.RequestCode.LOGIN_FB:
+
                 RegistrationActivity.open(context, faceBookUser);
 
                 break;

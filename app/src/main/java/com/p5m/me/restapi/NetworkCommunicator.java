@@ -925,7 +925,7 @@ public class NetworkCommunicator {
         return call;
     }
 
-    public Call applyPromoCode(PromoCodeRequest promoCodeRequest, final RequestListener requestListener, boolean useCache) {
+    public Call applyPromoCode(final PromoCodeRequest promoCodeRequest, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.PROMO_CODE;
         Call<ResponseModel<PromoCode>> call = apiService.applyPromoCode(promoCodeRequest);
         LogUtils.debug("NetworkCommunicator hitting applyPromoCode");
@@ -940,6 +940,10 @@ public class NetworkCommunicator {
             @Override
             public void onResponse(Call<ResponseModel<PromoCode>> call, Response<ResponseModel<PromoCode>> restResponse, ResponseModel<PromoCode> response) {
                 LogUtils.networkSuccess("NetworkCommunicator applyPromoCode onResponse data " + response);
+
+                if (response.data != null) {
+                    response.data.code = promoCodeRequest.getName();
+                }
                 requestListener.onApiSuccess(response, requestCode);
             }
         });

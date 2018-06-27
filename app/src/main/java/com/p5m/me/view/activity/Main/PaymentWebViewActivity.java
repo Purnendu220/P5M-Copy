@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.PaymentUrl;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.restapi.NetworkCommunicator;
@@ -29,7 +30,9 @@ import butterknife.ButterKnife;
 
 public class PaymentWebViewActivity extends BaseActivity implements NetworkCommunicator.RequestListener {
 
-    public static void open(Activity activity, PaymentUrl paymentUrl) {
+    public static void open(Activity activity, String couponCode, String packageName, PaymentUrl paymentUrl) {
+        PaymentWebViewActivity.couponCode = couponCode;
+        PaymentWebViewActivity.packageName = packageName;
         activity.startActivityForResult(new Intent(activity, PaymentWebViewActivity.class)
                 .putExtra(AppConstants.DataKey.PAYMENT_URL_OBJECT, paymentUrl), AppConstants.ResultCode.PAYMENT_SUCCESS);
     }
@@ -42,6 +45,9 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
     View layoutProgress;
     @BindView(R.id.layoutHide)
     View layoutHide;
+
+    private static String couponCode;
+    private static String packageName;
 
     private PaymentUrl paymentUrl;
 
@@ -96,6 +102,9 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
     private void paymentSuccessful() {
 //        networkCommunicator.getMyUser(this, false);
         setResult(RESULT_OK);
+
+        MixPanel.trackMembershipPurchase(couponCode, packageName);
+
         overridePendingTransition(0, 0);
         finish();
         overridePendingTransition(0, 0);
@@ -234,6 +243,7 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         overridePendingTransition(0, 0);
+                        MixPanel.trackSequentialUpdate(AppConstants.Tracker.PURCHASE_CANCEL);
                         PaymentWebViewActivity.super.onBackPressed();
                         overridePendingTransition(0, 0);
                     }

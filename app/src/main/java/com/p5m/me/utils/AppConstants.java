@@ -39,6 +39,63 @@ public class AppConstants {
         public static final int IMAGE_QUALITY = 90;
     }
 
+    public static class Tracker {
+        public static final String EMAIL = "email";
+        public static final String FB = "FB";
+
+        public static final String CONTINUE_AS = "continue_As";
+        public static final String SWITCH_ACCOUNT_ACTION = "switchAccountAction";
+        public static final String LOGIN_BUTTON = "loginButton";
+        public static final String REGISTER = "Register";
+
+        public static final String NAME_CHANGED = "Name_Changed";
+        public static final String EMAIL_CHANGED = "email_Changed";
+        public static final String MOBILE_NUMBER_CHANGED = "mobileNumber_Changed";
+        public static final String GENDER_CHANGED = "gender_changed";
+        public static final String LOCATION_CHANGED = "location_changed";
+        public static final String NATIONALITY_CHANGED = "nationality_changed";
+        public static final String DOB_CHANGED = "DOB_changed";
+        public static final String PASSWORD_CHANGED = "Password_Changed";
+        public static final String PROFILE_IMAGE_CHANGED = "Profile_Image_Changed";
+
+        public static final String GYM_PROFILE_TRAINERS = "GymProfile_Trainers";
+        public static final String SEARCH_TRAINER = "Search_Trainer";
+        public static final String SEARCH_GYM = "Search_Gym";
+        public static final String SEARCH = "Search";
+        public static final String TRAINER_TAB = "Trainer_Tab";
+        public static final String TRAINER_PROFILE = "Trainer_Profile";
+        public static final String USER_PROFILE = "User_Profile";
+
+        public static final String FIND_CLASS = "Find_Class";
+        public static final String VIEW_ALL_RESULTS = "View_all_results";
+        public static final String GYM_PROFILE = "Gym_Profile";
+        public static final String NOTIFICATION = "Notification";
+        public static final String SHARED_CLASS = "Shared_Class";
+        public static final String SHARED_GYM = "Shared_Gym";
+        public static final String SHARED_TRAINER = "Shared_Trainer";
+        public static final String PUSH_NOTIFICATION = "Push_Notification";
+
+        public static final String WISH_LIST = "WishList";
+        public static final String CLASS_CARD = "Class_Card";
+        public static final String CLASS_PROFILE = "Class_Profile";
+
+        public static final String LOOKING_GYM_TRAINERS_LIST = "looking_GymTrainer_List";
+        public static final String LOOKING_LOCATION_USING_MAP = "looking_location_using_map";
+        public static final String LOOKING_GALLERY = "looking_gallery";
+        public static final String VISIT_GYM_PROFILE = "Visit_Gym_Profile";
+        public static final String FROM_MY_SCHEDULE = "From_Myschedule";
+        public static final String SPECIAL = "SPECIAL";
+        public static final String NO_COUPON = "No_Coupon";
+
+        public static final String JOIN_CLASS = "Join_Class";
+        public static final String RECHARGE = "Recharge";
+        public static final String SETTINGS = "settings";
+
+        public static final String PURCHASE_CANCEL = "purchase_cancel";
+        public static final String VIEW_LIMIT_NO_PURCHASE = "view_limit_no_purchase";
+        public static final String NO_ACTION = "no_action";
+    }
+
     public static class Pref {
         public static final String NAME = "p5m_pref_main";
         public static final String LOGIN = "pref_login";
@@ -82,7 +139,6 @@ public class AppConstants {
 
         public static final String LIVE = "http://api.p5m.me";
         public static final String QA = "http://qa-api.profive.co";
-
 
         public static final String BASE_SERVICE_ALPHA = QA + "/profive-midl/";
         public static final String BASE_SERVICE_BETA = QA + "/dev-midl/";
@@ -221,6 +277,8 @@ public class AppConstants {
         public static final int NAVIGATION_FROM_TRAINERS = 57;
         public static final int NAVIGATION_FROM_SCHEDULE = 58;
         public static final int NAVIGATION_FROM_FB_LOGIN = 59;
+        public static final int NAVIGATION_FROM_NOTIFICATION_SCREEN = 60;
+        public static final int NAVIGATION_FROM_SHARE = 61;
     }
 
     public class Limit {

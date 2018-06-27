@@ -25,6 +25,7 @@ import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.TrainerProfileAdapter;
 import com.p5m.me.adapters.viewholder.TrainerListViewHolder;
 import com.p5m.me.adapters.viewholder.TrainerProfileViewHolder;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.FollowResponse;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.TrainerDetailModel;
@@ -53,18 +54,21 @@ import butterknife.ButterKnife;
 
 public class TrainerProfileActivity extends BaseActivity implements AdapterCallbacks, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener, NetworkCommunicator.RequestListenerRequestDataModel<TrainerModel> {
 
-    public static void open(Context context, TrainerModel trainerModel) {
+    public static void open(Context context, TrainerModel trainerModel, int navigationFrom) {
         context.startActivity(new Intent(context, TrainerProfileActivity.class)
+                .putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom)
                 .putExtra(AppConstants.DataKey.TRAINER_OBJECT, trainerModel));
     }
 
-    public static void open(Context context, int trainerId) {
+    public static void open(Context context, int trainerId, int navigationFrom) {
         context.startActivity(new Intent(context, TrainerProfileActivity.class)
+                .putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom)
                 .putExtra(AppConstants.DataKey.TRAINER_ID_INT, trainerId));
     }
 
-    public static Intent createIntent(Context context, int trainerId) {
+    public static Intent createIntent(Context context, int trainerId, int navigationFrom) {
         return new Intent(context, TrainerProfileActivity.class)
+                .putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom)
                 .putExtra(AppConstants.DataKey.TRAINER_ID_INT, trainerId);
     }
 
@@ -267,6 +271,8 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
                         } else {
                             ((BaseActivity) activity).networkCommunicator.followUnFollow(!trainerModel.isIsfollow(), trainerModel, this, false);
                             Helper.setFavButtonTemp(context, ((TrainerProfileViewHolder) viewHolder).button, !trainerModel.isIsfollow());
+
+                            MixPanel.trackAddFav(AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE);
                         }
                     }
                 }
@@ -284,6 +290,8 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
                 if (viewHolder instanceof TrainerListViewHolder) {
                     Helper.setFavButtonTemp(context, ((TrainerListViewHolder) viewHolder).buttonFav, !trainerModel.isIsfollow());
                 }
+
+                MixPanel.trackRemoveFav(AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE);
             }
         });
     }

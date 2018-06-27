@@ -5,6 +5,7 @@ public class PromoCode implements java.io.Serializable {
     private float price;
     private float discount;
     private String discountType;
+    public String code;
     private int id;
     private float priceAfterDiscount;
 
