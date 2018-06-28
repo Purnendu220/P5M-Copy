@@ -16,7 +16,7 @@
     <color name="black">#000000</color>
     <color name="grey">#999999</color>
     <color name="white">#FFFFFF</color>
-    <color name="highlight">#0D000000</color>
+    <color name="highlight">#1A000000</color>
     <color name="text_shadow">#7F000000</color>
     <color name="facebook_button">#485b92</color>
     <color name="theme_medium_text">#979797</color>

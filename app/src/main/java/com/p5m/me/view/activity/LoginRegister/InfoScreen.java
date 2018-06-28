@@ -33,7 +33,7 @@ public class InfoScreen extends BaseActivity implements ViewPager.OnPageChangeLi
 
     private InfoScreenAdapter infoScreenAdapter;
 
-    public static void openActivity(Context context) {
+    public static void open(Context context) {
         context.startActivity(new Intent(context, InfoScreen.class));
     }
 

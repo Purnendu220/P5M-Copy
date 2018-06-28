@@ -33,9 +33,14 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
     public final static boolean SHOW_LOG = false;
     public final static boolean RETROFIT_SHOW_LOG = false;
 
+//    public static final String MIX_PANEL_TOKEN = "705daac4d807e105c1ddc350c9324ca2";
+
+//    public static MixpanelAPI mixPanel;
+
     public final static List<Activity> ACTIVITIES = new ArrayList<>();
 
-    public static boolean isAppForeground;
+    public boolean isAppForeground;
+    public long appBackgroundTime;
 
     public enum ApiMode {
         TESTING_ALPHA,
@@ -54,6 +59,8 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         if (USE_CRASH_ANALYTICS) {
             Fabric.with(this, new Crashlytics());
         }
+
+//        mixPanel = MixpanelAPI.getInstance(context, MIX_PANEL_TOKEN);
 
         registerActivityLifecycleCallbacks(this);
 
@@ -81,6 +88,8 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         if (MyPreferences.getInstance().isLogin()) {
             NetworkCommunicator.getInstance(context).getDefault();
         }
+
+//        MixPanel.setup(context);
     }
 
     @Override
@@ -100,7 +109,6 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
     public void onActivityResumed(Activity activity) {
         if (!isAppForeground) {
             isAppForeground = true;
-            LogUtils.debug("App is in Foreground");
             onAppForeground();
         }
     }
@@ -130,14 +138,20 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         if (level == TRIM_MEMORY_UI_HIDDEN) {
             if (isAppForeground) {
                 isAppForeground = false;
-                LogUtils.debug("App is in Background");
                 onAppBackground();
             }
         }
     }
 
     private void onAppForeground() {
-        //ToastUtils.show(this, "AppForeground");
+
+        LogUtils.debug("App is in Foreground");
+
+        //Greater then 5 mins..
+        if (appBackgroundTime != 0 && System.currentTimeMillis() - appBackgroundTime >= (5000 * 60)) {
+            EventBroadcastHelper.sendRefreshClassList();
+        }
+
         try {
             if (MyPreferences.getInstance().isLogin()) {
                 EventBroadcastHelper.sendDeviceUpdate(this);
@@ -149,7 +163,12 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
     }
 
     private void onAppBackground() {
-        // ToastUtils.show(this, "AppBackground");
+
+        LogUtils.debug("App is in Background");
+
+        appBackgroundTime = System.currentTimeMillis();
+
+//        mixPanel.flush();
     }
 
     @Override

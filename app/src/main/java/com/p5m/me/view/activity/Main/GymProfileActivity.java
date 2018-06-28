@@ -12,6 +12,7 @@ import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.brandongogetap.stickyheaders.StickyLayoutManager;
@@ -46,6 +47,11 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
     public static void open(Context context, int gymId) {
         context.startActivity(new Intent(context, GymProfileActivity.class)
                 .putExtra(AppConstants.DataKey.GYM_ID_INT, gymId));
+    }
+
+    public static Intent createIntent(Context context, int gymId) {
+        return new Intent(context, GymProfileActivity.class)
+                .putExtra(AppConstants.DataKey.GYM_ID_INT, gymId);
     }
 
     @BindView(R.id.toolbar)
@@ -181,6 +187,21 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
         });
 
         ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.gym_profile));
+
+        ImageView imageViewShare = v.findViewById(R.id.imageViewShare);
+
+        imageViewShare.setVisibility(View.VISIBLE);
+        imageViewShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Helper.shareGym(context, gymId, gymDetailModel.getStudioName());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    LogUtils.exception(e);
+                }
+            }
+        });
 
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT));

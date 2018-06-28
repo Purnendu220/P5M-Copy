@@ -79,7 +79,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
     public static void popupOptionsCancelClass(final Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model) {
         final View viewRoot = LayoutInflater.from(context).inflate(R.layout.popup_options, null);
-        TextView textView = (TextView) viewRoot.findViewById(R.id.textViewOption1);
+        TextView textView = viewRoot.findViewById(R.id.textViewOption1);
         textView.setText(context.getString(R.string.cancel_class));
 
         final PopupWindow popupWindow = new PopupWindow(viewRoot, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
@@ -92,6 +92,17 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             }
         });
 
+        TextView textViewOption2 = viewRoot.findViewById(R.id.textViewOption2);
+        textViewOption2.setText(context.getString(R.string.share));
+
+        textViewOption2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindow.dismiss();
+                Helper.shareClass(context, model.getClassSessionId(), model.getTitle());
+            }
+        });
+
         int[] location = new int[2];
         view.getLocationOnScreen(location);
         popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.transparent));
@@ -100,13 +111,10 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
-    public static void popupOptionsAdd(Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model) {
-        if (model.isUserJoinStatus()) {
-            return;
-        }
+    public static void popupOptionsAdd(final Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model) {
 
         final View viewRoot = LayoutInflater.from(context).inflate(R.layout.popup_options, null);
-        TextView textView = (TextView) viewRoot.findViewById(R.id.textViewOption1);
+        TextView textView = viewRoot.findViewById(R.id.textViewOption1);
         textView.setText(context.getString(R.string.add_to_WishList));
 
         final PopupWindow popupWindow = new PopupWindow(viewRoot, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
@@ -116,6 +124,21 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             public void onClick(View view) {
                 popupWindow.dismiss();
                 networkCommunicator.addToWishList(model, model.getClassSessionId());
+            }
+        });
+
+        if (model != null && model.isUserJoinStatus()) {
+            textView.setVisibility(View.GONE);
+        }
+
+        TextView textViewOption2 = viewRoot.findViewById(R.id.textViewOption2);
+        textViewOption2.setText(context.getString(R.string.share));
+
+        textViewOption2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindow.dismiss();
+                Helper.shareClass(context, model.getClassSessionId(), model.getTitle());
             }
         });
 
@@ -129,7 +152,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
     public static void popupOptionsRemove(final Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model) {
         final View viewRoot = LayoutInflater.from(context).inflate(R.layout.popup_options, null);
-        TextView textView = (TextView) viewRoot.findViewById(R.id.textViewOption1);
+        TextView textView = viewRoot.findViewById(R.id.textViewOption1);
         textView.setText(context.getString(R.string.remove_WishList));
 
         final PopupWindow popupWindow = new PopupWindow(viewRoot, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
@@ -139,6 +162,17 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             public void onClick(View view) {
                 popupWindow.dismiss();
                 dialogConfirmDelete(context, networkCommunicator, model);
+            }
+        });
+
+        TextView textViewOption2 = viewRoot.findViewById(R.id.textViewOption2);
+        textViewOption2.setText(context.getString(R.string.share));
+
+        textViewOption2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindow.dismiss();
+                Helper.shareClass(context, model.getClassSessionId(), model.getTitle());
             }
         });
 

@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.p5m.me.MyApp;
 import com.p5m.me.R;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
@@ -24,9 +25,12 @@ import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.data.main.MediaModel;
 import com.p5m.me.data.main.TrainerDetailModel;
 import com.p5m.me.data.main.TrainerModel;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.KeyboardUtils;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.view.activity.LoginRegister.ContinueUser;
+import com.p5m.me.view.activity.LoginRegister.InfoScreen;
 import com.p5m.me.view.activity.Main.LocationActivity;
 import com.p5m.me.view.custom.GalleryActivity;
 
@@ -393,4 +397,51 @@ public class Helper {
         }
         return text.trim();
     }
+
+    public static void handleLogin(Context context) {
+        if (TempStorage.getUser() == null) {
+            InfoScreen.open(context);
+        } else {
+            ContinueUser.open(context);
+        }
+    }
+
+    public static void shareGym(Context context, int id, String name) {
+
+        String url = getUrlBase() + "/share/gym/" + id + "/" + name;
+        shareUrl(context, url);
+    }
+
+    public static void shareTrainer(Context context, int id, String name) {
+
+        String url = getUrlBase() + "/share/trainer/" + id + "/" + name;
+        shareUrl(context, url);
+    }
+
+    public static void shareClass(Context context, int id, String name) {
+
+        String url = getUrlBase() + "/share/classes/" + id + "/" + name;
+        shareUrl(context, url);
+    }
+
+    private static String getUrlBase() {
+        String urlBase = "";
+
+        if (MyApp.apiMode.equals(MyApp.ApiMode.LIVE)) {
+            urlBase = "http://www.p5m.me";
+        } else {
+            urlBase = "http://qa.profive.co";
+        }
+        return urlBase;
+    }
+
+    private static void shareUrl(Context context, String url) {
+
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, url.replace(" ", ""));
+        sendIntent.setType("text/plain");
+        context.startActivity(Intent.createChooser(sendIntent, "Share with"));
+    }
+
 }

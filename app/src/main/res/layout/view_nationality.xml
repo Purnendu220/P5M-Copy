@@ -14,7 +14,7 @@
             android:id="@+id/layoutItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/click_highlight"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:gravity="center"
             android:orientation="horizontal">

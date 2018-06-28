@@ -67,6 +67,9 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.layoutTrainer)
     public LinearLayout layoutTrainer;
 
+    @BindView(R.id.layoutMapClick)
+    public View layoutMapClick;
+
     @BindView(R.id.layoutLocation)
     public View layoutLocation;
 
@@ -221,10 +224,10 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
                 }
             });
 
-            layoutMap.setOnClickListener(new View.OnClickListener() {
+            layoutMapClick.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    adapterCallbacks.onAdapterItemClick(ClassProfileViewHolder.this, layoutMap, model, position);
+                    adapterCallbacks.onAdapterItemClick(ClassProfileViewHolder.this, layoutMapClick, model, position);
                 }
             });
 
@@ -236,13 +239,6 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
             });
 
             layoutTrainer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    adapterCallbacks.onAdapterItemClick(ClassProfileViewHolder.this, layoutTrainer, model, position);
-                }
-            });
-
-            layoutMap.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     adapterCallbacks.onAdapterItemClick(ClassProfileViewHolder.this, layoutTrainer, model, position);

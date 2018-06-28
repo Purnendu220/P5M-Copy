@@ -160,7 +160,7 @@
     <string name="coach_at">Coach at </string>
     <string name="remaing_day"><b>days</b> remaining until your classes expire.</string>
     <string name="fuel_your_workout">Fuel your workout.</string>
-    <string name="recharge">"<u>Recharge</u>"</string>
+    <string name="recharge">"<u>Buy Classes</u>"</string>
     <string name="login_error">The email and password combination is incorrect.\n Please try again.</string>
     <string name="password_error">The password you entered is incorrect. \n Please Try again</string>
     <string name="password_error_text">Password must be 6 to 14 character long.</string>
@@ -258,5 +258,7 @@
     <string name="reset_pass">Reset Password</string>
     <string name="apply_filter">Apply Filter</string>
     <string name="please_enter_your_email">Please enter your email</string>
+    <string name="p5m_app">P5M App</string>
+    <string name="share">Share</string>
 
 </resources>

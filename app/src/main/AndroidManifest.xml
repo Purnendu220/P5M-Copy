@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.p5m.me">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -12,12 +13,14 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
-        android:name="com.p5m.me.MyApp"
+        android:name=".MyApp"
         android:allowBackup="true"
         android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:theme="@style/AppTheme">
+        android:supportsRtl="false"
+        android:theme="@style/AppTheme"
+        tools:replace="android:supportsRtl">
 
         <!-- /////////////////////// FACEBOOK LOGIN /////////////////////// -->
         <meta-data
@@ -66,12 +69,12 @@
             android:value="@string/default_notification_channel_id" />
         <!-- [END fcm_default_channel] -->
 
-        <service android:name="com.p5m.me.notifications.MyFirebaseMessagingService">
+        <service android:name=".notifications.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name="com.p5m.me.notifications.MyFirebaseInstanceIDService">
+        <service android:name=".notifications.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
@@ -84,14 +87,14 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC36Oyf3q-4pO0HC7ZCydtu6OFFgUFxens" />
 
-        <!--<receiver-->
-        <!--android:name=".receivers.NetworkChangeReceiver"-->
-        <!--android:enabled="true">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />-->
-        <!--<action android:name="android.net.wifi.WIFI_STATE_CHANGED" />-->
-        <!--</intent-filter>-->
-        <!--</receiver>-->
+        <!-- <receiver -->
+        <!-- android:name=".receivers.NetworkChangeReceiver" -->
+        <!-- android:enabled="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.net.conn.CONNECTIVITY_CHANGE" /> -->
+        <!-- <action android:name="android.net.wifi.WIFI_STATE_CHANGED" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
 
         <activity
             android:name=".view.activity.Splash"
@@ -154,7 +157,6 @@
         <activity
             android:name=".view.activity.Main.SearchActivity"
             android:label="@string/title_activity_search"
-            android:screenOrientation="portrait"
             android:theme="@style/AppThemeTranslucent" />
         <activity
             android:name=".view.activity.Main.PaymentWebViewActivity"
@@ -212,16 +214,36 @@
         <activity
             android:name=".view.activity.Main.ForceUpdateActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
             android:theme="@style/AppThemeDialog" />
         <activity
             android:name=".view.activity.LoginRegister.ForgotPasswordActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.Main.LocationActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeGallery"></activity>
+            android:theme="@style/AppThemeGallery" />
+        <activity
+            android:name=".view.activity.Main.DeepLinkActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
 
+            <intent-filter android:label="@string/p5m_app">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="www.p5m.me"
+                    android:pathPrefix="/share"
+                    android:scheme="http" />
+
+                <!--<data-->
+                <!--android:host="qa.profive.co"-->
+                <!--android:pathPrefix="/share"-->
+                <!--android:scheme="http" />-->
+            </intent-filter>
+
+        </activity>
     </application>
 
 </manifest>

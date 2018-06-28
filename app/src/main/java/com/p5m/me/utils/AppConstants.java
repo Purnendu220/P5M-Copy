@@ -75,13 +75,18 @@ public class AppConstants {
 
     public class Url {
 //        public static final String BASE_SERVICE_ALPHA = "http://192.168.0.39:8080/profive-midl/";
-//        public static final String BASE_SERVICE_ALPHA = "http://192.168.100.17:8080/profive-midl/";
+//        public static final String BASE_SERVICE_ALPHA = "http://192.168.0.39:8080/profive-midl/";
 //        public static final String BASE_SERVICE_LIVE = "http://192.168.0.39:8080/profive-midl/";
 
         public static final String WEBSITE = "http://www.p5m.me/";
-        public static final String BASE_SERVICE_ALPHA = "http://qa-api.profive.co/profive-midl/";
-        public static final String BASE_SERVICE_BETA = "http://qa-api.profive.co/dev-midl/";
-        public static final String BASE_SERVICE_LIVE = "http://api.p5m.me/profive-midl/";
+
+        public static final String LIVE = "http://api.p5m.me";
+        public static final String QA = "http://qa-api.profive.co";
+
+
+        public static final String BASE_SERVICE_ALPHA = QA + "/profive-midl/";
+        public static final String BASE_SERVICE_BETA = QA + "/dev-midl/";
+        public static final String BASE_SERVICE_LIVE = LIVE + "/profive-midl/";
 
         public static final String LOGIN = "api/v1/user/login";
         public static final String LOGOUT = "api/v1/device/logout";

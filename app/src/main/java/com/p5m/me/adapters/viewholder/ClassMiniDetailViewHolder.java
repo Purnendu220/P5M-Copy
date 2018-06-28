@@ -115,10 +115,10 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 layoutGender.setVisibility(View.VISIBLE);
                 textViewClassGender.setText(Helper.getClassGenderText(model.getClassType()));
 
-                if (model.isUserJoinStatus()) {
-                    imageViewOptions1.setVisibility(View.GONE);
-                    imageViewOptions2.setVisibility(View.GONE);
-                }
+//                if (model.isUserJoinStatus()) {
+//                    imageViewOptions1.setVisibility(View.GONE);
+//                    imageViewOptions2.setVisibility(View.GONE);
+//                }
 
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE) {
                 trainerImage.setVisibility(View.VISIBLE);
@@ -131,10 +131,10 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 layoutGender.setVisibility(View.VISIBLE);
                 textViewClassGender.setText(Helper.getClassGenderText(model.getClassType()));
 
-                if (model.isUserJoinStatus()) {
-                    imageViewOptions1.setVisibility(View.GONE);
-                    imageViewOptions2.setVisibility(View.GONE);
-                }
+//                if (model.isUserJoinStatus()) {
+//                    imageViewOptions1.setVisibility(View.GONE);
+//                    imageViewOptions2.setVisibility(View.GONE);
+//                }
 
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED) {
                 trainerImage.setVisibility(View.VISIBLE);
@@ -152,10 +152,10 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 imageViewOptions1.setVisibility(View.GONE);
                 imageViewOptions2.setVisibility(View.VISIBLE);
 
-                if (model.isUserJoinStatus()) {
-                    imageViewOptions1.setVisibility(View.GONE);
-                    imageViewOptions2.setVisibility(View.GONE);
-                }
+//                if (model.isUserJoinStatus()) {
+//                    imageViewOptions1.setVisibility(View.GONE);
+//                    imageViewOptions2.setVisibility(View.GONE);
+//                }
             }
 
             if (model.getClassMedia() != null) {
