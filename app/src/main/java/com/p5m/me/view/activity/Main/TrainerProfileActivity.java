@@ -84,6 +84,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
     private TrainerDetailModel trainerDetailModel;
 
     private int trainerId;
+    private int navigatedFrom;
 
     private int page;
     private int pageSizeLimit = AppConstants.Limit.PAGE_LIMIT_INNER_CLASS_LIST;
@@ -151,6 +152,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
 
         trainerModel = (TrainerModel) getIntent().getSerializableExtra(AppConstants.DataKey.TRAINER_OBJECT);
         trainerId = getIntent().getIntExtra(AppConstants.DataKey.TRAINER_ID_INT, -1);
+        navigatedFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
 
         if (trainerModel == null && trainerId == -1) {
             finish();
@@ -202,6 +204,8 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
 
         onRefresh();
         setToolBar();
+
+        MixPanel.trackTrainerVisit(navigatedFrom);
     }
 
     private void callApiClasses() {
@@ -272,7 +276,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
                             ((BaseActivity) activity).networkCommunicator.followUnFollow(!trainerModel.isIsfollow(), trainerModel, this, false);
                             Helper.setFavButtonTemp(context, ((TrainerProfileViewHolder) viewHolder).button, !trainerModel.isIsfollow());
 
-                            MixPanel.trackAddFav(AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE);
+                            MixPanel.trackAddFav(AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE, trainerModel.getFirstName());
                         }
                     }
                 }
@@ -291,7 +295,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
                     Helper.setFavButtonTemp(context, ((TrainerListViewHolder) viewHolder).buttonFav, !trainerModel.isIsfollow());
                 }
 
-                MixPanel.trackRemoveFav(AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE);
+                MixPanel.trackRemoveFav(AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE, trainerModel.getFirstName());
             }
         });
     }

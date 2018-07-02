@@ -91,7 +91,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     private int classSessionId;
     private int page;
     private boolean isNavigationFromSharing;
-    private int navigatedFrom;
+    private int navigationFrom;
 
     @Override
     public void onDestroy() {
@@ -142,7 +142,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
         classModel = (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_OBJECT);
         classSessionId = getIntent().getIntExtra(AppConstants.DataKey.CLASS_SESSION_ID_INT, -1);
-        navigatedFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
+        navigationFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
 
         if (classModel == null && classSessionId == -1) {
             finish();
@@ -327,7 +327,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 if (model instanceof ClassModel) {
                     ClassModel data = (ClassModel) model;
                     if (data.getTrainerDetail() != null) {
-                        TrainerProfileActivity.open(context, data.getTrainerDetail(), navigatedFrom);
+                        TrainerProfileActivity.open(context, data.getTrainerDetail(), navigationFrom);
                     } else {
                         GymProfileActivity.open(context, data.getGymBranchDetail().getGymId(), AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE);
                     }
@@ -373,7 +373,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 onBackPressed();
                 break;
             case R.id.imageViewOptions:
-                ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, classModel, navigatedFrom);
+                ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, classModel, navigationFrom);
                 break;
         }
     }
@@ -392,6 +392,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 classModel.setUserJoinStatus(true);
 
                 Helper.setJoinStatusProfile(context, textViewBook, classModel);
+
+                MixPanel.trackJoinClass(navigationFrom, classModel);
 
 //                if (classModel != null) {
 //                    if (classModel.isUserJoinStatus()) {

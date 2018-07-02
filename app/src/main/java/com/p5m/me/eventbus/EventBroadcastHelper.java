@@ -2,6 +2,7 @@ package com.p5m.me.eventbus;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.provider.Settings;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.p5m.me.analytics.MixPanel;
@@ -40,7 +41,6 @@ public class EventBroadcastHelper {
         MyPreferences.getInstance().setLogin(true);
         NetworkCommunicator.getInstance(context).getDefault();
 
-        MixPanel.setup(context);
         EventBroadcastHelper.sendDeviceUpdate(context);
     }
 
@@ -87,6 +87,9 @@ public class EventBroadcastHelper {
 
     public static void sendUserUpdate(Context context, User user) {
         TempStorage.setUser(context, user);
+
+        MixPanel.trackUserUpdate(TempStorage.getUser());
+
         GlobalBus.getBus().post(new Events.UserUpdate(user));
     }
 
@@ -102,6 +105,7 @@ public class EventBroadcastHelper {
         } else {
             classModel.setAvailableSeat(classModel.getAvailableSeat() + 1);
         }
+
         GlobalBus.getBus().post(new Events.ClassJoin(classModel));
     }
 
@@ -168,8 +172,11 @@ public class EventBroadcastHelper {
                 return;
             }
 
+            String androidId = Settings.Secure.getString(context.getContentResolver(),
+                    Settings.Secure.ANDROID_ID);
+
             NetworkCommunicator.getInstance(context).deviceUpdate(
-                    new DeviceUpdate(TempStorage.version, TempStorage.getUser().getId(), deviceToken),
+                    new DeviceUpdate(TempStorage.version, TempStorage.getUser().getId(), deviceToken, androidId),
                     new NetworkCommunicator.RequestListener() {
                         @Override
                         public void onApiSuccess(Object response, int requestCode) {

@@ -56,7 +56,7 @@ public class TrainerListListenerHelper implements AdapterCallbacks, NetworkCommu
                             ((BaseActivity) activity).networkCommunicator.followUnFollow(!trainerModel.isIsfollow(), trainerModel, this, false);
                             Helper.setFavButtonTemp(context, ((TrainerListViewHolder) viewHolder).buttonFav, !trainerModel.isIsfollow());
 
-                            MixPanel.trackAddFav(shownInScreen);
+                            MixPanel.trackAddFav(shownInScreen, trainerModel.getFirstName());
                         }
                     }
                 }
@@ -78,7 +78,7 @@ public class TrainerListListenerHelper implements AdapterCallbacks, NetworkCommu
                     Helper.setFavButtonTemp(context, ((TrainerListViewHolder) viewHolder).buttonFav, !trainerModel.isIsfollow());
                 }
 
-                MixPanel.trackRemoveFav(shownInScreen);
+                MixPanel.trackRemoveFav(shownInScreen, trainerModel.getFirstName());
             }
         });
     }

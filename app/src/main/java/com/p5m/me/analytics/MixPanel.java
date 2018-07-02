@@ -4,14 +4,16 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.p5m.me.MyApp;
 import com.p5m.me.data.CityLocality;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.Filter;
+import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.User;
-import com.p5m.me.storage.preferences.MyPreferences;
+import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LogUtils;
@@ -19,6 +21,7 @@ import com.p5m.me.utils.LogUtils;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,6 +32,11 @@ public class MixPanel {
 
     private static HandlerThread handlerThread;
     private static Handler handlerBg;
+
+    private static boolean isSetupDone;
+    public static final String MIX_PANEL_TOKEN = "705daac4d807e105c1ddc350c9324ca2";
+
+    public static MixpanelAPI mixPanel;
 
     public static void setup(Context context) {
 
@@ -41,16 +49,54 @@ public class MixPanel {
             handlerBg = new Handler(handlerThread.getLooper());
         }
 
-        if (MyPreferences.getInstance().isLogin()) {
-            if (MyApp.mixPanel != null) {
-                MyApp.mixPanel.identify(MyApp.mixPanel.getDistinctId());
-            }
+        if (isSetupDone) {
+            return;
         }
 
+        mixPanel = MixpanelAPI.getInstance(context, MIX_PANEL_TOKEN);
+
         try {
+            mixPanel.identify(mixPanel.getDistinctId());
             JSONObject props = new JSONObject();
             props.put("Source", "Android");
-            MyApp.mixPanel.registerSuperProperties(props);
+            mixPanel.registerSuperProperties(props);
+            isSetupDone = true;
+            LogUtils.debug("MixPanel setup done");
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+            LogUtils.debug("MixPanel setup error");
+        }
+    }
+
+    private static void trackEvent(JSONObject props, String eventName) {
+        try {
+            if (MyApp.USE_MIX_PANEL) {
+                mixPanel.track(eventName, props);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
+    public static void flush() {
+        try {
+            if (MyApp.USE_MIX_PANEL) {
+                mixPanel.flush();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
+    private static void trackUser(String id, JSONObject props) {
+        try {
+            if (MyApp.USE_MIX_PANEL) {
+                mixPanel.getPeople().identify(id);
+                mixPanel.getPeople().set(props);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -62,7 +108,7 @@ public class MixPanel {
             JSONObject props = new JSONObject();
             props.put("pastLogin", pastLogin);
 
-            MyApp.mixPanel.track("Past_Login", props);
+            trackEvent(props, "Past_Login");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -75,7 +121,7 @@ public class MixPanel {
             props.put("origin", origin);
             props.put("gender", user.getGender());
 
-            MyApp.mixPanel.track("Registered_User", props);
+            trackEvent(props, "Registered_User");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -88,7 +134,7 @@ public class MixPanel {
             props.put("origin", origin);
             props.put("gender", user.getGender());
 
-            MyApp.mixPanel.track("Login_with", props);
+            trackEvent(props, "Login_with");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -100,7 +146,7 @@ public class MixPanel {
             JSONObject props = new JSONObject();
             props.put("changes", changes);
 
-            MyApp.mixPanel.track("Edit_Profile", props);
+            trackEvent(props, "Edit_Profile");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -113,7 +159,7 @@ public class MixPanel {
                 JSONObject props = new JSONObject();
                 props.put("ChooseFocus", classActivity.getName());
 
-                MyApp.mixPanel.track("Edit_Profile", props);
+                trackEvent(props, "Edit_Profile");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -121,7 +167,7 @@ public class MixPanel {
         }
     }
 
-    public static void trackAddFav(int shownInScreen) {
+    public static void trackAddFav(int shownInScreen, String name) {
 
         String origin = "";
 
@@ -146,15 +192,16 @@ public class MixPanel {
         try {
             JSONObject props = new JSONObject();
             props.put("origin", origin);
+            props.put("Trainer_Name", name);
 
-            MyApp.mixPanel.track("Add_Favourite", props);
+            trackEvent(props, "Add_Favourite");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
         }
     }
 
-    public static void trackRemoveFav(int shownInScreen) {
+    public static void trackRemoveFav(int shownInScreen, String name) {
 
         String origin = "";
 
@@ -179,15 +226,39 @@ public class MixPanel {
         try {
             JSONObject props = new JSONObject();
             props.put("origin", origin);
+            props.put("Trainer_Name", name);
 
-            MyApp.mixPanel.track("Remove_From_Favourite", props);
+            trackEvent(props, "Remove_From_Favourite");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
         }
     }
 
-    public static void trackAddWishList(String origin, ClassModel classModel) {
+    public static void trackAddWishList(int shownIn, ClassModel classModel) {
+
+        String origin = "";
+        if (shownIn == AppConstants.AppNavigation.SHOWN_IN_HOME_FIND_CLASSES) {
+            origin = AppConstants.Tracker.FIND_CLASS;
+        } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SEARCH) {
+            origin = AppConstants.Tracker.SEARCH;
+        } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SEARCH_RESULTS) {
+            origin = AppConstants.Tracker.VIEW_ALL_RESULTS;
+        } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE) {
+            origin = AppConstants.Tracker.GYM_PROFILE;
+        } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE) {
+            origin = AppConstants.Tracker.TRAINER_PROFILE;
+        } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
+            origin = AppConstants.Tracker.WISH_LIST;
+        } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
+            origin = AppConstants.Tracker.UP_COMING;
+        } else if (shownIn == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION) {
+            origin = AppConstants.Tracker.NOTIFICATION;
+        } else if (shownIn == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN) {
+            origin = AppConstants.Tracker.PUSH_NOTIFICATION;
+        } else if (shownIn == AppConstants.AppNavigation.NAVIGATION_FROM_SHARE) {
+            origin = AppConstants.Tracker.SHARED_CLASS;
+        }
 
         if (origin.isEmpty()) {
             return;
@@ -196,8 +267,9 @@ public class MixPanel {
         try {
             JSONObject props = new JSONObject();
             props.put("origin", origin);
+            props.put("className", classModel.getTitle());
 
-            MyApp.mixPanel.track("Add_to_wishlist", props);
+            trackEvent(props, "Add_to_wishlist");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -210,25 +282,14 @@ public class MixPanel {
             return;
         }
 
-        float hourDiff = DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime());
-
-        String diffHrs = "";
-        if (hourDiff <= 6) {
-            diffHrs = "less than 6 hrs";
-        } else if (hourDiff <= 12) {
-            diffHrs = "6 to 12 hrs";
-        } else if (hourDiff <= 24) {
-            diffHrs = "12 to 24 hrs";
-        } else {
-            diffHrs = "greater than 24 hrs";
-        }
-
         try {
             JSONObject props = new JSONObject();
             props.put("origin", origin);
-            props.put("diffHrs", diffHrs);
 
-            MyApp.mixPanel.track("Remove_from_wishlist", props);
+            float hourDiff = DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime());
+            props.put("diffHrs", DateUtils.getHourDiff(hourDiff));
+
+            trackEvent(props, "Remove_from_wishlist");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -240,7 +301,7 @@ public class MixPanel {
             JSONObject props = new JSONObject();
             props.put("view", "Viewed");
 
-            MyApp.mixPanel.track("Class_Details", props);
+            trackEvent(props, "Class_Details");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -252,7 +313,7 @@ public class MixPanel {
             JSONObject props = new JSONObject();
             props.put("searchText", searchText);
 
-            MyApp.mixPanel.track("Search", props);
+            trackEvent(props, "Search");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -308,7 +369,7 @@ public class MixPanel {
                                 props.put("using_Location", locations);
                             }
 
-                            MyApp.mixPanel.track("Filter", props);
+                            trackEvent(props, "Filter");
                         } catch (Exception e) {
                             e.printStackTrace();
                             LogUtils.exception(e);
@@ -318,24 +379,12 @@ public class MixPanel {
         );
     }
 
-    public static void trackPurchasePlan(String searchText) {
-        try {
-            JSONObject props = new JSONObject();
-            props.put("searchText", searchText);
-
-            MyApp.mixPanel.track("purchase_plan", props);
-        } catch (Exception e) {
-            e.printStackTrace();
-            LogUtils.exception(e);
-        }
-    }
-
     public static void trackPackagePreferred(String name) {
         try {
             JSONObject props = new JSONObject();
             props.put("package_name", name);
 
-            MyApp.mixPanel.track("Package_Preferred", props);
+            trackEvent(props, "Package_Preferred");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -372,7 +421,7 @@ public class MixPanel {
             JSONObject props = new JSONObject();
             props.put("origin", origin);
 
-            MyApp.mixPanel.track("Visit_Gym_Profile", props);
+            trackEvent(props, "Visit_Gym_Profile");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -384,7 +433,7 @@ public class MixPanel {
             JSONObject props = new JSONObject();
             props.put("action", action);
 
-            MyApp.mixPanel.track("Event_On_GymProfile", props);
+            trackEvent(props, "Event_On_GymProfile");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -421,7 +470,7 @@ public class MixPanel {
             JSONObject props = new JSONObject();
             props.put("origin", origin);
 
-            MyApp.mixPanel.track("Visit_Trainer_Profile", props);
+            trackEvent(props, "Visit_Trainer_Profile");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -433,7 +482,7 @@ public class MixPanel {
             JSONObject props = new JSONObject();
             props.put("action", action);
 
-            MyApp.mixPanel.track("Event_On_TrainerProfile", props);
+            trackEvent(props, "Event_On_TrainerProfile");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -445,7 +494,7 @@ public class MixPanel {
             JSONObject props = new JSONObject();
             props.put("Seen", origin);
 
-            MyApp.mixPanel.track("Notification_View", props);
+            trackEvent(props, "Notification_View");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -458,7 +507,7 @@ public class MixPanel {
             props.put("package_name", packageName);
             props.put("Coupon_Code", couponCode);
 
-            MyApp.mixPanel.track("Membership_Purchase", props);
+            trackEvent(props, "Membership_Purchase");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -489,8 +538,8 @@ public class MixPanel {
             JSONObject props = new JSONObject();
             props.put("origin", origin);
 
-            MyApp.mixPanel.track("Purchase_Plan", props);
-            MyApp.mixPanel.track("Open_Checkout", props);
+            trackEvent(props, "Purchase_Plan");
+            trackEvent(props, "Open_Membership");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -502,7 +551,7 @@ public class MixPanel {
             JSONObject props = new JSONObject();
             props.put("package_name", packageName);
 
-            MyApp.mixPanel.track("Open_Checkout", props);
+            trackEvent(props, "Open_Checkout");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -514,12 +563,127 @@ public class MixPanel {
             JSONObject props = new JSONObject();
             props.put("failure_reason", failureReason);
 
-            MyApp.mixPanel.track("Sequential tracking", props);
+            trackEvent(props, "Sequential tracking");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
         }
     }
 
+    public static void trackJoinClass(String origin, ClassModel classModel) {
+        try {
+            JSONObject props = new JSONObject();
+            props.put("className", classModel.getTitle());
+            props.put("classTiming", DateUtils.getDayTiming(classModel.getClassDate() + " " + classModel.getFromTime()));
+            props.put("origin", origin);
+            props.put("trainerName", classModel.getTrainerDetail() == null ? "No Trainer" : classModel.getTrainerDetail().getFirstName());
+            props.put("gymName", classModel.getGymBranchDetail() == null ? "No Trainer" : classModel.getGymBranchDetail().getGymName());
+            props.put("Classgender", Helper.getClassGenderTextForTracker(classModel.getClassType()));
+
+            float hourDiff = DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime());
+            props.put("diffHrs", DateUtils.getHourDiff(hourDiff));
+
+            props.put("ActivityPrefered", classModel.getClassCategory());
+            props.put("locality_preferred", classModel.getGymBranchDetail() == null ? "" : classModel.getGymBranchDetail().getLocalityName());
+
+            trackEvent(props, "Join_Class");
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
+    public static void trackJoinClass(int shownIn, ClassModel classModel) {
+
+        String origin = "";
+        if (shownIn == AppConstants.AppNavigation.SHOWN_IN_HOME_FIND_CLASSES) {
+            origin = AppConstants.Tracker.FIND_CLASS;
+        } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SEARCH) {
+            origin = AppConstants.Tracker.SEARCH;
+        } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SEARCH_RESULTS) {
+            origin = AppConstants.Tracker.VIEW_ALL_RESULTS;
+        } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE) {
+            origin = AppConstants.Tracker.GYM_PROFILE;
+        } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE) {
+            origin = AppConstants.Tracker.TRAINER_PROFILE;
+        } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
+            origin = AppConstants.Tracker.WISH_LIST;
+        } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
+            origin = AppConstants.Tracker.UP_COMING;
+        } else if (shownIn == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION) {
+            origin = AppConstants.Tracker.NOTIFICATION;
+        } else if (shownIn == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN) {
+            origin = AppConstants.Tracker.PUSH_NOTIFICATION;
+        } else if (shownIn == AppConstants.AppNavigation.NAVIGATION_FROM_SHARE) {
+            origin = AppConstants.Tracker.SHARED_CLASS;
+        }
+
+        trackJoinClass(origin, classModel);
+    }
+
+    public static void trackUnJoinClass(String origin, ClassModel classModel) {
+        try {
+
+            JSONObject props = new JSONObject();
+            props.put("className", classModel.getTitle());
+            props.put("classTiming", DateUtils.getDayTiming(classModel.getClassDate() + " " + classModel.getFromTime()));
+            props.put("origin", origin);
+            props.put("trainerName", classModel.getTrainerDetail() == null ? "No Trainer" : classModel.getTrainerDetail().getFirstName());
+            props.put("gymName", classModel.getGymBranchDetail() == null ? "No Trainer" : classModel.getGymBranchDetail().getGymName());
+            props.put("Classgender", Helper.getClassGenderTextForTracker(classModel.getClassType()));
+
+            float hourDiff = DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime());
+            props.put("diffHrs", DateUtils.getHourDiff(hourDiff));
+
+            props.put("ActivityPrefered", classModel.getClassCategory());
+            props.put("locality_preferred", classModel.getGymBranchDetail() == null ? "" : classModel.getGymBranchDetail().getLocalityName());
+
+            trackEvent(props, "Unjoin");
+            trackEvent(props, "Booking Cancel");
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
+    public static void trackUserUpdate(User user) {
+
+        try {
+            UserPackageInfo userPackageInfo = new UserPackageInfo(user);
+
+            JSONObject props = new JSONObject();
+            props.put("id", user.getId() + "");
+            props.put("name", user.getFirstName());
+            props.put("first_name", user.getFirstName());
+            props.put("email", user.getEmail());
+            props.put("User Category", user.getUserCategory());
+            props.put("Has Active Package", userPackageInfo.havePackages ? true : false);
+
+            props.put("Gender", user.getGender());
+
+            props.put("dob", user.getDob() == null ?
+                    "" : DateUtils.getDateFormatter(new Date(user.getDob())) + "");
+
+            props.put("phone", user.getMobile());
+
+            props.put("Date of Joining", user.getDateOfJoining() == 0 ?
+                    "" : DateUtils.getDateFormatter(new Date(user.getDateOfJoining())) + "");
+
+            props.put("Last Active Date", user.getLastActiveDate() == 0 ?
+                    "" : DateUtils.getDateFormatter(new Date(user.getLastActiveDate())) + "");
+
+            props.put("Location", user.getLocation());
+            props.put("Nationality", user.getNationality());
+            props.put("FacebookId", user.getFacebookId());
+            props.put("Category List", user.getClassCategoryList());
+            props.put("Number of Transactions", user.getNumberOfTransactions() + "");
+            props.put("General Package", userPackageInfo.haveGeneralPackage ?
+                    userPackageInfo.userPackageGeneral.getPackageName() : "");
+
+            trackUser(String.valueOf(user.getId()), props);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

@@ -46,6 +46,7 @@ import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity implements NetworkCommunicator.RequestListener {
 
+
     public static void open(Context context, int navigationFrom) {
         context.startActivity(new Intent(context, LoginActivity.class)
                 .putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom));
@@ -84,6 +85,7 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
     private int navigatedFrom;
     private CallbackManager callbackManager;
     private FaceBookUser faceBookUser;
+    private long loginTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -226,6 +228,7 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
         buttonLoginFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                loginTime = System.currentTimeMillis() - 5 * 1000;
                 LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile", "email"));
                 layoutProgressRoot.setVisibility(View.VISIBLE);
             }
@@ -263,9 +266,13 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
 
                     EventBroadcastHelper.sendLogin(context, user);
 
-                    MixPanel.trackLogin(AppConstants.Tracker.FB, TempStorage.getUser());
-
                     HomeActivity.open(context);
+
+                    if (user.getDateOfJoining() >= loginTime) {
+                        MixPanel.trackRegister(AppConstants.Tracker.FB, TempStorage.getUser());
+                    } else
+                        MixPanel.trackLogin(AppConstants.Tracker.FB, TempStorage.getUser());
+
                     finish();
                 }
 

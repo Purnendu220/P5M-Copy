@@ -126,26 +126,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                 popupWindow.dismiss();
                 networkCommunicator.addToWishList(model, model.getClassSessionId());
 
-                String origin = "";
-                if (shownIn == AppConstants.AppNavigation.SHOWN_IN_HOME_FIND_CLASSES) {
-                    origin = AppConstants.Tracker.FIND_CLASS;
-                } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SEARCH) {
-                    origin = AppConstants.Tracker.SEARCH;
-                } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SEARCH_RESULTS) {
-                    origin = AppConstants.Tracker.VIEW_ALL_RESULTS;
-                } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE) {
-                    origin = AppConstants.Tracker.GYM_PROFILE;
-                } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE) {
-                    origin = AppConstants.Tracker.TRAINER_PROFILE;
-                } else if (shownIn == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION) {
-                    origin = AppConstants.Tracker.NOTIFICATION;
-                } else if (shownIn == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN) {
-                    origin = AppConstants.Tracker.PUSH_NOTIFICATION;
-                } else if (shownIn == AppConstants.AppNavigation.NAVIGATION_FROM_SHARE) {
-                    origin = AppConstants.Tracker.SHARED_CLASS;
-                }
-
-                MixPanel.trackAddWishList(origin, model);
+                MixPanel.trackAddWishList(shownIn, model);
             }
         });
 
@@ -264,6 +245,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                             model.setUserJoinStatus(false);
                             EventBroadcastHelper.sendClassJoin(context, model);
                             EventBroadcastHelper.sendUserUpdate(context, ((ResponseModel<User>) response).data);
+
+                            MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
                             materialDialog.dismiss();
 
                         } catch (Exception e) {
@@ -290,12 +273,9 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
     private static void dialogConfirmDelete(Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, int shownIn) {
         networkCommunicator.removeFromWishList(model);
 
-        String origin = "";
         if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
-            origin = AppConstants.Tracker.WISH_LIST;
+            MixPanel.trackRemoveWishList(AppConstants.Tracker.WISH_LIST, model);
         }
-
-        MixPanel.trackRemoveWishList(origin, model);
 
 //        DialogUtils.showBasic(context, "Are you sure you want to remove " + model.getTitle() + " from your WishList?", "Delete", new MaterialDialog.SingleButtonCallback() {
 //            @Override

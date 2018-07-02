@@ -17,6 +17,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
 import com.p5m.me.analytics.MixPanel;
+import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.PaymentUrl;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.restapi.NetworkCommunicator;
@@ -30,9 +31,11 @@ import butterknife.ButterKnife;
 
 public class PaymentWebViewActivity extends BaseActivity implements NetworkCommunicator.RequestListener {
 
-    public static void open(Activity activity, String couponCode, String packageName, PaymentUrl paymentUrl) {
+    public static void open(Activity activity, String couponCode, String packageName, ClassModel classModel, PaymentUrl paymentUrl) {
         PaymentWebViewActivity.couponCode = couponCode;
         PaymentWebViewActivity.packageName = packageName;
+        PaymentWebViewActivity.classModel = classModel;
+
         activity.startActivityForResult(new Intent(activity, PaymentWebViewActivity.class)
                 .putExtra(AppConstants.DataKey.PAYMENT_URL_OBJECT, paymentUrl), AppConstants.ResultCode.PAYMENT_SUCCESS);
     }
@@ -48,6 +51,7 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
 
     private static String couponCode;
     private static String packageName;
+    private static ClassModel classModel;
 
     private PaymentUrl paymentUrl;
 
@@ -104,6 +108,10 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
         setResult(RESULT_OK);
 
         MixPanel.trackMembershipPurchase(couponCode, packageName);
+
+        if (classModel != null) {
+            MixPanel.trackJoinClass(AppConstants.Tracker.PURCHASE_PLAN, classModel);
+        }
 
         overridePendingTransition(0, 0);
         finish();

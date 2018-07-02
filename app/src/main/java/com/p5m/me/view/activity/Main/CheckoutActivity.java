@@ -404,7 +404,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 String packageName = aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName();
                 String couponCode = promoCode == null ? AppConstants.Tracker.NO_COUPON : promoCode.code;
 
-                PaymentWebViewActivity.open(activity, couponCode, packageName, ((ResponseModel<PaymentUrl>) response).data);
+                PaymentWebViewActivity.open(activity, couponCode, packageName, classModel, ((ResponseModel<PaymentUrl>) response).data);
                 break;
         }
     }

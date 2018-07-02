@@ -94,6 +94,8 @@ public class AppConstants {
         public static final String PURCHASE_CANCEL = "purchase_cancel";
         public static final String VIEW_LIMIT_NO_PURCHASE = "view_limit_no_purchase";
         public static final String NO_ACTION = "no_action";
+        public static final String UP_COMING = "UpComing";
+        public static final String PURCHASE_PLAN = "purchase_plan";
     }
 
     public static class Pref {
@@ -133,12 +135,13 @@ public class AppConstants {
     public class Url {
 //        public static final String BASE_SERVICE_ALPHA = "http://192.168.0.39:8080/profive-midl/";
 //        public static final String BASE_SERVICE_ALPHA = "http://192.168.0.39:8080/profive-midl/";
-//        public static final String BASE_SERVICE_LIVE = "http://192.168.0.39:8080/profive-midl/";
+//        public static final String BASE_SERVICE_LIVE = "http://192.168.0.18:8080/profive-midl/";
 
         public static final String WEBSITE = "http://www.p5m.me/";
 
         public static final String LIVE = "http://api.p5m.me";
         public static final String QA = "http://qa-api.profive.co";
+//        public static final String QA = "http://192.168.0.18:8080";
 
         public static final String BASE_SERVICE_ALPHA = QA + "/profive-midl/";
         public static final String BASE_SERVICE_BETA = QA + "/dev-midl/";

@@ -362,6 +362,16 @@ public class Helper {
         }
     }
 
+    public static String getClassGenderTextForTracker(String classType) {
+        if (classType.equals(AppConstants.ApiParamValue.GENDER_MALE)) {
+            return "Male".toUpperCase();
+        } else if (classType.equals(AppConstants.ApiParamValue.GENDER_FEMALE)) {
+            return "Female".toUpperCase();
+        } else {
+            return "Both".toUpperCase();
+        }
+    }
+
     public static void setClassJoinEventData(ClassModel classModel, ClassModel joinedData) {
         classModel.setUserJoinStatus(joinedData.isUserJoinStatus());
         classModel.setAvailableSeat(joinedData.getAvailableSeat());
