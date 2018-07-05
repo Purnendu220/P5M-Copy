@@ -36,6 +36,7 @@ public class MixPanel {
 
     private static boolean isSetupDone;
     public static final String MIX_PANEL_TOKEN = "705daac4d807e105c1ddc350c9324ca2";
+    public static final String PROJECT_ID = "109210713388";
 
     public static MixpanelAPI mixPanel;
 
@@ -97,6 +98,7 @@ public class MixPanel {
             if (MyApp.USE_MIX_PANEL) {
                 mixPanel.getPeople().identify(id);
                 mixPanel.getPeople().set(props);
+                mixPanel.getPeople().initPushHandling(MixPanel.PROJECT_ID);
             }
         } catch (Exception e) {
             e.printStackTrace();

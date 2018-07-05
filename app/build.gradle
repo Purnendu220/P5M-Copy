@@ -102,7 +102,7 @@ dependencies {
 
     /////////////////////////////////MIX PANEL//////////////////////////////////////////
     implementation 'com.mixpanel.android:mixpanel-android:5.4.0'
-
+    implementation 'com.google.android.gms:play-services-gcm:15.0.1'
 
 }
 
