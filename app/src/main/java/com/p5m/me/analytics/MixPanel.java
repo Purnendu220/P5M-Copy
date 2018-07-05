@@ -14,6 +14,7 @@ import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LogUtils;
@@ -34,7 +35,7 @@ public class MixPanel {
     private static Handler handlerBg;
 
     private static boolean isSetupDone;
-    public static final String MIX_PANEL_TOKEN = "705daac4d807e105c1ddc350c9324ca2";
+    public static final String MIX_PANEL_TOKEN = MyApp.MIX_PANEL_TOKEN;
 
     public static MixpanelAPI mixPanel;
 
@@ -53,16 +54,17 @@ public class MixPanel {
             return;
         }
 
-        mixPanel = MixpanelAPI.getInstance(context, MIX_PANEL_TOKEN);
+        mixPanel = MixpanelAPI.getInstance(context, MIX_PANEL_TOKEN, true);
 
         try {
-            mixPanel.identify(mixPanel.getDistinctId());
+            mixPanel.identify(String.valueOf(TempStorage.getUser().getId()));
             JSONObject props = new JSONObject();
             props.put("Source", "Android");
             mixPanel.registerSuperProperties(props);
             isSetupDone = true;
             LogUtils.debug("MixPanel setup done");
         } catch (Exception e) {
+            isSetupDone = false;
             e.printStackTrace();
             LogUtils.exception(e);
             LogUtils.debug("MixPanel setup error");
@@ -80,6 +82,12 @@ public class MixPanel {
         }
     }
 
+    public static void login(Context context) {
+    }
+
+    public static void logout() {
+    }
+
     public static void flush() {
         try {
             if (MyApp.USE_MIX_PANEL) {
@@ -92,15 +100,16 @@ public class MixPanel {
     }
 
     private static void trackUser(String id, JSONObject props) {
-        try {
-            if (MyApp.USE_MIX_PANEL) {
-                mixPanel.getPeople().identify(id);
-                mixPanel.getPeople().set(props);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            LogUtils.exception(e);
-        }
+//        try {
+//            if (MyApp.USE_MIX_PANEL) {
+//                mixPanel.getPeople().identify(id);
+//                mixPanel.getPeople().set(props);
+////                mixPanel.getPeople().initPushHandling(MyApp.GOOGLE_API_PROJECT);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            LogUtils.exception(e);
+//        }
     }
 
     public static void trackPastLogin(String pastLogin) {
@@ -330,7 +339,6 @@ public class MixPanel {
                 new Runnable() {
                     @Override
                     public void run() {
-
                         try {
                             List<String> times = new ArrayList<>();
                             List<String> activities = new ArrayList<>();
@@ -653,9 +661,9 @@ public class MixPanel {
 
             JSONObject props = new JSONObject();
             props.put("id", user.getId() + "");
-            props.put("name", user.getFirstName());
-            props.put("first_name", user.getFirstName());
-            props.put("email", user.getEmail());
+            props.put("$name", user.getFirstName());
+            props.put("$first_name", user.getFirstName());
+            props.put("$email", user.getEmail());
             props.put("User Category", user.getUserCategory());
             props.put("Has Active Package", userPackageInfo.havePackages ? true : false);
 
@@ -664,7 +672,7 @@ public class MixPanel {
             props.put("dob", user.getDob() == null ?
                     "" : DateUtils.getDateFormatter(new Date(user.getDob())) + "");
 
-            props.put("phone", user.getMobile());
+            props.put("$phone", user.getMobile());
 
             props.put("Date of Joining", user.getDateOfJoining() == 0 ?
                     "" : DateUtils.getDateFormatter(new Date(user.getDateOfJoining())) + "");
