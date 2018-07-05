@@ -212,39 +212,5 @@ public class GalleryActivity extends BaseActivity implements ViewPager.OnPageCha
 
         isPerformingSlideDownAnimation = true;
         textViewCounter.setVisibility(View.INVISIBLE);
-
-//        int colorTo = ContextCompat.getColor(context, R.color.layer);
-//        int colorFrom = Color.BLACK;
-//        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-//        colorAnimation.setDuration(300);
-//        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-//
-//            @Override
-//            public void onAnimationUpdate(ValueAnimator animator) {
-//                root.setBackgroundColor((int) animator.getAnimatedValue());
-//            }
-//
-//        });
-//        colorAnimation.start();
-
-//        root.setBackgroundColor(ContextCompat.getColor(context, R.color.layer));
-//        viewPager.startAnimation(slideDownAnimation);
-//
-//        slideDownAnimation.setAnimationListener(new Animation.AnimationListener() {
-//            @Override
-//            public void onAnimationStart(Animation animation) {
-//            }
-//
-//            @Override
-//            public void onAnimationEnd(Animation animation) {
-//                GalleryActivity.super.onBackPressed();
-//                overridePendingTransition(0, 0);
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animation animation) {
-//
-//            }
-//        });
     }
 }

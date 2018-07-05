@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.PromoCode;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
@@ -46,6 +47,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         */
     public static void openActivity(Context context, Package aPackage) {
         CheckoutActivity.aPackage = aPackage;
+        CheckoutActivity.classModel = null;
         CheckoutActivity.checkoutFor = PACKAGE;
 
         openActivity(context);
@@ -66,8 +68,9 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     if user is purchasing a special class
      */
     public static void openActivity(Context context, ClassModel specialClassModel) {
-        CheckoutActivity.checkoutFor = SPECIAL_CLASS;
+        CheckoutActivity.aPackage = null;
         CheckoutActivity.classModel = specialClassModel;
+        CheckoutActivity.checkoutFor = SPECIAL_CLASS;
 
         openActivity(context);
     }
@@ -143,6 +146,8 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         buttonPromoCode.setOnClickListener(this);
         textViewLimit.setOnClickListener(this);
         textViewCancellationPolicyToggle.setOnClickListener(this);
+
+        MixPanel.trackCheckoutVisit(aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName());
     }
 
     private void setData() {
@@ -395,7 +400,11 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
             case NetworkCommunicator.RequestCode.BUY_PACKAGE:
                 setPrice();
                 textViewPay.setEnabled(true);
-                PaymentWebViewActivity.open(activity, ((ResponseModel<PaymentUrl>) response).data);
+
+                String packageName = aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName();
+                String couponCode = promoCode == null ? AppConstants.Tracker.NO_COUPON : promoCode.code;
+
+                PaymentWebViewActivity.open(activity, couponCode, packageName, classModel, ((ResponseModel<PaymentUrl>) response).data);
                 break;
         }
     }

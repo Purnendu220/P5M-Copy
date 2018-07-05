@@ -242,22 +242,22 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, ClassModel model, int position) {
         switch (view.getId()) {
             case R.id.imageViewOptions:
-                ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, model);
+                ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, model, shownInScreen);
                 break;
             case R.id.textViewLocation:
             case R.id.layoutLocation:
-                GymProfileActivity.open(context, model.getGymBranchDetail().getGymId());
+                GymProfileActivity.open(context, model.getGymBranchDetail().getGymId(), shownInScreen);
                 break;
             case R.id.layoutTrainer:
                 if (model.getTrainerDetail() != null) {
-                    TrainerProfileActivity.open(context, model.getTrainerDetail());
+                    TrainerProfileActivity.open(context, model.getTrainerDetail(), shownInScreen);
                 } else {
-                    GymProfileActivity.open(context, model.getGymBranchDetail().getGymId());
+                    GymProfileActivity.open(context, model.getGymBranchDetail().getGymId(), shownInScreen);
                 }
                 break;
             case R.id.buttonJoin:
             default:
-                ClassProfileActivity.open(context, model);
+                ClassProfileActivity.open(context, model, shownInScreen);
         }
     }
 

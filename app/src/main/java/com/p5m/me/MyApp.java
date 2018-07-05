@@ -11,6 +11,7 @@ import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.receivers.NetworkChangeReceiver;
 import com.p5m.me.restapi.NetworkCommunicator;
@@ -29,11 +30,16 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
 
     public final static ApiMode apiMode = ApiMode.TESTING_ALPHA;
     public final static boolean USE_CRASH_ANALYTICS = false;
+    public final static boolean USE_MIX_PANEL = true;
 
     public final static boolean SHOW_LOG = true;
     public final static boolean RETROFIT_SHOW_LOG = true;
 
     public final static List<Activity> ACTIVITIES = new ArrayList<>();
+
+    public final static String MIX_PANEL_TOKEN = "705daac4d807e105c1ddc350c9324ca2";
+//    public final static String MIX_PANEL_TOKEN = "ac8ac225ea9618bad16a7fe25dfd548e";
+    public final static String GOOGLE_API_PROJECT = "109210713388";
 
     public boolean isAppForeground;
     public long appBackgroundTime;
@@ -159,6 +165,8 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         LogUtils.debug("App is in Background");
 
         appBackgroundTime = System.currentTimeMillis();
+
+        MixPanel.flush();
     }
 
     @Override

@@ -16,9 +16,11 @@ import android.widget.TextView;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.ImageListAdapter;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.GymBranchDetail;
 import com.p5m.me.data.main.TrainerDetailModel;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.ImageUtils;
 import com.p5m.me.view.activity.Main.GymProfileActivity;
 
@@ -71,7 +73,7 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
         dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
     }
 
-    public void bind(Object data, final AdapterCallbacks adapterCallbacks, final int position) {
+    public void bind(Object data, final AdapterCallbacks adapterCallbacks, final int position, final int shownIn) {
         if (data != null && data instanceof TrainerDetailModel) {
             itemView.setVisibility(View.VISIBLE);
 
@@ -95,7 +97,7 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
                 layoutGallery.setVisibility(View.VISIBLE);
                 textViewGallery.setText(Html.fromHtml("Gallery" + " <b>(" + model.getMediaResponseDtoList().size() + ")</b>"));
 
-                ImageListAdapter adapter = new ImageListAdapter(context, model.getMediaResponseDtoList());
+                ImageListAdapter adapter = new ImageListAdapter(context, AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE, model.getMediaResponseDtoList());
                 recyclerViewGallery.setAdapter(adapter);
                 recyclerViewGallery.setHasFixedSize(true);
 
@@ -153,7 +155,9 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
                         textView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                GymProfileActivity.open(context, gymBranchDetail.getGymId());
+                                GymProfileActivity.open(context, gymBranchDetail.getGymId(), shownIn);
+                                MixPanel.trackTrainerProfileEvent(AppConstants.Tracker.VISIT_GYM_PROFILE);
+                                MixPanel.trackGymVisit(AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE);
                             }
                         });
                     }

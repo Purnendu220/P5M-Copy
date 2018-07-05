@@ -24,6 +24,7 @@ import com.google.android.flexbox.FlexboxLayout;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.FilterAdapter;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.City;
 import com.p5m.me.data.CityLocality;
 import com.p5m.me.data.ClassesFilter;
@@ -429,6 +430,7 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
             case R.id.textViewFindClasses:
                 TempStorage.setFilterList(filterAdapter.getClassesFiltersSelected());
                 EventBroadcastHelper.sendNewFilterSet();
+                MixPanel.trackFilters(TempStorage.getFilters());
                 finish();
                 break;
         }

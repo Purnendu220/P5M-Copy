@@ -25,6 +25,7 @@ import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.TrainerProfileAdapter;
 import com.p5m.me.adapters.viewholder.TrainerListViewHolder;
 import com.p5m.me.adapters.viewholder.TrainerProfileViewHolder;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.FollowResponse;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.TrainerDetailModel;
@@ -53,18 +54,21 @@ import butterknife.ButterKnife;
 
 public class TrainerProfileActivity extends BaseActivity implements AdapterCallbacks, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener, NetworkCommunicator.RequestListenerRequestDataModel<TrainerModel> {
 
-    public static void open(Context context, TrainerModel trainerModel) {
+    public static void open(Context context, TrainerModel trainerModel, int navigationFrom) {
         context.startActivity(new Intent(context, TrainerProfileActivity.class)
+                .putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom)
                 .putExtra(AppConstants.DataKey.TRAINER_OBJECT, trainerModel));
     }
 
-    public static void open(Context context, int trainerId) {
+    public static void open(Context context, int trainerId, int navigationFrom) {
         context.startActivity(new Intent(context, TrainerProfileActivity.class)
+                .putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom)
                 .putExtra(AppConstants.DataKey.TRAINER_ID_INT, trainerId));
     }
 
-    public static Intent createIntent(Context context, int trainerId) {
+    public static Intent createIntent(Context context, int trainerId, int navigationFrom) {
         return new Intent(context, TrainerProfileActivity.class)
+                .putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom)
                 .putExtra(AppConstants.DataKey.TRAINER_ID_INT, trainerId);
     }
 
@@ -80,6 +84,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
     private TrainerDetailModel trainerDetailModel;
 
     private int trainerId;
+    private int navigatedFrom;
 
     private int page;
     private int pageSizeLimit = AppConstants.Limit.PAGE_LIMIT_INNER_CLASS_LIST;
@@ -147,6 +152,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
 
         trainerModel = (TrainerModel) getIntent().getSerializableExtra(AppConstants.DataKey.TRAINER_OBJECT);
         trainerId = getIntent().getIntExtra(AppConstants.DataKey.TRAINER_ID_INT, -1);
+        navigatedFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
 
         if (trainerModel == null && trainerId == -1) {
             finish();
@@ -198,6 +204,8 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
 
         onRefresh();
         setToolBar();
+
+        MixPanel.trackTrainerVisit(navigatedFrom);
     }
 
     private void callApiClasses() {
@@ -261,11 +269,15 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
                 break;
             case R.id.button:
                 if (viewHolder instanceof TrainerProfileViewHolder) {
-                    if (trainerModel.isIsfollow()) {
-                        dialogUnFollow(viewHolder, trainerModel);
-                    } else {
-                        ((BaseActivity) activity).networkCommunicator.followUnFollow(!trainerModel.isIsfollow(), trainerModel, this, false);
-                        Helper.setFavButtonTemp(context, ((TrainerProfileViewHolder) viewHolder).button, !trainerModel.isIsfollow());
+                    if (trainerModel != null) {
+                        if (trainerModel.isIsfollow()) {
+                            dialogUnFollow(viewHolder, trainerModel);
+                        } else {
+                            ((BaseActivity) activity).networkCommunicator.followUnFollow(!trainerModel.isIsfollow(), trainerModel, this, false);
+                            Helper.setFavButtonTemp(context, ((TrainerProfileViewHolder) viewHolder).button, !trainerModel.isIsfollow());
+
+                            MixPanel.trackAddFav(AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE, trainerModel.getFirstName());
+                        }
                     }
                 }
                 break;
@@ -282,6 +294,8 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
                 if (viewHolder instanceof TrainerListViewHolder) {
                     Helper.setFavButtonTemp(context, ((TrainerListViewHolder) viewHolder).buttonFav, !trainerModel.isIsfollow());
                 }
+
+                MixPanel.trackRemoveFav(AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE, trainerModel.getFirstName());
             }
         });
     }
@@ -336,6 +350,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
                 callApiClasses();
                 swipeRefreshLayout.setRefreshing(false);
                 TrainerDetailModel trainerDetailModel = ((ResponseModel<TrainerDetailModel>) response).data;
+                trainerModel = trainerDetailModel.getTrainer();
 
                 trainerProfileAdapter.setTrainerModel(trainerDetailModel);
                 break;
