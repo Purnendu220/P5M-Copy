@@ -14,6 +14,7 @@ import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LogUtils;
@@ -56,7 +57,7 @@ public class MixPanel {
         mixPanel = MixpanelAPI.getInstance(context, MIX_PANEL_TOKEN);
 
         try {
-            mixPanel.identify(mixPanel.getDistinctId());
+            mixPanel.identify(String.valueOf(TempStorage.getUser().getId()));
             JSONObject props = new JSONObject();
             props.put("Source", "Android");
             mixPanel.registerSuperProperties(props);
@@ -653,9 +654,9 @@ public class MixPanel {
 
             JSONObject props = new JSONObject();
             props.put("id", user.getId() + "");
-            props.put("name", user.getFirstName());
-            props.put("first_name", user.getFirstName());
-            props.put("email", user.getEmail());
+            props.put("$name", user.getFirstName());
+            props.put("$first_name", user.getFirstName());
+            props.put("$email", user.getEmail());
             props.put("User Category", user.getUserCategory());
             props.put("Has Active Package", userPackageInfo.havePackages ? true : false);
 
@@ -664,7 +665,7 @@ public class MixPanel {
             props.put("dob", user.getDob() == null ?
                     "" : DateUtils.getDateFormatter(new Date(user.getDob())) + "");
 
-            props.put("phone", user.getMobile());
+            props.put("$phone", user.getMobile());
 
             props.put("Date of Joining", user.getDateOfJoining() == 0 ?
                     "" : DateUtils.getDateFormatter(new Date(user.getDateOfJoining())) + "");
