@@ -155,9 +155,8 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
                         textView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                GymProfileActivity.open(context, gymBranchDetail.getGymId(), shownIn);
+                                GymProfileActivity.open(context, gymBranchDetail.getGymId(), AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE);
                                 MixPanel.trackTrainerProfileEvent(AppConstants.Tracker.VISIT_GYM_PROFILE);
-                                MixPanel.trackGymVisit(AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE);
                             }
                         });
                     }

@@ -461,6 +461,8 @@ public class MixPanel {
             origin = AppConstants.Tracker.PUSH_NOTIFICATION;
         } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SHARE) {
             origin = AppConstants.Tracker.SHARED_GYM;
+        } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE_TRAINERS) {
+            origin = AppConstants.Tracker.GYM_PROFILE_TRAINERS;
         }
 
         if (origin.isEmpty()) {
