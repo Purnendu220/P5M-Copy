@@ -19,11 +19,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.p5m.me.R;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.KeyboardUtils;
 import com.p5m.me.utils.ToastUtils;
@@ -330,10 +332,13 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
 
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.VALIDATE_EMAIL:
+
                 buttonNext.setVisibility(View.VISIBLE);
                 registrationActivity.setEmail(email);
                 registrationActivity.next();
+
                 break;
+
             case NetworkCommunicator.RequestCode.REGISTER:
                 buttonNext.setVisibility(View.VISIBLE);
 
@@ -342,6 +347,9 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
                     User user = ((ResponseModel<User>) response).data;
 
                     EventBroadcastHelper.sendLogin(context, user);
+
+                    MixPanel.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
+
                     RegistrationDoneActivity.open(context);
                 }
 

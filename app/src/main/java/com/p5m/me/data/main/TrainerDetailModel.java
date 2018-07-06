@@ -57,6 +57,23 @@ public class TrainerDetailModel implements java.io.Serializable {
         }
     }
 
+    public TrainerModel getTrainer() {
+
+        TrainerModel trainerModel = new TrainerModel();
+        trainerModel.setFirstName(firstName);
+        trainerModel.setProfileImageThumbnail(profileImageThumbnail);
+        trainerModel.setGymNames(gymNames);
+        trainerModel.setId(id);
+        trainerModel.setProfileImage(profileImage);
+        trainerModel.setIsfollow(isfollow);
+        trainerModel.setTrainerDeleted(trainerDeleted);
+        trainerModel.setTrainerStatus(trainerStatus);
+        trainerModel.setCategoryList(categoryList);
+        trainerModel.setTrainerBranchResponseList(trainerBranchResponseList);
+
+        return trainerModel;
+    }
+
     public int getProfileImageId() {
         return profileImageId;
     }

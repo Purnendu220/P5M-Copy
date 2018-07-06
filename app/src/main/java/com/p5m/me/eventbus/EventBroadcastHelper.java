@@ -2,8 +2,10 @@ package com.p5m.me.eventbus;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.provider.Settings;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
@@ -24,21 +26,23 @@ public class EventBroadcastHelper {
 
     public static void sendLogin(Context context, User user) {
 
-        try {
-            if (user.getId() != TempStorage.getUser().getId()) {
-                //Reset Filter..
-                MyPreferences.getInstance().saveFilters(new ArrayList<ClassesFilter>());
-                TempStorage.setFilterList(new ArrayList<ClassesFilter>());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // Saving filters for previous user...
+//        try {
+//            if (user.getId() != TempStorage.getUser().getId()) {
+//                //Reset Filter..
+//                MyPreferences.getInstance().saveFilters(new ArrayList<ClassesFilter>());
+//                TempStorage.setFilterList(new ArrayList<ClassesFilter>());
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         TempStorage.setUser(context, user);
         MyPreferences.getInstance().setLogin(true);
         NetworkCommunicator.getInstance(context).getDefault();
 
         EventBroadcastHelper.sendDeviceUpdate(context);
+        MixPanel.login(context);
     }
 
     public static void logout(Context context) {
@@ -50,7 +54,12 @@ public class EventBroadcastHelper {
             MyPreferences.getInstance().saveUser(user);
             MyPreferences.getInstance().saveActivities(activities);
 
+            //Remove Filters
+            MyPreferences.getInstance().saveFilters(new ArrayList<ClassesFilter>());
+
             TempStorage.setAuthToken(null);
+
+            MixPanel.logout();
 
             NotificationManager notificationManager = (NotificationManager) context
                     .getSystemService(Context.NOTIFICATION_SERVICE);
@@ -81,6 +90,9 @@ public class EventBroadcastHelper {
 
     public static void sendUserUpdate(Context context, User user) {
         TempStorage.setUser(context, user);
+
+        MixPanel.trackUserUpdate(TempStorage.getUser());
+
         GlobalBus.getBus().post(new Events.UserUpdate(user));
     }
 
@@ -96,6 +108,7 @@ public class EventBroadcastHelper {
         } else {
             classModel.setAvailableSeat(classModel.getAvailableSeat() + 1);
         }
+
         GlobalBus.getBus().post(new Events.ClassJoin(classModel));
     }
 
@@ -162,8 +175,11 @@ public class EventBroadcastHelper {
                 return;
             }
 
+            String androidId = Settings.Secure.getString(context.getContentResolver(),
+                    Settings.Secure.ANDROID_ID);
+
             NetworkCommunicator.getInstance(context).deviceUpdate(
-                    new DeviceUpdate(TempStorage.version, TempStorage.getUser().getId(), deviceToken),
+                    new DeviceUpdate(TempStorage.version, TempStorage.getUser().getId(), deviceToken, androidId),
                     new NetworkCommunicator.RequestListener() {
                         @Override
                         public void onApiSuccess(Object response, int requestCode) {

@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/click_highlight"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -59,15 +59,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:paddingTop="6dp">
+                    android:paddingTop="4dp">
 
                     <ImageView
                         android:id="@+id/imageViewSubtitle"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:layout_marginRight="4dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginRight="2dp"
                         android:src="@drawable/class_icon"
-                        android:visibility="gone" />
+                        android:visibility="visible" />
 
                     <TextView
                         android:id="@+id/textViewSubtitle"
@@ -75,6 +75,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
+                        android:layout_marginTop="2dp"
                         android:layout_toEndOf="@+id/imageViewClassCategory"
                         android:fontFamily="sans-serif-medium"
                         android:letterSpacing="@dimen/button_letter_spacing_very_little"

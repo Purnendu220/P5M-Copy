@@ -51,17 +51,17 @@ public class DeepLinkActivity extends BaseActivity {
                     if (getIntent().getData().toString().contains("/share/classes/")) {
 
                         int classSessionId = Integer.valueOf(url.substring(url.indexOf("/share/classes/") + "/share/classes/".length(), url.lastIndexOf("/")));
-                        navigationIntent = ClassProfileActivity.createIntent(context, classSessionId);
+                        navigationIntent = ClassProfileActivity.createIntent(context, classSessionId, AppConstants.AppNavigation.NAVIGATION_FROM_SHARE);
 
                     } else if (getIntent().getData().toString().contains("/share/gym/")) {
 
                         int gymId = Integer.valueOf(url.substring(url.indexOf("/share/gym/") + "/share/gym/".length(), url.lastIndexOf("/")));
-                        navigationIntent = GymProfileActivity.createIntent(context, gymId);
+                        navigationIntent = GymProfileActivity.createIntent(context, gymId, AppConstants.AppNavigation.NAVIGATION_FROM_SHARE);
 
                     } else if (getIntent().getData().toString().contains("/share/trainer/")) {
 
                         int trainerId = Integer.valueOf(url.substring(url.indexOf("/share/trainer/") + "/share/trainer/".length(), url.lastIndexOf("/")));
-                        navigationIntent = TrainerProfileActivity.createIntent(context, trainerId);
+                        navigationIntent = TrainerProfileActivity.createIntent(context, trainerId, AppConstants.AppNavigation.NAVIGATION_FROM_SHARE);
 
                     } else {
 
@@ -70,6 +70,8 @@ public class DeepLinkActivity extends BaseActivity {
 
                     TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
                     stackBuilder.addNextIntentWithParentStack(navigationIntent);
+
+                    stackBuilder.editIntentAt(0).putExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, true);
 
                     overridePendingTransition(0,0);
                     stackBuilder.startActivities();

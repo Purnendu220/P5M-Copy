@@ -20,10 +20,10 @@ import android.widget.TextView;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.MemberShipAdapter;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
-import com.p5m.me.data.main.PaymentUrl;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.eventbus.Events;
@@ -34,7 +34,6 @@ import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
-import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -84,6 +83,9 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     private int delay = 500;
 
     private User user;
+    private boolean hasVisitedGymLimits;
+    private boolean hasPurchased;
+    private boolean hasClickedCheckout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +119,8 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
         onRefresh();
 
         setToolBar();
+
+        MixPanel.trackMembershipVisit(navigatedFrom);
     }
 
     @Override
@@ -138,11 +142,13 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getPackagePurchased(Events.PackagePurchased packagePurchased) {
         refreshFromEvent();
+        hasPurchased = true;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void packagePurchasedForClass(Events.PackagePurchasedForClass data) {
         refreshFromEvent();
+        hasPurchased = true;
     }
 
     private void refreshFromEvent() {
@@ -181,7 +187,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
         v.findViewById(R.id.imageViewBack).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                onBackPressed();
             }
         });
 
@@ -224,7 +230,8 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
         } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SETTING ||
                 navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE ||
-                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION) {
+                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION ||
+                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN) {
 
             if (userPackageInfo.havePackages) {
 
@@ -272,6 +279,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                     name = aPackage.getPackageName();
                 }
                 PackageLimitsActivity.openActivity(context, name);
+                hasVisitedGymLimits = true;
             }
             break;
             case R.id.button: {
@@ -298,8 +306,12 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                     CheckoutActivity.openActivity(context, aPackage, classModel);
                 } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SETTING ||
                         navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE ||
-                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION) {
+                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION ||
+                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN) {
                     CheckoutActivity.openActivity(context, aPackage);
+
+                    MixPanel.trackPackagePreferred(aPackage.getName());
+                    hasClickedCheckout = true;
                 }
             }
             break;
@@ -363,13 +375,13 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                 memberShipAdapter.notifyDataSetChanges();
                 break;
 
-            case NetworkCommunicator.RequestCode.BUY_PACKAGE:
-
-                swipeRefreshLayout.setRefreshing(false);
-
-                PaymentWebViewActivity.open(activity, ((ResponseModel<PaymentUrl>) response).data);
-                memberShipAdapter.notifyDataSetChanges();
-                break;
+//            case NetworkCommunicator.RequestCode.BUY_PACKAGE:
+//
+//                swipeRefreshLayout.setRefreshing(false);
+//
+//                PaymentWebViewActivity.open(activity, promoCode.code, packageName, ((ResponseModel<PaymentUrl>) response).data);
+//                memberShipAdapter.notifyDataSetChanges();
+//                break;
 
             case NetworkCommunicator.RequestCode.ME_USER:
                 user = TempStorage.getUser();
@@ -385,13 +397,13 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
         swipeRefreshLayout.setRefreshing(false);
         swipeRefreshLayout.setEnabled(true);
 
-        switch (requestCode) {
-            case NetworkCommunicator.RequestCode.BUY_PACKAGE:
-                ToastUtils.showFailureResponse(context, errorMessage);
-                memberShipAdapter.notifyDataSetChanges();
-
-                break;
-        }
+//        switch (requestCode) {
+//            case NetworkCommunicator.RequestCode.BUY_PACKAGE:
+//                ToastUtils.showFailureResponse(context, errorMessage);
+//                memberShipAdapter.notifyDataSetChanges();
+//
+//                break;
+//        }
     }
 
     @Override
@@ -403,4 +415,16 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
         networkCommunicator.getMyUser(this, false);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        if (!hasPurchased && hasVisitedGymLimits) {
+            MixPanel.trackSequentialUpdate(AppConstants.Tracker.VIEW_LIMIT_NO_PURCHASE);
+        }
+
+        if (!hasVisitedGymLimits && !hasClickedCheckout) {
+            MixPanel.trackSequentialUpdate(AppConstants.Tracker.NO_ACTION);
+        }
+    }
 }

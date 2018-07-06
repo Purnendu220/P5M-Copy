@@ -88,8 +88,7 @@
             android:orientation="horizontal"
             android:paddingBottom="12dp"
             android:paddingLeft="24dp"
-            android:paddingRight="24dp"
-            android:paddingTop="16dp">
+            android:paddingRight="24dp">
 
             <Button
                 android:id="@+id/buttonLogin"
