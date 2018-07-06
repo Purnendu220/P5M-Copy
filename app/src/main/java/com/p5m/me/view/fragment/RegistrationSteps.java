@@ -1,6 +1,8 @@
 package com.p5m.me.view.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -11,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -209,6 +212,8 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
         layoutPassword.setVisibility(View.GONE);
 
         view.setVisibility(View.VISIBLE);
+
+
     }
 
     @Override
