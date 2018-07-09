@@ -20,6 +20,7 @@ import com.brandongogetap.stickyheaders.exposed.StickyHeaderListener;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.GymProfileAdapter;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.eventbus.Events;
@@ -44,13 +45,15 @@ import butterknife.ButterKnife;
 
 public class GymProfileActivity extends BaseActivity implements AdapterCallbacks, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
 
-    public static void open(Context context, int gymId) {
+    public static void open(Context context, int gymId, int navigationFrom) {
         context.startActivity(new Intent(context, GymProfileActivity.class)
+                .putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom)
                 .putExtra(AppConstants.DataKey.GYM_ID_INT, gymId));
     }
 
-    public static Intent createIntent(Context context, int gymId) {
+    public static Intent createIntent(Context context, int gymId, int navigationFrom) {
         return new Intent(context, GymProfileActivity.class)
+                .putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom)
                 .putExtra(AppConstants.DataKey.GYM_ID_INT, gymId);
     }
 
@@ -64,6 +67,8 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
     private GymProfileAdapter gymProfileAdapter;
     private int gymId;
     private GymDetailModel gymDetailModel;
+
+    private int navigatedFrom;
 
     private int page;
     private int pageSizeLimit = AppConstants.Limit.PAGE_LIMIT_INNER_CLASS_LIST;
@@ -117,6 +122,7 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
         GlobalBus.getBus().register(this);
 
         gymId = getIntent().getIntExtra(AppConstants.DataKey.GYM_ID_INT, -1);
+        navigatedFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
 
         if (gymId == -1) {
             finish();
@@ -163,6 +169,8 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
 
         onRefresh();
         setToolBar();
+
+        MixPanel.trackGymVisit(navigatedFrom);
     }
 
     private void setToolBar() {
@@ -224,12 +232,14 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
                     GymDetailModel data = (GymDetailModel) model;
                     if (data.getNumberOfTrainer() > 0) {
                         TrainerListActivity.open(context, data.getId());
+                        MixPanel.trackGymProfileEvent(AppConstants.Tracker.LOOKING_GYM_TRAINERS_LIST);
                     }
                 }
                 break;
             case R.id.layoutMap:
             case R.id.textViewMore:
                 LocationListMapActivity.openActivity(context, gymProfileAdapter.getGymDetailModel().getGymBranchResponseList());
+                MixPanel.trackGymProfileEvent(AppConstants.Tracker.LOOKING_LOCATION_USING_MAP);
                 break;
         }
     }

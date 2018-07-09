@@ -1,7 +1,6 @@
 package com.p5m.me.utils;
 
 import java.text.DateFormatSymbols;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -120,6 +119,16 @@ public class DateUtils {
         return "";
     }
 
+    public static String getDateFormatter(Date date) {
+        try {
+            return packageDateFormat.format(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+        return "";
+    }
+
     public static String getClassDateNotification(long time) {
         if (time < 1000000000000L) {
             // if timestamp given in seconds, convert to millis
@@ -155,10 +164,50 @@ public class DateUtils {
             long diff = expiryTime.getTime() - today.getTime();
             float minute = TimeUnit.MINUTES.convert(diff, TimeUnit.MILLISECONDS);
             return minute / 60f;
-        } catch (ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return 2;
+    }
+
+    public static String getHourDiff(float hourDiff) {
+        String diffHrs = "";
+        if (hourDiff <= 6) {
+            diffHrs = "less than 6 hrs";
+        } else if (hourDiff <= 12) {
+            diffHrs = "6 to 12 hrs";
+        } else if (hourDiff <= 24) {
+            diffHrs = "12 to 24 hrs";
+        } else {
+            diffHrs = "greater than 24 hrs";
+        }
+        return diffHrs;
+    }
+
+    public static String getDayTiming(String time) {
+        String timing = "";
+
+        try {
+            Date dateTime = classDateExpiry.parse(time);
+            Calendar timeCal = Calendar.getInstance();
+            timeCal.setTime(dateTime);
+
+            int hourOfDay = timeCal.get(Calendar.HOUR_OF_DAY);
+
+            if (hourOfDay < 12) {
+                timing = "Morning_Time";
+            } else if (hourOfDay < 16) {
+                timing = "Afternoon";
+            } else {
+                timing = "Evening_Time";
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+
+        return timing;
     }
 }

@@ -260,5 +260,7 @@
     <string name="please_enter_your_email">Please enter your email</string>
     <string name="p5m_app">P5M App</string>
     <string name="share">Share</string>
+    <string name="sure_unjoin">Are you sure you want to unjoin ?</string>
+    <string name="mention_email">Please mention your email first</string>
 
 </resources>

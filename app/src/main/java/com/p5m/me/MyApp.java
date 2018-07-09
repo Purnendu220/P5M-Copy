@@ -11,6 +11,7 @@ import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.receivers.NetworkChangeReceiver;
 import com.p5m.me.restapi.NetworkCommunicator;
@@ -27,15 +28,12 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
 
     public static Context context;
 
-    public final static ApiMode apiMode = ApiMode.LIVE;
-    public final static boolean USE_CRASH_ANALYTICS = true;
+    public final static ApiMode apiMode = ApiMode.TESTING_ALPHA;
+    public final static boolean USE_CRASH_ANALYTICS = false;
+    public final static boolean USE_MIX_PANEL = true;
 
-    public final static boolean SHOW_LOG = false;
-    public final static boolean RETROFIT_SHOW_LOG = false;
-
-//    public static final String MIX_PANEL_TOKEN = "705daac4d807e105c1ddc350c9324ca2";
-
-//    public static MixpanelAPI mixPanel;
+    public final static boolean SHOW_LOG = true;
+    public final static boolean RETROFIT_SHOW_LOG = true;
 
     public final static List<Activity> ACTIVITIES = new ArrayList<>();
 
@@ -59,8 +57,6 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         if (USE_CRASH_ANALYTICS) {
             Fabric.with(this, new Crashlytics());
         }
-
-//        mixPanel = MixpanelAPI.getInstance(context, MIX_PANEL_TOKEN);
 
         registerActivityLifecycleCallbacks(this);
 
@@ -88,8 +84,6 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         if (MyPreferences.getInstance().isLogin()) {
             NetworkCommunicator.getInstance(context).getDefault();
         }
-
-//        MixPanel.setup(context);
     }
 
     @Override
@@ -168,7 +162,7 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
 
         appBackgroundTime = System.currentTimeMillis();
 
-//        mixPanel.flush();
+        MixPanel.flush();
     }
 
     @Override

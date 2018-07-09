@@ -34,6 +34,7 @@ import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.SearchAdapter;
 import com.p5m.me.adapters.SearchPagerAdapter;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.data.main.SearchResults;
@@ -94,12 +95,13 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
     private Handler handlerUI;
     private Handler handlerBG;
     private int navigatedFrom;
-    private SearchAdapter searchAdapter;
     private int SEARCH_DELAY = 400;
     private int SEARCH_LIMIT = 2;
     private boolean isSearching = false;
 
+    private SearchAdapter searchAdapter;
     private SearchPagerAdapter searchPagerAdapter;
+
     private String[] titleTabs = new String[]{
             "Classes\n(" + 0 + ")",
             "Trainers\n(" + 0 + ")",
@@ -343,6 +345,7 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
                 });
 
                 searchCall = networkCommunicator.search(search, "user", SearchActivity.this, false);
+                MixPanel.trackSearch(search);
             }
         };
 

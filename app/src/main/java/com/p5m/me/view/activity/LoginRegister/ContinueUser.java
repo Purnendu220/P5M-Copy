@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.p5m.me.R;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.ImageUtils;
@@ -51,7 +52,7 @@ public class ContinueUser extends BaseActivity implements View.OnClickListener {
 
         try {
             ImageUtils.setImage(context, TempStorage.getUser().getProfileImage(), R.drawable.profile_holder, imageView);
-            buttonContinue.setText("Continue as "+TempStorage.getUser().getFirstName());
+            buttonContinue.setText("Continue as " + TempStorage.getUser().getFirstName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -61,16 +62,28 @@ public class ContinueUser extends BaseActivity implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.buttonContinue:
+
+                MixPanel.trackPastLogin(AppConstants.Tracker.CONTINUE_AS);
                 LoginActivity.open(context, AppConstants.AppNavigation.NAVIGATION_FROM_CONTINUE_USER);
+
                 break;
             case R.id.buttonLogin:
+
+                MixPanel.trackPastLogin(AppConstants.Tracker.LOGIN_BUTTON);
                 LoginActivity.open(context);
+
                 break;
             case R.id.buttonRegister:
+
+                MixPanel.trackPastLogin(AppConstants.Tracker.REGISTER);
                 SignUpOptions.open(context);
+
                 break;
             case R.id.textViewSwitch:
+
+                MixPanel.trackPastLogin(AppConstants.Tracker.SWITCH_ACCOUNT_ACTION);
                 LoginActivity.open(context);
+
                 break;
         }
     }

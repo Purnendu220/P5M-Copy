@@ -250,14 +250,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 case "OnNewTrainerAssign":
                     // Class Details..
                     title = "Class Updated";
-                    navigationIntent = ClassProfileActivity.createIntent(context, (int) dataID);
+                    navigationIntent = ClassProfileActivity.createIntent(context, (int) dataID, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
                     break;
                 ////////////////////////////////////////////////////////////
 
                 //********************TRAINER PROFILE********************//
                 case "OnClassCreation":
                     //Trainer Profile..
-                    navigationIntent = TrainerProfileActivity.createIntent(context, (int) dataID);
+                    navigationIntent = TrainerProfileActivity.createIntent(context, (int) dataID, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
                     break;
                 /////////////////////////////////////////////////////////
 

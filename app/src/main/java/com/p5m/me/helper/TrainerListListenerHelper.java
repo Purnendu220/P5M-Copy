@@ -11,6 +11,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.viewholder.TrainerListViewHolder;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.FollowResponse;
 import com.p5m.me.data.main.TrainerModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
@@ -31,9 +32,13 @@ public class TrainerListListenerHelper implements AdapterCallbacks, NetworkCommu
     public Context context;
     public Activity activity;
 
-    public TrainerListListenerHelper(Context context, Activity activity, AdapterCallbacks adapterCallbacks) {
+    public int shownInScreen;
+
+    public TrainerListListenerHelper(Context context, Activity activity, int shownInScreen, AdapterCallbacks adapterCallbacks) {
         this.context = context;
         this.activity = activity;
+        this.shownInScreen = shownInScreen;
+
         this.adapterCallbacks = adapterCallbacks;
     }
 
@@ -50,12 +55,14 @@ public class TrainerListListenerHelper implements AdapterCallbacks, NetworkCommu
                         } else {
                             ((BaseActivity) activity).networkCommunicator.followUnFollow(!trainerModel.isIsfollow(), trainerModel, this, false);
                             Helper.setFavButtonTemp(context, ((TrainerListViewHolder) viewHolder).buttonFav, !trainerModel.isIsfollow());
+
+                            MixPanel.trackAddFav(shownInScreen, trainerModel.getFirstName());
                         }
                     }
                 }
                 break;
             default:
-                TrainerProfileActivity.open(context, (TrainerModel) model);
+                TrainerProfileActivity.open(context, (TrainerModel) model, shownInScreen);
                 break;
         }
     }
@@ -70,6 +77,8 @@ public class TrainerListListenerHelper implements AdapterCallbacks, NetworkCommu
                 if (viewHolder instanceof TrainerListViewHolder) {
                     Helper.setFavButtonTemp(context, ((TrainerListViewHolder) viewHolder).buttonFav, !trainerModel.isIsfollow());
                 }
+
+                MixPanel.trackRemoveFav(shownInScreen, trainerModel.getFirstName());
             }
         });
     }

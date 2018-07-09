@@ -140,7 +140,7 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
 
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        myProfileAdapter = new MyProfileAdapter(context, new TrainerListListenerHelper(context, activity, this),
+        myProfileAdapter = new MyProfileAdapter(context, new TrainerListListenerHelper(context, activity, AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FAV_TRAINERS, this),
                 new ClassListListenerHelper(context, activity, AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED, this), this);
         StickyLayoutManager layoutManager = new StickyLayoutManager(context, myProfileAdapter);
         layoutManager.elevateHeaders(true);

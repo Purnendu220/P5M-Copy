@@ -20,11 +20,14 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.p5m.me.R;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.MediaResponse;
 import com.p5m.me.data.Nationality;
 import com.p5m.me.data.main.User;
@@ -36,6 +39,7 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
+import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.ImageUtils;
 import com.p5m.me.utils.KeyboardUtils;
 import com.p5m.me.utils.LogUtils;
@@ -358,7 +362,11 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                 dialogDob();
                 break;
             case R.id.layoutChangePass:
-                ChangePasswordActivity.openActivity(context);
+                if (TempStorage.getUser().getFacebookId() == 0) {
+                    ChangePasswordActivity.openActivity(context);
+                } else {
+                    dialogFBChangePass();
+                }
                 break;
             case R.id.textViewNationality:
                 ChooseNationalityActivity.openActivity(activity);
@@ -380,6 +388,66 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                 }
                 break;
         }
+    }
+
+    private void dialogFBChangePass() {
+
+        final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
+                .cancelable(true)
+                .customView(R.layout.dialog_fb_user_change_pass, false)
+                .build();
+        materialDialog.show();
+
+        final TextView textViewOk = (TextView) materialDialog.findViewById(R.id.textViewOk);
+        final TextView textViewClose = (TextView) materialDialog.findViewById(R.id.textViewCancel);
+
+        textViewClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                materialDialog.dismiss();
+                ChangePasswordActivity.openActivity(context);
+            }
+        });
+
+        textViewOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+//                if (TempStorage.getUser().getEmail().isEmpty()) {
+//                    ToastUtils.show(context, getString(R.string.mention_email));
+//                    materialDialog.dismiss();
+//                    editTextEmail.requestFocus();
+//                    return;
+//                }
+
+                textViewOk.setVisibility(View.GONE);
+
+                networkCommunicator.forgotPassword(TempStorage.getUser().getEmail(), new NetworkCommunicator.RequestListener() {
+                    @Override
+                    public void onApiSuccess(Object response, int requestCode) {
+                        String message = ((ResponseModel<String>) response).data;
+
+                        DialogUtils.showBasicMessage(context, message, "Ok", new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        textViewOk.setVisibility(View.VISIBLE);
+                        materialDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onApiFailure(String errorMessage, int requestCode) {
+                        textViewOk.setVisibility(View.VISIBLE);
+
+                        ToastUtils.showLong(context, errorMessage);
+                        materialDialog.dismiss();
+                    }
+                }, false);
+            }
+        });
     }
 
     private void dialogDob() {
@@ -470,6 +538,37 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
 
                 ToastUtils.show(context, "Changes to your profile have been saved!");
                 User user = ((ResponseModel<User>) response).data;
+
+                User userOld = TempStorage.getUser();
+
+                if (!user.getFirstName().equals(userOld.getFirstName())) {
+                    MixPanel.trackEditProfile(AppConstants.Tracker.NAME_CHANGED);
+                }
+
+                if (!user.getEmail().equals(userOld.getEmail())) {
+                    MixPanel.trackEditProfile(AppConstants.Tracker.EMAIL_CHANGED);
+                }
+
+                if (!user.getMobile().equals(userOld.getMobile())) {
+                    MixPanel.trackEditProfile(AppConstants.Tracker.MOBILE_NUMBER_CHANGED);
+                }
+
+                if (!user.getGender().equals(userOld.getGender())) {
+                    MixPanel.trackEditProfile(AppConstants.Tracker.GENDER_CHANGED);
+                }
+
+                if (!user.getLocation().equals(userOld.getLocation())) {
+                    MixPanel.trackEditProfile(AppConstants.Tracker.LOCATION_CHANGED);
+                }
+
+                if (!user.getNationality().equals(userOld.getNationality())) {
+                    MixPanel.trackEditProfile(AppConstants.Tracker.NATIONALITY_CHANGED);
+                }
+
+                if (!String.valueOf(user.getDob()).equals(String.valueOf(userOld.getDob()))) {
+                    MixPanel.trackEditProfile(AppConstants.Tracker.DOB_CHANGED);
+                }
+
                 EventBroadcastHelper.sendUserUpdate(context, user);
                 finish();
             }
@@ -477,6 +576,8 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
             case NetworkCommunicator.RequestCode.PHOTO_UPLOAD:
 
                 MediaResponse mediaResponse = ((ResponseModel<MediaResponse>) response).data;
+
+                MixPanel.trackEditProfile(AppConstants.Tracker.PROFILE_IMAGE_CHANGED);
 
                 if (activity != null && !activity.isFinishing()) {
                     ImageUtils.setImageDelay(context, mediaResponse.getMediaPath(), imageViewProfile);
