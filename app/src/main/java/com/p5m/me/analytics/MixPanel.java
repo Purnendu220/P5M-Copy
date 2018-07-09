@@ -465,6 +465,10 @@ public class MixPanel {
             origin = AppConstants.Tracker.SHARED_GYM;
         } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE_TRAINERS) {
             origin = AppConstants.Tracker.GYM_PROFILE_TRAINERS;
+        } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_HOME_TRAINERS) {
+            origin = AppConstants.Tracker.TRAINER_TAB;
+        } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FAV_TRAINERS) {
+            origin = AppConstants.Tracker.USER_PROFILE;
         }
 
         if (origin.isEmpty()) {
