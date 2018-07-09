@@ -109,8 +109,8 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 textViewTrainerName.setVisibility(View.GONE);
 
                 buttonJoin.setVisibility(View.VISIBLE);
-                imageViewOptions1.setVisibility(View.GONE);
-                imageViewOptions2.setVisibility(View.VISIBLE);
+                imageViewOptions1.setVisibility(View.VISIBLE);
+                imageViewOptions2.setVisibility(View.GONE);
 
                 layoutGender.setVisibility(View.VISIBLE);
                 textViewClassGender.setText(Helper.getClassGenderText(model.getClassType()));
@@ -125,8 +125,8 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 textViewTrainerName.setVisibility(View.VISIBLE);
 
                 buttonJoin.setVisibility(View.VISIBLE);
-                imageViewOptions1.setVisibility(View.GONE);
-                imageViewOptions2.setVisibility(View.VISIBLE);
+                imageViewOptions1.setVisibility(View.VISIBLE);
+                imageViewOptions2.setVisibility(View.GONE);
 
                 layoutGender.setVisibility(View.VISIBLE);
                 textViewClassGender.setText(Helper.getClassGenderText(model.getClassType()));

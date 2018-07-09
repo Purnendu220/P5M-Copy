@@ -30,6 +30,10 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.imageViewProfile)
     public ImageView imageViewProfile;
+
+    @BindView(R.id.imageViewCover)
+    public ImageView imageViewCover;
+
     @BindView(R.id.imageViewMap)
     public ImageView imageViewMap;
 
@@ -127,6 +131,9 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
             ImageUtils.setImage(context,
                     model.getProfileImage(),
                     R.drawable.profile_holder_big, imageViewProfile);
+            ImageUtils.setImage(context,
+                    model.getCoverImage(),
+                    R.drawable.profile_holder_big, imageViewCover);
 
             Helper.setFavButton(context, button, model);
 
@@ -188,6 +195,12 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
                 @Override
                 public void onClick(View view) {
                     adapterCallbacks.onAdapterItemClick(GymProfileViewHolder.this, imageViewProfile, model, position);
+                }
+            });
+            imageViewCover.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(GymProfileViewHolder.this, imageViewCover, model, position);
                 }
             });
 

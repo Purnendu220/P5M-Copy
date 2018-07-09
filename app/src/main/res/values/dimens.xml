@@ -52,4 +52,15 @@
     <dimen name="registration_title">28sp</dimen>
     <dimen name="action_bar_elevation">2dp</dimen>
     <dimen name="text_drawable_adjustment">2dp</dimen>
+
+    <dimen name="margin_100">100dp</dimen>
+    <dimen name="margin_118">118dp</dimen>
+    <dimen name="margin_20">20dp</dimen>
+    <dimen name="margin_35">35dp</dimen>
+    <dimen name="margin_130">130dp</dimen>
+    <dimen name="margin_6">6dp</dimen>
+    <dimen name="margin_14">14dp</dimen>
+    <dimen name="margin_1">1dp</dimen>
+    <dimen name="margin_17">17dp</dimen>
+    <dimen name="margin_86">86dp</dimen>
 </resources>

@@ -267,6 +267,12 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
                     Helper.openImageViewer(context, activity, view, trainerDetailModel.getProfileImage());
                 }
                 break;
+            case R.id.imageViewCover:
+                if (trainerDetailModel != null && !trainerDetailModel.getProfileImage().isEmpty()) {
+                    Helper.openImageViewer(context, activity, view, trainerDetailModel.getProfileImage());
+                }
+                break;
+
             case R.id.button:
                 if (viewHolder instanceof TrainerProfileViewHolder) {
                     if (trainerModel != null) {

@@ -36,6 +36,10 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.imageViewProfile)
     public ImageView imageViewProfile;
 
+    @BindView(R.id.imageViewCover)
+    public ImageView imageViewCover;
+
+
     @BindView(R.id.button)
     public Button button;
 
@@ -90,6 +94,11 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
             ImageUtils.setImage(context,
                     model.getProfileImage(),
                     R.drawable.profile_holder_big, imageViewProfile);
+
+            ImageUtils.setImage(context,
+                    model.getProfileImage(),
+                    R.drawable.profile_holder_big, imageViewCover);
+
 
             Helper.setFavButton(context, button, model);
 
@@ -174,6 +183,12 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
                 @Override
                 public void onClick(View view) {
                     adapterCallbacks.onAdapterItemClick(TrainerProfileViewHolder.this, imageViewProfile, model, position);
+                }
+            });
+            imageViewCover.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(TrainerProfileViewHolder.this, imageViewCover, model, position);
                 }
             });
 

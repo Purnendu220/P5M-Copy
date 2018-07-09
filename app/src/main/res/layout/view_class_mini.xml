@@ -139,28 +139,7 @@
                                 android:src="@drawable/more_options"
                                 android:visibility="visible" />
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:clipToPadding="false"
-                                android:paddingBottom="16dp"
-                                android:paddingLeft="12dp"
-                                android:paddingRight="16dp"
-                                android:paddingTop="16dp">
 
-                                <Button
-                                    android:id="@+id/buttonJoin"
-                                    android:layout_width="@dimen/button_width_inner_list"
-                                    android:layout_height="@dimen/button_height_inner_list"
-                                    android:background="@drawable/join_rect"
-                                    android:fontFamily="sans-serif-medium"
-                                    android:letterSpacing="@dimen/button_letter_spacing_little"
-                                    android:text="@string/join"
-                                    android:textAllCaps="true"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/button_join"
-                                    android:visibility="visible" />
-                            </LinearLayout>
                         </FrameLayout>
 
                     </LinearLayout>
@@ -383,7 +362,28 @@
                         android:padding="16dp"
                         android:src="@drawable/more_options" />
                 </FrameLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="8dp">
 
+                    <Button
+                        android:id="@+id/buttonJoin"
+                        android:layout_width="@dimen/button_width_main_list"
+                        android:layout_height="@dimen/button_height_inner_list"
+                        android:background="@drawable/join_rect"
+                        android:fontFamily="sans-serif-medium"
+                        android:letterSpacing="@dimen/button_letter_spacing_little"
+                        android:text="@string/join"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/button_join"
+                        android:visibility="visible" />
+                </LinearLayout>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
