@@ -30,7 +30,7 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
 
     public final static ApiMode apiMode = ApiMode.TESTING_ALPHA;
     public final static boolean USE_CRASH_ANALYTICS = false;
-    public final static boolean USE_MIX_PANEL = true;
+    public final static boolean USE_MIX_PANEL = false;
 
     public final static boolean SHOW_LOG = true;
     public final static boolean RETROFIT_SHOW_LOG = true;

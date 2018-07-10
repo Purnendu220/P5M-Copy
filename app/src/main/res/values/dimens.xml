@@ -63,4 +63,5 @@
     <dimen name="margin_1">1dp</dimen>
     <dimen name="margin_17">17dp</dimen>
     <dimen name="margin_86">86dp</dimen>
+    <dimen name="margin_150">150dp</dimen>
 </resources>

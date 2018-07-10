@@ -58,25 +58,39 @@
                         android:textColor="@color/theme_dark_text"
                         android:textSize="@dimen/text_large" />
 
-                    <Button
+                    <ImageButton
                         android:id="@+id/button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/button_height_main_list"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
                         android:layout_alignParentEnd="true"
-                        android:layout_below="@+id/imageViewCover"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginTop="-20dp"
-                        android:background="@drawable/join_rect"
-                        android:fontFamily="sans-serif-medium"
-                        android:letterSpacing="@dimen/button_letter_spacing_little"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp"
-                        android:text="@string/favourite"
-                        android:textAllCaps="true"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/button_join"
+                        android:layout_marginRight="6dp"
+                        android:layout_marginTop="51dp"
                         android:visibility="visible"
+                        android:src="@drawable/heart_white_unfav"
+                        android:padding="10dp"
+                        android:elevation="10dp"
+                        android:background="@drawable/transparent"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerInside"
+
                         />
+
+                    <!--<CheckBox-->
+                        <!--android:id="@+id/likeIcon"-->
+                        <!--android:layout_width="24dp"-->
+                        <!--android:layout_height="24dp"-->
+                        <!--android:layout_alignParentEnd="true"-->
+                        <!--android:layout_marginRight="16dp"-->
+                        <!--android:layout_marginTop="61dp"-->
+                        <!--android:clickable="true"-->
+                        <!--android:button="@null"-->
+                        <!--android:checked="false"-->
+                        <!--android:background="@drawable/like_icon"-->
+                        <!--android:elevation="10dp"-->
+                        <!--android:padding="10dp"-->
+                        <!--android:visibility="visible"-->
+                        <!--android:stateListAnimator="@animator/scale"-->
+                        <!--android:focusable="true" />-->
                     <android.support.v7.widget.CardView
                         android:layout_width="@dimen/margin_130"
                         android:layout_height="@dimen/margin_130"
@@ -104,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="12dp"
                     android:orientation="horizontal">
 
                     <ImageView

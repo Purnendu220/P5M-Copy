@@ -362,7 +362,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                 dialogDob();
                 break;
             case R.id.layoutChangePass:
-                if (TempStorage.getUser().getFacebookId() == 0) {
+                if (TempStorage.getUser().getFacebookId().isEmpty()||TempStorage.getUser().getFacebookId().equalsIgnoreCase("0")) {
                     ChangePasswordActivity.openActivity(context);
                 } else {
                     dialogFBChangePass();

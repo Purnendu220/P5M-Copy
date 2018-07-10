@@ -195,7 +195,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String title = "P5M";
 
             // If no message body found then its a silent push (just to increase the notification count)
-            if (message.isEmpty()) {
+            if (message.isEmpty() || message.equalsIgnoreCase("null")) {
                 return;
             }
 
@@ -225,7 +225,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 case "OnSlotDeleteByGymOfTrainer":
                 case "OnSlotDeleteByGym":
                 case "OnSlotDeletByTrainerOfGym":
-                case "OnPaymentSuccess":
+//                case "OnPaymentSuccess":
                 case "OnClassCancelByCMS":
                 case "OnBookingCancelToCustomerByCMS":
                 case "OnBookingCancelToGymByCMS":

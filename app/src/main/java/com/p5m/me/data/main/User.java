@@ -10,7 +10,7 @@ public class User implements java.io.Serializable {
     private int numberOfTrainer;
     private boolean favTrainerNotification;
     private long lastActiveDate;
-    private long facebookId;
+    private String facebookId;
     private String profileImage;
     private String firstName;
     private long dateOfJoining;
@@ -37,11 +37,11 @@ public class User implements java.io.Serializable {
         this.numberOfTransactions = numberOfTransactions;
     }
 
-    public long getFacebookId() {
+    public String getFacebookId() {
         return facebookId;
     }
 
-    public void setFacebookId(long facebookId) {
+    public void setFacebookId(String facebookId) {
         this.facebookId = facebookId;
     }
 
