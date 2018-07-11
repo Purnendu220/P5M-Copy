@@ -130,10 +130,10 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
 
             ImageUtils.setImage(context,
                     model.getProfileImage(),
-                    R.drawable.profile_holder_big, imageViewProfile);
+                    R.drawable.profile_holder, imageViewProfile);
             ImageUtils.setImage(context,
                     model.getCoverImage(),
-                    R.drawable.profile_holder_big, imageViewCover);
+                    R.drawable.cover_stub, imageViewCover);
 
             Helper.setFavButton(context, button, model);
 

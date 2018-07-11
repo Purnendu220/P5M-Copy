@@ -11,7 +11,6 @@ import android.text.TextWatcher;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -196,19 +195,17 @@ public class Helper {
     public static void setFavButtonTemp(Context context, ImageButton buttonFav, boolean isFollow) {
         setFavButton(context, buttonFav, isFollow);
     }
-    public static void setFavButtonTemp(Context context, CheckBox buttonFav, boolean isFollow) {
-        setFavButton(context, buttonFav, isFollow);
-    }
+
     public static void setFavButton(Context context, Button buttonFav, TrainerModel model) {
         setFavButton(context, buttonFav, model.isIsfollow());
     }
-
+    public static void setFavButton(Context context, ImageButton buttonFav, TrainerModel model) {
+        setFavButtonGray(context, buttonFav, model.isIsfollow());
+    }
     public static void setFavButton(Context context, ImageButton buttonFav, TrainerDetailModel model) {
         setFavButton(context, buttonFav, model.isIsfollow());
     }
-    public static void setFavButton(Context context, CheckBox buttonFav, TrainerDetailModel model) {
-        setFavButton(context, buttonFav, model.isIsfollow());
-    }
+
     public static void setFavButton(Context context, Button buttonFav, GymDetailModel model) {
         setFavButton(context, buttonFav, model.isIsfollow());
     }
@@ -225,7 +222,6 @@ public class Helper {
         }
     }
     private static void setFavButton(Context context, ImageButton buttonFav, boolean isFollow) {
-
         if (isFollow) {
             buttonFav.setImageResource(R.drawable.heart_fav);
             } else {
@@ -233,15 +229,17 @@ public class Helper {
 
         }
     }
-    private static void setFavButton(Context context, CheckBox buttonFav, boolean isFollow) {
+
+    private static void setFavButtonGray(Context context, ImageButton buttonFav, boolean isFollow) {
+
         if (isFollow) {
-            buttonFav.setChecked(true);
+            buttonFav.setImageResource(R.drawable.heart_fav);
         } else {
-            buttonFav.setChecked(false);
+            buttonFav.setImageResource(R.drawable.heart_unfav);
 
         }
     }
-    public static void openImageListViewer(Context context, List<MediaModel> list, int position) {
+     public static void openImageListViewer(Context context, List<MediaModel> list, int position) {
 
         List<String> images = new ArrayList<>(list.size());
         for (MediaModel mediaModel : list) {

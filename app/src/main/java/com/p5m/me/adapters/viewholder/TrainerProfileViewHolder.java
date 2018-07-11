@@ -99,12 +99,11 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
 
             ImageUtils.setImage(context,
                     model.getProfileImage(),
-                    R.drawable.profile_holder_big, imageViewProfile);
+                    R.drawable.profile_holder, imageViewProfile);
 
-            ImageUtils.setImage(context,
-                    model.getProfileImage(),
-                    R.drawable.profile_holder_big, imageViewCover);
-
+//            ImageUtils.setImage(context,
+//                    model.getProfileImage(),
+//                    R.drawable.cover_stub, imageViewCover);
 
             Helper.setFavButton(context, button, model);
 
@@ -191,12 +190,12 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
                     adapterCallbacks.onAdapterItemClick(TrainerProfileViewHolder.this, imageViewProfile, model, position);
                 }
             });
-            imageViewCover.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    adapterCallbacks.onAdapterItemClick(TrainerProfileViewHolder.this, imageViewCover, model, position);
-                }
-            });
+//            imageViewCover.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    adapterCallbacks.onAdapterItemClick(TrainerProfileViewHolder.this, imageViewCover, model, position);
+//                }
+//            });
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

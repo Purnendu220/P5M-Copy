@@ -7,12 +7,16 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.p5m.me.R;
 import com.p5m.me.adapters.HomeAdapter;
+import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
@@ -62,11 +66,15 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     @BindView(R.id.layoutBottomTabs)
     public LinearLayout layoutBottomTabs;
 
+    @BindView(R.id.buyClasses)
+    public Button buyClasses;
+
     private BottomTapLayout bottomTapLayout;
     private HomeAdapter homeAdapter;
 
     private final int TOTAL_TABS = 4;
     private int INITIAL_POSITION = AppConstants.Tab.TAB_FIND_CLASS;
+    private int currentTab =INITIAL_POSITION;
 
     private Handler handler;
 
@@ -102,6 +110,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         });
 
         setNotificationIcon();
+
     }
 
     @Override
@@ -172,6 +181,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
     @Override
     public void onPageSelected(int position) {
+        currentTab=position;
         try {
             ((ViewPagerFragmentSelection) homeAdapter.getFragments().get(position)).onTabSelection(position);
         } catch (Exception e) {
@@ -179,6 +189,13 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             LogUtils.exception(e);
         }
         bottomTapLayout.setTab(position);
+        if(position == AppConstants.Tab.TAB_FIND_CLASS){
+            handleBuyClassesButton();
+        }
+        else{
+            buyClasses.setVisibility(View.GONE);
+
+        }
     }
 
     @Override
@@ -201,5 +218,43 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
                 isBackRequested = false;
             }
         }, 2000);
+    }
+    
+    private void handleBuyClassesButton(){
+        try{
+            List<UserPackage> list= TempStorage.getUser().getUserPackageDetailDtoList();
+            if(list!=null){
+                boolean showBuyClasses=false;
+                for (UserPackage packageItem : list) {
+                    if(packageItem.getPackageType()!=null && packageItem.getPackageType().equalsIgnoreCase("GENERAL") && packageItem.getBalanceClass()==0){
+                        showBuyClasses=true;
+                    }
+
+                }
+                if(showBuyClasses){
+                    buyClasses.setVisibility(View.VISIBLE);
+                }else{
+                    buyClasses.setVisibility(View.GONE);
+                }
+            }else{
+                buyClasses.setVisibility(View.VISIBLE);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(currentTab == AppConstants.Tab.TAB_FIND_CLASS){
+            handleBuyClassesButton();
+        }
+        else{
+            buyClasses.setVisibility(View.GONE);
+
+        }
     }
 }
