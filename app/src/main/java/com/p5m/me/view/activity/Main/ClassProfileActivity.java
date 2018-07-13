@@ -327,7 +327,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 if (model instanceof ClassModel) {
                     ClassModel data = (ClassModel) model;
                     if (data.getTrainerDetail() != null) {
-                        TrainerProfileActivity.open(context, data.getTrainerDetail(), navigationFrom);
+                        TrainerProfileActivity.open(context, data.getTrainerDetail(), AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE);
                     } else {
                         GymProfileActivity.open(context, data.getGymBranchDetail().getGymId(), AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE);
                     }
