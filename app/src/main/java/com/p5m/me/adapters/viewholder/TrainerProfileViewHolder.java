@@ -101,9 +101,9 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
                     model.getProfileImage(),
                     R.drawable.profile_holder, imageViewProfile);
 
-//            ImageUtils.setImage(context,
-//                    model.getProfileImage(),
-//                    R.drawable.cover_stub, imageViewCover);
+            ImageUtils.setImage(context,
+                    model.getCoverImage(),
+                    R.drawable.cover_stub, imageViewCover);
 
             Helper.setFavButton(context, button, model);
 

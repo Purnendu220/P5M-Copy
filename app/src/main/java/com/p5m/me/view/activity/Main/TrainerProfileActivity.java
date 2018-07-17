@@ -268,8 +268,8 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
                 }
                 break;
             case R.id.imageViewCover:
-                if (trainerDetailModel != null && !trainerDetailModel.getProfileImage().isEmpty()) {
-                    Helper.openImageViewer(context, activity, view, trainerDetailModel.getProfileImage());
+                if (trainerDetailModel != null && !trainerDetailModel.getCoverImage().isEmpty()) {
+                    Helper.openImageViewer(context, activity, view, trainerDetailModel.getCoverImage());
                 }
                 break;
 
@@ -357,7 +357,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
 
                 callApiClasses();
                 swipeRefreshLayout.setRefreshing(false);
-                TrainerDetailModel trainerDetailModel = ((ResponseModel<TrainerDetailModel>) response).data;
+                trainerDetailModel = ((ResponseModel<TrainerDetailModel>) response).data;
                 trainerModel = trainerDetailModel.getTrainer();
 
                 trainerProfileAdapter.setTrainerModel(trainerDetailModel);

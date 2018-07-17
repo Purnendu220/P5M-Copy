@@ -90,10 +90,9 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                 imageViewHeader.setImageResource(R.drawable.set_icon);
 
                 if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
-
                     textViewPackageName.setText(model.getPackageName());
-                    textViewPageTitle.setText(Html.fromHtml(model.getBalanceClass() +
-                            " of " + model.getTotalNumberOfClass() + " " + "classes remaining"));
+                    textViewPageTitle.setText(Html.fromHtml(model.getBalanceClass() +" "+
+                            AppConstants.pluralES("class",model.getBalanceClass())+ " remaining"));
                     textViewPackageValidity.setText("Valid till " + DateUtils.getPackageClassDate(model.getExpiryDate()));
 
                     textViewViewLimit.setVisibility(View.VISIBLE);

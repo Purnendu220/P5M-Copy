@@ -538,6 +538,9 @@ public class MixPanel {
         } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN) {
             origin = AppConstants.Tracker.PUSH_NOTIFICATION;
         }
+        else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS){
+            origin = AppConstants.Tracker.FIND_CLASS;
+        }
 
         if (origin.isEmpty()) {
             return;

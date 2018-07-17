@@ -28,6 +28,8 @@ public class User implements java.io.Serializable {
     private boolean status;
     private List<UserPackage> userPackageDetailDtoList;
     private List<ClassActivity> classCategoryList;
+    private boolean buyMembership;
+
 
     public int getNumberOfTransactions() {
         return numberOfTransactions;
@@ -219,5 +221,13 @@ public class User implements java.io.Serializable {
 
     public void setClassCategoryList(List<ClassActivity> classCategoryList) {
         this.classCategoryList = classCategoryList;
+    }
+
+    public boolean isBuyMembership() {
+        return buyMembership;
+    }
+
+    public void setBuyMembership(boolean buyMembership) {
+        this.buyMembership = buyMembership;
     }
 }

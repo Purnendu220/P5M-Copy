@@ -40,6 +40,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -231,7 +232,8 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
         } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SETTING ||
                 navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE ||
                 navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION ||
-                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN) {
+                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN ||
+                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS) {
 
             if (userPackageInfo.havePackages) {
 
@@ -252,9 +254,8 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                     memberShipAdapter.setHeaderText(context.getString(R.string.membership_general_package_heading_1), context.getString(R.string.membership_general_package_heading_2));
                     memberShipAdapter.notifyDataSetChanges();
                 }
-            } else {
-                // User have no packages
-                // Show offered packages
+            }
+            if(user.isBuyMembership()){
                 swipeRefreshLayout.setRefreshing(true);
                 networkCommunicator.getPackages(user.getId(), this, false);
                 memberShipAdapter.setHeaderText(context.getString(R.string.membership_no_package_heading_1),
@@ -307,7 +308,8 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                 } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SETTING ||
                         navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE ||
                         navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION ||
-                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN) {
+                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN ||
+                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS) {
                     CheckoutActivity.openActivity(context, aPackage);
 
                     MixPanel.trackPackagePreferred(aPackage.getName());
@@ -355,19 +357,24 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                 swipeRefreshLayout.setEnabled(true);
 
                 List<Package> packagesTemp = ((ResponseModel<List<Package>>) response).data;
-
+                boolean dropinAvailable=false;
                 if (packagesTemp != null && !packagesTemp.isEmpty()) {
                     List<Package> packages = new ArrayList<>(packagesTemp.size());
 
                     for (Package aPackage : packagesTemp) {
                         if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
-                            if (!userPackageInfo.haveGeneralPackage) {
+                            if (user.isBuyMembership()) {
                                 packages.add(aPackage);
                             }
                         } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                             aPackage.setGymName(classModel.getGymBranchDetail().getGymName());
                             packages.add(aPackage);
+                            dropinAvailable=true;
                         }
+                    }
+                    if(dropinAvailable){
+                        Collections.reverse(packages);
+
                     }
 
                     memberShipAdapter.addAllOfferedPackages(packages);

@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 
 import com.p5m.me.R;
 import com.p5m.me.adapters.HomeAdapter;
+import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
@@ -34,7 +35,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HomeActivity extends BaseActivity implements BottomTapLayout.TabListener, ViewPager.OnPageChangeListener {
+public class HomeActivity extends BaseActivity implements BottomTapLayout.TabListener, ViewPager.OnPageChangeListener,View.OnClickListener {
 
     public static void open(Context context) {
         Intent intent = new Intent(context, HomeActivity.class);
@@ -92,6 +93,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         }
 
         ButterKnife.bind(activity);
+        buyClasses.setOnClickListener(this);
         GlobalBus.getBus().register(this);
 
         handler = new Handler(Looper.getMainLooper());
@@ -219,26 +221,18 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             }
         }, 2000);
     }
-    
+
     private void handleBuyClassesButton(){
         try{
-            List<UserPackage> list= TempStorage.getUser().getUserPackageDetailDtoList();
-            if(list!=null){
-                boolean showBuyClasses=false;
-                for (UserPackage packageItem : list) {
-                    if(packageItem.getPackageType()!=null && packageItem.getPackageType().equalsIgnoreCase("GENERAL") && packageItem.getBalanceClass()==0){
-                        showBuyClasses=true;
-                    }
-
-                }
-                if(showBuyClasses){
-                    buyClasses.setVisibility(View.VISIBLE);
-                }else{
-                    buyClasses.setVisibility(View.GONE);
-                }
-            }else{
+            User user=TempStorage.getUser();
+            if(user.isBuyMembership()){
                 buyClasses.setVisibility(View.VISIBLE);
+
+            }else{
+                buyClasses.setVisibility(View.GONE);
+
             }
+
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -256,5 +250,17 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             buyClasses.setVisibility(View.GONE);
 
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.buyClasses:{
+                MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
+
+            }
+            break;
+        }
+
     }
 }

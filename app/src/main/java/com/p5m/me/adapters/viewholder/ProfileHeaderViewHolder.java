@@ -62,15 +62,21 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                     R.drawable.profile_holder_big, imageView);
 
             if (userPackageInfo.havePackages) {
-                textViewRecharge.setVisibility(View.GONE);
+                if(user.isBuyMembership()){
+                    textViewRecharge.setVisibility(View.VISIBLE);
+
+                }else{
+                    textViewRecharge.setVisibility(View.GONE);
+
+                }
 
                 /*************************3 CONDITION ON PACKAGE**************************/
-                textViewRecharge.setVisibility(View.GONE);
                 textViewMore.setVisibility(View.GONE);
 
                 if (userPackageInfo.haveGeneralPackage && !userPackageInfo.haveDropInPackage) {
+                    String message=userPackageInfo.userPackageGeneral.getBalanceClass()!=1?"classes":"class";
                     textViewPackage.setText(Html.fromHtml("<b>" + userPackageInfo.userPackageGeneral.getBalanceClass() +
-                            " of " + userPackageInfo.userPackageGeneral.getTotalNumberOfClass() + "</b> " + "classes remaining"));
+                            "</b> " + message+" remaining"));
 
                     int daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageGeneral.getExpiryDate());
 
@@ -79,8 +85,10 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                             context.getString(R.string.profile_package_expiry)));
 
                 } else if (userPackageInfo.haveGeneralPackage && userPackageInfo.haveDropInPackage) {
+                    String message=userPackageInfo.userPackageGeneral.getBalanceClass()!=1?"classes ":"class";
+
                     textViewPackage.setText(Html.fromHtml("<b>" + userPackageInfo.userPackageGeneral.getBalanceClass() +
-                            " of " + userPackageInfo.userPackageGeneral.getTotalNumberOfClass() + "</b> " + "classes remaining"));
+                           "</b> " + message+" remaining"));
 
                     int daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageGeneral.getExpiryDate());
 
