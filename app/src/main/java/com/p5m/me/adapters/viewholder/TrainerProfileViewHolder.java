@@ -190,12 +190,12 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
                     adapterCallbacks.onAdapterItemClick(TrainerProfileViewHolder.this, imageViewProfile, model, position);
                 }
             });
-//            imageViewCover.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    adapterCallbacks.onAdapterItemClick(TrainerProfileViewHolder.this, imageViewCover, model, position);
-//                }
-//            });
+            imageViewCover.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(TrainerProfileViewHolder.this, imageViewCover, model, position);
+                }
+            });
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

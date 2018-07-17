@@ -1,5 +1,6 @@
 package com.p5m.me;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -19,11 +20,17 @@ import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.LogUtils;
 
+import org.acra.ACRA;
+import org.acra.ReportingInteractionMode;
+import org.acra.annotation.ReportsCrashes;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
-
+@ReportsCrashes(formKey = "", // will not be used
+        mailTo = "purnendu.mishar@p5m.me", mode = ReportingInteractionMode.TOAST, resToastText = R.string.app_crash)
+@SuppressLint("NewApi")
 public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.OnNetworkChangeListener, Application.ActivityLifecycleCallbacks, NetworkCommunicator.RequestListener {
 
     public static Context context;
@@ -49,6 +56,8 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
     @Override
     public void onCreate() {
         super.onCreate();
+        ACRA.init(this);
+
         context = getApplicationContext();
 
         MultiDex.install(this);

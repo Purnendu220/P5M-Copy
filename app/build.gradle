@@ -104,6 +104,12 @@ dependencies {
     implementation 'com.mixpanel.android:mixpanel-android:5.4.0'
     implementation 'com.google.android.gms:play-services-gcm:15.0.1'
 
+
+    /////////////////////////////////////// ACRA /////////////////////////////////////////
+
+    implementation files('libs/acra-4.5.0.jar')
+
+
 }
 
 apply plugin: 'com.google.gms.google-services'

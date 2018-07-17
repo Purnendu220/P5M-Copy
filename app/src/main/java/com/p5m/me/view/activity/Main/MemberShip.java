@@ -357,7 +357,6 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                 swipeRefreshLayout.setEnabled(true);
 
                 List<Package> packagesTemp = ((ResponseModel<List<Package>>) response).data;
-                boolean dropinAvailable=false;
                 if (packagesTemp != null && !packagesTemp.isEmpty()) {
                     List<Package> packages = new ArrayList<>(packagesTemp.size());
 
@@ -369,13 +368,9 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                         } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                             aPackage.setGymName(classModel.getGymBranchDetail().getGymName());
                             packages.add(aPackage);
-                            dropinAvailable=true;
                         }
                     }
-                    if(dropinAvailable){
-                        Collections.reverse(packages);
 
-                    }
 
                     memberShipAdapter.addAllOfferedPackages(packages);
                 }
