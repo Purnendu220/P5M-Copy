@@ -59,15 +59,16 @@ public class AppConstants {
         public static final String PROFILE_IMAGE_CHANGED = "Profile_Image_Changed";
 
         public static final String GYM_PROFILE_TRAINERS = "GymProfile_Trainers";
-        public static final String SEARCH_TRAINER = "Search_Trainer";
-        public static final String SEARCH_GYM = "Search_Gym";
         public static final String SEARCH = "Search";
+        public static final String SEARCH_TRAINER = SEARCH;
+        public static final String SEARCH_GYM = SEARCH;
         public static final String TRAINER_TAB = "Trainer_Tab";
         public static final String TRAINER_PROFILE = "Trainer_Profile";
         public static final String USER_PROFILE = "User_Profile";
+        public static final String CLASS_DETAILS = "Class_Details";
 
         public static final String FIND_CLASS = "Find_Class";
-        public static final String VIEW_ALL_RESULTS = "View_all_results";
+        public static final String VIEW_ALL_RESULTS = SEARCH;
         public static final String GYM_PROFILE = "Gym_Profile";
         public static final String NOTIFICATION = "Notification";
         public static final String SHARED_CLASS = "Shared_Class";
@@ -140,8 +141,8 @@ public class AppConstants {
         public static final String WEBSITE = "http://www.p5m.me/";
 
         public static final String LIVE = "http://api.p5m.me";
-        public static final String QA = "http://qa-api.profive.co";
-//        public static final String QA = "http://192.168.0.18:8080";
+       // public static final String QA = "http://qa-api.profive.co";
+        public static final String QA = "http://136.243.22.168:8080";
 
         public static final String BASE_SERVICE_ALPHA = QA + "/profive-midl/";
         public static final String BASE_SERVICE_BETA = QA + "/dev-midl/";
