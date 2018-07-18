@@ -36,6 +36,7 @@ public class MixPanel {
 
     private static boolean isSetupDone;
     public static final String MIX_PANEL_TOKEN = "705daac4d807e105c1ddc350c9324ca2";
+
     public static final String PROJECT_ID = "109210713388";
 
     public static MixpanelAPI mixPanel;
@@ -221,6 +222,9 @@ public class MixPanel {
         } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE) {
             origin = AppConstants.Tracker.TRAINER_PROFILE;
         }
+        else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FAV_TRAINERS){
+            origin = AppConstants.Tracker.USER_PROFILE;
+        }
 
         if (origin.isEmpty()) {
             return;
@@ -405,7 +409,7 @@ public class MixPanel {
         } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_HOME_FIND_CLASSES) {
             origin = AppConstants.Tracker.CLASS_CARD;
         } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE) {
-            origin = AppConstants.Tracker.CLASS_PROFILE;
+            origin = AppConstants.Tracker.CLASS_DETAILS;
         } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE) {
             origin = AppConstants.Tracker.TRAINER_PROFILE;
         } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN) {
@@ -450,11 +454,11 @@ public class MixPanel {
         if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_SEARCH) {
             origin = AppConstants.Tracker.SEARCH;
         } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_SEARCH_RESULTS) {
-            origin = AppConstants.Tracker.SEARCH_GYM;
+            origin = AppConstants.Tracker.SEARCH_TRAINER;
         } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_HOME_FIND_CLASSES) {
             origin = AppConstants.Tracker.CLASS_CARD;
         } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE) {
-            origin = AppConstants.Tracker.CLASS_PROFILE;
+            origin = AppConstants.Tracker.CLASS_DETAILS;
         } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE) {
             origin = AppConstants.Tracker.TRAINER_PROFILE;
         } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN) {
@@ -687,7 +691,7 @@ public class MixPanel {
             props.put("Location", user.getLocation());
             props.put("Nationality", user.getNationality());
             props.put("FacebookId", user.getFacebookId());
-            props.put("Category List", user.getClassCategoryList());
+            props.put("Category List", MixPanel.getCategoryList(user.getClassCategoryList()));
             props.put("Number of Transactions", user.getNumberOfTransactions() + "");
             props.put("General Package", userPackageInfo.haveGeneralPackage ?
                     userPackageInfo.userPackageGeneral.getPackageName() : "");
@@ -696,6 +700,22 @@ public class MixPanel {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static String getCategoryList(List<ClassActivity> list){
+        StringBuffer categoryList=new StringBuffer("");
+        try{
+            if(list!=null && list.size()>0){
+                for (ClassActivity object : list) {
+                    categoryList.append(object.getClassCategoryName()+",");
+                }
+                return categoryList.toString().substring(0,categoryList.toString().length()-1);
+            }
+
+        }catch(Exception e){
+
+        }
+        return categoryList.toString();
     }
 
 }
