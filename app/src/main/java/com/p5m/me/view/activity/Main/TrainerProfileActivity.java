@@ -263,12 +263,12 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
         switch (view.getId()) {
             case R.id.imageViewProfile:
-                if (trainerDetailModel != null && !trainerDetailModel.getProfileImage().isEmpty()) {
+                if (trainerDetailModel != null &&trainerDetailModel.getProfileImage() != null&& !trainerDetailModel.getProfileImage().isEmpty()) {
                     Helper.openImageViewer(context, activity, view, trainerDetailModel.getProfileImage());
                 }
                 break;
             case R.id.imageViewCover:
-                if (trainerDetailModel != null && !trainerDetailModel.getCoverImage().isEmpty()) {
+                if (trainerDetailModel != null &&trainerDetailModel.getCoverImage() != null&& !trainerDetailModel.getCoverImage().isEmpty()) {
                     Helper.openImageViewer(context, activity, view, trainerDetailModel.getCoverImage());
                 }
                 break;

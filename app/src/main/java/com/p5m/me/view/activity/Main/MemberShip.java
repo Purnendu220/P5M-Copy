@@ -211,12 +211,19 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
             if (userPackageInfo.havePackages) {
                 memberShipAdapter.addAllOwnedPackages(userPackageInfo.userPackageReady);
 
-                if (userPackageInfo.haveGeneralPackage) {
+                if (userPackageInfo.haveGeneralPackage && !user.isBuyMembership()) {
                     // User have General package and may be also have dropins..
                     memberShipAdapter.addOwnedPackages(userPackageInfo.userPackageGeneral);
                     memberShipAdapter.setHeaderText(context.getString(R.string.membership_only_drop_in_package_heading_1),
                             context.getString(R.string.membership_only_drop_in_package_heading_2));
-                } else {
+                }
+                else if(userPackageInfo.haveGeneralPackage && user.isBuyMembership()){
+                    memberShipAdapter.addOwnedPackages(userPackageInfo.userPackageGeneral);
+                    memberShipAdapter.setHeaderText(context.getString(R.string.membership_no_package_heading_1),
+                            context.getString(R.string.membership_only_drop_in_package_heading_2));
+                }
+
+                else {
                     // User don't have General package but may have dropins..
                     memberShipAdapter.setHeaderText(context.getString(R.string.membership_drop_in_package_heading_1), context.getString(R.string.membership_drop_in_package_heading_2));
                 }
@@ -243,7 +250,6 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                     // User don't have General package..
                     // get general and show owned packages
                     swipeRefreshLayout.setRefreshing(true);
-                    networkCommunicator.getPackages(user.getId(), this, false);
                     memberShipAdapter.setHeaderText(context.getString(R.string.membership_drop_in_package_heading_1),
                             context.getString(R.string.membership_drop_in_package_heading_2));
 
@@ -258,8 +264,14 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
             if(user.isBuyMembership()){
                 swipeRefreshLayout.setRefreshing(true);
                 networkCommunicator.getPackages(user.getId(), this, false);
-                memberShipAdapter.setHeaderText(context.getString(R.string.membership_no_package_heading_1),
-                        context.getString(R.string.membership_no_package_heading_2));
+                if(userPackageInfo.haveDropInPackage||userPackageInfo.haveGeneralPackage){
+                    memberShipAdapter.setHeaderText(context.getString(R.string.membership_drop_in_package_heading_1),
+                            context.getString(R.string.membership_drop_in_package_heading_2));
+                }else{
+                    memberShipAdapter.setHeaderText(context.getString(R.string.membership_drop_in_package_heading_1),
+                            context.getString(R.string.membership_general_package_heading_1));
+                }
+
             }
         }
     }

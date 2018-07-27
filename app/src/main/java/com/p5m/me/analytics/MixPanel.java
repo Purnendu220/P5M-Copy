@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
+import com.p5m.me.BuildConfig;
 import com.p5m.me.MyApp;
 import com.p5m.me.data.CityLocality;
 import com.p5m.me.data.ClassesFilter;
@@ -35,9 +36,9 @@ public class MixPanel {
     private static Handler handlerBg;
 
     private static boolean isSetupDone;
-    public static final String MIX_PANEL_TOKEN = "705daac4d807e105c1ddc350c9324ca2";
+    public static final String MIX_PANEL_TOKEN = BuildConfig.MIXPANEL_KEY;
 
-    public static final String PROJECT_ID = "109210713388";
+    public static final String PROJECT_ID = BuildConfig.SENDER_ID;
 
     public static MixpanelAPI mixPanel;
 

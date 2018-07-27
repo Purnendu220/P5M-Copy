@@ -11,6 +11,8 @@ import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import com.p5m.me.BuildConfig;
 import com.p5m.me.MyApp;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
@@ -53,20 +55,9 @@ public class RestServiceFactory {
                 }
             });
 
-            String baseUrl = "";
+            String baseUrl = BuildConfig.BASE_URL+BuildConfig.BASE_URL_MIDL;
 
-            switch (MyApp.apiMode) {
-                case TESTING_BETA:
-                    baseUrl = AppConstants.Url.BASE_SERVICE_BETA;
-                    break;
-                case TESTING_ALPHA:
-                    baseUrl = AppConstants.Url.BASE_SERVICE_ALPHA;
-                    break;
-                case LIVE:
-                    baseUrl = AppConstants.Url.BASE_SERVICE_LIVE;
-                    break;
-                default:
-            }
+
 
             Retrofit.Builder builder =
                     new Retrofit.Builder()

@@ -8,6 +8,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.p5m.me.R;
@@ -71,6 +72,16 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.recyclerViewGallery)
     public RecyclerView recyclerViewGallery;
 
+    @BindView(R.id.linearLayoutTotalLocations)
+    public LinearLayout linearLayoutTotalLocations;
+
+    @BindView(R.id.textViewTotalLocations)
+    public TextView textViewTotalLocations;
+
+
+
+
+
     private final int dp;
     private Context context;
 
@@ -94,6 +105,8 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
 
             if (model.getGymBranchResponseList() != null && !model.getGymBranchResponseList().isEmpty()) {
                 layoutMap.setVisibility(View.VISIBLE);
+
+
                 GymBranchDetail gymBranchDetail = model.getGymBranchResponseList().get(0);
 
                 ImageUtils.setImage(context, ImageUtils.generateMapImageUrGymDetail(gymBranchDetail.getLatitude(), gymBranchDetail.getLongitude()),
@@ -117,7 +130,14 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
                 } else {
                     textViewMore.setVisibility(View.GONE);
                 }
+try{
+    String locationsString = String.format(context.getString(R.string.total_locations),model.getGymBranchResponseList().size());
+    linearLayoutTotalLocations.setVisibility(View.VISIBLE);
+    textViewTotalLocations.setText(locationsString);
+}catch (Exception e){
+    linearLayoutTotalLocations.setVisibility(View.GONE);
 
+}
             } else {
                 layoutMap.setVisibility(View.GONE);
             }

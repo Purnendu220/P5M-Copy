@@ -19,44 +19,33 @@ import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.LogUtils;
-
-import org.acra.ACRA;
-import org.acra.ReportingInteractionMode;
-import org.acra.annotation.ReportsCrashes;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
-@ReportsCrashes(formKey = "", // will not be used
-        mailTo = "purnendu.mishar@p5m.me", mode = ReportingInteractionMode.TOAST, resToastText = R.string.app_crash)
+
 @SuppressLint("NewApi")
 public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.OnNetworkChangeListener, Application.ActivityLifecycleCallbacks, NetworkCommunicator.RequestListener {
 
     public static Context context;
 
-    public final static ApiMode apiMode = ApiMode.TESTING_ALPHA;
-    public final static boolean USE_CRASH_ANALYTICS = false;
-    public final static boolean USE_MIX_PANEL = false;
+    public final static boolean USE_CRASH_ANALYTICS = BuildConfig.IS_PRODUCTION;
+    public final static boolean USE_MIX_PANEL = BuildConfig.IS_PRODUCTION;
 
-    public final static boolean SHOW_LOG = true;
-    public final static boolean RETROFIT_SHOW_LOG = true;
+    public final static boolean SHOW_LOG = BuildConfig.IS_DEBUG;
+    public final static boolean RETROFIT_SHOW_LOG = BuildConfig.IS_DEBUG;
 
     public final static List<Activity> ACTIVITIES = new ArrayList<>();
 
     public boolean isAppForeground;
     public long appBackgroundTime;
 
-    public enum ApiMode {
-        TESTING_ALPHA,
-        TESTING_BETA,
-        LIVE
-    }
+
 
     @Override
     public void onCreate() {
         super.onCreate();
-        ACRA.init(this);
+
 
         context = getApplicationContext();
 

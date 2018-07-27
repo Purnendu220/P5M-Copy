@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.p5m.me.BuildConfig;
 import com.p5m.me.MyApp;
 import com.p5m.me.R;
 import com.p5m.me.data.main.ClassActivity;
@@ -458,13 +459,8 @@ public class Helper {
     }
 
     private static String getUrlBase() {
-        String urlBase = "";
+        String urlBase = BuildConfig.BASE_URL_SHARE;
 
-        if (MyApp.apiMode.equals(MyApp.ApiMode.LIVE)) {
-            urlBase = "http://www.p5m.me";
-        } else {
-            urlBase = "http://qa.profive.co";
-        }
         return urlBase;
     }
 

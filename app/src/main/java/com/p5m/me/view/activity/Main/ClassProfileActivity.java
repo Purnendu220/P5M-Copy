@@ -246,11 +246,24 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
             // 1st condition : have drop-in for class..
             if (userPackageInfo.haveDropInPackage && classModel.getGymBranchDetail() != null) {
+                boolean userHaveDropinForClass=false;
                 for (UserPackage userPackage : userPackageInfo.userPackageReady) {
-                    if (userPackage.getGymId() == classModel.getGymBranchDetail().getGymId()) {
-                        joinClass();
-                        return;
-                    }
+                    if ((userPackage.getGymId() == classModel.getGymBranchDetail().getGymId())&&(userPackage.getExpiryDate()==null || DateUtils.canJoinClass(classModel.getClassDate(), userPackage.getExpiryDate()) >= 0)) {
+                        userHaveDropinForClass=true;
+                        }
+                }
+                if(userHaveDropinForClass){
+                    joinClass();
+                    return;
+                }else{
+                    DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), "Purchase", new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            dialog.dismiss();
+                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+                        }
+                    });
+                    return;
                 }
             }
 
