@@ -263,5 +263,6 @@
     <string name="sure_unjoin">Are you sure you want to unjoin ?</string>
     <string name="mention_email">Please mention your email first</string>
     <string name="total_locations">Locations (%1$d)</string>
+    <string name="unable_to_load">Unable to load image</string>
 
 </resources>

@@ -1,13 +1,16 @@
 package com.p5m.me.view.activity.Main;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
@@ -687,8 +690,58 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        pickerDialog.onPermissionsResult(requestCode, permissions, grantResults);
+        for (int i = 0, len = permissions.length; i < len; i++) {
+            String permission = permissions[i];
+            if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                pickerDialog.dismiss();
+                if (Manifest.permission.CAMERA.equals(permission)) {
+                    showPermissionImportantAlert("Please allow P5M to take pictures and record video.");
+                    return;
+                    }
+                else if (Manifest.permission.WRITE_EXTERNAL_STORAGE.equals(permission)) {
+                    showPermissionImportantAlert("Please allow P5M to access photos,media and files on your device to take photo.");
+                    return;
+                    }
+                else if (Manifest.permission.READ_EXTERNAL_STORAGE.equals(permission)) {
+                    showPermissionImportantAlert("Please allow P5M to access photos,media and files on your device to take photo.");
+                    return;
+                    }
+            }
+        }
+            try{
+                pickerDialog.onPermissionsResult(requestCode, permissions, grantResults);
+
+            }catch (Exception e){
+                e.printStackTrace();
+                pickerDialog.dismiss();
+            }
+
+
+
     }
+    private void showPermissionImportantAlert(String message){
+        DialogUtils.showBasicMessage(context,"Permission Alert", message,
+                "Go to Settings", new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Intent i = new Intent();
+                        i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        i.addCategory(Intent.CATEGORY_DEFAULT);
+                        i.setData(Uri.parse("package:" + context.getPackageName()));
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                        context.startActivity(i);
+                        dialog.dismiss();
+                        }
+                },"Cancle", new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                });
+    }
+
 
 //    @Override
 //    public void onBackPressed() {

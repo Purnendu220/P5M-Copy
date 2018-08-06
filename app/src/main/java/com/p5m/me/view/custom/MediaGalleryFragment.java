@@ -1,7 +1,8 @@
 package com.p5m.me.view.custom;
 
 
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,13 +15,15 @@ import android.widget.ProgressBar;
 import com.bogdwellers.pinchtozoom.ImageMatrixTouchHandler;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.p5m.me.R;
 import com.p5m.me.helper.GlideApp;
+import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.fragment.BaseFragment;
 import com.p5m.me.view.fragment.ViewPagerFragmentSelection;
+
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +34,7 @@ public class MediaGalleryFragment extends BaseFragment implements ViewPagerFragm
     ImageView imageViewImage;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
+
 
     public MediaGalleryFragment() {
     }
@@ -56,35 +60,29 @@ public class MediaGalleryFragment extends BaseFragment implements ViewPagerFragm
         }
 
         progressBar.setVisibility(View.VISIBLE);
-
-//        GlideApp.with(context)
-//                .load(R.drawable.placeholder_glide)
-//                .into(imageViewImageLoader);
-
-//        GlideApp.with(context).load(uri)
-//                .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                .fitCenter().transition(DrawableTransitionOptions.withCrossFade())
-//                .into(new SimpleTarget<Drawable>() {
-//                    @Override
-//                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-//                        progressBar.setVisibility(View.GONE);
-//                        imageViewImage.setImageDrawable(resource);
-//                        imageViewImage.setOnTouchListener(new ImageMatrixTouchHandler(context));
-//                    }
-//                });
-
-        RequestBuilder<Drawable> requestBuilder = GlideApp.with(context).asDrawable().load(uri)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .fitCenter().transition(DrawableTransitionOptions.withCrossFade());
+        RequestBuilder<Bitmap> requestBuilder = GlideApp.with(context).asBitmap().load(uri)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .fitCenter().transition(BitmapTransitionOptions.withCrossFade());
         requestBuilder.preload(1080, 1080);
-        requestBuilder.into(new SimpleTarget<Drawable>() {
+        requestBuilder.into(new SimpleTarget<Bitmap>() {
+
                     @Override
-                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                         progressBar.setVisibility(View.GONE);
-                        imageViewImage.setImageDrawable(resource);
-                        imageViewImage.setOnTouchListener(new ImageMatrixTouchHandler(context));
+                        try{
+                            imageViewImage.setImageBitmap(getResizedBitmap(resource,1080,1080));
+                            imageViewImage.setOnTouchListener(new ImageMatrixTouchHandler(context));
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            ToastUtils.show(context,getString(R.string.unable_to_load));
+                        }
+
                     }
+
                 });
+
+
+
     }
 
 //    public void setTransitionName(String imageViewTransition) {
@@ -95,6 +93,25 @@ public class MediaGalleryFragment extends BaseFragment implements ViewPagerFragm
 
     @Override
     public void onTabSelection(int position) {
+
+    }
+
+    public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth)
+    {  try{
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // create a matrix for the manipulation
+        Matrix matrix = new Matrix();
+        // resize the bit map
+        matrix.postScale(scaleWidth, scaleHeight);
+        // recreate the new Bitmap
+        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+        return resizedBitmap;
+    }catch (Exception e){
+       return null;
+    }
 
     }
 }

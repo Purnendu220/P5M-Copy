@@ -359,6 +359,29 @@ public class LocationActivity extends BaseActivity implements LocationListener {
                                 }
                             });
                             return;
+                        }else{
+                            DialogUtils.showBasicMessage(context, "Need Location", "Please allow P5M to use your Location", "Go to settings", new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    dialog.dismiss();
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                        Intent i = new Intent();
+                                        i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                        i.addCategory(Intent.CATEGORY_DEFAULT);
+                                        i.setData(Uri.parse("package:" + context.getPackageName()));
+                                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                        i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                                        context.startActivity(i);
+                                    }
+                                }
+                            }, "Cancel", new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    dialog.dismiss();
+                                    callFinish();
+                                }
+                            });
                         }
                     }
                 } else {
