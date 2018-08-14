@@ -46,6 +46,8 @@ import com.p5m.me.view.activity.base.BaseActivity;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -239,34 +241,24 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     }
 
     private void performJoinProcess() {
-
+        boolean userHaveDropinForClass = false;
+        boolean userHaveGeneralPackageForClass=false;
+        ArrayList<Integer> list=new ArrayList<>();
         UserPackageInfo userPackageInfo = new UserPackageInfo(TempStorage.getUser());
 
         if (userPackageInfo.havePackages) {
 
             // 1st condition : have drop-in for class..
             if (userPackageInfo.haveDropInPackage && classModel.getGymBranchDetail() != null) {
-                boolean userHaveDropinForClass=false;
+                 userHaveDropinForClass=false;
                 for (UserPackage userPackage : userPackageInfo.userPackageReady) {
                     if ((userPackage.getGymId() == classModel.getGymBranchDetail().getGymId())&&(userPackage.getExpiryDate()==null || DateUtils.canJoinClass(classModel.getClassDate(), userPackage.getExpiryDate()) >= 0)) {
                         userHaveDropinForClass=true;
+                        list.add(userPackage.getGymId());
                         }
                 }
-                if(userHaveDropinForClass){
-                    joinClass();
-                    return;
-                }else{
-                    DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), "Purchase", new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            dialog.dismiss();
-                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
-                        }
-                    });
-                    return;
-                }
-            }
 
+            }
             // 2st condition : have class remaining in package..
             if (userPackageInfo.haveGeneralPackage) {
                 if (userPackageInfo.userPackageGeneral != null) {
@@ -277,22 +269,34 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     }
 
                     if (DateUtils.canJoinClass(classModel.getClassDate(), userPackageInfo.userPackageGeneral.getExpiryDate()) >= 0) {
-                        joinClass();
-                        return;
-                    } else {
-                        DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), "Purchase", new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                dialog.dismiss();
-                                MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
-                            }
-                        });
-                        return;
+                        userHaveGeneralPackageForClass=true;
+
                     }
+
                 }
             }
-            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+            try{
+                if(userHaveDropinForClass||userHaveGeneralPackageForClass){
+                    joinClass();
+                    return;
+                }
+                else {
+                    DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), "Purchase", new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            dialog.dismiss();
+                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+                        }
+                    });
+                    return;
+                }
 
+            }
+            catch(Exception e){
+                e.printStackTrace();
+                joinClass();
+                return;
+            }
         } else {
             // 3rt condition : have no packages..
             MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);

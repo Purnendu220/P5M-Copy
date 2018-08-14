@@ -126,7 +126,9 @@ public class RegistrationActivity extends BaseActivity {
     public void setName(String name) {
         registrationRequest.setFirstName(name);
     }
-
+    public void setLastName(String lastname) {
+        registrationRequest.setLastName(lastname);
+    }
     public void setEmail(String email) {
         registrationRequest.setEmail(email);
     }

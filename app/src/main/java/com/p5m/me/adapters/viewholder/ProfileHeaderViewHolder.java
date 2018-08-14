@@ -54,7 +54,7 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
             final User user = (User) data;
             itemView.setVisibility(View.VISIBLE);
 
-            textViewName.setText(user.getFirstName());
+            textViewName.setText(user.getFirstName()+" "+user.getLastName());
             UserPackageInfo userPackageInfo = new UserPackageInfo(user);
 
             ImageUtils.setImage(context,

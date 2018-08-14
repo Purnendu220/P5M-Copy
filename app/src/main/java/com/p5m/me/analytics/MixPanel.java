@@ -13,6 +13,7 @@ import com.p5m.me.data.Filter;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.storage.TempStorage;
@@ -344,6 +345,9 @@ public class MixPanel {
                             List<String> activities = new ArrayList<>();
                             List<String> activityNames = new ArrayList<>();
                             List<String> genders = new ArrayList<>();
+                            List<String> gymList = new ArrayList<>();
+                            List<String> gymNames = new ArrayList<>();
+
                             List<CityLocality> cityLocalities = new ArrayList<>();
 
                             for (ClassesFilter classesFilter : classesFilters) {
@@ -357,12 +361,19 @@ public class MixPanel {
                                     activities.add(String.valueOf(((ClassActivity) classesFilter.getObject()).getId()));
                                     activityNames.add(String.valueOf(((ClassActivity) classesFilter.getObject()).getName()));
                                 }
+                                else if (classesFilter.getObject() instanceof GymDataModel) {
+                                    gymList.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getId()));
+                                    gymNames.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getStudioName()));
+                                }
                             }
 
                             JSONObject props = new JSONObject();
 
                             if (!activityNames.isEmpty()) {
                                 props.put("using_Activity", activityNames);
+                            }
+                            if (!gymList.isEmpty()) {
+                                props.put("using_Gym", gymNames);
                             }
                             if (!times.isEmpty()) {
                                 props.put("using_Time", times);

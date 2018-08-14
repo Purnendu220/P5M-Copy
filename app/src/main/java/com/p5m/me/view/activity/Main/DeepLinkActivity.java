@@ -63,7 +63,12 @@ public class DeepLinkActivity extends BaseActivity {
                         int trainerId = Integer.valueOf(url.substring(url.indexOf("/share/trainer/") + "/share/trainer/".length(), url.lastIndexOf("/")));
                         navigationIntent = TrainerProfileActivity.createIntent(context, trainerId, AppConstants.AppNavigation.NAVIGATION_FROM_SHARE);
 
-                    } else {
+                    }
+                    else if (getIntent().getData().toString().contains("/settings")) {
+                        navigationIntent = MemberShip.createIntent(context, AppConstants.AppNavigation.NAVIGATION_FROM_DEEPLINK_ACTIVITY);
+
+                    }
+                    else {
 
                         navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
                     }

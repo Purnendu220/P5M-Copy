@@ -226,22 +226,9 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         editTextMobile.setText(TempStorage.getUser().getMobile());
         editTextEmail.setText(TempStorage.getUser().getEmail());
 
-        String[] names = TempStorage.getUser().getFirstName().split(" ");
+        editTextNameFirst.setText(TempStorage.getUser().getFirstName());
+        editTextNameLast.setText(TempStorage.getUser().getLastName());
 
-        if (names.length > 1) {
-            String name = TempStorage.getUser().getFirstName();
-            try {
-                editTextNameFirst.setText(names[0]);
-                editTextNameLast.setText(name.substring(name.indexOf(" ") + 1, name.length()));
-            } catch (Exception e) {
-                e.printStackTrace();
-                LogUtils.exception(e);
-                editTextNameFirst.setText(TempStorage.getUser().getFirstName());
-                editTextNameLast.setText("");
-            }
-        } else {
-            editTextNameFirst.setText(TempStorage.getUser().getFirstName());
-        }
     }
 
     private void selectFemale() {
@@ -272,6 +259,11 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         if (editTextNameFirst.getText().toString().trim().isEmpty()) {
             ToastUtils.show(context, "Please enter your first name");
             editTextNameFirst.requestFocus();
+            return;
+        }
+        if (editTextNameLast.getText().toString().trim().isEmpty()) {
+            ToastUtils.show(context, "Please enter your last name");
+            editTextNameLast.requestFocus();
             return;
         }
 
@@ -329,9 +321,9 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
             userInfoUpdate.setNationality(textViewNationality.getText().toString().trim());
         }
 
-//        userInfoUpdate.setFirstName(editTextNameFirst.getText().toString().trim());
-//        userInfoUpdate.setLastName(editTextNameLast.getText().toString().trim());
-        userInfoUpdate.setFirstName(editTextNameFirst.getText().toString().trim() + " " + editTextNameLast.getText().toString().trim());
+        userInfoUpdate.setFirstName(editTextNameFirst.getText().toString().trim());
+       userInfoUpdate.setLastName(editTextNameLast.getText().toString().trim());
+       // userInfoUpdate.setFirstName(editTextNameFirst.getText().toString().trim() + " " + editTextNameLast.getText().toString().trim());
 
 
         if (!TempStorage.getUser().getEmail().equals(email)) {
@@ -430,7 +422,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                     public void onApiSuccess(Object response, int requestCode) {
                         String message = ((ResponseModel<String>) response).data;
 
-                        DialogUtils.showBasicMessage(context, message, "Ok", new MaterialDialog.SingleButtonCallback() {
+                        DialogUtils.showBasicMessage(context, message, context.getResources().getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 dialog.dismiss();
@@ -515,7 +507,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
             textViewNationality.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
         } else {
             textViewNationality.setTextColor(ContextCompat.getColor(context, R.color.theme_medium_text));
-            textViewNationality.setText("Nationality");
+            textViewNationality.setText(R.string.nationality);
         }
     }
 
@@ -526,7 +518,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
             textViewLocation.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
         } else {
             textViewLocation.setTextColor(ContextCompat.getColor(context, R.color.theme_medium_text));
-            textViewLocation.setText("Location");
+            textViewLocation.setText(R.string.location);
         }
     }
 
@@ -539,15 +531,17 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.UPDATE_USER: {
 
-                ToastUtils.show(context, "Changes to your profile have been saved!");
+                ToastUtils.show(context, R.string.profile_changes_saved);
                 User user = ((ResponseModel<User>) response).data;
 
                 User userOld = TempStorage.getUser();
 
                 if (!user.getFirstName().trim().equals(userOld.getFirstName().trim())) {
-                    MixPanel.trackEditProfile(AppConstants.Tracker.NAME_CHANGED);
+                    MixPanel.trackEditProfile(AppConstants.Tracker.FIRST_NAME_CHANGED);
                 }
-
+                if (!user.getLastName().trim().equals(userOld.getLastName().trim())) {
+                    MixPanel.trackEditProfile(AppConstants.Tracker.LAST_NAME_CHANGED);
+                }
                 if (!user.getEmail().equals(userOld.getEmail())) {
                     MixPanel.trackEditProfile(AppConstants.Tracker.EMAIL_CHANGED);
                 }
@@ -652,7 +646,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
 //        itemModels.add(new ItemModel(ItemModel.ITEM_FILES, "", 0, false, 0, 0));
 
         pickerDialog = new PickerDialog.Builder((BaseActivity) activity)// Activity or Fragment
-                .setTitle("Pick Image")          // String value or resource ID
+                .setTitle(context.getResources().getString(R.string.pick_image))          // String value or resource ID
                 .setTitleTextColor(ContextCompat.getColor(context, R.color.theme_dark_text)) // Color of title text
                 .setListType(PickerDialog.TYPE_LIST, 3)       // Type of the picker, must be PickerDialog.TYPE_LIST or PickerDialog.TYPE_Grid
                 .setItems(itemModels)
@@ -695,15 +689,16 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
             if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
                 pickerDialog.dismiss();
                 if (Manifest.permission.CAMERA.equals(permission)) {
-                    showPermissionImportantAlert("Please allow P5M to take pictures and record video.");
+                    showPermissionImportantAlert(context.getResources().getString(R.string.permission_message_camera));
                     return;
                     }
                 else if (Manifest.permission.WRITE_EXTERNAL_STORAGE.equals(permission)) {
-                    showPermissionImportantAlert("Please allow P5M to access photos,media and files on your device to take photo.");
+                    showPermissionImportantAlert(context.getResources().getString(R.string.permission_message_media));
                     return;
                     }
                 else if (Manifest.permission.READ_EXTERNAL_STORAGE.equals(permission)) {
-                    showPermissionImportantAlert("Please allow P5M to access photos,media and files on your device to take photo.");
+                    showPermissionImportantAlert(context.getResources().getString(R.string.permission_message_media));
+
                     return;
                     }
             }
@@ -720,8 +715,8 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
 
     }
     private void showPermissionImportantAlert(String message){
-        DialogUtils.showBasicMessage(context,"Permission Alert", message,
-                "Go to Settings", new MaterialDialog.SingleButtonCallback() {
+        DialogUtils.showBasicMessage(context,context.getResources().getString(R.string.permission_alert), message,
+                context.getResources().getString(R.string.go_to_settings), new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         Intent i = new Intent();
@@ -734,7 +729,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                         context.startActivity(i);
                         dialog.dismiss();
                         }
-                },"Cancle", new MaterialDialog.SingleButtonCallback() {
+                },context.getResources().getString(R.string.cancel), new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         dialog.dismiss();

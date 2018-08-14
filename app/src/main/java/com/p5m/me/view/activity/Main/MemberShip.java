@@ -240,7 +240,8 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                 navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE ||
                 navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION ||
                 navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN ||
-                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS) {
+                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS||
+                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_DEEPLINK_ACTIVITY) {
 
             if (userPackageInfo.havePackages) {
 
@@ -297,23 +298,6 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
             break;
             case R.id.button: {
 
-//                if (viewHolder instanceof MemberShipViewHolder) {
-//                    ((MemberShipViewHolder) viewHolder).button.setText(context.getResources().getString(R.string.please_wait));
-//                    ((MemberShipViewHolder) viewHolder).button.setEnabled(false);
-//                }
-//
-//                Package aPackage = (Package) model;
-//                if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS) {
-//                    networkCommunicator.purchasePackageForClass(new PaymentUrlRequest(TempStorage.getUser().getId(),
-//                            aPackage.getId(), classModel.getClassSessionId(),
-//                            classModel.getGymBranchDetail().getGymId()), this, false);
-//
-//                } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SETTING ||
-//                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE) {
-//                    networkCommunicator.purchasePackageForClass(new PaymentUrlRequest(TempStorage.getUser().getId(),
-//                            aPackage.getId()), this, false);
-//                }
-
                 Package aPackage = (Package) model;
                 if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS) {
                     CheckoutActivity.openActivity(context, aPackage, classModel);
@@ -321,7 +305,9 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                         navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE ||
                         navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION ||
                         navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN ||
-                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS) {
+                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS||
+                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_DEEPLINK_ACTIVITY
+                        ) {
                     CheckoutActivity.openActivity(context, aPackage);
 
                     MixPanel.trackPackagePreferred(aPackage.getName());

@@ -48,7 +48,9 @@ public class AppConstants {
         public static final String LOGIN_BUTTON = "loginButton";
         public static final String REGISTER = "Register";
 
-        public static final String NAME_CHANGED = "Name_Changed";
+        public static final String FIRST_NAME_CHANGED = "First_Name_Changed";
+        public static final String LAST_NAME_CHANGED = "Last_Name_Changed";
+
         public static final String EMAIL_CHANGED = "email_Changed";
         public static final String MOBILE_NUMBER_CHANGED = "mobileNumber_Changed";
         public static final String GENDER_CHANGED = "gender_changed";
@@ -170,8 +172,12 @@ public class AppConstants {
         public static final String UPCOMING_CLASSES = "api/v1/class/upcomingClasses";
         public static final String FINISHED_CLASS_LIST = "api/v1/user/finishedClasses";
         public static final String FAV_TRAINER_LIST = "api/v1/follow/getFavList";
+        public static final String GET_USER_LIST = "api/v1/user/list";
+
 
         public static final String PACKAGE_LIST = "api/v1/package";
+        public static final String PACKAGE_LIST_NEW = "api/v2/package";
+
         public static final String CLASS_PACKAGE_LIST = "api/v1/package";
 
         public static final String PACKAGE_LIMITS = "api/v1/gym/mapping/";
@@ -283,6 +289,8 @@ public class AppConstants {
         public static final int NAVIGATION_FROM_FB_LOGIN = 59;
         public static final int NAVIGATION_FROM_NOTIFICATION_SCREEN = 60;
         public static final int NAVIGATION_FROM_SHARE = 61;
+        public static final int NAVIGATION_FROM_DEEPLINK_ACTIVITY = 62;
+
     }
 
     public class Limit {

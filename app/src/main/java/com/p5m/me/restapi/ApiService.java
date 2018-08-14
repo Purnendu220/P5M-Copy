@@ -7,6 +7,7 @@ import com.p5m.me.data.PromoCode;
 import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.TrainerDetailModel;
@@ -90,6 +91,10 @@ public interface ApiService {
     Call<ResponseModel<List<ClassActivity>>> getClassCategoryList();
 
     @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.GET_USER_LIST +"/{" + AppConstants.ApiParamKey.USER_CATEGORY_ID + "}")
+    Call<ResponseModel<List<GymDataModel>>> getGymList(@Path(AppConstants.ApiParamKey.USER_CATEGORY_ID) int userCategoryId);
+
+    @Headers("Content-type: application/json")
     @POST(AppConstants.Url.CLASS_LIST)
     Call<ResponseModel<List<ClassModel>>> getClassList(@Body ClassListRequest classListRequest);
 
@@ -155,7 +160,7 @@ public interface ApiService {
                                                               @Query(AppConstants.ApiParamKey.ID) int userId);
 
     @Headers("Content-type: application/json")
-    @GET(AppConstants.Url.PACKAGE_LIST)
+    @GET(AppConstants.Url.PACKAGE_LIST_NEW)
     Call<ResponseModel<List<Package>>> getPackageList(@Query(AppConstants.ApiParamKey.USER_ID) int userId);
 
     @Headers("Content-type: application/json")

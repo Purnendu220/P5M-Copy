@@ -22,6 +22,7 @@ import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.Filter;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.data.request.ClassListRequest;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
@@ -209,7 +210,9 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
         List<String> times = new ArrayList<>();
         List<String> activities = new ArrayList<>();
+        List<String> gymList = new ArrayList<>();
         List<String> genders = new ArrayList<>();
+
         List<CityLocality> cityLocalities = new ArrayList<>();
 
         for (ClassesFilter classesFilter : TempStorage.getFilters()) {
@@ -221,6 +224,9 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                 genders.add(((Filter.Gender) classesFilter.getObject()).getId());
             } else if (classesFilter.getObject() instanceof ClassActivity) {
                 activities.add(String.valueOf(((ClassActivity) classesFilter.getObject()).getId()));
+            }
+            else if (classesFilter.getObject() instanceof GymDataModel) {
+                gymList.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getId()));
             }
         }
 
@@ -234,6 +240,8 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
         classListRequest.setGenderList(genders);
         classListRequest.setTimingList(times);
         classListRequest.setLocationList(cityLocalities);
+        classListRequest.setGymList(gymList);
+
 
         return classListRequest;
     }

@@ -62,6 +62,8 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
 
     @BindView(R.id.textInputLayoutName)
     public TextInputLayout textInputLayoutName;
+    @BindView(R.id.textInputLayoutLastName)
+    public TextInputLayout textInputLayoutLastName;
     @BindView(R.id.textInputLayoutEmail)
     public TextInputLayout textInputLayoutEmail;
     @BindView(R.id.textInputLayoutPass)
@@ -77,6 +79,9 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
     public EditText editTextEmail;
     @BindView(R.id.editTextName)
     public EditText editTextName;
+
+    @BindView(R.id.editTextLastName)
+    public EditText editTextLastName;
 
     @BindView(R.id.buttonMale)
     public Button buttonMale;
@@ -134,6 +139,7 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
         buttonNext.setOnClickListener(this);
 
         Helper.setupErrorWatcher(editTextName, textInputLayoutName);
+        Helper.setupErrorWatcher(editTextLastName, textInputLayoutLastName);
         Helper.setupErrorWatcher(editTextEmail, textInputLayoutEmail);
         Helper.setupErrorWatcher(editTextPass, textInputLayoutPass);
         Helper.setupErrorWatcher(editTextConfirmPass, textInputLayoutConfirmPass);
@@ -159,7 +165,7 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
             }
         }
 
-        editTextName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        editTextLastName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                     onClick(buttonNext);
@@ -252,12 +258,18 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
         switch (stepPosition) {
             case AppConstants.Tab.REGISTRATION_STEP_NAME:
                 String name = editTextName.getText().toString().trim();
+                String lastname = editTextLastName.getText().toString().trim();
+
                 if (name.isEmpty()) {
                     textInputLayoutName.setError(context.getResources().getString(R.string.name_required_error));
                     return;
                 }
-
+                if (lastname.isEmpty()) {
+                    textInputLayoutLastName.setError(context.getResources().getString(R.string.last_name_required_error));
+                    return;
+                }
                 registrationActivity.setName(name);
+                registrationActivity.setLastName(lastname);
                 registrationActivity.next();
                 break;
 

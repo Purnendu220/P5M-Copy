@@ -112,6 +112,11 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     @BindView(R.id.textViewCancellationPolicy)
     TextView textViewCancellationPolicy;
 
+    @BindView(R.id.textViewCancellationPolicyGeneralToggle)
+    TextView textViewCancellationPolicyGeneralToggle;
+    @BindView(R.id.textViewCancellationPolicyGenral)
+    TextView textViewCancellationPolicyGenral;
+
     @BindView(R.id.textViewTotal)
     TextView textViewTotal;
     @BindView(R.id.textViewPay)
@@ -146,6 +151,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         buttonPromoCode.setOnClickListener(this);
         textViewLimit.setOnClickListener(this);
         textViewCancellationPolicyToggle.setOnClickListener(this);
+        textViewCancellationPolicyGeneralToggle.setOnClickListener(this);
 
         MixPanel.trackCheckoutVisit(aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName());
     }
@@ -165,6 +171,10 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                     textViewPackageValidity.setText("Valid for " + aPackage.getGymName());
                     textViewLimit.setVisibility(View.GONE);
+                    textViewCancellationPolicyGeneralToggle.setVisibility(View.VISIBLE);
+                    textViewCancellationPolicyGenral.setText(R.string.membership_drop_in_info);
+
+
                 }
 
                 textViewPackageName.setText(Html.fromHtml("1X <b>" + aPackage.getName() + "</b>"));
@@ -197,6 +207,9 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
                 break;
         }
+        if(aPackage.getPromoResponseDto()!=null){
+            applyPromocode(aPackage.getPromoResponseDto());
+        }
     }
 
     @OnClick(R.id.imageViewBack)
@@ -213,6 +226,14 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     textViewCancellationPolicy.setVisibility(View.GONE);
                 } else {
                     textViewCancellationPolicy.setVisibility(View.VISIBLE);
+                }
+                break;
+
+            case R.id.textViewCancellationPolicyGeneralToggle:
+                if (textViewCancellationPolicyGenral.getVisibility() == View.VISIBLE) {
+                    textViewCancellationPolicyGenral.setVisibility(View.GONE);
+                } else {
+                    textViewCancellationPolicyGenral.setVisibility(View.VISIBLE);
                 }
                 break;
             case R.id.textViewLimit:
@@ -250,7 +271,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 if (promoCode != null) {
                     textViewTotal.setText(promoCode.getPriceAfterDiscount() + " " + context.getString(R.string.currency));
                     textViewPay.setText("Pay " + promoCode.getPriceAfterDiscount() + " " + context.getString(R.string.currency));
-                    textViewPromoCodePrice.setText("- " + String.format("%.2f", (aPackage.getCost() - promoCode.getPriceAfterDiscount())) + " " + context.getString(R.string.currency));
+                    textViewPromoCodePrice.setText("- " + String.format("%.2f", (promoCode.getPrice() - promoCode.getPriceAfterDiscount())) + " " + context.getString(R.string.currency));
                     layoutPromoCode.setVisibility(View.VISIBLE);
                     buttonPromoCode.setText(context.getString(R.string.remove_promo_code));
 
@@ -385,17 +406,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     public void onApiSuccess(Object response, int requestCode) {
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.PROMO_CODE:
-                try {
-                    final TextView textViewOk = (TextView) materialDialog.findViewById(R.id.textViewOk);
-                    textViewOk.setVisibility(View.VISIBLE);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    LogUtils.exception(e);
-                }
-
-                promoCode = ((ResponseModel<PromoCode>) response).data;
-                setPrice();
-
+                applyPromocode(((ResponseModel<PromoCode>) response).data);
                 break;
             case NetworkCommunicator.RequestCode.BUY_PACKAGE:
                 setPrice();
@@ -456,5 +467,17 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     break;
             }
         }
+    }
+
+    private void applyPromocode(PromoCode promo){
+        try {
+            final TextView textViewOk = (TextView) materialDialog.findViewById(R.id.textViewOk);
+            textViewOk.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+        promoCode = promo;
+        setPrice();
     }
 }

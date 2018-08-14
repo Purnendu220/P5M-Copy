@@ -186,13 +186,42 @@
                             android:textColor="@color/theme_accent_text"
                             android:textSize="@dimen/text_large"
                             android:visibility="visible" />
+                        <TextView
+                            android:id="@+id/textViewCancellationPolicyGeneralToggle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:fontFamily="sans-serif"
+                            android:gravity="left"
+                            android:letterSpacing="@dimen/text_medium_letter_spacing"
+                            android:lineSpacingExtra="@dimen/line_spacing_extra"
+                            android:text="@string/cancellation_policy"
+                            android:textColor="@color/theme_accent_text"
+                            android:textSize="@dimen/text_large"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/textViewCancellationPolicyGenral"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:gravity="left"
+                            android:letterSpacing="@dimen/text_medium_letter_spacing"
+                            android:lineSpacingExtra="@dimen/line_spacing_extra_title"
+                            android:paddingBottom="16dp"
+                            android:text="Valid for P5M Studio Valid for P5M Studio Valid for P5M Studio Valid for P5M Studio Valid for P5M Studio"
+                            android:textColor="@color/theme_light_text"
+                            android:textSize="@dimen/text_medium"
+                            android:textStyle="normal"
+                            android:visibility="gone" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/layoutSpecialClassDetails"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        >
 
                         <TextView
                             android:layout_width="wrap_content"

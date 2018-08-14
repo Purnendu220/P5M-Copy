@@ -172,6 +172,12 @@ public class MyPreferences {
                     classesFilter.setObject(model);
 
                 }
+                else if (classesFilter.getObjectClassName().equals("Gym")) {
+
+                    Filter.Gym model = new Filter.Gym(object.getInt("id")+"", object.getString("name"));
+                    classesFilter.setObject(model);
+
+                }
 
                 classesFilters.add(classesFilter);
             }

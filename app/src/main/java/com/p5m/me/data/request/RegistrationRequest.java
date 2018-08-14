@@ -4,6 +4,7 @@ public class RegistrationRequest implements java.io.Serializable {
     private static final long serialVersionUID = 4834428472264496728L;
 
     private String firstName;
+    private String lastName;
     private String password;
     private String gender;
     private int userType = 1;
@@ -21,13 +22,19 @@ public class RegistrationRequest implements java.io.Serializable {
         loginThrough = "facebook";
     }
 
-    public RegistrationRequest(String firstName, String password, String gender, int userType, String email) {
+    public RegistrationRequest(String firstName,String lastName, String password, String gender, int userType, String email) {
         this.firstName = firstName;
+        this.lastName = lastName;
         this.password = password;
         this.gender = gender;
         this.userType = userType;
         this.email = email;
     }
+
+
+    public String getLastName() { return this.lastName == null ? "" : lastName; }
+
+    public void setLastName(String lastName) { this.lastName = lastName; }
 
     public String getFirstName() {
         return this.firstName == null ? "" : firstName;

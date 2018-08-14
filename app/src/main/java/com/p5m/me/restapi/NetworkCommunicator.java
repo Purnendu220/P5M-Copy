@@ -12,6 +12,7 @@ import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.DefaultSettingServer;
+import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.data.main.NotificationModel;
 import com.p5m.me.data.main.Package;
@@ -79,6 +80,8 @@ public class NetworkCommunicator {
         public static final int LOGIN = 100;
         public static final int ALL_CITY = 101;
         public static final int ALL_CLASS_ACTIVITY = 102;
+        public static final int ALL_GYM_LIST = 131;
+
 
         public static final int CLASS_LIST = 103;
         public static final int TRAINER_LIST = 104;
@@ -306,6 +309,26 @@ public class NetworkCommunicator {
                 LogUtils.networkSuccess("NetworkCommunicator getActivities onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
                 TempStorage.setActivities(response.data);
+            }
+        });
+        return call;
+    }
+    public Call getGymsList(final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.ALL_GYM_LIST;
+        Call<ResponseModel<List<GymDataModel>>> call = apiService.getGymList(3 );
+        LogUtils.debug("NetworkCommunicator hitting getGymList");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<GymDataModel>>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<List<GymDataModel>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getGymList onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<GymDataModel>>> call, Response<ResponseModel<List<GymDataModel>>> restResponse, ResponseModel<List<GymDataModel>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getGymList onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
             }
         });
         return call;

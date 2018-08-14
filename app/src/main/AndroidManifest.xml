@@ -61,7 +61,7 @@
 
                 <data
                     android:host="${hostName}"
-                    android:pathPrefix="/share"
+                    android:pathPrefix="/"
                     android:scheme="http" />
             </intent-filter>
 
