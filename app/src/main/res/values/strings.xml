@@ -275,5 +275,9 @@
     <string name="permission_message_camera">\"Please allow P5M to take pictures and record video.\"</string>
     <string name="pick_image">Pick Image</string>
     <string name="profile_changes_saved">Changes to your profile have been saved!</string>
+    <string name="package_offer_percentage">% off </string>
+    <string name="package_offer_kwd">KWD off </string>
+
+
 
 </resources>

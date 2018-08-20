@@ -1,12 +1,14 @@
 package com.p5m.me.adapters.viewholder;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.p5m.me.R;
@@ -49,6 +51,15 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
     public TextView textViewPackagePrice;
     @BindView(R.id.textViewPageTitle)
     public TextView textViewPageTitle;
+
+    @BindView(R.id.linearLayoutOffer)
+    public LinearLayout linearLayoutOffer;
+    @BindView(R.id.textViewOffer)
+    public TextView textViewOffer;
+
+    @BindView(R.id.textViewPackagePriceStrike)
+    public TextView textViewPackagePriceStrike;
+
 
     @BindView(R.id.button)
     public Button button;
@@ -123,7 +134,6 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     button.setText(R.string.select_plan);
                     button.setBackgroundResource(R.drawable.join_rect);
                     Helper.setPackageImage(imageViewHeader, model.getName());
-
                     if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
 
                         textViewPackageName.setText(model.getName());
@@ -180,6 +190,10 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
                         imageViewInfo.setVisibility(View.VISIBLE);
                     }
+                    if(model.getPromoResponseDto()!=null){
+                        setPackagePriceAfterDiscount(model,textViewPackagePrice,textViewPackagePriceStrike);
+                    }
+
                 }
 
             textViewViewLimit.setOnClickListener(new View.OnClickListener() {
@@ -206,4 +220,23 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
             itemView.setVisibility(View.GONE);
         }
     }
+   private void setPackagePriceAfterDiscount(Package model,TextView textViewPackagePrice,TextView textViewPackagePriceStrike){
+       linearLayoutOffer.setVisibility(View.VISIBLE);
+       textViewPackagePriceStrike.setVisibility(View.VISIBLE);
+       String offerText;
+       if(model.getPromoResponseDto().getDiscountType().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_OFFER_PERCENTAGE)){
+           offerText = context.getString(R.string.package_offer_percentage);
+           }
+           else{
+           offerText = context.getString(R.string.package_offer_kwd);
+
+       }
+       textViewOffer.setText(Math.round(model.getPromoResponseDto().getDiscount())+offerText);
+
+       textViewPackagePrice.setText(model.getPromoResponseDto().getPriceAfterDiscount() + " " + context.getString(R.string.currency).toUpperCase());
+       textViewPackagePriceStrike.setText(model.getPromoResponseDto().getPrice() + " " + context.getString(R.string.currency).toUpperCase());
+       textViewPackagePriceStrike.setPaintFlags(textViewPackagePriceStrike.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+
+   }
 }

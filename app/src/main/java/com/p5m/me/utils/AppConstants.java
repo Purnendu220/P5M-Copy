@@ -175,10 +175,9 @@ public class AppConstants {
         public static final String GET_USER_LIST = "api/v1/user/list";
 
 
-        public static final String PACKAGE_LIST = "api/v1/package";
         public static final String PACKAGE_LIST_NEW = "api/v2/package";
 
-        public static final String CLASS_PACKAGE_LIST = "api/v1/package";
+        public static final String CLASS_PACKAGE_LIST = "api/v2/package";
 
         public static final String PACKAGE_LIMITS = "api/v1/gym/mapping/";
 
@@ -216,6 +215,8 @@ public class AppConstants {
         public static final String GENDER_MALE = "MALE";
         public static final String GENDER_FEMALE = "FEMALE";
         public static final String GENDER_BOTH = "MIXED";
+        public static final String PACKAGE_OFFER_PERCENTAGE = "PERCENTAGE";
+
     }
 
     public class ApiParamKey {
