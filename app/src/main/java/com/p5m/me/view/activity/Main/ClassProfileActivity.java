@@ -242,6 +242,10 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
     private void performJoinProcess() {
         boolean userHaveDropinForClass = false;
+        boolean userHaveExpiredDropinForClass = false;
+        boolean userHaveExpiredGeneralPackageForClass=false;
+
+
         boolean userHaveGeneralPackageForClass=false;
         ArrayList<Integer> list=new ArrayList<>();
         UserPackageInfo userPackageInfo = new UserPackageInfo(TempStorage.getUser());
@@ -256,6 +260,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                         userHaveDropinForClass=true;
                         list.add(userPackage.getGymId());
                         }
+                    if ((userPackage.getGymId() == classModel.getGymBranchDetail().getGymId())&&(userPackage.getExpiryDate()!=null && DateUtils.canJoinClass(classModel.getClassDate(), userPackage.getExpiryDate()) < 0)) {
+                            userHaveExpiredDropinForClass=true;
+                        }
                 }
 
             }
@@ -263,13 +270,17 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             if (userPackageInfo.haveGeneralPackage) {
                 if (userPackageInfo.userPackageGeneral != null) {
 
-                    if (userPackageInfo.userPackageGeneral.getBalanceClass() == 0) {
+                    if (userPackageInfo.userPackageGeneral.getBalanceClass() == 0&&!userHaveDropinForClass) {
                         MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
                         return;
                     }
 
                     if (DateUtils.canJoinClass(classModel.getClassDate(), userPackageInfo.userPackageGeneral.getExpiryDate()) >= 0) {
                         userHaveGeneralPackageForClass=true;
+
+                    }
+                    if (DateUtils.canJoinClass(classModel.getClassDate(), userPackageInfo.userPackageGeneral.getExpiryDate()) < 0) {
+                        userHaveExpiredGeneralPackageForClass=true;
 
                     }
 
@@ -281,14 +292,20 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     return;
                 }
                 else {
-                    DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), "Purchase", new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            dialog.dismiss();
-                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
-                        }
-                    });
-                    return;
+                 if(userHaveExpiredGeneralPackageForClass){
+                     DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), "Purchase", new MaterialDialog.SingleButtonCallback() {
+                         @Override
+                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                             dialog.dismiss();
+                             MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+                         }
+                     });
+                     return;
+                 }else{
+                     joinClass();
+                     return;
+                 }
+
                 }
 
             }

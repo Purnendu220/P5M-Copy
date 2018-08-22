@@ -181,7 +181,7 @@ public class AppConstants {
 
         public static final String PACKAGE_LIMITS = "api/v1/gym/mapping/";
 
-        public static final String PACKAGE_PURCHASE = "api/v1/payment/package-purchase/";
+        public static final String PACKAGE_PURCHASE = "api/v2/payment/package-purchase/";
 
         public static final String JOIN_CLASS = "api/v1/user/class/join";
         public static final String UN_JOIN_CLASS = "api/v1/user/class/unjoin";

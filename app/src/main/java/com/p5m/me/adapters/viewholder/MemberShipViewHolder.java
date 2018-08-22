@@ -91,6 +91,8 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
             if (data instanceof UserPackage) {
                 UserPackage model = (UserPackage) data;
                 textViewPackagePrice.setVisibility(View.GONE);
+                linearLayoutOffer.setVisibility(View.GONE);
+                textViewPackagePriceStrike.setVisibility(View.GONE);
                 button.setText(R.string.your_current_plan);
 
                 button.setEnabled(false);
@@ -190,7 +192,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
                         imageViewInfo.setVisibility(View.VISIBLE);
                     }
-                    if(model.getPromoResponseDto()!=null){
+                    if(model.getPromoResponseDto()!=null&& model.getPromoResponseDto().getDiscountType()!=null){
                         setPackagePriceAfterDiscount(model,textViewPackagePrice,textViewPackagePriceStrike);
                     }
 
@@ -231,7 +233,13 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
            offerText = context.getString(R.string.package_offer_kwd);
 
        }
-       textViewOffer.setText(Math.round(model.getPromoResponseDto().getDiscount())+offerText);
+       try{
+           textViewOffer.setText(Math.round(model.getPromoResponseDto().getDiscount())+offerText);
+
+       }catch (Exception e){
+           textViewOffer.setText(model.getPromoResponseDto().getDiscount()+offerText);
+
+       }
 
        textViewPackagePrice.setText(model.getPromoResponseDto().getPriceAfterDiscount() + " " + context.getString(R.string.currency).toUpperCase());
        textViewPackagePriceStrike.setText(model.getPromoResponseDto().getPrice() + " " + context.getString(R.string.currency).toUpperCase());

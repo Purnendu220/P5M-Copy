@@ -55,6 +55,7 @@ public class EventBroadcastHelper {
 
             //Remove Filters
             MyPreferences.getInstance().saveFilters(new ArrayList<ClassesFilter>());
+            TempStorage.setFilterList(new ArrayList<ClassesFilter>());
 
             TempStorage.setAuthToken(null);
 

@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 
 import com.p5m.me.R;
 import com.p5m.me.adapters.HomeAdapter;
+import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.eventbus.Events;
@@ -250,6 +251,8 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             buyClasses.setVisibility(View.GONE);
 
         }
+       List<ClassesFilter> list = TempStorage.getFilters();
+
     }
 
     @Override

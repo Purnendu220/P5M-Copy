@@ -319,16 +319,16 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                 if (model instanceof Package) {
                     Package aPackage = (Package) model;
                     if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
-                        DialogUtils.showBasicMessage(context, aPackage.getName(), "Ok", R.string.membership_package_limit_info);
+                        DialogUtils.showBasicMessage(context, aPackage.getName().toUpperCase(), "Ok", R.string.membership_package_limit_info);
                     } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
-                        DialogUtils.showBasicMessage(context, aPackage.getName(), "Ok", R.string.membership_drop_in_info);
+                        DialogUtils.showBasicMessage(context, aPackage.getName().toUpperCase(), "Ok", R.string.membership_drop_in_info);
                     }
                 } else if (model instanceof UserPackage) {
                     UserPackage aPackage = (UserPackage) model;
                     if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
-                        DialogUtils.showBasicMessage(context, aPackage.getPackageName(), "Ok", R.string.membership_package_limit_info);
+                        DialogUtils.showBasicMessage(context, aPackage.getPackageName().toUpperCase(), "Ok", R.string.membership_package_limit_info);
                     } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
-                        DialogUtils.showBasicMessage(context, aPackage.getPackageName(), "Ok", R.string.membership_drop_in_info);
+                        DialogUtils.showBasicMessage(context, aPackage.getPackageName().toUpperCase(), "Ok", R.string.membership_drop_in_info);
                     }
                 }
             }
