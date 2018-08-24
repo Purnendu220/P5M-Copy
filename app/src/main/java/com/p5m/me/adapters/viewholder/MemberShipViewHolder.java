@@ -194,6 +194,9 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     }
                     if(model.getPromoResponseDto()!=null&& model.getPromoResponseDto().getDiscountType()!=null){
                         setPackagePriceAfterDiscount(model,textViewPackagePrice,textViewPackagePriceStrike);
+                    }else{
+                        linearLayoutOffer.setVisibility(View.GONE);
+                        textViewPackagePriceStrike.setVisibility(View.GONE);
                     }
 
                 }

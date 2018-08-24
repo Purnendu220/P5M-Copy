@@ -261,7 +261,7 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
 
         List<ClassesFilter> timeList = new ArrayList<>(4);
         addClassFilterTime(timeList, new Filter.Time("MORNING", "Morning"));
-        addClassFilterTime(timeList, new Filter.Time("AFTERNOON", "After Noon"));
+        addClassFilterTime(timeList, new Filter.Time("AFTERNOON", "Afternoon"));
         addClassFilterTime(timeList, new Filter.Time("EVENING", "Evening"));
 
         filterAdapter.getClassesFilterList().get(2).setList(timeList);
