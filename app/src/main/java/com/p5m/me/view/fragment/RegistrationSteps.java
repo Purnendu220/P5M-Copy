@@ -153,6 +153,9 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
             if (!registrationActivity.getRegistrationRequest().getFirstName().isEmpty()) {
                 editTextName.setText(registrationActivity.getRegistrationRequest().getFirstName());
             }
+            if (!registrationActivity.getRegistrationRequest().getLastName().isEmpty()) {
+                editTextLastName.setText(registrationActivity.getRegistrationRequest().getLastName());
+            }
             if (!registrationActivity.getRegistrationRequest().getEmail().isEmpty()) {
                 editTextEmail.setText(registrationActivity.getRegistrationRequest().getEmail());
             }

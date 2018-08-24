@@ -190,11 +190,10 @@
                         android:background="@color/green"
                         android:gravity="center"
                         android:visibility="gone"
-                        android:paddingLeft="@dimen/margin_14"
+                        android:paddingLeft="@dimen/margin_20"
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:paddingRight="10dp"
-
                         >
                         <TextView
                             android:id="@+id/textViewOffer"

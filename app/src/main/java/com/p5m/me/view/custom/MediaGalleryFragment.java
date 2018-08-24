@@ -70,7 +70,7 @@ public class MediaGalleryFragment extends BaseFragment implements ViewPagerFragm
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                         progressBar.setVisibility(View.GONE);
                         try{
-                            imageViewImage.setImageBitmap(getResizedBitmap(resource,1080,1080));
+                            imageViewImage.setImageBitmap(getResizedBitmap(resource,(resource.getHeight()*50)/100,(resource.getWidth()*50)/100));
                             imageViewImage.setOnTouchListener(new ImageMatrixTouchHandler(context));
                         }catch (Exception e){
                             e.printStackTrace();

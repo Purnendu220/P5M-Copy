@@ -63,7 +63,7 @@ public class RegistrationActivity extends BaseActivity {
         if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FB_LOGIN) {
 //            TOTAL_STEPS = AppConstants.Tab.COUNT_FB_REGISTRATION;
             String message = "";
-            registrationRequest = new RegistrationRequest(faceBookUser.getId(), faceBookUser.getName());
+            registrationRequest = new RegistrationRequest(faceBookUser.getId(), faceBookUser.getName(),faceBookUser.getLastName());
 
             if (faceBookUser.getEmail().isEmpty()) {
 

@@ -165,7 +165,13 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 layoutPromoCode.setVisibility(View.GONE);
 
                 if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
-                    textViewPackageValidity.setText("Valid for " + aPackage.getDuration() + " " + aPackage.getValidityPeriod().toLowerCase());
+                    String validityPeriod = aPackage.getValidityPeriod();
+                    validityPeriod = Helper.capitalize(validityPeriod);
+                    if (validityPeriod.charAt(validityPeriod.length() - 1) == 's') {
+                        validityPeriod = validityPeriod.substring(0, validityPeriod.length() - 1);
+                    }
+
+                    textViewPackageValidity.setText("Valid for " + aPackage.getDuration() + " " + AppConstants.plural(validityPeriod, aPackage.getDuration()));
                     textViewLimit.setVisibility(View.VISIBLE);
 
                 } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {

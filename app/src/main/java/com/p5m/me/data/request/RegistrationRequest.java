@@ -16,8 +16,9 @@ public class RegistrationRequest implements java.io.Serializable {
     public RegistrationRequest() {
     }
 
-    public RegistrationRequest(String facebookId, String firstName) {
+    public RegistrationRequest(String facebookId, String firstName,String lastName) {
         this.firstName = firstName;
+        this.lastName = lastName;
         this.facebookId = facebookId;
         loginThrough = "facebook";
     }

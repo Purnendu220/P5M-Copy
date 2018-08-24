@@ -222,7 +222,7 @@ public class AppConstants {
     public class ApiParamKey {
         public static final String MYU_AUTH_TOKEN = "Pro-Auth-Token";
         public static final String USER_AGENT = "userAgent";
-        public static final String APP_VERSION = "";
+        public static final String APP_VERSION = "appVersion";
         public static final String SIZE = "size";
         public static final String PAGE = "page";
         public static final String ID = "id";
