@@ -277,7 +277,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 if (promoCode != null) {
                     textViewTotal.setText(promoCode.getPriceAfterDiscount() + " " + context.getString(R.string.currency));
                     textViewPay.setText("Pay " + promoCode.getPriceAfterDiscount() + " " + context.getString(R.string.currency));
-                    textViewPromoCodePrice.setText("- " + String.format("%.1f", (promoCode.getPrice() - promoCode.getPriceAfterDiscount())) + " " + context.getString(R.string.currency));
+                    textViewPromoCodePrice.setText("- " +  (promoCode.getPrice() - promoCode.getPriceAfterDiscount()) + " " + context.getString(R.string.currency));
                     layoutPromoCode.setVisibility(View.VISIBLE);
                     buttonPromoCode.setText(context.getString(R.string.remove_promo_code));
 
