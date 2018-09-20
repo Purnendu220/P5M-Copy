@@ -25,6 +25,8 @@ public class AppConstants {
         public static final int TAB_TRAINER = 1;
         public static final int TAB_SCHEDULE = 2;
         public static final int TAB_MY_PROFILE = 3;
+        public static final int TAB_MY_PROFILE_FINISHED = 4;
+
 
         public static final int TAB_MY_SCHEDULE_UPCOMING = 0;
         public static final int TAB_MY_SCHEDULE_WISH_LIST = 1;
@@ -112,6 +114,14 @@ public class AppConstants {
         public static final String AUTH_TOKEN = "pref_auth_token";
         public static final String DEVICE_TOKEN = "pref_device_token";
         public static final String NOTIFICATION_COUNT = "pref_notification_count";
+        public static final String JOINED_CLASSES = "joined_classes";
+        public static final String FINISHED_CLASSES = "finished_classes";
+
+        public static final String CLASS_MODEL = "class_model";
+        public static final String RATING_PARAM = "rating_param";
+
+
+
     }
 
     public class DataKey {
@@ -133,6 +143,10 @@ public class AppConstants {
         public static final String HOME_TABS_INNER_TAB_POSITION = "home_tabs_inner_tab_position";
         public static final String PACKAGE_NAME_STRING = "package_name";
         public static final String IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN = "is_from_notification_stack_builder_boolean";
+        public static final String RATING_VALUE = "Rating_Value";
+        public static final String CLASS_MODEL = "class_model";
+
+
     }
 
     public class Url {
@@ -160,6 +174,8 @@ public class AppConstants {
 
         public static final String ALL_CITY = "api/v1/country/getAllCity";
         public static final String ALL_CLASS_CATEGORY = "api/v1/class/getAllClassCategory";
+        public static final String ALL_RATING_PARAMETERS = "api/v1/rating/ratingParameters";
+
 
         public static final String USER = "api/v1/user/find";
         public static final String CLASS_DETAILS = "api/v1/class";
@@ -199,6 +215,13 @@ public class AppConstants {
         public static final String SEARCH = "api/v1/gym/searchCriteria?";
         public static final String SEARCH_USER_LIST = "api/v1/user/showAllUsers";
         public static final String SEARCH_CLASS_LIST = "api/v1/class/getClasses";
+        public static final String CLASS_RATING = "api/v1/rating";
+        public static final String CLASS_RATING_PATCH = "api/v1/rating/{id}";
+        public static final String CLASS_UNRATED = "api/v1/rating/unRateClasses";
+        public static final String DELETE_MEDIA = "api/v1/media/{id}";
+
+
+
     }
 
     public class ApiParamValue {
@@ -251,6 +274,15 @@ public class AppConstants {
         public static final String QUERY_STRING = "queryString";
         public static final String SEARCH_FOR = "searchFor";
         public static final String EMAIL_ID = "emailId";
+        public static final String CLASS_ID = "classId";
+        public static final String STATUS_LIST = "statusList";
+        public static final String RATING_ID = "ratingId";
+
+
+
+
+
+
     }
 
     public static final class Notification {
@@ -260,6 +292,13 @@ public class AppConstants {
         public static final String OBJECT_DATA_ID = "objectDataId";
         public static final String NOTIFICATION_TYPE = "notificationCategory";
         public static final String USER_ID_TO_NOTIFY = "userIdToNotify";
+        public static final String CLASS_FROM_TIME = "fromTime";
+        public static final String CLASS_TO_TIME = "toTime";
+        public static final String CLASS_DATE = "classDate";
+        public static final String CLASS_TITLE = "classTitle";
+
+
+
     }
 
     public class AppNavigation {
@@ -277,6 +316,8 @@ public class AppConstants {
         public static final int SHOWN_IN_GYM_PROFILE = 11;
         public static final int SHOWN_IN_GYM_PROFILE_TRAINERS = 12;
         public static final int SHOWN_IN_SEARCH_RESULTS = 13;
+        public static final int SHOWN_IN_RATING_LIST = 15;
+
 
         public static final int NAVIGATION_FROM_RESERVE_CLASS = 51;
         public static final int NAVIGATION_FROM_MY_PROFILE = 52;
@@ -300,6 +341,8 @@ public class AppConstants {
         public static final int PAGE_LIMIT_MAIN_TRAINER_LIST = 25;
         public static final int PAGE_LIMIT_INNER_TRAINER_LIST = 25;
         public static final int PAGE_LIMIT_NOTIFICATIONS = 25;
+        public static final int PAGE_LIMIT_UNLIMITED = 10000;
+
 
         public static final int PACKAGE_LIMIT_SCREEN_TABS = 6;
     }

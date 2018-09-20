@@ -1,11 +1,13 @@
 package com.p5m.me.adapters.viewholder;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.p5m.me.R;
@@ -73,6 +75,27 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.layoutLocation)
     public View layoutLocation;
 
+    @BindView(R.id.studioRating)
+    RatingBar studioRating;
+
+    @BindView(R.id.textViewRatingCount)
+    TextView textViewRatingCount;
+
+    @BindView(R.id.textViewReviewCountText)
+    TextView textViewReviewCountText;
+
+    @BindView(R.id.linearLayoutStudioRating)
+    LinearLayout linearLayoutStudioRating;
+
+    @BindView(R.id.layoutSeeAllReview)
+    LinearLayout layoutSeeAllReview;
+
+    @BindView(R.id.linearLayoutClassRating)
+    public LinearLayout linearLayoutClassRating;
+
+    @BindView(R.id.textViewClassRating)
+    public TextView textViewClassRating;
+
     private final Context context;
     private int shownInScreen;
 
@@ -84,6 +107,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, view);
     }
 
+    @SuppressLint("StringFormatInvalid")
     public void bind(Object data, final AdapterCallbacks adapterCallbacks, final int position) {
         if (data != null && data instanceof ClassModel) {
             itemView.setVisibility(View.VISIBLE);
@@ -185,6 +209,21 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
             } else {
                 textViewLocation.setText("");
             }
+            if(model.getRating() >0 && model.getNumberOfRating()>0){
+                CharSequence text = String.format(context.getString(R.string.review_based_on),model.getNumberOfRating()+"");
+                linearLayoutStudioRating.setVisibility(View.VISIBLE);
+                studioRating.setRating(model.getRating());
+
+                textViewRatingCount.setText(model.getRating()+"/5.0");
+                textViewReviewCountText.setText(text);
+                studioRating.setIsIndicator(true);
+                linearLayoutClassRating.setVisibility(View.GONE);
+                textViewClassRating.setText(model.getRating()+"");
+                }else{
+                linearLayoutClassRating.setVisibility(View.GONE);
+                linearLayoutStudioRating.setVisibility(View.GONE);
+                }
+
 
             textViewClassName.setText(model.getTitle());
             textViewClassCategory.setText(model.getClassCategory());
@@ -195,7 +234,12 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
 
             textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
             textViewGender.setText(Helper.getClassGenderText(model.getClassType()));
-
+            layoutSeeAllReview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ClassProfileViewHolder.this, layoutSeeAllReview, model, position);
+                }
+            });
             layoutLocation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

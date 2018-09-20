@@ -63,6 +63,12 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.textViewTrainerName)
     public TextView textViewTrainerName;
 
+    @BindView(R.id.buttonEditRating)
+    public Button buttonEditRating;
+
+    @BindView(R.id.buttonClassRating)
+    public Button buttonClassRating;
+
     private final Context context;
     private int shownInScreen;
 
@@ -82,7 +88,7 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
             final ClassModel model = (ClassModel) data;
 
             layoutGender.setVisibility(View.GONE);
-
+            buttonClassRating.setVisibility(View.GONE);
             if (Helper.isSpecialClass(model)) {
                 layoutSpecial.setVisibility(View.VISIBLE);
                 textViewSpecialClass.setText(Helper.getSpecialClassText(model));
@@ -195,13 +201,35 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
             textViewClassDate.setText(DateUtils.getClassDate(model.getClassDate()));
 
             Helper.setJoinButton(context, buttonJoin, model);
+             if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED) {
+                 if(model.getRatingResDto()==null||model.getRatingResDto().getRating()==0){
+                     buttonClassRating.setVisibility(View.VISIBLE);
+                     buttonEditRating.setVisibility(View.GONE);
+                 }
+                 else{
+                     buttonClassRating.setVisibility(View.GONE);
+                     buttonEditRating.setVisibility(View.VISIBLE);
+                 }
 
+            }
             textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
 
             buttonJoin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     adapterCallbacks.onAdapterItemClick(ClassMiniDetailViewHolder.this, buttonJoin, model, position);
+                }
+            });
+            buttonClassRating.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ClassMiniDetailViewHolder.this, buttonClassRating, model, position);
+                }
+            });
+            buttonEditRating.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ClassMiniDetailViewHolder.this, buttonEditRating, model, position);
                 }
             });
 

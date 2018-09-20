@@ -48,7 +48,8 @@ public class EventBroadcastHelper {
         try {
             User user = MyPreferences.getInstance().getUser();
             List<ClassActivity> activities = MyPreferences.getInstance().getActivities();
-
+            List<ClassModel> list=TempStorage.getSavedClasses();
+            TempStorage.removeAllSavedClasses(list,context);
             MyPreferences.getInstance().clear();
             MyPreferences.getInstance().saveUser(user);
             MyPreferences.getInstance().saveActivities(activities);
@@ -108,6 +109,9 @@ public class EventBroadcastHelper {
         }
 
         GlobalBus.getBus().post(new Events.ClassJoin(classModel));
+    }
+    public static void sendclassRating(Context context,String className){
+        GlobalBus.getBus().post(new Events.ClassRating(className))  ;
     }
 
     public static void sendPackagePurchasedForClass(ClassModel classModel) {

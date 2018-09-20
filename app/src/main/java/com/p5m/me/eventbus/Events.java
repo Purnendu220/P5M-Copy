@@ -22,6 +22,14 @@ public class Events {
         }
     }
 
+    public static class ClassRating{
+       public String classRating;
+       public ClassRating(String classRating){
+          this.classRating=classRating;
+       }
+
+    }
+
     public static class PackagePurchased {
     }
 

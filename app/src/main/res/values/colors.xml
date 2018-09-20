@@ -15,6 +15,8 @@
     <color name="login_active_highlighted">#EEEEEE</color>
     <color name="black">#000000</color>
     <color name="grey">#999999</color>
+    <color name="grey_bg">#f1f0f6</color>
+    <color name="dark_grey">#9aa4a6</color>
     <color name="white">#FFFFFF</color>
     <color name="highlight">#1A000000</color>
     <color name="text_shadow">#7F000000</color>
@@ -41,6 +43,13 @@
     <color name="red">#f22229</color>
     <color name="red1">#D0021B</color>
     <color name="green">#1FB257</color>
+    <color name="rating_blank">#9aa4a6</color>
+    <color name="rating_filled">#f5a623</color>
+    <color name="grey_line">#dadee1</color>
+    <color name="colorPrimaryPix">#031d22</color>
+    <color name="colorPrimaryLightPix">#031d22</color>
+    <color name="text_color_light">#858d9e</color>
+    <color name="grey_line_dark">#c3c5cd</color>
 
 
     <drawable name="transparent">#00000000</drawable>

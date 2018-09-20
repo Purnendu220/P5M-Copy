@@ -14,6 +14,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.p5m.me.R;
 import com.p5m.me.adapters.viewholder.ImageViewHolder;
 import com.p5m.me.data.main.MediaModel;
+import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
 
 import java.util.List;
@@ -44,7 +45,6 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageViewHolder> {
     @Override
     public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CardView cardView = new CardView(context);
-
         cardView.setCardBackgroundColor(Color.BLACK);
         cardView.setRadius(dp * 4);
         RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(dp * 96, dp * 96);

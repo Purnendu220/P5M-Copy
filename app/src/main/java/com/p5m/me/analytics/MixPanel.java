@@ -172,6 +172,16 @@ public class MixPanel {
             LogUtils.exception(e);
         }
     }
+    public static void trackRatingImageView() {
+        try {
+                JSONObject props = new JSONObject();
+                props.put("action", "looking_rating_images");
+                trackEvent(props, "Event_On_Rating");
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
 
     public static void trackAddFav(int shownInScreen, String name) {
 

@@ -10,6 +10,7 @@ import android.view.Window;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.RefrenceWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +21,13 @@ public class BaseActivity extends AppCompatActivity {
     public static boolean isForeground = false;
     public boolean showActionBar = true;
 
-    public static Context contextRef;
+    public static Context mContext;
     public static Activity activityRef;
 
     public Activity activity;
     public Context context;
     public NetworkCommunicator networkCommunicator;
+    public RefrenceWrapper refrenceWrapper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,8 +35,9 @@ public class BaseActivity extends AppCompatActivity {
 
         activity = this;
         context = this;
-        contextRef = this;
+        mContext = this;
         activityRef = this;
+        refrenceWrapper= RefrenceWrapper.getRefrenceWrapper(this);
 
         MixPanel.setup(activity);
 

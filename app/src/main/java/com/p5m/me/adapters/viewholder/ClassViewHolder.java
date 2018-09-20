@@ -59,6 +59,12 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.layoutTrainer)
     public LinearLayout layoutTrainer;
 
+    @BindView(R.id.linearLayoutClassRating)
+    public LinearLayout linearLayoutClassRating;
+
+    @BindView(R.id.textViewClassRating)
+    public TextView textViewClassRating;
+
     @BindView(R.id.layoutLocation)
     public View layoutLocation;
 
@@ -142,6 +148,12 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
 
             textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
             textViewGender.setText(Helper.getClassGenderText(model.getClassType()));
+            if(model.getRating()!=0.0F&&model.getRating()>0){
+                linearLayoutClassRating.setVisibility(View.VISIBLE);
+                textViewClassRating.setText(model.getRating()+"");
+            }else{
+                linearLayoutClassRating.setVisibility(View.GONE);
+            }
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -4,13 +4,19 @@ import android.content.Context;
 
 import com.p5m.me.data.City;
 import com.p5m.me.data.ClassesFilter;
+import com.p5m.me.data.RatingParamModel;
 import com.p5m.me.data.main.ClassActivity;
+import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.DefaultSettingServer;
 import com.p5m.me.data.main.User;
+import com.p5m.me.ratemanager.RateAlarmReceiver;
+import com.p5m.me.ratemanager.ScheduleAlarmManager;
 import com.p5m.me.storage.preferences.MyPreferences;
+import com.p5m.me.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class TempStorage {
 
@@ -23,6 +29,7 @@ public class TempStorage {
     private static DefaultSettingServer defaultSettingServer;
 
     private static List<ClassesFilter> filterList;
+
 
     public static List<City> getCities() {
         if (cities == null) {
@@ -46,7 +53,12 @@ public class TempStorage {
         TempStorage.activities = activities;
         MyPreferences.getInstance().saveActivities(activities);
     }
-
+    public static void setRatingParams(List<RatingParamModel> ratingParamList) {
+        MyPreferences.getInstance().saveRatingParams(ratingParamList);
+    }
+    public static  List<RatingParamModel> getRatingParams() {
+       return MyPreferences.getInstance().getRatingParams();
+    }
     public static DefaultSettingServer getDefault() {
         if (defaultSettingServer == null) {
             defaultSettingServer = MyPreferences.getInstance().getDefaultSettingServer();
@@ -85,6 +97,64 @@ public class TempStorage {
         TempStorage.filterList = filterList;
         MyPreferences.getInstance().saveFilters(filterList);
     }
+ public static void setSavedClasses(ClassModel classModel,Context context){
+     List<ClassModel> classList=  MyPreferences.getInstance().getJoinedClassList();
+     if(classList!=null&&classList.size()>0){
+        if(filterclassList(classList,classModel)==null||filterclassList(classList,classModel).size()==0){
+            classList.add(classModel);
+            MyPreferences.getInstance().saveJoinedClassList(classList);
+            ScheduleAlarmManager.setReminder(context,RateAlarmReceiver.class,classModel);
+            LogUtils.debug("Class finish alert set for the "+classModel.getTitle());
+            return;
+            }
+     }
+     else{
+       classList=new ArrayList<>();
+       classList.add(classModel);
+       MyPreferences.getInstance().saveJoinedClassList(classList);
+       ScheduleAlarmManager.setReminder(context,RateAlarmReceiver.class,classModel);
+         LogUtils.debug("Class finish alert set for the "+classModel.getTitle()+" else");
+
+         return;
+     }
+
+     }
+
+
+
+ public static void removeSavedClass(int classSessionId,Context context){
+        try{
+            List<ClassModel> classList=  MyPreferences.getInstance().getJoinedClassList();
+            if(classList!=null&&classList.size()>0){
+                for (ClassModel model:classList) {
+                    if(model.getClassSessionId()==classSessionId){
+                        classList.remove(model);
+                    }
+                }
+                MyPreferences.getInstance().saveJoinedClassList(classList);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+         ScheduleAlarmManager.cancelReminder(context,RateAlarmReceiver.class,classSessionId);
+         return;
+
+
+ }
+ public static void removeAllSavedClasses(List<ClassModel> classList, Context context){
+     List<ClassModel> classListEmpty=new ArrayList<>();
+     if(classList!=null && classList.size()>0){
+         for (ClassModel model:classList) {
+             ScheduleAlarmManager.cancelReminder(context,RateAlarmReceiver.class,model.getClassSessionId());
+         }
+     }
+         MyPreferences.getInstance().saveJoinedClassList(classListEmpty);
+    }
+ public static List<ClassModel>  getSavedClasses(){
+     return  MyPreferences.getInstance().getJoinedClassList();
+ }
+
 
     public static User getUser() {
         if (user == null) {
@@ -98,4 +168,21 @@ public class TempStorage {
         TempStorage.user = user;
         MyPreferences.getInstance().saveUser(user);
     }
+    public static List<ClassModel> filterclassList(List<ClassModel> classList,ClassModel classModel){
+        try{
+            List<ClassModel> filteredClassList = new ArrayList<>();
+            for (ClassModel model:classList) {
+                if(model.getClassSessionId()==classModel.getClassSessionId()){
+                    filteredClassList.add(model);
+                }
+            }
+
+            return filteredClassList;
+        }catch (Exception e){
+           return null;
+        }
+
+    }
+
+
 }

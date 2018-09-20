@@ -1,6 +1,7 @@
 package com.p5m.me.utils;
 
 import java.text.DateFormatSymbols;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,9 +21,14 @@ public class DateUtils {
     private static SimpleDateFormat classDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
     private static SimpleDateFormat classDateSec = new SimpleDateFormat("dd-mm-yyyy", Locale.ENGLISH);
     private static SimpleDateFormat classDateExpiry = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+    private static SimpleDateFormat classDateTime = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.ENGLISH);
     private static SimpleDateFormat classDateFormat = new SimpleDateFormat("EEE, MMM d, yyyy", Locale.ENGLISH);
     private static SimpleDateFormat packageDateFormat = new SimpleDateFormat("MMM d, yyyy", Locale.ENGLISH);
     private static SimpleDateFormat notificationDate = new SimpleDateFormat("h:mm a, MMM d", Locale.ENGLISH);
+    private static SimpleDateFormat classRatingDate = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
+    private static SimpleDateFormat classTime24Format = new SimpleDateFormat("HH:mm");
+    private static SimpleDateFormat classTime12Format = new SimpleDateFormat("hh:mm aa");
+
 
     public static String getMonthName(int monthCode) {
         String month = "wrong";
@@ -143,6 +149,16 @@ public class DateUtils {
         }
         return "";
     }
+    public static String getRatingDate(long time){
+        try {
+            return classRatingDate.format(new Date(time));
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+        return "";
+    }
+
 
     public static String getTransactionDate(long date) {
         try {
@@ -209,5 +225,18 @@ public class DateUtils {
         }
 
         return timing;
+    }
+
+    public static Date getClassDate(String classDate,String classTime){
+        try {
+            String time24 = classTime24Format.format(classTime12Format.parse(classTime));
+            Date classDateObject = classDateTime.parse(classDate+" "+time24);
+
+            return classDateObject;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+            }
+
     }
 }

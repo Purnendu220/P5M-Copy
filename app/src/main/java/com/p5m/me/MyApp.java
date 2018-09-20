@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
@@ -19,6 +20,8 @@ import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.RefrenceWrapper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +75,8 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
 
         TempStorage.setUser(this, MyPreferences.initialize(this).getUser());
         TempStorage.version = myVersionName;
-
+        String android_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+        RefrenceWrapper.getRefrenceWrapper(this).setDeviceId(android_id);
         LogUtils.debug("version : " + TempStorage.version);
 
         IntentFilter filter = new IntentFilter();

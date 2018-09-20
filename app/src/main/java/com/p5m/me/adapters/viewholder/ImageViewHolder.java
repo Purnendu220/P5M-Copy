@@ -58,6 +58,9 @@ public class ImageViewHolder extends RecyclerView.ViewHolder {
                     } else if (showIn == AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE) {
                         MixPanel.trackTrainerProfileEvent(AppConstants.Tracker.LOOKING_GALLERY);
                     }
+                    else if(showIn == AppConstants.AppNavigation.SHOWN_IN_RATING_LIST){
+                        MixPanel.trackRatingImageView();
+                    }
                 }
             });
         } else {

@@ -1,9 +1,13 @@
 package com.p5m.me.restapi;
 
 import com.p5m.me.data.City;
+import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.MediaResponse;
 import com.p5m.me.data.PackageLimitModel;
 import com.p5m.me.data.PromoCode;
+import com.p5m.me.data.RatingParamModel;
+import com.p5m.me.data.RatingResponseModel;
+import com.p5m.me.data.UnratedClassData;
 import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
@@ -17,6 +21,7 @@ import com.p5m.me.data.main.User;
 import com.p5m.me.data.request.ChangePasswordRequest;
 import com.p5m.me.data.request.ChooseFocusRequest;
 import com.p5m.me.data.request.ClassListRequest;
+import com.p5m.me.data.request.ClassRatingRequest;
 import com.p5m.me.data.request.DeviceUpdate;
 import com.p5m.me.data.request.JoinClassRequest;
 import com.p5m.me.data.request.PaymentUrlRequest;
@@ -34,6 +39,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
@@ -89,6 +95,10 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.ALL_CLASS_CATEGORY)
     Call<ResponseModel<List<ClassActivity>>> getClassCategoryList();
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.ALL_RATING_PARAMETERS)
+    Call<ResponseModel<List<RatingParamModel>>> getClassRatingPArameters();
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.GET_USER_LIST +"/{" + AppConstants.ApiParamKey.USER_CATEGORY_ID + "}")
@@ -152,7 +162,9 @@ public interface ApiService {
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.FINISHED_CLASS_LIST + "/{" + AppConstants.ApiParamKey.USER_ID + "}")
-    Call<ResponseModel<List<ClassModel>>> getFinishedClassList(@Path(AppConstants.ApiParamKey.USER_ID) int userId);
+    Call<ResponseModel<List<ClassModel>>> getFinishedClassList(@Path(AppConstants.ApiParamKey.USER_ID) int userId,
+                                                               @Query(AppConstants.ApiParamKey.PAGE) int page,
+                                                               @Query(AppConstants.ApiParamKey.SIZE) int size);
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.FAV_TRAINER_LIST)
@@ -234,6 +246,34 @@ public interface ApiService {
     Call<ResponseModel<String>> changePass(@Body ChangePasswordRequest changePasswordRequest);
 
     @Headers("Content-type: application/json")
+    @POST(AppConstants.Url.CLASS_RATING)
+    Call<ResponseModel<RatingResponseModel>> submitClassRating(@Body ClassRatingRequest classRatingRequest);
+
+    @Headers("Content-type: application/json")
+    @PUT(AppConstants.Url.CLASS_RATING+ "/{" + AppConstants.ApiParamKey.RATING_ID + "}")
+    Call<ResponseModel<RatingResponseModel>> updateClassRating(@Path(AppConstants.ApiParamKey.RATING_ID) long ratingId,@Body ClassRatingRequest classRatingRequest);
+
+
+
+    @Headers("Content-type: application/json")
+    @PATCH(AppConstants.Url.CLASS_RATING_PATCH)
+    Call<ResponseModel<RatingResponseModel>> publishClassRating(@Path("id") long id,@Body ClassRatingRequest classRatingRequest);
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.CLASS_UNRATED)
+    Call<ResponseModel<UnratedClassData>> unRatedClassList(@Query(AppConstants.ApiParamKey.USER_ID) int userId,
+                                                           @Query(AppConstants.ApiParamKey.PAGE) int page,
+                                                           @Query(AppConstants.ApiParamKey.SIZE) int size);
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.CLASS_RATING)
+    Call<ResponseModel<ClassRatingUserData>> getRatingList(@Query(AppConstants.ApiParamKey.CLASS_ID) int classId,
+                                                           @Query(AppConstants.ApiParamKey.STATUS_LIST) int statusList,
+                                                           @Query(AppConstants.ApiParamKey.PAGE) int page,
+                                                           @Query(AppConstants.ApiParamKey.SIZE) int size);
+
+
+    @Headers("Content-type: application/json")
     @POST(AppConstants.Url.PROMO_CODE)
     Call<ResponseModel<PromoCode>> applyPromoCode(@Body PromoCodeRequest promoCodeRequest);
 
@@ -242,6 +282,7 @@ public interface ApiService {
     Call<ResponseModel<List<TrainerModel>>> getTrainers(@Query(AppConstants.ApiParamKey.GYM_ID) int gymId,
                                                         @Query(AppConstants.ApiParamKey.PAGE) int page,
                                                         @Query(AppConstants.ApiParamKey.SIZE) int size);
+
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.NOTIFICATIONS)
@@ -264,6 +305,10 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.WISH_DELETE + "/{" + AppConstants.ApiParamKey.ID + "}")
     Call<ResponseModel<String>> removeFromWishList(@Path(AppConstants.ApiParamKey.ID) int wishId);
+
+    @Headers("Content-type: application/json")
+    @DELETE(AppConstants.Url.DELETE_MEDIA)
+    Call<ResponseModel<User>> deleteMedia(@Path(AppConstants.ApiParamKey.ID) long mediaId);
 
     @Headers("Content-type: application/json")
     @DELETE(AppConstants.Url.UN_JOIN_CLASS + "/{" + AppConstants.ApiParamKey.ID + "}")

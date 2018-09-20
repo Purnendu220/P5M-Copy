@@ -159,7 +159,35 @@
                                     android:textAllCaps="true"
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/button_join"
-                                    android:visibility="visible" />
+                                    android:visibility="gone" />
+                                <Button
+                                    android:id="@+id/buttonClassRating"
+                                    android:layout_width="@dimen/button_width_inner_list"
+                                    android:layout_height="@dimen/button_height_inner_list"
+                                    android:background="@drawable/join_rect"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:letterSpacing="@dimen/button_letter_spacing_little"
+                                    android:gravity="center"
+                                    android:text="@string/rate_class_tilte"
+                                    android:textAllCaps="true"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_extra_small"
+                                    android:visibility="gone"
+                                    />
+                                <Button
+                                    android:id="@+id/buttonEditRating"
+                                    android:layout_width="@dimen/button_width_inner_list"
+                                    android:layout_height="@dimen/button_height_inner_list"
+                                    android:background="@drawable/button_grey"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:letterSpacing="@dimen/button_letter_spacing_little"
+                                    android:gravity="center"
+                                    android:text="@string/edit_rating"
+                                    android:textAllCaps="true"
+                                    android:textColor="@color/dark_grey"
+                                    android:textSize="@dimen/text_extra_small"
+                                    android:visibility="gone"
+                                    />
                             </LinearLayout>
                         </FrameLayout>
 
