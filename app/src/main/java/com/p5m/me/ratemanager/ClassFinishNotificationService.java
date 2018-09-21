@@ -52,7 +52,12 @@ public class ClassFinishNotificationService extends Service {
             }
             if(model!=null){
                 showNotification(model);
-                TempStorage.removeSavedClass(model.getClassSessionId(),mContext);
+                try{
+                    TempStorage.removeSavedClass(model.getClassSessionId(),mContext);
+
+                }catch (Exception e){
+                 e.printStackTrace();
+                }
 
             }
         }
