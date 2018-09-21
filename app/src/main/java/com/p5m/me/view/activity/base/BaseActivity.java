@@ -42,6 +42,7 @@ public class BaseActivity extends AppCompatActivity {
         MixPanel.setup(activity);
 
         networkCommunicator = NetworkCommunicator.getInstance(context);
+        LogUtils.debug(activityRef.getComponentName().getClassName());
 
         if (!showActionBar) {
             requestWindowFeature(Window.FEATURE_NO_TITLE);

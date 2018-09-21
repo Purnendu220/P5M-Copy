@@ -21,13 +21,13 @@ public class DateUtils {
     private static SimpleDateFormat classDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
     private static SimpleDateFormat classDateSec = new SimpleDateFormat("dd-mm-yyyy", Locale.ENGLISH);
     private static SimpleDateFormat classDateExpiry = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-    private static SimpleDateFormat classDateTime = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.ENGLISH);
+    private static SimpleDateFormat classDateTime = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault());
     private static SimpleDateFormat classDateFormat = new SimpleDateFormat("EEE, MMM d, yyyy", Locale.ENGLISH);
     private static SimpleDateFormat packageDateFormat = new SimpleDateFormat("MMM d, yyyy", Locale.ENGLISH);
     private static SimpleDateFormat notificationDate = new SimpleDateFormat("h:mm a, MMM d", Locale.ENGLISH);
     private static SimpleDateFormat classRatingDate = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
-    private static SimpleDateFormat classTime24Format = new SimpleDateFormat("HH:mm");
-    private static SimpleDateFormat classTime12Format = new SimpleDateFormat("hh:mm aa");
+    private static SimpleDateFormat classTime24Format = new SimpleDateFormat("HH:mm",Locale.getDefault());
+    private static SimpleDateFormat classTime12Format = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
 
 
     public static String getMonthName(int monthCode) {

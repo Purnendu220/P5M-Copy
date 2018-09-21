@@ -22,7 +22,6 @@ public class ScheduleAlarmManager {
         String classTime=model.getToTime();
         int DAILY_REMINDER_REQUEST_CODE=model.getClassSessionId();
 
-        Calendar calendar = Calendar.getInstance();
         Calendar setcalendar = Calendar.getInstance();
         setcalendar.setTime(DateUtils.getClassDate(classDate,classTime));
         cancelReminder(context,cls,DAILY_REMINDER_REQUEST_CODE);
