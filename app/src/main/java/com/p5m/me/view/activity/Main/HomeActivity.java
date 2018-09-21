@@ -300,10 +300,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         }else{
             networkCommunicator.getUnratedClassList(0,1,this,true);
         }
-
-
-
-    }
+        }
 private void showAlert(ClassModel model){
     CustomRateAlertDialog   mCustomMatchDialog = new CustomRateAlertDialog(this,model, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
     try {

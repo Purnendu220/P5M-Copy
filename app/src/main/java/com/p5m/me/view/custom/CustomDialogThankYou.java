@@ -57,7 +57,7 @@ public class CustomDialogThankYou extends Dialog implements OnClickListener {
         setContentView(R.layout.view_thank_you_dialog);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         ButterKnife.bind(this);
-        setCancelable(false);
+        setCancelable(true);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(getWindow().getAttributes());
         lp.width = (int) (mContext.getResources().getDisplayMetrics().widthPixels * 0.90);

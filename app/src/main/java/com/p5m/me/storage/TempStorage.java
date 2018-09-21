@@ -125,12 +125,14 @@ public class TempStorage {
  public static void removeSavedClass(int classSessionId,Context context){
         try{
             List<ClassModel> classList=  MyPreferences.getInstance().getJoinedClassList();
+            List<ClassModel> classListToRemove=new ArrayList<>();
             if(classList!=null&&classList.size()>0){
                 for (ClassModel model:classList) {
                     if(model.getClassSessionId()==classSessionId){
-                        classList.remove(model);
+                        classListToRemove.remove(model);
                     }
                 }
+                classList.removeAll(classListToRemove);
                 MyPreferences.getInstance().saveJoinedClassList(classList);
             }
         }catch (Exception e){

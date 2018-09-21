@@ -711,9 +711,16 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
                 break;
             case NetworkCommunicator.RequestCode.UNRATED_CLASS_COUNT:
                 UnratedClassData classModels = ((ResponseModel<UnratedClassData>) response).data;
-                if(classModels!=null&&classModels.getCount()>1){
-                    isThereClassForRating=true;
+                if(model.getRatingResDto()!=null&&model.getRatingResDto().getRating()>0){
+                    if(classModels!=null&&classModels.getCount()>0){
+                        isThereClassForRating=true;
+                    }
+                }else{
+                    if(classModels!=null&&classModels.getCount()>1){
+                        isThereClassForRating=true;
+                    }
                 }
+
 
                 break;
             case NetworkCommunicator.RequestCode.RATING_PARAMS:

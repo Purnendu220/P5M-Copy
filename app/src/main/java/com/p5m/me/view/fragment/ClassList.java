@@ -180,6 +180,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
         recyclerViewClass.setLayoutManager(new LinearLayoutManager(activity));
         recyclerViewClass.setHasFixedSize(false);
+       // recyclerViewClass.scrollToPosition(0);
 
         try {
             ((SimpleItemAnimator) recyclerViewClass.getItemAnimator()).setSupportsChangeAnimations(false);
