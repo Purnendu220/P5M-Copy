@@ -12,9 +12,11 @@ import com.p5m.me.data.main.User;
 import com.p5m.me.ratemanager.RateAlarmReceiver;
 import com.p5m.me.ratemanager.ScheduleAlarmManager;
 import com.p5m.me.storage.preferences.MyPreferences;
+import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LogUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -112,7 +114,7 @@ public class TempStorage {
        classList=new ArrayList<>();
        classList.add(classModel);
        MyPreferences.getInstance().saveJoinedClassList(classList);
-       ScheduleAlarmManager.setReminder(context,RateAlarmReceiver.class,classModel);
+         ScheduleAlarmManager.setReminder(context,RateAlarmReceiver.class,classModel);
          LogUtils.debug("Class finish alert set for the "+classModel.getTitle()+" else");
 
          return;
@@ -123,6 +125,43 @@ public class TempStorage {
 
 
  public static void removeSavedClass(int classSessionId,Context context){
+        try{
+            List<ClassModel> classList=  MyPreferences.getInstance().getJoinedClassList();
+            List<ClassModel> classListToRemove=new ArrayList<>();
+            if(classList!=null&&classList.size()>0){
+                for (ClassModel model:classList) {
+                    if(model.getClassSessionId() == classSessionId){
+                        classListToRemove.add(model);
+                    }
+                }
+                classList.removeAll(classListToRemove);
+                MyPreferences.getInstance().saveJoinedClassList(classList);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+         ScheduleAlarmManager.cancelReminder(context,RateAlarmReceiver.class,classSessionId);
+         rescheduleAlarms(context);
+         return;
+
+
+ }
+ public static void rescheduleAlarms(Context context){
+     try{
+            List<ClassModel> classList=  MyPreferences.getInstance().getJoinedClassList();
+            if(classList!=null&&classList.size()>0){
+                for (ClassModel model:classList) {
+                   Date date=DateUtils.getClassDate(model.getClassDate(),model.getToTime());
+                   if(date.after(new Date())){
+                       ScheduleAlarmManager.setReminder(context,RateAlarmReceiver.class,model);
+                       }
+                }
+            } }catch (Exception e){
+e.printStackTrace();
+        }
+ }
+    public static void removeSavedClassOnly(int classSessionId,Context context){
         try{
             List<ClassModel> classList=  MyPreferences.getInstance().getJoinedClassList();
             List<ClassModel> classListToRemove=new ArrayList<>();
@@ -139,11 +178,10 @@ public class TempStorage {
             e.printStackTrace();
         }
 
-         ScheduleAlarmManager.cancelReminder(context,RateAlarmReceiver.class,classSessionId);
-         return;
+        return;
 
 
- }
+    }
  public static void removeAllSavedClasses(List<ClassModel> classList, Context context){
      List<ClassModel> classListEmpty=new ArrayList<>();
      if(classList!=null && classList.size()>0){

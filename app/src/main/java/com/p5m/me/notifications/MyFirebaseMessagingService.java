@@ -476,19 +476,7 @@ e.printStackTrace();
         }
     }
 
-    private void updateNotificationSchedule(List<ClassModel> models,long classSessionId,String fromTime,String toTime){
-        if(classSessionId!=0L&&classSessionId>0&&fromTime!=null&&toTime!=null){
-            for (ClassModel model:models) {
-          if(model.getClassSessionId()==classSessionId){
-              TempStorage.removeSavedClass((int)classSessionId,context);
-              model.setFromTime(fromTime);
-              model.setToTime(toTime);
-             TempStorage.setSavedClasses(model,context);
 
-          }
-        }
-        }
-    }
     private void setNotification(JSONObject jsonObject,long dataID){
         String title=jsonObject.optString(AppConstants.Notification.CLASS_TITLE);
         String classDate=jsonObject.optString(AppConstants.Notification.CLASS_DATE);

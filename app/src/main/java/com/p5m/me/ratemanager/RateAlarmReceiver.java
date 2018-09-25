@@ -23,7 +23,8 @@ public class RateAlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         LogUtils.debug("Alarm works");
         //ClassModel model = null;
-         int classSessionId = intent.getIntExtra(AppConstants.Pref.CLASS_MODEL,-1);
+
+        int classSessionId = intent.getIntExtra(AppConstants.Pref.CLASS_MODEL,-1);
         if(classSessionId>0){
             Intent myIntent2 = new Intent(context, ClassFinishNotificationService.class);
             myIntent2.putExtra(AppConstants.Pref.CLASS_MODEL,classSessionId);

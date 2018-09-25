@@ -328,7 +328,8 @@ public interface ApiService {
                                                         @Query(AppConstants.ApiParamKey.OBJECT_DATA_ID) int objectDataId,
                                                         @Query(AppConstants.ApiParamKey.MEDIA_FOR) String mediaFor,
                                                         @Query(AppConstants.ApiParamKey.MEDIA_TYPE) String mediaType,
-                                                        @Query(AppConstants.ApiParamKey.MEDIA_NAME) String mediaName);
+                                                        @Query(AppConstants.ApiParamKey.MEDIA_NAME) String mediaName,
+                                                        @Query(AppConstants.ApiParamKey.UNIQUE_CHAR) String uniqueChar);
 
     @Multipart
     @POST(AppConstants.Url.MEDIA_UPLOAD)
@@ -337,6 +338,7 @@ public interface ApiService {
                                                         @Query(AppConstants.ApiParamKey.OBJECT_DATA_ID) int objectDataId,
                                                         @Query(AppConstants.ApiParamKey.MEDIA_FOR) String mediaFor,
                                                         @Query(AppConstants.ApiParamKey.MEDIA_TYPE) String mediaType,
-                                                        @Query(AppConstants.ApiParamKey.MEDIA_NAME) String mediaName);
+                                                        @Query(AppConstants.ApiParamKey.MEDIA_NAME) String mediaName,
+                                                        @Query(AppConstants.ApiParamKey.UNIQUE_CHAR) String uniqueChar);
 
 }

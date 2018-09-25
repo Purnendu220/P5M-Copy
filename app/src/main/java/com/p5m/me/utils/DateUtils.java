@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -229,6 +230,8 @@ public class DateUtils {
 
     public static Date getClassDate(String classDate,String classTime){
         try {
+            TimeZone tz = TimeZone.getDefault();
+            classDateTime.setTimeZone(tz);
             String time24 = classTime24Format.format(classTime12Format.parse(classTime));
             Date classDateObject = classDateTime.parse(classDate+" "+time24);
 
@@ -237,6 +240,20 @@ public class DateUtils {
             e.printStackTrace();
             return null;
             }
+
+    }
+    public static Date getClassDate24hour(String classDate,String classtime){
+        try {
+            TimeZone tz = TimeZone.getDefault();
+            classDateTime.setTimeZone(tz);
+            String time24 = classTime.format(classtime);
+            Date classDateObject = classDateTime.parse(classDate+" "+time24);
+
+            return classDateObject;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
 
     }
 }

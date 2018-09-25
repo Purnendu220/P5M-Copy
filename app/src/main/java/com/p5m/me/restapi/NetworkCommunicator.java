@@ -46,6 +46,7 @@ import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.CommonUtillity;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 
@@ -997,6 +998,13 @@ public class NetworkCommunicator {
 
     public Call uploadUserImage(Context context, File file, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.PHOTO_UPLOAD;
+        String uniqueChar;
+        try{
+            uniqueChar= CommonUtillity.getnerateUniqueToken(context);
+        }catch (Exception e){
+            uniqueChar= System.currentTimeMillis()+"";
+        }
+
         LogUtils.debug("NetworkCommunicator hitting uploadImage");
 
         int mediaId = TempStorage.getUser().getUserProfileImageId();
@@ -1040,7 +1048,8 @@ public class NetworkCommunicator {
                 TempStorage.getUser().getId(),
                 "UserProfile",
                 "Image",
-                file.getName());
+                file.getName(),
+                uniqueChar);
 
         if (mediaId == 0) {
             call = RestServiceFactory.createService().uploadMediaImage(
@@ -1049,7 +1058,8 @@ public class NetworkCommunicator {
                     TempStorage.getUser().getId(),
                     "UserProfile",
                     "Image",
-                    file.getName());
+                    file.getName(),
+                    uniqueChar);
 
         }
 
@@ -1116,7 +1126,8 @@ public class NetworkCommunicator {
                      mediaId,
                     "rating",
                     "Image",
-                     file.getName());
+                     file.getName(),
+                selectedFileData.getSpecialToken());
         final File finalFile = file;
         call.enqueue(new RestCallBack<ResponseModel<MediaResponse>>(context) {
             @Override
