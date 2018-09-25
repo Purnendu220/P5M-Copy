@@ -296,12 +296,11 @@
     <string name="rate">Rate</string>
     <string name="rating_view">Rating View</string>
     <string name="studio_rating">CLASS RATING:</string>
-    <string name="review_based_on">based on %1s ratings</string>
+    <string name="review_based_on">based on %1s rating(s)</string>
     <string name="edit_rating">Edit Rating</string>
     <string name="selection_limiter_pix">Cant select more than %d images.</string>
     <string name="message_to_drag_up">Drag images up for gallery and Hold to select multiple images</string>
-
-
+    <string name="powered_by">Powered By</string>
 
 
 </resources>

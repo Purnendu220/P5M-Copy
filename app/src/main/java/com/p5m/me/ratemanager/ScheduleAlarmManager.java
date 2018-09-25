@@ -24,7 +24,6 @@ public class ScheduleAlarmManager {
 
         Calendar setcalendar = Calendar.getInstance();
         setcalendar.setTime(DateUtils.getClassDate(classDate,classTime));
-        cancelReminder(context,cls,DAILY_REMINDER_REQUEST_CODE);
 
         // Enable a receiver
         ComponentName receiver = new ComponentName(context, cls);
@@ -34,33 +33,14 @@ public class ScheduleAlarmManager {
                 PackageManager.DONT_KILL_APP);
 
         Intent intent1 = new Intent(context, cls);
+        intent1.setAction("com.p5m.me.DISPLAY_NOTIFICATION");
+
         intent1.putExtra(AppConstants.Pref.CLASS_MODEL,model.getClassSessionId());
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DAILY_REMINDER_REQUEST_CODE, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DAILY_REMINDER_REQUEST_CODE, intent1, 0);
         AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        am.setExact(AlarmManager.RTC_WAKEUP, setcalendar.getTimeInMillis(),pendingIntent);
+        am.set(AlarmManager.RTC_WAKEUP, setcalendar.getTimeInMillis(),pendingIntent);
     }
-    public static void setReminder(Context context, Class<?> cls,String classDate,String classTime)
-    {
-        int DAILY_REMINDER_REQUEST_CODE=5000;
 
-        Calendar calendar = Calendar.getInstance();
-        Calendar setcalendar = Calendar.getInstance();
-        setcalendar.setTime(DateUtils.getClassDate(classDate,classTime));
-        cancelReminder(context,cls,DAILY_REMINDER_REQUEST_CODE);
-
-        // Enable a receiver
-        ComponentName receiver = new ComponentName(context, cls);
-        PackageManager pm = context.getPackageManager();
-        pm.setComponentEnabledSetting(receiver,
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                PackageManager.DONT_KILL_APP);
-
-        Intent intent1 = new Intent(context, cls);
-        intent1.putExtra(AppConstants.Pref.CLASS_MODEL,5000);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DAILY_REMINDER_REQUEST_CODE, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        am.setExact(AlarmManager.RTC_WAKEUP, setcalendar.getTimeInMillis(),pendingIntent);
-    }
     public static void cancelReminder(Context context,Class<?> cls,int DAILY_REMINDER_REQUEST_CODE)
     {
         ComponentName receiver = new ComponentName(context, cls);
@@ -69,7 +49,7 @@ public class ScheduleAlarmManager {
 
         Intent intent1 = new Intent(context, cls);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
-                DAILY_REMINDER_REQUEST_CODE, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+                DAILY_REMINDER_REQUEST_CODE, intent1, 0);
         AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         am.cancel(pendingIntent);
         pendingIntent.cancel();

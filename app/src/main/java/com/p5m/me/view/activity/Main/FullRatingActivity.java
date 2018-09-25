@@ -30,6 +30,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -60,6 +61,7 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CommonUtillity;
+import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.ImageUtility;
 import com.p5m.me.utils.ImageUtils;
@@ -76,6 +78,7 @@ import com.robertlevonyan.components.picker.PickerDialog;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -137,6 +140,11 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
 
     @BindView(R.id.progressBarRating)
     public ProgressBar progressBarRating;
+
+    @BindView(R.id.parentLayout)
+    public RelativeLayout parentLayout;
+
+
 
     ArrayList<SelectedFileData> fileList = new ArrayList<>();
     int ratingValue;
@@ -553,7 +561,7 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
 //        if(fileList!=null&&fileList.size()>0){
 //            request.setmIsImage(fileList.size());
 //        }
-        if(editTextComment.getText().toString()!=null&&editTextComment.getText().toString().length()>0){
+        if(editTextComment.getText().toString()!=null&&editTextComment.getText().toString().trim().length()>0){
             request.setRemark(editTextComment.getText().toString());
         }
         if(selectedRatingParam!=null&&selectedRatingParam.size()>0){
@@ -581,7 +589,7 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
 //        if(deletedRatingFeedbackIds!=null&&deletedRatingFeedbackIds.size()>0){
 //            request.setDeletedRatingFeedbackIds(deletedRatingFeedbackIds);
 //        }
-        if((fileList==null||fileList.size()==0)&&(editTextComment.getText().toString()==null&&editTextComment.getText().toString().length()==0)){
+        if((fileList==null||fileList.size()==0)&&(editTextComment.getText().toString()==null||editTextComment.getText().toString().trim().length()==0)){
             request.setIsPublish(1);
             request.setStatus(1);
         }
@@ -602,7 +610,7 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
 //        if(fileList!=null&&fileList.size()>0){
 //            request.setmIsImage(fileList.size());
 //        }
-        if(editTextComment.getText().toString()!=null&&editTextComment.getText().toString().length()>0){
+        if(editTextComment.getText().toString()!=null&&editTextComment.getText().toString().trim().length()>0){
             request.setRemark(editTextComment.getText().toString());
         }
         if(selectedRatingParam!=null&&selectedRatingParam.size()>0){
@@ -614,7 +622,7 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
             }
             request.setRatingFeedbackAreaList(ratingFeedbackAreaList);
         }
-        if((fileList==null||fileList.size()==0)&&(editTextComment.getText().toString()==null||editTextComment.getText().toString().length()==0)){
+        if((fileList==null||fileList.size()==0)&&(editTextComment.getText().toString()==null||editTextComment.getText().toString().trim().length()==0)){
             request.setIsPublish(1);
             request.setStatus(1);
         }
@@ -645,12 +653,11 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
                 RatingResponseModel responseModel = ((ResponseModel<RatingResponseModel>) response).data;
                 ratingId=responseModel.getId();
                 processFileUpload();
-                TempStorage.removeSavedClass(model.getClassSessionId(),context);
-                break;
+                    TempStorage.removeSavedClass(model.getClassSessionId(),context);
+                    break;
             case NetworkCommunicator.RequestCode.CLASS_RATING_UPDATE:
                 RatingResponseModel responseModelUpdate = ((ResponseModel<RatingResponseModel>) response).data;
                 processFileUpload();
-                TempStorage.removeSavedClass(model.getClassSessionId(),context);
                 break;
             case NetworkCommunicator.RequestCode.CLASS_RATING_PUBLISH:
                 handleSubmitButton(mContext.getResources().getString(R.string.submit_review),true,View.GONE);
@@ -824,7 +831,6 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
         CustomDialogThankYou mCustomThankyouDialog = new CustomDialogThankYou(RefrenceWrapper.getRefrenceWrapper(this).getActivity(),isThereClassForRating,navigatinFrom);
         try {
             mCustomThankyouDialog.show();
-            ScheduleAlarmManager.cancelReminder(context,RateAlarmReceiver.class,model.getClassSessionId());
             }catch (Exception e){
             e.printStackTrace();
         }
@@ -837,6 +843,7 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
     private void handleSubmitButton(String message,boolean isClikable,int visibility){
         rateClasses.setText(message);
         rateClasses.setClickable(isClikable);
+        parentLayout.setEnabled(isClikable);
         progressBarRating.setVisibility(visibility);
     }
 
