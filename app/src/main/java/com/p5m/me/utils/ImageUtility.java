@@ -30,7 +30,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 
 
-import com.fxn.pix.Pix;
+import com.p5m.me.fxn.pix.Pix;
 
 import java.io.File;
 import java.io.FileInputStream;

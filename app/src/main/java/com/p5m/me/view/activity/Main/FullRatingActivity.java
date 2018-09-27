@@ -35,7 +35,6 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.fxn.pix.Pix;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayout;
 import com.p5m.me.R;
@@ -50,9 +49,11 @@ import com.p5m.me.data.UnratedClassData;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.MediaModel;
 import com.p5m.me.data.request.ClassRatingRequest;
+import com.p5m.me.data.request.PublishRequest;
 import com.p5m.me.data.request.RatingFeedbackAreaList;
 import com.p5m.me.data.request.SelectedFileData;
 import com.p5m.me.eventbus.EventBroadcastHelper;
+import com.p5m.me.fxn.pix.Pix;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.ratemanager.RateAlarmReceiver;
 import com.p5m.me.ratemanager.ScheduleAlarmManager;
@@ -277,7 +278,7 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
                     if(ratingId>0){
                         if(isAllResponseReceived()){
                             if(isFileUploadCompleteSuccess()){
-                                networkCommunicator.publishClassRating(ratingId,new ClassRatingRequest(1),this,false);
+                                networkCommunicator.publishClassRating(ratingId,new PublishRequest(1),this,false);
                                 return;
                             }
                         }
@@ -628,7 +629,7 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
         }
     else{
             if(isFileUploadCompleteSuccess()){
-              if(editTextComment.getText().toString()!=null&&editTextComment.getText().toString().length()>0){
+                if(editTextComment.getText().toString()==null||editTextComment.getText().toString().trim().length()==0){
                   request.setIsPublish(1);
                   request.setStatus(1);
               }else{
@@ -816,7 +817,7 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
     private void publishReview(){
         if(isAllResponseReceived()){
             if(isFileUploadCompleteSuccess()){
-                networkCommunicator.publishClassRating(ratingId,new ClassRatingRequest(1),this,false);
+                networkCommunicator.publishClassRating(ratingId,new PublishRequest(1),this,false);
                 return;
             }
             handleSubmitButton(mContext.getResources().getString(R.string.retry_review),true,View.GONE);

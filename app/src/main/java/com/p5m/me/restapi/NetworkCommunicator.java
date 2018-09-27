@@ -37,6 +37,7 @@ import com.p5m.me.data.request.LoginRequest;
 import com.p5m.me.data.request.LogoutRequest;
 import com.p5m.me.data.request.PaymentUrlRequest;
 import com.p5m.me.data.request.PromoCodeRequest;
+import com.p5m.me.data.request.PublishRequest;
 import com.p5m.me.data.request.RegistrationRequest;
 import com.p5m.me.data.request.SelectedFileData;
 import com.p5m.me.data.request.UserInfoUpdate;
@@ -1238,7 +1239,7 @@ public class NetworkCommunicator {
         return call;
     }
 
-    public Call publishClassRating(long ratingId,ClassRatingRequest classRatingRequest, final RequestListener requestListener, boolean useCache) {
+    public Call publishClassRating(long ratingId, PublishRequest classRatingRequest, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.CLASS_RATING_PUBLISH;
         Call<ResponseModel<RatingResponseModel>> call = apiService.publishClassRating(ratingId,classRatingRequest);
         LogUtils.debug("NetworkCommunicator hitting changePass");

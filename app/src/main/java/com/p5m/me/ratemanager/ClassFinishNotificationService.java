@@ -86,11 +86,9 @@ try {
         Intent navigationIntent = HomeActivity.createIntent(mContext, AppConstants.Tab.TAB_FIND_CLASS, 0,model);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(mContext);
         stackBuilder.addNextIntentWithParentStack(navigationIntent);
-
         stackBuilder.editIntentAt(0).putExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, true);
 
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(NOTIFICATION, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         CharSequence text = String.format(getString(R.string.rate_class_message),model.getTitle());
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {

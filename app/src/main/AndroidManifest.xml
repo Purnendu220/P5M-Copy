@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -50,21 +51,13 @@
             android:name=".view.activity.Main.DeepLinkActivity"
             android:label="${appName}"
             android:screenOrientation="portrait">
-            <intent-filter android:autoVerify="true">
+            <intent-filter android:autoVerify="true" android:label="@string/p5m_app">
                 <action android:name="android.intent.action.VIEW" />
-                <data android:scheme="flowersbutton"></data>
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-            </intent-filter>
-            <intent-filter android:label="@string/p5m_app">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                   <data
-                    android:host="${hostName}"
-                    android:scheme="http" />
+                   <data android:scheme="http"
+                    android:host="qa.profive.co"
+                     />
             </intent-filter>
         </activity>
 
@@ -283,6 +276,11 @@
             android:screenOrientation="portrait"
 
             ></activity>
+        <activity
+            android:name=".fxn.pix.Pix"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+          ></activity>
     </application>
 
 </manifest>
