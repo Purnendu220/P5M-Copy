@@ -464,11 +464,13 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 case CLASS_PURCHASE_WITH_PACKAGE:
                     classModel.setUserJoinStatus(true);
                     EventBroadcastHelper.sendPackagePurchasedForClass(classModel);
+                    EventBroadcastHelper.classAutoJoin(context,classModel);
                     HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE);
                     break;
                 case SPECIAL_CLASS:
                     classModel.setUserJoinStatus(true);
                     EventBroadcastHelper.sendClassPurchased(classModel);
+                    EventBroadcastHelper.classAutoJoin(context,classModel);
                     HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE);
                     break;
             }

@@ -66,6 +66,11 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     public static void openActivity(Context context) {
         context.startActivity(new Intent(context, EditProfileActivity.class));
     }
+    public static Intent createIntent(Context context) {
+        Intent intent = new Intent(context, EditProfileActivity.class);
+        return intent;
+    }
+
 
     @BindView(R.id.editTextNameFirst)
     public EditText editTextNameFirst;

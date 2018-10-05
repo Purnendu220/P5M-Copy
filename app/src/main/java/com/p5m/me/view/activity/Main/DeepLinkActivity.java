@@ -49,18 +49,28 @@ public class DeepLinkActivity extends BaseActivity {
                     Intent navigationIntent = null;
 
                     if (getIntent().getData().toString().contains("/share/classes/")) {
-
                         int classSessionId = Integer.valueOf(url.substring(url.indexOf("/share/classes/") + "/share/classes/".length(), url.lastIndexOf("/")));
                         navigationIntent = ClassProfileActivity.createIntent(context, classSessionId, AppConstants.AppNavigation.NAVIGATION_FROM_SHARE);
 
                     } else if (getIntent().getData().toString().contains("/share/gym/")) {
-
                         int gymId = Integer.valueOf(url.substring(url.indexOf("/share/gym/") + "/share/gym/".length(), url.lastIndexOf("/")));
                         navigationIntent = GymProfileActivity.createIntent(context, gymId, AppConstants.AppNavigation.NAVIGATION_FROM_SHARE);
 
                     } else if (getIntent().getData().toString().contains("/share/trainer/")) {
-
                         int trainerId = Integer.valueOf(url.substring(url.indexOf("/share/trainer/") + "/share/trainer/".length(), url.lastIndexOf("/")));
+                        navigationIntent = TrainerProfileActivity.createIntent(context, trainerId, AppConstants.AppNavigation.NAVIGATION_FROM_SHARE);
+
+                    }
+                   else if (getIntent().getData().toString().contains("/classes/")) {
+                        int classSessionId = Integer.valueOf(url.substring(url.indexOf("/classes/") + "/classes/".length(), url.lastIndexOf("/")));
+                        navigationIntent = ClassProfileActivity.createIntent(context, classSessionId, AppConstants.AppNavigation.NAVIGATION_FROM_SHARE);
+
+                    } else if (getIntent().getData().toString().contains("/gym/")) {
+                        int gymId = Integer.valueOf(url.substring(url.indexOf("/gym/") + "/gym/".length(), url.lastIndexOf("/")));
+                        navigationIntent = GymProfileActivity.createIntent(context, gymId, AppConstants.AppNavigation.NAVIGATION_FROM_SHARE);
+
+                    } else if (getIntent().getData().toString().contains("/trainer/")) {
+                        int trainerId = Integer.valueOf(url.substring(url.indexOf("/trainer/") + "/trainer/".length(), url.lastIndexOf("/")));
                         navigationIntent = TrainerProfileActivity.createIntent(context, trainerId, AppConstants.AppNavigation.NAVIGATION_FROM_SHARE);
 
                     }
@@ -68,6 +78,26 @@ public class DeepLinkActivity extends BaseActivity {
                         navigationIntent = MemberShip.createIntent(context, AppConstants.AppNavigation.NAVIGATION_FROM_DEEPLINK_ACTIVITY);
 
                     }
+                    else if(getIntent().getData().toString().contains("/trainers")){
+                        navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_TRAINER, 0);
+
+                    }
+                    else if(getIntent().getData().toString().contains("/userschedule")){
+                        navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, 0);
+
+                    }
+                    else if(getIntent().getData().toString().contains("/notifications")){
+                        navigationIntent = NotificationActivity.createIntent(context);
+
+                    }
+                    else if(getIntent().getData().toString().contains("/editprofile")){
+                        navigationIntent = EditProfileActivity.createIntent(context);
+
+                    }
+                    else if(getIntent().getData().toString().contains("/profile")){
+                        navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_MY_PROFILE, 0);
+                    }
+
                     else {
 
                         navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);

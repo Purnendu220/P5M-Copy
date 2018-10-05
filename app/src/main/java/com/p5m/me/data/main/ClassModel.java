@@ -45,6 +45,16 @@ public class ClassModel implements java.io.Serializable {
     private float rating;
     private ClassRatingListData ratingResDto;
 
+    private String fitnessLevel;
+
+    public String getFitnessLevel() {
+        return fitnessLevel;
+    }
+
+    public void setFitnessLevel(String fitnessLevel) {
+        this.fitnessLevel = fitnessLevel;
+    }
+
     public ClassModel(String title, String classDate, String fromTime, String toTime, long dataID) {
         this.title=title;
         this.classDate=classDate;

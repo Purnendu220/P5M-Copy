@@ -113,6 +113,11 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         }
 
         ButterKnife.bind(activity);
+        if(getIntent()!=null){
+            INITIAL_POSITION = getIntent().getIntExtra(AppConstants.DataKey.HOME_TAB_POSITION,
+                    AppConstants.Tab.TAB_FIND_CLASS);
+        }
+
         RefrenceWrapper.getRefrenceWrapper(this).setActivity(this);
         buyClasses.setOnClickListener(this);
         GlobalBus.getBus().register(this);

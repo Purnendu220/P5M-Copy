@@ -113,7 +113,9 @@ public class EventBroadcastHelper {
     public static void sendclassRating(Context context,String className){
         GlobalBus.getBus().post(new Events.ClassRating(className))  ;
     }
-
+    public static void classAutoJoin(Context context,ClassModel classModel){
+        GlobalBus.getBus().post(new Events.ClassAutoJoin(classModel))  ;
+    }
     public static void sendPackagePurchasedForClass(ClassModel classModel) {
         if (classModel.isUserJoinStatus()) {
             classModel.setAvailableSeat(classModel.getAvailableSeat() - 1);

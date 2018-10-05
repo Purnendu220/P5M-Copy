@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:background="@color/float_transparent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="350dp"
+        android:gravity="center"
+        android:background="@color/float_transparent"
+        >
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-30dp"
+            android:background="@color/float_transparent"
+            android:src="@drawable/thankyou_popup"
+            android:elevation="@dimen/margin_14"
+            android:visibility="gone"
+            >
+        </ImageView>
+
+
+        <LinearLayout
+            android:id="@+id/linearlayoutTopPart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center"
+            android:orientation="vertical"
+            android:background="@color/white"
+            >
+            <TextView
+                android:id="@+id/textViewthank_you"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="30dp"
+                android:textSize="@dimen/margin_16"
+                android:text="@string/add_more_time"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium"
+                android:textAllCaps="true"
+                />
+
+
+            <TextView
+                android:id="@+id/textViewReveiwSubmitted"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="@dimen/margin_20"
+                android:textSize="@dimen/text_extra_large"
+                android:text="Purchase more time without changing your current plan.This is one time package that does not reset any prevoius gym visits."
+                android:textColor="@color/black"
+                />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_margin="@dimen/margin_20"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/margin_10"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="1 week"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_extra_extra_large" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_5"
+                android:gravity="center"
+                android:text="2.5 KWD"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_large" />
+
+        </LinearLayout>
+
+
+        <nl.dionsegijn.steppertouch.StepperTouch
+            android:id="@+id/stepperTouch"
+            android:layout_width="@dimen/margin_100"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            app:stepperBackgroundColor="@color/colorAccent"
+            app:stepperTextColor="@color/colorAccent"
+            android:layout_marginRight="@dimen/margin_10"
+
+
+
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linearlayoutTopPart"
+            android:visibility="visible"
+            android:background="@color/white"
+            >
+            <TextView
+                android:id="@+id/textViewCancel"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bottom_text_button_height"
+                android:background="@drawable/theme_bottom_text_button_book"
+                android:clickable="true"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:letterSpacing="@dimen/button_letter_spacing"
+                android:text="@string/got_it"
+                android:textAllCaps="true"
+                android:textSize="@dimen/text_large"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/margin_15"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutRatePast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linearlayoutTopPart"
+            android:background="@color/white"
+            android:visibility="visible"
+
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_margin="@dimen/margin_15"
+                >
+                <TextView
+                    android:id="@+id/textViewIWillDoLater"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/bottom_text_button_height"
+                    android:background="@drawable/theme_bottom_text_button_light_grey"
+                    android:clickable="true"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:letterSpacing="@dimen/button_letter_spacing"
+                    android:text="@string/cancel"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/text_small"
+                    android:textColor="@color/rating_blank"
+                    android:layout_weight="1"
+                    android:layout_marginRight="@dimen/margin_10"
+
+                    />
+                <TextView
+                    android:id="@+id/textViewRatePrevious"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/bottom_text_button_height"
+                    android:background="@drawable/theme_bottom_text_button_book"
+                    android:clickable="true"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:letterSpacing="@dimen/button_letter_spacing"
+                    android:text="@string/proceed"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/text_small"
+                    android:textColor="@color/white"
+                    android:layout_weight="1"
+
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>
