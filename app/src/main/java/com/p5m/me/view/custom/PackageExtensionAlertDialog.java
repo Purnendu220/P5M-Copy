@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.p5m.me.R;
+import com.p5m.me.data.main.User;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.RefrenceWrapper;
 
@@ -25,12 +26,14 @@ public class PackageExtensionAlertDialog extends Dialog implements View.OnClickL
 
     private final int navigatinFrom;
     private Context mContext;
+    private User user;
 
 
-    public PackageExtensionAlertDialog(@NonNull Context context,int navigatinFrom) {
+    public PackageExtensionAlertDialog(@NonNull Context context,int navigatinFrom,User user) {
         super(context, R.style.AdvanceDialogTheme);
         this.mContext=context;
         this.navigatinFrom=navigatinFrom;
+        this.user=user;
         init(context);
     }
     private void init(Context context) {

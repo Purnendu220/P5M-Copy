@@ -443,19 +443,19 @@ public class Helper {
     public static void shareGym(Context context, int id, String name) {
 
         String url = getUrlBase() + "/share/gym/" + id + "/" + name;
-        shareUrl(context, url);
+        shareUrl(context, url.replace(" ", ""));
     }
 
     public static void shareTrainer(Context context, int id, String name) {
 
         String url = getUrlBase() + "/share/trainer/" + id + "/" + name;
-        shareUrl(context, url);
+        shareUrl(context, url.replace(" ", ""));
     }
 
     public static void shareClass(Context context, int id, String name) {
-
+        CharSequence classShareMessage = String.format(context.getString(R.string.share_message),name+"");
         String url = getUrlBase() + "/share/classes/" + id + "/" + name;
-        shareUrl(context, url);
+        shareUrl(context, classShareMessage+url.replace(" ", ""));
     }
 
     private static String getUrlBase() {
@@ -468,7 +468,7 @@ public class Helper {
 
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, url.replace(" ", ""));
+        sendIntent.putExtra(Intent.EXTRA_TEXT, url);
         sendIntent.setType("text/plain");
         context.startActivity(Intent.createChooser(sendIntent, "Share with"));
     }

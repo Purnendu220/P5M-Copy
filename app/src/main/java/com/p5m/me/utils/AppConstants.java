@@ -354,4 +354,11 @@ public class AppConstants {
         public static final int IMAGE_PICKER = 1003;
 
     }
+
+  public class FitnessLevel {
+        public static final String CLASS_LEVEL_BASIC = "BASIC";
+      public static final String CLASS_LEVEL_INTERMEDIATE = "INTERMEDIATE";
+      public static final String CLASS_LEVEL_ADVANCED = "ADVANCED";
+
+  }
 }

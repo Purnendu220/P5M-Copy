@@ -38,6 +38,9 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.textViewMore)
     public TextView textViewMore;
 
+    @BindView(R.id.textViewExtendPackage)
+    public TextView textViewExtendPackage;
+
     private final Context context;
 
     public ProfileHeaderViewHolder(View itemView) {
@@ -158,6 +161,12 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                 }
             });
 
+            textViewExtendPackage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ProfileHeaderViewHolder.this, textViewExtendPackage, user, position);
+                }
+            });
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

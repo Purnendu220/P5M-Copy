@@ -311,6 +311,8 @@
     <string name="invite_friends">Invite Friends</string>
     <string name="add_more_time">Add More Time</string>
     <string name="proceed">Proceed</string>
+    <string name="share_message">Hey. Let\'s workout together. Join %1s with me.\n</string>
+    <string name="extend_package">Extend Package</string>
 
 
 </resources>

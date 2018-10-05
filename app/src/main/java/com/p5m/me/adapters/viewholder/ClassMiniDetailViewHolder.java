@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.p5m.me.R;
@@ -71,6 +72,14 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
 
     private final Context context;
     private int shownInScreen;
+    @BindView(R.id.relativeLayoutFitnessLevel)
+    public RelativeLayout relativeLayoutFitnessLevel;
+
+    @BindView(R.id.imageViewClassFitnessLevel)
+    public ImageView imageViewClassFitnessLevel;
+
+    @BindView(R.id.textViewFitnessLevel)
+    public TextView textViewFitnessLevel;
 
     public ClassMiniDetailViewHolder(View view, int shownInScreen) {
         super(view);
@@ -212,6 +221,29 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                  }
 
             }
+            if(model.getFitnessLevel()!=null && !model.getFitnessLevel().isEmpty()){
+                relativeLayoutFitnessLevel.setVisibility(View.GONE);
+                switch (model.getFitnessLevel()){
+                    case AppConstants.FitnessLevel.CLASS_LEVEL_BASIC:
+                        imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_get);
+                        break;
+                    case AppConstants.FitnessLevel.CLASS_LEVEL_INTERMEDIATE:
+                        imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_set);
+
+                        break;
+                    case AppConstants.FitnessLevel.CLASS_LEVEL_ADVANCED:
+                        imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_pro);
+
+                        break;
+                    default:
+                        relativeLayoutFitnessLevel.setVisibility(View.GONE);
+                        break;
+                }
+                textViewFitnessLevel.setText(model.getFitnessLevel());
+            }else{
+                relativeLayoutFitnessLevel.setVisibility(View.GONE);
+            }
+
             textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
 
             buttonJoin.setOnClickListener(new View.OnClickListener() {

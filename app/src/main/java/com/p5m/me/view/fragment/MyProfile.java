@@ -43,6 +43,7 @@ import com.p5m.me.view.activity.Main.MemberShip;
 import com.p5m.me.view.activity.Main.SettingActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.activity.custom.MyRecyclerView;
+import com.p5m.me.view.custom.PackageExtensionAlertDialog;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -311,6 +312,18 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
                     Helper.openImageViewer(context, activity, view, myProfileAdapter.getUser().getProfileImage());
                 }
                 break;
+            case R.id.textViewExtendPackage:
+                if(myProfileAdapter.getUser().getUserPackageDetailDtoList()!=null){
+                    try {
+                        PackageExtensionAlertDialog dialog=new PackageExtensionAlertDialog(context,AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE,myProfileAdapter.getUser()) ;
+                        dialog.show();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                }
+                break;
+
 
         }
     }

@@ -225,7 +225,40 @@
                         android:textSize="@dimen/text_medium"
                         android:textStyle="normal" />
                 </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutFitnessLevel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    >
 
+                    <ImageView
+                        android:id="@+id/imageViewClassFitnessLevel"
+                        style="@style/ClassIconSmall"
+                        android:src="@drawable/class_level_get" />
+
+                    <TextView
+                        android:id="@+id/textViewFitnessLevel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="@dimen/text_icon_gap"
+                        android:layout_marginTop="@dimen/text_drawable_adjustment"
+                        android:layout_toEndOf="@+id/imageViewClassFitnessLevel"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left"
+                        android:letterSpacing="@dimen/text_medium_letter_spacing"
+                        android:lineSpacingExtra="@dimen/line_spacing_extra"
+                        android:text="Intermidieate"
+                        android:textColor="@color/theme_dark_text"
+                        android:textSize="@dimen/text_medium"
+                        android:textStyle="normal"
+                        />
+                </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
 
