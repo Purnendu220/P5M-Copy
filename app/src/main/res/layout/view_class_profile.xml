@@ -12,7 +12,8 @@
         android:clipToPadding="false"
         android:orientation="vertical"
         tools:layout_editor_absoluteX="453dp"
-        tools:layout_editor_absoluteY="0dp">
+        tools:layout_editor_absoluteY="0dp"
+        tools:ignore="MissingConstraints">
 
         <LinearLayout
             android:layout_width="match_parent"
