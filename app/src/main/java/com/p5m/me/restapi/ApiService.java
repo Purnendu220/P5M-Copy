@@ -26,6 +26,7 @@ import com.p5m.me.data.request.DeviceUpdate;
 import com.p5m.me.data.request.JoinClassRequest;
 import com.p5m.me.data.request.PaymentUrlRequest;
 import com.p5m.me.data.request.PromoCodeRequest;
+import com.p5m.me.data.request.PublishRequest;
 import com.p5m.me.data.request.RegistrationRequest;
 import com.p5m.me.data.request.UserInfoUpdate;
 import com.p5m.me.data.request.WishListRequest;
@@ -257,7 +258,7 @@ public interface ApiService {
 
     @Headers("Content-type: application/json")
     @PATCH(AppConstants.Url.CLASS_RATING_PATCH)
-    Call<ResponseModel<RatingResponseModel>> publishClassRating(@Path("id") long id,@Body ClassRatingRequest classRatingRequest);
+    Call<ResponseModel<RatingResponseModel>> publishClassRating(@Path("id") long id,@Body PublishRequest classRatingRequest);
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.CLASS_UNRATED)

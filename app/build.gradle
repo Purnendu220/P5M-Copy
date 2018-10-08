@@ -68,7 +68,7 @@ android {
             buildConfigField "boolean", "IS_PRODUCTION", "false"
             buildConfigField "String", "MIXPANEL_KEY", '\"705daac4d807e105c1ddc350c9324ca2\"'
             buildConfigField "String", "SENDER_ID", '\"109210713388\"'
-            buildConfigField "String", "BASE_URL", '\"http://192.168.0.19:8080\"'
+            buildConfigField "String", "BASE_URL", '\"http://192.168.0.39:8080\"'
             buildConfigField "String", "BASE_URL_MIDL", '\"/profive-midl/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://qa.profive.co\"'
             manifestPlaceholders = [hostName: "qa.profive.co", appName: "P5M LOCAL",fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
@@ -131,6 +131,8 @@ dependencies {
     implementation "com.android.support:design:${SUPPORT_PACKAGE_VERSION}"
     implementation "com.android.support:support-v4:${SUPPORT_PACKAGE_VERSION}"
     implementation "com.android.support:cardview-v7:${SUPPORT_PACKAGE_VERSION}"
+    implementation "com.android.support:exifinterface:${SUPPORT_PACKAGE_VERSION}"
+
     /////////////////////////////////HTTP API////////////////////////////////////////
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
@@ -154,6 +156,7 @@ dependencies {
     implementation 'com.google.android:flexbox:0.3.2'
     implementation 'com.google.firebase:firebase-core:15.0.2'
     implementation 'com.google.firebase:firebase-messaging:15.0.2'
+
     implementation 'com.google.android.gms:play-services-location:15.0.1'
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
     implementation 'com.google.android.gms:play-services-places:15.0.1'
@@ -168,7 +171,7 @@ dependencies {
     /////////////////////////////////MIX PANEL//////////////////////////////////////////
     implementation 'com.mixpanel.android:mixpanel-android:5.4.0'
     implementation 'com.google.android.gms:play-services-gcm:15.0.1'
-    implementation 'com.fxn769:pix:1.2.5'
+    implementation 'io.fotoapparat.fotoapparat:library:2.3.1'
     implementation 'me.zhanghai.android.materialratingbar:library:1.3.1'
 
 }

@@ -26,13 +26,14 @@ public class RateAlarmReceiver extends BroadcastReceiver {
 
         int classSessionId = intent.getIntExtra(AppConstants.Pref.CLASS_MODEL,-1);
         if(classSessionId>0){
-            Intent myIntent2 = new Intent(context, ClassFinishNotificationService.class);
-            myIntent2.putExtra(AppConstants.Pref.CLASS_MODEL,classSessionId);
-            context.startService(myIntent2);
-
-
-
-        }
+            try{
+                Intent myIntent2 = new Intent(context, ClassFinishNotificationService.class);
+                myIntent2.putExtra(AppConstants.Pref.CLASS_MODEL,classSessionId);
+                context.startService(myIntent2);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            }
 
     }
 
