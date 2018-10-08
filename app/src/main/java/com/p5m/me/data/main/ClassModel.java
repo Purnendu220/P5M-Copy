@@ -45,6 +45,25 @@ public class ClassModel implements java.io.Serializable {
     private float rating;
     private ClassRatingListData ratingResDto;
 
+    private String fitnessLevel;
+    private boolean isExpired;
+
+    public boolean isExpired() {
+        return isExpired;
+    }
+
+    public void setExpired(boolean expired) {
+        isExpired = expired;
+    }
+
+    public String getFitnessLevel() {
+        return fitnessLevel;
+    }
+
+    public void setFitnessLevel(String fitnessLevel) {
+        this.fitnessLevel = fitnessLevel;
+    }
+
     public ClassModel(String title, String classDate, String fromTime, String toTime, long dataID) {
         this.title=title;
         this.classDate=classDate;

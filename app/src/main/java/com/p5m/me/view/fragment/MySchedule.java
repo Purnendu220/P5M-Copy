@@ -2,6 +2,7 @@ package com.p5m.me.view.fragment;
 
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
@@ -15,13 +16,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
 import com.p5m.me.adapters.ScheduleAdapter;
 import com.p5m.me.analytics.MixPanel;
+import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
+import com.p5m.me.helper.Helper;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.Main.NotificationActivity;
 import com.p5m.me.view.activity.Main.SearchActivity;
@@ -49,6 +55,7 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
 
     private ScheduleAdapter scheduleAdapter;
     private String[] titleTabs = new String[]{"Upcoming", "Wish List"};
+    private boolean isVisibleToUser=false;
 
     public MySchedule() {
     }
@@ -69,7 +76,35 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
     public void notificationReceived(Events.NotificationCountUpdated notificationCountUpdated) {
         setNotificationIcon();
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void ClassAutoJoin(Events.ClassAutoJoin data) {
+        final ClassModel classModel=data.classModel;
+            if(classModel!=null){
+                try{
+                    DialogUtils.showBasicMessage(context,"",
+                            "Successfully joined " + classModel.getTitle()
+                            ,context.getResources().getString(R.string.invite_friends), new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    dialog.dismiss();
+                                    Helper.shareClass(context, classModel.getClassSessionId(), classModel.getTitle());
 
+                                }
+                            },  context.getResources().getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+
+            }
+
+
+    }
     private void setNotificationIcon() {
         int count = MyPreferences.initialize(context).getNotificationCount();
 
@@ -173,5 +208,11 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
                 SearchActivity.openActivity(context, activity, view, AppConstants.AppNavigation.NAVIGATION_FROM_SCHEDULE);
                 break;
         }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        this.isVisibleToUser=isVisibleToUser;
+        super.setUserVisibleHint(isVisibleToUser);
     }
 }

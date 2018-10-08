@@ -5,8 +5,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
@@ -446,14 +448,24 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
                 MixPanel.trackJoinClass(navigationFrom, classModel);
                 if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
-                    DialogUtils.showBasicMessage(context, "Successfully joined " + classModel.getTitle(),
-                            "OK", new MaterialDialog.SingleButtonCallback() {
+                    DialogUtils.showBasicMessage(context,"",
+                            "Successfully joined " + classModel.getTitle()
+                          ,context.getResources().getString(R.string.invite_friends), new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    dialog.dismiss();
+                                    Helper.shareClass(context, classModel.getClassSessionId(), classModel.getTitle());
+                                    finish();
+
+                                }
+                            },  context.getResources().getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();
                                     finish();
                                 }
                             });
+
                 }
                 break;
 

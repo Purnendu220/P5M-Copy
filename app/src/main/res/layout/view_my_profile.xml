@@ -123,6 +123,21 @@
                         android:textColor="@color/theme_accent_text"
                         android:textSize="@dimen/text_medium"
                         android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/textViewExtendPackage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left"
+                        android:letterSpacing="@dimen/text_medium_letter_spacing"
+                        android:lineSpacingExtra="@dimen/line_spacing_extra"
+                        android:text="@string/extend_package"
+                        android:paddingTop="12dp"
+
+                        android:textColor="@color/theme_accent_text"
+                        android:textSize="@dimen/text_medium"
+                        android:textStyle="bold"
+                        android:visibility="gone"/>
 
                 </LinearLayout>
             </LinearLayout>

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.p5m.me.R;
@@ -95,6 +96,15 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.textViewClassRating)
     public TextView textViewClassRating;
+
+    @BindView(R.id.relativeLayoutFitnessLevel)
+    public RelativeLayout relativeLayoutFitnessLevel;
+
+    @BindView(R.id.imageViewClassFitnessLevel)
+    public ImageView imageViewClassFitnessLevel;
+
+    @BindView(R.id.textViewFitnessLevel)
+    public TextView textViewFitnessLevel;
 
     private final Context context;
     private int shownInScreen;
@@ -224,7 +234,28 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
                 linearLayoutStudioRating.setVisibility(View.GONE);
                 }
 
+             if(model.getFitnessLevel()!=null && !model.getFitnessLevel().isEmpty()){
+                relativeLayoutFitnessLevel.setVisibility(View.GONE);
+                switch (model.getFitnessLevel()){
+                    case AppConstants.FitnessLevel.CLASS_LEVEL_BASIC:
+                        imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_get);
+                        break;
+                    case AppConstants.FitnessLevel.CLASS_LEVEL_INTERMEDIATE:
+                        imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_set);
 
+                        break;
+                    case AppConstants.FitnessLevel.CLASS_LEVEL_ADVANCED:
+                        imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_pro);
+
+                        break;
+                        default:
+                            relativeLayoutFitnessLevel.setVisibility(View.GONE);
+                            break;
+                            }
+                textViewFitnessLevel.setText(model.getFitnessLevel());
+                }else{
+                 relativeLayoutFitnessLevel.setVisibility(View.GONE);
+            }
             textViewClassName.setText(model.getTitle());
             textViewClassCategory.setText(model.getClassCategory());
             textViewClassDate.setText(DateUtils.getClassDate(model.getClassDate()));

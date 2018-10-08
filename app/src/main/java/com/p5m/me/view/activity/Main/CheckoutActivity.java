@@ -3,6 +3,7 @@ package com.p5m.me.view.activity.Main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
@@ -27,6 +28,7 @@ import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
@@ -42,9 +44,12 @@ import static com.p5m.me.view.activity.Main.CheckoutActivity.CheckoutFor.SPECIAL
 
 public class CheckoutActivity extends BaseActivity implements View.OnClickListener, NetworkCommunicator.RequestListener {
 
+    private Handler handler;
+    private Runnable nextScreenRunnable;
+
     /*
-        if user is purchasing a package
-        */
+            if user is purchasing a package
+            */
     public static void openActivity(Context context, Package aPackage) {
         CheckoutActivity.aPackage = aPackage;
         CheckoutActivity.classModel = null;
@@ -144,6 +149,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         setContentView(R.layout.activity_checkout);
 
         ButterKnife.bind(activity);
+        handler = new Handler();
 
         setData();
 
@@ -465,16 +471,28 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     classModel.setUserJoinStatus(true);
                     EventBroadcastHelper.sendPackagePurchasedForClass(classModel);
                     HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE);
+                    sendAutoJoinEvent();
                     break;
                 case SPECIAL_CLASS:
                     classModel.setUserJoinStatus(true);
                     EventBroadcastHelper.sendClassPurchased(classModel);
                     HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE);
+                    sendAutoJoinEvent();
                     break;
             }
         }
     }
+    private void sendAutoJoinEvent() {
+        nextScreenRunnable = new Runnable() {
+            @Override
+            public void run() {
+                EventBroadcastHelper.classAutoJoin(context,classModel);
 
+            }
+        };
+
+        handler.postDelayed(nextScreenRunnable, 1000);
+    }
     private void applyPromocode(PromoCode promo){
         try {
             final TextView textViewOk = (TextView) materialDialog.findViewById(R.id.textViewOk);

@@ -175,7 +175,12 @@ public class Helper {
     }
 
     public static void setJoinStatusProfile(Context context, TextView view, ClassModel model) {
-        if (model.isUserJoinStatus()) {
+        if(model.isExpired()){
+            view.setText(context.getString(R.string.expired));
+            view.setBackgroundResource(R.drawable.theme_bottom_text_button_full);
+            view.setEnabled(false);
+        }
+        else if (model.isUserJoinStatus()) {
             view.setText(context.getString(R.string.booked));
             view.setBackgroundResource(R.drawable.theme_bottom_text_button_booked);
             view.setEnabled(false);
@@ -189,7 +194,6 @@ public class Helper {
             view.setEnabled(true);
         }
     }
-
     public static void setFavButtonTemp(Context context, Button buttonFav, boolean isFollow) {
         setFavButton(context, buttonFav, isFollow);
     }
@@ -443,19 +447,19 @@ public class Helper {
     public static void shareGym(Context context, int id, String name) {
 
         String url = getUrlBase() + "/share/gym/" + id + "/" + name;
-        shareUrl(context, url);
+        shareUrl(context, url.replace(" ", ""));
     }
 
     public static void shareTrainer(Context context, int id, String name) {
 
         String url = getUrlBase() + "/share/trainer/" + id + "/" + name;
-        shareUrl(context, url);
+        shareUrl(context, url.replace(" ", ""));
     }
 
     public static void shareClass(Context context, int id, String name) {
-
+        CharSequence classShareMessage = String.format(context.getString(R.string.share_message),name+"");
         String url = getUrlBase() + "/share/classes/" + id + "/" + name;
-        shareUrl(context, url);
+        shareUrl(context, classShareMessage+url.replace(" ", ""));
     }
 
     private static String getUrlBase() {
@@ -468,7 +472,7 @@ public class Helper {
 
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, url.replace(" ", ""));
+        sendIntent.putExtra(Intent.EXTRA_TEXT, url);
         sendIntent.setType("text/plain");
         context.startActivity(Intent.createChooser(sendIntent, "Share with"));
     }

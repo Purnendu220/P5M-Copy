@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.p5m.me.R;
@@ -67,6 +68,14 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.layoutLocation)
     public View layoutLocation;
+    @BindView(R.id.layoutFitnessLevel)
+    public LinearLayout layoutFitnessLevel;
+
+    @BindView(R.id.imageViewClassFitnessLevel)
+    public ImageView imageViewClassFitnessLevel;
+
+    @BindView(R.id.textViewFitnessLevel)
+    public TextView textViewFitnessLevel;
 
     private final Context context;
     private int shownInScreen;
@@ -153,6 +162,28 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
                 textViewClassRating.setText(model.getRating()+"");
             }else{
                 linearLayoutClassRating.setVisibility(View.GONE);
+            }
+            if(model.getFitnessLevel()!=null && !model.getFitnessLevel().isEmpty()){
+                layoutFitnessLevel.setVisibility(View.GONE);
+                switch (model.getFitnessLevel()){
+                    case AppConstants.FitnessLevel.CLASS_LEVEL_BASIC:
+                        imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_get);
+                        break;
+                    case AppConstants.FitnessLevel.CLASS_LEVEL_INTERMEDIATE:
+                        imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_set);
+
+                        break;
+                    case AppConstants.FitnessLevel.CLASS_LEVEL_ADVANCED:
+                        imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_pro);
+
+                        break;
+                    default:
+                        layoutFitnessLevel.setVisibility(View.GONE);
+                        break;
+                }
+                textViewFitnessLevel.setText(model.getFitnessLevel());
+            }else{
+                layoutFitnessLevel.setVisibility(View.GONE);
             }
 
             itemView.setOnClickListener(new View.OnClickListener() {

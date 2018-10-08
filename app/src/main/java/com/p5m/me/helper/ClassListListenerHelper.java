@@ -158,7 +158,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         }
 
         TextView textViewOption2 = viewRoot.findViewById(R.id.textViewOption2);
-        textViewOption2.setText(context.getString(R.string.share));
+        textViewOption2.setText(context.getString(R.string.invite_friends));
 
         textViewOption2.setOnClickListener(new View.OnClickListener() {
             @Override

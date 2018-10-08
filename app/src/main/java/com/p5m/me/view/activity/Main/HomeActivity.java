@@ -99,6 +99,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     private int currentTab =INITIAL_POSITION;
 
     private Handler handler;
+    public  CustomRateAlertDialog   mCustomMatchDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +114,11 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         }
 
         ButterKnife.bind(activity);
+        if(getIntent()!=null){
+            INITIAL_POSITION = getIntent().getIntExtra(AppConstants.DataKey.HOME_TAB_POSITION,
+                    AppConstants.Tab.TAB_FIND_CLASS);
+        }
+
         RefrenceWrapper.getRefrenceWrapper(this).setActivity(this);
         buyClasses.setOnClickListener(this);
         GlobalBus.getBus().register(this);
@@ -138,7 +144,9 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         }catch (Exception e){
             e.printStackTrace();
         }
-        openRateAlertDialog();
+            openRateAlertDialog();
+
+
         networkCommunicator.getRatingParameters(this,true);
         //startTimerForGoToNextScreen();
 
@@ -325,6 +333,14 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+          if(mCustomMatchDialog!=null&&mCustomMatchDialog.isShowing()){
+            mCustomMatchDialog.dismiss();
+        }
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.buyClasses:{
@@ -345,14 +361,17 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         }
         }
 private void showAlert(ClassModel model){
-    CustomRateAlertDialog   mCustomMatchDialog = new CustomRateAlertDialog(this,model, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
-    try {
-        mCustomMatchDialog.show();
-        refrenceWrapper.setCustomRateAlertDialog(mCustomMatchDialog);
-    }catch (Exception e){
-        e.printStackTrace();
+    if(currentTab == AppConstants.Tab.TAB_FIND_CLASS) {
+        mCustomMatchDialog = new CustomRateAlertDialog(this,model, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
+        try {
+            mCustomMatchDialog.show();
+            refrenceWrapper.setCustomRateAlertDialog(mCustomMatchDialog);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return;
     }
-    return;
+
 }
 
     @Override
@@ -383,11 +402,6 @@ private void showAlert(ClassModel model){
 
 
         }
-    }
-    private void clearAllNotifications(){
-        NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancelAll();
-
     }
 
     public void navigateToMyProfile(){

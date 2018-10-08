@@ -29,6 +29,12 @@ public class Events {
        }
 
     }
+    public static class ClassAutoJoin{
+        public ClassModel classModel;
+        public ClassAutoJoin(ClassModel classModel){
+            this.classModel=classModel;
+        }
+    }
 
     public static class PackagePurchased {
     }
