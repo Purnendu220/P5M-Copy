@@ -175,7 +175,12 @@ public class Helper {
     }
 
     public static void setJoinStatusProfile(Context context, TextView view, ClassModel model) {
-        if (model.isUserJoinStatus()) {
+        if(model.isExpired()){
+            view.setText(context.getString(R.string.expired));
+            view.setBackgroundResource(R.drawable.theme_bottom_text_button_full);
+            view.setEnabled(false);
+        }
+        else if (model.isUserJoinStatus()) {
             view.setText(context.getString(R.string.booked));
             view.setBackgroundResource(R.drawable.theme_bottom_text_button_booked);
             view.setEnabled(false);
@@ -189,7 +194,6 @@ public class Helper {
             view.setEnabled(true);
         }
     }
-
     public static void setFavButtonTemp(Context context, Button buttonFav, boolean isFollow) {
         setFavButton(context, buttonFav, isFollow);
     }

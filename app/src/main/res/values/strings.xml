@@ -105,13 +105,15 @@
     <string name="booked">Booked</string>
     <string name="full">Full</string>
     <string name="book">Book</string>
+    <string name="expired">Session Expired</string>
+
 
     <string name="email"><font size="10">E-mail</font></string>
     <string name="password"><font size="5">Password</font></string>
     <string name="reminders">REMINDERS:</string>
     <string name="studio_instruction">STUDIO INSTRUCTION:</string>
     <string name="special_note_by_trainer">SPECIAL NOTE BY THE TRAINER:</string>
-    <string name="reserve_class">RESERVE CLASS</string>
+    <string name="reserve_class">BOOK CLASS</string>
     <string name="favourite">Favourite</string>
     <string name="favorited">Favorited</string>
     <string name="favorite_trainer">Favourite Trainer</string>
@@ -266,7 +268,7 @@
     <string name="apply_filter">Apply Filter</string>
     <string name="please_enter_your_email">Please enter your email</string>
     <string name="p5m_app">P5M App</string>
-    <string name="share">Share</string>
+    <string name="share">Invite Friends</string>
     <string name="sure_unjoin">Are you sure you want to unjoin ?</string>
     <string name="mention_email">Please mention your email first</string>
     <string name="total_locations">Locations (%1$d)</string>
