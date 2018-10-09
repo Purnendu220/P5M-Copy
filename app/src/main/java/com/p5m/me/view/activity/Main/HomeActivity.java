@@ -148,50 +148,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
 
         networkCommunicator.getRatingParameters(this,true);
-        //startTimerForGoToNextScreen();
-
-    }
-//    private void startTimerForGoToNextScreen() {
-//            Handler handler = null;
-//            handler = new Handler();
-//
-//            Runnable nextScreenRunnable,nextScreenRunnable1,nextScreenRunnable2,nextScreenRunnable3;
-//            nextScreenRunnable = new Runnable() {
-//                @Override
-//                public void run() {
-//                    TempStorage.setSavedClasses(new ClassModel("Test Class 1","24-09-2018","02:10 PM","03:45 PM",System.currentTimeMillis()),getApplicationContext());
-//
-//                }
-//            };
-//            nextScreenRunnable1 = new Runnable() {
-//                @Override
-//                public void run() {
-//                    TempStorage.setSavedClasses(new ClassModel("Test Class 2","24-09-2018","02:10 PM","03:46 PM",System.currentTimeMillis()),getApplicationContext());
-//
-//                }
-//            };
-//            nextScreenRunnable2 = new Runnable() {
-//                @Override
-//                public void run() {
-//                    TempStorage.setSavedClasses(new ClassModel("Test Class 3","24-09-2018","02:10 PM","03:47 PM",System.currentTimeMillis()),getApplicationContext());
-//
-//                }
-//            };
-//            nextScreenRunnable3 = new Runnable() {
-//                @Override
-//                public void run() {
-//                    TempStorage.setSavedClasses(new ClassModel("Test Class 4","24-09-2018","02:10 PM","03:48 PM",System.currentTimeMillis()),getApplicationContext());
-//
-//                }
-//            };
-//            handler.postDelayed(nextScreenRunnable, 1000);
-//        handler.postDelayed(nextScreenRunnable1, 2000);
-//        handler.postDelayed(nextScreenRunnable2, 3000);
-//        handler.postDelayed(nextScreenRunnable3, 4000);
-//
-//
-//    }
-
+        }
 
 
     @Override
