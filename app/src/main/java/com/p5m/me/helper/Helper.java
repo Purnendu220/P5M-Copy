@@ -445,15 +445,17 @@ public class Helper {
     }
 
     public static void shareGym(Context context, int id, String name) {
+        CharSequence gymShareMessage = String.format(context.getString(R.string.share_message_gym),name+"");
 
         String url = getUrlBase() + "/share/gym/" + id + "/" + name;
-        shareUrl(context, url.replace(" ", ""));
+        shareUrl(context, gymShareMessage+url.replace(" ", ""));
     }
 
     public static void shareTrainer(Context context, int id, String name) {
+        CharSequence trainerShareMessage = String.format(context.getString(R.string.share_message_trainer),name+"");
 
         String url = getUrlBase() + "/share/trainer/" + id + "/" + name;
-        shareUrl(context, url.replace(" ", ""));
+        shareUrl(context, trainerShareMessage+url.replace(" ", ""));
     }
 
     public static void shareClass(Context context, int id, String name) {
