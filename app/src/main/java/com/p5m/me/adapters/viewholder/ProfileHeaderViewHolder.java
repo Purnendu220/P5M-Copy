@@ -65,6 +65,7 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                     R.drawable.profile_holder_big, imageView);
 
             if (userPackageInfo.havePackages) {
+                textViewExtendPackage.setVisibility(View.VISIBLE);
                 if(user.isBuyMembership()){
                     textViewRecharge.setVisibility(View.VISIBLE);
 
@@ -144,6 +145,7 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                 }
                 /************************************************************************/
             } else {
+                textViewExtendPackage.setVisibility(View.GONE);
 
                 /************************NO PACKAGE******************************/
                 textViewPackage.setText(Html.fromHtml("<b>" + 0 + "</b> " + context.getString(R.string.classes).toLowerCase()));
