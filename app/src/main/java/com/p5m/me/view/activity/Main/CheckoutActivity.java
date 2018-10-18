@@ -249,11 +249,9 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
             case EXTENSION:
                 String validUntill=DateUtils.getExtendedExpiryDate(userPackage.getExpiryDate(),selectedPacakageFromList.getDuration());
                 String message=String.format(mContext.getString(R.string.valid_intil),validUntill);
-
                 layoutSpecialClassDetails.setVisibility(View.VISIBLE);
                 layoutNormalClassDetails.setVisibility(View.GONE);
                 textViewPackageValidityExtend.setVisibility(View.VISIBLE);
-
                 layoutPromoCode.setVisibility(View.GONE);
                 buttonPromoCode.setVisibility(View.GONE);
                 textViewTopTitle.setVisibility(View.GONE);
