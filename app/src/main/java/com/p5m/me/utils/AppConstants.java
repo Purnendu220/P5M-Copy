@@ -332,6 +332,8 @@ public class AppConstants {
         public static final int NAVIGATION_FROM_NOTIFICATION_SCREEN = 60;
         public static final int NAVIGATION_FROM_SHARE = 61;
         public static final int NAVIGATION_FROM_DEEPLINK_ACTIVITY = 62;
+        public static final int NAVIGATION_FROM_MEMBERSHIP = 63;
+
 
     }
 

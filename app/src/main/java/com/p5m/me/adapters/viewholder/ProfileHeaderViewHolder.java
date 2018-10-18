@@ -11,6 +11,7 @@ import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.User;
+import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
@@ -42,6 +43,7 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
     public TextView textViewExtendPackage;
 
     private final Context context;
+    public UserPackage userpackageToExtend;
 
     public ProfileHeaderViewHolder(View itemView) {
         super(itemView);
@@ -89,6 +91,7 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                     textViewValidity.setText(Html.fromHtml("<b>" + daysLeftFromPackageExpiryDate + " " +
                             AppConstants.plural("day", daysLeftFromPackageExpiryDate) + "</b> " +
                             context.getString(R.string.profile_package_expiry)));
+                    userpackageToExtend = userPackageInfo.userPackageGeneral;
 
                 } else if (userPackageInfo.haveGeneralPackage && userPackageInfo.haveDropInPackage) {
                     textViewValidity.setVisibility(View.VISIBLE);
@@ -100,6 +103,7 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
 
                         textViewValidity.setText(Html.fromHtml("<b>" + daysLeftFromPackageExpiryDate + "</b> " +
                                 " " + AppConstants.plural("day", daysLeftFromPackageExpiryDate) + context.getString(R.string.profile_package_expiry)));
+                        userpackageToExtend = userPackageInfo.userPackageReady.get(0);
 
                         if (userPackageInfo.dropInPackageCount+userPackageInfo.generalPackageCount > 1) {
                             textViewMore.setVisibility(View.VISIBLE);
@@ -119,6 +123,8 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                         textViewValidity.setText(Html.fromHtml("<b>" + daysLeftFromPackageExpiryDate + " " +
                                 AppConstants.plural("day", daysLeftFromPackageExpiryDate) + "</b> " +
                                 context.getString(R.string.profile_package_expiry)));
+                        userpackageToExtend = userPackageInfo.userPackageGeneral;
+
 
                         textViewMore.setVisibility(View.VISIBLE);
                         String more = "+" + userPackageInfo.dropInPackageCount + " more " +
@@ -135,6 +141,7 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
 
                     textViewValidity.setText(Html.fromHtml("<b>" + daysLeftFromPackageExpiryDate + "</b> " +
                             " " + AppConstants.plural("day", daysLeftFromPackageExpiryDate) + context.getString(R.string.profile_package_expiry)));
+                    userpackageToExtend = userPackageInfo.userPackageReady.get(0);
 
                     if (userPackageInfo.dropInPackageCount > 1) {
                         textViewMore.setVisibility(View.VISIBLE);
@@ -166,7 +173,7 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
             textViewExtendPackage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    adapterCallbacks.onAdapterItemClick(ProfileHeaderViewHolder.this, textViewExtendPackage, user, position);
+                    adapterCallbacks.onAdapterItemClick(ProfileHeaderViewHolder.this, textViewExtendPackage, userpackageToExtend, position);
                 }
             });
             imageView.setOnClickListener(new View.OnClickListener() {

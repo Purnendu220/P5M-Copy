@@ -29,6 +29,7 @@ public class DateUtils {
     private static SimpleDateFormat classRatingDate = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
     private static SimpleDateFormat classTime24Format = new SimpleDateFormat("HH:mm",Locale.getDefault());
     private static SimpleDateFormat classTime12Format = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
+    private static SimpleDateFormat ExtendedDateFormat = new SimpleDateFormat("MMM d", Locale.ENGLISH);
 
 
     public static String getMonthName(int monthCode) {
@@ -84,6 +85,26 @@ public class DateUtils {
         }
         return 0;
     }
+
+    public static String getExtendedExpiryDate(String date,int days) {
+        try {
+            date = date + " 23:59:00";
+            Date expiryDate = classDateExpiry.parse(date);
+            return addDaysToDate(expiryDate,days*7);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+        return date;
+    }
+
+    public static String addDaysToDate(Date date,int days){
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.DATE, days);
+        String output = ExtendedDateFormat.format(c.getTime());
+        return output;
+        }
 
     public static int canJoinClass(String classDateText, String packageExpiryDateText) {
         try {

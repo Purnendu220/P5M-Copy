@@ -64,6 +64,9 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.button)
     public Button button;
 
+    @BindView(R.id.textViewExtendPackage)
+    public TextView textViewExtendPackage;
+
     private final Context context;
     private int shownInScreen;
 
@@ -90,6 +93,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
             // Package owned..
             if (data instanceof UserPackage) {
                 UserPackage model = (UserPackage) data;
+                textViewExtendPackage.setVisibility(View.VISIBLE);
                 textViewPackagePrice.setVisibility(View.GONE);
                 linearLayoutOffer.setVisibility(View.GONE);
                 textViewPackagePriceStrike.setVisibility(View.GONE);
@@ -133,6 +137,8 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                 if (data instanceof Package) {
                     Package model = (Package) data;
                     textViewPackagePrice.setVisibility(View.VISIBLE);
+                    textViewExtendPackage.setVisibility(View.GONE);
+
                     button.setText(R.string.select_plan);
                     button.setBackgroundResource(R.drawable.join_rect);
                     Helper.setPackageImage(imageViewHeader, model.getName());
@@ -205,6 +211,13 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                 @Override
                 public void onClick(View view) {
                     adapterCallbacks.onAdapterItemClick(MemberShipViewHolder.this, textViewViewLimit, data, position);
+                }
+            });
+
+            textViewExtendPackage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(MemberShipViewHolder.this, textViewExtendPackage, data, position);
                 }
             });
 

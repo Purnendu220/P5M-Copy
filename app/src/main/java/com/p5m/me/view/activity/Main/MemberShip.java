@@ -35,6 +35,7 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
+import com.p5m.me.view.custom.PackageExtensionAlertDialog;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -241,7 +242,8 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                 navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION ||
                 navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN ||
                 navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS||
-                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_DEEPLINK_ACTIVITY) {
+                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_DEEPLINK_ACTIVITY||
+                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MEMBERSHIP) {
 
             if (userPackageInfo.havePackages) {
 
@@ -331,6 +333,21 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                         DialogUtils.showBasicMessage(context, aPackage.getPackageName().toUpperCase(), "Ok", R.string.membership_drop_in_info);
                     }
                 }
+            }
+            break;
+
+            case R.id.textViewExtendPackage:{
+                if(model instanceof UserPackage){
+                    try {
+                        PackageExtensionAlertDialog dialog=new PackageExtensionAlertDialog(context,AppConstants.AppNavigation.NAVIGATION_FROM_MEMBERSHIP, (UserPackage) model) ;
+                        dialog.show();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                }
+
+
             }
             break;
         }

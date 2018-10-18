@@ -18,9 +18,11 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.PromoCode;
+import com.p5m.me.data.ValidityPackageList;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.PaymentUrl;
+import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.data.request.PaymentUrlRequest;
 import com.p5m.me.data.request.PromoCodeRequest;
 import com.p5m.me.eventbus.EventBroadcastHelper;
@@ -30,6 +32,7 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
@@ -39,6 +42,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.p5m.me.view.activity.Main.CheckoutActivity.CheckoutFor.CLASS_PURCHASE_WITH_PACKAGE;
+import static com.p5m.me.view.activity.Main.CheckoutActivity.CheckoutFor.EXTENSION;
 import static com.p5m.me.view.activity.Main.CheckoutActivity.CheckoutFor.PACKAGE;
 import static com.p5m.me.view.activity.Main.CheckoutActivity.CheckoutFor.SPECIAL_CLASS;
 
@@ -64,6 +68,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     public static void openActivity(Context context, Package aPackage, ClassModel classModel) {
         CheckoutActivity.aPackage = aPackage;
         CheckoutActivity.classModel = classModel;
+        CheckoutActivity.selectedPacakageFromList = null;
         CheckoutActivity.checkoutFor = CLASS_PURCHASE_WITH_PACKAGE;
 
         openActivity(context);
@@ -74,8 +79,19 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
      */
     public static void openActivity(Context context, ClassModel specialClassModel) {
         CheckoutActivity.aPackage = null;
+        CheckoutActivity.selectedPacakageFromList = null;
         CheckoutActivity.classModel = specialClassModel;
         CheckoutActivity.checkoutFor = SPECIAL_CLASS;
+
+        openActivity(context);
+    }
+    public static void openActivity(Context context, ValidityPackageList selectedPacakageFromList, UserPackage userPackage,int navigatedFrom) {
+        CheckoutActivity.aPackage = null;
+        CheckoutActivity.classModel = null;
+        CheckoutActivity.selectedPacakageFromList = selectedPacakageFromList;
+        CheckoutActivity.checkoutFor = EXTENSION;
+        CheckoutActivity.userPackage = userPackage;
+        CheckoutActivity.navigatinFrom = navigatedFrom;
 
         openActivity(context);
     }
@@ -89,12 +105,18 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     public enum CheckoutFor {
         PACKAGE,
         SPECIAL_CLASS,
-        CLASS_PURCHASE_WITH_PACKAGE
+        CLASS_PURCHASE_WITH_PACKAGE,
+        EXTENSION
     }
 
     private static Package aPackage;
     private static ClassModel classModel;
     private static CheckoutFor checkoutFor;
+    private static ValidityPackageList selectedPacakageFromList;
+    private static UserPackage userPackage;
+    private static int navigatinFrom;
+
+
 
     @BindView(R.id.textViewPackageName)
     TextView textViewPackageName;
@@ -139,6 +161,12 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     ViewGroup layoutSpecialClassDetails;
     @BindView(R.id.layoutNormalClassDetails)
     View layoutNormalClassDetails;
+
+    @BindView(R.id.validityUnit)
+    TextView validityUnit;
+
+    @BindView(R.id.textViewPackageValidityExtend)
+    TextView textViewPackageValidityExtend;
 
     private PromoCode promoCode;
     private MaterialDialog materialDialog;
@@ -216,6 +244,31 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 Helper.setPackageImage(imageViewPackageImage, "special");
 
                 setPrice();
+
+                break;
+            case EXTENSION:
+                String validUntill=DateUtils.getExtendedExpiryDate(userPackage.getExpiryDate(),selectedPacakageFromList.getDuration());
+                String message=String.format(mContext.getString(R.string.valid_intil),validUntill);
+
+                layoutSpecialClassDetails.setVisibility(View.VISIBLE);
+                layoutNormalClassDetails.setVisibility(View.GONE);
+                textViewPackageValidityExtend.setVisibility(View.VISIBLE);
+
+                layoutPromoCode.setVisibility(View.GONE);
+                buttonPromoCode.setVisibility(View.GONE);
+                textViewTopTitle.setVisibility(View.GONE);
+                textViewPackageName.setText(R.string.add_more_time);
+                textViewCancellationPolicyToggle.setText(R.string.terms);
+                textViewPrice.setText(selectedPacakageFromList.getCost() + " " + context.getString(R.string.currency));
+                textViewCancellationPolicy.setText(R.string.extend_term);
+                validityUnit.setText(selectedPacakageFromList.getDuration()+" Week(s) "+message);
+                textViewPackageValidityExtend.setText("Valid for " + userPackage.getPackageName()+" Package");
+
+                Helper.setPackageImage(imageViewPackageImage, "special");
+               setPrice();
+
+
+
 
                 break;
         }
@@ -305,6 +358,11 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
             case SPECIAL_CLASS:
                 textViewTotal.setText(classModel.getPrice() + " " + context.getString(R.string.currency));
                 textViewPay.setText("Pay " + classModel.getPrice() + " " + context.getString(R.string.currency));
+
+                break;
+            case EXTENSION:
+                textViewTotal.setText(selectedPacakageFromList.getCost() + " " + context.getString(R.string.currency));
+                textViewPay.setText("Pay " + selectedPacakageFromList.getCost() + " " + context.getString(R.string.currency));
 
                 break;
         }
@@ -411,6 +469,15 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                         classModel.getClassSessionId(), classModel.getGymBranchDetail().getGymId()), this, false);
             }
             break;
+            case EXTENSION: {
+                textViewPay.setText(context.getResources().getString(R.string.please_wait));
+                textViewPay.setEnabled(false);
+                PaymentUrlRequest paymentUrlRequest = new PaymentUrlRequest(TempStorage.getUser().getId(),selectedPacakageFromList.getId(),
+                        userPackage.getId(),"Extension");
+
+                networkCommunicator.purchasePackageForClass(paymentUrlRequest, this, false);
+            }
+            break;
         }
     }
 
@@ -421,13 +488,18 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 applyPromocode(((ResponseModel<PromoCode>) response).data);
                 break;
             case NetworkCommunicator.RequestCode.BUY_PACKAGE:
-                setPrice();
-                textViewPay.setEnabled(true);
+                PaymentUrl paymentUrlResponse=((ResponseModel<PaymentUrl>) response).data;
+                if(paymentUrlResponse.getCompleted()){
+                    redirectOnResult();
+                    }
+                    else{
+                    setPrice();
+                    textViewPay.setEnabled(true);
+                    String packageName = aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName();
+                    String couponCode = promoCode == null ? AppConstants.Tracker.NO_COUPON : promoCode.code;
+                    PaymentWebViewActivity.open(activity, couponCode, packageName, classModel, ((ResponseModel<PaymentUrl>) response).data);
 
-                String packageName = aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName();
-                String couponCode = promoCode == null ? AppConstants.Tracker.NO_COUPON : promoCode.code;
-
-                PaymentWebViewActivity.open(activity, couponCode, packageName, classModel, ((ResponseModel<PaymentUrl>) response).data);
+                }
                 break;
         }
     }
@@ -461,25 +533,43 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == AppConstants.ResultCode.PAYMENT_SUCCESS && resultCode == RESULT_OK) {
+            redirectOnResult();
 
-            switch (checkoutFor) {
-                case PACKAGE:
-                    EventBroadcastHelper.sendPackagePurchased();
-                    finish();
-                    break;
-                case CLASS_PURCHASE_WITH_PACKAGE:
-                    classModel.setUserJoinStatus(true);
-                    EventBroadcastHelper.sendPackagePurchasedForClass(classModel);
-                    HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE);
-                    sendAutoJoinEvent();
-                    break;
-                case SPECIAL_CLASS:
-                    classModel.setUserJoinStatus(true);
-                    EventBroadcastHelper.sendClassPurchased(classModel);
-                    HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE);
-                    sendAutoJoinEvent();
-                    break;
-            }
+        }
+    }
+
+    private void redirectOnResult(){
+        switch (checkoutFor) {
+            case PACKAGE:
+                EventBroadcastHelper.sendPackagePurchased();
+                finish();
+                break;
+            case CLASS_PURCHASE_WITH_PACKAGE:
+                classModel.setUserJoinStatus(true);
+                EventBroadcastHelper.sendPackagePurchasedForClass(classModel);
+                HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE);
+                sendAutoJoinEvent();
+                break;
+            case SPECIAL_CLASS:
+                classModel.setUserJoinStatus(true);
+                EventBroadcastHelper.sendClassPurchased(classModel);
+                HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE);
+                sendAutoJoinEvent();
+                break;
+            case EXTENSION:
+                if(navigatinFrom==AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE){
+                    HomeActivity.show(context, AppConstants.Tab.TAB_MY_PROFILE);
+
+                }
+                else if(navigatinFrom==AppConstants.AppNavigation.NAVIGATION_FROM_MEMBERSHIP){
+                    MemberShip.openActivity(context, navigatinFrom);
+
+                }
+                else{
+                    HomeActivity.show(context, AppConstants.Tab.TAB_MY_PROFILE);
+
+                }
+                break;
         }
     }
     private void sendAutoJoinEvent() {

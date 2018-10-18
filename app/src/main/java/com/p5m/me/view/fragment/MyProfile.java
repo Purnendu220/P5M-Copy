@@ -26,6 +26,7 @@ import com.p5m.me.adapters.MyProfileAdapter;
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.TrainerModel;
+import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.helper.ClassListListenerHelper;
@@ -315,7 +316,7 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
             case R.id.textViewExtendPackage:
                 if(myProfileAdapter.getUser().getUserPackageDetailDtoList()!=null){
                     try {
-                        PackageExtensionAlertDialog dialog=new PackageExtensionAlertDialog(context,AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE,myProfileAdapter.getUser()) ;
+                        PackageExtensionAlertDialog dialog=new PackageExtensionAlertDialog(context,AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE, (UserPackage) model) ;
                         dialog.show();
                     }catch (Exception e){
                         e.printStackTrace();

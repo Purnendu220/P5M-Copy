@@ -11,13 +11,12 @@ allprojects {
         maven { url 'https://maven.fabric.io/public' }
     }
 }
-
 android {
     signingConfigs {
         release {
             keyAlias 'p5m'
             keyPassword 'p5m12!@'
-            storeFile file('E:/keystore p5m/p5m_keystore.jks')
+            storeFile file('/Android/keystore_p5m/p5m_keystore.jks')
             storePassword 'p5m12!@'
         }
     }

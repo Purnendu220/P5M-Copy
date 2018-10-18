@@ -4,25 +4,16 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
-    android:background="@color/float_transparent">
+    android:background="@color/float_transparent"
+
+    >
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="350dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:background="@color/float_transparent"
         >
-        <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="-30dp"
-            android:background="@color/float_transparent"
-            android:src="@drawable/thankyou_popup"
-            android:elevation="@dimen/margin_14"
-            android:visibility="gone"
-            >
-        </ImageView>
 
 
         <LinearLayout
@@ -31,7 +22,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical|center"
             android:orientation="vertical"
-            android:background="@color/white"
+            android:background="@drawable/rounded_topcorner"
             >
             <TextView
                 android:id="@+id/textViewthank_you"
@@ -42,10 +33,10 @@
                 android:textSize="@dimen/margin_16"
                 android:text="@string/add_more_time"
                 android:textColor="@color/black"
-                android:textStyle="bold"
                 android:fontFamily="sans-serif-medium"
                 android:textAllCaps="true"
                 />
+
 
 
             <TextView
@@ -55,8 +46,8 @@
                 android:gravity="center"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="@dimen/margin_20"
-                android:textSize="@dimen/text_extra_large"
-                android:text="Purchase more time without changing your current plan.This is one time package that does not reset any prevoius gym visits."
+                android:textSize="@dimen/text_large"
+                android:text="@string/extend_message"
                 android:textColor="@color/black"
                 />
 <LinearLayout
@@ -76,17 +67,45 @@
             android:orientation="vertical"
             android:layout_marginLeft="@dimen/margin_10"
             >
-
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="1 week"
-                android:textAllCaps="true"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_extra_extra_large" />
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:id="@+id/textViewWeekValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="1 week"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_large"
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:id="@+id/textViewValidUntil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/valid_intil"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_medium"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginLeft="@dimen/margin_2"
+                    />
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="150dp"
+                android:layout_height="2dp"
+                android:background="@color/black"
+                android:layout_marginTop="@dimen/margin_5"
+                ></View>
 
             <TextView
+                android:id="@+id/textViewCost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_5"
@@ -94,62 +113,71 @@
                 android:text="2.5 KWD"
                 android:textAllCaps="true"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_large" />
+                android:textSize="@dimen/text_large"
+                android:textStyle="bold"
+                />
 
         </LinearLayout>
 
 
-        <nl.dionsegijn.steppertouch.StepperTouch
-            android:id="@+id/stepperTouch"
-            android:layout_width="@dimen/margin_100"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:layout_alignParentRight="true"
+            android:background="@drawable/rounded_theme_bg"
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            app:stepperBackgroundColor="@color/colorAccent"
-            app:stepperTextColor="@color/colorAccent"
-            android:layout_marginRight="@dimen/margin_10"
+            android:padding="@dimen/margin_2"
+            >
+
+            <ImageView
+                android:id="@+id/minusButton"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:layout_margin="@dimen/margin_2"
+                android:src="@drawable/min"
+                android:layout_gravity="center"
+                android:tint="@color/colorAccent"
+                 />
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="50dp"
+                android:background="@color/colorAccent">
+
+            </View>
+
+            <ImageView
+                android:id="@+id/plusButton"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:layout_margin="@dimen/margin_2"
+                android:src="@drawable/plus"
+                android:layout_gravity="center"
+                android:tint="@color/colorAccent"
+
+                />
 
 
+        </LinearLayout>
 
-            />
 
     </RelativeLayout>
 
 </LinearLayout>
 
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/linearlayoutTopPart"
-            android:visibility="visible"
-            android:background="@color/white"
-            >
-            <TextView
-                android:id="@+id/textViewCancel"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/bottom_text_button_height"
-                android:background="@drawable/theme_bottom_text_button_book"
-                android:clickable="true"
-                android:fontFamily="sans-serif"
-                android:gravity="center"
-                android:letterSpacing="@dimen/button_letter_spacing"
-                android:text="@string/got_it"
-                android:textAllCaps="true"
-                android:textSize="@dimen/text_large"
-                android:textColor="@color/white"
-                android:visibility="gone"
-                android:layout_marginTop="@dimen/margin_15"
-                />
 
         </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/linearLayoutRatePast"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/linearlayoutTopPart"
-            android:background="@color/white"
+            android:background="@drawable/rounded_bottomcorner"
             android:visibility="visible"
 
             >
@@ -161,7 +189,7 @@
                 android:layout_margin="@dimen/margin_15"
                 >
                 <TextView
-                    android:id="@+id/textViewIWillDoLater"
+                    android:id="@+id/textViewCancel"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/bottom_text_button_height"
                     android:background="@drawable/theme_bottom_text_button_light_grey"
@@ -178,7 +206,7 @@
 
                     />
                 <TextView
-                    android:id="@+id/textViewRatePrevious"
+                    android:id="@+id/textViewProceed"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/bottom_text_button_height"
                     android:background="@drawable/theme_bottom_text_button_book"
