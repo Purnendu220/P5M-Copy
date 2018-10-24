@@ -560,13 +560,14 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
                 }
                 else if(navigatinFrom==AppConstants.AppNavigation.NAVIGATION_FROM_MEMBERSHIP){
-                    MemberShip.openActivity(context, navigatinFrom);
+                    EventBroadcastHelper.sendPackagePurchased();
 
                 }
                 else{
                     HomeActivity.show(context, AppConstants.Tab.TAB_MY_PROFILE);
 
                 }
+                finish();
                 break;
         }
     }

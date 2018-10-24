@@ -93,12 +93,20 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
             // Package owned..
             if (data instanceof UserPackage) {
                 UserPackage model = (UserPackage) data;
-                textViewExtendPackage.setVisibility(View.VISIBLE);
                 textViewPackagePrice.setVisibility(View.GONE);
                 linearLayoutOffer.setVisibility(View.GONE);
                 textViewPackagePriceStrike.setVisibility(View.GONE);
                 button.setText(R.string.your_current_plan);
+                if(model.getBalanceClass()>0){
+                    textViewExtendPackage.setVisibility(View.VISIBLE);
 
+                }else{
+                    textViewExtendPackage.setVisibility(View.GONE);
+
+                }
+                if(model!=null&&model.getTotalRemainingWeeks()<1){
+                    textViewExtendPackage.setVisibility(View.GONE);
+                }
                 button.setEnabled(false);
                 button.setBackgroundResource(R.drawable.button_disabled);
                 button.setTextColor(ContextCompat.getColor(context, R.color.theme_light_text));

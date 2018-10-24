@@ -67,12 +67,26 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                     R.drawable.profile_holder_big, imageView);
 
             if (userPackageInfo.havePackages) {
-                textViewExtendPackage.setVisibility(View.VISIBLE);
                 if(user.isBuyMembership()){
                     textViewRecharge.setVisibility(View.VISIBLE);
 
+
                 }else{
                     textViewRecharge.setVisibility(View.GONE);
+
+                }
+
+                if(user.isBuyMembership()){
+                    if(userPackageInfo.haveDropInPackage){
+                        textViewExtendPackage.setVisibility(View.VISIBLE);
+
+                    }else{
+                        textViewExtendPackage.setVisibility(View.GONE);
+
+                    }
+
+                }else{
+                    textViewExtendPackage.setVisibility(View.VISIBLE);
 
                 }
 
@@ -161,6 +175,10 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                 textViewValidity.setVisibility(View.GONE);
                 textViewValidity.setText(R.string.profile_validiy_no_package);
                 /***************************************************************/
+            }
+            if(userpackageToExtend!=null&&userpackageToExtend.getTotalRemainingWeeks()!=null&&userpackageToExtend.getTotalRemainingWeeks()<1){
+                textViewExtendPackage.setVisibility(View.GONE);
+
             }
 
             textViewRecharge.setOnClickListener(new View.OnClickListener() {

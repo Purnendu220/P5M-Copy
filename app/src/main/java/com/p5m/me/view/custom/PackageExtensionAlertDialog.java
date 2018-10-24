@@ -22,6 +22,7 @@ import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.RefrenceWrapper;
+import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.CheckoutActivity;
 
 import java.util.List;
@@ -62,6 +63,7 @@ public class PackageExtensionAlertDialog extends Dialog implements View.OnClickL
     private int weekValue=1;
     public List<ValidityPackageList> defaultServerPacakageList;
     public ValidityPackageList selectedPacakageFromList;
+    private int weeksExtensionAllowed=4;
 
 
 
@@ -84,12 +86,19 @@ public class PackageExtensionAlertDialog extends Dialog implements View.OnClickL
         lp.gravity = Gravity.CENTER;
         getWindow().setAttributes(lp);
         defaultServerPacakageList=TempStorage.getDefault().getValidityPackageList();
+        setweeksAllowedToExtend();
         setListeners();
         handlePlusMinus(weekValue);
-
-
-
-
+    }
+    private void setweeksAllowedToExtend(){
+        if(userPackage.getTotalRemainingWeeks()!=null&&userPackage.getTotalRemainingWeeks()>0){
+            weeksExtensionAllowed=userPackage.getTotalRemainingWeeks();
+            return;
+        }
+        if(defaultServerPacakageList!=null&&defaultServerPacakageList.size()>0){
+            weeksExtensionAllowed=defaultServerPacakageList.size();
+            return;
+        }
 
     }
 
@@ -112,9 +121,12 @@ public class PackageExtensionAlertDialog extends Dialog implements View.OnClickL
             }
             break;
             case R.id.plusButton:{
-                if(weekValue < 5){
+                if(weekValue < weeksExtensionAllowed){
                     weekValue=weekValue+1;
                     handlePlusMinus(weekValue);
+                }
+                else{
+                    ToastUtils.show(mContext,"You can extend your package upto "+weeksExtensionAllowed+" weeks");
                 }
 
             }

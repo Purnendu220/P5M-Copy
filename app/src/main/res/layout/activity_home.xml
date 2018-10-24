@@ -29,7 +29,7 @@
             android:textAllCaps="true"
             android:textColor="@color/white"
             android:textSize="@dimen/text_large"
-            android:text="@string/recharge"
+            android:text="@string/buy_classes"
             android:layout_gravity="bottom"
             android:visibility="gone"
             />

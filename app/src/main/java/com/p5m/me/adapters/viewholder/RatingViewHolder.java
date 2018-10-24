@@ -68,10 +68,13 @@ public class RatingViewHolder extends RecyclerView.ViewHolder {
             textViewUsername.setText(model.getUserDetail().getFirstName());
             textViewReviewDate.setText(DateUtils.getRatingDate(model.getCreateDate()));
             textViewClassRating.setText(model.getRating()+"");
-            if(model.getUserDetail().getProfileImageThumbnail()!=null){
+            if(model.getUserDetail().getProfileImageThumbnail()!=null&&!model.getUserDetail().getProfileImageThumbnail().isEmpty()){
                 ImageUtils.setImage(context,
                         model.getUserDetail().getProfileImageThumbnail(),
                         R.drawable.profile_holder, imageViewUserProfile);
+            }
+            else{
+                imageViewUserProfile.setImageResource(R.drawable.profile_holder);
             }
 
             if(model.getRemark()!=null&&model.getRemark().length()>0){
