@@ -430,7 +430,8 @@
                                 android:lineSpacingExtra="@dimen/line_spacing_extra"
                                 android:text="INTERMEDIATE"
                                 android:textColor="@color/theme_dark_text"
-                                android:textSize="@dimen/text_medium" />
+                                android:textSize="@dimen/text_medium"
+                                />
 
                         </RelativeLayout>
                     </LinearLayout>

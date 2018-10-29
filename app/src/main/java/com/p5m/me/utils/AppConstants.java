@@ -359,8 +359,11 @@ public class AppConstants {
 
   public class FitnessLevel {
         public static final String CLASS_LEVEL_BASIC = "BASIC";
-      public static final String CLASS_LEVEL_INTERMEDIATE = "INTERMEDIATE";
-      public static final String CLASS_LEVEL_ADVANCED = "ADVANCED";
+        public static final String CLASS_LEVEL_INTERMEDIATE = "INTERMEDIATE";
+        public static final String CLASS_LEVEL_ADVANCED = "ADVANCED";
+      public static final String CLASS_LEVEL_BASIC_TITLE = "Basic";
+      public static final String CLASS_LEVEL_INTERMEDIATE_TITLE = "Intermediate";
+      public static final String CLASS_LEVEL_ADVANCED_TITLE = "Advanced";
 
   }
 }
