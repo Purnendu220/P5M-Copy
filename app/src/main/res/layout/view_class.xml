@@ -160,6 +160,57 @@
 
                 </RelativeLayout>
 
+                <LinearLayout
+                    android:id="@+id/layoutTrainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/click_highlight"
+                    android:clickable="true"
+                    android:clipToPadding="false"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    >
+
+                    <android.support.v7.widget.CardView style="@style/CardViewCircularProfileSmallClass">
+
+                        <ImageView
+                            android:id="@+id/imageViewTrainerProfile"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/profile_holder"
+                            />
+                    </android.support.v7.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/textViewTrainerName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="12dp"
+                        android:layout_toEndOf="@+id/imageViewClassCategory"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left"
+                        android:letterSpacing="@dimen/text_medium_letter_spacing"
+                        android:lineSpacingExtra="@dimen/line_spacing_extra"
+                        android:text="Varun John"
+                        android:textColor="@color/theme_dark_text"
+                        android:textSize="@dimen/text_medium" />
+
+                    <ImageView
+                        style="@style/ClassIconSmall"
+                        android:paddingBottom="4dp"
+                        android:paddingTop="4dp"
+                        android:src="@drawable/arrow_right"
+                        android:visibility="invisible"
+                        />
+
+                </LinearLayout>
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -289,56 +340,7 @@
                     android:textStyle="normal"
                     android:visibility="gone"
                     />
-                <LinearLayout
-                    android:id="@+id/layoutTrainer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/click_highlight"
-                    android:clickable="true"
-                    android:clipToPadding="false"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    >
 
-                    <android.support.v7.widget.CardView style="@style/CardViewCircularProfileSmallClass">
-
-                        <ImageView
-                            android:id="@+id/imageViewTrainerProfile"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/profile_holder"
-                            />
-                    </android.support.v7.widget.CardView>
-
-                    <TextView
-                        android:id="@+id/textViewTrainerName"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginLeft="12dp"
-                        android:layout_toEndOf="@+id/imageViewClassCategory"
-                        android:layout_weight="1"
-                        android:fontFamily="sans-serif"
-                        android:gravity="left"
-                        android:letterSpacing="@dimen/text_medium_letter_spacing"
-                        android:lineSpacingExtra="@dimen/line_spacing_extra"
-                        android:text="Varun John"
-                        android:textColor="@color/theme_dark_text"
-                        android:textSize="@dimen/text_medium" />
-
-                    <ImageView
-                        style="@style/ClassIconSmall"
-                        android:paddingBottom="4dp"
-                        android:paddingTop="4dp"
-                        android:src="@drawable/arrow_right"
-                        android:visibility="invisible"
-                        />
-
-                </LinearLayout>
                 <LinearLayout
                     android:id="@+id/layoutFitnessLevel"
                     android:layout_width="wrap_content"

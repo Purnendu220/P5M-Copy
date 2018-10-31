@@ -16,6 +16,7 @@ import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
+import com.p5m.me.utils.WordUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -181,7 +182,7 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
                         layoutFitnessLevel.setVisibility(View.GONE);
                         break;
                 }
-                textViewFitnessLevel.setText(model.getFitnessLevel());
+                textViewFitnessLevel.setText(WordUtils.capitalize(model.getFitnessLevel().toLowerCase()));
             }else{
                 layoutFitnessLevel.setVisibility(View.GONE);
             }

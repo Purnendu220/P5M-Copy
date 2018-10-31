@@ -20,6 +20,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.p5m.me.R;
 import com.p5m.me.helper.GlideApp;
+import com.p5m.me.utils.ImageUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.fragment.BaseFragment;
 import com.p5m.me.view.fragment.ViewPagerFragmentSelection;
@@ -59,27 +60,33 @@ public class MediaGalleryFragment extends BaseFragment implements ViewPagerFragm
             return;
         }
 
-        progressBar.setVisibility(View.VISIBLE);
-        RequestBuilder<Bitmap> requestBuilder = GlideApp.with(context).asBitmap().load(uri)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .fitCenter().transition(BitmapTransitionOptions.withCrossFade());
-        requestBuilder.preload(1080, 1080);
-        requestBuilder.into(new SimpleTarget<Bitmap>() {
+        progressBar.setVisibility(View.GONE);
+        ImageUtils.setImage(context,
+                uri,
+                R.drawable.profile_holder, imageViewImage);
+        imageViewImage.setOnTouchListener(new ImageMatrixTouchHandler(context));
 
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                        progressBar.setVisibility(View.GONE);
-                        try{
-                            imageViewImage.setImageBitmap(getResizedBitmap(resource,(resource.getHeight()*50)/100,(resource.getWidth()*50)/100));
-                            imageViewImage.setOnTouchListener(new ImageMatrixTouchHandler(context));
-                        }catch (Exception e){
-                            e.printStackTrace();
-                            ToastUtils.show(context,getString(R.string.unable_to_load));
-                        }
 
-                    }
-
-                });
+//        RequestBuilder<Bitmap> requestBuilder = GlideApp.with(context).asBitmap().load(uri)
+//                .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                .fitCenter().transition(BitmapTransitionOptions.withCrossFade());
+//        requestBuilder.preload(1080, 1080);
+//        requestBuilder.into(new SimpleTarget<Bitmap>() {
+//
+//                    @Override
+//                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+//                        progressBar.setVisibility(View.GONE);
+//                        try{
+//                            imageViewImage.setImageBitmap(getResizedBitmap(resource,(resource.getHeight()*50)/100,(resource.getWidth()*50)/100));
+//                            imageViewImage.setOnTouchListener(new ImageMatrixTouchHandler(context));
+//                        }catch (Exception e){
+//                            e.printStackTrace();
+//                            ToastUtils.show(context,getString(R.string.unable_to_load));
+//                        }
+//
+//                    }
+//
+//                });
 
 
 
