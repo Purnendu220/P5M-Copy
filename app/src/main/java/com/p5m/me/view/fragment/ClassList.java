@@ -272,6 +272,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
     @Override
     public void onAdapterItemLongClick(RecyclerView.ViewHolder viewHolder, View view, ClassModel model, int position) {
+
     }
 
     @Override

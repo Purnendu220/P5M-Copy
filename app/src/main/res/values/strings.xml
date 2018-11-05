@@ -321,8 +321,9 @@
     <string name="share_message_trainer">Hey. Want to workout with me? Let’s join %1s‘s classes together.\n</string>
     <string name="valid_intil">(until %1s)</string>
     <string name="terms">"<u><![CDATA[Terms & Conditions]]></u>"</string>
-    <string name="extend_message">Purchase more time without changing your current plan.This is one time package that does not reset any prevoius gym visits.</string>
-    <string name="extend_term">This is a one-time purchase that will extend validity of your selected plan. It does not reset any previous gym visits.</string>
+    <string name="extend_message">Add more time to your current plan. Any gym visit limits still apply, and will not be reset with this extension.</string>
+    <string name="extend_term">The gym visit limits will not re-set with this one-time purchase. You have just extended your membership (%1d week(s)). You have (%1d) week(s) remaining. Make sure if you need more time to extend your membership before your classes expire.</string>
     <string name="extend">"<u>Extend</u>"</string>
+    <string name="extention_policy">Membership extension policy</string>
 
 </resources>

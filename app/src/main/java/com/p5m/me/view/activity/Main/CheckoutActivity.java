@@ -256,9 +256,10 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 buttonPromoCode.setVisibility(View.GONE);
                 textViewTopTitle.setVisibility(View.GONE);
                 textViewPackageName.setText(R.string.add_more_time);
-                textViewCancellationPolicyToggle.setText(R.string.terms);
+                textViewCancellationPolicyToggle.setText(R.string.extention_policy);
                 textViewPrice.setText(selectedPacakageFromList.getCost() + " " + context.getString(R.string.currency));
-                textViewCancellationPolicy.setText(R.string.extend_term);
+                String extentTerm=String.format(mContext.getString(R.string.extend_term),selectedPacakageFromList.getDuration(),userPackage.getTotalRemainingWeeks()-selectedPacakageFromList.getDuration());
+                textViewCancellationPolicy.setText(extentTerm);
                 validityUnit.setText(selectedPacakageFromList.getDuration()+" Week(s) "+message);
                 textViewPackageValidityExtend.setText("Valid for " + userPackage.getPackageName()+" Package");
 
