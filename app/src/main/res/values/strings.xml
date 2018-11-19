@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">P5M</string>
     <string name="no_internet">No internet connection</string>
 
@@ -325,5 +325,10 @@
     <string name="extend_term">The gym visit limits will not re-set with this one-time purchase. You have just extended your membership (%1d week(s)). You have (%1d) week(s) remaining. Make sure if you need more time to extend your membership before your classes expire.</string>
     <string name="extend">"<u>Extend</u>"</string>
     <string name="extention_policy">Membership extension policy</string>
+    <string name="yourfriendsname">Frined\'s Name</string>
+    <string name="friendsemail">Friend\'s Email</string>
+    <string name="bookWithFriend">Book With Friend</string>
+    <string name="whojoiningyou">Who\'s joining you?</string>
+    <string name="almostthere">Almost there...</string>
 
 </resources>
