@@ -1,13 +1,16 @@
 package com.p5m.me.view.activity.Main;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
@@ -63,6 +66,11 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     public static void openActivity(Context context) {
         context.startActivity(new Intent(context, EditProfileActivity.class));
     }
+    public static Intent createIntent(Context context) {
+        Intent intent = new Intent(context, EditProfileActivity.class);
+        return intent;
+    }
+
 
     @BindView(R.id.editTextNameFirst)
     public EditText editTextNameFirst;
@@ -223,22 +231,9 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         editTextMobile.setText(TempStorage.getUser().getMobile());
         editTextEmail.setText(TempStorage.getUser().getEmail());
 
-        String[] names = TempStorage.getUser().getFirstName().split(" ");
+        editTextNameFirst.setText(TempStorage.getUser().getFirstName());
+        editTextNameLast.setText(TempStorage.getUser().getLastName());
 
-        if (names.length > 1) {
-            String name = TempStorage.getUser().getFirstName();
-            try {
-                editTextNameFirst.setText(names[0]);
-                editTextNameLast.setText(name.substring(name.indexOf(" ") + 1, name.length()));
-            } catch (Exception e) {
-                e.printStackTrace();
-                LogUtils.exception(e);
-                editTextNameFirst.setText(TempStorage.getUser().getFirstName());
-                editTextNameLast.setText("");
-            }
-        } else {
-            editTextNameFirst.setText(TempStorage.getUser().getFirstName());
-        }
     }
 
     private void selectFemale() {
@@ -269,6 +264,11 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         if (editTextNameFirst.getText().toString().trim().isEmpty()) {
             ToastUtils.show(context, "Please enter your first name");
             editTextNameFirst.requestFocus();
+            return;
+        }
+        if (editTextNameLast.getText().toString().trim().isEmpty()) {
+            ToastUtils.show(context, "Please enter your last name");
+            editTextNameLast.requestFocus();
             return;
         }
 
@@ -326,9 +326,9 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
             userInfoUpdate.setNationality(textViewNationality.getText().toString().trim());
         }
 
-//        userInfoUpdate.setFirstName(editTextNameFirst.getText().toString().trim());
-//        userInfoUpdate.setLastName(editTextNameLast.getText().toString().trim());
-        userInfoUpdate.setFirstName(editTextNameFirst.getText().toString().trim() + " " + editTextNameLast.getText().toString().trim());
+        userInfoUpdate.setFirstName(editTextNameFirst.getText().toString().trim());
+       userInfoUpdate.setLastName(editTextNameLast.getText().toString().trim());
+       // userInfoUpdate.setFirstName(editTextNameFirst.getText().toString().trim() + " " + editTextNameLast.getText().toString().trim());
 
 
         if (!TempStorage.getUser().getEmail().equals(email)) {
@@ -427,7 +427,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                     public void onApiSuccess(Object response, int requestCode) {
                         String message = ((ResponseModel<String>) response).data;
 
-                        DialogUtils.showBasicMessage(context, message, "Ok", new MaterialDialog.SingleButtonCallback() {
+                        DialogUtils.showBasicMessage(context, message, context.getResources().getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 dialog.dismiss();
@@ -512,7 +512,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
             textViewNationality.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
         } else {
             textViewNationality.setTextColor(ContextCompat.getColor(context, R.color.theme_medium_text));
-            textViewNationality.setText("Nationality");
+            textViewNationality.setText(R.string.nationality);
         }
     }
 
@@ -523,7 +523,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
             textViewLocation.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
         } else {
             textViewLocation.setTextColor(ContextCompat.getColor(context, R.color.theme_medium_text));
-            textViewLocation.setText("Location");
+            textViewLocation.setText(R.string.location);
         }
     }
 
@@ -536,15 +536,17 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.UPDATE_USER: {
 
-                ToastUtils.show(context, "Changes to your profile have been saved!");
+                ToastUtils.show(context, R.string.profile_changes_saved);
                 User user = ((ResponseModel<User>) response).data;
 
                 User userOld = TempStorage.getUser();
 
                 if (!user.getFirstName().trim().equals(userOld.getFirstName().trim())) {
-                    MixPanel.trackEditProfile(AppConstants.Tracker.NAME_CHANGED);
+                    MixPanel.trackEditProfile(AppConstants.Tracker.FIRST_NAME_CHANGED);
                 }
-
+                if (!user.getLastName().trim().equals(userOld.getLastName().trim())) {
+                    MixPanel.trackEditProfile(AppConstants.Tracker.LAST_NAME_CHANGED);
+                }
                 if (!user.getEmail().equals(userOld.getEmail())) {
                     MixPanel.trackEditProfile(AppConstants.Tracker.EMAIL_CHANGED);
                 }
@@ -649,7 +651,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
 //        itemModels.add(new ItemModel(ItemModel.ITEM_FILES, "", 0, false, 0, 0));
 
         pickerDialog = new PickerDialog.Builder((BaseActivity) activity)// Activity or Fragment
-                .setTitle("Pick Image")          // String value or resource ID
+                .setTitle(context.getResources().getString(R.string.pick_image))          // String value or resource ID
                 .setTitleTextColor(ContextCompat.getColor(context, R.color.theme_dark_text)) // Color of title text
                 .setListType(PickerDialog.TYPE_LIST, 3)       // Type of the picker, must be PickerDialog.TYPE_LIST or PickerDialog.TYPE_Grid
                 .setItems(itemModels)
@@ -687,8 +689,59 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        pickerDialog.onPermissionsResult(requestCode, permissions, grantResults);
+        for (int i = 0, len = permissions.length; i < len; i++) {
+            String permission = permissions[i];
+            if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                pickerDialog.dismiss();
+                if (Manifest.permission.CAMERA.equals(permission)) {
+                    showPermissionImportantAlert(context.getResources().getString(R.string.permission_message_camera));
+                    return;
+                    }
+                else if (Manifest.permission.WRITE_EXTERNAL_STORAGE.equals(permission)) {
+                    showPermissionImportantAlert(context.getResources().getString(R.string.permission_message_media));
+                    return;
+                    }
+                else if (Manifest.permission.READ_EXTERNAL_STORAGE.equals(permission)) {
+                    showPermissionImportantAlert(context.getResources().getString(R.string.permission_message_media));
+
+                    return;
+                    }
+            }
+        }
+            try{
+                pickerDialog.onPermissionsResult(requestCode, permissions, grantResults);
+
+            }catch (Exception e){
+                e.printStackTrace();
+                pickerDialog.dismiss();
+            }
+
+
+
     }
+    private void showPermissionImportantAlert(String message){
+        DialogUtils.showBasicMessage(context,context.getResources().getString(R.string.permission_alert), message,
+                context.getResources().getString(R.string.go_to_settings), new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Intent i = new Intent();
+                        i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        i.addCategory(Intent.CATEGORY_DEFAULT);
+                        i.setData(Uri.parse("package:" + context.getPackageName()));
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                        context.startActivity(i);
+                        dialog.dismiss();
+                        }
+                },context.getResources().getString(R.string.cancel), new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                });
+    }
+
 
 //    @Override
 //    public void onBackPressed() {

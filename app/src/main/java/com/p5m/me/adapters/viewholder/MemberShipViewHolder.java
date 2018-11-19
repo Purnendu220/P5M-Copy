@@ -1,12 +1,14 @@
 package com.p5m.me.adapters.viewholder;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.p5m.me.R;
@@ -50,8 +52,20 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.textViewPageTitle)
     public TextView textViewPageTitle;
 
+    @BindView(R.id.linearLayoutOffer)
+    public LinearLayout linearLayoutOffer;
+    @BindView(R.id.textViewOffer)
+    public TextView textViewOffer;
+
+    @BindView(R.id.textViewPackagePriceStrike)
+    public TextView textViewPackagePriceStrike;
+
+
     @BindView(R.id.button)
     public Button button;
+
+    @BindView(R.id.textViewExtendPackage)
+    public TextView textViewExtendPackage;
 
     private final Context context;
     private int shownInScreen;
@@ -80,8 +94,19 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
             if (data instanceof UserPackage) {
                 UserPackage model = (UserPackage) data;
                 textViewPackagePrice.setVisibility(View.GONE);
+                linearLayoutOffer.setVisibility(View.GONE);
+                textViewPackagePriceStrike.setVisibility(View.GONE);
                 button.setText(R.string.your_current_plan);
+                if(model.getBalanceClass()>0){
+                    textViewExtendPackage.setVisibility(View.VISIBLE);
 
+                }else{
+                    textViewExtendPackage.setVisibility(View.GONE);
+
+                }
+                if(model!=null&&model.getTotalRemainingWeeks()<1){
+                    textViewExtendPackage.setVisibility(View.GONE);
+                }
                 button.setEnabled(false);
                 button.setBackgroundResource(R.drawable.button_disabled);
                 button.setTextColor(ContextCompat.getColor(context, R.color.theme_light_text));
@@ -90,10 +115,9 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                 imageViewHeader.setImageResource(R.drawable.set_icon);
 
                 if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
-
                     textViewPackageName.setText(model.getPackageName());
-                    textViewPageTitle.setText(Html.fromHtml(model.getBalanceClass() +
-                            " of " + model.getTotalNumberOfClass() + " " + "classes remaining"));
+                    textViewPageTitle.setText(Html.fromHtml(model.getBalanceClass() +" "+
+                            AppConstants.pluralES("class",model.getBalanceClass())+ " remaining"));
                     textViewPackageValidity.setText("Valid till " + DateUtils.getPackageClassDate(model.getExpiryDate()));
 
                     textViewViewLimit.setVisibility(View.VISIBLE);
@@ -121,10 +145,11 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                 if (data instanceof Package) {
                     Package model = (Package) data;
                     textViewPackagePrice.setVisibility(View.VISIBLE);
+                    textViewExtendPackage.setVisibility(View.GONE);
+
                     button.setText(R.string.select_plan);
                     button.setBackgroundResource(R.drawable.join_rect);
                     Helper.setPackageImage(imageViewHeader, model.getName());
-
                     if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
 
                         textViewPackageName.setText(model.getName());
@@ -181,12 +206,26 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
                         imageViewInfo.setVisibility(View.VISIBLE);
                     }
+                    if(model.getPromoResponseDto()!=null&& model.getPromoResponseDto().getDiscountType()!=null){
+                        setPackagePriceAfterDiscount(model,textViewPackagePrice,textViewPackagePriceStrike);
+                    }else{
+                        linearLayoutOffer.setVisibility(View.GONE);
+                        textViewPackagePriceStrike.setVisibility(View.GONE);
+                    }
+
                 }
 
             textViewViewLimit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     adapterCallbacks.onAdapterItemClick(MemberShipViewHolder.this, textViewViewLimit, data, position);
+                }
+            });
+
+            textViewExtendPackage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(MemberShipViewHolder.this, textViewExtendPackage, data, position);
                 }
             });
 
@@ -207,4 +246,29 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
             itemView.setVisibility(View.GONE);
         }
     }
+   private void setPackagePriceAfterDiscount(Package model,TextView textViewPackagePrice,TextView textViewPackagePriceStrike){
+       linearLayoutOffer.setVisibility(View.VISIBLE);
+       textViewPackagePriceStrike.setVisibility(View.VISIBLE);
+       String offerText;
+       if(model.getPromoResponseDto().getDiscountType().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_OFFER_PERCENTAGE)){
+           offerText = context.getString(R.string.package_offer_percentage);
+           }
+           else{
+           offerText = context.getString(R.string.package_offer_kwd);
+
+       }
+       try{
+           textViewOffer.setText(Math.round(model.getPromoResponseDto().getDiscount())+offerText);
+
+       }catch (Exception e){
+           textViewOffer.setText(model.getPromoResponseDto().getDiscount()+offerText);
+
+       }
+
+       textViewPackagePrice.setText(model.getPromoResponseDto().getPriceAfterDiscount() + " " + context.getString(R.string.currency).toUpperCase());
+       textViewPackagePriceStrike.setText(model.getPromoResponseDto().getPrice() + " " + context.getString(R.string.currency).toUpperCase());
+       textViewPackagePriceStrike.setPaintFlags(textViewPackagePriceStrike.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+
+   }
 }

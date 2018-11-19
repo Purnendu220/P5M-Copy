@@ -23,13 +23,19 @@ import com.p5m.me.data.main.User;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.RefrenceWrapper;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.ClassProfileActivity;
+import com.p5m.me.view.activity.Main.FullRatingActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
+import com.p5m.me.view.custom.CustomRateAlertDialog;
+
+import java.util.List;
 
 /**
  * Created by Varun John on 4/19/2018.
@@ -66,7 +72,24 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                     }
                 }
                 break;
+            case R.id.buttonEditRating:
+                ClassModel classData = (ClassModel) model;
+                FullRatingActivity.open(context,shownIn,classData,0);
+                break;
             case R.id.buttonJoin:
+                if (model instanceof ClassModel) {
+                        ClassModel classModel = (ClassModel) model;
+                        ClassProfileActivity.open(context, classModel, shownIn);
+                    }
+
+
+                    break;
+            case R.id.buttonClassRating:
+                if (shownIn == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED&&model instanceof ClassModel) {
+                    openRateAlertDialog((ClassModel) model);
+                }
+                break;
+
             default:
                 if (shownIn != AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED) {
                     if (model instanceof ClassModel) {
@@ -135,7 +158,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         }
 
         TextView textViewOption2 = viewRoot.findViewById(R.id.textViewOption2);
-        textViewOption2.setText(context.getString(R.string.share));
+        textViewOption2.setText(context.getString(R.string.invite_friends));
 
         textViewOption2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -245,7 +268,6 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                             model.setUserJoinStatus(false);
                             EventBroadcastHelper.sendClassJoin(context, model);
                             EventBroadcastHelper.sendUserUpdate(context, ((ResponseModel<User>) response).data);
-
                             MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
                             materialDialog.dismiss();
 
@@ -310,5 +332,20 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 //                ToastUtils.showLong(context, errorMessage);
 //                break;
 //        }
+    }
+    private void openRateAlertDialog(ClassModel model){
+        if(model!=null){
+            CustomRateAlertDialog mCustomMatchDialog = new CustomRateAlertDialog(context,model,AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED);
+            try {
+                mCustomMatchDialog.show();
+                RefrenceWrapper.getRefrenceWrapper(context).setCustomRateAlertDialog(mCustomMatchDialog);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return;
+        }
+
+
+
     }
 }

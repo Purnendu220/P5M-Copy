@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,7 +36,7 @@ public class TrainerListViewHolder extends RecyclerView.ViewHolder {
     public ImageView imageViewSubtitle;
 
     @BindView(R.id.buttonFav)
-    public Button buttonFav;
+    public ImageButton buttonFav;
 
     private final Context context;
     private int shownInScreen;

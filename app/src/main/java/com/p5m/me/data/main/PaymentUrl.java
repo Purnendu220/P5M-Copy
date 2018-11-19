@@ -8,6 +8,7 @@ public class PaymentUrl implements java.io.Serializable {
     private String responseMessage;
     private String referenceID;
     private String responseCode;
+    private boolean isCompleted;
 
     public String getTapPayURL() {
         return this.tapPayURL;
@@ -47,6 +48,14 @@ public class PaymentUrl implements java.io.Serializable {
 
     public void setResponseCode(String responseCode) {
         this.responseCode = responseCode;
+    }
+
+    public boolean getCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
     }
 }
 

@@ -77,36 +77,58 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:paddingBottom="12dp">
+                        >
 
-                        <TextView
-                            android:id="@+id/textViewValidity"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="sans-serif"
-                            android:gravity="left"
-                            android:letterSpacing="@dimen/text_medium_letter_spacing"
-                            android:lineSpacingExtra="@dimen/line_spacing_extra"
-                            android:text="4 days remaining"
-                            android:textColor="@color/theme_dark_text"
-                            android:textSize="@dimen/text_medium" />
 
-                        <TextView
-                            android:id="@+id/textViewRecharge"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="12dp"
-                            android:fontFamily="sans-serif"
-                            android:gravity="left"
-                            android:letterSpacing="@dimen/text_medium_letter_spacing"
-                            android:lineSpacingExtra="@dimen/line_spacing_extra"
-                            android:text="@string/recharge"
-                            android:textColor="@color/theme_accent_text"
-                            android:textSize="@dimen/text_medium"
-                            android:textStyle="bold" />
+
+
 
                     </LinearLayout>
+                    <RelativeLayout
+                        android:id="@+id/blank"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        >
+                        <LinearLayout
+                            android:id="@+id/message_container"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="50dp"
+                            >
+                            <TextView
+                                android:id="@+id/textViewValidity"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif"
+                                android:gravity="left"
+                                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                                android:lineSpacingExtra="@dimen/line_spacing_extra"
+                                android:text="4 days remaining "
+                                android:textColor="@color/theme_dark_text"
+                                android:paddingBottom="12dp"
+                                android:visibility="visible"
+                                android:textSize="@dimen/text_medium" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/textViewExtendPackage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/message_container"
+                            android:layout_marginLeft="-45dp"
+                            android:fontFamily="sans-serif"
+                            android:letterSpacing="@dimen/text_medium_letter_spacing"
+                            android:lineSpacingExtra="@dimen/line_spacing_extra"
+                            android:text="@string/extend"
+
+                            android:textColor="@color/theme_accent_text"
+                            android:textSize="@dimen/text_medium"
+                            android:textStyle="bold"
+                            android:visibility="gone"/>
+
+
+                    </RelativeLayout>
+
 
                     <TextView
                         android:id="@+id/textViewMore"
@@ -121,6 +143,19 @@
                         android:textColor="@color/theme_accent_text"
                         android:textSize="@dimen/text_medium"
                         android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/textViewRecharge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left"
+                        android:letterSpacing="@dimen/text_medium_letter_spacing"
+                        android:lineSpacingExtra="@dimen/line_spacing_extra"
+                        android:text="@string/recharge"
+                        android:textColor="@color/theme_accent_text"
+                        android:textSize="@dimen/text_medium"
+                        android:textStyle="bold" />
+
 
                 </LinearLayout>
             </LinearLayout>

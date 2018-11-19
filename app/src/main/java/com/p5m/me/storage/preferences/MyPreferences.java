@@ -8,10 +8,13 @@ import com.p5m.me.data.City;
 import com.p5m.me.data.CityLocality;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.Filter;
+import com.p5m.me.data.RatingParamModel;
 import com.p5m.me.data.main.ClassActivity;
+import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.DefaultSettingServer;
 import com.p5m.me.data.main.User;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.JsonUtils;
 import com.p5m.me.utils.LogUtils;
 import com.shawnlin.preferencesmanager.PreferencesManager;
 
@@ -127,7 +130,23 @@ public class MyPreferences {
             LogUtils.exception(e);
         }
     }
-
+    public void saveRatingParams(List<RatingParamModel> ratingParamList) {
+        try {
+            PreferencesManager.putString(AppConstants.Pref.RATING_PARAM, gson.toJson(ratingParamList).toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+    public List<RatingParamModel> getRatingParams() {
+        try {
+            return gson.fromJson(PreferencesManager.getString(AppConstants.Pref.RATING_PARAM), new TypeToken<List<RatingParamModel>>() {
+            }.getType());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
     public List<ClassesFilter> getFilters() {
         List<ClassesFilter> classesFilters = new ArrayList<>();
         try {
@@ -172,6 +191,12 @@ public class MyPreferences {
                     classesFilter.setObject(model);
 
                 }
+                else if (classesFilter.getObjectClassName().equals("Gym")) {
+
+                    Filter.Gym model = new Filter.Gym(object.getInt("id")+"", object.getString("name"));
+                    classesFilter.setObject(model);
+
+                }
 
                 classesFilters.add(classesFilter);
             }
@@ -192,6 +217,30 @@ public class MyPreferences {
             LogUtils.exception(e);
         }
     }
+    public void saveJoinedClassList(List<ClassModel> classList) {
+        try {
+            String joinedClassesList = JsonUtils.toJson(classList);
+            PreferencesManager.putString(AppConstants.Pref.JOINED_CLASSES,joinedClassesList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+    public List<ClassModel> getJoinedClassList() {
+        try{
+            String joinedClassList = PreferencesManager.getString(AppConstants.Pref.JOINED_CLASSES);
+            if (joinedClassList != null) {
+                List<ClassModel> classList = gson.fromJson(joinedClassList, new TypeToken<List<ClassModel>>(){}.getType());
+                return classList;
+            }
+        }catch (Exception e){
+e.printStackTrace();
+        }
+        return null;
+        }
+
+
+
 
     public User getUser() {
         try {

@@ -1,11 +1,13 @@
 package com.p5m.me;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
@@ -18,37 +20,36 @@ import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.RefrenceWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
 
+@SuppressLint("NewApi")
 public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.OnNetworkChangeListener, Application.ActivityLifecycleCallbacks, NetworkCommunicator.RequestListener {
 
     public static Context context;
 
-    public final static ApiMode apiMode = ApiMode.TESTING_ALPHA;
-    public final static boolean USE_CRASH_ANALYTICS = true;
-    public final static boolean USE_MIX_PANEL = true;
+    public final static boolean USE_CRASH_ANALYTICS = BuildConfig.IS_PRODUCTION;
+    public final static boolean USE_MIX_PANEL = BuildConfig.IS_PRODUCTION;
 
-    public final static boolean SHOW_LOG = true;
-    public final static boolean RETROFIT_SHOW_LOG = true;
+    public final static boolean SHOW_LOG = BuildConfig.IS_DEBUG;
+    public final static boolean RETROFIT_SHOW_LOG = BuildConfig.IS_DEBUG;
 
     public final static List<Activity> ACTIVITIES = new ArrayList<>();
 
     public boolean isAppForeground;
     public long appBackgroundTime;
 
-    public enum ApiMode {
-        TESTING_ALPHA,
-        TESTING_BETA,
-        LIVE
-    }
+
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+
         context = getApplicationContext();
 
         MultiDex.install(this);
@@ -74,7 +75,8 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
 
         TempStorage.setUser(this, MyPreferences.initialize(this).getUser());
         TempStorage.version = myVersionName;
-
+        String android_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+        RefrenceWrapper.getRefrenceWrapper(this).setDeviceId(android_id);
         LogUtils.debug("version : " + TempStorage.version);
 
         IntentFilter filter = new IntentFilter();

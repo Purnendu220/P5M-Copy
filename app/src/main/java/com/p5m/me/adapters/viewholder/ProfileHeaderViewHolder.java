@@ -11,6 +11,7 @@ import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.User;
+import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
@@ -38,7 +39,11 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.textViewMore)
     public TextView textViewMore;
 
+    @BindView(R.id.textViewExtendPackage)
+    public TextView textViewExtendPackage;
+
     private final Context context;
+    public UserPackage userpackageToExtend;
 
     public ProfileHeaderViewHolder(View itemView) {
         super(itemView);
@@ -54,7 +59,7 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
             final User user = (User) data;
             itemView.setVisibility(View.VISIBLE);
 
-            textViewName.setText(user.getFirstName());
+            textViewName.setText(user.getFirstName()+" "+user.getLastName());
             UserPackageInfo userPackageInfo = new UserPackageInfo(user);
 
             ImageUtils.setImage(context,
@@ -62,44 +67,95 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                     R.drawable.profile_holder_big, imageView);
 
             if (userPackageInfo.havePackages) {
-                textViewRecharge.setVisibility(View.GONE);
+                if(user.isBuyMembership()){
+                    textViewRecharge.setVisibility(View.VISIBLE);
+
+
+                }else{
+                    textViewRecharge.setVisibility(View.GONE);
+
+                }
+
+                if(user.isBuyMembership()){
+                    if(userPackageInfo.haveDropInPackage){
+                        textViewExtendPackage.setVisibility(View.VISIBLE);
+
+                    }else{
+                        textViewExtendPackage.setVisibility(View.GONE);
+
+                    }
+
+                }else{
+                    textViewExtendPackage.setVisibility(View.VISIBLE);
+
+                }
 
                 /*************************3 CONDITION ON PACKAGE**************************/
-                textViewRecharge.setVisibility(View.GONE);
                 textViewMore.setVisibility(View.GONE);
 
                 if (userPackageInfo.haveGeneralPackage && !userPackageInfo.haveDropInPackage) {
+                    textViewValidity.setVisibility(View.VISIBLE);
+
+                    String message=userPackageInfo.userPackageGeneral.getBalanceClass()!=1?"classes":"class";
                     textViewPackage.setText(Html.fromHtml("<b>" + userPackageInfo.userPackageGeneral.getBalanceClass() +
-                            " of " + userPackageInfo.userPackageGeneral.getTotalNumberOfClass() + "</b> " + "classes remaining"));
+                            "</b> " + message+" remaining"));
 
                     int daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageGeneral.getExpiryDate());
 
                     textViewValidity.setText(Html.fromHtml("<b>" + daysLeftFromPackageExpiryDate + " " +
                             AppConstants.plural("day", daysLeftFromPackageExpiryDate) + "</b> " +
                             context.getString(R.string.profile_package_expiry)));
+                    userpackageToExtend = userPackageInfo.userPackageGeneral;
 
                 } else if (userPackageInfo.haveGeneralPackage && userPackageInfo.haveDropInPackage) {
-                    textViewPackage.setText(Html.fromHtml("<b>" + userPackageInfo.userPackageGeneral.getBalanceClass() +
-                            " of " + userPackageInfo.userPackageGeneral.getTotalNumberOfClass() + "</b> " + "classes remaining"));
+                    textViewValidity.setVisibility(View.VISIBLE);
+                    int daysLeftFromPackageExpiryDate;
+                    if(user.isBuyMembership()){
+                        textViewPackage.setText(Html.fromHtml("<b>1</b>" + " class for " + userPackageInfo.userPackageReady.get(0).getGymName()));
 
-                    int daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageGeneral.getExpiryDate());
+                         daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageReady.get(0).getExpiryDate());
 
-                    textViewValidity.setText(Html.fromHtml("<b>" + daysLeftFromPackageExpiryDate + " " +
-                            AppConstants.plural("day", daysLeftFromPackageExpiryDate) + "</b> " +
-                            context.getString(R.string.profile_package_expiry)));
+                        textViewValidity.setText(Html.fromHtml("<b>" + daysLeftFromPackageExpiryDate + "</b> " +
+                                " " + AppConstants.plural("day", daysLeftFromPackageExpiryDate) + context.getString(R.string.profile_package_expiry)));
+                        userpackageToExtend = userPackageInfo.userPackageReady.get(0);
 
-                    textViewMore.setVisibility(View.VISIBLE);
-                    String more = "+" + userPackageInfo.dropInPackageCount + " more " +
-                            AppConstants.plural("package", userPackageInfo.dropInPackageCount);
-                    textViewMore.setText(Html.fromHtml("<b><u>" + more + "</u></b> "));
+                        if (userPackageInfo.dropInPackageCount+userPackageInfo.generalPackageCount > 1) {
+                            textViewMore.setVisibility(View.VISIBLE);
+                            String more = "+" + (userPackageInfo.dropInPackageCount+userPackageInfo.generalPackageCount-1 ) + " more " +
+                                    AppConstants.plural("package", (userPackageInfo.dropInPackageCount - 1));
+                            textViewMore.setText(Html.fromHtml("<b><u>" + more + "</u></b> "));
+                        }
+                    }else{
+
+                        String message=userPackageInfo.userPackageGeneral.getBalanceClass()!=1?"classes ":"class";
+
+                        textViewPackage.setText(Html.fromHtml("<b>" + userPackageInfo.userPackageGeneral.getBalanceClass() +
+                                "</b> " + message+" remaining"));
+
+                         daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageGeneral.getExpiryDate());
+
+                        textViewValidity.setText(Html.fromHtml("<b>" + daysLeftFromPackageExpiryDate + " " +
+                                AppConstants.plural("day", daysLeftFromPackageExpiryDate) + "</b> " +
+                                context.getString(R.string.profile_package_expiry)));
+                        userpackageToExtend = userPackageInfo.userPackageGeneral;
+
+
+                        textViewMore.setVisibility(View.VISIBLE);
+                        String more = "+" + userPackageInfo.dropInPackageCount + " more " +
+                                AppConstants.plural("package", userPackageInfo.dropInPackageCount);
+                        textViewMore.setText(Html.fromHtml("<b><u>" + more + "</u></b> "));
+                    }
+
 
                 } else if (!userPackageInfo.haveGeneralPackage && userPackageInfo.haveDropInPackage) {
+                    textViewValidity.setVisibility(View.VISIBLE);
                     textViewPackage.setText(Html.fromHtml("<b>1</b>" + " class for " + userPackageInfo.userPackageReady.get(0).getGymName()));
 
                     int daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageReady.get(0).getExpiryDate());
 
                     textViewValidity.setText(Html.fromHtml("<b>" + daysLeftFromPackageExpiryDate + "</b> " +
                             " " + AppConstants.plural("day", daysLeftFromPackageExpiryDate) + context.getString(R.string.profile_package_expiry)));
+                    userpackageToExtend = userPackageInfo.userPackageReady.get(0);
 
                     if (userPackageInfo.dropInPackageCount > 1) {
                         textViewMore.setVisibility(View.VISIBLE);
@@ -110,13 +166,19 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                 }
                 /************************************************************************/
             } else {
+                textViewExtendPackage.setVisibility(View.GONE);
 
                 /************************NO PACKAGE******************************/
                 textViewPackage.setText(Html.fromHtml("<b>" + 0 + "</b> " + context.getString(R.string.classes).toLowerCase()));
                 textViewRecharge.setVisibility(View.VISIBLE);
                 textViewMore.setVisibility(View.GONE);
+                textViewValidity.setVisibility(View.GONE);
                 textViewValidity.setText(R.string.profile_validiy_no_package);
                 /***************************************************************/
+            }
+            if(userpackageToExtend!=null&&userpackageToExtend.getTotalRemainingWeeks()!=null&&userpackageToExtend.getTotalRemainingWeeks()<1){
+                textViewExtendPackage.setVisibility(View.GONE);
+
             }
 
             textViewRecharge.setOnClickListener(new View.OnClickListener() {
@@ -126,6 +188,12 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                 }
             });
 
+            textViewExtendPackage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ProfileHeaderViewHolder.this, textViewExtendPackage, userpackageToExtend, position);
+                }
+            });
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

@@ -18,6 +18,7 @@ public class UserPackageInfo {
     public boolean haveGeneralPackage = false;
     public boolean haveDropInPackage = false;
     public int dropInPackageCount = 0;
+    public int generalPackageCount = 0;
 
     public UserPackage userPackageGeneral = null;
     public List<UserPackage> userPackageReady = null;
@@ -31,6 +32,7 @@ public class UserPackageInfo {
                 if (userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
                     haveGeneralPackage = true;
                     userPackageGeneral = userPackage;
+                    generalPackageCount++;
                 } else if (userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                     haveDropInPackage = true;
                     userPackageReady.add(userPackage);

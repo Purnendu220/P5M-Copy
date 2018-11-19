@@ -227,6 +227,15 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
                     }
                 }
                 break;
+            case R.id.imageViewCover:
+                if (model != null && model instanceof GymDetailModel) {
+                    GymDetailModel data = (GymDetailModel) model;
+                    if (data != null && !data.getCoverImage().isEmpty()) {
+                        Helper.openImageViewer(context, activity, view, gymDetailModel.getCoverImage());
+                    }
+                }
+                break;
+
             case R.id.textViewTrainers:
                 if (model != null && model instanceof GymDetailModel) {
                     GymDetailModel data = (GymDetailModel) model;

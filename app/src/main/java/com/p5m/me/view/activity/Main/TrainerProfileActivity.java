@@ -263,10 +263,16 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
         switch (view.getId()) {
             case R.id.imageViewProfile:
-                if (trainerDetailModel != null && !trainerDetailModel.getProfileImage().isEmpty()) {
+                if (trainerDetailModel != null &&trainerDetailModel.getProfileImage() != null&& !trainerDetailModel.getProfileImage().isEmpty()) {
                     Helper.openImageViewer(context, activity, view, trainerDetailModel.getProfileImage());
                 }
                 break;
+            case R.id.imageViewCover:
+                if (trainerDetailModel != null &&trainerDetailModel.getCoverImage() != null&& !trainerDetailModel.getCoverImage().isEmpty()) {
+                    Helper.openImageViewer(context, activity, view, trainerDetailModel.getCoverImage());
+                }
+                break;
+
             case R.id.button:
                 if (viewHolder instanceof TrainerProfileViewHolder) {
                     if (trainerModel != null) {
@@ -281,6 +287,8 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
                     }
                 }
                 break;
+
+
         }
     }
 
@@ -349,7 +357,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
 
                 callApiClasses();
                 swipeRefreshLayout.setRefreshing(false);
-                TrainerDetailModel trainerDetailModel = ((ResponseModel<TrainerDetailModel>) response).data;
+                trainerDetailModel = ((ResponseModel<TrainerDetailModel>) response).data;
                 trainerModel = trainerDetailModel.getTrainer();
 
                 trainerProfileAdapter.setTrainerModel(trainerDetailModel);

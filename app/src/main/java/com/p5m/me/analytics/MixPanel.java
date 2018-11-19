@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
+import com.p5m.me.BuildConfig;
 import com.p5m.me.MyApp;
 import com.p5m.me.data.CityLocality;
 import com.p5m.me.data.ClassesFilter;
@@ -12,6 +13,7 @@ import com.p5m.me.data.Filter;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.storage.TempStorage;
@@ -35,9 +37,9 @@ public class MixPanel {
     private static Handler handlerBg;
 
     private static boolean isSetupDone;
-    public static final String MIX_PANEL_TOKEN = "705daac4d807e105c1ddc350c9324ca2";
+    public static final String MIX_PANEL_TOKEN = BuildConfig.MIXPANEL_KEY;
 
-    public static final String PROJECT_ID = "109210713388";
+    public static final String PROJECT_ID = BuildConfig.SENDER_ID;
 
     public static MixpanelAPI mixPanel;
 
@@ -165,6 +167,16 @@ public class MixPanel {
 
                 trackEvent(props, "Edit_Profile");
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+    public static void trackRatingImageView() {
+        try {
+                JSONObject props = new JSONObject();
+                props.put("action", "looking_rating_images");
+                trackEvent(props, "Event_On_Rating");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -343,6 +355,9 @@ public class MixPanel {
                             List<String> activities = new ArrayList<>();
                             List<String> activityNames = new ArrayList<>();
                             List<String> genders = new ArrayList<>();
+                            List<String> gymList = new ArrayList<>();
+                            List<String> gymNames = new ArrayList<>();
+
                             List<CityLocality> cityLocalities = new ArrayList<>();
 
                             for (ClassesFilter classesFilter : classesFilters) {
@@ -356,12 +371,19 @@ public class MixPanel {
                                     activities.add(String.valueOf(((ClassActivity) classesFilter.getObject()).getId()));
                                     activityNames.add(String.valueOf(((ClassActivity) classesFilter.getObject()).getName()));
                                 }
+                                else if (classesFilter.getObject() instanceof GymDataModel) {
+                                    gymList.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getId()));
+                                    gymNames.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getStudioName()));
+                                }
                             }
 
                             JSONObject props = new JSONObject();
 
                             if (!activityNames.isEmpty()) {
                                 props.put("using_Activity", activityNames);
+                            }
+                            if (!gymList.isEmpty()) {
+                                props.put("using_Gym", gymNames);
                             }
                             if (!times.isEmpty()) {
                                 props.put("using_Time", times);
@@ -541,6 +563,9 @@ public class MixPanel {
             origin = AppConstants.Tracker.NOTIFICATION;
         } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN) {
             origin = AppConstants.Tracker.PUSH_NOTIFICATION;
+        }
+        else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS){
+            origin = AppConstants.Tracker.FIND_CLASS;
         }
 
         if (origin.isEmpty()) {

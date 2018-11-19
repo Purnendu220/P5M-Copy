@@ -1,9 +1,14 @@
 package com.p5m.me.view.activity.Main;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
@@ -23,6 +28,7 @@ import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.ClassProfileAdapter;
 import com.p5m.me.analytics.MixPanel;
+import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.User;
@@ -33,6 +39,8 @@ import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.helper.ClassListListenerHelper;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.ratemanager.RateAlarmReceiver;
+import com.p5m.me.ratemanager.ScheduleAlarmManager;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -46,9 +54,14 @@ import com.p5m.me.view.activity.base.BaseActivity;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.p5m.me.utils.AppConstants.Limit.PAGE_LIMIT_MAIN_CLASS_LIST;
 
 public class ClassProfileActivity extends BaseActivity implements AdapterCallbacks, View.OnClickListener, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
 
@@ -92,6 +105,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     private int page;
     private boolean isNavigationFromSharing;
     private int navigationFrom;
+    ClassRatingUserData ratingData;
 
     @Override
     public void onDestroy() {
@@ -195,6 +209,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
         networkCommunicator.getClassDetail(classSessionId, this, false);
+
     }
 
     @OnClick(R.id.textViewBook)
@@ -239,47 +254,79 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     }
 
     private void performJoinProcess() {
+        boolean userHaveDropinForClass = false;
+        boolean userHaveExpiredDropinForClass = false;
+        boolean userHaveExpiredGeneralPackageForClass=false;
 
+
+        boolean userHaveGeneralPackageForClass=false;
+        ArrayList<Integer> list=new ArrayList<>();
         UserPackageInfo userPackageInfo = new UserPackageInfo(TempStorage.getUser());
 
         if (userPackageInfo.havePackages) {
 
             // 1st condition : have drop-in for class..
             if (userPackageInfo.haveDropInPackage && classModel.getGymBranchDetail() != null) {
+                 userHaveDropinForClass=false;
                 for (UserPackage userPackage : userPackageInfo.userPackageReady) {
-                    if (userPackage.getGymId() == classModel.getGymBranchDetail().getGymId()) {
-                        joinClass();
-                        return;
-                    }
+                    if ((userPackage.getGymId() == classModel.getGymBranchDetail().getGymId())&&(userPackage.getExpiryDate()==null || DateUtils.canJoinClass(classModel.getClassDate(), userPackage.getExpiryDate()) >= 0)) {
+                        userHaveDropinForClass=true;
+                        list.add(userPackage.getGymId());
+                        }
+                    if ((userPackage.getGymId() == classModel.getGymBranchDetail().getGymId())&&(userPackage.getExpiryDate()!=null && DateUtils.canJoinClass(classModel.getClassDate(), userPackage.getExpiryDate()) < 0)) {
+                            userHaveExpiredDropinForClass=true;
+                        }
                 }
-            }
 
+            }
             // 2st condition : have class remaining in package..
             if (userPackageInfo.haveGeneralPackage) {
                 if (userPackageInfo.userPackageGeneral != null) {
 
-                    if (userPackageInfo.userPackageGeneral.getBalanceClass() == 0) {
+                    if (userPackageInfo.userPackageGeneral.getBalanceClass() == 0&&!userHaveDropinForClass) {
                         MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
                         return;
                     }
 
                     if (DateUtils.canJoinClass(classModel.getClassDate(), userPackageInfo.userPackageGeneral.getExpiryDate()) >= 0) {
-                        joinClass();
-                        return;
-                    } else {
-                        DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), "Purchase", new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                dialog.dismiss();
-                                MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
-                            }
-                        });
-                        return;
+                        userHaveGeneralPackageForClass=true;
+
                     }
+                    if (DateUtils.canJoinClass(classModel.getClassDate(), userPackageInfo.userPackageGeneral.getExpiryDate()) < 0) {
+                        userHaveExpiredGeneralPackageForClass=true;
+
+                    }
+
                 }
             }
-            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+            try{
+                if(userHaveDropinForClass||userHaveGeneralPackageForClass){
+                    joinClass();
+                    return;
+                }
+                else {
+                 if(userHaveExpiredGeneralPackageForClass){
+                     DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), "Purchase", new MaterialDialog.SingleButtonCallback() {
+                         @Override
+                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                             dialog.dismiss();
+                             MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+                         }
+                     });
+                     return;
+                 }else{
+                     joinClass();
+                     return;
+                 }
 
+                }
+
+            }
+            catch(Exception e){
+                e.printStackTrace();
+                joinClass();
+                return;
+            }
         } else {
             // 3rt condition : have no packages..
             MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
@@ -339,6 +386,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     GymProfileActivity.open(context, ((ClassModel) model).getGymBranchDetail().getGymId(), AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE);
                 }
                 break;
+
             case R.id.imageViewMap:
             case R.id.layoutMapClick:
                 if (model instanceof ClassModel) {
@@ -353,6 +401,11 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     }
 
                     Helper.openMap(context, data.getGymBranchDetail().getLatitude(), data.getGymBranchDetail().getLongitude(), label);
+                }
+                break;
+            case R.id.layoutSeeAllReview:
+                if (model instanceof ClassModel) {
+                    ViewClassRating.open(context, ((ClassModel) model), AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE);
                 }
                 break;
         }
@@ -394,40 +447,51 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 Helper.setJoinStatusProfile(context, textViewBook, classModel);
 
                 MixPanel.trackJoinClass(navigationFrom, classModel);
-
-//                if (classModel != null) {
-//                    if (classModel.isUserJoinStatus()) {
-//                        imageViewOptions.setVisibility(View.GONE);
-//                    }
-//                }
-
                 if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
-                    DialogUtils.showBasicMessage(context, "Successfully joined " + classModel.getTitle(),
-                            "OK", new MaterialDialog.SingleButtonCallback() {
+                    DialogUtils.showBasicMessage(context,"",
+                            "Successfully joined " + classModel.getTitle()
+                          ,context.getResources().getString(R.string.invite_friends), new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    dialog.dismiss();
+                                    Helper.shareClass(context, classModel.getClassSessionId(), classModel.getTitle());
+                                    finish();
+
+                                }
+                            },  context.getResources().getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();
                                     finish();
                                 }
                             });
+
                 }
                 break;
 
             case NetworkCommunicator.RequestCode.CLASS_DETAIL:
-
                 swipeRefreshLayout.setRefreshing(false);
                 swipeRefreshLayout.setEnabled(false);
                 classModel = ((ResponseModel<ClassModel>) response).data;
-
                 if (classModel != null) {
+                    getCountRating();
                     classProfileAdapter.setClass(classModel);
                     classProfileAdapter.notifyDataSetChanged();
                 }
-
                 layoutButton.setVisibility(View.VISIBLE);
                 Helper.setJoinStatusProfile(context, textViewBook, classModel);
 
                 break;
+            case NetworkCommunicator.RequestCode.CLASS_RATING_LIST:
+                 ratingData=((ResponseModel<ClassRatingUserData>) response).data;
+                if(classModel!=null&&ratingData.getCount()>0){
+                    classModel.setNumberOfRating(ratingData.getCount());
+                    classProfileAdapter.setClass(classModel);
+                    classProfileAdapter.notifyDataSetChanged();
+                }
+
+                break;
+
         }
     }
 
@@ -435,7 +499,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public void onApiFailure(String errorMessage, int requestCode) {
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.JOIN_CLASS:
-
                 if (errorMessage.equals("498")) {
                     if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
                         DialogUtils.showBasic(context, getString(R.string.join_fail_limit_exhaust), "Purchase", new MaterialDialog.SingleButtonCallback() {
@@ -458,7 +521,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
                 break;
             case NetworkCommunicator.RequestCode.CLASS_DETAIL:
-
                 swipeRefreshLayout.setRefreshing(false);
                 swipeRefreshLayout.setEnabled(true);
 
@@ -479,4 +541,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public void onBackPressed() {
         super.onBackPressed();
     }
+    private void getCountRating(){
+        networkCommunicator.getClassRatingList(classModel.getClassId(),page,PAGE_LIMIT_MAIN_CLASS_LIST,this,false);
+
+    }
+
 }

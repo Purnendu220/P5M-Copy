@@ -1,5 +1,7 @@
 package com.p5m.me.data.main;
 
+import com.p5m.me.data.PromoCode;
+
 public class Package implements java.io.Serializable {
     private static final long serialVersionUID = -9014729511132434076L;
 
@@ -14,6 +16,7 @@ public class Package implements java.io.Serializable {
     private int id;
     private String packageType;
     private boolean status;
+    private PromoCode promoResponseDto;
 
     public String getGymName() {
         return gymName == null ? "" : gymName;
@@ -105,5 +108,13 @@ public class Package implements java.io.Serializable {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public PromoCode getPromoResponseDto() {
+        return promoResponseDto;
+    }
+
+    public void setPromoResponseDto(PromoCode promoResponseDto) {
+        this.promoResponseDto = promoResponseDto;
     }
 }

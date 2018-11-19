@@ -35,6 +35,8 @@ public class TrainerDetailModel implements java.io.Serializable {
     private List<MediaModel> mediaResponseDtoList;
     private List<String> categoryList;
     private boolean status;
+    private String coverImage;
+    private String coverImageThumbnail;
 
     public TrainerDetailModel(TrainerModel trainerModel) {
 
@@ -264,6 +266,22 @@ public class TrainerDetailModel implements java.io.Serializable {
 
     public void setMediaResponseDtoList(List<MediaModel> mediaResponseDtoList) {
         this.mediaResponseDtoList = mediaResponseDtoList;
+    }
+
+    public String getCoverImage() {
+        return coverImage;
+    }
+
+    public void setCoverImage(String coverImage) {
+        this.coverImage = coverImage;
+    }
+
+    public String getCoverImageThumbnail() {
+        return coverImageThumbnail;
+    }
+
+    public void setCoverImageThumbnail(String coverImageThumbnail) {
+        this.coverImageThumbnail = coverImageThumbnail;
     }
 
     public List<String> getCategoryList() {

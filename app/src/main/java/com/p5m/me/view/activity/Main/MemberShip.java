@@ -35,11 +35,13 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
+import com.p5m.me.view.custom.PackageExtensionAlertDialog;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -210,12 +212,19 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
             if (userPackageInfo.havePackages) {
                 memberShipAdapter.addAllOwnedPackages(userPackageInfo.userPackageReady);
 
-                if (userPackageInfo.haveGeneralPackage) {
+                if (userPackageInfo.haveGeneralPackage && !user.isBuyMembership()) {
                     // User have General package and may be also have dropins..
                     memberShipAdapter.addOwnedPackages(userPackageInfo.userPackageGeneral);
                     memberShipAdapter.setHeaderText(context.getString(R.string.membership_only_drop_in_package_heading_1),
                             context.getString(R.string.membership_only_drop_in_package_heading_2));
-                } else {
+                }
+                else if(userPackageInfo.haveGeneralPackage && user.isBuyMembership()){
+                    memberShipAdapter.addOwnedPackages(userPackageInfo.userPackageGeneral);
+                    memberShipAdapter.setHeaderText(context.getString(R.string.membership_no_package_heading_1),
+                            context.getString(R.string.membership_only_drop_in_package_heading_2));
+                }
+
+                else {
                     // User don't have General package but may have dropins..
                     memberShipAdapter.setHeaderText(context.getString(R.string.membership_drop_in_package_heading_1), context.getString(R.string.membership_drop_in_package_heading_2));
                 }
@@ -231,7 +240,10 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
         } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SETTING ||
                 navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE ||
                 navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION ||
-                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN) {
+                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN ||
+                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS||
+                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_DEEPLINK_ACTIVITY||
+                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MEMBERSHIP) {
 
             if (userPackageInfo.havePackages) {
 
@@ -241,7 +253,6 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                     // User don't have General package..
                     // get general and show owned packages
                     swipeRefreshLayout.setRefreshing(true);
-                    networkCommunicator.getPackages(user.getId(), this, false);
                     memberShipAdapter.setHeaderText(context.getString(R.string.membership_drop_in_package_heading_1),
                             context.getString(R.string.membership_drop_in_package_heading_2));
 
@@ -252,13 +263,18 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                     memberShipAdapter.setHeaderText(context.getString(R.string.membership_general_package_heading_1), context.getString(R.string.membership_general_package_heading_2));
                     memberShipAdapter.notifyDataSetChanges();
                 }
-            } else {
-                // User have no packages
-                // Show offered packages
+            }
+            if(user.isBuyMembership()){
                 swipeRefreshLayout.setRefreshing(true);
                 networkCommunicator.getPackages(user.getId(), this, false);
-                memberShipAdapter.setHeaderText(context.getString(R.string.membership_no_package_heading_1),
-                        context.getString(R.string.membership_no_package_heading_2));
+                if(userPackageInfo.haveDropInPackage||userPackageInfo.haveGeneralPackage){
+                    memberShipAdapter.setHeaderText(context.getString(R.string.membership_drop_in_package_heading_1),
+                            context.getString(R.string.membership_drop_in_package_heading_2));
+                }else{
+                    memberShipAdapter.setHeaderText(context.getString(R.string.membership_drop_in_package_heading_1),
+                            context.getString(R.string.membership_general_package_heading_1));
+                }
+
             }
         }
     }
@@ -284,30 +300,16 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
             break;
             case R.id.button: {
 
-//                if (viewHolder instanceof MemberShipViewHolder) {
-//                    ((MemberShipViewHolder) viewHolder).button.setText(context.getResources().getString(R.string.please_wait));
-//                    ((MemberShipViewHolder) viewHolder).button.setEnabled(false);
-//                }
-//
-//                Package aPackage = (Package) model;
-//                if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS) {
-//                    networkCommunicator.purchasePackageForClass(new PaymentUrlRequest(TempStorage.getUser().getId(),
-//                            aPackage.getId(), classModel.getClassSessionId(),
-//                            classModel.getGymBranchDetail().getGymId()), this, false);
-//
-//                } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SETTING ||
-//                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE) {
-//                    networkCommunicator.purchasePackageForClass(new PaymentUrlRequest(TempStorage.getUser().getId(),
-//                            aPackage.getId()), this, false);
-//                }
-
                 Package aPackage = (Package) model;
                 if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS) {
                     CheckoutActivity.openActivity(context, aPackage, classModel);
                 } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SETTING ||
                         navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE ||
                         navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION ||
-                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN) {
+                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN ||
+                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS||
+                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_DEEPLINK_ACTIVITY
+                        ) {
                     CheckoutActivity.openActivity(context, aPackage);
 
                     MixPanel.trackPackagePreferred(aPackage.getName());
@@ -319,18 +321,33 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                 if (model instanceof Package) {
                     Package aPackage = (Package) model;
                     if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
-                        DialogUtils.showBasicMessage(context, aPackage.getName(), "Ok", R.string.membership_package_limit_info);
+                        DialogUtils.showBasicMessage(context, aPackage.getName().toUpperCase(), "Ok", R.string.membership_package_limit_info);
                     } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
-                        DialogUtils.showBasicMessage(context, aPackage.getName(), "Ok", R.string.membership_drop_in_info);
+                        DialogUtils.showBasicMessage(context, aPackage.getName().toUpperCase(), "Ok", R.string.membership_drop_in_info);
                     }
                 } else if (model instanceof UserPackage) {
                     UserPackage aPackage = (UserPackage) model;
                     if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
-                        DialogUtils.showBasicMessage(context, aPackage.getPackageName(), "Ok", R.string.membership_package_limit_info);
+                        DialogUtils.showBasicMessage(context, aPackage.getPackageName().toUpperCase(), "Ok", R.string.membership_package_limit_info);
                     } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
-                        DialogUtils.showBasicMessage(context, aPackage.getPackageName(), "Ok", R.string.membership_drop_in_info);
+                        DialogUtils.showBasicMessage(context, aPackage.getPackageName().toUpperCase(), "Ok", R.string.membership_drop_in_info);
                     }
                 }
+            }
+            break;
+
+            case R.id.textViewExtendPackage:{
+                if(model instanceof UserPackage){
+                    try {
+                        PackageExtensionAlertDialog dialog=new PackageExtensionAlertDialog(context,AppConstants.AppNavigation.NAVIGATION_FROM_MEMBERSHIP, (UserPackage) model) ;
+                        dialog.show();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                }
+
+
             }
             break;
         }
@@ -355,13 +372,12 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                 swipeRefreshLayout.setEnabled(true);
 
                 List<Package> packagesTemp = ((ResponseModel<List<Package>>) response).data;
-
                 if (packagesTemp != null && !packagesTemp.isEmpty()) {
                     List<Package> packages = new ArrayList<>(packagesTemp.size());
 
                     for (Package aPackage : packagesTemp) {
                         if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
-                            if (!userPackageInfo.haveGeneralPackage) {
+                            if (user.isBuyMembership()) {
                                 packages.add(aPackage);
                             }
                         } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
@@ -369,6 +385,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                             packages.add(aPackage);
                         }
                     }
+
 
                     memberShipAdapter.addAllOfferedPackages(packages);
                 }

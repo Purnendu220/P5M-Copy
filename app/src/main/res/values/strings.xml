@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">P5M</string>
     <string name="no_internet">No internet connection</string>
 
@@ -18,6 +18,8 @@
 
     <string name="skip">SKIP</string>
     <string name="start">GOT IT</string>
+    <string name="not_now">NOT NOW</string>
+
 
     <string name="slide_1_title">Explore and join fitness classes around you with one plan.</string>
 
@@ -41,6 +43,9 @@
     <string name="enter_name">Enter your name</string>
     <string name="create_a_password">Create a password</string>
     <string name="create_your_password">Create your password</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+
     <string name="confirm_your_password">Confirm your password</string>
     <string name="gender_string">Gender</string>
     <string name="male">MALE</string>
@@ -100,13 +105,15 @@
     <string name="booked">Booked</string>
     <string name="full">Full</string>
     <string name="book">Book</string>
+    <string name="expired">Session Expired</string>
+
 
     <string name="email"><font size="10">E-mail</font></string>
     <string name="password"><font size="5">Password</font></string>
     <string name="reminders">REMINDERS:</string>
     <string name="studio_instruction">STUDIO INSTRUCTION:</string>
     <string name="special_note_by_trainer">SPECIAL NOTE BY THE TRAINER:</string>
-    <string name="reserve_class">RESERVE CLASS</string>
+    <string name="reserve_class">BOOK CLASS</string>
     <string name="favourite">Favourite</string>
     <string name="favorited">Favorited</string>
     <string name="favorite_trainer">Favourite Trainer</string>
@@ -161,6 +168,8 @@
     <string name="remaing_day"><b>days</b> remaining until your classes expire.</string>
     <string name="fuel_your_workout">Fuel your workout.</string>
     <string name="recharge">"<u>Buy Classes</u>"</string>
+    <string name="buy_classes">Buy Classes</string>
+
     <string name="login_error">The email and password combination is incorrect.\n Please try again.</string>
     <string name="password_error">The password you entered is incorrect. \n Please Try again</string>
     <string name="password_error_text">Password must be 6 to 14 character long.</string>
@@ -168,7 +177,9 @@
 
     <string name="password_required_error">We need Password for login.</string>
     <string name="email_required_error">We need email for login.</string>
-    <string name="name_required_error">Your name is required.</string>
+    <string name="name_required_error">Your first name is required.</string>
+    <string name="last_name_required_error">Your last name is required.</string>
+
     <string name="gender_required">Your gender is required.</string>
     <string name="promo_code_required">Promo code is required.</string>
     <string name="email_required">Email is required.</string>
@@ -226,7 +237,7 @@
     <string name="join_fail_limit_exhaust">You have exceeded the number of visits to this studio. Would you like to continue and purchase a one-time visit to this class, without changing your current plan?</string>
     <string name="title_activity_continue_user">ContinueUser</string>
     <string name="switch_account">"<u>Switch an account</u>"</string>
-    <string name="cancel">cancel</string>
+    <string name="cancel">Cancel</string>
     <string name="transaction_history">Transaction History</string>
     <string name="choose_focus">Choose your focus</string>
     <string name="choose_nationality">Choose your Nationality</string>
@@ -259,8 +270,65 @@
     <string name="apply_filter">Apply Filter</string>
     <string name="please_enter_your_email">Please enter your email</string>
     <string name="p5m_app">P5M App</string>
-    <string name="share">Share</string>
+    <string name="share">Invite Friends</string>
     <string name="sure_unjoin">Are you sure you want to unjoin ?</string>
     <string name="mention_email">Please mention your email first</string>
+    <string name="total_locations">Locations (%1$d)</string>
+    <string name="unable_to_load">Unable to load image</string>
+    <string name="go_to_settings">Go to Settings</string>
+    <string name="permission_alert">Permission Alert</string>
+    <string name="permission_message_media">Please allow P5M to access photos,media and files on your device to take photo.</string>
+    <string name="permission_message_camera">\"Please allow P5M to take pictures and record video.\"</string>
+    <string name="pick_image">Pick Image</string>
+    <string name="profile_changes_saved">Changes to your profile have been saved!</string>
+    <string name="package_offer_percentage">% off </string>
+    <string name="package_offer_kwd">KWD off </string>
+    <string name="local_service_stopped">Service destroy</string>
+    <string name="rate_class_message">Your class %1s is finished.Rate this class for better experience on next visit.</string>
+    <string name="what_was_good_here">What was good here?</string>
+    <string name="take_photo">Take photo</string>
+    <string name="open_gallery">Open gallery</string>
+    <string name="rate_class_tilte">Rate Class</string>
+    <string name="add_photos">Add a photo from the class. Up to 4 photos.</string>
+    <string name="submit_review">Submit Review</string>
+    <string name="retry_review">Retry</string>
+
+    <string name="how_was_your_class">How was your <b>%s</b> class?</string>
+    <string name="how_was_your_class_v_two">How was your experiance with <b>%s</b>  class?</string>
+    <string name="submiting_review">Submitting Review...</string>
+    <string name="got_it">GOT IT</string>
+    <string name="rate">Rate</string>
+    <string name="rating_view">Rating View</string>
+    <string name="studio_rating">CLASS RATING:</string>
+    <string name="review_based_on">based on %1s rating(s)</string>
+    <string name="edit_rating">Edit Rating</string>
+    <string name="powered_by">Powered By</string>
+
+    <string name="selection_limiter_pix">Cant select more than %d images.</string>
+    <string name="message_to_drag_up">Drag images up for gallery</string>
+    <string name="pix_ok">OK</string>
+    <string name="pix_tap_to_select">Tap photo to select</string>
+    <string name="pix_selected">Selected</string>
+    <string name="pix_recent">Recent</string>
+    <string name="pix_last_month">Last Month</string>
+    <string name="pix_last_week">Last Week</string>
+    <string name="invite_friends">Invite Friends</string>
+    <string name="add_more_time">Extend Membership</string>
+    <string name="proceed">Proceed</string>
+    <string name="share_message">Hey. Want to workout with me? Let’s join %1s together.\n</string>
+    <string name="extend_package">Extend Package</string>
+    <string name="share_message_gym">Hey. Want to workout with me? Let’s join %1s\'s classes together.\n</string>
+    <string name="share_message_trainer">Hey. Want to workout with me? Let’s join %1s‘s classes together.\n</string>
+    <string name="valid_intil">(until %1s)</string>
+    <string name="terms">"<u><![CDATA[Terms & Conditions]]></u>"</string>
+    <string name="extend_message">Add more time to your current plan. Any gym visit limits still apply, and will not be reset with this extension.</string>
+    <string name="extend_term">The gym visit limits will not re-set with this one-time purchase. You have just extended your membership (%1d week(s)). You have (%1d) week(s) remaining. Make sure if you need more time to extend your membership before your classes expire.</string>
+    <string name="extend">"<u>Extend</u>"</string>
+    <string name="extention_policy">Membership extension policy</string>
+    <string name="yourfriendsname">Frined\'s Name</string>
+    <string name="friendsemail">Friend\'s Email</string>
+    <string name="bookWithFriend">Book With Friend</string>
+    <string name="whojoiningyou">Who\'s joining you?</string>
+    <string name="almostthere">Almost there...</string>
 
 </resources>
