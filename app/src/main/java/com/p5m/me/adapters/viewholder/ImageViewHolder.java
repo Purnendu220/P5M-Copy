@@ -7,8 +7,10 @@ import android.widget.ImageView;
 
 import com.p5m.me.R;
 import com.p5m.me.adapters.ImageListAdapter;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.MediaModel;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.ImageUtils;
 
 /**
@@ -38,7 +40,7 @@ public class ImageViewHolder extends RecyclerView.ViewHolder {
 //        ButterKnife.bind(this, itemView);
 //    }
 
-    public void bind(MediaModel item, final ImageListAdapter imageListAdapter, final int position) {
+    public void bind(MediaModel item, final ImageListAdapter imageListAdapter, final int position, final int showIn) {
         if (item != null && item.getMediaThumbNailUrl() != null && !item.getMediaThumbNailUrl().isEmpty()) {
             itemView.setVisibility(View.VISIBLE);
 
@@ -50,6 +52,15 @@ public class ImageViewHolder extends RecyclerView.ViewHolder {
                 @Override
                 public void onClick(View view) {
                     Helper.openImageListViewer(context, imageListAdapter.getList(), position);
+
+                    if (showIn == AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE) {
+                        MixPanel.trackGymProfileEvent(AppConstants.Tracker.LOOKING_GALLERY);
+                    } else if (showIn == AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE) {
+                        MixPanel.trackTrainerProfileEvent(AppConstants.Tracker.LOOKING_GALLERY);
+                    }
+                    else if(showIn == AppConstants.AppNavigation.SHOWN_IN_RATING_LIST){
+                        MixPanel.trackRatingImageView();
+                    }
                 }
             });
         } else {

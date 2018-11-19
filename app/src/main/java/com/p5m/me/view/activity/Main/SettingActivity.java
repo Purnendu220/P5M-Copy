@@ -145,7 +145,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case NetworkCommunicator.RequestCode.LOGOUT:
                 imageViewLogout.setVisibility(View.VISIBLE);
                 progressBarLogout.setVisibility(View.GONE);
-
                 EventBroadcastHelper.logout(context);
                 break;
         }

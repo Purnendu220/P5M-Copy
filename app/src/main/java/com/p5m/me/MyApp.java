@@ -1,56 +1,55 @@
 package com.p5m.me;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.receivers.NetworkChangeReceiver;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.RefrenceWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
 
+@SuppressLint("NewApi")
 public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.OnNetworkChangeListener, Application.ActivityLifecycleCallbacks, NetworkCommunicator.RequestListener {
 
     public static Context context;
 
-    public final static ApiMode apiMode = ApiMode.LIVE;
-    public final static boolean USE_CRASH_ANALYTICS = true;
+    public final static boolean USE_CRASH_ANALYTICS = BuildConfig.IS_PRODUCTION;
+    public final static boolean USE_MIX_PANEL = BuildConfig.IS_PRODUCTION;
 
-    public final static boolean SHOW_LOG = false;
-    public final static boolean RETROFIT_SHOW_LOG = false;
-
-//    public static final String MIX_PANEL_TOKEN = "705daac4d807e105c1ddc350c9324ca2";
-
-//    public static MixpanelAPI mixPanel;
+    public final static boolean SHOW_LOG = BuildConfig.IS_DEBUG;
+    public final static boolean RETROFIT_SHOW_LOG = BuildConfig.IS_DEBUG;
 
     public final static List<Activity> ACTIVITIES = new ArrayList<>();
 
     public boolean isAppForeground;
     public long appBackgroundTime;
 
-    public enum ApiMode {
-        TESTING_ALPHA,
-        TESTING_BETA,
-        LIVE
-    }
+
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+
         context = getApplicationContext();
 
         MultiDex.install(this);
@@ -59,8 +58,6 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         if (USE_CRASH_ANALYTICS) {
             Fabric.with(this, new Crashlytics());
         }
-
-//        mixPanel = MixpanelAPI.getInstance(context, MIX_PANEL_TOKEN);
 
         registerActivityLifecycleCallbacks(this);
 
@@ -78,7 +75,8 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
 
         TempStorage.setUser(this, MyPreferences.initialize(this).getUser());
         TempStorage.version = myVersionName;
-
+        String android_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+        RefrenceWrapper.getRefrenceWrapper(this).setDeviceId(android_id);
         LogUtils.debug("version : " + TempStorage.version);
 
         IntentFilter filter = new IntentFilter();
@@ -88,8 +86,6 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         if (MyPreferences.getInstance().isLogin()) {
             NetworkCommunicator.getInstance(context).getDefault();
         }
-
-//        MixPanel.setup(context);
     }
 
     @Override
@@ -168,7 +164,7 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
 
         appBackgroundTime = System.currentTimeMillis();
 
-//        mixPanel.flush();
+        MixPanel.flush();
     }
 
     @Override

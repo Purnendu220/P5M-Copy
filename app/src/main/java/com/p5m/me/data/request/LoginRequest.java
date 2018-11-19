@@ -10,6 +10,7 @@ public class LoginRequest implements java.io.Serializable {
 
     private String facebookId;
     private String firstName;
+    private String lastName;
     private String gender;
     private String loginThrough;
 
@@ -18,9 +19,10 @@ public class LoginRequest implements java.io.Serializable {
         this.password = password;
     }
 
-    public LoginRequest(String facebookId, String firstName, String email, String gender) {
+    public LoginRequest(String facebookId, String firstName,String lastName,String email, String gender) {
         this.facebookId = facebookId;
         this.firstName = firstName;
+        this.lastName = lastName;
         this.gender = gender;
         this.email = email;
         loginThrough = "facebook";
@@ -41,4 +43,5 @@ public class LoginRequest implements java.io.Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+
 }

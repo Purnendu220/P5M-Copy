@@ -7,12 +7,14 @@ package com.p5m.me.data;
 public class FaceBookUser {
     String id;
     String name;
+    String lastName;
     String gender;
     String email;
 
-    public FaceBookUser(String id, String name, String gender, String email) {
+    public FaceBookUser(String id, String name,String lastName, String gender, String email) {
         this.id = id;
         this.name = name;
+        this.lastName = lastName;
         this.gender = gender;
         this.email = email;
     }
@@ -32,6 +34,10 @@ public class FaceBookUser {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getLastName() { return lastName; }
+
+    public void setLastName(String lastName) { this.lastName = lastName; }
 
     public String getGender() {
         return gender;

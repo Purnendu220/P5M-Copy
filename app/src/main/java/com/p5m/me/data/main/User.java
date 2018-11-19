@@ -10,8 +10,11 @@ public class User implements java.io.Serializable {
     private int numberOfTrainer;
     private boolean favTrainerNotification;
     private long lastActiveDate;
+    private String facebookId;
     private String profileImage;
     private String firstName;
+    private String lastName;
+
     private long dateOfJoining;
     private String nationality;
     private String userCategory;
@@ -20,12 +23,31 @@ public class User implements java.io.Serializable {
     private int userProfileImageId;
     private int id;
     private int followerCount;
+    private int numberOfTransactions;
     private String email;
     private String mobile;
     private boolean isfollow;
     private boolean status;
     private List<UserPackage> userPackageDetailDtoList;
     private List<ClassActivity> classCategoryList;
+    private boolean buyMembership;
+
+
+    public int getNumberOfTransactions() {
+        return numberOfTransactions;
+    }
+
+    public void setNumberOfTransactions(int numberOfTransactions) {
+        this.numberOfTransactions = numberOfTransactions;
+    }
+
+    public String getFacebookId() {
+        return facebookId;
+    }
+
+    public void setFacebookId(String facebookId) {
+        this.facebookId = facebookId;
+    }
 
     public long getLastPasswordResetDate() {
         return this.lastPasswordResetDate;
@@ -201,5 +223,21 @@ public class User implements java.io.Serializable {
 
     public void setClassCategoryList(List<ClassActivity> classCategoryList) {
         this.classCategoryList = classCategoryList;
+    }
+
+    public boolean isBuyMembership() {
+        return buyMembership;
+    }
+
+    public void setBuyMembership(boolean buyMembership) {
+        this.buyMembership = buyMembership;
+    }
+
+    public String getLastName() {
+        return this.lastName == null ? "" : lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

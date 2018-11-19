@@ -24,6 +24,8 @@
                 layout="@layout/empty_screen_layout"
                 android:visibility="gone" />
 
+           
+
         </FrameLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>

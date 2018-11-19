@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -25,6 +26,7 @@ import com.p5m.me.adapters.MyProfileAdapter;
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.TrainerModel;
+import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.helper.ClassListListenerHelper;
@@ -35,11 +37,14 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.RefrenceWrapper;
+import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.EditProfileActivity;
 import com.p5m.me.view.activity.Main.MemberShip;
 import com.p5m.me.view.activity.Main.SettingActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.activity.custom.MyRecyclerView;
+import com.p5m.me.view.custom.PackageExtensionAlertDialog;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -50,7 +55,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MyProfile extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks<Object>, MyRecyclerView.LoaderCallbacks, NetworkCommunicator.RequestListener, PopupMenu.OnMenuItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+    public static Fragment createMyProfileFragment(int position) {
+        Fragment tabFragment = new MyProfile();
+        Bundle bundle = new Bundle();
+        bundle.putInt(AppConstants.DataKey.TAB_POSITION_INT, position);
+        tabFragment.setArguments(bundle);
 
+        return tabFragment;
+    }
     @BindView(R.id.recyclerView)
     public RecyclerView recyclerView;
 
@@ -62,7 +74,8 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
     public Toolbar toolbar;
 
     private MyProfileAdapter myProfileAdapter;
-    private int page;
+    private int page=0;
+    private int tabPosition=ProfileHeaderTabViewHolder.TAB_1;
 
     public MyProfile() {
     }
@@ -94,7 +107,11 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
             LogUtils.exception(e);
         }
     }
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void ClassRating(Events.ClassRating data) {
+        refreshFimishedClass();
+        LogUtils.debug(data+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void trainerFollowed(Events.TrainerFollowed trainerFollowed) {
 
@@ -129,6 +146,8 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        tabPosition = getArguments().getInt(AppConstants.DataKey.TAB_POSITION_INT);
+
         return inflater.inflate(R.layout.fragment_my_profile, container, false);
     }
 
@@ -137,10 +156,11 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
         super.onActivityCreated(savedInstanceState);
 
         ButterKnife.bind(this, getView());
+        tabPosition = getArguments().getInt(AppConstants.DataKey.TAB_POSITION_INT);
 
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        myProfileAdapter = new MyProfileAdapter(context, new TrainerListListenerHelper(context, activity, this),
+        myProfileAdapter = new MyProfileAdapter(context, new TrainerListListenerHelper(context, activity, AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FAV_TRAINERS, this),
                 new ClassListListenerHelper(context, activity, AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED, this), this);
         StickyLayoutManager layoutManager = new StickyLayoutManager(context, myProfileAdapter);
         layoutManager.elevateHeaders(true);
@@ -153,6 +173,7 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
         myProfileAdapter.setUser(TempStorage.getUser());
         myProfileAdapter.notifyDataSetChanges();
         recyclerView.setHasFixedSize(true);
+        LogUtils.debug(tabPosition+"sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
 
         layoutManager.setStickyHeaderListener(new StickyHeaderListener() {
             @Override
@@ -174,14 +195,17 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
         }
 
         setToolBar();
+
+
     }
 
     @Override
     public void onRefresh() {
         networkCommunicator.getMyUser(this, false);
         networkCommunicator.getFavTrainerList(AppConstants.ApiParamValue.FOLLOW_TYPE_FOLLOWED, TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_TRAINER_LIST, this, false);
-        networkCommunicator.getFinishedClassList(TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_TRAINER_LIST, this, false);
-    }
+        networkCommunicator.getFinishedClassList(TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_UNLIMITED, this, false);
+
+        }
 
     boolean isLoadingFirstTime = true;
 
@@ -190,9 +214,12 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
         if (isLoadingFirstTime) {
             isLoadingFirstTime = false;
             networkCommunicator.getFavTrainerList(AppConstants.ApiParamValue.FOLLOW_TYPE_FOLLOWED, TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_TRAINER_LIST, this, false);
-            networkCommunicator.getFinishedClassList(TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_TRAINER_LIST, this, false);
-
-            myProfileAdapter.onTabSelection(ProfileHeaderTabViewHolder.TAB_1);
+            networkCommunicator.getFinishedClassList(TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_UNLIMITED, this, false);
+            if(RefrenceWrapper.getRefrenceWrapper(getActivity()).getMyProfileTabPosition()==ProfileHeaderTabViewHolder.TAB_2){
+                myProfileAdapter.onTabSelection(ProfileHeaderTabViewHolder.TAB_2);
+                RefrenceWrapper.getRefrenceWrapper(getActivity()).setMyProfileTabPosition(ProfileHeaderTabViewHolder.TAB_1);
+                }
+            else{ myProfileAdapter.onTabSelection(tabPosition); }
             myProfileAdapter.clearTrainers();
             myProfileAdapter.clearClasses();
             myProfileAdapter.notifyDataSetChanges();
@@ -286,6 +313,19 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
                     Helper.openImageViewer(context, activity, view, myProfileAdapter.getUser().getProfileImage());
                 }
                 break;
+            case R.id.textViewExtendPackage:
+                if(myProfileAdapter.getUser().getUserPackageDetailDtoList()!=null){
+                    try {
+                        PackageExtensionAlertDialog dialog=new PackageExtensionAlertDialog(context,AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE, (UserPackage) model) ;
+                        dialog.show();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                }
+                break;
+
+
         }
     }
 
@@ -358,6 +398,11 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
             default:
                 return false;
         }
+    }
+
+    private void refreshFimishedClass(){
+        networkCommunicator.getFinishedClassList(TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_UNLIMITED, this, false);
+
     }
 
 }

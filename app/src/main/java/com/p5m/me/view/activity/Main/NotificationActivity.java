@@ -38,6 +38,10 @@ public class NotificationActivity extends BaseActivity implements SwipeRefreshLa
     public static void openActivity(Context context) {
         context.startActivity(new Intent(context, NotificationActivity.class));
     }
+    public static Intent createIntent(Context context) {
+        Intent intent = new Intent(context, NotificationActivity.class);
+        return intent;
+    }
 
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
@@ -131,17 +135,17 @@ public class NotificationActivity extends BaseActivity implements SwipeRefreshLa
                         case "OnClassUpdateByCMS":
                         case "OnGroupClassUpdateByCms":
                             // Class Details..
-                            ClassProfileActivity.open(context,  notificationModel.getObjectDataId());
+                            ClassProfileActivity.open(context,  notificationModel.getObjectDataId(), AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN);
                             break;
 
                         case "OnClassCreation":
                             //Trainer Profile..
-                            TrainerProfileActivity.open(context, notificationModel.getObjectDataId());
+                            TrainerProfileActivity.open(context, notificationModel.getObjectDataId(), AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN);
                             break;
 
                         case "OnClassRefund":
                             //Membership..
-                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
+                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN);
                             break;
 
                         case "OnSessionDeleteByGYM":

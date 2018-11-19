@@ -14,6 +14,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.p5m.me.R;
 import com.p5m.me.adapters.viewholder.ImageViewHolder;
 import com.p5m.me.data.main.MediaModel;
+import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
 
 import java.util.List;
@@ -23,11 +24,13 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageViewHolder> {
 
     private int dp;
     private List<MediaModel> list;
-    Context context;
+    private Context context;
+    private int shownIn;
 
-    public ImageListAdapter(Context context, List<MediaModel> mediaResponseDtoList) {
+    public ImageListAdapter(Context context, int shownIn, List<MediaModel> mediaResponseDtoList) {
         this.context = context;
         list = mediaResponseDtoList;
+        this.shownIn = shownIn;
 
         Fresco.initialize(context);
 
@@ -42,7 +45,6 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageViewHolder> {
     @Override
     public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CardView cardView = new CardView(context);
-
         cardView.setCardBackgroundColor(Color.BLACK);
         cardView.setRadius(dp * 4);
         RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(dp * 96, dp * 96);
@@ -71,7 +73,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageViewHolder> {
     public void onBindViewHolder(ImageViewHolder holder, final int position) {
         LogUtils.debug("onBindViewHolder " + position);
 
-        holder.bind(getItem(position), this, position);
+        holder.bind(getItem(position), this, position, shownIn);
     }
 
     @Override

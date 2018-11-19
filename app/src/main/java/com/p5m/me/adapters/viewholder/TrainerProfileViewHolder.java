@@ -9,6 +9,8 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,9 +18,11 @@ import android.widget.TextView;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.ImageListAdapter;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.GymBranchDetail;
 import com.p5m.me.data.main.TrainerDetailModel;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.ImageUtils;
 import com.p5m.me.view.activity.Main.GymProfileActivity;
 
@@ -34,8 +38,16 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.imageViewProfile)
     public ImageView imageViewProfile;
 
+    @BindView(R.id.imageViewCover)
+    public ImageView imageViewCover;
+
+
     @BindView(R.id.button)
-    public Button button;
+    public ImageButton button;
+
+
+
+
 
     @BindView(R.id.textViewName)
     public TextView textViewName;
@@ -71,7 +83,7 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
         dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
     }
 
-    public void bind(Object data, final AdapterCallbacks adapterCallbacks, final int position) {
+    public void bind(Object data, final AdapterCallbacks adapterCallbacks, final int position, final int shownIn) {
         if (data != null && data instanceof TrainerDetailModel) {
             itemView.setVisibility(View.VISIBLE);
 
@@ -87,7 +99,11 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
 
             ImageUtils.setImage(context,
                     model.getProfileImage(),
-                    R.drawable.profile_holder_big, imageViewProfile);
+                    R.drawable.profile_holder, imageViewProfile);
+
+            ImageUtils.setImage(context,
+                    model.getCoverImage(),
+                    R.drawable.cover_stub, imageViewCover);
 
             Helper.setFavButton(context, button, model);
 
@@ -95,7 +111,7 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
                 layoutGallery.setVisibility(View.VISIBLE);
                 textViewGallery.setText(Html.fromHtml("Gallery" + " <b>(" + model.getMediaResponseDtoList().size() + ")</b>"));
 
-                ImageListAdapter adapter = new ImageListAdapter(context, model.getMediaResponseDtoList());
+                ImageListAdapter adapter = new ImageListAdapter(context, AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE, model.getMediaResponseDtoList());
                 recyclerViewGallery.setAdapter(adapter);
                 recyclerViewGallery.setHasFixedSize(true);
 
@@ -153,7 +169,8 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
                         textView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                GymProfileActivity.open(context, gymBranchDetail.getGymId());
+                                GymProfileActivity.open(context, gymBranchDetail.getGymId(), AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE);
+                                MixPanel.trackTrainerProfileEvent(AppConstants.Tracker.VISIT_GYM_PROFILE);
                             }
                         });
                     }
@@ -171,6 +188,12 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
                 @Override
                 public void onClick(View view) {
                     adapterCallbacks.onAdapterItemClick(TrainerProfileViewHolder.this, imageViewProfile, model, position);
+                }
+            });
+            imageViewCover.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(TrainerProfileViewHolder.this, imageViewCover, model, position);
                 }
             });
 

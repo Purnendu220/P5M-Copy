@@ -7,10 +7,12 @@ public class DeviceUpdate implements java.io.Serializable {
     private String appVersion;
     private int userId;
     private String deviceToken;
+    private String androidId;
 
-    public DeviceUpdate(String appVersion, int userId, String deviceToken) {
+    public DeviceUpdate(String appVersion, int userId, String deviceToken, String androidId) {
         this.appVersion = appVersion;
         this.userId = userId;
         this.deviceToken = deviceToken;
+        this.androidId = androidId;
     }
 }

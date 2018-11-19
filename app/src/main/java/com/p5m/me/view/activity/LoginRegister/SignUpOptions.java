@@ -19,6 +19,7 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.p5m.me.R;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.FaceBookUser;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.request.LoginRequest;
@@ -27,6 +28,7 @@ import com.p5m.me.helper.Helper;
 import com.p5m.me.helper.MyClickSpan;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.Main.HomeActivity;
@@ -57,6 +59,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
 
     private CallbackManager callbackManager;
     private FaceBookUser faceBookUser;
+    private long loginTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,14 +120,16 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
 
                                         LogUtils.debug("Facebook newMeRequest : " + object.toString());
 
-                                        String name = "";
+                                        String first_name = "";
+                                        String last_name = "";
                                         String gender = "";
                                         String email = "";
                                         String id = "";
 
                                         try {
                                             id = object.getString("id");
-                                            name = object.getString("name");
+                                            first_name = object.getString("first_name");
+                                            last_name = object.getString("last_name");
                                             gender = object.getString("gender").toUpperCase();
                                             email = object.getString("email");
 
@@ -133,13 +138,13 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                                             LogUtils.exception(e);
                                         }
 
-                                        faceBookUser = new FaceBookUser(id, name, gender, email);
+                                        faceBookUser = new FaceBookUser(id, first_name,last_name, gender, email);
 
-                                        networkCommunicator.loginFb(new LoginRequest(id, name, email, gender), SignUpOptions.this, false);
+                                        networkCommunicator.loginFb(new LoginRequest(id,first_name,last_name, email, gender), SignUpOptions.this, false);
                                     }
                                 });
                         Bundle parameters = new Bundle();
-                        parameters.putString("fields", "id,name,birthday,gender,email,location");
+                        parameters.putString("fields", "id,name,first_name,last_name,birthday,gender,email,location");
                         request.setParameters(parameters);
                         request.executeAsync();
                     }
@@ -160,6 +165,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
         buttonLoginFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                loginTime = System.currentTimeMillis() - 5 * 1000;
                 LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile", "email"));
                 layoutProgress.setVisibility(View.VISIBLE);
             }
@@ -186,6 +192,12 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                     User user = ((ResponseModel<User>) response).data;
 
                     EventBroadcastHelper.sendLogin(context, user);
+
+                    if (user.getDateOfJoining() >= loginTime) {
+                        MixPanel.trackRegister(AppConstants.Tracker.FB, TempStorage.getUser());
+                    } else
+                        MixPanel.trackLogin(AppConstants.Tracker.FB, TempStorage.getUser());
+
                     HomeActivity.open(context);
                     finish();
                 }
@@ -203,6 +215,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
         switch (requestCode) {
 
             case NetworkCommunicator.RequestCode.LOGIN_FB:
+
                 RegistrationActivity.open(context, faceBookUser);
 
                 break;

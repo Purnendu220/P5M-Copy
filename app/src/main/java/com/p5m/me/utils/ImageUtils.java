@@ -81,6 +81,7 @@ public class ImageUtils {
                 .load(url)
                 .centerCrop().transition(DrawableTransitionOptions.withCrossFade())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .skipMemoryCache( true )
                 .placeholder(placeHolder)
                 .into(imageView);
     }

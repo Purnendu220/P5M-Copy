@@ -11,6 +11,8 @@ import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import com.p5m.me.BuildConfig;
 import com.p5m.me.MyApp;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
@@ -47,26 +49,15 @@ public class RestServiceFactory {
                     Request request = chain.request().newBuilder()
                             .addHeader(AppConstants.ApiParamKey.MYU_AUTH_TOKEN, auth)
                             .addHeader(AppConstants.ApiParamKey.USER_AGENT, AppConstants.ApiParamValue.USER_AGENT_ANDROID)
-//                            .addHeader(AppConstants.ApiParamKey.APP_VERSION, TempStorage.version)
+                            .addHeader(AppConstants.ApiParamKey.APP_VERSION, BuildConfig.VERSION_NAME)
                             .build();
                     return chain.proceed(request);
                 }
             });
 
-            String baseUrl = "";
+            String baseUrl = BuildConfig.BASE_URL+BuildConfig.BASE_URL_MIDL;
 
-            switch (MyApp.apiMode) {
-                case TESTING_BETA:
-                    baseUrl = AppConstants.Url.BASE_SERVICE_BETA;
-                    break;
-                case TESTING_ALPHA:
-                    baseUrl = AppConstants.Url.BASE_SERVICE_ALPHA;
-                    break;
-                case LIVE:
-                    baseUrl = AppConstants.Url.BASE_SERVICE_LIVE;
-                    break;
-                default:
-            }
+
 
             Retrofit.Builder builder =
                     new Retrofit.Builder()

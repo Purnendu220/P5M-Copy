@@ -159,7 +159,35 @@
                                     android:textAllCaps="true"
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/button_join"
-                                    android:visibility="visible" />
+                                    android:visibility="gone" />
+                                <Button
+                                    android:id="@+id/buttonClassRating"
+                                    android:layout_width="@dimen/button_width_inner_list"
+                                    android:layout_height="@dimen/button_height_inner_list"
+                                    android:background="@drawable/join_rect"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:letterSpacing="@dimen/button_letter_spacing_little"
+                                    android:gravity="center"
+                                    android:text="@string/rate_class_tilte"
+                                    android:textAllCaps="true"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_extra_small"
+                                    android:visibility="gone"
+                                    />
+                                <Button
+                                    android:id="@+id/buttonEditRating"
+                                    android:layout_width="@dimen/button_width_inner_list"
+                                    android:layout_height="@dimen/button_height_inner_list"
+                                    android:background="@drawable/button_grey"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:letterSpacing="@dimen/button_letter_spacing_little"
+                                    android:gravity="center"
+                                    android:text="@string/edit_rating"
+                                    android:textAllCaps="true"
+                                    android:textColor="@color/dark_grey"
+                                    android:textSize="@dimen/text_extra_small"
+                                    android:visibility="gone"
+                                    />
                             </LinearLayout>
                         </FrameLayout>
 
@@ -373,6 +401,38 @@
 
                         </RelativeLayout>
 
+                        <RelativeLayout
+                            android:id="@+id/relativeLayoutFitnessLevel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="12dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="48dp"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:id="@+id/imageViewClassFitnessLevel"
+                                style="@style/ClassIconSmall"
+                                android:src="@drawable/gender_dark" />
+
+                            <TextView
+                                android:id="@+id/textViewFitnessLevel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginLeft="@dimen/text_icon_gap"
+                                android:layout_marginTop="@dimen/text_drawable_adjustment"
+                                android:layout_toEndOf="@+id/imageViewClassFitnessLevel"
+                                android:fontFamily="sans-serif"
+                                android:gravity="left"
+                                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                                android:lineSpacingExtra="@dimen/line_spacing_extra"
+                                android:text="INTERMEDIATE"
+                                android:textColor="@color/theme_dark_text"
+                                android:textSize="@dimen/text_medium" />
+
+                        </RelativeLayout>
                     </LinearLayout>
 
                     <ImageView

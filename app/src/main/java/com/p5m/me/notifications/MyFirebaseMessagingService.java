@@ -13,7 +13,10 @@ import android.support.v4.app.TaskStackBuilder;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.p5m.me.R;
+import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
+import com.p5m.me.ratemanager.RateAlarmReceiver;
+import com.p5m.me.ratemanager.ScheduleAlarmManager;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
@@ -24,6 +27,8 @@ import com.p5m.me.view.activity.Main.MemberShip;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
 
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Created by Varun John on 4/12/2018.
@@ -52,10 +57,96 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 JSONObject json = new JSONObject(message);
                 handleDataMessage(json);
+                handleDataMessageForNotificationSchedule(json);
             }
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
+        }
+    }
+    private void handleDataMessageForNotificationSchedule(JSONObject json){
+        try{
+
+
+        JSONObject jsonObject = json;
+        String type = jsonObject.optString(AppConstants.Notification.TYPE);
+
+        long dataID = jsonObject.optLong(AppConstants.Notification.OBJECT_DATA_ID);
+        try {
+            String userIdToNotify = jsonObject.optString(AppConstants.Notification.USER_ID_TO_NOTIFY);
+            int userId = Integer.parseInt(userIdToNotify);
+
+            if (TempStorage.getUser() != null && TempStorage.getUser().getId() != userId) {
+                return;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+
+        switch (type){
+            case "OnClassRefund":
+                if(dataID!=0L&&dataID>0) {
+                    TempStorage.removeSavedClass((int)dataID,context);
+                    }
+                break;
+            case "CustomerCancelClass":
+                if(dataID!=0L&&dataID>0){
+                    TempStorage.removeSavedClass((int)dataID,context);
+                }
+                break;
+            case "OnClassUpdateByGYM":
+                TempStorage.removeSavedClass((int)dataID,context);
+                setNotification(jsonObject,dataID);
+
+                //updateNotificationSchedule(TempStorage.getSavedClasses(),dataID,jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME),jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME));
+                break;
+            case "OnClassUpdateByTrainer":
+                TempStorage.removeSavedClass((int)dataID,context);
+                setNotification(jsonObject,dataID);
+
+               // updateNotificationSchedule(TempStorage.getSavedClasses(),dataID,jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME),jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME));
+                break;
+            case "OnSessionUpdateByGYM":
+                TempStorage.removeSavedClass((int)dataID,context);
+                setNotification(jsonObject,dataID);
+
+               // updateNotificationSchedule(TempStorage.getSavedClasses(),dataID,jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME),jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME));
+                break;
+            case "OnSessionUpdateByTrainerOfGym":
+                TempStorage.removeSavedClass((int)dataID,context);
+                setNotification(jsonObject,dataID);
+
+               // updateNotificationSchedule(TempStorage.getSavedClasses(),dataID,jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME),jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME));
+                break;
+            case "OnSessionUpdateByTrainer":
+                TempStorage.removeSavedClass((int)dataID,context);
+                setNotification(jsonObject,dataID);
+
+                //updateNotificationSchedule(TempStorage.getSavedClasses(),dataID,jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME),jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME));
+                break;
+            case "OnSessionUpdateByGymOfTrainer":
+                TempStorage.removeSavedClass((int)dataID,context);
+                setNotification(jsonObject,dataID);
+
+               // updateNotificationSchedule(TempStorage.getSavedClasses(),dataID,jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME),jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME));
+                break;
+            case "OnClassUpdateByCms":
+                TempStorage.removeSavedClass((int)dataID,context);
+                setNotification(jsonObject,dataID);
+                // updateNotificationSchedule(TempStorage.getSavedClasses(),dataID,jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME),jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME));
+                break;
+            case "OnGroupClassUpdateByCms":
+                TempStorage.removeSavedClass((int)dataID,context);
+                setNotification(jsonObject,dataID);
+                // updateNotificationSchedule(TempStorage.getSavedClasses(),dataID,jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME),jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME));
+                break;
+            case "OnJoinClass":
+                setNotification(jsonObject,dataID);
+                break;
+                }
+        }catch (Exception e){
+e.printStackTrace();
         }
     }
 
@@ -127,6 +218,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     EventBroadcastHelper.updatePackage(this);
 
                     break;
+                case "OnSessionDeleteSilentPush":
+                    break;
+
             }
 
             /****************************Notification Batch Count********************************/
@@ -195,7 +289,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String title = "P5M";
 
             // If no message body found then its a silent push (just to increase the notification count)
-            if (message.isEmpty()) {
+            if (message == null||message.isEmpty()||message.equalsIgnoreCase("null")) {
                 return;
             }
 
@@ -250,14 +344,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 case "OnNewTrainerAssign":
                     // Class Details..
                     title = "Class Updated";
-                    navigationIntent = ClassProfileActivity.createIntent(context, (int) dataID);
+                    navigationIntent = ClassProfileActivity.createIntent(context, (int) dataID, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
                     break;
                 ////////////////////////////////////////////////////////////
 
                 //********************TRAINER PROFILE********************//
                 case "OnClassCreation":
                     //Trainer Profile..
-                    navigationIntent = TrainerProfileActivity.createIntent(context, (int) dataID);
+                    navigationIntent = TrainerProfileActivity.createIntent(context, (int) dataID, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
                     break;
                 /////////////////////////////////////////////////////////
 
@@ -288,7 +382,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 //********************SILENT PUSH********************//
                 case "OnClassRefund":
+                    break;
                 case "CustomerCancelClass":
+                    break;
                 case "OnEmailVerification":
                 case "FollowUser":
 
@@ -378,5 +474,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificationManager.notify((int) (System.currentTimeMillis() - 10000000), notification);
 
         }
+    }
+
+
+    private void setNotification(JSONObject jsonObject,long dataID){
+        String title=jsonObject.optString(AppConstants.Notification.CLASS_TITLE);
+        String classDate=jsonObject.optString(AppConstants.Notification.CLASS_DATE);
+        String fromTime=jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME);
+        String toTime=jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
+        ClassModel model=new ClassModel(title,classDate,fromTime,toTime,dataID);
+        TempStorage.setSavedClasses(model,context);
     }
 }

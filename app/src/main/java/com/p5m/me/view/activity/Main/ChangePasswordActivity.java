@@ -10,11 +10,13 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.p5m.me.R;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.request.ChangePasswordRequest;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 
@@ -113,6 +115,9 @@ public class ChangePasswordActivity extends BaseActivity implements NetworkCommu
         progressBarDone.setVisibility(View.GONE);
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.CHANGE_PASS:
+
+                MixPanel.trackEditProfile(AppConstants.Tracker.PASSWORD_CHANGED);
+
                 ToastUtils.show(context, ((ResponseModel<String>) response).data);
                 finish();
                 break;

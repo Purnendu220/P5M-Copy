@@ -70,7 +70,8 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         list = new ArrayList<>();
         this.navigationFrom = navigationFrom;
         this.showLoader = showLoader;
-        trainerListListenerHelper = new TrainerListListenerHelper(context, activity, adapterCallbacks);
+
+        trainerListListenerHelper = new TrainerListListenerHelper(context, activity, AppConstants.AppNavigation.SHOWN_IN_SEARCH, adapterCallbacks);
         classListListenerHelper = new ClassListListenerHelper(context, activity, AppConstants.AppNavigation.SHOWN_IN_SEARCH, adapterCallbacks);
         gymListListenerHelper = new GymListListenerHelper(context, activity, AppConstants.AppNavigation.SHOWN_IN_SEARCH, adapterCallbacks);
 

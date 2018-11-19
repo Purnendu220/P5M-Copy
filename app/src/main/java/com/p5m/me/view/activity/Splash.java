@@ -100,7 +100,6 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
             case NetworkCommunicator.RequestCode.DEVICE:
 
                 Boolean forceUpdate = ((ResponseModel<Boolean>) response).data;
-
                 if (forceUpdate) {
                     ForceUpdateActivity.openActivity(MyApp.context, "", "");
                 }

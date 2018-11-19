@@ -5,8 +5,10 @@ public class PromoCode implements java.io.Serializable {
     private float price;
     private float discount;
     private String discountType;
+    public String code;
     private int id;
     private float priceAfterDiscount;
+    private String promoCode;
 
     public float getPrice() {
         return this.price;
@@ -46,5 +48,13 @@ public class PromoCode implements java.io.Serializable {
 
     public void setPriceAfterDiscount(float priceAfterDiscount) {
         this.priceAfterDiscount = priceAfterDiscount;
+    }
+
+    public String getPromoCode() {
+        return promoCode;
+    }
+
+    public void setPromoCode(String promoCode) {
+        this.promoCode = promoCode;
     }
 }

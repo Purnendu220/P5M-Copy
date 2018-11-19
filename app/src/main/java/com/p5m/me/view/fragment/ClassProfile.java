@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
@@ -44,7 +45,7 @@ public class ClassProfile extends BaseFragment implements AdapterCallbacks<Objec
     public Toolbar toolbar;
 
     private MyProfileAdapter myProfileAdapter;
-    private int page;
+    private int page=0;
 
     public ClassProfile() {
     }
@@ -155,7 +156,7 @@ public class ClassProfile extends BaseFragment implements AdapterCallbacks<Objec
             break;
             case R.id.header2: {
                 if (myProfileAdapter.getClasses().isEmpty()) {
-                    networkCommunicator.getFinishedClassList(TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_TRAINER_LIST, this, false);
+                    networkCommunicator.getFinishedClassList(TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_UNLIMITED, this, false);
                 }
 
                 myProfileAdapter.onTabSelection(ProfileHeaderTabViewHolder.TAB_2);

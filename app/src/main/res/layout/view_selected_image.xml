@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="@dimen/margin_5"
+    >
+
+
+    <ImageView
+        android:id="@+id/imageViewSelectedImage"
+        android:layout_width="@dimen/margin_86"
+        android:layout_height="@dimen/margin_100"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/choose_image">
+
+    </ImageView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/theme_dark_light_text"
+        android:layout_gravity="top|right"
+        >
+
+        <ImageView
+            android:id="@+id/imageViewCross"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/close_ic"
+            android:elevation="@dimen/margin_10"
+            >
+
+
+        </ImageView>
+    </LinearLayout>
+
+</FrameLayout>

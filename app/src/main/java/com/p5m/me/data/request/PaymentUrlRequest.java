@@ -11,10 +11,22 @@ public class PaymentUrlRequest {
     private Integer sessionId;
     private Integer gymId;
     private Integer promoId;
+    private Long id;
 
     public PaymentUrlRequest(Integer userId, Integer packageId) {
         this.userId = userId;
         this.packageId = packageId;
+    }
+    public PaymentUrlRequest(Integer userId, Integer sessionId, Integer gymId) {
+        this.userId = userId;
+        this.sessionId = sessionId;
+        this.gymId = gymId;
+    }
+
+    public PaymentUrlRequest(Integer userId,Integer packageId,Long userPacakageId,String type) {
+        this.userId = userId;
+        this.packageId = packageId;
+        this.id = userPacakageId;
     }
 
     public PaymentUrlRequest(Integer userId, Integer packageId, Integer sessionId, Integer gymId) {
@@ -24,11 +36,6 @@ public class PaymentUrlRequest {
         this.gymId = gymId;
     }
 
-    public PaymentUrlRequest(Integer userId, Integer sessionId, Integer gymId) {
-        this.userId = userId;
-        this.sessionId = sessionId;
-        this.gymId = gymId;
-    }
 
     public PaymentUrlRequest(Integer userId, Integer packageId, Integer sessionId, Integer gymId, Integer promoId) {
         this.userId = userId;
@@ -76,5 +83,13 @@ public class PaymentUrlRequest {
 
     public void setPromoId(Integer promoId) {
         this.promoId = promoId;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
