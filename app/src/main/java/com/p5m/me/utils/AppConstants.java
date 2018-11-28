@@ -120,6 +120,8 @@ public class AppConstants {
         public static final String CLASS_MODEL = "class_model";
         public static final String RATING_PARAM = "rating_param";
 
+        public static final String PAYMENT_ERROR_RESPONSE = "payment_error_response";
+
 
 
     }
@@ -145,6 +147,9 @@ public class AppConstants {
         public static final String IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN = "is_from_notification_stack_builder_boolean";
         public static final String RATING_VALUE = "Rating_Value";
         public static final String CLASS_MODEL = "class_model";
+        public static final String BOOK_WITH_FRIEND_DATA = "book_with_friend_data";
+        public static final String NUMBER_OF_PACKAGES_TO_BUY = "number_of_packages_to_buy";
+
 
 
     }
@@ -279,10 +284,7 @@ public class AppConstants {
         public static final String RATING_ID = "ratingId";
 
 
-
-
-
-
+        public static final String NUMBER_OF_FRIENDS = "numberOfFriends" ;
     }
 
     public static final class Notification {

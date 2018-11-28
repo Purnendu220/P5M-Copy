@@ -17,6 +17,7 @@ public class Package implements java.io.Serializable {
     private String packageType;
     private boolean status;
     private PromoCode promoResponseDto;
+    private int gymVisitLimit;
 
     public String getGymName() {
         return gymName == null ? "" : gymName;
@@ -116,5 +117,13 @@ public class Package implements java.io.Serializable {
 
     public void setPromoResponseDto(PromoCode promoResponseDto) {
         this.promoResponseDto = promoResponseDto;
+    }
+
+    public int getGymVisitLimit() {
+        return gymVisitLimit;
+    }
+
+    public void setGymVisitLimit(int gymVisitLimit) {
+        this.gymVisitLimit = gymVisitLimit;
     }
 }

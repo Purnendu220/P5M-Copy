@@ -6,6 +6,7 @@ import android.provider.Settings;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.p5m.me.analytics.MixPanel;
+import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
@@ -142,7 +143,9 @@ public class EventBroadcastHelper {
     public static void sendWishRemoved(ClassModel classModel) {
         GlobalBus.getBus().post(new Events.WishRemoved(classModel));
     }
-
+public static void sendBookWithFriendEvent(BookWithFriendData friendData){
+        GlobalBus.getBus().post(new Events.BookWithFriend(friendData));
+}
     public static void trainerFollowUnFollow(TrainerModel trainerModel, boolean isFollowed) {
         GlobalBus.getBus().post(new Events.TrainerFollowed(trainerModel, isFollowed));
     }

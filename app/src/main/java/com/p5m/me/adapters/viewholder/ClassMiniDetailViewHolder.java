@@ -82,6 +82,9 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.textViewFitnessLevel)
     public TextView textViewFitnessLevel;
 
+    @BindView(R.id.classBookedWithFriend)
+    public RelativeLayout classBookedWithFriend;
+
     public ClassMiniDetailViewHolder(View view, int shownInScreen) {
         super(view);
 
@@ -109,6 +112,12 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
             if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
                 trainerImage.setVisibility(View.VISIBLE);
                 textViewTrainerName.setVisibility(View.VISIBLE);
+                if(model.getRefBookingId()!=null&&model.getRefBookingId()>0){
+                    classBookedWithFriend.setVisibility(View.VISIBLE);
+                }else{
+                    classBookedWithFriend.setVisibility(View.GONE);
+
+                }
 
                 buttonJoin.setVisibility(View.GONE);
                 imageViewOptions1.setVisibility(View.GONE);

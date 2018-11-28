@@ -25,6 +25,7 @@ public class ClassModel implements java.io.Serializable {
     private String toTime;
     private int totalSeat;
     private GymBranchDetail gymBranchDetail;
+    private Integer refBookingId;
 
     /*************Special Class Addition****************/
     private String priceModel;
@@ -327,5 +328,13 @@ public class ClassModel implements java.io.Serializable {
 
     public void setRating(float rating) {
         this.rating = rating;
+    }
+
+    public Integer getRefBookingId() {
+        return refBookingId;
+    }
+
+    public void setRefBookingId(Integer refBookingId) {
+        this.refBookingId = refBookingId;
     }
 }

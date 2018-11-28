@@ -28,7 +28,9 @@ import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.ClassProfileAdapter;
 import com.p5m.me.analytics.MixPanel;
+import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.ClassRatingUserData;
+import com.p5m.me.data.LimitExceedErrorResponse;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.User;
@@ -44,18 +46,23 @@ import com.p5m.me.ratemanager.ScheduleAlarmManager;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.RefrenceWrapper;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
+import com.p5m.me.view.custom.BookForAFriendPopup;
+import com.p5m.me.view.custom.CustomDialogThankYou;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -95,6 +102,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public View layoutButton;
     @BindView(R.id.textViewBook)
     public TextView textViewBook;
+    @BindView(R.id.textViewBookWithFriend)
+    public TextView textViewBookWithFriend;
     @BindView(R.id.swipeRefreshLayout)
     public SwipeRefreshLayout swipeRefreshLayout;
 
@@ -106,6 +115,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     private boolean isNavigationFromSharing;
     private int navigationFrom;
     ClassRatingUserData ratingData;
+    private boolean isBookWithFriendInProgress=false;
+    private BookWithFriendData mBookWithFriendData;
 
     @Override
     public void onDestroy() {
@@ -121,6 +132,12 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void packagePurchasedForClass(Events.PackagePurchasedForClass data) {
         handleClassJoined(data.data);
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void bookwithFriend(Events.BookWithFriend data) {
+        isBookWithFriendInProgress=true;
+        mBookWithFriendData=data.friendData;
+        bookWithAFriend(data.friendData);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -138,7 +155,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 e.printStackTrace();
                 LogUtils.exception(e);
             }
-            Helper.setJoinStatusProfile(context, textViewBook, classModel);
+            Helper.setJoinStatusProfile(context, textViewBook,textViewBookWithFriend,classModel);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -180,7 +197,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             classProfileAdapter.setClass(classModel);
             classProfileAdapter.notifyDataSetChanged();
 
-            Helper.setJoinStatusProfile(context, textViewBook, classModel);
+            Helper.setJoinStatusProfile(context, textViewBook,textViewBookWithFriend, classModel);
         } else {
             layoutButton.setVisibility(View.GONE);
         }
@@ -214,7 +231,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
     @OnClick(R.id.textViewBook)
     public void textViewBook() {
-
+        isBookWithFriendInProgress=false;
+        mBookWithFriendData=null;
         // Check if class is allowed for the gender..
         if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
                 && !Helper.isMalesAllowed(classModel)) {
@@ -230,7 +248,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             if (Helper.isFreeClass(classModel))
                 joinClass();
             else {
-                CheckoutActivity.openActivity(context, classModel);
+                CheckoutActivity.openActivity(context, classModel,1);
             }
             return;
         }
@@ -242,15 +260,169 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             @Override
             public void onApiSuccess(Object response, int requestCode) {
                 performJoinProcess();
-                Helper.setJoinStatusProfile(context, textViewBook, classModel);
+                Helper.setJoinStatusProfile(context, textViewBook,textViewBookWithFriend, classModel);
             }
 
             @Override
             public void onApiFailure(String errorMessage, int requestCode) {
                 ToastUtils.show(context, errorMessage);
-                Helper.setJoinStatusProfile(context, textViewBook, classModel);
+                Helper.setJoinStatusProfile(context, textViewBook,textViewBookWithFriend, classModel);
             }
         }, false);
+    }
+
+    @OnClick(R.id.textViewBookWithFriend)
+    public void textViewBookWithFriend() {
+
+        BookForAFriendPopup mBookForAFriendPopup = new BookForAFriendPopup(this,classModel,navigationFrom);
+        try {
+            mBookForAFriendPopup.show();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void bookWithAFriend(final BookWithFriendData data){
+
+        // Check if class is allowed for the gender..
+        if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
+                && !Helper.isMalesAllowed(classModel)) {
+            ToastUtils.show(context, "This is a Females only class");
+            return;
+        } else if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
+                && !Helper.isFemalesAllowed(classModel)) {
+            ToastUtils.show(context, "This is a Males only class");
+            return;
+        }
+        if (data.getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
+                && !Helper.isMalesAllowed(classModel)) {
+            ToastUtils.show(context, "This is a Females only class");
+            return;
+        } else if (data.getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
+                && !Helper.isFemalesAllowed(classModel)) {
+            ToastUtils.show(context, "This is a Males only class");
+            return;
+        }
+
+
+        if (Helper.isSpecialClass(classModel)) {
+            if (Helper.isFreeClass(classModel))
+                joinClassWithFriend(data);
+            else {
+                CheckoutActivity.openActivity(context, classModel,2,data);
+            }
+            return;
+        }
+
+        textViewBookWithFriend.setText(context.getResources().getString(R.string.please_wait));
+        textViewBookWithFriend.setEnabled(false);
+
+        networkCommunicator.getMyUser(new NetworkCommunicator.RequestListener() {
+            @Override
+            public void onApiSuccess(Object response, int requestCode) {
+                performJoinProcessWithFriend(data);
+                Helper.setJoinStatusProfile(context, textViewBook,textViewBookWithFriend, classModel);
+            }
+
+            @Override
+            public void onApiFailure(String errorMessage, int requestCode) {
+                ToastUtils.show(context, errorMessage);
+                Helper.setJoinStatusProfile(context, textViewBook,textViewBookWithFriend, classModel);
+            }
+        }, false);
+    }
+
+    private void performJoinProcessWithFriend(BookWithFriendData dataFriend) {
+        boolean userHaveDropinForClass = false;
+        boolean userHaveExpiredDropinForClass = false;
+        boolean userHaveExpiredGeneralPackageForClass=false;
+
+
+        boolean userHaveGeneralPackageForClass=false;
+        ArrayList<Integer> list=new ArrayList<>();
+        UserPackageInfo userPackageInfo = new UserPackageInfo(TempStorage.getUser());
+
+        if (userPackageInfo.havePackages) {
+
+            // 1st condition : have drop-in for class..
+            if (userPackageInfo.haveDropInPackage && classModel.getGymBranchDetail() != null) {
+                userHaveDropinForClass=false;
+                for (UserPackage userPackage : userPackageInfo.userPackageReady) {
+                    if ((userPackage.getGymId() == classModel.getGymBranchDetail().getGymId())&&(userPackage.getExpiryDate()==null || DateUtils.canJoinClass(classModel.getClassDate(), userPackage.getExpiryDate()) >= 0)) {
+                        userHaveDropinForClass=true;
+                        list.add(userPackage.getGymId());
+                    }
+                    if ((userPackage.getGymId() == classModel.getGymBranchDetail().getGymId())&&(userPackage.getExpiryDate()!=null && DateUtils.canJoinClass(classModel.getClassDate(), userPackage.getExpiryDate()) < 0)) {
+                        userHaveExpiredDropinForClass=true;
+                    }
+                }
+
+            }
+            // 2st condition : have class remaining in package..
+            if (userPackageInfo.haveGeneralPackage) {
+                if (userPackageInfo.userPackageGeneral != null) {
+
+                    if (userPackageInfo.userPackageGeneral.getBalanceClass() < 2 && !userHaveDropinForClass) {
+                        MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel,mBookWithFriendData,2-userPackageInfo.userPackageGeneral.getBalanceClass());
+                        return;
+                    }
+                    if (userPackageInfo.userPackageGeneral.getBalanceClass() < 2 && userHaveDropinForClass && list.size()>1) {
+                        joinClassWithFriend(dataFriend);
+                        return;
+                    }
+
+                    if (DateUtils.canJoinClass(classModel.getClassDate(), userPackageInfo.userPackageGeneral.getExpiryDate()) >= 0) {
+                        userHaveGeneralPackageForClass=true;
+
+                    }
+                    if (DateUtils.canJoinClass(classModel.getClassDate(), userPackageInfo.userPackageGeneral.getExpiryDate()) < 0) {
+                        userHaveExpiredGeneralPackageForClass=true;
+
+                    }
+
+                }
+            }
+            try{
+                if(userHaveDropinForClass||userHaveGeneralPackageForClass){
+                    joinClassWithFriend(dataFriend);
+                    return;
+                }
+                else {
+                    if(userHaveExpiredGeneralPackageForClass){
+                        DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), "Purchase", new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                dialog.dismiss();
+                                MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+                            }
+                        });
+                        return;
+                    }else{
+                        joinClassWithFriend(dataFriend);
+                        return;
+                    }
+
+                }
+
+            }
+            catch(Exception e){
+                e.printStackTrace();
+                joinClassWithFriend(dataFriend);
+                return;
+            }
+        } else {
+            // 3rt condition : have no packages..
+           // MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel,mBookWithFriendData,2);
+
+        }
+    }
+    private void joinClassWithFriend(BookWithFriendData data) {
+        List<BookWithFriendData> friendList=new ArrayList<>();
+        friendList.add(data);
+        textViewBookWithFriend.setText(context.getResources().getString(R.string.please_wait));
+        textViewBookWithFriend.setEnabled(false);
+        networkCommunicator.joinClass(new JoinClassRequest(TempStorage.getUser().getId(), classModel.getClassSessionId(),friendList), this, false);
     }
 
     private void performJoinProcess() {
@@ -338,6 +510,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         textViewBook.setEnabled(false);
         networkCommunicator.joinClass(new JoinClassRequest(TempStorage.getUser().getId(), classModel.getClassSessionId()), this, false);
     }
+
 
     private void setToolBar() {
 
@@ -435,6 +608,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public void onApiSuccess(Object response, int requestCode) {
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.JOIN_CLASS:
+
                 User user = ((ResponseModel<User>) response).data;
 
                 EventBroadcastHelper.sendUserUpdate(context, user);
@@ -444,7 +618,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
                 classModel.setUserJoinStatus(true);
 
-                Helper.setJoinStatusProfile(context, textViewBook, classModel);
+                Helper.setJoinStatusProfile(context, textViewBook,textViewBookWithFriend, classModel);
 
                 MixPanel.trackJoinClass(navigationFrom, classModel);
                 if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
@@ -473,13 +647,24 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 swipeRefreshLayout.setRefreshing(false);
                 swipeRefreshLayout.setEnabled(false);
                 classModel = ((ResponseModel<ClassModel>) response).data;
+                if(classModel.getAvailableSeat()<2){
+
+                }else{
+
+                }
                 if (classModel != null) {
                     getCountRating();
                     classProfileAdapter.setClass(classModel);
                     classProfileAdapter.notifyDataSetChanged();
                 }
                 layoutButton.setVisibility(View.VISIBLE);
-                Helper.setJoinStatusProfile(context, textViewBook, classModel);
+                Helper.setJoinStatusProfile(context, textViewBook,textViewBookWithFriend, classModel);
+                if (Helper.isSpecialClass(classModel)) {
+                    if (Helper.isFreeClass(classModel)){
+                        textViewBookWithFriend.setVisibility(View.GONE);
+                    }
+
+                }
 
                 break;
             case NetworkCommunicator.RequestCode.CLASS_RATING_LIST:
@@ -496,7 +681,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     }
 
     @Override
-    public void onApiFailure(String errorMessage, int requestCode) {
+    public void onApiFailure(final String errorMessage, int requestCode) {
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.JOIN_CLASS:
                 if (errorMessage.equals("498")) {
@@ -505,19 +690,78 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 dialog.dismiss();
-                                MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+                                if(isBookWithFriendInProgress&&mBookWithFriendData!=null){
+                                    User errorResponse=MyPreferences.getInstance().getPaymentErrorResponse();
+                                    //MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+                                    if(errorResponse!=null){
+                                        MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel,mBookWithFriendData,errorResponse.getReadyPckSize());
+
+                                    }else{
+                                        ToastUtils.showLong(context, errorMessage);
+
+                                    }
+
+                                }else{
+                                    MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+
+                                }
                             }
                         });
                     }
 
-                } else if (errorMessage.equals("402")) {
-                    MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+                }
+                if(errorMessage.equals("405")){
+                    if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
+                        DialogUtils.showBasic(context, getString(R.string.join_share_limit_exhaust), "Purchase", new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                dialog.dismiss();
+                                if(isBookWithFriendInProgress&&mBookWithFriendData!=null){
+                                    User errorResponse=MyPreferences.getInstance().getPaymentErrorResponse();
+                                    //MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+                                    if(errorResponse!=null){
+                                        MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel,mBookWithFriendData,errorResponse.getReadyPckSize());
+
+                                    }else{
+                                        ToastUtils.showLong(context, errorMessage);
+
+                                    }
+
+
+                                }else{
+                                    MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+
+                                }
+                            }
+                        });
+                    }
+
+                }
+
+                else if (errorMessage.equals("402")) {
+                    if(isBookWithFriendInProgress&&mBookWithFriendData!=null){
+                        User errorResponse=MyPreferences.getInstance().getPaymentErrorResponse();
+                        //MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+                        if(errorResponse!=null){
+                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel,mBookWithFriendData,errorResponse.getReadyPckSize());
+
+                        }else{
+                            ToastUtils.showLong(context, errorMessage);
+
+                        }
+
+                    }else{
+                        MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+
+                    }
+
+
 
                 } else {
                     ToastUtils.showLong(context, errorMessage);
                 }
 
-                Helper.setJoinStatusProfile(context, textViewBook, classModel);
+                Helper.setJoinStatusProfile(context, textViewBook,textViewBookWithFriend, classModel);
 
                 break;
             case NetworkCommunicator.RequestCode.CLASS_DETAIL:

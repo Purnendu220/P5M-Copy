@@ -180,7 +180,8 @@ public interface ApiService {
     @GET(AppConstants.Url.CLASS_PACKAGE_LIST)
     Call<ResponseModel<List<Package>>> getClassPackageList(@Query(AppConstants.ApiParamKey.USER_ID) int userId,
                                                            @Query(AppConstants.ApiParamKey.GYM_ID) int gymId,
-                                                           @Query(AppConstants.ApiParamKey.SESSION_ID) int sessionId);
+                                                           @Query(AppConstants.ApiParamKey.SESSION_ID) int sessionId,
+                                                           @Query(AppConstants.ApiParamKey.NUMBER_OF_FRIENDS) int numberOfFriends);
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.PACKAGE_LIMITS)

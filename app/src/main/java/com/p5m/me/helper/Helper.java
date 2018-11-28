@@ -174,24 +174,40 @@ public class Helper {
         }
     }
 
-    public static void setJoinStatusProfile(Context context, TextView view, ClassModel model) {
+    public static void setJoinStatusProfile(Context context, TextView view,TextView view1, ClassModel model) {
         if(model.isExpired()){
             view.setText(context.getString(R.string.expired));
             view.setBackgroundResource(R.drawable.theme_bottom_text_button_full);
             view.setEnabled(false);
+            view1.setVisibility(View.GONE);
         }
         else if (model.isUserJoinStatus()) {
             view.setText(context.getString(R.string.booked));
             view.setBackgroundResource(R.drawable.theme_bottom_text_button_booked);
             view.setEnabled(false);
+            view1.setVisibility(View.GONE);
+
         } else if (model.getAvailableSeat() == 0) {
             view.setText(context.getString(R.string.full));
             view.setBackgroundResource(R.drawable.theme_bottom_text_button_full);
             view.setEnabled(false);
-        } else {
+            view1.setVisibility(View.GONE);
+
+        }
+        else if(model.getAvailableSeat()<2){
+            view1.setVisibility(View.GONE);
+
+        }
+        else {
             view.setText(context.getString(R.string.reserve_class));
             view.setBackgroundResource(R.drawable.theme_bottom_text_button_book);
             view.setEnabled(true);
+            view1.setVisibility(View.VISIBLE);
+            view1.setText(context.getString(R.string.reserve_class_with_friend));
+            view1.setBackgroundResource(R.drawable.theme_bottom_text_button_book);
+            view1.setEnabled(true);
+
+
         }
     }
     public static void setFavButtonTemp(Context context, Button buttonFav, boolean isFollow) {
