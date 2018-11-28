@@ -23,6 +23,7 @@ import com.p5m.me.R;
 import com.p5m.me.helper.GlideApp;
 import com.p5m.me.utils.ImageUtility;
 import com.p5m.me.utils.ImageUtils;
+import com.p5m.me.utils.ImageUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.fragment.BaseFragment;
 import com.p5m.me.view.fragment.ViewPagerFragmentSelection;
@@ -66,7 +67,7 @@ public class MediaGalleryFragment extends BaseFragment implements ViewPagerFragm
         ImageUtils.setImage(context,
                 uri,
                 R.drawable.profile_holder, imageViewImage);
-     imageViewImage.setOnTouchListener(new ImageMatrixTouchHandler(context));
+        imageViewImage.setOnTouchListener(new ImageMatrixTouchHandler(context));
 
 
 //        RequestBuilder<Bitmap> requestBuilder = GlideApp.with(context).asBitmap().load(uri)
@@ -79,8 +80,7 @@ public class MediaGalleryFragment extends BaseFragment implements ViewPagerFragm
 //                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
 //                        progressBar.setVisibility(View.GONE);
 //                        try{
-//                            imageViewImage.setImageBitmap(resource);
-//                           // imageViewImage.setImageBitmap(getResizedBitmap(resource,(resource.getHeight()*50)/100,(resource.getWidth()*50)/100));
+//                            imageViewImage.setImageBitmap(getResizedBitmap(resource,(resource.getHeight()*50)/100,(resource.getWidth()*50)/100));
 //                            imageViewImage.setOnTouchListener(new ImageMatrixTouchHandler(context));
 //                        }catch (Exception e){
 //                            e.printStackTrace();
