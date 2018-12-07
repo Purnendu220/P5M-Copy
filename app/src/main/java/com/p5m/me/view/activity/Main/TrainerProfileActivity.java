@@ -264,12 +264,12 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
         switch (view.getId()) {
             case R.id.imageViewProfile:
                 if (trainerDetailModel != null &&trainerDetailModel.getProfileImage() != null&& !trainerDetailModel.getProfileImage().isEmpty()) {
-                    Helper.openImageViewer(context, activity, view, trainerDetailModel.getProfileImage());
+                    Helper.openImageViewer(context, activity, view, trainerDetailModel.getProfileImage(),AppConstants.ImageViewHolderType.PROFILE_IMAGE_HOLDER);
                 }
                 break;
             case R.id.imageViewCover:
                 if (trainerDetailModel != null &&trainerDetailModel.getCoverImage() != null&& !trainerDetailModel.getCoverImage().isEmpty()) {
-                    Helper.openImageViewer(context, activity, view, trainerDetailModel.getCoverImage());
+                    Helper.openImageViewer(context, activity, view, trainerDetailModel.getCoverImage(),AppConstants.ImageViewHolderType.COVER_IMAGE_HOLDER);
                 }
                 break;
 

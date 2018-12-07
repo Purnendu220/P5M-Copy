@@ -149,7 +149,11 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
 
                 } else if (!userPackageInfo.haveGeneralPackage && userPackageInfo.haveDropInPackage) {
                     textViewValidity.setVisibility(View.VISIBLE);
-                    textViewPackage.setText(Html.fromHtml("<b>1</b>" + " class for " + userPackageInfo.userPackageReady.get(0).getGymName()));
+                    int balanceClasses=userPackageInfo.userPackageReady.get(0).getBalanceClass()!=0?userPackageInfo.userPackageReady.get(0).getBalanceClass():1;
+                    String message=userPackageInfo.userPackageReady.get(0).getBalanceClass()>1?"classes ":"class";
+
+
+                    textViewPackage.setText(Html.fromHtml("<b>"+balanceClasses+"</b> " + message+" for " + userPackageInfo.userPackageReady.get(0).getGymName()));
 
                     int daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageReady.get(0).getExpiryDate());
 

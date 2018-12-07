@@ -368,4 +368,17 @@ public class AppConstants {
       public static final String CLASS_LEVEL_ADVANCED_TITLE = "Advanced";
 
   }
+
+  public class ImageViewHolderType{
+      public static final String CLASS_IMAGE_HOLDER = "CLASS_IMAGE_HOLDER";
+      public static final String PROFILE_IMAGE_HOLDER = "PROFILE_IMAGE_HOLDER";
+      public static final String GALLERY_IMAGE_HOLDER = "GALLERY_IMAGE_HOLDER";
+      public static final String RATING_IMAGE_HOLDER = "RATING_IMAGE_HOLDER";
+      public static final String COVER_IMAGE_HOLDER = "COVER_IMAGE_HOLDER";
+
+
+
+
+
+  }
 }

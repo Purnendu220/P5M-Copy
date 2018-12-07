@@ -20,6 +20,7 @@ import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.RefrenceWrapper;
 
@@ -84,7 +85,7 @@ public class BookForAFriendPopup extends Dialog implements View.OnClickListener 
         lp.gravity = Gravity.CENTER;
         getWindow().setAttributes(lp);
         setListeners();
-        selectGender(model.getClassType());
+       // selectGender(model.getClassType());
 
 
     }
@@ -118,6 +119,7 @@ public class BookForAFriendPopup extends Dialog implements View.OnClickListener 
                     textViewGenderError.setText(mContext.getResources().getText(R.string.gender_required));
                     return;
                 }
+                if(email.equals(TempStorage.getUser().getEmail()))
 
                 EventBroadcastHelper.sendBookWithFriendEvent(new BookWithFriendData(name,email,gender));
                 dismiss();

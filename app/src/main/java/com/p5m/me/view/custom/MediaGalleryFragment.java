@@ -39,6 +39,8 @@ public class MediaGalleryFragment extends BaseFragment implements ViewPagerFragm
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
 
+    int mViewHolder=R.drawable.class_holder;
+
 
     public MediaGalleryFragment() {
     }
@@ -58,15 +60,51 @@ public class MediaGalleryFragment extends BaseFragment implements ViewPagerFragm
         super.onActivityCreated(savedInstanceState);
 
         String uri = getArguments().getString("uri", "");
+        String viewHolder = getArguments().getString("viewHolder", "");
+
+
 
         if (uri == null && !uri.isEmpty()) {
             return;
         }
+        try{
+            if (viewHolder != null && !viewHolder.isEmpty()) {
+                switch (viewHolder){
+                    case "CLASS_IMAGE_HOLDER":
+                        mViewHolder=R.drawable.class_holder;
+                        break;
+                    case "PROFILE_IMAGE_HOLDER":
+                        mViewHolder=R.drawable.profile_holder;
+                        break;
+                    case "GALLERY_IMAGE_HOLDER":
+                        mViewHolder=R.drawable.class_holder;
+                        break;
+                    case "RATING_IMAGE_HOLDER":
+                        mViewHolder=R.drawable.class_holder;
+                        break;
+                    case "COVER_IMAGE_HOLDER":
+                        mViewHolder=R.drawable.class_holder;
+                        break;
+                    default:
+                        mViewHolder=R.drawable.class_holder;
+
+                        break;
+
+                }
+            }
+        }catch (Exception e){
+
+        }
+
+
+
+
+
 
         progressBar.setVisibility(View.GONE);
         ImageUtils.setImage(context,
                 uri,
-                R.drawable.profile_holder, imageViewImage);
+                mViewHolder, imageViewImage);
         imageViewImage.setOnTouchListener(new ImageMatrixTouchHandler(context));
 
 

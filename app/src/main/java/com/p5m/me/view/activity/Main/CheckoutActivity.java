@@ -39,6 +39,7 @@ import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -315,7 +316,13 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 textViewTopTitle.setVisibility(View.GONE);
 
                 textViewPackageName.setText(Html.fromHtml("<b>" + classModel.getTitle() + "</b>"));
-                textViewPrice.setText(classModel.getPrice() + " " + context.getString(R.string.currency));
+                if(mNumberOfPackagesToBuy>1){
+                    textViewPrice.setText(mNumberOfPackagesToBuy+"x "+classModel.getPrice() + " " + context.getString(R.string.currency));
+
+                }else{
+                    textViewPrice.setText(classModel.getPrice() + " " + context.getString(R.string.currency));
+
+                }
 
                 textViewCancellationPolicy.setText(classModel.getReminder());
                 Helper.setPackageImage(imageViewPackageImage, "special");
@@ -410,14 +417,18 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
             case CLASS_PURCHASE_WITH_PACKAGE:
 
                 if (promoCode != null) {
+                    DecimalFormat numberFormat = new DecimalFormat("#.00");
                     textViewTotal.setText(promoCode.getPriceAfterDiscount() + " " + context.getString(R.string.currency));
                     textViewPay.setText("Pay " + promoCode.getPriceAfterDiscount() + " " + context.getString(R.string.currency));
-                    textViewPromoCodePrice.setText("- " +  (promoCode.getPrice() - promoCode.getPriceAfterDiscount()) + " " + context.getString(R.string.currency));
+                    textViewPromoCodePrice.setText("- " + numberFormat.format((promoCode.getPrice() - promoCode.getPriceAfterDiscount()))  + " " + context.getString(R.string.currency));
                     layoutPromoCode.setVisibility(View.VISIBLE);
                     buttonPromoCode.setText(context.getString(R.string.remove_promo_code));
 
                     try {
-                        materialDialog.dismiss();
+                        if(materialDialog!=null){
+                            materialDialog.dismiss();
+
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                         LogUtils.exception(e);
@@ -495,14 +506,21 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     case PACKAGE:
                         textViewOk.setVisibility(View.INVISIBLE);
                         networkCommunicator.applyPromoCode(
-                                new PromoCodeRequest(promoCodeText, aPackage.getId(), TempStorage.getUser().getId()),
+                                new PromoCodeRequest(promoCodeText, aPackage.getId(), TempStorage.getUser().getId(),mNumberOfPackagesToBuy),
                                 CheckoutActivity.this, false);
                         break;
                     case CLASS_PURCHASE_WITH_PACKAGE:
                         textViewOk.setVisibility(View.INVISIBLE);
-                        networkCommunicator.applyPromoCode(
-                                new PromoCodeRequest(classModel.getGymBranchDetail().getGymId(), promoCodeText, aPackage.getId(), TempStorage.getUser().getId()),
-                                CheckoutActivity.this, false);
+                        if(aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)){
+                            networkCommunicator.applyPromoCode(
+                                    new PromoCodeRequest(classModel.getGymBranchDetail().getGymId(), promoCodeText, aPackage.getId(), TempStorage.getUser().getId(),mNumberOfPackagesToBuy),
+                                    CheckoutActivity.this, false);
+                        }else{
+                            networkCommunicator.applyPromoCode(
+                                    new PromoCodeRequest(classModel.getGymBranchDetail().getGymId(), promoCodeText, aPackage.getId(), TempStorage.getUser().getId()),
+                                    CheckoutActivity.this, false);
+                        }
+
                         break;
                 }
             }
@@ -690,8 +708,11 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     }
     private void applyPromocode(PromoCode promo){
         try {
-            final TextView textViewOk = (TextView) materialDialog.findViewById(R.id.textViewOk);
-            textViewOk.setVisibility(View.VISIBLE);
+            if(materialDialog!=null){
+                final TextView textViewOk = (TextView) materialDialog.findViewById(R.id.textViewOk);
+                textViewOk.setVisibility(View.VISIBLE);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);

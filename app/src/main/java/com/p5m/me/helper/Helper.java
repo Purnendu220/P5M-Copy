@@ -260,14 +260,14 @@ public class Helper {
 
         }
     }
-     public static void openImageListViewer(Context context, List<MediaModel> list, int position) {
+     public static void openImageListViewer(Context context, List<MediaModel> list, int position,String viewholderType) {
 
         List<String> images = new ArrayList<>(list.size());
         for (MediaModel mediaModel : list) {
             images.add(mediaModel.getMediaUrl());
         }
 
-        GalleryActivity.openActivity(context, null, null, position, images);
+        GalleryActivity.openActivity(context, null, null, position, images,viewholderType);
 
 
 //        Fresco.initialize(context);
@@ -290,7 +290,7 @@ public class Helper {
 //                .show();
     }
 
-    public static void openImageViewer(Context context, Activity activity, View sharedElement, String url) {
+    public static void openImageViewer(Context context, Activity activity, View sharedElement, String url,String viewholderType) {
 
         if (url == null || url.isEmpty()) {
             return;
@@ -299,7 +299,7 @@ public class Helper {
         List<String> images = new ArrayList<>(1);
         images.add(url);
 
-        GalleryActivity.openActivity(context, activity, sharedElement, 0, images);
+        GalleryActivity.openActivity(context, activity, sharedElement, 0, images,viewholderType);
 
 //        Fresco.initialize(context);
 //
