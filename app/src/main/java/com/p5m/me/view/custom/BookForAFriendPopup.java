@@ -23,6 +23,7 @@ import com.p5m.me.helper.Helper;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.RefrenceWrapper;
+import com.p5m.me.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -101,6 +102,9 @@ public class BookForAFriendPopup extends Dialog implements View.OnClickListener 
             case R.id.textViewBookWithFriend:{
                 String name = editTextFriendsName.getText().toString().trim();
                 String email = editTextFriendsEmail.getText().toString().trim();
+                textInputLayoutFriendsName.setError(null);
+                textInputLayoutFriendsEmail.setError(null);
+                textViewGenderError.setVisibility(View.GONE);
 
                 if (name.isEmpty()) {
                     textInputLayoutFriendsName.setError(mContext.getResources().getString(R.string.name_required_error));
@@ -114,12 +118,29 @@ public class BookForAFriendPopup extends Dialog implements View.OnClickListener 
                     textInputLayoutFriendsEmail.setError(mContext.getResources().getString(R.string.email_error_text));
                     return;
                 }
+
+                if(email.equals(TempStorage.getUser().getEmail())){
+                    textInputLayoutFriendsEmail.setError(mContext.getResources().getString(R.string.own_email_error_text));
+                    return;
+
+                }
                 if (gender == null) {
                     textViewGenderError.setVisibility(View.VISIBLE);
                     textViewGenderError.setText(mContext.getResources().getText(R.string.gender_required));
                     return;
                 }
-                if(email.equals(TempStorage.getUser().getEmail()))
+                if (gender.equals(AppConstants.ApiParamValue.GENDER_MALE)
+                        && !Helper.isMalesAllowed(model)) {
+                    textViewGenderError.setVisibility(View.VISIBLE);
+                    textViewGenderError.setText(mContext.getResources().getText(R.string.gender_females_only_error));
+                    return;
+                } else if (gender.equals(AppConstants.ApiParamValue.GENDER_FEMALE)
+                        && !Helper.isFemalesAllowed(model)) {
+                    textViewGenderError.setVisibility(View.VISIBLE);
+                    textViewGenderError.setText(mContext.getResources().getText(R.string.gender_males_only_error));
+                    return;
+                }
+
 
                 EventBroadcastHelper.sendBookWithFriendEvent(new BookWithFriendData(name,email,gender));
                 dismiss();

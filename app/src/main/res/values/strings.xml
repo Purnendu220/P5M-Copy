@@ -339,5 +339,8 @@
     <string name="reserve_class_with_friend">Book with Friend</string>
     <string name="continue_with">Continue</string>
     <string name="booked_with_friend">2 Bookings</string>
+    <string name="own_email_error_text">You can\'t use your email.</string>
+    <string name="gender_females_only_error">This is a Females only class</string>
+    <string name="gender_males_only_error">This is a Males only class</string>
 
 </resources>

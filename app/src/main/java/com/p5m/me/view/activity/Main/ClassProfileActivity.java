@@ -276,20 +276,20 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         // Check if class is allowed for the gender..
         if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
                 && !Helper.isMalesAllowed(classModel)) {
-            ToastUtils.show(context, "This is a Females only class");
+            ToastUtils.show(context, mContext.getResources().getText(R.string.gender_females_only_error).toString());
             return;
         } else if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
                 && !Helper.isFemalesAllowed(classModel)) {
-            ToastUtils.show(context, "This is a Males only class");
+            ToastUtils.show(context, mContext.getResources().getText(R.string.gender_males_only_error).toString());
             return;
         }
         if (data.getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
                 && !Helper.isMalesAllowed(classModel)) {
-            ToastUtils.show(context, "This is a Females only class");
+            ToastUtils.show(context, mContext.getResources().getText(R.string.gender_females_only_error).toString());
             return;
         } else if (data.getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
                 && !Helper.isFemalesAllowed(classModel)) {
-            ToastUtils.show(context, "This is a Males only class");
+            ToastUtils.show(context, mContext.getResources().getText(R.string.gender_males_only_error).toString());
             return;
         }
 
