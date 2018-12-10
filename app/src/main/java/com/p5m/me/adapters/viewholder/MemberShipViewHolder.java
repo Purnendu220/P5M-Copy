@@ -149,7 +149,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
                     button.setText(R.string.select_plan);
                     button.setBackgroundResource(R.drawable.join_rect);
-                    Helper.setPackageImage(imageViewHeader, model.getName());
+                    Helper.setPackageImage(imageViewHeader, model.getId());
                     if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
 
                         textViewPackageName.setText(model.getName());

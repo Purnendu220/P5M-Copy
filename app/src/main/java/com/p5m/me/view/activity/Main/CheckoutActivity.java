@@ -303,7 +303,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 textViewPackageInfo.setText(aPackage.getDescription());
 
                 buttonPromoCode.setVisibility(View.VISIBLE);
-                Helper.setPackageImage(imageViewPackageImage, aPackage.getName());
+                Helper.setPackageImage(imageViewPackageImage, aPackage.getId());
 
                 setPrice();
 
@@ -325,7 +325,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 }
 
                 textViewCancellationPolicy.setText(classModel.getReminder());
-                Helper.setPackageImage(imageViewPackageImage, "special");
+                Helper.setPackageImage(imageViewPackageImage, AppConstants.Values.SPECIAL_CLASS_ID);
                 validityUnit.setText(mNumberOfPackagesToBuy+" "+AppConstants.pluralES("Class", mNumberOfPackagesToBuy));
 
                 setPrice();
@@ -348,7 +348,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 validityUnit.setText(selectedPacakageFromList.getDuration()+" Week(s) "+message);
                 textViewPackageValidityExtend.setText("Valid for " + userPackage.getPackageName()+" Package");
 
-                Helper.setPackageImage(imageViewPackageImage, "special");
+                Helper.setPackageImage(imageViewPackageImage, AppConstants.Values.SPECIAL_CLASS_ID);
                setPrice();
 
                break;

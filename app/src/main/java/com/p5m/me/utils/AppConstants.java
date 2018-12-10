@@ -39,6 +39,8 @@ public class AppConstants {
         public static final int IMAGE_RESOLUTION_COMPRESSION = 1280;
         public static final int IMAGE_THUMBNAIL_RESOLUTION_COMPRESSION = 256;
         public static final int IMAGE_QUALITY = 90;
+        public static final int SPECIAL_CLASS_ID = 1010;
+
     }
 
     public static class Tracker {

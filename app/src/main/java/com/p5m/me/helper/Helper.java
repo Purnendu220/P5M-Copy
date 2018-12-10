@@ -421,21 +421,21 @@ public class Helper {
         classModel.setAvailableSeat(joinedData.getAvailableSeat());
     }
 
-    public static void setPackageImage(ImageView imageView, String packageName) {
-        switch (packageName.toLowerCase()) {
-            case "ready":
+    public static void setPackageImage(ImageView imageView, int packageId) {
+        switch (packageId) {
+            case 1:
                 imageView.setImageResource(R.drawable.ready_icon);
                 break;
-            case "visit":
+            case 4:
                 imageView.setImageResource(R.drawable.star);
                 break;
-            case "get set":
+            case 2:
                 imageView.setImageResource(R.drawable.set);
                 break;
-            case "pro":
+            case 3:
                 imageView.setImageResource(R.drawable.pro_icon);
                 break;
-            case "special":
+            case AppConstants.Values.SPECIAL_CLASS_ID:
                 imageView.setImageResource(R.drawable.set_icon);
                 break;
             default:
