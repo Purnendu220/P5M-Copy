@@ -375,6 +375,8 @@
                         android:lineSpacingExtra="@dimen/line_spacing_extra"
                         android:text="INTERMEDIATE"
                         android:textColor="@color/theme_dark_text"
+                        android:inputType="textCapSentences"
+                        android:capitalize="sentences"
                         android:textSize="@dimen/text_medium" />
 
                     <ImageView

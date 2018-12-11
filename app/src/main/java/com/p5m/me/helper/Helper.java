@@ -174,24 +174,40 @@ public class Helper {
         }
     }
 
-    public static void setJoinStatusProfile(Context context, TextView view, ClassModel model) {
+    public static void setJoinStatusProfile(Context context, TextView view,TextView view1, ClassModel model) {
         if(model.isExpired()){
             view.setText(context.getString(R.string.expired));
             view.setBackgroundResource(R.drawable.theme_bottom_text_button_full);
             view.setEnabled(false);
+            view1.setVisibility(View.GONE);
         }
         else if (model.isUserJoinStatus()) {
             view.setText(context.getString(R.string.booked));
             view.setBackgroundResource(R.drawable.theme_bottom_text_button_booked);
             view.setEnabled(false);
+            view1.setVisibility(View.GONE);
+
         } else if (model.getAvailableSeat() == 0) {
             view.setText(context.getString(R.string.full));
             view.setBackgroundResource(R.drawable.theme_bottom_text_button_full);
             view.setEnabled(false);
-        } else {
+            view1.setVisibility(View.GONE);
+
+        }
+        else if(model.getAvailableSeat()<2){
+            view1.setVisibility(View.GONE);
+
+        }
+        else {
             view.setText(context.getString(R.string.reserve_class));
             view.setBackgroundResource(R.drawable.theme_bottom_text_button_book);
             view.setEnabled(true);
+            view1.setVisibility(View.VISIBLE);
+            view1.setText(context.getString(R.string.reserve_class_with_friend));
+            view1.setBackgroundResource(R.drawable.theme_bottom_text_button_book);
+            view1.setEnabled(true);
+
+
         }
     }
     public static void setFavButtonTemp(Context context, Button buttonFav, boolean isFollow) {
@@ -244,14 +260,14 @@ public class Helper {
 
         }
     }
-     public static void openImageListViewer(Context context, List<MediaModel> list, int position) {
+     public static void openImageListViewer(Context context, List<MediaModel> list, int position,String viewholderType) {
 
         List<String> images = new ArrayList<>(list.size());
         for (MediaModel mediaModel : list) {
             images.add(mediaModel.getMediaUrl());
         }
 
-        GalleryActivity.openActivity(context, null, null, position, images);
+        GalleryActivity.openActivity(context, null, null, position, images,viewholderType);
 
 
 //        Fresco.initialize(context);
@@ -274,7 +290,7 @@ public class Helper {
 //                .show();
     }
 
-    public static void openImageViewer(Context context, Activity activity, View sharedElement, String url) {
+    public static void openImageViewer(Context context, Activity activity, View sharedElement, String url,String viewholderType) {
 
         if (url == null || url.isEmpty()) {
             return;
@@ -283,7 +299,7 @@ public class Helper {
         List<String> images = new ArrayList<>(1);
         images.add(url);
 
-        GalleryActivity.openActivity(context, activity, sharedElement, 0, images);
+        GalleryActivity.openActivity(context, activity, sharedElement, 0, images,viewholderType);
 
 //        Fresco.initialize(context);
 //
@@ -405,21 +421,21 @@ public class Helper {
         classModel.setAvailableSeat(joinedData.getAvailableSeat());
     }
 
-    public static void setPackageImage(ImageView imageView, String packageName) {
-        switch (packageName.toLowerCase()) {
-            case "ready":
+    public static void setPackageImage(ImageView imageView, int packageId) {
+        switch (packageId) {
+            case 1:
                 imageView.setImageResource(R.drawable.ready_icon);
                 break;
-            case "visit":
+            case 4:
                 imageView.setImageResource(R.drawable.star);
                 break;
-            case "get set":
+            case 2:
                 imageView.setImageResource(R.drawable.set);
                 break;
-            case "pro":
+            case 3:
                 imageView.setImageResource(R.drawable.pro_icon);
                 break;
-            case "special":
+            case AppConstants.Values.SPECIAL_CLASS_ID:
                 imageView.setImageResource(R.drawable.set_icon);
                 break;
             default:

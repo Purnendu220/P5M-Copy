@@ -653,9 +653,9 @@ public class NetworkCommunicator {
         return call;
     }
 
-    public Call getPackagesForClass(int userId, int gymId, int sessionId, final RequestListener requestListener, boolean useCache) {
+    public Call getPackagesForClass(int userId, int gymId, int sessionId,int numberOfFriends, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.PACKAGES_FOR_USER;
-        Call<ResponseModel<List<Package>>> call = apiService.getClassPackageList(userId, gymId, sessionId);
+        Call<ResponseModel<List<Package>>> call = apiService.getClassPackageList(userId, gymId, sessionId,numberOfFriends);
         LogUtils.debug("NetworkCommunicator hitting getPackagesForClass");
 
         call.enqueue(new RestCallBack<ResponseModel<List<Package>>>(context) {

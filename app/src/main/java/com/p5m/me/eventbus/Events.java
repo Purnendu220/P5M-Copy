@@ -1,5 +1,6 @@
 package com.p5m.me.eventbus;
 
+import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.TrainerModel;
@@ -27,6 +28,14 @@ public class Events {
        public ClassRating(String classRating){
           this.classRating=classRating;
        }
+
+    }
+
+    public static class BookWithFriend{
+        public BookWithFriendData friendData;
+        public BookWithFriend(BookWithFriendData friendData){
+            this.friendData=friendData;
+        }
 
     }
     public static class ClassAutoJoin{

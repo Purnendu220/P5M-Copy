@@ -327,8 +327,8 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
                     if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
                         for (ClassModel classModel : classModels) {
                             classModel.setUserJoinStatus(true);
+                            }
 
-                        }
 
                     }
 

@@ -78,9 +78,11 @@ public class RatingViewHolder extends RecyclerView.ViewHolder {
             }
 
             if(model.getRemark()!=null&&model.getRemark().length()>0){
+                 textViewReviewComment.setVisibility(View.VISIBLE);
+
                 textViewReviewComment.setText(model.getRemark());
                 }else{
-                textViewReviewComment.setVisibility(View.GONE);
+               // textViewReviewComment.setVisibility(View.GONE);
 
             }
             if (model.getMediaList() != null && !model.getMediaList().isEmpty()) {

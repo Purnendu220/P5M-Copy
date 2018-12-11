@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -66,7 +67,13 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                     if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
                         popupOptionsRemove(context, ((BaseActivity) activity).networkCommunicator, view, classModel, shownIn);
                     } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
-                        popupOptionsCancelClass(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
+                        if(classModel.getRefBookingId()!=null&&classModel.getRefBookingId()>0){
+                            popupOptionsCancelClassBookedWithFriend(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
+
+                        }else{
+                                    popupOptionsCancelClass(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
+
+                                }
                     } else {
                         popupOptionsAdd(context, ((BaseActivity) activity).networkCommunicator, view, classModel, shownIn);
                     }
@@ -112,7 +119,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             @Override
             public void onClick(View view) {
                 popupWindow.dismiss();
-                dialogConfirmUnJoin(context, networkCommunicator, model);
+                dialogConfirmUnJoin(context, networkCommunicator, model,model.getJoinClassId());
             }
         });
 
@@ -120,6 +127,65 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         textViewOption2.setText(context.getString(R.string.share));
 
         textViewOption2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindow.dismiss();
+                Helper.shareClass(context, model.getClassSessionId(), model.getTitle());
+            }
+        });
+
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.transparent));
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.showAtLocation(view, Gravity.NO_GRAVITY, location[0], location[1]);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    }
+    public static void popupOptionsCancelClassBookedWithFriend(final Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model) {
+        final View viewRoot = LayoutInflater.from(context).inflate(R.layout.popup_options, null);
+        CardView cardView1 = viewRoot.findViewById(R.id.card_view);
+        CardView cardViewBWF = viewRoot.findViewById(R.id.card_view_booked_with_friend);
+        cardView1.setVisibility(View.GONE);
+        cardViewBWF.setVisibility(View.VISIBLE);
+
+        TextView textViewSelfUnjoin = viewRoot.findViewById(R.id.textViewSelfUnjoin);
+        TextView textViewFriendUnjoin = viewRoot.findViewById(R.id.textViewFriendUnjoin);
+        TextView textViewBothUnjoin = viewRoot.findViewById(R.id.textViewBothUnjoin);
+        TextView textViewInviteFriend = viewRoot.findViewById(R.id.textViewInviteFriend);
+
+        textViewSelfUnjoin.setText(context.getString(R.string.cancel_class_self));
+        textViewFriendUnjoin.setText(context.getString(R.string.cancel_class_friend));
+        textViewBothUnjoin.setText(context.getString(R.string.cancel_class_both));
+
+
+        final PopupWindow popupWindow = new PopupWindow(viewRoot, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+
+        textViewSelfUnjoin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindow.dismiss();
+                dialogConfirmUnJoin(context, networkCommunicator, model,model.getJoinClassId());
+            }
+        });
+
+        textViewFriendUnjoin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindow.dismiss();
+                dialogConfirmUnJoin(context, networkCommunicator, model,model.getRefBookingId());
+            }
+        });
+        textViewBothUnjoin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindow.dismiss();
+                dialogConfirmUnJoin(context, networkCommunicator, model,model.getJoinClassId());
+            }
+        });
+
+        textViewInviteFriend.setText(context.getString(R.string.share));
+
+        textViewInviteFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 popupWindow.dismiss();
@@ -210,7 +276,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
-    private static void dialogConfirmUnJoin(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model) {
+    private static void dialogConfirmUnJoin(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, final int unJoinClassId) {
 
         String message = context.getString(R.string.sure_unjoin);
 
@@ -225,6 +291,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             serverMessageSpecialClass = defaultSettingServer.getSpecialClassCancellationPolicy();
 
         }
+
+
 
         if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model)) {
             message = serverMessageSpecialClass;
@@ -260,7 +328,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             public void onClick(View view) {
 
                 textViewUnJoin.setVisibility(View.GONE);
-                networkCommunicator.unJoinClass(model, model.getJoinClassId(), new NetworkCommunicator.RequestListener() {
+                networkCommunicator.unJoinClass(model, unJoinClassId, new NetworkCommunicator.RequestListener() {
                     @Override
                     public void onApiSuccess(Object response, int requestCode) {
 

@@ -8,11 +8,13 @@ import com.p5m.me.data.City;
 import com.p5m.me.data.CityLocality;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.Filter;
+import com.p5m.me.data.LimitExceedErrorResponse;
 import com.p5m.me.data.RatingParamModel;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.DefaultSettingServer;
 import com.p5m.me.data.main.User;
+import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.JsonUtils;
 import com.p5m.me.utils.LogUtils;
@@ -137,6 +139,29 @@ public class MyPreferences {
             e.printStackTrace();
             LogUtils.exception(e);
         }
+    }
+
+    public void savePaymentErrorResponse(ResponseModel errorResponse){
+        try {
+            PreferencesManager.putString(AppConstants.Pref.PAYMENT_ERROR_RESPONSE, gson.toJson(errorResponse.data).toString());
+
+        }catch (Exception e){
+            e.printStackTrace();
+            LogUtils.exception(e);
+
+
+        }
+    }
+
+    public User getPaymentErrorResponse(){
+        try {
+            return gson.fromJson(PreferencesManager.getString(AppConstants.Pref.PAYMENT_ERROR_RESPONSE), new TypeToken<User>() {
+            }.getType());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
     public List<RatingParamModel> getRatingParams() {
         try {

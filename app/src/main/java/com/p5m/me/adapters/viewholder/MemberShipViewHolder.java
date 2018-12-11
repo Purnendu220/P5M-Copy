@@ -111,8 +111,8 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                 button.setBackgroundResource(R.drawable.button_disabled);
                 button.setTextColor(ContextCompat.getColor(context, R.color.theme_light_text));
 
-//                Helper.setPackageImage(imageViewHeader, model.getPackageName());
-                imageViewHeader.setImageResource(R.drawable.set_icon);
+                Helper.setPackageImage(imageViewHeader, model.getPackageId());
+                //imageViewHeader.setImageResource(R.drawable.set_icon);
 
                 if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
                     textViewPackageName.setText(model.getPackageName());
@@ -149,7 +149,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
                     button.setText(R.string.select_plan);
                     button.setBackgroundResource(R.drawable.join_rect);
-                    Helper.setPackageImage(imageViewHeader, model.getName());
+                    Helper.setPackageImage(imageViewHeader, model.getId());
                     if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
 
                         textViewPackageName.setText(model.getName());
@@ -198,6 +198,13 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     } else if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
 
                         textViewPackageName.setText(model.getName());
+//                        if(model.isBookingWithFriend() && model.getNoOfClass()==1){
+//                            textViewPageTitle.setText(model.getNoOfClass() + " " + AppConstants.pluralES("Class", model.getNoOfClass())+" for friend");
+//
+//                        }else{
+//                            textViewPageTitle.setText(model.getNoOfClass() + " " + AppConstants.pluralES("Class", model.getNoOfClass()));
+//
+//                        }
                         textViewPageTitle.setText(model.getNoOfClass() + " " + AppConstants.pluralES("Class", model.getNoOfClass()));
                         textViewPackageValidity.setText("Valid for " + model.getGymName());
                         textViewPackagePrice.setText(model.getCost() + " " + context.getString(R.string.currency).toUpperCase());

@@ -11,6 +11,7 @@ import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.RatingImagesListAdapter;
 import com.p5m.me.data.main.MediaModel;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.ImageUtils;
 
 import butterknife.BindView;
@@ -39,7 +40,7 @@ public class RatingImageViewHolder extends RecyclerView.ViewHolder {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Helper.openImageListViewer(context, ratingImagesListAdapter.getList(), position);
+                    Helper.openImageListViewer(context, ratingImagesListAdapter.getList(), position,AppConstants.ImageViewHolderType.RATING_IMAGE_HOLDER);
 
                 }
             });

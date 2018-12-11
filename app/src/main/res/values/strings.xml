@@ -235,6 +235,7 @@
     <string name="registration_done">Registration completed successfully!</string>
     <string name="join_fail_date_expire">Your current plan will expire before the date of the following class. Would you like to continue and purchase a one-time visit to this class?</string>
     <string name="join_fail_limit_exhaust">You have exceeded the number of visits to this studio. Would you like to continue and purchase a one-time visit to this class, without changing your current plan?</string>
+    <string name="join_share_limit_exhaust">You have exceeded package share limit.Would you like to continue and purchase a one-time visit to this class, without changing your current plan?</string>
     <string name="title_activity_continue_user">ContinueUser</string>
     <string name="switch_account">"<u>Switch an account</u>"</string>
     <string name="cancel">Cancel</string>
@@ -248,6 +249,11 @@
     <string name="cancellation_policy">"<u>Cancellation Policy</u>"</string>
     <string name="press_again_to_exit">Press back again to exit</string>
     <string name="cancel_class">Unjoin Class</string>
+    <string name="cancel_class_self">Unjoin My Class</string>
+    <string name="cancel_class_friend">Unjoin Friends\'s Class</string>
+    <string name="cancel_class_both">Unjoin Both Class</string>
+
+
     <string name="forgot_password">"<b><u>Forgot password</u>?</b>"</string>
     <string name="forgot_password_no_bold">"Forgot password?"</string>
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
@@ -325,10 +331,16 @@
     <string name="extend_term">The gym visit limits will not re-set with this one-time purchase. You have just extended your membership (%1d week(s)). You have (%1d) week(s) remaining. Make sure if you need more time to extend your membership before your classes expire.</string>
     <string name="extend">"<u>Extend</u>"</string>
     <string name="extention_policy">Membership extension policy</string>
-    <string name="yourfriendsname">Frined\'s Name</string>
+    <string name="yourfriendsname">Friend\'s Name</string>
     <string name="friendsemail">Friend\'s Email</string>
     <string name="bookWithFriend">Book With Friend</string>
     <string name="whojoiningyou">Who\'s joining you?</string>
     <string name="almostthere">Almost there...</string>
+    <string name="reserve_class_with_friend">Book with Friend</string>
+    <string name="continue_with">Continue</string>
+    <string name="booked_with_friend">2 Bookings</string>
+    <string name="own_email_error_text">You can\'t use your email.</string>
+    <string name="gender_females_only_error">This is a Females only class</string>
+    <string name="gender_males_only_error">This is a Males only class</string>
 
 </resources>

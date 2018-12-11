@@ -310,7 +310,7 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
                 break;
             case R.id.imageView:
                 if (!myProfileAdapter.getUser().getProfileImage().isEmpty()) {
-                    Helper.openImageViewer(context, activity, view, myProfileAdapter.getUser().getProfileImage());
+                    Helper.openImageViewer(context, activity, view, myProfileAdapter.getUser().getProfileImage(),AppConstants.ImageViewHolderType.PROFILE_IMAGE_HOLDER);
                 }
                 break;
             case R.id.textViewExtendPackage:

@@ -1,5 +1,9 @@
 package com.p5m.me.data.request;
 
+import com.p5m.me.data.BookWithFriendData;
+
+import java.util.List;
+
 /**
  * Created by Varun John on 4/19/2018.
  */
@@ -12,6 +16,8 @@ public class PaymentUrlRequest {
     private Integer gymId;
     private Integer promoId;
     private Long id;
+    private List<BookWithFriendData> userList;
+    private Integer numOfClass;
 
     public PaymentUrlRequest(Integer userId, Integer packageId) {
         this.userId = userId;
@@ -22,6 +28,15 @@ public class PaymentUrlRequest {
         this.sessionId = sessionId;
         this.gymId = gymId;
     }
+    public PaymentUrlRequest(Integer userId, Integer sessionId, Integer gymId,List<BookWithFriendData> userList,Integer numOfClass) {
+        this.userId = userId;
+        this.sessionId = sessionId;
+        this.gymId = gymId;
+        this.userList=userList;
+        this.numOfClass=numOfClass;
+    }
+
+
 
     public PaymentUrlRequest(Integer userId,Integer packageId,Long userPacakageId,String type) {
         this.userId = userId;
@@ -34,6 +49,21 @@ public class PaymentUrlRequest {
         this.packageId = packageId;
         this.sessionId = sessionId;
         this.gymId = gymId;
+    }
+    public PaymentUrlRequest(Integer userId, Integer packageId, Integer sessionId, Integer gymId,List<BookWithFriendData> userList,Integer numOfClass) {
+        this.userId = userId;
+        this.packageId = packageId;
+        this.sessionId = sessionId;
+        this.gymId = gymId;
+        this.userList=userList;
+        this.numOfClass=numOfClass;
+    }
+    public PaymentUrlRequest(Integer userId, Integer packageId, Integer sessionId, Integer gymId,List<BookWithFriendData> userList) {
+        this.userId = userId;
+        this.packageId = packageId;
+        this.sessionId = sessionId;
+        this.gymId = gymId;
+        this.userList=userList;
     }
 
 
@@ -91,5 +121,21 @@ public class PaymentUrlRequest {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public List<BookWithFriendData> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<BookWithFriendData> userList) {
+        this.userList = userList;
+    }
+
+    public Integer getNumOfClass() {
+        return numOfClass;
+    }
+
+    public void setNumOfClass(Integer numOfClass) {
+        this.numOfClass = numOfClass;
     }
 }

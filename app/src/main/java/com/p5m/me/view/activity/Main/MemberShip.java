@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,10 +18,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.MemberShipAdapter;
 import com.p5m.me.analytics.MixPanel;
+import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
@@ -28,6 +32,7 @@ import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
+import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -60,6 +65,14 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
         intent.putExtra(AppConstants.DataKey.CLASS_OBJECT, classModel);
         context.startActivity(intent);
     }
+    public static void openActivity(Context context, int navigationFrom, ClassModel classModel, BookWithFriendData friendData,int numberOfPackagesToBuy) {
+        Intent intent = new Intent(context, MemberShip.class)
+                .putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom);
+        intent.putExtra(AppConstants.DataKey.CLASS_OBJECT, classModel);
+        intent.putExtra(AppConstants.DataKey.BOOK_WITH_FRIEND_DATA,friendData);
+        intent.putExtra(AppConstants.DataKey.NUMBER_OF_PACKAGES_TO_BUY,numberOfPackagesToBuy);
+        context.startActivity(intent);
+    }
 
     public static Intent createIntent(Context context, int navigationFrom) {
         return new Intent(context, MemberShip.class)
@@ -79,6 +92,8 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     private ClassModel classModel;
     private MemberShipAdapter memberShipAdapter;
     private UserPackageInfo userPackageInfo;
+    private BookWithFriendData mFriendsData;
+    private Package mAvailableDropInPackage;
 
     private Handler handler;
     private Runnable runnable;
@@ -88,6 +103,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     private boolean hasVisitedGymLimits;
     private boolean hasPurchased;
     private boolean hasClickedCheckout;
+    private int mNumberOfPackagesToBuy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +120,8 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
         navigatedFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
         classModel = (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_OBJECT);
-
+        mFriendsData = (BookWithFriendData) getIntent().getSerializableExtra(AppConstants.DataKey.BOOK_WITH_FRIEND_DATA);
+        mNumberOfPackagesToBuy=getIntent().getIntExtra(AppConstants.DataKey.NUMBER_OF_PACKAGES_TO_BUY,1);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setHasFixedSize(false);
 
@@ -235,7 +252,13 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
             }
 
             swipeRefreshLayout.setRefreshing(true);
-            networkCommunicator.getPackagesForClass(user.getId(), classModel.getGymBranchDetail().getGymId(), classModel.getClassSessionId(), this, false);
+            if(mFriendsData!=null){
+                networkCommunicator.getPackagesForClass(user.getId(), classModel.getGymBranchDetail().getGymId(), classModel.getClassSessionId(),mNumberOfPackagesToBuy, this, false);
+
+            }else{
+                networkCommunicator.getPackagesForClass(user.getId(), classModel.getGymBranchDetail().getGymId(), classModel.getClassSessionId(),1, this, false);
+
+            }
 
         } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SETTING ||
                 navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE ||
@@ -300,9 +323,28 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
             break;
             case R.id.button: {
 
-                Package aPackage = (Package) model;
+                final Package aPackage = (Package) model;
                 if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS) {
-                    CheckoutActivity.openActivity(context, aPackage, classModel);
+                    if(mFriendsData!=null && aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)){
+                        CheckoutActivity.openActivity(context, aPackage, classModel,aPackage.getNoOfClass(),mFriendsData);
+                        return;
+                        }
+                    if(mFriendsData!=null && aPackage.getGymVisitLimit()==1){
+                        DialogUtils.showBasicMessage(context,"",
+                                "This package has "+aPackage.getGymVisitLimit()+" visit limit for this gym.So you need to buy diffrent package to book with friend."
+                                ,context.getResources().getString(R.string.continue_with), new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        dialog.dismiss();
+
+                                    }
+                                });
+
+                    }else{
+                        CheckoutActivity.openActivity(context, aPackage, classModel,1,mFriendsData);
+                        return;
+                    }
+
                 } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SETTING ||
                         navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE ||
                         navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION ||
@@ -383,11 +425,27 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                         } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                             aPackage.setGymName(classModel.getGymBranchDetail().getGymName());
                             packages.add(aPackage);
+                            mAvailableDropInPackage=aPackage;
                         }
+                    }
+                    if(mFriendsData!=null){
+                        List<Package> packagesWithVisitLimit = new ArrayList<>();
+                        for (Package aPackage : packages) {
+                            aPackage.setBookingWithFriend(true);
+                            if(aPackage.getGymVisitLimit()!=1){
+                                packagesWithVisitLimit.add(aPackage);
+                            }
+
+                        }
+                        memberShipAdapter.addAllOfferedPackages(packagesWithVisitLimit);
+
+
+                    }else{
+                        memberShipAdapter.addAllOfferedPackages(packages);
+
                     }
 
 
-                    memberShipAdapter.addAllOfferedPackages(packages);
                 }
                 memberShipAdapter.notifyDataSetChanges();
                 break;

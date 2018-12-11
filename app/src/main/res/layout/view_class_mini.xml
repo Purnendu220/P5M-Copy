@@ -401,6 +401,8 @@
 
                         </RelativeLayout>
 
+
+
                         <RelativeLayout
                             android:id="@+id/relativeLayoutFitnessLevel"
                             android:layout_width="match_parent"
@@ -430,8 +432,42 @@
                                 android:lineSpacingExtra="@dimen/line_spacing_extra"
                                 android:text="INTERMEDIATE"
                                 android:textColor="@color/theme_dark_text"
-                                android:textSize="@dimen/text_medium" />
+                                android:textSize="@dimen/text_medium"
+                                />
 
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:id="@+id/classBookedWithFriend"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="12dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:orientation="horizontal"
+                            android:visibility="gone"
+                            >
+
+                            <ImageView
+                                android:id="@+id/imageViewClassAvailable"
+                                style="@style/ClassIconSmall"
+                                android:src="@drawable/profile_icon" />
+
+                            <TextView
+                                android:id="@+id/textViewBookings"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginLeft="@dimen/text_icon_gap"
+                                android:layout_marginTop="@dimen/text_drawable_adjustment"
+                                android:layout_toEndOf="@+id/imageViewClassAvailable"
+                                android:fontFamily="sans-serif"
+                                android:gravity="left"
+                                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                                android:lineSpacingExtra="@dimen/line_spacing_extra"
+                                android:text="@string/booked_with_friend"
+                                android:textColor="@color/theme_dark_text"
+                                android:textSize="@dimen/text_medium"
+                                android:textStyle="normal" />
                         </RelativeLayout>
                     </LinearLayout>
 

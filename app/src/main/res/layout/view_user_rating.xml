@@ -71,6 +71,7 @@
                 android:textColor="@color/black"
                 android:fontFamily="sans-serif"
                 android:layout_marginTop="@dimen/margin_5"
+                android:visibility="gone"
 
                 />
             <android.support.v7.widget.RecyclerView
