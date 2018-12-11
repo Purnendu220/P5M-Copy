@@ -431,6 +431,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                     if(mFriendsData!=null){
                         List<Package> packagesWithVisitLimit = new ArrayList<>();
                         for (Package aPackage : packages) {
+                            aPackage.setBookingWithFriend(true);
                             if(aPackage.getGymVisitLimit()!=1){
                                 packagesWithVisitLimit.add(aPackage);
                             }

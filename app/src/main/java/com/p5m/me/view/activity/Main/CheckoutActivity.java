@@ -65,6 +65,8 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         CheckoutActivity.classModel = null;
         CheckoutActivity.checkoutFor = PACKAGE;
         CheckoutActivity.mNumberOfPackagesToBuy=1;
+        CheckoutActivity.friendsDetail=null;
+
 
 
         openActivity(context);
@@ -79,6 +81,8 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         CheckoutActivity.selectedPacakageFromList = null;
         CheckoutActivity.checkoutFor = CLASS_PURCHASE_WITH_PACKAGE;
         CheckoutActivity.mNumberOfPackagesToBuy = 1;
+        CheckoutActivity.friendsDetail=null;
+
 
 
         openActivity(context);
@@ -103,7 +107,9 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         CheckoutActivity.selectedPacakageFromList = null;
         CheckoutActivity.classModel = specialClassModel;
         CheckoutActivity.checkoutFor = SPECIAL_CLASS;
-        CheckoutActivity.mNumberOfPackagesToBuy=mNumberOfPackagesToBuy;
+        CheckoutActivity.mNumberOfPackagesToBuy = mNumberOfPackagesToBuy;
+        CheckoutActivity.friendsDetail = null;
+
 
 
 
@@ -130,6 +136,8 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         CheckoutActivity.userPackage = userPackage;
         CheckoutActivity.navigatinFrom = navigatedFrom;
         CheckoutActivity.mNumberOfPackagesToBuy=1;
+        CheckoutActivity.friendsDetail=null;
+
 
 
         openActivity(context);

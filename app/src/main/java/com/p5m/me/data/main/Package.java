@@ -18,6 +18,7 @@ public class Package implements java.io.Serializable {
     private boolean status;
     private PromoCode promoResponseDto;
     private int gymVisitLimit;
+    private boolean isBookingWithFriend;
 
     public String getGymName() {
         return gymName == null ? "" : gymName;
@@ -125,5 +126,13 @@ public class Package implements java.io.Serializable {
 
     public void setGymVisitLimit(int gymVisitLimit) {
         this.gymVisitLimit = gymVisitLimit;
+    }
+
+    public boolean isBookingWithFriend() {
+        return isBookingWithFriend;
+    }
+
+    public void setBookingWithFriend(boolean bookingWithFriend) {
+        isBookingWithFriend = bookingWithFriend;
     }
 }
