@@ -596,6 +596,17 @@ public class MixPanel {
         }
     }
 
+    public static void trackPayButtonClick(String packageName) {
+        try {
+            JSONObject props = new JSONObject();
+            props.put("package_name", packageName);
+
+            trackEvent(props, "Pay_Clicked");
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
     public static void trackSequentialUpdate(String failureReason) {
         try {
             JSONObject props = new JSONObject();

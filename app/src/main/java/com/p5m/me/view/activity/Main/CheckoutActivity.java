@@ -402,6 +402,8 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.textViewPay:
                 handlePayment();
+                MixPanel.trackPayButtonClick(aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName());
+
                 break;
             case R.id.buttonPromoCode:
                 if (promoCode == null) {
