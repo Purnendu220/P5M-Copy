@@ -40,6 +40,9 @@ public class AppConstants {
         public static final int IMAGE_THUMBNAIL_RESOLUTION_COMPRESSION = 256;
         public static final int IMAGE_QUALITY = 90;
         public static final int SPECIAL_CLASS_ID = 1010;
+        public static final int UNJOIN_BOTH_CLASS = 1000;
+        public static final int UNJOIN_FRIEND_CLASS = 1001;
+
 
     }
 

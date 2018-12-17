@@ -164,7 +164,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             @Override
             public void onClick(View view) {
                 popupWindow.dismiss();
-                dialogConfirmUnJoin(context, networkCommunicator, model,model.getJoinClassId());
+                dialogConfirmUnJoinBookWithFriend(context, networkCommunicator, model,model.getJoinClassId(),AppConstants.Values.UNJOIN_BOTH_CLASS);
             }
         });
 
@@ -172,14 +172,14 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             @Override
             public void onClick(View view) {
                 popupWindow.dismiss();
-                dialogConfirmUnJoin(context, networkCommunicator, model,model.getRefBookingId());
+                dialogConfirmUnJoinBookWithFriend(context, networkCommunicator, model,model.getRefBookingId(),AppConstants.Values.UNJOIN_FRIEND_CLASS);
             }
         });
         textViewBothUnjoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 popupWindow.dismiss();
-                dialogConfirmUnJoin(context, networkCommunicator, model,model.getJoinClassId());
+                dialogConfirmUnJoinBookWithFriend(context, networkCommunicator, model,model.getJoinClassId(),AppConstants.Values.UNJOIN_BOTH_CLASS);
             }
         });
 
@@ -359,7 +359,97 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             }
         });
     }
+    private static void dialogConfirmUnJoinBookWithFriend(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, final int unJoinClassId,final int unJoinType) {
 
+        String message = context.getString(R.string.sure_unjoin);
+
+        String serverMessageNormalClass = message;
+        String serverMessageSpecialClass = message;
+        float cancelTime = 2;
+
+        DefaultSettingServer defaultSettingServer = MyPreferences.getInstance().getDefaultSettingServer();
+        if (defaultSettingServer != null) {
+            cancelTime = defaultSettingServer.getRefundAllowedbefore();
+            serverMessageNormalClass = defaultSettingServer.getCancellationPolicy();
+            serverMessageSpecialClass = defaultSettingServer.getSpecialClassCancellationPolicy();
+
+        }
+
+
+
+        if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model)) {
+            message = serverMessageSpecialClass;
+
+        } else if (Helper.isSpecialClass(model) && Helper.isFreeClass(model)) {
+            message = context.getString(R.string.sure_unjoin);
+
+        } else if (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) <= cancelTime) {
+            message = serverMessageNormalClass;
+        }
+        else if(unJoinType == AppConstants.Values.UNJOIN_BOTH_CLASS){
+            message = context.getString(R.string.sure_unjoin_both);
+
+        }
+        else if(unJoinType == AppConstants.Values.UNJOIN_FRIEND_CLASS){
+            message = context.getString(R.string.sure_unjoin_friend);
+
+        }
+
+        final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
+                .cancelable(false)
+                .customView(R.layout.dialog_unjoin_class, false)
+                .build();
+        materialDialog.show();
+
+        final TextView textViewMessage = (TextView) materialDialog.findViewById(R.id.textViewMessage);
+        final TextView textViewUnJoin = (TextView) materialDialog.findViewById(R.id.textViewOk);
+        final TextView textViewClose = (TextView) materialDialog.findViewById(R.id.textViewCancel);
+
+        textViewMessage.setText(message);
+
+        textViewClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                materialDialog.dismiss();
+            }
+        });
+
+        textViewUnJoin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                textViewUnJoin.setVisibility(View.GONE);
+                networkCommunicator.unJoinClass(model, unJoinClassId, new NetworkCommunicator.RequestListener() {
+                    @Override
+                    public void onApiSuccess(Object response, int requestCode) {
+
+                        try {
+                            model.setUserJoinStatus(false);
+                            EventBroadcastHelper.sendClassJoin(context, model);
+                            EventBroadcastHelper.sendUserUpdate(context, ((ResponseModel<User>) response).data);
+                            MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
+                            materialDialog.dismiss();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            LogUtils.exception(e);
+                        }
+
+                        textViewUnJoin.setVisibility(View.VISIBLE);
+                        materialDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onApiFailure(String errorMessage, int requestCode) {
+                        textViewUnJoin.setVisibility(View.VISIBLE);
+
+                        ToastUtils.showLong(context, errorMessage);
+                        materialDialog.dismiss();
+                    }
+                });
+            }
+        });
+    }
     private static void dialogConfirmDelete(Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, int shownIn) {
         networkCommunicator.removeFromWishList(model);
 

@@ -198,13 +198,13 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     } else if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
 
                         textViewPackageName.setText(model.getName());
-//                        if(model.isBookingWithFriend() && model.getNoOfClass()==1){
-//                            textViewPageTitle.setText(model.getNoOfClass() + " " + AppConstants.pluralES("Class", model.getNoOfClass())+" for friend");
-//
-//                        }else{
-//                            textViewPageTitle.setText(model.getNoOfClass() + " " + AppConstants.pluralES("Class", model.getNoOfClass()));
-//
-//                        }
+                        if(model.isBookingWithFriend() && model.getNoOfClass()==1){
+                            textViewPageTitle.setText(model.getNoOfClass() + " " + AppConstants.pluralES("Class", model.getNoOfClass())+" for friend");
+
+                        }else{
+                            textViewPageTitle.setText(model.getNoOfClass() + " " + AppConstants.pluralES("Class", model.getNoOfClass()));
+
+                        }
                         textViewPageTitle.setText(model.getNoOfClass() + " " + AppConstants.pluralES("Class", model.getNoOfClass()));
                         textViewPackageValidity.setText("Valid for " + model.getGymName());
                         textViewPackagePrice.setText(model.getCost() + " " + context.getString(R.string.currency).toUpperCase());

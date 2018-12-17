@@ -235,7 +235,11 @@
     <string name="registration_done">Registration completed successfully!</string>
     <string name="join_fail_date_expire">Your current plan will expire before the date of the following class. Would you like to continue and purchase a one-time visit to this class?</string>
     <string name="join_fail_limit_exhaust">You have exceeded the number of visits to this studio. Would you like to continue and purchase a one-time visit to this class, without changing your current plan?</string>
+    <string name="join_fail_limit_exhaust_booking_with_friend">You have exceeded the number of visits to the following studio. Would you like to continue and purchase a one-time visit to this class, for your guest?</string>
+    <string name="join_fail_limit_exhaust_booking_with_friend_two_ready">You have exceeded the number of visits to the following studio. Would you like to continue and purchase %1d one-time visits to this class, for yourself and your guest?</string>
+
     <string name="join_share_limit_exhaust">You have exceeded package share limit.Would you like to continue and purchase a one-time visit to this class, without changing your current plan?</string>
+
     <string name="title_activity_continue_user">ContinueUser</string>
     <string name="switch_account">"<u>Switch an account</u>"</string>
     <string name="cancel">Cancel</string>
@@ -248,10 +252,10 @@
     <string name="remove_promo_code">Remove Promo Code</string>
     <string name="cancellation_policy">"<u>Cancellation Policy</u>"</string>
     <string name="press_again_to_exit">Press back again to exit</string>
-    <string name="cancel_class">Unjoin Class</string>
+    <string name="cancel_class">Cancel booking</string>
     <string name="cancel_class_self">Unjoin My Class</string>
-    <string name="cancel_class_friend">Unjoin Friends\'s Class</string>
-    <string name="cancel_class_both">Unjoin Both Class</string>
+    <string name="cancel_class_friend">Cancel Friends\'s booking</string>
+    <string name="cancel_class_both">Cancel Both bookings</string>
 
 
     <string name="forgot_password">"<b><u>Forgot password</u>?</b>"</string>
@@ -278,6 +282,9 @@
     <string name="p5m_app">P5M App</string>
     <string name="share">Invite Friends</string>
     <string name="sure_unjoin">Are you sure you want to unjoin ?</string>
+    <string name="sure_unjoin_both">Are you sure you want to cancel both bookings ?</string>
+    <string name="sure_unjoin_friend">Are you sure you want to cancel your friends booking ?</string>
+
     <string name="mention_email">Please mention your email first</string>
     <string name="total_locations">Locations (%1$d)</string>
     <string name="unable_to_load">Unable to load image</string>
