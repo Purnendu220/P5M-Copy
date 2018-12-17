@@ -601,12 +601,25 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             case NetworkCommunicator.RequestCode.JOIN_CLASS:
                 if (errorMessage.equals("498")) {
                     if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
-                        DialogUtils.showBasic(context, getString(R.string.join_fail_limit_exhaust), "Purchase", new MaterialDialog.SingleButtonCallback() {
+                        final User errorResponse=MyPreferences.getInstance().getPaymentErrorResponse();
+
+                        String message;
+                        if(isBookWithFriendInProgress&&mBookWithFriendData!=null){
+                            if(errorResponse.getReadyPckSize()==1){
+                                message=String.format(mContext.getString(R.string.join_fail_limit_exhaust_booking_with_friend));
+
+                            }else{
+                                message=String.format(mContext.getString(R.string.join_fail_limit_exhaust_booking_with_friend_two_ready),errorResponse.getReadyPckSize());
+
+                            }
+                        }else{
+                            message=getString(R.string.join_fail_limit_exhaust);
+                        }
+                        DialogUtils.showBasic(context,message, "Purchase", new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 dialog.dismiss();
                                 if(isBookWithFriendInProgress&&mBookWithFriendData!=null){
-                                    User errorResponse=MyPreferences.getInstance().getPaymentErrorResponse();
                                     //MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
                                     if(errorResponse!=null){
                                         MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel,mBookWithFriendData,errorResponse.getReadyPckSize());
