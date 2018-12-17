@@ -205,7 +205,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                             textViewPageTitle.setText(model.getNoOfClass() + " " + AppConstants.pluralES("Class", model.getNoOfClass()));
 
                         }
-                        textViewPageTitle.setText(model.getNoOfClass() + " " + AppConstants.pluralES("Class", model.getNoOfClass()));
+                        //textViewPageTitle.setText(model.getNoOfClass() + " " + AppConstants.pluralES("Class", model.getNoOfClass()));
                         textViewPackageValidity.setText("Valid for " + model.getGymName());
                         textViewPackagePrice.setText(model.getCost() + " " + context.getString(R.string.currency).toUpperCase());
 
