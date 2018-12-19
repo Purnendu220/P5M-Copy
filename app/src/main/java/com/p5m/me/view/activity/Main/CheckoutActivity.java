@@ -351,7 +351,13 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 textViewPackageName.setText(R.string.add_more_time);
                 textViewCancellationPolicyToggle.setText(R.string.extention_policy);
                 textViewPrice.setText(selectedPacakageFromList.getCost() + " " + context.getString(R.string.currency));
-                String extentTerm=String.format(mContext.getString(R.string.extend_term),selectedPacakageFromList.getDuration(),userPackage.getTotalRemainingWeeks()-selectedPacakageFromList.getDuration());
+                int remainigExtension;
+                if(userPackage.getTotalRemainingWeeks()!=null){
+                    remainigExtension = userPackage.getTotalRemainingWeeks()-selectedPacakageFromList.getDuration();
+                }else{
+                    remainigExtension = selectedPacakageFromList.getDuration();
+                }
+                String extentTerm=String.format(mContext.getString(R.string.extend_term),selectedPacakageFromList.getDuration(),remainigExtension);
                 textViewCancellationPolicy.setText(extentTerm);
                 validityUnit.setText(selectedPacakageFromList.getDuration()+" "+getString(R.string.weeks)+message);
                 textViewPackageValidityExtend.setText(getString(R.string.valid_for)+" " + userPackage.getPackageName()+" Package");
@@ -402,6 +408,8 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.textViewPay:
                 handlePayment();
+                MixPanel.trackPayButtonClick(aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName());
+
                 break;
             case R.id.buttonPromoCode:
                 if (promoCode == null) {

@@ -70,7 +70,7 @@ android {
             buildConfigField "String", "BASE_URL", '\"http://192.168.0.39:8080\"'
             buildConfigField "String", "BASE_URL_MIDL", '\"/profive-midl/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://qa.profive.co\"'
-            manifestPlaceholders = [hostName: "qa.profive.co", appName: "P5M LOCAL",fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
+            manifestPlaceholders = [hostName: "qa.profive.co",hostName_www: "www.qa.profive.co", appName: "P5M LOCAL",fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
 
         }
         dev {
@@ -83,7 +83,7 @@ android {
             buildConfigField "String", "BASE_URL", '\"http://136.243.22.168:8080\"'
             buildConfigField "String", "BASE_URL_MIDL", '\"/dev-midl/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://qa.profive.co\"'
-            manifestPlaceholders = [hostName: "qa.profive.co", appName: "P5M DEV",fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
+            manifestPlaceholders = [hostName: "qa.profive.co",hostName_www: "www.qa.profive.co", appName: "P5M DEV",fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
         }
         qa {
             def id = 'com.p5m.me'
@@ -95,7 +95,7 @@ android {
             buildConfigField "String", "BASE_URL", '\"http://qa.profive.co\"'
             buildConfigField "String", "BASE_URL_MIDL", '\"/profive-midl/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://qa.profive.co\"'
-            manifestPlaceholders = [hostName: "qa.profive.co", appName: "P5M QA",fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
+            manifestPlaceholders = [hostName: "qa.profive.co", hostName_www: "www.qa.profive.co",appName: "P5M QA",fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
         }
 
         live {
@@ -106,10 +106,10 @@ android {
             buildConfigField "boolean", "IS_PRODUCTION", "true"
             buildConfigField "String", "MIXPANEL_KEY", '\"b42c082f0a59ef518fc63392802a8724\"'
             buildConfigField "String", "SENDER_ID", '\"109210713388\"'
-            buildConfigField "String", "BASE_URL", '\"https://api.p5m.me\"'
+            buildConfigField "String", "BASE_URL", '\"https://p5m.me\"'
             buildConfigField "String", "BASE_URL_MIDL", '\"/profive-midl/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"https://www.p5m.me\"'
-            manifestPlaceholders = [hostName: "www.p5m.me", appName: "P5M",fabricKey: "81e25498c1638dbcb2017cc88dba175c5d44a1a6"]
+            manifestPlaceholders = [hostName: "p5m.me",hostName_www: "www.p5m.me", appName: "P5M",fabricKey: "81e25498c1638dbcb2017cc88dba175c5d44a1a6"]
         }
 
     }
