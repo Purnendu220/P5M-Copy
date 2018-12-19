@@ -168,6 +168,19 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 buttonJoin.setVisibility(View.GONE);
                 imageViewOptions1.setVisibility(View.GONE);
                 imageViewOptions2.setVisibility(View.GONE);
+                try{
+                    if(model.getRefBookingId()!=null && model.getRefBookingId()>0){
+                        classBookedWithFriend.setVisibility(View.VISIBLE);
+                    }else{
+                        classBookedWithFriend.setVisibility(View.GONE);
+
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                    classBookedWithFriend.setVisibility(View.GONE);
+
+                }
+
 
             } else {
                 trainerImage.setVisibility(View.VISIBLE);
