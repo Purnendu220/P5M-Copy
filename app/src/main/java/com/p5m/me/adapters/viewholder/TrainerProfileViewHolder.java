@@ -90,11 +90,11 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
             final TrainerDetailModel model = (TrainerDetailModel) data;
 
             if (model.getFollowerCount() == -1) {
-                textViewFollowers.setText(Html.fromHtml("followers"));
+                textViewFollowers.setText(Html.fromHtml(context.getString(R.string.followers)));
             } else if (model.getFollowerCount() == 0) {
-                textViewFollowers.setText(Html.fromHtml("No followers"));
+                textViewFollowers.setText(Html.fromHtml(context.getString(R.string.no_followers)));
             } else {
-                textViewFollowers.setText(Html.fromHtml("<b>" + (model.getFollowerCount() + "</b>" + " followers")));
+                textViewFollowers.setText(Html.fromHtml("<b>" + (model.getFollowerCount() + "</b>" + " "+context.getString(R.string.followers))));
             }
 
             ImageUtils.setImage(context,
@@ -109,7 +109,7 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
 
             if (model.getMediaResponseDtoList() != null && !model.getMediaResponseDtoList().isEmpty()) {
                 layoutGallery.setVisibility(View.VISIBLE);
-                textViewGallery.setText(Html.fromHtml("Gallery" + " <b>(" + model.getMediaResponseDtoList().size() + ")</b>"));
+                textViewGallery.setText(Html.fromHtml(context.getString(R.string.gallery) + " <b>(" + model.getMediaResponseDtoList().size() + ")</b>"));
 
                 ImageListAdapter adapter = new ImageListAdapter(context, AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE, model.getMediaResponseDtoList());
                 recyclerViewGallery.setAdapter(adapter);
@@ -160,7 +160,7 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
                         textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                         textView.setPadding(0, dp * 2, 0, dp * 4);
                         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-                        textView.setText(Html.fromHtml("Coach at <b>" + gymBranchDetail.getGymName() + "</b>"));
+                        textView.setText(Html.fromHtml(context.getString(R.string.coach_at)+" <b>" + gymBranchDetail.getGymName() + "</b>"));
                         textView.setClickable(true);
                         textView.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
 

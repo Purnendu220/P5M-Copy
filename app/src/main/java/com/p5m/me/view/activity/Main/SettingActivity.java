@@ -112,12 +112,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     private void dialogContactUs() {
         final List<String> items = new ArrayList<>();
-        items.add("Mail Us");
-        items.add("Make a Call");
+        items.add(getString(R.string.mail_us));
+        items.add(getString(R.string.make_a_call));
 
         DialogUtils.showBasicList(
                 context,
-                "Contact Us",
+                getString(R.string.contact_us),
                 items,
                 new MaterialDialog.ListCallback() {
                     @Override

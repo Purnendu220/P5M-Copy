@@ -453,7 +453,7 @@
                             android:fontFamily="sans-serif"
                             android:gravity="left"
                             android:letterSpacing="@dimen/text_medium_letter_spacing"
-                            android:text="Promo Code Applied"
+                            android:text="@string/promo_code_applied"
                             android:textColor="@color/colorAccent"
                             android:textSize="@dimen/text_large"
                             android:textStyle="normal" />
@@ -496,7 +496,7 @@
                         android:fontFamily="sans-serif"
                         android:gravity="left"
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
-                        android:text="Total : "
+                        android:text="@string/total"
                         android:textColor="@color/theme_dark_light_text"
                         android:textSize="@dimen/text_large"
                         android:textStyle="normal" />
@@ -561,7 +561,7 @@
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center"
                 android:letterSpacing="@dimen/button_letter_spacing"
-                android:text="Pay"
+                android:text="@string/pay"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_large" />

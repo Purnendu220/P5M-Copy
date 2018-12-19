@@ -39,7 +39,7 @@
             android:gravity="center"
             android:layout_marginTop="50dp"
             android:textSize="@dimen/margin_16"
-            android:text="THANK YOU!"
+            android:text="@string/thank_you"
             android:textColor="@color/black"
             android:fontFamily="sans-serif-medium"
             />
@@ -53,7 +53,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="@dimen/margin_20"
             android:textSize="@dimen/text_extra_large"
-            android:text="Your review has been submitted"
+            android:text="@string/your_review_has_been_submitted"
             android:textColor="@color/black"
             />
     </LinearLayout>
@@ -108,7 +108,7 @@
         android:fontFamily="sans-serif"
         android:gravity="center"
         android:letterSpacing="@dimen/button_letter_spacing"
-        android:text="I’L DO IT LATER"
+        android:text="@string/i_l_do_it_later"
         android:textAllCaps="true"
         android:textSize="@dimen/text_small"
         android:textColor="@color/rating_blank"
@@ -125,7 +125,7 @@
         android:fontFamily="sans-serif"
         android:gravity="center"
         android:letterSpacing="@dimen/button_letter_spacing"
-        android:text="RATE PAST CLASSES"
+        android:text="@string/rate_past_classes"
         android:textAllCaps="true"
         android:textSize="@dimen/text_small"
         android:textColor="@color/white"

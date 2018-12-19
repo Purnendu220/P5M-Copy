@@ -96,14 +96,14 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                 if (userPackageInfo.haveGeneralPackage && !userPackageInfo.haveDropInPackage) {
                     textViewValidity.setVisibility(View.VISIBLE);
 
-                    String message=userPackageInfo.userPackageGeneral.getBalanceClass()!=1?"classes":"class";
+                    String message=userPackageInfo.userPackageGeneral.getBalanceClass()!=1?context.getString(R.string.classes):context.getString(R.string.one_class);
                     textViewPackage.setText(Html.fromHtml("<b>" + userPackageInfo.userPackageGeneral.getBalanceClass() +
-                            "</b> " + message+" remaining"));
+                            "</b> " + message+" "+context.getString(R.string.remaining)));
 
                     int daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageGeneral.getExpiryDate());
 
                     textViewValidity.setText(Html.fromHtml("<b>" + daysLeftFromPackageExpiryDate + " " +
-                            AppConstants.plural("day", daysLeftFromPackageExpiryDate) + "</b> " +
+                            AppConstants.plural(context.getString(R.string.day), daysLeftFromPackageExpiryDate) + "</b> " +
                             context.getString(R.string.profile_package_expiry)));
                     userpackageToExtend = userPackageInfo.userPackageGeneral;
 
@@ -111,38 +111,39 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                     textViewValidity.setVisibility(View.VISIBLE);
                     int daysLeftFromPackageExpiryDate;
                     if(user.isBuyMembership()){
-                        textViewPackage.setText(Html.fromHtml("<b>1</b>" + " class for " + userPackageInfo.userPackageReady.get(0).getGymName()));
+                        textViewPackage.setText(Html.fromHtml("<b>1</b>" + context.getString(R.string.class_for)
+                                + userPackageInfo.userPackageReady.get(0).getGymName()));
 
                          daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageReady.get(0).getExpiryDate());
 
                         textViewValidity.setText(Html.fromHtml("<b>" + daysLeftFromPackageExpiryDate + "</b> " +
-                                " " + AppConstants.plural("day", daysLeftFromPackageExpiryDate) + context.getString(R.string.profile_package_expiry)));
+                                " " + AppConstants.plural(context.getString(R.string.day), daysLeftFromPackageExpiryDate) + context.getString(R.string.profile_package_expiry)));
                         userpackageToExtend = userPackageInfo.userPackageReady.get(0);
 
                         if (userPackageInfo.dropInPackageCount+userPackageInfo.generalPackageCount > 1) {
                             textViewMore.setVisibility(View.VISIBLE);
                             String more = "+" + (userPackageInfo.dropInPackageCount+userPackageInfo.generalPackageCount-1 ) + " more " +
-                                    AppConstants.plural("package", (userPackageInfo.dropInPackageCount - 1));
+                                    AppConstants.plural(context.getString(R.string.package_name), (userPackageInfo.dropInPackageCount - 1));
                             textViewMore.setText(Html.fromHtml("<b><u>" + more + "</u></b> "));
                         }
                     }else{
 
-                        String message=userPackageInfo.userPackageGeneral.getBalanceClass()!=1?"classes ":"class";
+                        String message=userPackageInfo.userPackageGeneral.getBalanceClass()!=1?context.getString(R.string.classes):context.getString(R.string.one_class);
 
                         textViewPackage.setText(Html.fromHtml("<b>" + userPackageInfo.userPackageGeneral.getBalanceClass() +
-                                "</b> " + message+" remaining"));
+                                "</b> " + message+" "+context.getString(R.string.remaining)));
 
                          daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageGeneral.getExpiryDate());
 
                         textViewValidity.setText(Html.fromHtml("<b>" + daysLeftFromPackageExpiryDate + " " +
-                                AppConstants.plural("day", daysLeftFromPackageExpiryDate) + "</b> " +
+                                AppConstants.plural(context.getString(R.string.day), daysLeftFromPackageExpiryDate) + "</b> " +
                                 context.getString(R.string.profile_package_expiry)));
                         userpackageToExtend = userPackageInfo.userPackageGeneral;
 
 
                         textViewMore.setVisibility(View.VISIBLE);
                         String more = "+" + userPackageInfo.dropInPackageCount + " more " +
-                                AppConstants.plural("package", userPackageInfo.dropInPackageCount);
+                                AppConstants.plural(context.getString(R.string.package_name), userPackageInfo.dropInPackageCount);
                         textViewMore.setText(Html.fromHtml("<b><u>" + more + "</u></b> "));
                     }
 
@@ -158,13 +159,13 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                     int daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageReady.get(0).getExpiryDate());
 
                     textViewValidity.setText(Html.fromHtml("<b>" + daysLeftFromPackageExpiryDate + "</b> " +
-                            " " + AppConstants.plural("day", daysLeftFromPackageExpiryDate) + context.getString(R.string.profile_package_expiry)));
+                            " " + AppConstants.plural(context.getString(R.string.day), daysLeftFromPackageExpiryDate) + context.getString(R.string.profile_package_expiry)));
                     userpackageToExtend = userPackageInfo.userPackageReady.get(0);
 
                     if (userPackageInfo.dropInPackageCount > 1) {
                         textViewMore.setVisibility(View.VISIBLE);
                         String more = "+" + (userPackageInfo.dropInPackageCount - 1) + " more " +
-                                AppConstants.plural("package", (userPackageInfo.dropInPackageCount - 1));
+                                AppConstants.plural(context.getString(R.string.package_name), (userPackageInfo.dropInPackageCount - 1));
                         textViewMore.setText(Html.fromHtml("<b><u>" + more + "</u></b> "));
                     }
                 }

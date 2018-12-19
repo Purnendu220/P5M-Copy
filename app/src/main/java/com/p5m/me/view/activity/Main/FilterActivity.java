@@ -252,17 +252,17 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
     private void setListAdapter() {
         List<ClassesFilter> classesFilterList = new ArrayList<>(4);
 
-        classesFilterList.add(new ClassesFilter<CityLocality>("", true, "CityLocality", "Location", R.drawable.filter_location_main, ClassesFilter.TYPE_HEADER));
-        classesFilterList.add(new ClassesFilter<ClassActivity>("", true, "ClassActivity", "Activity", R.drawable.filter_activity_main, ClassesFilter.TYPE_HEADER));
-        classesFilterList.add(new ClassesFilter<Filter.Time>("", true, "Time", "Time", R.drawable.filter_time_main, ClassesFilter.TYPE_HEADER));
-        classesFilterList.add(new ClassesFilter<Filter.Gym>("", true,"Gym", "Gym", R.drawable.filter_gym_main, ClassesFilter.TYPE_HEADER));
+        classesFilterList.add(new ClassesFilter<CityLocality>("", true, "CityLocality", getString(R.string.location), R.drawable.filter_location_main, ClassesFilter.TYPE_HEADER));
+        classesFilterList.add(new ClassesFilter<ClassActivity>("", true, "ClassActivity", getString(R.string.activity), R.drawable.filter_activity_main, ClassesFilter.TYPE_HEADER));
+        classesFilterList.add(new ClassesFilter<Filter.Time>("", true, "Time", getString(R.string.time), R.drawable.filter_time_main, ClassesFilter.TYPE_HEADER));
+        classesFilterList.add(new ClassesFilter<Filter.Gym>("", true,"Gym", getString(R.string.gym), R.drawable.filter_gym_main, ClassesFilter.TYPE_HEADER));
 
         filterAdapter.setClassesFilterList(classesFilterList);
 
         List<ClassesFilter> timeList = new ArrayList<>(4);
-        addClassFilterTime(timeList, new Filter.Time("MORNING", "Morning"));
-        addClassFilterTime(timeList, new Filter.Time("AFTERNOON", "Afternoon"));
-        addClassFilterTime(timeList, new Filter.Time("EVENING", "Evening"));
+        addClassFilterTime(timeList, new Filter.Time("MORNING", getString(R.string.morning)));
+        addClassFilterTime(timeList, new Filter.Time("AFTERNOON", getString(R.string.after_Noon)));
+        addClassFilterTime(timeList, new Filter.Time("EVENING", getString(R.string.evening)));
 
         filterAdapter.getClassesFilterList().get(2).setList(timeList);
 

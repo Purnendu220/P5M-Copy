@@ -84,7 +84,7 @@ public class Trainers extends BaseFragment implements ViewPagerFragmentSelection
     }
 
     private void setUpPager() {
-        activities.add(0, new ClassActivity("ALL", 0));
+        activities.add(0, new ClassActivity(getString(R.string.all), 0));
 
         Iterator<ClassActivity> carsIterator = activities.iterator();
         while (carsIterator.hasNext()) {

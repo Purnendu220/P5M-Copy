@@ -37,7 +37,7 @@
                 android:paddingBottom="16dp"
                 android:paddingRight="16dp"
                 android:paddingTop="16dp"
-                android:text="Activity"
+                android:text="@string/activity"
                 android:textColor="@color/theme_dark_light_text"
                 android:textSize="@dimen/text_large"
                 android:textStyle="normal" />

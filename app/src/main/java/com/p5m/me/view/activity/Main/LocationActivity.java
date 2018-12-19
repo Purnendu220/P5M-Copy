@@ -141,14 +141,14 @@ public class LocationActivity extends BaseActivity implements LocationListener {
                                 status.startResolutionForResult(LocationActivity.this, REQUEST_CHECK_SETTINGS);
                             } catch (IntentSender.SendIntentException e) {
 //                                Log.i(TAG, "PendingIntent unable to execute request.");
-                                DialogUtils.showBasicMessage(context, "Need Location", "Please allow P5M to use your Location", "Ok", new MaterialDialog.SingleButtonCallback() {
+                                DialogUtils.showBasicMessage(context, getString(R.string.need_location), getString(R.string.please_allow_location), context.getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
                                     @Override
                                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                         dialog.dismiss();
                                         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                                         startActivity(intent);
                                     }
-                                }, "Cancel", new MaterialDialog.SingleButtonCallback() {
+                                }, context.getString(R.string.cancel), new MaterialDialog.SingleButtonCallback() {
                                     @Override
                                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                         dialog.dismiss();
@@ -200,14 +200,14 @@ public class LocationActivity extends BaseActivity implements LocationListener {
                 if (permissionsToRequest.size() > 0)
                     requestPermissions(permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
             } else {
-                DialogUtils.showBasicMessage(context, "Need Location", "Please allow P5M to use your Location", "Ok", new MaterialDialog.SingleButtonCallback() {
+                DialogUtils.showBasicMessage(context, context.getString(R.string.need_location), context.getString(R.string.please_allow_location), context.getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         dialog.dismiss();
                         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                         startActivity(intent);
                     }
-                }, "Cancel", new MaterialDialog.SingleButtonCallback() {
+                }, context.getString(R.string.cancel), new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         dialog.dismiss();
@@ -360,7 +360,7 @@ public class LocationActivity extends BaseActivity implements LocationListener {
                             });
                             return;
                         }else{
-                            DialogUtils.showBasicMessage(context, "Need Location", "Please allow P5M to use your Location", "Go to settings", new MaterialDialog.SingleButtonCallback() {
+                            DialogUtils.showBasicMessage(context, context.getString(R.string.need_location), context.getString(R.string.please_allow_location), context.getString(R.string.go_to_settings), new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();

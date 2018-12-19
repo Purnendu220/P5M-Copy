@@ -62,7 +62,7 @@
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
                         android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                         android:paddingBottom="4dp"
-                        android:text="New Version Available"
+                        android:text="@string/new_version_available"
                         android:textColor="@color/theme_dark_text"
                         android:textSize="@dimen/text_large"
                         android:textStyle="bold" />
@@ -78,7 +78,7 @@
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
                         android:lineSpacingExtra="3sp"
                         android:paddingBottom="4dp"
-                        android:text="Please update P5M to the newer version to continue using."
+                        android:text="@string/please_update_p5m_to_the_newer_version_to_continue_using"
                         android:textColor="@color/theme_medium_dark_text"
                         android:textSize="@dimen/text_medium" />
 
@@ -98,7 +98,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center"
                     android:letterSpacing="@dimen/button_letter_spacing"
-                    android:text="Update"
+                    android:text="@string/update"
                     android:textAllCaps="true"
                     android:textColor="@color/theme_accent_text"
                     android:textSize="@dimen/text_large" />

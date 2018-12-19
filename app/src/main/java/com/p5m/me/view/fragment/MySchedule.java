@@ -54,7 +54,8 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
     public TextView textViewNotificationMessageCounter;
 
     private ScheduleAdapter scheduleAdapter;
-    private String[] titleTabs = new String[]{"Upcoming", "Wish List"};
+    private String[] titleTabs ;
+//        private String[] titleTabs = new String[]{"UPCOMING","WISH LIST"};
     private boolean isVisibleToUser=false;
 
     public MySchedule() {
@@ -82,7 +83,7 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
             if(classModel!=null){
                 try{
                     DialogUtils.showBasicMessage(context,"",
-                            "Successfully joined " + classModel.getTitle()
+                            getString(R.string.successfully_joined)+" " + classModel.getTitle()
                             ,context.getResources().getString(R.string.invite_friends), new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -125,7 +126,7 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
         ButterKnife.bind(this, getView());
 
         setToolBar();
-
+        titleTabs= context.getResources().getStringArray(R.array.schedule_list);
         scheduleAdapter = new ScheduleAdapter(getChildFragmentManager(), titleTabs);
         viewPager.setAdapter(scheduleAdapter);
         viewPager.setOffscreenPageLimit(1);

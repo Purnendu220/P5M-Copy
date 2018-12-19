@@ -70,9 +70,9 @@ public class RegistrationActivity extends BaseActivity {
                 INITIAL_STEP = AppConstants.Tab.REGISTRATION_STEP_EMAIL;
 
                 if (faceBookUser.getGender().isEmpty()) {
-                    message = "P5M needs your Email and Gender";
+                    message = getString(R.string.needs_your_email_and_gender);
                 } else {
-                    message = "P5M needs your Email";
+                    message = getString(R.string.needs_your_email);
                     registrationRequest.setGender(faceBookUser.getGender());
                 }
 
@@ -80,7 +80,7 @@ public class RegistrationActivity extends BaseActivity {
                 if (faceBookUser.getGender().isEmpty()) {
                     INITIAL_STEP = AppConstants.Tab.REGISTRATION_STEP_GENDER;
 
-                    message = "P5M needs your Gender";
+                    message = getString(R.string.needs_your_gender);
                 } else {
                     registrationRequest.setGender(faceBookUser.getGender());
                 }
@@ -89,7 +89,7 @@ public class RegistrationActivity extends BaseActivity {
             }
 
             if (!message.isEmpty()) {
-                DialogUtils.showBasicMessage(context, context.getString(R.string.app_name), "ok", message);
+                DialogUtils.showBasicMessage(context, context.getString(R.string.app_name), getString(R.string.ok), message);
             }
         } else {
 //            TOTAL_STEPS = AppConstants.Tab.COUNT_NORMAL_REGISTRATION;

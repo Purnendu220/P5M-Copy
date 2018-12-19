@@ -40,7 +40,7 @@
                         android:fontFamily="sans-serif"
                         android:gravity="left"
                         android:letterSpacing="@dimen/text_title_letter_spacing"
-                        android:text="Reference ID"
+                        android:text="@string/reference_id"
                         android:textColor="@color/theme_dark_light_text"
                         android:textSize="@dimen/text_medium"
                         android:textStyle="normal" />
@@ -74,7 +74,7 @@
                         android:fontFamily="sans-serif"
                         android:gravity="left"
                         android:letterSpacing="@dimen/text_title_letter_spacing"
-                        android:text="Package Name"
+                        android:text="@string/package_name"
                         android:textColor="@color/theme_dark_light_text"
                         android:textSize="@dimen/text_medium"
                         android:textStyle="normal" />
@@ -108,7 +108,7 @@
                         android:fontFamily="sans-serif"
                         android:gravity="left"
                         android:letterSpacing="@dimen/text_title_letter_spacing"
-                        android:text="Amount (KD)"
+                        android:text="@string/amount_kd"
                         android:textColor="@color/theme_dark_light_text"
                         android:textSize="@dimen/text_medium"
                         android:textStyle="normal" />
@@ -142,7 +142,7 @@
                         android:fontFamily="sans-serif"
                         android:gravity="left"
                         android:letterSpacing="@dimen/text_title_letter_spacing"
-                        android:text="Date"
+                        android:text="@string/date"
                         android:textColor="@color/theme_dark_light_text"
                         android:textSize="@dimen/text_medium"
                         android:textStyle="normal" />
@@ -175,7 +175,7 @@
                         android:fontFamily="sans-serif"
                         android:gravity="left"
                         android:letterSpacing="@dimen/text_title_letter_spacing"
-                        android:text="Status"
+                        android:text="@string/status"
                         android:textColor="@color/theme_dark_light_text"
                         android:textSize="@dimen/text_medium"
                         android:textStyle="normal" />
