@@ -181,7 +181,6 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
 
                 }
 
-
             } else {
                 trainerImage.setVisibility(View.VISIBLE);
                 textViewTrainerName.setVisibility(View.VISIBLE);
