@@ -597,7 +597,6 @@
                     android:lineSpacingExtra="@dimen/line_spacing_extra"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
-                    android:text="@string/we_have_provided_you_with_the_tools_you_can_use_to_create_your_personalized_workout_at_your"
                     android:textColor="@color/theme_medium_dark_text"
                     android:textSize="@dimen/text_medium"
                     android:textStyle="normal" />
@@ -632,7 +631,6 @@
                     android:lineSpacingExtra="@dimen/line_spacing_extra"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
-                    android:text="@string/we_have_provided_you_with_the_tools_you_can_use_to_create_your_personalized_workout_at_your"
                     android:textColor="@color/theme_medium_dark_text"
                     android:textSize="@dimen/text_medium"
                     android:textStyle="normal" />
@@ -686,7 +684,6 @@
                     android:lineSpacingExtra="@dimen/line_spacing_extra"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
-                    android:text="@string/we_have_provided_you_with_the_tools_you_can_use_to_create_your_personalized_workout_at_your"
                     android:textColor="@color/theme_medium_dark_text"
                     android:textSize="@dimen/text_medium"
                     android:textStyle="normal" />

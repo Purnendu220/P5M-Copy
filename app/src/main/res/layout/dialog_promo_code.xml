@@ -47,7 +47,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
                 android:gravity="left"
-                android:text="@string/invalied_code"
+                android:text="@string/invalid_code"
                 android:textColor="@color/theme_error_text"
                 android:visibility="visible" />
 

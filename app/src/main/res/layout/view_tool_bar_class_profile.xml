@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="left"
-            android:text="@string/join_class"
+            android:text="@string/reserve_class"
             android:textColor="@color/white" />
 
         <ImageView
