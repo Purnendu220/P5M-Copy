@@ -294,6 +294,7 @@
             android:noHistory="true"
             android:screenOrientation="portrait"
           ></activity>
+
     </application>
 
 </manifest>

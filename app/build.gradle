@@ -178,6 +178,7 @@ dependencies {
 
     implementation files('libs/apptimize-android-3.2.16.jar')
 
+
 }
 
 apply plugin: 'com.google.gms.google-services'
