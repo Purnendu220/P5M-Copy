@@ -58,6 +58,16 @@
                    <data android:scheme="http"
                     android:host="${hostName}"
                      />
+                <data android:scheme="http"
+                    android:host="${hostName_www}"
+                    />
+                <data android:scheme="https"
+                    android:host="${hostName}"
+                    />
+                <data android:scheme="https"
+                    android:host="${hostName_www}"
+                    />
+
             </intent-filter>
         </activity>
 
@@ -284,6 +294,7 @@
             android:noHistory="true"
             android:screenOrientation="portrait"
           ></activity>
+
     </application>
 
 </manifest>
