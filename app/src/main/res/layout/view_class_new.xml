@@ -110,7 +110,6 @@
                         android:background="@drawable/join_rect"
                         android:fontFamily="sans-serif-medium"
                         android:letterSpacing="@dimen/button_letter_spacing"
-                        android:text="@string/join"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
                         android:textSize="@dimen/button_join" />

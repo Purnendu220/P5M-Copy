@@ -710,7 +710,7 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
                     }
                 }
                 if(isAllResponseReceived()){
-                    ToastUtils.show(mContext,"Image upload failed ");
+                    ToastUtils.show(mContext,R.string.image_upload_failed);
                     handleSubmitButton(mContext.getResources().getString(R.string.retry_review),true,View.GONE);
 
 

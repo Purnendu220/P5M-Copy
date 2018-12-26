@@ -300,7 +300,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         } else if (Helper.isSpecialClass(model) && Helper.isFreeClass(model)) {
             message = context.getString(R.string.sure_unjoin);
 
-        } else if (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) <= cancelTime) {
+        } else if (DateUtils.hoursLeft(
+                model.getClassDate() + " " + model.getFromTime()) <= cancelTime) {
             message = serverMessageNormalClass;
         }
 

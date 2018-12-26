@@ -43,7 +43,7 @@ public class GymListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         list = new ArrayList<>();
         this.shownInScreen = shownInScreen;
         this.showLoader = showLoader;
-        listLoader = new ListLoader(true, "No more gyms");
+        listLoader = new ListLoader(true, context.getString(R.string.no_more_gyms));
         gymListListenerHelper = new GymListListenerHelper(context, activity, AppConstants.AppNavigation.SHOWN_IN_SEARCH, adapterCallbacks);
     }
 

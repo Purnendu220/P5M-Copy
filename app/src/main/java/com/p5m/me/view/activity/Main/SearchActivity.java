@@ -108,7 +108,6 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
             "Gyms\n(" + 0 + ")"
     };
     private int TOTAL_TABS = 3;
-
     private Runnable runnableSearch;
     private Call searchCall;
     private int dp;
@@ -451,13 +450,14 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
             searchResult.setClassDetailList(new ArrayList<ClassModel>());
             searchResult.setTrainerDetailList(new ArrayList<TrainerModel>());
         }
+        titleTabs = getResources().getStringArray(R.array.setting_header);
 
-        titleTabs = new String[]{
+       /* titleTabs = new String[]{
                 "Classes\n(" + searchResult.getClassCount() + ")",
                 "Trainers\n(" + searchResult.getTrainerCount() + ")",
                 "Gyms\n(" + searchResult.getGymCount() + ")"
         };
-
+*/
         searchPagerAdapter = new SearchPagerAdapter(getSupportFragmentManager(), titleTabs);
         searchPagerAdapter.setSearchKeywords(searchAdapter.getSearchResult().searchText);
 

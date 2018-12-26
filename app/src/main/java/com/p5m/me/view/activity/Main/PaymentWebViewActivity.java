@@ -241,13 +241,13 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
 
     @Override
     public void onBackPressed() {
-        DialogUtils.showBasicMessage(context, "Are you sure?", "To complete the payment you should stay on this page",
-                "Stay on this page", new MaterialDialog.SingleButtonCallback() {
+        DialogUtils.showBasicMessage(context, getString(R.string.are_you_sure), getString(R.string.to_complete_the_payment_you_should_stay_on_this_page),
+                getString(R.string.stay_on_this_page), new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         dialog.dismiss();
                     }
-                }, "Leave this page", new MaterialDialog.SingleButtonCallback() {
+                }, getString(R.string.leave_this_page), new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         overridePendingTransition(0, 0);

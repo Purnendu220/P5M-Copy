@@ -2,7 +2,10 @@ package com.p5m.me.restapi;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.v7.app.AppCompatActivity;
 
+import com.p5m.me.MyApp;
+import com.p5m.me.R;
 import com.p5m.me.data.City;
 import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.FollowResponse;
@@ -1320,7 +1323,7 @@ public class NetworkCommunicator {
 //                requestListener.onApiSuccess(response, requestCode);
 
                 try {
-                    ToastUtils.show(context, classModel.getTitle() + " successfully added to your wishlist");
+                    ToastUtils.show(context, classModel.getTitle() + context.getString(R.string.successfully_added_to_your_wishlist));
                     classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
                     EventBroadcastHelper.sendWishAdded(classModel);
                 } catch (Exception e) {

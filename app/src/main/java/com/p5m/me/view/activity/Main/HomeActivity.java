@@ -13,7 +13,6 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-
 import com.p5m.me.R;
 import com.p5m.me.adapters.HomeAdapter;
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
@@ -46,6 +45,11 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+
+import com.apptimize.Apptimize;
+import com.apptimize.ApptimizeTest;
+import com.apptimize.ApptimizeVar;
 
 public class HomeActivity extends BaseActivity implements BottomTapLayout.TabListener, ViewPager.OnPageChangeListener,View.OnClickListener,NetworkCommunicator.RequestListener {
 
@@ -105,6 +109,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        Apptimize.setup(this, "D3taadAtamrfkcD9wkxm3uKDh257MMw");
         // If coming from a shared link, then open that link after login..
         if (DeepLinkActivity.url != null) {
             overridePendingTransition(0 ,0 );
@@ -228,11 +233,20 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         }
         bottomTapLayout.setTab(position);
         if(position == AppConstants.Tab.TAB_FIND_CLASS){
+//            handleApptimize();
             handleBuyClassesButton();
         }
         else{
             buyClasses.setVisibility(View.GONE);
 
+        }
+    }
+
+    private void handleApptimize() {
+        if (Apptimize.isFeatureFlagOn("new_feature_flag_variable")) {
+            ToastUtils.show(this,"Apptimize feature is ON");
+        } else {
+            ToastUtils.show(this,"Apptimize feature is OFF");
         }
     }
 
@@ -280,6 +294,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     protected void onResume() {
         super.onResume();
         if(currentTab == AppConstants.Tab.TAB_FIND_CLASS){
+//            handleApptimize();
             handleBuyClassesButton();
         }
         else{

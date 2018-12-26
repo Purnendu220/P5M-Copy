@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 public class DateUtils {
 
-    public static DateFormatSymbols dfs = new DateFormatSymbols(Locale.ENGLISH);
+    public static DateFormatSymbols dfs = new DateFormatSymbols(Locale.getDefault());
 
     private static SimpleDateFormat classTime = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
     private static SimpleDateFormat classTimeFormat = new SimpleDateFormat("h:mma", Locale.ENGLISH);

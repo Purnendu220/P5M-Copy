@@ -262,12 +262,12 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         boolean isPhoneValid = true;
 
         if (editTextNameFirst.getText().toString().trim().isEmpty()) {
-            ToastUtils.show(context, "Please enter your first name");
+            ToastUtils.show(context, R.string.enter_first_name);
             editTextNameFirst.requestFocus();
             return;
         }
         if (editTextNameLast.getText().toString().trim().isEmpty()) {
-            ToastUtils.show(context, "Please enter your last name");
+            ToastUtils.show(context, R.string.enter_last_name);
             editTextNameLast.requestFocus();
             return;
         }

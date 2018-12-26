@@ -338,7 +338,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
     private void checkListData() {
         if (classListAdapter.getList().isEmpty()) {
             layoutNoData.setVisibility(View.VISIBLE);
-
+            classListAdapter.notifyDataSetChanged();
             textViewEmptyLayoutText.setText(R.string.no_data_class_list_main);
             imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_class);
         } else {

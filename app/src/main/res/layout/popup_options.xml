@@ -34,7 +34,7 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:paddingTop="12dp"
-                    android:text="Add to wishlist"
+                    android:text="@string/add_to_WishList"
                     android:textColor="@color/theme_dark_text"
                     android:textSize="@dimen/text_large"
                     android:visibility="visible" />
@@ -50,7 +50,7 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:paddingTop="12dp"
-                    android:text="Share"
+                    android:text="@string/share"
                     android:textColor="@color/theme_dark_text"
                     android:textSize="@dimen/text_large"
                     android:visibility="visible" />

@@ -79,9 +79,6 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
     public TextView textViewTotalLocations;
 
 
-
-
-
     private final int dp;
     private Context context;
 
@@ -125,25 +122,25 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
                 layoutLocationPhone.setVisibility(View.INVISIBLE);
 
                 if (model.getGymBranchResponseList().size() > 1) {
-                    textViewMore.setText(Html.fromHtml("<b>+" + (model.getGymBranchResponseList().size() - 1) + " more</b>"));
+                    textViewMore.setText(Html.fromHtml("<b>+" + (model.getGymBranchResponseList().size() - 1) + " " + context.getString(R.string.more) + "</b>"));
                     textViewMore.setVisibility(View.VISIBLE);
                 } else {
                     textViewMore.setVisibility(View.GONE);
                 }
-try{
-    String locationsString = String.format(context.getString(R.string.total_locations),model.getGymBranchResponseList().size());
-    linearLayoutTotalLocations.setVisibility(View.VISIBLE);
-    textViewTotalLocations.setText(locationsString);
-}catch (Exception e){
-    linearLayoutTotalLocations.setVisibility(View.GONE);
+                try {
+                    String locationsString = String.format(context.getString(R.string.total_locations), model.getGymBranchResponseList().size());
+                    linearLayoutTotalLocations.setVisibility(View.VISIBLE);
+                    textViewTotalLocations.setText(locationsString);
+                } catch (Exception e) {
+                    linearLayoutTotalLocations.setVisibility(View.GONE);
 
-}
+                }
             } else {
                 layoutMap.setVisibility(View.GONE);
             }
 
             if (model.getNumberOfTrainer() == -1) {
-                textViewTrainers.setText(Html.fromHtml("trainers"));
+                textViewTrainers.setText(Html.fromHtml(context.getString(R.string.trainer).toLowerCase()));
             } else {
                 textViewTrainers.setText(Html.fromHtml("<b>" + (model.getNumberOfTrainer() + "</b>" + AppConstants.plural(" trainer", model.getNumberOfTrainer()))));
             }
@@ -159,7 +156,7 @@ try{
 
             if (model.getMediaResponseDtoList() != null && !model.getMediaResponseDtoList().isEmpty()) {
                 layoutGallery.setVisibility(View.VISIBLE);
-                textViewGallery.setText(Html.fromHtml("Gallery" + " <b>(" + model.getMediaResponseDtoList().size() + ")</b>"));
+                textViewGallery.setText(Html.fromHtml(context.getString(R.string.gallery)+" " + " <b>(" + model.getMediaResponseDtoList().size() + ")</b>"));
 
                 ImageListAdapter adapter = new ImageListAdapter(context, AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE, model.getMediaResponseDtoList());
                 recyclerViewGallery.setAdapter(adapter);

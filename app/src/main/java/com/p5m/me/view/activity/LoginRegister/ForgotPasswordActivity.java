@@ -88,7 +88,7 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
                 String message = ((ResponseModel<String>) response).data;
                 buttonReset.setVisibility(View.VISIBLE);
 
-                DialogUtils.showBasicMessage(context, message, "Ok", new MaterialDialog.SingleButtonCallback() {
+                DialogUtils.showBasicMessage(context, message, getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         dialog.dismiss();
@@ -106,7 +106,7 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
             case NetworkCommunicator.RequestCode.FORGOT_PASSWORD:
                 buttonReset.setVisibility(View.VISIBLE);
 
-                DialogUtils.showBasicMessage(context, errorMessage, "Ok", new MaterialDialog.SingleButtonCallback() {
+                DialogUtils.showBasicMessage(context, errorMessage, context.getString(R.string.ok)+ new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         dialog.dismiss();
