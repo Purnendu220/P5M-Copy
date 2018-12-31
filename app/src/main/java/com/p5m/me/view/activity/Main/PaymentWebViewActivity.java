@@ -12,6 +12,7 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -26,8 +27,13 @@ import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.p5m.me.utils.AppConstants.DataKey.REFERENCE_ID;
 
 public class PaymentWebViewActivity extends BaseActivity implements NetworkCommunicator.RequestListener {
 
@@ -103,10 +109,11 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
         webView.setWebViewClient(new MyWebViewClient());
     }
 
-    private void paymentSuccessful() {
+    private void paymentSuccessful(String url) {
 //        networkCommunicator.getMyUser(this, false);
         setResult(RESULT_OK);
-
+        String refId=getRefferenceId (url);
+        Toast.makeText(this,refId,Toast.LENGTH_LONG).show();
         MixPanel.trackMembershipPurchase(couponCode, packageName);
 
         if (classModel != null) {
@@ -114,6 +121,10 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
         }
 
         overridePendingTransition(0, 0);
+
+        Intent returnIntent = getIntent();
+        returnIntent.putExtra(REFERENCE_ID,refId);
+        setResult(Activity.RESULT_OK,returnIntent);
         finish();
         overridePendingTransition(0, 0);
 
@@ -124,6 +135,14 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
 //        setResult(RESULT_OK);
 //        finish();
     }
+
+    private String getRefferenceId (String url) {
+        if(url.indexOf("refId=") == -1)
+            return "";
+        String id  = url.split("refId=")[1];
+        return id;
+    }
+
 
     @Override
     public void onApiSuccess(Object response, int requestCode) {
@@ -193,8 +212,9 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
                 layoutProgress.setVisibility(View.GONE);
             }
 
-            if (url.equalsIgnoreCase("intent://com.profive.android.view.activity.SplashScreenActivity")) {
-                paymentSuccessful();
+            if (url.contains("intent://com.profive.android.view.activity.SplashScreenActivity")) {
+
+                paymentSuccessful(url);
                 return;
             }
         }

@@ -21,4 +21,11 @@ public class Constants {
     public static Uri URI = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
     public static String ORDERBY = MediaStore.Images.Media.DATE_TAKEN + " DESC";
 
+    public enum CheckoutFor {
+        PACKAGE,
+        SPECIAL_CLASS,
+        CLASS_PURCHASE_WITH_PACKAGE,
+        EXTENSION,
+        BOOKWITHFRIEND
+    }
 }

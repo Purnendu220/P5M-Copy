@@ -4,6 +4,7 @@ import com.p5m.me.data.City;
 import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.MediaResponse;
 import com.p5m.me.data.PackageLimitModel;
+import com.p5m.me.data.PaymentConfirmationResponse;
 import com.p5m.me.data.PromoCode;
 import com.p5m.me.data.RatingParamModel;
 import com.p5m.me.data.RatingResponseModel;
@@ -342,5 +343,9 @@ public interface ApiService {
                                                         @Query(AppConstants.ApiParamKey.MEDIA_TYPE) String mediaType,
                                                         @Query(AppConstants.ApiParamKey.MEDIA_NAME) String mediaName,
                                                         @Query(AppConstants.ApiParamKey.UNIQUE_CHAR) String uniqueChar);
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.GET_PAYMENT_DETAIL )
+    Call<ResponseModel<PaymentConfirmationResponse>> getPaymentDetail(@Path("id") long id);
 
 }
