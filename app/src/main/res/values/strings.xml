@@ -339,10 +339,9 @@
     <string name="no_more_trainers">No more trainers</string>
 
 
-
-    <string name="booked_with_friend" >2 Bookings</string>
-    <string name="own_email_error_text" >You can\'t use your email.</string>
-    <string name="gender_females_only_error" >This is a Females only class</string>
+    <string name="booked_with_friend">2 Bookings</string>
+    <string name="own_email_error_text">You can\'t use your email.</string>
+    <string name="gender_females_only_error">This is a Females only class</string>
     <string name="gender_males_only_error">This is a Males only class</string>
     <string name="contact_us">Contact Us</string>
     <string name="privacy_policy">Privacy Policy</string>
@@ -374,6 +373,15 @@
     <string name="limit_for_this_gym" translatable="false">visit limit for this gym.So you need to buy different package to book with friend.</string>
     <string name="by_making_this_booking_2_classes_will_be_deducted_from_your_balance_book_with_a_friend">By making this booking, 2 classes will be deducted from your balance Book with a friend</string>
     <string name="class_booked_successfully">Class booked successfully</string>
+    <string name="package_details">Package details</string>
+    <string name="packages">Package</string>
+    <string name="validity">Validity</string>
+    <string name="among">Among</string>
+    <string name="payment_confirmation">Payment Confirmation</string>
+    <string name="view_schedule">View Schedule</string>
+    <string name="terms_service">terms of service</string>
+    <string name="amount">Amount</string>
+    <string name="pending_detail">is pending. You will receive a noticeabout booking a class during 2 days.</string>
 
     <string-array name="schedule_list">
         <item>@string/upcoming</item>

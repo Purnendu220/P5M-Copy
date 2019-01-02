@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.ClassListAdapter;
+import com.p5m.me.adapters.RecommendedClassAdapter;
 import com.p5m.me.data.CityLocality;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.Filter;
@@ -62,6 +63,8 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
     @BindView(R.id.recyclerViewClass)
     public RecyclerView recyclerViewClass;
+    @BindView(R.id.recyclerViewRecommendedClass)
+    public RecyclerView recyclerViewRecommendedClass;
     @BindView(R.id.swipeRefreshLayout)
     public SwipeRefreshLayout swipeRefreshLayout;
 
@@ -191,6 +194,23 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
         classListAdapter = new ClassListAdapter(context, shownInScreen, true, this);
         recyclerViewClass.setAdapter(classListAdapter);
+
+        setRecommendedClassView();
+    }
+
+    private void setRecommendedClassView() {
+        recyclerViewRecommendedClass.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewRecommendedClass.setHasFixedSize(true);
+
+      /*  try {
+            ((SimpleItemAnimator) recyclerViewRecommendedClass.getItemAnimator()).setSupportsChangeAnimations(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }*/
+
+        RecommendedClassAdapter recommendedListAdapter = new RecommendedClassAdapter(context, shownInScreen, true, new ClassListListenerHelper(context, activity, shownInScreen, this));
+        recyclerViewRecommendedClass.setAdapter(recommendedListAdapter);
     }
 
     private ClassListRequest generateRequest() {

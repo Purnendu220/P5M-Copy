@@ -11,6 +11,7 @@ import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.FollowResponse;
 import com.p5m.me.data.MediaResponse;
 import com.p5m.me.data.PackageLimitModel;
+import com.p5m.me.data.PaymentConfirmationResponse;
 import com.p5m.me.data.PromoCode;
 import com.p5m.me.data.RatingParamModel;
 import com.p5m.me.data.RatingResponseModel;
@@ -136,11 +137,7 @@ public class NetworkCommunicator {
         public static final int MEDIA_DELETE=140;
 
 
-
-
-
-
-
+        public static final int PAYMENT_CONFIRMATION_DETAIL = 150;
     }
 
     private Context context;
@@ -1434,5 +1431,28 @@ public class NetworkCommunicator {
         });
         return call;
     }
+
+    /*---------------------------Payment Caonfirmation--------------------------*/
+    public Call getPaymentDetail(long refId, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.PAYMENT_CONFIRMATION_DETAIL;
+        Call<ResponseModel<PaymentConfirmationResponse>> call = apiService.getPaymentDetail(refId);
+        LogUtils.debug("NetworkCommunicator hitting Payment Detail");
+
+        call.enqueue(new RestCallBack<ResponseModel<PaymentConfirmationResponse>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<PaymentConfirmationResponse>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator paymentDetail onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<PaymentConfirmationResponse>> call, Response<ResponseModel<PaymentConfirmationResponse>> restResponse, ResponseModel<PaymentConfirmationResponse> response) {
+                LogUtils.networkSuccess("NetworkCommunicator paymentDetail onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
 }
 

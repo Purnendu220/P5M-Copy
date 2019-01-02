@@ -50,7 +50,10 @@
     <color name="colorPrimaryLightPix">#031d22</color>
     <color name="text_color_light">#858d9e</color>
     <color name="grey_line_dark">#c3c5cd</color>
-
+    <color name="blue">#EBF2FC</color>
+    <color name="wewak">#FCD3D4</color>
+    <color name="light_green">#DFF5D9</color>
+    <color name="black_transparent">#99000000</color>
 
     <drawable name="transparent">#00000000</drawable>
     <drawable name="highlight">#1A000000</drawable>

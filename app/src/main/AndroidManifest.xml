@@ -51,23 +51,26 @@
             android:name=".view.activity.Main.DeepLinkActivity"
             android:label="${appName}"
             android:screenOrientation="portrait">
-            <intent-filter android:autoVerify="true" android:label="@string/p5m_app">
+            <intent-filter
+                android:autoVerify="true"
+                android:label="@string/p5m_app">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                   <data android:scheme="http"
-                    android:host="${hostName}"
-                     />
-                <data android:scheme="http"
-                    android:host="${hostName_www}"
-                    />
-                <data android:scheme="https"
-                    android:host="${hostName}"
-                    />
-                <data android:scheme="https"
-                    android:host="${hostName_www}"
-                    />
 
+                <data
+                    android:host="${hostName}"
+                    android:scheme="http" />
+                <data
+                    android:host="${hostName_www}"
+                    android:scheme="http" />
+                <data
+                    android:host="${hostName}"
+                    android:scheme="https" />
+                <data
+                    android:host="${hostName_www}"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
 
@@ -124,6 +127,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC36Oyf3q-4pO0HC7ZCydtu6OFFgUFxens" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
         <!-- <receiver -->
         <!-- android:name=".receivers.NetworkChangeReceiver" -->
@@ -243,7 +249,6 @@
         <activity
             android:name=".view.activity.Main.NotificationActivity"
             android:parentActivityName=".view.activity.Main.HomeActivity"
-
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.custom.GalleryActivity"
@@ -266,11 +271,10 @@
         <receiver
             android:name=".ratemanager.RateAlarmReceiver"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
-                <action android:name="com.p5m.me.DISPLAY_NOTIFICATION"></action>
+                <action android:name="com.p5m.me.DISPLAY_NOTIFICATION" />
             </intent-filter>
-
         </receiver>
 
         <service
@@ -280,21 +284,18 @@
 
         <activity
             android:name=".view.activity.Main.FullRatingActivity"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme_Scale"
-            android:screenOrientation="portrait"
-
-            />
-        <activity android:name=".view.activity.Main.ViewClassRating"
-            android:screenOrientation="portrait"
-
-            ></activity>
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+        <activity
+            android:name=".view.activity.Main.ViewClassRating"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".fxn.pix.Pix"
             android:noHistory="true"
-            android:screenOrientation="portrait"
-          ></activity>
-
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.activity.Main.PaymentConfirmationActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

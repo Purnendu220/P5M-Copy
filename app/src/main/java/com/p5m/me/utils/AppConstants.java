@@ -156,11 +156,10 @@ public class AppConstants {
         public static final String NUMBER_OF_PACKAGES_TO_BUY = "number_of_packages_to_buy";
 
 
-
+        public static final String REFERENCE_ID = "Reference_Id";
     }
 
     public class Url {
-//        public static final String BASE_SERVICE_ALPHA = "http://192.168.0.39:8080/profive-midl/";
 //        public static final String BASE_SERVICE_ALPHA = "http://192.168.0.39:8080/profive-midl/";
 //        public static final String BASE_SERVICE_LIVE = "http://192.168.0.18:8080/profive-midl/";
 
@@ -231,7 +230,7 @@ public class AppConstants {
         public static final String DELETE_MEDIA = "api/v1/media/{id}";
 
 
-
+        public static final String GET_PAYMENT_DETAIL = "api/v1/payment/package-purchase/{id}";
     }
 
     public class ApiParamValue {
@@ -290,6 +289,7 @@ public class AppConstants {
 
 
         public static final String NUMBER_OF_FRIENDS = "numberOfFriends" ;
+        public static final String APP_Language = "language";
     }
 
     public static final class Notification {
@@ -380,10 +380,7 @@ public class AppConstants {
       public static final String GALLERY_IMAGE_HOLDER = "GALLERY_IMAGE_HOLDER";
       public static final String RATING_IMAGE_HOLDER = "RATING_IMAGE_HOLDER";
       public static final String COVER_IMAGE_HOLDER = "COVER_IMAGE_HOLDER";
-
-
-
-
-
   }
+
+
 }
