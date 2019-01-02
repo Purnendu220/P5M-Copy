@@ -113,7 +113,7 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
 //        networkCommunicator.getMyUser(this, false);
         setResult(RESULT_OK);
         String refId=getRefferenceId (url);
-        Toast.makeText(this,refId,Toast.LENGTH_LONG).show();
+//        Toast.makeText(this,refId,Toast.LENGTH_LONG).show();
         MixPanel.trackMembershipPurchase(couponCode, packageName);
 
         if (classModel != null) {

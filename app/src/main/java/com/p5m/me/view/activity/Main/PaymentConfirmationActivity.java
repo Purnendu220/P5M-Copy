@@ -173,13 +173,16 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         textViewPaymentReference.setVisibility(View.VISIBLE);
         textViewBookedDate.setVisibility(View.VISIBLE);
 //        String bookedDate=DateUtils.getTransactionDate(paymentResponse.getDate());
+
         String bookedString = BOOKED_ON + DateUtils.getTransactionDate(paymentResponse.getDate());
         SpannableString spanBoldBooked = boldBookedOn(bookedString, BOOKED_ON.length(), bookedString.length());
         textViewBookedDate.setText(spanBoldBooked);
-        String paymentReference = PAYMENT_REFERENCE + paymentResponse.getReferenceId();
-        SpannableString spanBoldReferenceID = boldBookedOn(paymentReference, PAYMENT_REFERENCE.length(), paymentReference.length());
-        textViewPaymentReference.setText(spanBoldReferenceID);
-
+        if(!TextUtils.isEmpty(paymentResponse.getReferenceId())) {
+            String paymentReference = PAYMENT_REFERENCE + paymentResponse.getReferenceId();
+            SpannableString spanBoldReferenceID = boldBookedOn(paymentReference, PAYMENT_REFERENCE.length(), paymentReference.length());
+            textViewPaymentReference.setText(spanBoldReferenceID);
+        }
+//        if(!TextUtils)
         String paymentDetail = CONGRATULATION
                 + paymentResponse.getClassDetailDto().getTitle() + SUCCESSFULLY_BOOKED;
         SpannableString spanBoldPayDetail = boldBookedOn(paymentDetail, CONGRATULATION.length(), CONGRATULATION.length() + paymentResponse.getClassDetailDto().getTitle().length());
@@ -294,10 +297,10 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
             case NetworkCommunicator.RequestCode.PAYMENT_CONFIRMATION_DETAIL:
 
                 paymentResponse = ((ResponseModel<PaymentConfirmationResponse>) response).data;
-//                if (paymentResponse.getStatus().equalsIgnoreCase("Success")) {
+                if (paymentResponse.getStatus().equalsIgnoreCase("Success")) {
                     setConfirmBookingStyle();
                     handleData();
-                /*} else if (paymentResponse.getStatus().equalsIgnoreCase("Failure"))
+                } else if (paymentResponse.getStatus().equalsIgnoreCase("Failure"))
                 {
                     setFailBookingStyle();
                     handleData();
@@ -306,7 +309,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 {
                     setPendingBookingStyle();
                     handleData();
-                }*/
+                }
 
 //                setData();
 //                setConfirmBookingStyle();
