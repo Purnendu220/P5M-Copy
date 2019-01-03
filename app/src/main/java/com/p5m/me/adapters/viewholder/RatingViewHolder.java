@@ -24,6 +24,8 @@ import com.p5m.me.utils.LogUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.p5m.me.utils.LanguageUtils.currencyConverter;
+
 /**
  * Created by MyU10 on 3/10/2018.
  */
@@ -67,7 +69,7 @@ public class RatingViewHolder extends RecyclerView.ViewHolder {
             itemView.setVisibility(View.VISIBLE);
             textViewUsername.setText(model.getUserDetail().getFirstName());
             textViewReviewDate.setText(DateUtils.getRatingDate(model.getCreateDate()));
-            textViewClassRating.setText(model.getRating()+"");
+            textViewClassRating.setText(currencyConverter(model.getRating())+"");
             if(model.getUserDetail().getProfileImageThumbnail()!=null&&!model.getUserDetail().getProfileImageThumbnail().isEmpty()){
                 ImageUtils.setImage(context,
                         model.getUserDetail().getProfileImageThumbnail(),

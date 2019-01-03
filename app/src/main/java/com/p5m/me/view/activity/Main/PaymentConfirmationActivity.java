@@ -15,7 +15,6 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
-import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -24,10 +23,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.p5m.me.R;
-import com.p5m.me.data.PackageLimitModel;
 import com.p5m.me.data.PaymentConfirmationResponse;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
@@ -43,14 +40,7 @@ import com.p5m.me.view.activity.base.BaseActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.p5m.me.fxn.utility.Constants.CheckoutFor.CLASS_PURCHASE_WITH_PACKAGE;
-import static com.p5m.me.fxn.utility.Constants.CheckoutFor.EXTENSION;
-import static com.p5m.me.fxn.utility.Constants.CheckoutFor.PACKAGE;
-import static com.p5m.me.fxn.utility.Constants.CheckoutFor.SPECIAL_CLASS;
-import static com.p5m.me.utils.AppConstants.ApiParamValue.SUCCESS_RESPONSE_CODE;
-import static com.p5m.me.view.activity.Main.PaymentConfirmationActivity.PaymentStatus.FAILURE;
-import static com.p5m.me.view.activity.Main.PaymentConfirmationActivity.PaymentStatus.PENDING;
-import static com.p5m.me.view.activity.Main.PaymentConfirmationActivity.PaymentStatus.SUCCESS;
+import static com.p5m.me.utils.LanguageUtils.currencyConverter;
 
 public class PaymentConfirmationActivity extends BaseActivity implements NetworkCommunicator.RequestListener {
 
@@ -95,25 +85,31 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
     public TextView textViewPackageName;
     @BindView(R.id.textViewClassName)
     public TextView textViewClassName;
+    @BindView(R.id.textViewClass)
+    public TextView textViewClass;
     @BindView(R.id.textViewValidity)
     public TextView textViewValidity;
     @BindView(R.id.textViewAmount)
     public TextView textViewAmount;
+    @BindView(R.id.layoutClass)
+    public LinearLayout layoutClass;
+    @BindView(R.id.viewClass)
+    public View viewClass;
     @BindView(R.id.textViewPaymentDetail)
     public TextView textViewPaymentDetail;
     @BindView(R.id.buttonViewSchedule)
     public Button buttonViewSchedule;
+    public static String BOOKED_ON = "";
+    public static String PAYMENT_REFERENCE = "";
+    public static String CONGRATULATION = "";
+    public static String CLASS = "";
+    public static String SUCCESSFULLY_BOOKED = "";
 
     public static long referenceId;
     private int navigatedFrom;
     private static PaymentStatus paymentStatus;
     private static Package aPackage;
     private static Constants.CheckoutFor checkoutFor;
-    public static final String BOOKED_ON = "Booked On: ";
-    public static final String PAYMENT_REFERENCE = "Payment Reference: ";
-    public static final String CONGRATULATION = "Congratulations! Class  ";
-    public static final String CLASS = "Class  ";
-    public static final String SUCCESSFULLY_BOOKED = " is successfully booked.";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,12 +117,14 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         setContentView(R.layout.activity_payment_confirmation);
         ButterKnife.bind(activity);
         handler = new Handler();
+
         setToolBar();
-        setAnimation();
+
         getIntentData();
         handleClickEvent();
     }
 
+    /* Set Toolbar */
     private void setToolBar() {
 
         BaseActivity activity = (BaseActivity) this.activity;
@@ -154,77 +152,77 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 ActionBar.LayoutParams.MATCH_PARENT));
         activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
     }
-
-    private void setFailBookingStyle() {
-        layoutPaymentStatus.setBackgroundColor(getResources().getColor(R.color.wewak));
-        textViewPaymentStatus.setText("Class booking is failed");
-        textViewPaymentStatus.setTextColor(getResources().getColor(R.color.red));
-        buttonContactUs.setVisibility(View.VISIBLE);
-        textViewPaymentReference.setVisibility(View.GONE);
-        textViewBookedDate.setVisibility(View.GONE);
-
-    }
-
-    private void setConfirmBookingStyle() {
-        layoutPaymentStatus.setBackgroundColor(getResources().getColor(R.color.blue));
-        textViewPaymentStatus.setText("Class booked successfully");
-        textViewPaymentStatus.setTextColor(getResources().getColor(R.color.theme_book));
-        buttonContactUs.setVisibility(View.GONE);
-        textViewPaymentReference.setVisibility(View.VISIBLE);
-        textViewBookedDate.setVisibility(View.VISIBLE);
-//        String bookedDate=DateUtils.getTransactionDate(paymentResponse.getDate());
-
-        String bookedString = BOOKED_ON + DateUtils.getTransactionDate(paymentResponse.getDate());
-        SpannableString spanBoldBooked = boldBookedOn(bookedString, BOOKED_ON.length(), bookedString.length());
-        textViewBookedDate.setText(spanBoldBooked);
-        if(!TextUtils.isEmpty(paymentResponse.getReferenceId())) {
-            String paymentReference = PAYMENT_REFERENCE + paymentResponse.getReferenceId();
-            SpannableString spanBoldReferenceID = boldBookedOn(paymentReference, PAYMENT_REFERENCE.length(), paymentReference.length());
-            textViewPaymentReference.setText(spanBoldReferenceID);
-        }
-//        if(!TextUtils)
-        String paymentDetail = CONGRATULATION
-                + paymentResponse.getClassDetailDto().getTitle() + SUCCESSFULLY_BOOKED;
-        SpannableString spanBoldPayDetail = boldBookedOn(paymentDetail, CONGRATULATION.length(), CONGRATULATION.length() + paymentResponse.getClassDetailDto().getTitle().length());
-        textViewPaymentDetail.setText(spanBoldPayDetail);
-
-    }
-
-    private void setPendingBookingStyle() {
-        layoutPaymentStatus.setBackgroundColor(getResources().getColor(R.color.light_green));
-        textViewPaymentStatus.setText("Class booking is pending");
-        textViewPaymentStatus.setTextColor(getResources().getColor(R.color.green));
-        buttonContactUs.setVisibility(View.GONE);
-        textViewPaymentReference.setVisibility(View.VISIBLE);
-        String paymentReference = PAYMENT_REFERENCE + paymentResponse.getReferenceId();
-        SpannableString spanBoldReferenceID = boldBookedOn(paymentReference, PAYMENT_REFERENCE.length(), paymentReference.length());
-        textViewPaymentReference.setText(spanBoldReferenceID);
-
-        String bookedString = BOOKED_ON + paymentResponse.getClassDetailDto().getClassDate();
-        SpannableString spanBoldBooked = boldBookedOn(bookedString, BOOKED_ON.length(), BOOKED_ON.length() + bookedString.length());
-        textViewBookedDate.setText(spanBoldBooked);
-
-        textViewBookedDate.setVisibility(View.VISIBLE);
-
-        String paymentDetail = CLASS
-                + paymentResponse.getClassDetailDto().getTitle() + getString(R.string.pending_detail);
-        SpannableString spanBoldPayDetail = boldBookedOn(paymentDetail, CONGRATULATION.length(), CONGRATULATION.length() + paymentResponse.getClassDetailDto().getTitle().length());
-        textViewPaymentDetail.setText(spanBoldPayDetail);
-
-    }
-
-    private SpannableString boldBookedOn(String bookedDate, int start, int end) {
-        SpannableString spannableStr = new SpannableString(bookedDate);
-        StyleSpan styleSpanBold = new StyleSpan(Typeface.BOLD);
-        spannableStr.setSpan(styleSpanBold, start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        return spannableStr;
-    }
-
+    
+    /*
+    * Get Intent Data
+    * */
     private void getIntentData() {
         navigatedFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
         callPaymentDetailApi();
 
     }
+    
+    /* Initialize the Variables*/
+    private void initializeStringVariables(String startTitle,String endTitle) {
+        BOOKED_ON = getString(R.string.booked_on) + " ";
+        PAYMENT_REFERENCE = getString(R.string.payment_reference);
+        if (paymentResponse.getClassDetailDto() != null) {
+            CONGRATULATION = startTitle + " ";
+            CLASS = getString(R.string.classs);
+            layoutClass.setVisibility(View.VISIBLE);
+            viewClass.setVisibility(View.VISIBLE);
+        } else {
+            CONGRATULATION = getString(R.string.congratulation_package) + " ";
+            CLASS = getString(R.string.package_name);
+            layoutClass.setVisibility(View.GONE);
+            viewClass.setVisibility(View.GONE);
+
+        }
+        SUCCESSFULLY_BOOKED = " " + endTitle;
+
+    }
+
+
+
+
+    /* Set Confirmation Booking Layout*/
+    private void setConfirmBookingStyle() {
+        layoutPaymentStatus.setBackgroundColor(getResources().getColor(R.color.blue));
+        if (paymentResponse.getClassDetailDto() != null)
+            textViewPaymentStatus.setText(R.string.class_booked_successfully);
+        else
+            textViewPaymentStatus.setText(R.string.package_booked_successfully);
+        textViewPaymentStatus.setTextColor(getResources().getColor(R.color.theme_book));
+        buttonContactUs.setVisibility(View.GONE);
+        textViewPaymentReference.setVisibility(View.VISIBLE);
+        textViewBookedDate.setVisibility(View.VISIBLE);
+
+        setConfirmBookingTitle();
+
+    }
+
+    /*
+    *  Set Congratulation Title
+    * */
+    private void setConfirmBookingTitle() {
+        if (paymentResponse.getClassDetailDto() != null) {
+            if (!TextUtils.isEmpty(paymentResponse.getClassDetailDto().getTitle())) {
+                String paymentDetail = CONGRATULATION
+                        + paymentResponse.getClassDetailDto().getTitle() + SUCCESSFULLY_BOOKED;
+                SpannableString spanBoldPayDetail = boldString(paymentDetail, CONGRATULATION.length(), CONGRATULATION.length() + paymentResponse.getClassDetailDto().getTitle().length());
+                textViewPaymentDetail.setText(spanBoldPayDetail);
+            }
+        }
+        else {
+            String paymentDetail = CONGRATULATION
+                    + paymentResponse.getPackageName() + SUCCESSFULLY_BOOKED;
+            SpannableString spanBoldPayDetail = boldString(paymentDetail, CONGRATULATION.length(), CONGRATULATION.length() + paymentResponse.getClassDetailDto().getTitle().length());
+            textViewPaymentDetail.setText(spanBoldPayDetail);
+        }
+    }
+
+
+    
 
     private void callPaymentDetailApi() {
         networkCommunicator.getPaymentDetail(referenceId, this, false);
@@ -287,7 +285,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 
     private void setAnimation() {
         ScaleAnimation anim = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        anim.setDuration(750);
+        anim.setDuration(550);
         cardView.startAnimation(anim);
     }
 
@@ -297,38 +295,29 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
             case NetworkCommunicator.RequestCode.PAYMENT_CONFIRMATION_DETAIL:
 
                 paymentResponse = ((ResponseModel<PaymentConfirmationResponse>) response).data;
-                if (paymentResponse.getStatus().equalsIgnoreCase("Success")) {
-                    setConfirmBookingStyle();
-                    handleData();
-                } else if (paymentResponse.getStatus().equalsIgnoreCase("Failure"))
-                {
-                    setFailBookingStyle();
-                    handleData();
-                }
-                else
-                {
-                    setPendingBookingStyle();
-                    handleData();
-                }
 
-//                setData();
+                setData(PaymentStatus.valueOf(paymentResponse.getStatus()));
 //                setConfirmBookingStyle();
-//                handleData();
+//                handlePackageDetails();
         }
     }
 
-    private void setData() {
+    private void setData(PaymentStatus paymentStatus) {
         switch (paymentStatus) {
             case SUCCESS:
+                initializeStringVariables(getString(R.string.congratulation_class),getString(R.string.is_successfully_booked));
                 setConfirmBookingStyle();
-                handleData();
+                handlePackageDetails();
                 break;
             case FAILURE:
+                initializeStringVariables(getString(R.string.unfortunately_class),getString(R.string.is_failed));
                 setFailBookingStyle();
+                handlePackageDetails();
                 break;
             case PENDING:
+                initializeStringVariables(getString(R.string.classs),getString(R.string.is_pending));
                 setPendingBookingStyle();
-                handleData();
+                handlePackageDetails();
                 break;
 
         }
@@ -346,14 +335,36 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         handler.postDelayed(nextScreenRunnable, 1000);
     }
 
-    private void handleData() {
-        textViewPackageName.setText(paymentResponse.getPackageName());
-        textViewClassName.setText(paymentResponse.getClassDetailDto().getTitle());
-        if (!TextUtils.isEmpty(aPackage.getValidityPeriod()))
-            textViewValidity.setText(aPackage.getValidityPeriod());
-        else
-            textViewValidity.setText("N/A");
-        textViewAmount.setText(String.valueOf(paymentResponse.getAmount()) + " KWD");
+    /*
+    * Handle Package Detail Data
+    * */
+    private void handlePackageDetails() {
+        if (paymentResponse.getDate() != 0) {
+            String bookedString = BOOKED_ON + DateUtils.getTransactionDate(paymentResponse.getDate());
+            SpannableString spanBoldBooked = boldString(bookedString, BOOKED_ON.length(), bookedString.length());
+            textViewBookedDate.setText(spanBoldBooked);
+        }
+        if (!TextUtils.isEmpty(paymentResponse.getReferenceId())) {
+            String paymentReference = PAYMENT_REFERENCE + '#' + paymentResponse.getReferenceId();
+            SpannableString spanBoldReferenceID = boldString(paymentReference, PAYMENT_REFERENCE.length(), paymentReference.length());
+            textViewPaymentReference.setText(spanBoldReferenceID);
+        }
+        if (!TextUtils.isEmpty(paymentResponse.getPackageName()))
+            textViewPackageName.setText(paymentResponse.getPackageName());
+        if (paymentResponse.getClassDetailDto() != null) {
+            buttonViewSchedule.setText(getString(R.string.view_schedule));
+            if (!TextUtils.isEmpty(paymentResponse.getClassDetailDto().getTitle()))
+                textViewClassName.setText(paymentResponse.getClassDetailDto().getTitle());
+        } else {
+            buttonViewSchedule.setText(getString(R.string.view_membership));
+        }
+        if (aPackage != null) {
+            if (!TextUtils.isEmpty(aPackage.getValidityPeriod()))
+                textViewValidity.setText(aPackage.getValidityPeriod());
+        } else
+            textViewValidity.setText(R.string.n_a);
+        textViewAmount.setText(currencyConverter(paymentResponse.getAmount()) + " "+context.getString(R.string.currency));
+
     }
 
     @Override
@@ -364,4 +375,54 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 ToastUtils.show(this, errorMessage);
         }
     }
+
+
+    private void setPendingBookingStyle() {
+        layoutPaymentStatus.setBackgroundColor(getResources().getColor(R.color.light_green));
+        if (paymentResponse.getClassDetailDto() != null)
+            textViewPaymentStatus.setText(R.string.class_booking_is_pending);
+        else
+            textViewPaymentStatus.setText(R.string.package_booking_is_pending);
+        textViewPaymentStatus.setTextColor(getResources().getColor(R.color.green));
+        buttonContactUs.setVisibility(View.GONE);
+        textViewPaymentReference.setVisibility(View.VISIBLE);
+       /* String paymentReference = PAYMENT_REFERENCE + paymentResponse.getReferenceId();
+        SpannableString spanBoldReferenceID = boldString(paymentReference, PAYMENT_REFERENCE.length(), paymentReference.length());
+        textViewPaymentReference.setText(spanBoldReferenceID);
+
+        String bookedString = BOOKED_ON + paymentResponse.getClassDetailDto().getClassDate();
+        SpannableString spanBoldBooked = boldString(bookedString, BOOKED_ON.length(), BOOKED_ON.length() + bookedString.length());
+        textViewBookedDate.setText(spanBoldBooked);
+*/
+        textViewBookedDate.setVisibility(View.VISIBLE);
+
+        if (paymentResponse.getClassDetailDto() != null) {
+            String paymentDetail = CLASS
+                    + paymentResponse.getClassDetailDto().getTitle() + getString(R.string.pending_detail);
+            SpannableString spanBoldPayDetail = boldString(paymentDetail, CONGRATULATION.length(), CONGRATULATION.length() + paymentResponse.getClassDetailDto().getTitle().length());
+            textViewPaymentDetail.setText(spanBoldPayDetail);
+        }
+
+    }
+    private void setFailBookingStyle() {
+        layoutPaymentStatus.setBackgroundColor(getResources().getColor(R.color.wewak));
+        if (paymentResponse.getClassDetailDto() != null)
+            textViewPaymentStatus.setText(R.string.class_booking_is_failed);
+        else
+            textViewPaymentStatus.setText(R.string.package_booking_is_failed);
+        textViewPaymentStatus.setTextColor(getResources().getColor(R.color.red));
+        buttonContactUs.setVisibility(View.VISIBLE);
+        textViewPaymentReference.setVisibility(View.GONE);
+        textViewBookedDate.setVisibility(View.GONE);
+        setConfirmBookingTitle();
+
+
+    }
+    private SpannableString boldString(String bookedDate, int start, int end) {
+        SpannableString spannableStr = new SpannableString(bookedDate);
+        StyleSpan styleSpanBold = new StyleSpan(Typeface.BOLD);
+        spannableStr.setSpan(styleSpanBold, start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        return spannableStr;
+    }
+
 }

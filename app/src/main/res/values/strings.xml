@@ -88,9 +88,7 @@
 
     <string name="email"><font size="10">E-mail</font></string>
     <string name="password"><font size="5">Password</font></string>
-    <string name="reminders">REMINDERS:</string>
-    <string name="studio_instruction">STUDIO INSTRUCTION:</string>
-    <string name="special_note_by_trainer">SPECIAL NOTE BY THE TRAINER:</string>
+
     <string name="reserve_class">BOOK CLASS</string>
     <string name="favourite">Favourite</string>
     <string name="favorited">Favorited</string>
@@ -333,7 +331,7 @@
     <string name="no_more_gyms">No more gyms</string>
     <string name="no_more_ratings">No more ratifngs</string>
     <string name="image_upload_failed">Image upload failed</string>
-    <string name="gaping" translatable="false" />
+    <string name="gaping" translatable="false" >" "</string>
     <string name="membership_general_package_heading_1" translatable="false" />
     <string name="membership_no_package_heading_2" translatable="false" />
     <string name="no_more_trainers">No more trainers</string>
@@ -344,7 +342,7 @@
     <string name="gender_females_only_error">This is a Females only class</string>
     <string name="gender_males_only_error">This is a Males only class</string>
     <string name="contact_us">Contact Us</string>
-    <string name="privacy_policy">Privacy Policy</string>
+    <string name="privacy_policy">privacy policy</string>
     <string name="terms_n_condition"><![CDATA[Terms & Condition]]></string>
     <string name="mail_us">Mail Us</string>
     <string name="make_a_call">Make a Call</string>
@@ -372,7 +370,6 @@
     <string name="cancel_class_both">Cancel Both bookings</string>
     <string name="limit_for_this_gym" translatable="false">visit limit for this gym.So you need to buy different package to book with friend.</string>
     <string name="by_making_this_booking_2_classes_will_be_deducted_from_your_balance_book_with_a_friend">By making this booking, 2 classes will be deducted from your balance Book with a friend</string>
-    <string name="class_booked_successfully">Class booked successfully</string>
     <string name="package_details">Package details</string>
     <string name="packages">Package</string>
     <string name="validity">Validity</string>
@@ -382,6 +379,33 @@
     <string name="terms_service">terms of service</string>
     <string name="amount">Amount</string>
     <string name="pending_detail">is pending. You will receive a noticeabout booking a class during 2 days.</string>
+    <string name="booked_on">Booked On:</string>
+    <string name="payment_reference">Payment Reference:</string>
+    <string name="congratulation_class">Congratulations! Class</string>
+    <string name="congratulation_package">Congratulations! Package</string>
+    <string name="classs">Class</string>
+    <string name="is_successfully_booked">is successfully booked.</string>
+    <string name="view_membership">View Membership</string>
+    <string name="no_more_classes">No more classes</string>
+    <string name="remenders"><![CDATA[<b>REMINDERS:</b>]]></string>
+    <string name="address"><![CDATA[<b>ADDRESS:</b>]]></string>
+    <string name="studio_instruction"><![CDATA[<b>STUDIO INSTRUCTION:</b>]]></string>
+    <string name="special_note_by_trainer"><![CDATA[<b>SPECIAL NOTE BY THE TRAINER:</b>]]></string>
+    <string name="available_seats" >available seat(s)</string>
+    <string name="view_all_results">View All Results</string>
+    <string name="class_booking_is_failed">Class booking is failed</string>
+    <string name="package_booking_is_failed">Package booking is failed</string>
+    <string name="class_booked_successfully">Class booked successfully</string>
+    <string name="package_booked_successfully">Package booked successfully</string>
+    <string name="class_booking_is_pending">Class booking is pending</string>
+    <string name="package_booking_is_pending">Package booking is pending</string>
+    <string name="n_a">N/A</string>
+    <string name="unfortunately_class">Unfortunately Class</string>
+    <string name="is_failed">is failed. Please contact the app support for a successful class booking.</string>
+    <string name="is_pending">is pending. You will receive a notice about booking a class during 2 days.</string>
+    <string name="for_key">for</string>
+    <string name="purchase">Purchase</string>
+    <string name="are_you_sure_you_want_to_remove">Are you sure you want to remove</string>
 
     <string-array name="schedule_list">
         <item>@string/upcoming</item>

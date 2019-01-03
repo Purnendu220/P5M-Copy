@@ -3,12 +3,15 @@ package com.p5m.me.fxn.utility;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import java.util.Locale;
+
 /**
  * Created by akshay on 06/04/18.
  */
 
 public class Constants {
     public static final int sScrollbarAnimDuration = 300;
+    public static Locale LANGUAGE ;
     public static String[] PROJECTION = new String[]{
             MediaStore.Images.Media.DATA,
             MediaStore.Images.Media._ID,

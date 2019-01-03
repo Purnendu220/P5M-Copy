@@ -160,7 +160,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
 
         if (!list.isEmpty()) {
-            list.add("View All Results");
+            list.add(context.getString(R.string.view_all_results));
         }
 
         notifyDataSetChanged();

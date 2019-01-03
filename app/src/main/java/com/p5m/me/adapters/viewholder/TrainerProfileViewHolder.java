@@ -8,8 +8,6 @@ import android.text.Html;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,10 +19,13 @@ import com.p5m.me.adapters.ImageListAdapter;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.GymBranchDetail;
 import com.p5m.me.data.main.TrainerDetailModel;
+import com.p5m.me.fxn.utility.Constants;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.ImageUtils;
 import com.p5m.me.view.activity.Main.GymProfileActivity;
+
+import java.text.NumberFormat;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -94,7 +95,7 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
             } else if (model.getFollowerCount() == 0) {
                 textViewFollowers.setText(Html.fromHtml(context.getString(R.string.no_followers)));
             } else {
-                textViewFollowers.setText(Html.fromHtml("<b>" + (model.getFollowerCount() + "</b>" + " "+context.getString(R.string.followers))));
+                textViewFollowers.setText(Html.fromHtml("<b>" + NumberFormat.getNumberInstance(Constants.LANGUAGE).format(model.getFollowerCount()) + "</b>" + " "+context.getString(R.string.followers)));
             }
 
             ImageUtils.setImage(context,

@@ -35,13 +35,17 @@ import com.p5m.me.view.activity.base.BaseActivity;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.p5m.me.utils.LanguageUtils.numberConverter;
 
 public class FindClass extends BaseFragment implements ViewPagerFragmentSelection, View.OnClickListener, ViewPager.OnPageChangeListener {
 
@@ -218,7 +222,7 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
 
             tabLayout.getTabAt(index).setCustomView(linearLayout);
 
-            textViewSubtitle.setText(monthName + " " + day);
+            textViewSubtitle.setText(monthName + " " +numberConverter(day));
 
             if (index == 0) {
                 textViewTitle.setText(getString(R.string.today));
