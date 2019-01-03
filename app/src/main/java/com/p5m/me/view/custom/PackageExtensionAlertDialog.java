@@ -30,6 +30,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.p5m.me.utils.LanguageUtils.currencyConverter;
+import static com.p5m.me.utils.LanguageUtils.numberConverter;
 
 
 public class PackageExtensionAlertDialog extends Dialog implements View.OnClickListener {
@@ -157,8 +159,8 @@ public class PackageExtensionAlertDialog extends Dialog implements View.OnClickL
                 }
             }
             if(selectedPacakageFromList!=null){
-                textViewCost.setText(selectedPacakageFromList.getCost()+" KWD");
-                textViewWeekValue.setText(selectedPacakageFromList.getDuration()+" Week(s)");
+                textViewCost.setText(currencyConverter(selectedPacakageFromList.getCost())+" KWD");
+                textViewWeekValue.setText(numberConverter(selectedPacakageFromList.getDuration())+" "+getContext().getString(R.string.weeks));
                 String validUntill=DateUtils.getExtendedExpiryDate(userPackage.getExpiryDate(),selectedPacakageFromList.getDuration());
                 String message=String.format(mContext.getString(R.string.valid_intil),validUntill);
                 textViewValidUntil.setText(message);
