@@ -19,6 +19,7 @@ import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
+import com.p5m.me.utils.LanguageUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -158,13 +159,13 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                         textViewPackageName.setText(model.getName());
                         textViewPageTitle.setText(numberConverter(model.getNoOfClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass()));
 
-                        String validityPeriod = model.getValidityPeriod();
-                        validityPeriod = Helper.capitalize(validityPeriod);
+                        String validityPeriod = LanguageUtils.matchWord(model.getValidityPeriod(),context);
+                      /*  validityPeriod = Helper.capitalize(validityPeriod);
 
                         // Removing s from last
                         if (validityPeriod.charAt(validityPeriod.length() - 1) == 's') {
                             validityPeriod = validityPeriod.substring(0, validityPeriod.length() - 1);
-                        }
+                        }*/
 
                         textViewPackageValidity.setText(context.getString(R.string.valid_for)+" " +numberConverter( model.getDuration()) + " " + AppConstants.plural(validityPeriod, model.getDuration()));
 

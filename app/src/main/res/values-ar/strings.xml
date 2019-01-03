@@ -703,6 +703,8 @@
     <string name="for_key">for</string>
     <string name="purchase">شراء</string>
     <string name="are_you_sure_you_want_to_remove">هل أنت متأكد من أنك تريد إزالة</string>
+    <string name="week">أسبوع</string>
+    <string name="month">شهر</string>
     <string-array name="schedule_list">
         <item>@string/upcoming</item>
         <item>@string/wish_list</item>
