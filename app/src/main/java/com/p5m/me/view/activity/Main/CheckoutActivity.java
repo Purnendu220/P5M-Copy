@@ -54,6 +54,7 @@ import static com.p5m.me.fxn.utility.Constants.CheckoutFor.EXTENSION;
 import static com.p5m.me.fxn.utility.Constants.CheckoutFor.PACKAGE;
 import static com.p5m.me.fxn.utility.Constants.CheckoutFor.SPECIAL_CLASS;
 import static com.p5m.me.utils.LanguageUtils.currencyConverter;
+import static com.p5m.me.utils.LanguageUtils.matchWord;
 import static com.p5m.me.utils.LanguageUtils.numberConverter;
 
 
@@ -269,11 +270,11 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 layoutPromoCode.setVisibility(View.GONE);
 
                 if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
-                    String validityPeriod = aPackage.getValidityPeriod();
-                    validityPeriod = Helper.capitalize(validityPeriod);
+                    String validityPeriod = matchWord(aPackage.getValidityPeriod(),context);
+                   /* validityPeriod = Helper.capitalize(validityPeriod);
                     if (validityPeriod.charAt(validityPeriod.length() - 1) == 's') {
                         validityPeriod = validityPeriod.substring(0, validityPeriod.length() - 1);
-                    }
+                    }*/
 
                     textViewPackageValidity.setText(context.getString(R.string.valid_for)+" " + numberConverter(aPackage.getDuration()) + " " + AppConstants.plural(validityPeriod, aPackage.getDuration()));
                     textViewLimit.setVisibility(View.VISIBLE);

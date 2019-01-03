@@ -1,7 +1,9 @@
 package com.p5m.me.utils;
 
+import android.content.Context;
 import android.util.Log;
 
+import com.p5m.me.R;
 import com.p5m.me.fxn.utility.Constants;
 
 import java.text.NumberFormat;
@@ -42,5 +44,12 @@ public class LanguageUtils {
     {
         String localLanguage=NumberFormat.getNumberInstance(Locale.getDefault()).format(value);
         return localLanguage;
+    }
+
+    public static String matchWord(String word, Context context){
+        if(word.contains("MONTH")){
+            return context.getString(R.string.month);
+        }
+        else return context.getString(R.string.week);
     }
 }
