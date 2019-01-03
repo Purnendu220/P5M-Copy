@@ -1,13 +1,25 @@
 package com.p5m.me.data;
 
-public class PaymentConfirmationResponse{
+public class PaymentConfirmationResponse {
 
+
+        /**
+         * referenceId : 291855563
+         * packageName : Membership extension for 1 week
+         * amount : 2.5
+         * date : 1546414113000
+         * status : SUCCESS
+         * expiryDate : 2019-01-08
+         * classDetailDto : {"classSessionId":45754,"classDate":"2019-01-31","fromTime":"13:00:00","toTime":"14:00:00","title":"Super Yoga ++"}
+         */
 
         private String referenceId;
         private String packageName;
-        private int amount;
+        private double amount;
         private long date;
         private String status;
+        private String expiryDate;
+        private String promoCode;
         private ClassDetailDtoBean classDetailDto;
 
         public String getReferenceId() {
@@ -26,11 +38,11 @@ public class PaymentConfirmationResponse{
             this.packageName = packageName;
         }
 
-        public int getAmount() {
+        public double getAmount() {
             return amount;
         }
 
-        public void setAmount(int amount) {
+        public void setAmount(double amount) {
             this.amount = amount;
         }
 
@@ -50,6 +62,14 @@ public class PaymentConfirmationResponse{
             this.status = status;
         }
 
+        public String getExpiryDate() {
+            return expiryDate;
+        }
+
+        public void setExpiryDate(String expiryDate) {
+            this.expiryDate = expiryDate;
+        }
+
         public ClassDetailDtoBean getClassDetailDto() {
             return classDetailDto;
         }
@@ -58,10 +78,18 @@ public class PaymentConfirmationResponse{
             this.classDetailDto = classDetailDto;
         }
 
-        public static class ClassDetailDtoBean {
+    public String getPromoCode() {
+        return promoCode;
+    }
+
+    public void setPromoCode(String promoCode) {
+        this.promoCode = promoCode;
+    }
+
+    public static class ClassDetailDtoBean {
             /**
-             * classSessionId : 45740
-             * classDate : 2019-01-17
+             * classSessionId : 45754
+             * classDate : 2019-01-31
              * fromTime : 13:00:00
              * toTime : 14:00:00
              * title : Super Yoga ++
@@ -113,5 +141,4 @@ public class PaymentConfirmationResponse{
                 this.title = title;
             }
         }
-
 }

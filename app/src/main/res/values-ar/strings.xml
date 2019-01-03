@@ -29,6 +29,8 @@
     <string name="please_wait">يتم التحميل</string>
 
     <string name="terms_of_service">""عند تسجيل الدخول ، فإنك توافق على <u>شروط الخدمة</u>لدينا\nو <u>سياسة الخصوصية</u>""</string>
+    <!--<string name="terms_of_service">عن طريق تسجيل الدخول ، فإنك توافق على شروط الخدمة لدينا-->
+<!--وسياسة الخصوصية</string>-->
 
     <string name="whats_your_name">ما هو اسمك</string>
 
@@ -130,7 +132,7 @@
 
     <string name="login">""<b><u>تسجيل الدخول</u></b>""</string>
 
-    <string name="login_no_lines">"\"تسجيل الدخول\""</string>
+    <string name="login_no_lines">تسجيل الدخول</string>
 
     <string name="sign_up_email">سجل عن طريق البريد الإلكتروني</string>
 
@@ -146,11 +148,8 @@
 
 <string name="password">كلمة السر</string>
 
-<string name="reminders">نقاط هامة</string>
 
-<string name="studio_instruction">تعليمات النادي</string>
 
-<string name="special_note_by_trainer">تعليمات خاصة من المدرب</string>
 
 <string name="reserve_class">احجز الكلاس</string>
 
@@ -539,7 +538,7 @@
 <string name="enter_last_name">قم بإدخال اسمك الأخير</string>
 
 <string name="one_class">الكلاس</string>
-
+    <string name="classs">الكلاس</string>
 <string name="remaining">متبقي</string>
 
 <string name="day">يوم</string>
@@ -668,17 +667,42 @@
 
 <string name="no_more_trainers">لا يوجد المزيد من المدربين</string>
     <string name="by_making_this_booking_2_classes_will_be_deducted_from_your_balance_book_with_a_friend">By making this booking, 2 classes will be deducted from your balance Book with a friend</string>
-    <string name="class_booked_successfully">Class booked successfully</string>
     <string name="package_details">Package details</string>
     <string name="packages">Package</string>
     <string name="validity">Validity</string>
     <string name="among">Among</string>
     <string name="payment_confirmation">Payment Confirmation</string>
     <string name="view_schedule">View Schedule</string>
-    <string name="terms_service">terms of service</string>
+    <string name="terms_service">شروط الخدمة</string>
     <string name="amount">Amount</string>
     <string name="pending_detail">is pending. You will receive a noticeabout booking a class during 2 days.</string>
+    <string name="booked_on">Booked On:</string>
+    <string name="payment_reference">Payment Reference:</string>
+    <string name="congratulation_class">Congratulations! Class</string>
+    <string name="congratulation_package">Congratulations! Package</string>
 
+    <string name="is_successfully_booked">is successfully booked.</string>
+    <string name="view_membership">View Membership</string>
+    <string name="no_more_classes">لا مزيد من الطبقات</string>
+    <string name="remenders"><![CDATA[<b>نقاط هامة:</b>]]></string>
+    <string name="studio_instruction"><![CDATA[<b>تعليمات النادي:</b>]]></string>
+    <string name="available_seats">المقاعد المتاحة</string>
+    <string name="address"><![CDATA[<b>عنوان:</b>]]></string>
+    <string name="special_note_by_trainer"><![CDATA[<b>تعليمات خاصة من المدرب :</b>]]></string>
+    <string name="view_all_results">عرض جميع النتائج</string>
+    <string name="class_booking_is_failed">Class booking is failed</string>
+    <string name="package_booking_is_failed">Package booking is failed</string>
+    <string name="class_booked_successfully">Class booked successfully</string>
+    <string name="package_booked_successfully">Package booked successfully</string>
+    <string name="class_booking_is_pending">Class booking is pending</string>
+    <string name="package_booking_is_pending">Package booking is pending</string>
+    <string name="n_a">N/A</string>
+    <string name="unfortunately_class">Unfortunately Class</string>
+    <string name="is_failed">is failed. Please contact the app support for a successful class booking.</string>
+    <string name="is_pending">is pending. You will receive a notice about booking a class during 2 days.</string>
+    <string name="for_key">for</string>
+    <string name="purchase">شراء</string>
+    <string name="are_you_sure_you_want_to_remove">هل أنت متأكد من أنك تريد إزالة</string>
     <string-array name="schedule_list">
         <item>@string/upcoming</item>
         <item>@string/wish_list</item>

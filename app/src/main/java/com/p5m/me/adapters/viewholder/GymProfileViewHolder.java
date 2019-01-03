@@ -23,6 +23,8 @@ import com.p5m.me.utils.ImageUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.p5m.me.utils.LanguageUtils.numberConverter;
+
 /**
  * Created by MyU10 on 3/10/2018.
  */
@@ -122,7 +124,7 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
                 layoutLocationPhone.setVisibility(View.INVISIBLE);
 
                 if (model.getGymBranchResponseList().size() > 1) {
-                    textViewMore.setText(Html.fromHtml("<b>+" + (model.getGymBranchResponseList().size() - 1) + " " + context.getString(R.string.more) + "</b>"));
+                    textViewMore.setText(Html.fromHtml("<b>+" + numberConverter(model.getGymBranchResponseList().size() - 1) + " " + context.getString(R.string.more) + "</b>"));
                     textViewMore.setVisibility(View.VISIBLE);
                 } else {
                     textViewMore.setVisibility(View.GONE);
@@ -142,7 +144,7 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
             if (model.getNumberOfTrainer() == -1) {
                 textViewTrainers.setText(Html.fromHtml(context.getString(R.string.trainer).toLowerCase()));
             } else {
-                textViewTrainers.setText(Html.fromHtml("<b>" + (model.getNumberOfTrainer() + "</b>" + AppConstants.plural(" trainer", model.getNumberOfTrainer()))));
+                textViewTrainers.setText(Html.fromHtml("<b>" + (numberConverter(model.getNumberOfTrainer()) + "</b>" +" "+ AppConstants.plural(context.getString(R.string.trainer), model.getNumberOfTrainer()))));
             }
 
             ImageUtils.setImage(context,
@@ -156,7 +158,7 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
 
             if (model.getMediaResponseDtoList() != null && !model.getMediaResponseDtoList().isEmpty()) {
                 layoutGallery.setVisibility(View.VISIBLE);
-                textViewGallery.setText(Html.fromHtml(context.getString(R.string.gallery)+" " + " <b>(" + model.getMediaResponseDtoList().size() + ")</b>"));
+                textViewGallery.setText(Html.fromHtml(context.getString(R.string.gallery)+" " + " <b>(" + numberConverter(model.getMediaResponseDtoList().size()) + ")</b>"));
 
                 ImageListAdapter adapter = new ImageListAdapter(context, AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE, model.getMediaResponseDtoList());
                 recyclerViewGallery.setAdapter(adapter);

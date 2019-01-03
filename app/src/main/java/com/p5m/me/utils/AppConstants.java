@@ -1,5 +1,9 @@
 package com.p5m.me.utils;
 
+import com.p5m.me.fxn.utility.Constants;
+
+import java.util.Locale;
+
 /**
  * Created by MyU10 on 3/9/2018.
  */
@@ -7,11 +11,19 @@ package com.p5m.me.utils;
 public class AppConstants {
 
     public static String plural(String word, int number) {
-        return number == 1 ? word : word + "s";
+        if(Constants.LANGUAGE==Locale.ENGLISH)
+            return number == 1 ? word : word + "s";
+        else
+            return word;
+
     }
 
     public static String pluralES(String word, int number) {
-        return number == 1 ? word : word + "es";
+        if(Constants.LANGUAGE==Locale.ENGLISH)
+            return number == 1 ? word : word + "es";
+        else
+            return word;
+
     }
 
     public static class Tab {
