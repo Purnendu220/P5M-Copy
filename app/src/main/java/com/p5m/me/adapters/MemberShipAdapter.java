@@ -156,7 +156,8 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (viewType == VIEW_TYPE_MEMBERSHIP) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_membership, parent, false);
             return new MemberShipViewHolder(view, navigatedFrom);
-        } else if (viewType == VIEW_TYPE_MEMBERSHIP_HEADER) {
+        }
+        /*else if (viewType == VIEW_TYPE_MEMBERSHIP_HEADER) {
 
             TextView textView = new TextView(context);
             textView.setPadding(dp * 16, dp * 20, dp * 16, dp * 20);
@@ -166,7 +167,8 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             textView.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
 
             return new MemberShipHeaderViewHolder(textView, textView);
-        } else if (viewType == VIEW_TYPE_LOADER) {
+        } */
+        else if (viewType == VIEW_TYPE_LOADER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_list_progress, parent, false);
             return new LoaderViewHolder(view);
         }

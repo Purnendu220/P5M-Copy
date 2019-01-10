@@ -417,9 +417,9 @@
 
 <string name="profile_changes_saved">تم حفظ التغييرات في ملف التعريف الخاص بك!</string>
 
-<string name="package_offer_percentage">٪ إيقاف</string>
+<string name="package_offer_percentage">٪ خصم</string>
 
-<string name="package_offer_kwd">دينار كويتي قبالة</string>
+<string name="package_offer_kwd">دينار كويتي خصم</string>
 
 <string name="local_service_stopped">تدمير الخدمة</string>
 
@@ -538,7 +538,7 @@
 <string name="enter_last_name">قم بإدخال اسمك الأخير</string>
 
 <string name="one_class">الكلاس</string>
-    <string name="classs">الكلاس</string>
+    <string name="classs">كلاسات</string>
 <string name="remaining">متبقي</string>
 
 <string name="day">يوم</string>
@@ -577,7 +577,7 @@
 
 <string name="no_more_notification">لا يوجد إشعارات</string>
 
-<string name="both">كلاهما</string>
+<string name="both">مختلط</string>
 
 <string name="enter_promo_code">ادخل رمز الكوبون</string>
 
@@ -666,6 +666,11 @@
 <string name="image_upload_failed">فشل تحميل الصورة</string>
 
 <string name="no_more_trainers">لا يوجد المزيد من المدربين</string>
+
+
+
+    <string name="valid_for_weeks"> أسبوع (%d) صالحة لمدة</string>
+    <string name="valid_for_months"> شهر (%d) صالح لمدة </string>
     <string name="by_making_this_booking_2_classes_will_be_deducted_from_your_balance_book_with_a_friend">By making this booking, 2 classes will be deducted from your balance Book with a friend</string>
     <string name="package_details">Package details</string>
     <string name="packages">Package</string>
@@ -705,6 +710,16 @@
     <string name="are_you_sure_you_want_to_remove">هل أنت متأكد من أنك تريد إزالة</string>
     <string name="week">أسبوع</string>
     <string name="month">شهر</string>
+    <string name="at_any_gym"> </string>
+    <string name="book_classes">Book Classes</string>
+    <string name="payment_history">View Payment History</string>
+    <string name="class_one">كلاس واحد</string>
+    <string name="extend_package_limit">You can extend your package upto</string>
+    <string name="extend_on">Extended On :</string>
+    <string name="booking_details">Booking details</string>
+    <string name="package_extended_successfully">Package extended successfully</string>
+    <string name="class_name">Class Name</string>
+
     <string-array name="schedule_list">
         <item>@string/upcoming</item>
         <item>@string/wish_list</item>

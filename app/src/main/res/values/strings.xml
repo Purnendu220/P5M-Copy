@@ -254,6 +254,8 @@
     <string name="powered_by">Powered By</string>
 
     <string name="selection_limiter_pix">Can\'t select more than %d images.</string>
+    <string name="valid_for_weeks">Valid for (%d) weeks</string>
+    <string name="valid_for_months" >Valid for %d months</string>
     <string name="message_to_drag_up">Drag images up for gallery</string>
     <string name="pix_ok">OK</string>
     <string name="pix_tap_to_select">Tap photo to select</string>
@@ -369,7 +371,7 @@
     <string name="cancel_class_friend">Cancel Friends\'s booking</string>
     <string name="cancel_class_both">Cancel Both bookings</string>
     <string name="limit_for_this_gym" translatable="false">visit limit for this gym.So you need to buy different package to book with friend.</string>
-    <string name="by_making_this_booking_2_classes_will_be_deducted_from_your_balance_book_with_a_friend">By making this booking, 2 classes will be deducted from your balance Book with a friend</string>
+    <string name="by_making_this_booking_2_classes_will_be_deducted_from_your_balance_book_with_a_friend">By making this booking, 2 classes will be deducted from your balance.</string>
     <string name="package_details">Package details</string>
     <string name="packages">Package</string>
     <string name="validity">Validity</string>
@@ -408,6 +410,15 @@
     <string name="are_you_sure_you_want_to_remove">Are you sure you want to remove</string>
     <string name="week">Week</string>
     <string name="month">Month</string>
+    <string name="at_any_gym">at any gym</string>
+    <string name="book_classes">Book Classes</string>
+    <string name="payment_history">View Payment History</string>
+    <string name="class_one">1 Class</string>
+    <string name="extend_package_limit">You can extend your package upto</string>
+    <string name="extend_on">Extended On :</string>
+    <string name="booking_details">Booking details</string>
+    <string name="package_extended_successfully">Package extended successfully</string>
+    <string name="class_name">Class Name</string>
 
     <string-array name="schedule_list">
         <item>@string/upcoming</item>

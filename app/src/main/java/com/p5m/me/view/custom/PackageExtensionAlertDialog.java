@@ -9,19 +9,14 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.p5m.me.R;
 import com.p5m.me.data.ValidityPackageList;
-import com.p5m.me.data.main.DefaultSettingServer;
-import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
-import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.storage.TempStorage;
-import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
-import com.p5m.me.utils.RefrenceWrapper;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.CheckoutActivity;
 
@@ -30,7 +25,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.p5m.me.utils.LanguageUtils.currencyConverter;
 import static com.p5m.me.utils.LanguageUtils.numberConverter;
 
 
@@ -128,7 +122,7 @@ public class PackageExtensionAlertDialog extends Dialog implements View.OnClickL
                     handlePlusMinus(weekValue);
                 }
                 else{
-                    ToastUtils.show(mContext,"You can extend your package upto "+weeksExtensionAllowed+" weeks");
+                    ToastUtils.show(mContext,mContext.getString(R.string.extend_package_limit)+weeksExtensionAllowed+" "+mContext.getString(R.string.weeks));
                 }
 
             }
@@ -159,7 +153,7 @@ public class PackageExtensionAlertDialog extends Dialog implements View.OnClickL
                 }
             }
             if(selectedPacakageFromList!=null){
-                textViewCost.setText(currencyConverter(selectedPacakageFromList.getCost())+" KWD");
+                textViewCost.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost())+" KWD");
                 textViewWeekValue.setText(numberConverter(selectedPacakageFromList.getDuration())+" "+getContext().getString(R.string.weeks));
                 String validUntill=DateUtils.getExtendedExpiryDate(userPackage.getExpiryDate(),selectedPacakageFromList.getDuration());
                 String message=String.format(mContext.getString(R.string.valid_intil),validUntill);

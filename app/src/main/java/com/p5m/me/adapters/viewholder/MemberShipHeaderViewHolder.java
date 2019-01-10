@@ -26,7 +26,7 @@ public class MemberShipHeaderViewHolder extends RecyclerView.ViewHolder {
 
             if (!text.getTitle().isEmpty()) {
                 textView.setText(text.getTitle());
-                itemView.setVisibility(View.VISIBLE);
+                itemView.setVisibility(View.GONE);
             } else {
                 itemView.setVisibility(View.GONE);
             }

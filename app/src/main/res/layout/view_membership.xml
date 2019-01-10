@@ -133,8 +133,9 @@
         android:paddingBottom="12dp"
         android:paddingTop="12dp"
         android:text="Valid for P5M Studio"
-        android:textColor="@color/theme_light_text"
-        android:textSize="@dimen/text_extra_large"
+        android:textSize="@dimen/text_medium"
+        android:textColor="@color/theme_dark_text"
+
         android:textStyle="normal" />
     <TextView
         android:id="@+id/textViewExtendPackage"

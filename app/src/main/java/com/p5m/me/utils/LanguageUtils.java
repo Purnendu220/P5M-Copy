@@ -1,7 +1,9 @@
 package com.p5m.me.utils;
 
 import android.content.Context;
+import android.text.Html;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.p5m.me.R;
 import com.p5m.me.fxn.utility.Constants;
@@ -30,12 +32,12 @@ public class LanguageUtils {
         String localLanguage=NumberFormat.getInstance(Locale.getDefault()).format(value);
         return localLanguage;
     }
-    public static String currencyConverter(float value)
+    public static String numberConverter(float value)
     {
         String localLanguage=NumberFormat.getNumberInstance(Locale.getDefault()).format(value);
         return localLanguage;
     }
-    public static String currencyConverter(double value)
+    public static String numberConverter(double value)
     {
         String localLanguage=NumberFormat.getNumberInstance(Locale.getDefault()).format(value);
         return localLanguage;
@@ -51,5 +53,16 @@ public class LanguageUtils {
             return context.getString(R.string.month);
         }
         else return context.getString(R.string.week);
+    }
+
+    public static void setText(TextView textViewId, int numberOfViews, String viewString) {
+        if(Constants.LANGUAGE==Locale.ENGLISH){
+            textViewId.setText(Html.fromHtml("<b>"+numberConverter(numberOfViews)+"</b> "));
+            textViewId.append(viewString);
+        }
+        else{
+            textViewId.setText(viewString+" ");
+            textViewId.append(Html.fromHtml("<b>"+numberConverter(numberOfViews)+"</b> "));
+        }
     }
 }

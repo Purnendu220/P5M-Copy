@@ -25,13 +25,13 @@ public class DateUtils {
     private static SimpleDateFormat classDateSec = new SimpleDateFormat("dd-mm-yyyy", Locale.getDefault());
     private static SimpleDateFormat classDateExpiry = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     private static SimpleDateFormat classDateTime = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault());
-    private static SimpleDateFormat classDateFormat = new SimpleDateFormat("EEE, MMM d, yyyy", Locale.getDefault());
-    private static SimpleDateFormat packageDateFormat = new SimpleDateFormat("MMM d, yyyy", Locale.getDefault());
+    private static SimpleDateFormat classDateFormat = new SimpleDateFormat("EEE, d MMM yyyy", Locale.getDefault());
+    private static SimpleDateFormat packageDateFormat = new SimpleDateFormat("d MMM yyyy", Locale.getDefault());
     private static SimpleDateFormat notificationDate = new SimpleDateFormat("h:mm a, MMM d", Locale.getDefault());
     private static SimpleDateFormat classRatingDate = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
     private static SimpleDateFormat classTime24Format = new SimpleDateFormat("HH:mm",Locale.getDefault());
     private static SimpleDateFormat classTime12Format = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
-    private static SimpleDateFormat ExtendedDateFormat = new SimpleDateFormat("MMM d", Locale.getDefault());
+    private static SimpleDateFormat ExtendedDateFormat = new SimpleDateFormat("d MMM ", Locale.getDefault());
 
 
     public static String getMonthName(int monthCode) {
@@ -120,7 +120,7 @@ public class DateUtils {
 
     public static String getClassTime(String from, String till) {
         try {
-            return "  " + classTimeFormat.format(classTime.parse(from)).replace(".", "").toUpperCase() + " - " +
+            return " " + classTimeFormat.format(classTime.parse(from)).replace(".", "").toUpperCase() + " - " +
                     classTimeFormat.format(classTime.parse(till)).replace(".", "").toUpperCase();
         } catch (Exception e) {
             e.printStackTrace();

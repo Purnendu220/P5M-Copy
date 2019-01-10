@@ -23,6 +23,7 @@ import com.p5m.me.fxn.utility.Constants;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.ImageUtils;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.view.activity.Main.GymProfileActivity;
 
 import java.text.NumberFormat;
@@ -95,7 +96,8 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
             } else if (model.getFollowerCount() == 0) {
                 textViewFollowers.setText(Html.fromHtml(context.getString(R.string.no_followers)));
             } else {
-                textViewFollowers.setText(Html.fromHtml("<b>" + NumberFormat.getNumberInstance(Constants.LANGUAGE).format(model.getFollowerCount()) + "</b>" + " "+context.getString(R.string.followers)));
+//                textViewFollowers.setText(Html.fromHtml("<b>" + NumberFormat.getNumberInstance(Constants.LANGUAGE).format(model.getFollowerCount()) + "</b>" + " "+context.getString(R.string.followers)));
+                LanguageUtils.setText(textViewFollowers,model.getFollowerCount(), " "+context.getString(R.string.followers));
             }
 
             ImageUtils.setImage(context,

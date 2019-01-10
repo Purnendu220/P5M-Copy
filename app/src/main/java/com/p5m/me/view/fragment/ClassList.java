@@ -201,14 +201,6 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
     private void setRecommendedClassView() {
         recyclerViewRecommendedClass.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewRecommendedClass.setHasFixedSize(true);
-
-      /*  try {
-            ((SimpleItemAnimator) recyclerViewRecommendedClass.getItemAnimator()).setSupportsChangeAnimations(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-            LogUtils.exception(e);
-        }*/
-
         RecommendedClassAdapter recommendedListAdapter = new RecommendedClassAdapter(context, shownInScreen, true, new ClassListListenerHelper(context, activity, shownInScreen, this));
         recyclerViewRecommendedClass.setAdapter(recommendedListAdapter);
     }

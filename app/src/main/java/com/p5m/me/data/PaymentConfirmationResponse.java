@@ -4,13 +4,14 @@ public class PaymentConfirmationResponse {
 
 
         /**
-         * referenceId : 291855563
-         * packageName : Membership extension for 1 week
-         * amount : 2.5
-         * date : 1546414113000
+         * referenceId : 1170958047
+         * packageName : SPECIAL
+         * amount : 10.0
+         * date : 1547100322000
          * status : SUCCESS
-         * expiryDate : 2019-01-08
-         * classDetailDto : {"classSessionId":45754,"classDate":"2019-01-31","fromTime":"13:00:00","toTime":"14:00:00","title":"Super Yoga ++"}
+         * expiryDate : 2019-01-10
+         * numberOfClasses : 1
+         * classDetailDto : {"classSessionId":45903,"classDate":"2019-01-14","fromTime":"01:05:00","toTime":"02:05:00","title":"Hip Hop Class"}
          */
 
         private String referenceId;
@@ -19,7 +20,7 @@ public class PaymentConfirmationResponse {
         private long date;
         private String status;
         private String expiryDate;
-        private String promoCode;
+        private int numberOfClasses;
         private ClassDetailDtoBean classDetailDto;
 
         public String getReferenceId() {
@@ -70,6 +71,14 @@ public class PaymentConfirmationResponse {
             this.expiryDate = expiryDate;
         }
 
+        public int getNumberOfClasses() {
+            return numberOfClasses;
+        }
+
+        public void setNumberOfClasses(int numberOfClasses) {
+            this.numberOfClasses = numberOfClasses;
+        }
+
         public ClassDetailDtoBean getClassDetailDto() {
             return classDetailDto;
         }
@@ -78,21 +87,13 @@ public class PaymentConfirmationResponse {
             this.classDetailDto = classDetailDto;
         }
 
-    public String getPromoCode() {
-        return promoCode;
-    }
-
-    public void setPromoCode(String promoCode) {
-        this.promoCode = promoCode;
-    }
-
-    public static class ClassDetailDtoBean {
+        public static class ClassDetailDtoBean {
             /**
-             * classSessionId : 45754
-             * classDate : 2019-01-31
-             * fromTime : 13:00:00
-             * toTime : 14:00:00
-             * title : Super Yoga ++
+             * classSessionId : 45903
+             * classDate : 2019-01-14
+             * fromTime : 01:05:00
+             * toTime : 02:05:00
+             * title : Hip Hop Class
              */
 
             private int classSessionId;
@@ -140,5 +141,6 @@ public class PaymentConfirmationResponse {
             public void setTitle(String title) {
                 this.title = title;
             }
-        }
+
+    }
 }

@@ -152,6 +152,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_marginLeft="@dimen/text_icon_gap"
                         android:layout_marginTop="@dimen/text_drawable_adjustment"
+                        android:textDirection="ltr"
                         android:layout_toEndOf="@+id/imageViewTrainers"
                         android:fontFamily="sans-serif"
                         android:gravity="left"

@@ -19,6 +19,7 @@ import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.ImageUtils;
+import com.p5m.me.utils.LanguageUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -144,7 +145,16 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
             if (model.getNumberOfTrainer() == -1) {
                 textViewTrainers.setText(Html.fromHtml(context.getString(R.string.trainer).toLowerCase()));
             } else {
-                textViewTrainers.setText(Html.fromHtml("<b>" + (numberConverter(model.getNumberOfTrainer()) + "</b>" +" "+ AppConstants.plural(context.getString(R.string.trainer), model.getNumberOfTrainer()))));
+               /* String src = "<b dir=\"ltr\">"+(numberConverter(model.getNumberOfTrainer())) +"</b> ";
+                String trainer=AppConstants.plural(context.getString(R.string.trainer), model.getNumberOfTrainer());
+
+//                textViewTrainers.setText(Html.fromHtml("<b>" + (numberConverter(model.getNumberOfTrainer()) + "</b>" +" "+ AppConstants.plural(context.getString(R.string.trainer), model.getNumberOfTrainer()))));
+                textViewTrainers.setText(trainer);
+                textViewTrainers.append(Html.fromHtml(src));*/
+                LanguageUtils.setText(textViewTrainers,model.getNumberOfTrainer() ,AppConstants.plural(context.getString(R.string.trainer), model.getNumberOfTrainer()));
+
+
+
             }
 
             ImageUtils.setImage(context,
