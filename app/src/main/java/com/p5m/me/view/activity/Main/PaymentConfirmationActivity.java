@@ -481,8 +481,6 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
             case NetworkCommunicator.RequestCode.PAYMENT_CONFIRMATION_DETAIL:
                 progressBarDone.setVisibility(View.GONE);
                 layoutNoData.setVisibility(View.VISIBLE);
-//                layoutConfirmation.setVisibility(View.VISIBLE);
-//                setData(PaymentStatus.valueOf("FAILURE"));
 
                 ToastUtils.show(this, errorMessage);
         }
@@ -631,7 +629,6 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 break;
 
         }
-//        super.onBackPressed();
     }
 
 
