@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.provider.Settings;
 
+import com.facebook.login.LoginManager;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
@@ -64,6 +65,7 @@ public class EventBroadcastHelper {
             NotificationManager notificationManager = (NotificationManager) context
                     .getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.cancelAll();
+            LoginManager.getInstance().logOut();
 
             ContinueUser.open(context);
         } catch (Exception e) {
