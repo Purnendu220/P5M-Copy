@@ -166,6 +166,7 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
             }
             if(model.getFitnessLevel()!=null && !model.getFitnessLevel().isEmpty()){
                 layoutFitnessLevel.setVisibility(View.VISIBLE);
+
                 switch (model.getFitnessLevel()){
                     case AppConstants.FitnessLevel.CLASS_LEVEL_BASIC:
                         imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_get);

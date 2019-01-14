@@ -29,6 +29,7 @@ public class Constants {
         SPECIAL_CLASS,
         CLASS_PURCHASE_WITH_PACKAGE,
         EXTENSION,
-        BOOKWITHFRIEND
+        BOOKWITHFRIEND,
+        PENDING_TRANSACTION
     }
 }

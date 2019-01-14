@@ -52,7 +52,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MemberShip extends BaseActivity implements AdapterCallbacks, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
+public class MemberShip extends BaseActivity implements AdapterCallbacks, NetworkCommunicator.RequestListener,
+        SwipeRefreshLayout.OnRefreshListener  {
 
     public static void openActivity(Context context, int navigationFrom) {
         context.startActivity(new Intent(context, MemberShip.class)
@@ -168,6 +169,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     public void packagePurchasedForClass(Events.PackagePurchasedForClass data) {
         refreshFromEvent();
         hasPurchased = true;
+        finish();
     }
 
     private void refreshFromEvent() {
@@ -502,4 +504,5 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
             MixPanel.trackSequentialUpdate(AppConstants.Tracker.NO_ACTION);
         }
     }
+
 }

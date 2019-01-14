@@ -15,6 +15,7 @@ import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
+import com.p5m.me.utils.LanguageUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -99,8 +100,8 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                     textViewValidity.setVisibility(View.VISIBLE);
 
                     String message=userPackageInfo.userPackageGeneral.getBalanceClass()!=1?context.getString(R.string.classes):context.getString(R.string.one_class);
-                    textViewPackage.setText(Html.fromHtml("<b>" + numberConverter(userPackageInfo.userPackageGeneral.getBalanceClass()) +
-                            "</b> " + message+" "+context.getString(R.string.remaining)));
+
+                    LanguageUtils.setText(textViewPackage,userPackageInfo.userPackageGeneral.getBalanceClass(),  message+" "+context.getString(R.string.remaining));
 
                     int daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageGeneral.getExpiryDate());
 

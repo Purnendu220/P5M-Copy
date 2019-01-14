@@ -19,6 +19,7 @@ import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.WordUtils;
 
 import java.text.NumberFormat;
@@ -263,9 +264,10 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
             textViewClassName.setText(model.getTitle());
             textViewClassCategory.setText(model.getClassCategory());
             textViewClassDate.setText(DateUtils.getClassDate(model.getClassDate()));
-            textViewAvailable.setText( NumberFormat.getNumberInstance(Constants.LANGUAGE).format(model.getAvailableSeat()) + " " + context.getString(R.string.available_seats) + " ");
+//            textViewAvailable.setText( NumberFormat.getNumberInstance(Constants.LANGUAGE).format(model.getAvailableSeat()) + " " + context.getString(R.string.available_seats) + " ");
 //                    +
 //                    AppConstants.plural(context.getString(R.string.seat), model.getAvailableSeat()));
+            LanguageUtils.setText(textViewAvailable,model.getAvailableSeat(),context.getString(R.string.available_seats) + " ");
 
             textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
             textViewGender.setText(Helper.getClassGenderText(model.getClassType()));

@@ -107,7 +107,7 @@
     <dimen name="fastscroll_bubble_size">56dp</dimen>
     <dimen name="margin_200">200dp</dimen>
     <dimen name="margin_38">38dp</dimen>
-    <dimen name="icon_size">17dp</dimen>
+    <dimen name="icon_size">19dp</dimen>
 
 
 </resources>

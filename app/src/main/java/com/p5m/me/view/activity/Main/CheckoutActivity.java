@@ -27,7 +27,6 @@ import com.p5m.me.data.main.PaymentUrl;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.data.request.PaymentUrlRequest;
 import com.p5m.me.data.request.PromoCodeRequest;
-import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.fxn.utility.Constants;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
@@ -53,7 +52,6 @@ import static com.p5m.me.fxn.utility.Constants.CheckoutFor.CLASS_PURCHASE_WITH_P
 import static com.p5m.me.fxn.utility.Constants.CheckoutFor.EXTENSION;
 import static com.p5m.me.fxn.utility.Constants.CheckoutFor.PACKAGE;
 import static com.p5m.me.fxn.utility.Constants.CheckoutFor.SPECIAL_CLASS;
-import static com.p5m.me.utils.LanguageUtils.currencyConverter;
 import static com.p5m.me.utils.LanguageUtils.matchWord;
 import static com.p5m.me.utils.LanguageUtils.numberConverter;
 
@@ -278,23 +276,24 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
                     textViewPackageValidity.setText(context.getString(R.string.valid_for)+" " + numberConverter(aPackage.getDuration()) + " " + AppConstants.plural(validityPeriod, aPackage.getDuration()));
                     textViewLimit.setVisibility(View.VISIBLE);
-                    textViewPackageClasses.setText(numberConverter(aPackage.getNoOfClass()) + " " + AppConstants.pluralES(getString(R.string.one_class), aPackage.getNoOfClass()));
+                    textViewPackageClasses.setText(numberConverter(aPackage.getNoOfClass()) + " " + AppConstants.pluralES(getString(R.string.one_class), aPackage.getNoOfClass())+" "+context.getString(R.string.at_any_gym));
 
 
                 } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
-                    textViewPackageValidity.setText(getString(R.string.valid_for) + " " + aPackage.getGymName());
+//                    textViewPackageValidity.setText(getString(R.string.valid_for) + " " + aPackage.getGymName());
+                    textViewPackageValidity.setText(context.getString(R.string.valid_for) + " " + DateUtils.getPackageClassDate(classModel.getClassDate()) + " -" + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()));
+
                     textViewLimit.setVisibility(View.GONE);
                     textViewCancellationPolicyGeneralToggle.setVisibility(View.VISIBLE);
                     textViewCancellationPolicyGenral.setText(R.string.membership_drop_in_info);
-                    textViewPackageClasses.setText(numberConverter(mNumberOfPackagesToBuy )+ " " + getString(R.string.classes));
 
-                    textViewPackageClasses.setText(numberConverter(mNumberOfPackagesToBuy) + " " + AppConstants.pluralES(getString(R.string.one_class), mNumberOfPackagesToBuy));
+                    textViewPackageClasses.setText(numberConverter(mNumberOfPackagesToBuy) + " " + AppConstants.pluralES(getString(R.string.one_class), mNumberOfPackagesToBuy)+" at "+classModel.getGymBranchDetail().getGymName());
 
                 }
 
                 textViewPackageName.setText(Html.fromHtml(numberConverter(mNumberOfPackagesToBuy) + "X <b>" + aPackage.getName() + "</b>"));
 //                textViewPrice.setText(aPackage.getCost() + " " + context.getString(R.string.currency));
-                textViewPrice.setText(currencyConverter(aPackage.getCost()) + " " + context.getString(R.string.currency));
+                textViewPrice.setText(LanguageUtils.numberConverter(aPackage.getCost()) + " " + context.getString(R.string.currency));
 
                 textViewPackageInfo.setVisibility(aPackage.getDescription().isEmpty() ? View.GONE : View.VISIBLE);
                 textViewPackageInfo.setText(aPackage.getDescription());
@@ -319,13 +318,13 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
                 } else {
 //                    textViewPrice.setText(classModel.getPrice() + " " + context.getString(R.string.currency));
-                    textViewPrice.setText(currencyConverter(classModel.getPrice()) + " " + context.getString(R.string.currency));
+                    textViewPrice.setText(LanguageUtils.numberConverter(classModel.getPrice()) + " " + context.getString(R.string.currency));
 
                 }
 
                 textViewCancellationPolicy.setText(classModel.getReminder());
                 Helper.setPackageImage(imageViewPackageImage, AppConstants.Values.SPECIAL_CLASS_ID);
-                validityUnit.setText(numberConverter(mNumberOfPackagesToBuy) + " " + AppConstants.pluralES(getString(R.string.one_class), mNumberOfPackagesToBuy));
+                validityUnit.setText(numberConverter(mNumberOfPackagesToBuy) + " " + AppConstants.pluralES(getString(R.string.one_class), mNumberOfPackagesToBuy)+" at "+classModel.getTitle());
 
                 setPrice();
 
@@ -342,7 +341,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 textViewPackageName.setText(R.string.add_more_time);
                 textViewCancellationPolicyToggle.setText(R.string.extention_policy);
 //                textViewPrice.setText(selectedPacakageFromList.getCost() + " " + context.getString(R.string.currency));
-                textViewPrice.setText(currencyConverter(selectedPacakageFromList.getCost()) + " " + context.getString(R.string.currency));
+                textViewPrice.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost()) + " " + context.getString(R.string.currency));
                 int remainigExtension;
                 if (userPackage.getTotalRemainingWeeks() != null) {
                     remainigExtension = userPackage.getTotalRemainingWeeks() - selectedPacakageFromList.getDuration();
@@ -426,9 +425,9 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
                 if (promoCode != null) {
                     DecimalFormat numberFormat = new DecimalFormat("#.00");
-                    textViewTotal.setText(currencyConverter(promoCode.getPriceAfterDiscount()) + " " + context.getString(R.string.currency));
-                    textViewPay.setText(getString(R.string.pay) + " " + currencyConverter(promoCode.getPriceAfterDiscount()) + " " + context.getString(R.string.currency));
-                    textViewPromoCodePrice.setText("- " + currencyConverter(((promoCode.getPrice() - promoCode.getPriceAfterDiscount()))) + " " + context.getString(R.string.currency));
+                    textViewTotal.setText(LanguageUtils.numberConverter(promoCode.getPriceAfterDiscount()) + " " + context.getString(R.string.currency));
+                    textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(promoCode.getPriceAfterDiscount()) + " " + context.getString(R.string.currency));
+                    textViewPromoCodePrice.setText("- " + LanguageUtils.numberConverter(((promoCode.getPrice() - promoCode.getPriceAfterDiscount()))) + " " + context.getString(R.string.currency));
                     layoutPromoCode.setVisibility(View.VISIBLE);
                     buttonPromoCode.setText(context.getString(R.string.remove_promo_code));
 
@@ -444,20 +443,20 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
                 } else {
                     layoutPromoCode.setVisibility(View.GONE);
-                    textViewTotal.setText(currencyConverter(aPackage.getCost()) + " " + context.getString(R.string.currency));
-                    textViewPay.setText(getString(R.string.pay) + " " +currencyConverter( aPackage.getCost()) + " " + context.getString(R.string.currency));
+                    textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost()) + " " + context.getString(R.string.currency));
+                    textViewPay.setText(getString(R.string.pay) + " " +LanguageUtils.numberConverter( aPackage.getCost()) + " " + context.getString(R.string.currency));
                     buttonPromoCode.setText(context.getString(R.string.apply_promo_code));
                 }
                 break;
 
             case SPECIAL_CLASS:
-                textViewTotal.setText(currencyConverter(mNumberOfPackagesToBuy * classModel.getPrice()) + " " + context.getString(R.string.currency));
-                textViewPay.setText(getString(R.string.pay) + " " +currencyConverter( mNumberOfPackagesToBuy * classModel.getPrice()) + " " + context.getString(R.string.currency));
+                textViewTotal.setText(LanguageUtils.numberConverter(mNumberOfPackagesToBuy * classModel.getPrice()) + " " + context.getString(R.string.currency));
+                textViewPay.setText(getString(R.string.pay) + " " +LanguageUtils.numberConverter( mNumberOfPackagesToBuy * classModel.getPrice()) + " " + context.getString(R.string.currency));
 
                 break;
             case EXTENSION:
-                textViewTotal.setText(currencyConverter(selectedPacakageFromList.getCost()) + " " + context.getString(R.string.currency));
-                textViewPay.setText(getString(R.string.pay) + " " + currencyConverter(selectedPacakageFromList.getCost()) + " " + context.getString(R.string.currency));
+                textViewTotal.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost()) + " " + context.getString(R.string.currency));
+                textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(selectedPacakageFromList.getCost()) + " " + context.getString(R.string.currency));
 
                 break;
 
@@ -675,8 +674,32 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void redirectOnResult() {
-        PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,refId,aPackage,classModel,checkoutFor);
+        finish();
+//        PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,refId,aPackage,classModel,checkoutFor,userPackage,selectedPacakageFromList);
+        switch (checkoutFor) {
+            case PACKAGE:
 
+                PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,
+                        refId, aPackage, null, checkoutFor, null, null,mNumberOfPackagesToBuy);
+
+                finish();
+                break;
+            case CLASS_PURCHASE_WITH_PACKAGE:
+                PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,
+                        refId, aPackage, classModel, checkoutFor, null, null,mNumberOfPackagesToBuy);
+
+                break;
+            case SPECIAL_CLASS:
+                PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,
+                        refId, null, classModel, checkoutFor, null, selectedPacakageFromList,mNumberOfPackagesToBuy);
+
+                break;
+            case EXTENSION:
+                PaymentConfirmationActivity.openActivity(context, navigatinFrom,
+                        refId, null, null, checkoutFor, userPackage, selectedPacakageFromList,mNumberOfPackagesToBuy);
+
+                break;
+        }
     }
 
 
