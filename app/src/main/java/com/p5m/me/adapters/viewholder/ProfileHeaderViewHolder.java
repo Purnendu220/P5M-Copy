@@ -114,12 +114,13 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                     textViewValidity.setVisibility(View.VISIBLE);
                     int daysLeftFromPackageExpiryDate;
                     if(user.isBuyMembership()){
-                        textViewPackage.setText(Html.fromHtml("<b>1</b>" + context.getString(R.string.class_for)
+                        String one = numberConverter(1);
+                        textViewPackage.setText(Html.fromHtml("<b>"+one+"</b>" + " "+context.getString(R.string.class_for)+" "
                                 + userPackageInfo.userPackageReady.get(0).getGymName()));
 
                          daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageReady.get(0).getExpiryDate());
 
-                        textViewValidity.setText(Html.fromHtml("<b>" + daysLeftFromPackageExpiryDate + "</b> " +
+                        textViewValidity.setText(Html.fromHtml("<b>" + LanguageUtils.numberConverter(daysLeftFromPackageExpiryDate) + "</b> " +
                                 " " + AppConstants.plural(context.getString(R.string.day), daysLeftFromPackageExpiryDate) + context.getString(R.string.profile_package_expiry)));
                         userpackageToExtend = userPackageInfo.userPackageReady.get(0);
 
@@ -171,7 +172,7 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                         textViewMore.setVisibility(View.VISIBLE);
                         String more = "+" + numberConverter(userPackageInfo.dropInPackageCount - 1) + " "+context.getString(R.string.more)+" " +
                                 AppConstants.plural(context.getString(R.string.package_name), (userPackageInfo.dropInPackageCount - 1));
-                        textViewMore.setText(Html.fromHtml("<b><u>" + context.getString(R.string.more) + "</u></b> "));
+                        textViewMore.setText(Html.fromHtml("<b><u>" + more + "</u></b> "));
                     }
                 }
                 /************************************************************************/

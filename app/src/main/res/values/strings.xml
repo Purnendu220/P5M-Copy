@@ -255,7 +255,7 @@
 
     <string name="selection_limiter_pix">Can\'t select more than %d images.</string>
     <string name="valid_for_weeks">Valid for (%d) weeks</string>
-    <string name="valid_for_months" >Valid for %d months</string>
+    <string name="valid_for_months" >Valid for (%d) months</string>
     <string name="message_to_drag_up">Drag images up for gallery</string>
     <string name="pix_ok">OK</string>
     <string name="pix_tap_to_select">Tap photo to select</string>
@@ -419,6 +419,13 @@
     <string name="booking_details">Booking details</string>
     <string name="package_extended_successfully">Package extended successfully</string>
     <string name="class_name">Class Name</string>
+    <string name="req_permission">Location Permission is required by app</string>
+    <string name="intermediate">Intermediate</string>
+    <string name="advanced">Advanced</string>
+    <string name="basic">Basic</string>
+    <string name="class_one_at">1 Class at </string>
+    <string name="at">at</string>
+    <string name="permission_location">Please allow P5M to access location on your device.</string>
 
     <string-array name="schedule_list">
         <item>@string/upcoming</item>

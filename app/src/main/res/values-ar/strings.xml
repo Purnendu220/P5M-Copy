@@ -671,7 +671,7 @@
 
     <string name="valid_for_weeks"> أسبوع (%d) صالحة لمدة</string>
     <string name="valid_for_months"> شهر (%d) صالح لمدة </string>
-    <string name="by_making_this_booking_2_classes_will_be_deducted_from_your_balance_book_with_a_friend">By making this booking, 2 classes will be deducted from your balance Book with a friend</string>
+    <string name="by_making_this_booking_2_classes_will_be_deducted_from_your_balance_book_with_a_friend">مع إجراء هذا الحجز ، سيتم خصم كلاسين من رصيدك </string>
     <string name="package_details">Package details</string>
     <string name="packages">Package</string>
     <string name="validity">Validity</string>
@@ -680,7 +680,7 @@
     <string name="view_schedule">View Schedule</string>
     <string name="terms_service">شروط الخدمة</string>
     <string name="amount">Amount</string>
-    <string name="pending_detail">is pending. You will receive a noticeabout booking a class during 2 days.</string>
+    <string name="pending_detail">is pending. You will receive a notice about booking a class during 2 days.</string>
     <string name="booked_on">Booked On:</string>
     <string name="payment_reference">Payment Reference:</string>
     <string name="congratulation_class">Congratulations! Class</string>
@@ -714,11 +714,18 @@
     <string name="book_classes">Book Classes</string>
     <string name="payment_history">View Payment History</string>
     <string name="class_one">كلاس واحد</string>
-    <string name="extend_package_limit">You can extend your package upto</string>
+    <string name="extend_package_limit">يمكنك تمديد اشتراكك حتى</string>
     <string name="extend_on">Extended On :</string>
     <string name="booking_details">Booking details</string>
     <string name="package_extended_successfully">Package extended successfully</string>
     <string name="class_name">Class Name</string>
+    <string name="req_permission">Location Permission is required by app</string>
+    <string name="intermediate">متوسط</string>
+    <string name="advanced">متقدم</string>
+    <string name="basic">مبتدئ</string>
+    <string name="class_one_at">كلاس واحد في</string>
+    <string name="at"></string>
+    <string name="permission_location">Please allow P5M location permission</string>
 
     <string-array name="schedule_list">
         <item>@string/upcoming</item>

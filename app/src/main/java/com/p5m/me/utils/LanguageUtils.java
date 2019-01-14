@@ -48,11 +48,15 @@ public class LanguageUtils {
         return localLanguage;
     }
 
-    public static String matchWord(String word, Context context){
-        if(word.contains("MONTH")){
-            return context.getString(R.string.month);
+    public static String matchFitnessWord(String word, Context context){
+
+        if(word.contains("INTERMEDIATE")){
+            return context.getString(R.string.intermediate);
         }
-        else return context.getString(R.string.week);
+        else if(word.contains("ADVANCED"))
+            return context.getString(R.string.advanced);
+        else
+            return context.getString(R.string.basic);
     }
 
     public static void setText(TextView textViewId, int numberOfViews, String viewString) {
@@ -63,6 +67,17 @@ public class LanguageUtils {
         else{
             textViewId.setText(viewString+" ");
             textViewId.append(Html.fromHtml("<b>"+numberConverter(numberOfViews)+"</b> "));
+        }
+    }
+
+    public static void worldWideSetText(TextView textViewId,String startString , String endString){
+        if(Constants.LANGUAGE==Locale.ENGLISH) {
+            textViewId.setText(startString+"");
+            textViewId.append(" "+endString);
+        }
+        else{
+            textViewId.setText(startString+" ");
+            textViewId.append(" "+endString);
         }
     }
 }

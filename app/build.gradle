@@ -73,6 +73,19 @@ android {
             manifestPlaceholders = [hostName: "qa.profive.co", hostName_www: "www.qa.profive.co", appName: "P5M LOCAL", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
 
         }
+        internationlization {
+            def id = 'com.p5m.me'
+            applicationId id
+            buildConfigField "boolean", "IS_DEBUG", "true"
+            buildConfigField "boolean", "IS_PRODUCTION", "false"
+            buildConfigField "String", "MIXPANEL_KEY", '\"705daac4d807e105c1ddc350c9324ca2\"'
+            buildConfigField "String", "SENDER_ID", '\"109210713388\"'
+            buildConfigField "String", "BASE_URL", '\"http://136.243.22.168:8080\"'
+            buildConfigField "String", "BASE_URL_MIDL", '\"/internationlization-midl/\"'
+            buildConfigField "String", "BASE_URL_SHARE", '\"http://qa.profive.co\"'
+            manifestPlaceholders = [hostName: "qa.profive.co", hostName_www: "www.qa.profive.co", appName: "P5M LOCAL", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
+
+        }
         dev {
             def id = 'com.p5m.me'
             applicationId id

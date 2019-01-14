@@ -35,6 +35,7 @@ import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
+import com.p5m.me.utils.Utility;
 import com.p5m.me.view.activity.Main.ClassProfileActivity;
 import com.p5m.me.view.activity.Main.GymProfileActivity;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
@@ -194,7 +195,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
         classListAdapter = new ClassListAdapter(context, shownInScreen, true, this);
         recyclerViewClass.setAdapter(classListAdapter);
-
+//        Utility.verifyLocationInfoPermissions(activ);
         setRecommendedClassView();
     }
 
