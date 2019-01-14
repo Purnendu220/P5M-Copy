@@ -41,7 +41,7 @@ public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.shownInScreen = shownInScreen;
         this.showLoader = showLoader;
 
-        listLoader = new ListLoader(true, "No more classes");
+        listLoader = new ListLoader(true, context.getString(R.string.no_more_classes));
     }
 
     public List<Object> getList() {

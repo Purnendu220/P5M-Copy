@@ -52,7 +52,7 @@ public class ContinueUser extends BaseActivity implements View.OnClickListener {
 
         try {
             ImageUtils.setImage(context, TempStorage.getUser().getProfileImage(), R.drawable.profile_holder, imageView);
-            buttonContinue.setText("Continue as " + TempStorage.getUser().getFirstName());
+            buttonContinue.setText(getString(R.string.continue_as)+" " + TempStorage.getUser().getFirstName());
         } catch (Exception e) {
             e.printStackTrace();
         }

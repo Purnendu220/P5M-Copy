@@ -69,9 +69,9 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
 
         ButterKnife.bind(activity);
 
-        String spanText = "By login you are agree to our terms of service and privacy policy";
-        String terms = "terms of service";
-        String policy = "privacy policy";
+        String spanText = activity.getString(R.string.terms_of_service);
+        String terms = activity.getString(R.string.terms_service);
+        String policy = activity.getString(R.string.privacy_policy);
 
         Spannable span = Spannable.Factory.getInstance().newSpannable(spanText);
 

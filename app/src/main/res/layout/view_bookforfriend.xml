@@ -30,7 +30,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="left"
                 android:textSize="@dimen/text_extra_large"
-                android:text="@string/almostthere"
                 android:textColor="@color/black"
                 android:fontFamily="sans-serif-medium"
                 android:visibility="gone"
@@ -58,10 +57,12 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="@dimen/text_small"
-                android:text="2 classes will be debited from your balance"
+                android:text="@string/by_making_this_booking_2_classes_will_be_deducted_from_your_balance_book_with_a_friend"
                 android:textColor="@color/black"
                 android:fontFamily="sans-serif"
                 android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_marginRight="@dimen/margin_10"
 
                 />
             <android.support.design.widget.TextInputLayout

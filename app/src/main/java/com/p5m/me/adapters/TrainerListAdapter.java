@@ -40,7 +40,7 @@ public class TrainerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         list = new ArrayList<>();
         this.shownInScreen = shownInScreen;
         this.showLoader = showLoader;
-        listLoader = new ListLoader(true, "No more trainers");
+        listLoader = new ListLoader(true, context.getString(R.string.no_more_trainers));
     }
 
     public List<Object> getList() {

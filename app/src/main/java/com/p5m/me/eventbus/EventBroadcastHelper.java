@@ -1,5 +1,6 @@
 package com.p5m.me.eventbus;
 
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.provider.Settings;
@@ -210,6 +211,7 @@ public static void sendBookWithFriendEvent(BookWithFriendData friendData){
             LogUtils.exception(e);
         }
     }
+
 
 
 }

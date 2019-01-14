@@ -45,7 +45,7 @@ public class RatingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.shownInScreen = shownInScreen;
         this.showLoader = showLoader;
 
-        listLoader = new ListLoader(true, "No more ratings");
+        listLoader = new ListLoader(true, context.getString(R.string.no_more_ratings));
     }
 
     public List<Object> getList() {

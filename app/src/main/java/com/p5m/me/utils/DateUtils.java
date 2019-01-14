@@ -1,5 +1,7 @@
 package com.p5m.me.utils;
 
+import com.p5m.me.fxn.utility.Constants;
+
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,21 +17,21 @@ import java.util.concurrent.TimeUnit;
 
 public class DateUtils {
 
-    public static DateFormatSymbols dfs = new DateFormatSymbols(Locale.ENGLISH);
+    public static DateFormatSymbols dfs = new DateFormatSymbols(Locale.getDefault());
 
-    private static SimpleDateFormat classTime = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
-    private static SimpleDateFormat classTimeFormat = new SimpleDateFormat("h:mma", Locale.ENGLISH);
-    private static SimpleDateFormat classDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-    private static SimpleDateFormat classDateSec = new SimpleDateFormat("dd-mm-yyyy", Locale.ENGLISH);
-    private static SimpleDateFormat classDateExpiry = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+    private static SimpleDateFormat classTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+    private static SimpleDateFormat classTimeFormat = new SimpleDateFormat("h:mma", Locale.getDefault());
+    private static SimpleDateFormat classDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+    private static SimpleDateFormat classDateSec = new SimpleDateFormat("dd-mm-yyyy", Locale.getDefault());
+    private static SimpleDateFormat classDateExpiry = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     private static SimpleDateFormat classDateTime = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault());
-    private static SimpleDateFormat classDateFormat = new SimpleDateFormat("EEE, MMM d, yyyy", Locale.ENGLISH);
-    private static SimpleDateFormat packageDateFormat = new SimpleDateFormat("MMM d, yyyy", Locale.ENGLISH);
-    private static SimpleDateFormat notificationDate = new SimpleDateFormat("h:mm a, MMM d", Locale.ENGLISH);
-    private static SimpleDateFormat classRatingDate = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
+    private static SimpleDateFormat classDateFormat = new SimpleDateFormat("EEE, d MMM yyyy", Locale.getDefault());
+    private static SimpleDateFormat packageDateFormat = new SimpleDateFormat("d MMM yyyy", Locale.getDefault());
+    private static SimpleDateFormat notificationDate = new SimpleDateFormat("h:mm a, MMM d", Locale.getDefault());
+    private static SimpleDateFormat classRatingDate = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
     private static SimpleDateFormat classTime24Format = new SimpleDateFormat("HH:mm",Locale.getDefault());
     private static SimpleDateFormat classTime12Format = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
-    private static SimpleDateFormat ExtendedDateFormat = new SimpleDateFormat("MMM d", Locale.ENGLISH);
+    private static SimpleDateFormat ExtendedDateFormat = new SimpleDateFormat("d MMM ", Locale.getDefault());
 
 
     public static String getMonthName(int monthCode) {
@@ -118,7 +120,7 @@ public class DateUtils {
 
     public static String getClassTime(String from, String till) {
         try {
-            return "  " + classTimeFormat.format(classTime.parse(from)).replace(".", "").toUpperCase() + " - " +
+            return " " + classTimeFormat.format(classTime.parse(from)).replace(".", "").toUpperCase() + " - " +
                     classTimeFormat.format(classTime.parse(till)).replace(".", "").toUpperCase();
         } catch (Exception e) {
             e.printStackTrace();
@@ -139,6 +141,7 @@ public class DateUtils {
 
     public static String getPackageClassDate(String date) {
         try {
+
             return packageDateFormat.format(classDate.parse(date));
         } catch (Exception e) {
             e.printStackTrace();
@@ -146,6 +149,8 @@ public class DateUtils {
         }
         return "";
     }
+
+
 
     public static String getDateFormatter(Date date) {
         try {

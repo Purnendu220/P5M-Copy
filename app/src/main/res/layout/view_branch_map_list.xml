@@ -30,7 +30,6 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
                     android:gravity="left"
-                    android:text="Branch Name"
                     android:textAllCaps="true"
                     android:textColor="@color/theme_dark_light_text"
                     android:textSize="@dimen/text_large"

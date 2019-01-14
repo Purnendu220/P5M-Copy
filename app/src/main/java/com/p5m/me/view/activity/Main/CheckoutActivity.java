@@ -27,19 +27,20 @@ import com.p5m.me.data.main.PaymentUrl;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.data.request.PaymentUrlRequest;
 import com.p5m.me.data.request.PromoCodeRequest;
-import com.p5m.me.eventbus.EventBroadcastHelper;
+import com.p5m.me.fxn.utility.Constants;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
-import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,15 +48,19 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.p5m.me.view.activity.Main.CheckoutActivity.CheckoutFor.CLASS_PURCHASE_WITH_PACKAGE;
-import static com.p5m.me.view.activity.Main.CheckoutActivity.CheckoutFor.EXTENSION;
-import static com.p5m.me.view.activity.Main.CheckoutActivity.CheckoutFor.PACKAGE;
-import static com.p5m.me.view.activity.Main.CheckoutActivity.CheckoutFor.SPECIAL_CLASS;
+import static com.p5m.me.fxn.utility.Constants.CheckoutFor.CLASS_PURCHASE_WITH_PACKAGE;
+import static com.p5m.me.fxn.utility.Constants.CheckoutFor.EXTENSION;
+import static com.p5m.me.fxn.utility.Constants.CheckoutFor.PACKAGE;
+import static com.p5m.me.fxn.utility.Constants.CheckoutFor.SPECIAL_CLASS;
+import static com.p5m.me.utils.LanguageUtils.matchWord;
+import static com.p5m.me.utils.LanguageUtils.numberConverter;
+
 
 public class CheckoutActivity extends BaseActivity implements View.OnClickListener, NetworkCommunicator.RequestListener {
 
     private Handler handler;
     private Runnable nextScreenRunnable;
+    private String refId;
 
     /*
             if user is purchasing a package
@@ -64,9 +69,8 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         CheckoutActivity.aPackage = aPackage;
         CheckoutActivity.classModel = null;
         CheckoutActivity.checkoutFor = PACKAGE;
-        CheckoutActivity.mNumberOfPackagesToBuy=1;
-        CheckoutActivity.friendsDetail=null;
-
+        CheckoutActivity.mNumberOfPackagesToBuy = 1;
+        CheckoutActivity.friendsDetail = null;
 
 
         openActivity(context);
@@ -81,20 +85,19 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         CheckoutActivity.selectedPacakageFromList = null;
         CheckoutActivity.checkoutFor = CLASS_PURCHASE_WITH_PACKAGE;
         CheckoutActivity.mNumberOfPackagesToBuy = 1;
-        CheckoutActivity.friendsDetail=null;
-
+        CheckoutActivity.friendsDetail = null;
 
 
         openActivity(context);
     }
 
-    public static void openActivity(Context context, Package aPackage, ClassModel classModel,int mNumberOfPackagesToBuy,BookWithFriendData friendsDetail) {
+    public static void openActivity(Context context, Package aPackage, ClassModel classModel, int mNumberOfPackagesToBuy, BookWithFriendData friendsDetail) {
         CheckoutActivity.aPackage = aPackage;
         CheckoutActivity.classModel = classModel;
         CheckoutActivity.selectedPacakageFromList = null;
         CheckoutActivity.checkoutFor = CLASS_PURCHASE_WITH_PACKAGE;
-        CheckoutActivity.mNumberOfPackagesToBuy=mNumberOfPackagesToBuy;
-        CheckoutActivity.friendsDetail=friendsDetail;
+        CheckoutActivity.mNumberOfPackagesToBuy = mNumberOfPackagesToBuy;
+        CheckoutActivity.friendsDetail = friendsDetail;
 
         openActivity(context);
     }
@@ -102,7 +105,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     /*
     if user is purchasing a special class
      */
-    public static void openActivity(Context context, ClassModel specialClassModel,int mNumberOfPackagesToBuy) {
+    public static void openActivity(Context context, ClassModel specialClassModel, int mNumberOfPackagesToBuy) {
         CheckoutActivity.aPackage = null;
         CheckoutActivity.selectedPacakageFromList = null;
         CheckoutActivity.classModel = specialClassModel;
@@ -111,33 +114,30 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         CheckoutActivity.friendsDetail = null;
 
 
-
-
         openActivity(context);
     }
-    public static void openActivity(Context context, ClassModel specialClassModel,int mNumberOfPackagesToBuy,BookWithFriendData friendsDetail) {
+
+    public static void openActivity(Context context, ClassModel specialClassModel, int mNumberOfPackagesToBuy, BookWithFriendData friendsDetail) {
         CheckoutActivity.aPackage = null;
         CheckoutActivity.selectedPacakageFromList = null;
         CheckoutActivity.classModel = specialClassModel;
         CheckoutActivity.checkoutFor = SPECIAL_CLASS;
-        CheckoutActivity.mNumberOfPackagesToBuy=mNumberOfPackagesToBuy;
-        CheckoutActivity.friendsDetail=friendsDetail;
-
-
+        CheckoutActivity.mNumberOfPackagesToBuy = mNumberOfPackagesToBuy;
+        CheckoutActivity.friendsDetail = friendsDetail;
 
 
         openActivity(context);
     }
-    public static void openActivity(Context context, ValidityPackageList selectedPacakageFromList, UserPackage userPackage,int navigatedFrom) {
+
+    public static void openActivity(Context context, ValidityPackageList selectedPacakageFromList, UserPackage userPackage, int navigatedFrom) {
         CheckoutActivity.aPackage = null;
         CheckoutActivity.classModel = null;
         CheckoutActivity.selectedPacakageFromList = selectedPacakageFromList;
         CheckoutActivity.checkoutFor = EXTENSION;
         CheckoutActivity.userPackage = userPackage;
         CheckoutActivity.navigatinFrom = navigatedFrom;
-        CheckoutActivity.mNumberOfPackagesToBuy=1;
-        CheckoutActivity.friendsDetail=null;
-
+        CheckoutActivity.mNumberOfPackagesToBuy = 1;
+        CheckoutActivity.friendsDetail = null;
 
 
         openActivity(context);
@@ -149,25 +149,17 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         context.startActivity(intent);
     }
 
-    public enum CheckoutFor {
-        PACKAGE,
-        SPECIAL_CLASS,
-        CLASS_PURCHASE_WITH_PACKAGE,
-        EXTENSION,
-        BOOKWITHFRIEND
-    }
+
 
     private static Package aPackage;
     private static Package aPackage1;
     private static int mNumberOfPackagesToBuy = 1;
     private static ClassModel classModel;
-    private static CheckoutFor checkoutFor;
+    private static Constants.CheckoutFor checkoutFor;
     private static ValidityPackageList selectedPacakageFromList;
     private static UserPackage userPackage;
     private static int navigatinFrom;
     private static BookWithFriendData friendsDetail;
-
-
 
 
     @BindView(R.id.textViewPackageName)
@@ -245,12 +237,6 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     TextView textViewCancellationPolicyBWF;
 
 
-
-
-
-
-
-
     private PromoCode promoCode;
     private MaterialDialog materialDialog;
 
@@ -282,30 +268,32 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 layoutPromoCode.setVisibility(View.GONE);
 
                 if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
-                    String validityPeriod = aPackage.getValidityPeriod();
-                    validityPeriod = Helper.capitalize(validityPeriod);
+                    String validityPeriod = matchWord(aPackage.getValidityPeriod(),context);
+                   /* validityPeriod = Helper.capitalize(validityPeriod);
                     if (validityPeriod.charAt(validityPeriod.length() - 1) == 's') {
                         validityPeriod = validityPeriod.substring(0, validityPeriod.length() - 1);
-                    }
+                    }*/
 
-                    textViewPackageValidity.setText("Valid for " + aPackage.getDuration() + " " + AppConstants.plural(validityPeriod, aPackage.getDuration()));
+                    textViewPackageValidity.setText(context.getString(R.string.valid_for)+" " + numberConverter(aPackage.getDuration()) + " " + AppConstants.plural(validityPeriod, aPackage.getDuration()));
                     textViewLimit.setVisibility(View.VISIBLE);
-                    textViewPackageClasses.setText(aPackage.getNoOfClass() + " " + AppConstants.pluralES("Class", aPackage.getNoOfClass()));
+                    textViewPackageClasses.setText(numberConverter(aPackage.getNoOfClass()) + " " + AppConstants.pluralES(getString(R.string.one_class), aPackage.getNoOfClass())+" "+context.getString(R.string.at_any_gym));
 
 
                 } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
-                    textViewPackageValidity.setText("Valid for " + aPackage.getGymName());
+//                    textViewPackageValidity.setText(getString(R.string.valid_for) + " " + aPackage.getGymName());
+                    textViewPackageValidity.setText(context.getString(R.string.valid_for) + " " + DateUtils.getPackageClassDate(classModel.getClassDate()) + " -" + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()));
+
                     textViewLimit.setVisibility(View.GONE);
                     textViewCancellationPolicyGeneralToggle.setVisibility(View.VISIBLE);
                     textViewCancellationPolicyGenral.setText(R.string.membership_drop_in_info);
-                    textViewPackageClasses.setText(mNumberOfPackagesToBuy+" Class(s)");
 
-                    textViewPackageClasses.setText(mNumberOfPackagesToBuy + " " + AppConstants.pluralES("Class", mNumberOfPackagesToBuy));
+                    textViewPackageClasses.setText(numberConverter(mNumberOfPackagesToBuy) + " " + AppConstants.pluralES(getString(R.string.one_class), mNumberOfPackagesToBuy)+" at "+classModel.getGymBranchDetail().getGymName());
 
                 }
 
-                textViewPackageName.setText(Html.fromHtml(mNumberOfPackagesToBuy+"X <b>" + aPackage.getName() + "</b>"));
-                textViewPrice.setText(aPackage.getCost() + " " + context.getString(R.string.currency));
+                textViewPackageName.setText(Html.fromHtml(numberConverter(mNumberOfPackagesToBuy) + "X <b>" + aPackage.getName() + "</b>"));
+//                textViewPrice.setText(aPackage.getCost() + " " + context.getString(R.string.currency));
+                textViewPrice.setText(LanguageUtils.numberConverter(aPackage.getCost()) + " " + context.getString(R.string.currency));
 
                 textViewPackageInfo.setVisibility(aPackage.getDescription().isEmpty() ? View.GONE : View.VISIBLE);
                 textViewPackageInfo.setText(aPackage.getDescription());
@@ -324,24 +312,26 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 textViewTopTitle.setVisibility(View.GONE);
 
                 textViewPackageName.setText(Html.fromHtml("<b>" + classModel.getTitle() + "</b>"));
-                if(mNumberOfPackagesToBuy>1){
-                    textViewPrice.setText(mNumberOfPackagesToBuy+"x "+classModel.getPrice() + " " + context.getString(R.string.currency));
+                if (mNumberOfPackagesToBuy > 1) {
+//                    textViewPrice.setText(mNumberOfPackagesToBuy + "x " + classModel.getPrice() + " " + context.getString(R.string.currency));
+                    textViewPrice.setText(numberConverter(mNumberOfPackagesToBuy) + "x " + NumberFormat.getNumberInstance(Constants.LANGUAGE).format(classModel.getPrice())+ " " + context.getString(R.string.currency));
 
-                }else{
-                    textViewPrice.setText(classModel.getPrice() + " " + context.getString(R.string.currency));
+                } else {
+//                    textViewPrice.setText(classModel.getPrice() + " " + context.getString(R.string.currency));
+                    textViewPrice.setText(LanguageUtils.numberConverter(classModel.getPrice()) + " " + context.getString(R.string.currency));
 
                 }
 
                 textViewCancellationPolicy.setText(classModel.getReminder());
                 Helper.setPackageImage(imageViewPackageImage, AppConstants.Values.SPECIAL_CLASS_ID);
-                validityUnit.setText(mNumberOfPackagesToBuy+" "+AppConstants.pluralES("Class", mNumberOfPackagesToBuy));
+                validityUnit.setText(numberConverter(mNumberOfPackagesToBuy) + " " + AppConstants.pluralES(getString(R.string.one_class), mNumberOfPackagesToBuy)+" at "+classModel.getTitle());
 
                 setPrice();
 
                 break;
             case EXTENSION:
-                String validUntill=DateUtils.getExtendedExpiryDate(userPackage.getExpiryDate(),selectedPacakageFromList.getDuration());
-                String message=String.format(mContext.getString(R.string.valid_intil),validUntill);
+                String validUntill = DateUtils.getExtendedExpiryDate(userPackage.getExpiryDate(), selectedPacakageFromList.getDuration());
+                String message = String.format(mContext.getString(R.string.valid_intil), validUntill);
                 layoutSpecialClassDetails.setVisibility(View.VISIBLE);
                 layoutNormalClassDetails.setVisibility(View.GONE);
                 textViewPackageValidityExtend.setVisibility(View.VISIBLE);
@@ -350,26 +340,27 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 textViewTopTitle.setVisibility(View.GONE);
                 textViewPackageName.setText(R.string.add_more_time);
                 textViewCancellationPolicyToggle.setText(R.string.extention_policy);
-                textViewPrice.setText(selectedPacakageFromList.getCost() + " " + context.getString(R.string.currency));
+//                textViewPrice.setText(selectedPacakageFromList.getCost() + " " + context.getString(R.string.currency));
+                textViewPrice.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost()) + " " + context.getString(R.string.currency));
                 int remainigExtension;
-                if(userPackage.getTotalRemainingWeeks()!=null){
-                    remainigExtension = userPackage.getTotalRemainingWeeks()-selectedPacakageFromList.getDuration();
-                }else{
+                if (userPackage.getTotalRemainingWeeks() != null) {
+                    remainigExtension = userPackage.getTotalRemainingWeeks() - selectedPacakageFromList.getDuration();
+                } else {
                     remainigExtension = selectedPacakageFromList.getDuration();
                 }
-                String extentTerm=String.format(mContext.getString(R.string.extend_term),selectedPacakageFromList.getDuration(),remainigExtension);
+                String extentTerm = String.format(mContext.getString(R.string.extend_term), selectedPacakageFromList.getDuration(), remainigExtension);
                 textViewCancellationPolicy.setText(extentTerm);
-                validityUnit.setText(selectedPacakageFromList.getDuration()+" Week(s) "+message);
-                textViewPackageValidityExtend.setText("Valid for " + userPackage.getPackageName()+" Package");
+                validityUnit.setText(numberConverter(selectedPacakageFromList.getDuration()) + " " + getString(R.string.weeks) + message);
+                textViewPackageValidityExtend.setText(getString(R.string.valid_for) + " " + userPackage.getPackageName() + " "+context.getString(R.string.package_name));
 
                 Helper.setPackageImage(imageViewPackageImage, AppConstants.Values.SPECIAL_CLASS_ID);
-               setPrice();
+                setPrice();
 
-               break;
+                break;
 
 
         }
-        if(aPackage!=null && aPackage.getPromoResponseDto()!=null && aPackage.getPromoResponseDto().getDiscountType()!=null){
+        if (aPackage != null && aPackage.getPromoResponseDto() != null && aPackage.getPromoResponseDto().getDiscountType() != null) {
             applyPromocode(aPackage.getPromoResponseDto());
         }
     }
@@ -434,14 +425,14 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
                 if (promoCode != null) {
                     DecimalFormat numberFormat = new DecimalFormat("#.00");
-                    textViewTotal.setText(promoCode.getPriceAfterDiscount() + " " + context.getString(R.string.currency));
-                    textViewPay.setText("Pay " + promoCode.getPriceAfterDiscount() + " " + context.getString(R.string.currency));
-                    textViewPromoCodePrice.setText("- " + numberFormat.format((promoCode.getPrice() - promoCode.getPriceAfterDiscount()))  + " " + context.getString(R.string.currency));
+                    textViewTotal.setText(LanguageUtils.numberConverter(promoCode.getPriceAfterDiscount()) + " " + context.getString(R.string.currency));
+                    textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(promoCode.getPriceAfterDiscount()) + " " + context.getString(R.string.currency));
+                    textViewPromoCodePrice.setText("- " + LanguageUtils.numberConverter(((promoCode.getPrice() - promoCode.getPriceAfterDiscount()))) + " " + context.getString(R.string.currency));
                     layoutPromoCode.setVisibility(View.VISIBLE);
                     buttonPromoCode.setText(context.getString(R.string.remove_promo_code));
 
                     try {
-                        if(materialDialog!=null){
+                        if (materialDialog != null) {
                             materialDialog.dismiss();
 
                         }
@@ -452,20 +443,20 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
                 } else {
                     layoutPromoCode.setVisibility(View.GONE);
-                    textViewTotal.setText(aPackage.getCost() + " " + context.getString(R.string.currency));
-                    textViewPay.setText("Pay " + aPackage.getCost() + " " + context.getString(R.string.currency));
+                    textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost()) + " " + context.getString(R.string.currency));
+                    textViewPay.setText(getString(R.string.pay) + " " +LanguageUtils.numberConverter( aPackage.getCost()) + " " + context.getString(R.string.currency));
                     buttonPromoCode.setText(context.getString(R.string.apply_promo_code));
                 }
                 break;
 
             case SPECIAL_CLASS:
-                textViewTotal.setText(mNumberOfPackagesToBuy*classModel.getPrice() + " " + context.getString(R.string.currency));
-                textViewPay.setText("Pay " + mNumberOfPackagesToBuy*classModel.getPrice() + " " + context.getString(R.string.currency));
+                textViewTotal.setText(LanguageUtils.numberConverter(mNumberOfPackagesToBuy * classModel.getPrice()) + " " + context.getString(R.string.currency));
+                textViewPay.setText(getString(R.string.pay) + " " +LanguageUtils.numberConverter( mNumberOfPackagesToBuy * classModel.getPrice()) + " " + context.getString(R.string.currency));
 
                 break;
             case EXTENSION:
-                textViewTotal.setText(selectedPacakageFromList.getCost() + " " + context.getString(R.string.currency));
-                textViewPay.setText("Pay " + selectedPacakageFromList.getCost() + " " + context.getString(R.string.currency));
+                textViewTotal.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost()) + " " + context.getString(R.string.currency));
+                textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(selectedPacakageFromList.getCost()) + " " + context.getString(R.string.currency));
 
                 break;
 
@@ -522,16 +513,16 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     case PACKAGE:
                         textViewOk.setVisibility(View.INVISIBLE);
                         networkCommunicator.applyPromoCode(
-                                new PromoCodeRequest(promoCodeText, aPackage.getId(), TempStorage.getUser().getId(),mNumberOfPackagesToBuy),
+                                new PromoCodeRequest(promoCodeText, aPackage.getId(), TempStorage.getUser().getId(), mNumberOfPackagesToBuy),
                                 CheckoutActivity.this, false);
                         break;
                     case CLASS_PURCHASE_WITH_PACKAGE:
                         textViewOk.setVisibility(View.INVISIBLE);
-                        if(aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)){
+                        if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                             networkCommunicator.applyPromoCode(
-                                    new PromoCodeRequest(classModel.getGymBranchDetail().getGymId(), promoCodeText, aPackage.getId(), TempStorage.getUser().getId(),mNumberOfPackagesToBuy),
+                                    new PromoCodeRequest(classModel.getGymBranchDetail().getGymId(), promoCodeText, aPackage.getId(), TempStorage.getUser().getId(), mNumberOfPackagesToBuy),
                                     CheckoutActivity.this, false);
-                        }else{
+                        } else {
                             networkCommunicator.applyPromoCode(
                                     new PromoCodeRequest(classModel.getGymBranchDetail().getGymId(), promoCodeText, aPackage.getId(), TempStorage.getUser().getId()),
                                     CheckoutActivity.this, false);
@@ -562,23 +553,24 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
             case CLASS_PURCHASE_WITH_PACKAGE: {
                 textViewPay.setText(context.getResources().getString(R.string.please_wait));
                 textViewPay.setEnabled(false);
+
                 PaymentUrlRequest paymentUrlRequest;
-                if(friendsDetail!=null){
+                if (friendsDetail != null) {
                     List<BookWithFriendData> data = new ArrayList<>();
                     data.add(friendsDetail);
-                    if(aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)){
+                    if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                         paymentUrlRequest = new PaymentUrlRequest(TempStorage.getUser().getId(),
                                 aPackage.getId(), classModel.getClassSessionId(),
-                                classModel.getGymBranchDetail().getGymId(),data,aPackage.getNoOfClass());
-                    }else{
+                                classModel.getGymBranchDetail().getGymId(), data, aPackage.getNoOfClass());
+                    } else {
                         paymentUrlRequest = new PaymentUrlRequest(TempStorage.getUser().getId(),
                                 aPackage.getId(), classModel.getClassSessionId(),
-                                classModel.getGymBranchDetail().getGymId(),data);
+                                classModel.getGymBranchDetail().getGymId(), data);
                     }
 
 
-                }else{
-                     paymentUrlRequest = new PaymentUrlRequest(TempStorage.getUser().getId(),
+                } else {
+                    paymentUrlRequest = new PaymentUrlRequest(TempStorage.getUser().getId(),
                             aPackage.getId(), classModel.getClassSessionId(),
                             classModel.getGymBranchDetail().getGymId());
                 }
@@ -592,26 +584,28 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
             }
             break;
             case SPECIAL_CLASS: {
+
                 textViewPay.setText(context.getResources().getString(R.string.please_wait));
                 textViewPay.setEnabled(false);
-                if(friendsDetail!=null){
+                if (friendsDetail != null) {
                     List<BookWithFriendData> data = new ArrayList<>();
                     data.add(friendsDetail);
                     networkCommunicator.purchasePackageForClass(new PaymentUrlRequest(TempStorage.getUser().getId(),
-                            classModel.getClassSessionId(), classModel.getGymBranchDetail().getGymId(),data,mNumberOfPackagesToBuy), this, false);
+                            classModel.getClassSessionId(), classModel.getGymBranchDetail().getGymId(), data, mNumberOfPackagesToBuy), this, false);
 
-                }else{
+                } else {
                     networkCommunicator.purchasePackageForClass(new PaymentUrlRequest(TempStorage.getUser().getId(),
                             classModel.getClassSessionId(), classModel.getGymBranchDetail().getGymId()), this, false);
 
                 }
-                           }
+            }
             break;
             case EXTENSION: {
+
                 textViewPay.setText(context.getResources().getString(R.string.please_wait));
                 textViewPay.setEnabled(false);
-                PaymentUrlRequest paymentUrlRequest = new PaymentUrlRequest(TempStorage.getUser().getId(),selectedPacakageFromList.getId(),
-                        userPackage.getId(),"Extension");
+                PaymentUrlRequest paymentUrlRequest = new PaymentUrlRequest(TempStorage.getUser().getId(), selectedPacakageFromList.getId(),
+                        userPackage.getId(), "Extension");
 
                 networkCommunicator.purchasePackageForClass(paymentUrlRequest, this, false);
             }
@@ -626,11 +620,12 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 applyPromocode(((ResponseModel<PromoCode>) response).data);
                 break;
             case NetworkCommunicator.RequestCode.BUY_PACKAGE:
-                PaymentUrl paymentUrlResponse=((ResponseModel<PaymentUrl>) response).data;
-                if(paymentUrlResponse.getCompleted()){
+
+                PaymentUrl paymentUrlResponse = ((ResponseModel<PaymentUrl>) response).data;
+                if (paymentUrlResponse.getCompleted()) {
                     redirectOnResult();
-                    }
-                    else{
+                } else {
+
                     setPrice();
                     textViewPay.setEnabled(true);
                     String packageName = aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName();
@@ -670,61 +665,47 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == AppConstants.ResultCode.PAYMENT_SUCCESS && resultCode == RESULT_OK) {
-            redirectOnResult();
 
+        if (requestCode == AppConstants.ResultCode.PAYMENT_SUCCESS && resultCode == RESULT_OK) {
+
+            refId=data.getStringExtra(AppConstants.DataKey.REFERENCE_ID);
+            redirectOnResult();
         }
     }
 
-    private void redirectOnResult(){
+    private void redirectOnResult() {
+        finish();
+//        PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,refId,aPackage,classModel,checkoutFor,userPackage,selectedPacakageFromList);
         switch (checkoutFor) {
             case PACKAGE:
-                EventBroadcastHelper.sendPackagePurchased();
+
+                PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,
+                        refId, aPackage, null, checkoutFor, null, null,mNumberOfPackagesToBuy);
+
                 finish();
                 break;
             case CLASS_PURCHASE_WITH_PACKAGE:
-                classModel.setUserJoinStatus(true);
-                EventBroadcastHelper.sendPackagePurchasedForClass(classModel);
-                HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE);
-                sendAutoJoinEvent();
+                PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,
+                        refId, aPackage, classModel, checkoutFor, null, null,mNumberOfPackagesToBuy);
+
                 break;
             case SPECIAL_CLASS:
-                classModel.setUserJoinStatus(true);
-                EventBroadcastHelper.sendClassPurchased(classModel);
-                HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE);
-                sendAutoJoinEvent();
+                PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,
+                        refId, null, classModel, checkoutFor, null, selectedPacakageFromList,mNumberOfPackagesToBuy);
+
                 break;
             case EXTENSION:
-                if(navigatinFrom==AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE){
-                    HomeActivity.show(context, AppConstants.Tab.TAB_MY_PROFILE);
+                PaymentConfirmationActivity.openActivity(context, navigatinFrom,
+                        refId, null, null, checkoutFor, userPackage, selectedPacakageFromList,mNumberOfPackagesToBuy);
 
-                }
-                else if(navigatinFrom==AppConstants.AppNavigation.NAVIGATION_FROM_MEMBERSHIP){
-                    EventBroadcastHelper.sendPackagePurchased();
-
-                }
-                else{
-                    HomeActivity.show(context, AppConstants.Tab.TAB_MY_PROFILE);
-
-                }
-                finish();
                 break;
         }
     }
-    private void sendAutoJoinEvent() {
-        nextScreenRunnable = new Runnable() {
-            @Override
-            public void run() {
-                EventBroadcastHelper.classAutoJoin(context,classModel);
 
-            }
-        };
 
-        handler.postDelayed(nextScreenRunnable, 1000);
-    }
-    private void applyPromocode(PromoCode promo){
+    private void applyPromocode(PromoCode promo) {
         try {
-            if(materialDialog!=null){
+            if (materialDialog != null) {
                 final TextView textViewOk = (TextView) materialDialog.findViewById(R.id.textViewOk);
                 textViewOk.setVisibility(View.VISIBLE);
             }

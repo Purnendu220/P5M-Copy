@@ -4,15 +4,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.view.fragment.FindClass;
 import com.p5m.me.view.fragment.MyProfile;
 import com.p5m.me.view.fragment.MySchedule;
 import com.p5m.me.view.fragment.Trainers;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeAdapter extends FragmentStatePagerAdapter {
 
