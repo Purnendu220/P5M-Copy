@@ -21,6 +21,8 @@ import com.p5m.me.utils.WordUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.p5m.me.utils.LanguageUtils.matchFitnessWord;
+
 /**
  * Created by MyU10 on 3/10/2018.
  */
@@ -183,7 +185,8 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
                         layoutFitnessLevel.setVisibility(View.GONE);
                         break;
                 }
-                textViewFitnessLevel.setText(WordUtils.capitalize(model.getFitnessLevel().toLowerCase()));
+                setTextFitnessLevel(model);
+//                textViewFitnessLevel.setText(WordUtils.capitalize(model.getFitnessLevel().toLowerCase()));
             }else{
                 layoutFitnessLevel.setVisibility(View.GONE);
             }
@@ -232,5 +235,9 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
         } else {
             itemView.setVisibility(View.GONE);
         }
+    }
+    private void setTextFitnessLevel(ClassModel model) {
+        String fitnessLevel = matchFitnessWord(model.getFitnessLevel(),context);
+        textViewFitnessLevel.setText(fitnessLevel);
     }
 }

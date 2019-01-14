@@ -32,7 +32,6 @@ import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
-import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -46,7 +45,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;

@@ -111,7 +111,6 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
 
     private void paymentSuccessful(String url) {
 //        networkCommunicator.getMyUser(this, false);
-        setResult(RESULT_OK);
         String refId=getRefferenceId (url);
 //        Toast.makeText(this,refId,Toast.LENGTH_LONG).show();
         MixPanel.trackMembershipPurchase(couponCode, packageName);
@@ -124,7 +123,7 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
 
         Intent returnIntent = getIntent();
         returnIntent.putExtra(REFERENCE_ID,refId);
-        setResult(Activity.RESULT_OK,returnIntent);
+        setResult(RESULT_OK,returnIntent);
         finish();
         overridePendingTransition(0, 0);
 
