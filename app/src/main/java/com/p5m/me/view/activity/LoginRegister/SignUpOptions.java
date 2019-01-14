@@ -166,7 +166,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
             @Override
             public void onClick(View view) {
                 loginTime = System.currentTimeMillis() - 5 * 1000;
-                LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile", "email"));
+                LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile", "email","user_gender"));
                 layoutProgress.setVisibility(View.VISIBLE);
             }
         });

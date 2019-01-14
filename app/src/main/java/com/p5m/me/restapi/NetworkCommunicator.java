@@ -3,6 +3,7 @@ package com.p5m.me.restapi;
 import android.content.Context;
 import android.graphics.Bitmap;
 
+import com.facebook.login.LoginManager;
 import com.p5m.me.data.City;
 import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.FollowResponse;
@@ -192,12 +193,14 @@ public class NetworkCommunicator {
             public void onFailure(Call<ResponseModel<User>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator loginFB onFailure " + message);
                 requestListener.onApiFailure(message, requestCode);
+                LoginManager.getInstance().logOut();
             }
 
             @Override
             public void onResponse(Call<ResponseModel<User>> call, Response<ResponseModel<User>> restResponse, ResponseModel<User> response) {
                 LogUtils.networkSuccess("NetworkCommunicator loginFB onResponse data " + response);
                 TempStorage.setAuthToken(restResponse.headers().get(AppConstants.ApiParamKey.MYU_AUTH_TOKEN));
+                MyPreferences.getInstance().setLoginWithFacebook(true);
                 requestListener.onApiSuccess(response, requestCode);
 
 //                EventBroadcastHelper.sendDeviceUpdate(context);

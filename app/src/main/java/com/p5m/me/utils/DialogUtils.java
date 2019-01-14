@@ -181,6 +181,28 @@ public class DialogUtils {
                 .onPositive(singleButtonCallback)
                 .show();
     }
+    public static void showBasicMessageCancelableFalse(Context context,
+                                                       String message,
+                                                       String buttonText,
+                                                       MaterialDialog.SingleButtonCallback singleButtonCallback) {
+
+        TextView textView = new TextView(context);
+        int dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
+
+        textView.setPadding(dp * 20, dp * 20, dp * 16, dp * 8);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        textView.setGravity(Gravity.LEFT);
+        textView.setTextColor(ContextCompat.getColor(context, R.color.theme_medium_dark_text));
+        textView.setText(message);
+        textView.setBackgroundColor(Color.WHITE);
+
+        new MaterialDialog.Builder(context)
+                .customView(textView, false)
+                .cancelable(false)
+                .positiveText(buttonText)
+                .onPositive(singleButtonCallback)
+                .show();
+    }
 
     public static void showBasicList(Context context,
                                      String title,

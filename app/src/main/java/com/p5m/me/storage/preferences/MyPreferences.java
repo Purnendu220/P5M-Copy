@@ -77,6 +77,13 @@ public class MyPreferences {
         PreferencesManager.putBoolean(AppConstants.Pref.LOGIN, isLogin);
     }
 
+    public void setLoginWithFacebook(boolean isLogin) {
+        PreferencesManager.putBoolean(AppConstants.Pref.FACEBOOK_LOGIN, isLogin);
+    }
+    public boolean isLoginWithFacebook() {
+        return PreferencesManager.getBoolean(AppConstants.Pref.FACEBOOK_LOGIN, false);
+    }
+
     public String getDeviceToken() {
         return PreferencesManager.getString(AppConstants.Pref.DEVICE_TOKEN, null);
     }

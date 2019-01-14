@@ -8,18 +8,26 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.SyncStateContract;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.p5m.me.R;
 import com.p5m.me.adapters.HomeAdapter;
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
 import com.p5m.me.data.UnratedClassData;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.User;
+import com.p5m.me.data.request.LogoutRequest;
+import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.ratemanager.RateAlarmReceiver;
@@ -29,6 +37,7 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.RefrenceWrapper;
 import com.p5m.me.utils.ToastUtils;
@@ -40,6 +49,7 @@ import com.p5m.me.view.fragment.ViewPagerFragmentSelection;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -148,6 +158,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
 
         networkCommunicator.getRatingParameters(this,true);
+        checkFacebookSessionStatus();
         }
 
 
@@ -344,6 +355,9 @@ private void showAlert(ClassModel model){
                 }
 
                 break;
+            case NetworkCommunicator.RequestCode.LOGOUT:
+                EventBroadcastHelper.logout(context);
+                break;
 
         }
     }
@@ -357,9 +371,57 @@ private void showAlert(ClassModel model){
             case NetworkCommunicator.RequestCode.UNRATED_CLASS_COUNT:
                 break;
 
+            case NetworkCommunicator.RequestCode.LOGOUT:
+                EventBroadcastHelper.logout(context);
+                break;
+
 
         }
     }
+
+    private void checkFacebookSessionStatus(){
+        try{
+            if(MyPreferences.getInstance().isLoginWithFacebook()){
+                if(AccessToken.getCurrentAccessToken()!=null && AccessToken.getCurrentAccessToken().getToken()!=null&&!AccessToken.getCurrentAccessToken().isExpired()){
+                    makeGraphRequest();
+
+                }else{
+                    showFacebookSessionExpiredDialog();
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    private void makeGraphRequest(){
+        GraphRequest request = GraphRequest.newMeRequest(
+                AccessToken.getCurrentAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        if(response.getError()!=null){
+                            showFacebookSessionExpiredDialog();
+                            return;
+                        }
+                    }
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,name,first_name,last_name,birthday,gender,email,location");
+        request.setParameters(parameters);
+        request.executeAsync();
+    }
+
+    private void showFacebookSessionExpiredDialog(){
+        DialogUtils.showBasicMessageCancelableFalse(context, "Your facebook session is expired.Please login again.", context.getResources().getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                networkCommunicator.logout(new LogoutRequest(TempStorage.getUser().getId()), HomeActivity.this, false);
+            }
+        });
+    }
+
 
     public void navigateToMyProfile(){
         RefrenceWrapper.getRefrenceWrapper(this).setMyProfileTabPosition(ProfileHeaderTabViewHolder.TAB_2);
