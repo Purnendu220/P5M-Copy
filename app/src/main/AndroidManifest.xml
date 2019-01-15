@@ -298,6 +298,7 @@
             android:screenOrientation="portrait" />
         <activity android:name=".view.activity.Main.PaymentConfirmationActivity"
             android:screenOrientation="portrait"></activity>
+
     </application>
 
 </manifest>
