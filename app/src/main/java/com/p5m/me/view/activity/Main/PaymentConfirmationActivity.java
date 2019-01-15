@@ -468,6 +468,11 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 setFailBookingStyle();
                 setStyle();
                 break;
+            case PENDING:
+                initializeStringVariables(getString(R.string.classs), getString(R.string.pending_detail));
+                setPendingBookingStyle();
+                setStyle();
+                break;
             case INITIALIZE:
                 initializeStringVariables(getString(R.string.classs), getString(R.string.pending_detail));
                 setPendingBookingStyle();
@@ -498,6 +503,12 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
             }
         }
         if (PaymentStatus.valueOf(paymentResponse.getStatus()) == PaymentStatus.INITIALIZE) {
+            buttonViewSchedule.setText(getString(R.string.transaction_history));
+            buttonsLayout.setVisibility(View.GONE);
+            buttonViewSchedule.setVisibility(View.VISIBLE);
+            checkoutFor = PENDING_TRANSACTION;
+        }
+        if (PaymentStatus.valueOf(paymentResponse.getStatus()) == PaymentStatus.PENDING) {
             buttonViewSchedule.setText(getString(R.string.transaction_history));
             buttonsLayout.setVisibility(View.GONE);
             buttonViewSchedule.setVisibility(View.VISIBLE);
@@ -664,6 +675,9 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 } else {
                     HomeActivity.show(context, AppConstants.Tab.TAB_MY_PROFILE);
                 }
+                finish();
+                break;
+            case PENDING_TRANSACTION:
                 finish();
                 break;
 

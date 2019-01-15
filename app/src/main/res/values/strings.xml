@@ -375,12 +375,10 @@
     <string name="package_details">Package details</string>
     <string name="packages">Package</string>
     <string name="validity">Validity</string>
-    <string name="among">Among</string>
     <string name="payment_confirmation">Payment Confirmation</string>
     <string name="view_schedule">View Schedule</string>
     <string name="terms_service">terms of service</string>
     <string name="amount">Amount</string>
-    <string name="pending_detail">is pending. You will receive a noticeabout booking a class during 2 days.</string>
     <string name="booked_on">Booked On:</string>
     <string name="payment_reference">Payment Reference:</string>
     <string name="congratulation_class">Congratulations! Class</string>
@@ -429,7 +427,7 @@
     <string name="has_been_extended_for">has been extended for</string>
     <string name="contactUs">Please identify the details of your issue below. A member of our staff will respond shortly.</string>
     <string name="send_email">Send Email</string>
-    <string name="payment_session_expired">You ran out of time.</string>
+    <string name="payment_session_expired" translatable="false">You ran out of time.</string>
 
 
     <string-array name="schedule_list">
