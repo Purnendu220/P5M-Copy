@@ -667,27 +667,12 @@
 
 <string name="no_more_trainers">لا يوجد المزيد من المدربين</string>
 
-
-
-    <string name="valid_for_weeks"> أسبوع (%d) صالحة لمدة</string>
-    <string name="valid_for_months"> شهر (%d) صالح لمدة </string>
-    <string name="by_making_this_booking_2_classes_will_be_deducted_from_your_balance_book_with_a_friend">مع إجراء هذا الحجز ، سيتم خصم كلاسين من رصيدك </string>
-    <string name="package_details">Package details</string>
-    <string name="packages">Package</string>
-    <string name="validity">Validity</string>
-    <string name="among">Among</string>
-    <string name="payment_confirmation">Payment Confirmation</string>
-    <string name="view_schedule">View Schedule</string>
+    <string name="intermediate">متوسط</string>
+    <string name="advanced">متقدم</string>
+    <string name="basic">مبتدئ</string>
+    <string name="class_one_at">كلاس واحد في</string>
+    <string name="at"></string>
     <string name="terms_service">شروط الخدمة</string>
-    <string name="amount">Amount</string>
-    <string name="pending_detail">is pending. You will receive a notice about booking a class during 2 days.</string>
-    <string name="booked_on">Booked On:</string>
-    <string name="payment_reference">Payment Reference:</string>
-    <string name="congratulation_class">Congratulations! Class</string>
-    <string name="congratulation_package">Congratulations! Package</string>
-
-    <string name="is_successfully_booked">is successfully booked.</string>
-    <string name="view_membership">View Membership</string>
     <string name="no_more_classes">لا مزيد من الطبقات</string>
     <string name="remenders"><![CDATA[<b>نقاط هامة:</b>]]></string>
     <string name="studio_instruction"><![CDATA[<b>تعليمات النادي:</b>]]></string>
@@ -695,6 +680,34 @@
     <string name="address"><![CDATA[<b>عنوان:</b>]]></string>
     <string name="special_note_by_trainer"><![CDATA[<b>تعليمات خاصة من المدرب :</b>]]></string>
     <string name="view_all_results">عرض جميع النتائج</string>
+    <string name="purchase">شراء</string>
+    <string name="are_you_sure_you_want_to_remove">هل أنت متأكد من أنك تريد إزالة</string>
+    <string name="week">أسبوع</string>
+    <string name="month">شهر</string>
+    <string name="at_any_gym"> </string>
+    <string name="class_one">كلاس واحد</string>
+    <string name="extend_package_limit">يمكنك تمديد اشتراكك حتى</string>
+    <string name="packages">الحزمة</string>
+    <string name="valid_for_weeks"> أسبوع (%d) صالحة لمدة</string>
+    <string name="valid_for_months"> شهر (%d) صالح لمدة </string>
+    <string name="by_making_this_booking_2_classes_will_be_deducted_from_your_balance_book_with_a_friend">مع إجراء هذا الحجز ، سيتم خصم كلاسين من رصيدك </string>
+
+    <string name="package_details">Package details</string>
+
+    <string name="validity">Validity</string>
+    <string name="payment_confirmation">Payment Confirmation</string>
+    <string name="view_schedule">View Schedule</string>
+
+    <string name="amount">Amount</string>
+    <string name="pending_detail">is pending. You will receive a booking confirmation within 4 hours.</string>
+    <string name="booked_on">Booked On:</string>
+    <string name="payment_reference">Payment Reference:</string>
+    <string name="congratulation_class">Congratulations! Class</string>
+    <string name="congratulation_package">Congratulations! Package</string>
+
+    <string name="is_successfully_booked">is successfully booked.</string>
+    <string name="view_membership">View Membership</string>
+
     <string name="class_booking_is_failed">Class booking is failed</string>
     <string name="package_booking_is_failed">Package booking is failed</string>
     <string name="class_booked_successfully">Class booked successfully</string>
@@ -703,29 +716,20 @@
     <string name="package_booking_is_pending">Package booking is pending</string>
     <string name="n_a">N/A</string>
     <string name="unfortunately_class">Unfortunately Class</string>
-    <string name="is_failed">is failed. Please contact the app support for a successful class booking.</string>
-    <string name="is_pending">is pending. You will receive a notice about booking a class during 2 days.</string>
+    <string name="is_failed">is failed. Please try again. Please contact support in case the amount is debited from your account.</string>
     <string name="for_key">for</string>
-    <string name="purchase">شراء</string>
-    <string name="are_you_sure_you_want_to_remove">هل أنت متأكد من أنك تريد إزالة</string>
-    <string name="week">أسبوع</string>
-    <string name="month">شهر</string>
-    <string name="at_any_gym"> </string>
     <string name="book_classes">Book Classes</string>
     <string name="payment_history">View Payment History</string>
-    <string name="class_one">كلاس واحد</string>
-    <string name="extend_package_limit">يمكنك تمديد اشتراكك حتى</string>
     <string name="extend_on">Extended On :</string>
     <string name="booking_details">Booking details</string>
     <string name="package_extended_successfully">Package extended successfully</string>
     <string name="class_name">Class Name</string>
     <string name="req_permission">Location Permission is required by app</string>
-    <string name="intermediate">متوسط</string>
-    <string name="advanced">متقدم</string>
-    <string name="basic">مبتدئ</string>
-    <string name="class_one_at">كلاس واحد في</string>
-    <string name="at"></string>
+
     <string name="permission_location">Please allow P5M location permission</string>
+    <string name="has_been_extended_for">has been extended for</string>
+    <string name="contactUs">Please identify the details of your issue below. A member of our staff will respond shortly.</string>
+    <string name="send_email">Send Email</string>
 
     <string-array name="schedule_list">
         <item>@string/upcoming</item>
