@@ -670,7 +670,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     if(isBookWithFriendInProgress&&mBookWithFriendData!=null){
                         final User errorResponse=MyPreferences.getInstance().getPaymentErrorResponse();
                         if(checkIfUserHaveExpiredPackage()){
-                                DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), "Purchase", new MaterialDialog.SingleButtonCallback() {
+                                DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), getString(R.string.purchase), new MaterialDialog.SingleButtonCallback() {
                                     @Override
                                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                         dialog.dismiss();
@@ -713,7 +713,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 swipeRefreshLayout.setEnabled(true);
 
                 if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
-                    DialogUtils.showBasicMessage(context, errorMessage, "ok", new MaterialDialog.SingleButtonCallback() {
+                    DialogUtils.showBasicMessage(context, errorMessage, getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             finish();

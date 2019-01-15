@@ -64,6 +64,10 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
     public LinearLayout linearLayoutOffer;
     @BindView(R.id.textViewOffer)
     public TextView textViewOffer;
+@BindView(R.id.textViewOr)
+    public TextView textViewOr;
+@BindView(R.id.viewOr)
+    public View viewOr;
 
     @BindView(R.id.textViewPackagePriceStrike)
     public TextView textViewPackagePriceStrike;
@@ -204,7 +208,8 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                         }
 
                     } else if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
-
+                        textViewOr.setVisibility(View.VISIBLE);
+                        viewOr.setVisibility(View.VISIBLE);
                         textViewPackageName.setText(model.getName());
                         if (model.isBookingWithFriend() && model.getNoOfClass() == 1) {
                             textViewPageTitle.setText(model.getNoOfClass() +" "+ AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass()) + " for friend");
@@ -288,8 +293,14 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
         }
         try {
-            textViewOffer.setText(currencyConverter(Math.round(model.getPromoResponseDto().getDiscount())) + offerText);
-
+            if(Math.round(model.getPromoResponseDto().getDiscount())==0)
+            {
+                linearLayoutOffer.setVisibility(View.GONE);
+            }
+            else {
+                linearLayoutOffer.setVisibility(View.VISIBLE);
+                textViewOffer.setText(currencyConverter(Math.round(model.getPromoResponseDto().getDiscount())) + offerText);
+            }
         } catch (Exception e) {
             textViewOffer.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getDiscount()) + offerText);
 
