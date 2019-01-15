@@ -123,6 +123,7 @@ public class AppConstants {
     public static class Pref {
         public static final String NAME = "p5m_pref_main";
         public static final String LOGIN = "pref_login";
+        public static final String FACEBOOK_LOGIN = "fb_pref_login";
         public static final String CITIES = "pref_cities";
         public static final String ACTIVITIES = "pref_activities";
         public static final String FILTERS = "pref_filters";

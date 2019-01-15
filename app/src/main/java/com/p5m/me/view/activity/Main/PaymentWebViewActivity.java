@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -12,6 +15,7 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -55,11 +59,16 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
     @BindView(R.id.layoutHide)
     View layoutHide;
 
+    @BindView(R.id.text_timer)
+    TextView text_timer;
+
     private static String couponCode;
     private static String packageName;
     private static ClassModel classModel;
 
     private PaymentUrl paymentUrl;
+    private CountDownTimer mTimmer;
+    private String refId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +79,22 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
         ButterKnife.bind(activity);
 
         openPage(getIntent());
+        mTimmer =  new CountDownTimer(10000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                text_timer.setText(secondsToString(millisUntilFinished/1000));
+            }
+
+            public void onFinish() {
+                text_timer.setText("00:00");
+
+                showSessionExpiredDialog();
+
+
+
+
+            }
+        };
+        mTimmer .start();
     }
 
     @Override
@@ -107,32 +132,35 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
         layoutProgress.setVisibility(View.VISIBLE);
         webView.loadUrl(paymentUrl.getPaymentURL());
         webView.setWebViewClient(new MyWebViewClient());
+        refId=paymentUrl.getReferenceID();
+
     }
 
-    private void paymentSuccessful(String url) {
-//        networkCommunicator.getMyUser(this, false);
-        String refId=getRefferenceId (url);
-//        Toast.makeText(this,refId,Toast.LENGTH_LONG).show();
+    private void paymentSuccessful() {
         MixPanel.trackMembershipPurchase(couponCode, packageName);
-
         if (classModel != null) {
             MixPanel.trackJoinClass(AppConstants.Tracker.PURCHASE_PLAN, classModel);
         }
-
+        mTimmer.cancel();
         overridePendingTransition(0, 0);
-
         Intent returnIntent = getIntent();
         returnIntent.putExtra(REFERENCE_ID,refId);
         setResult(RESULT_OK,returnIntent);
         finish();
         overridePendingTransition(0, 0);
 
-//        EventBroadcastHelper.sendPackagePurchased();
-//
-//        webView.setVisibility(View.INVISIBLE);
-//        layoutProgress.setVisibility(View.VISIBLE);
-//        setResult(RESULT_OK);
-//        finish();
+
+        }
+    private void paymentSessionExpired() {
+        mTimmer.cancel();
+        overridePendingTransition(0, 0);
+        Intent returnIntent = getIntent();
+        returnIntent.putExtra(REFERENCE_ID,refId);
+        setResult(RESULT_OK,returnIntent);
+        finish();
+        overridePendingTransition(0, 0);
+
+
     }
 
     private String getRefferenceId (String url) {
@@ -212,8 +240,7 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
             }
 
             if (url.contains("intent://com.profive.android.view.activity.SplashScreenActivity")) {
-
-                paymentSuccessful(url);
+                paymentSuccessful();
                 return;
             }
         }
@@ -273,13 +300,29 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
                         MixPanel.trackSequentialUpdate(AppConstants.Tracker.PURCHASE_CANCEL);
                         PaymentWebViewActivity.super.onBackPressed();
                         overridePendingTransition(0, 0);
+                        mTimmer.cancel();
                     }
                 });
     }
 
     @Override
     protected void onDestroy() {
+        mTimmer.cancel();
         networkCommunicator.getMyUser(this, false);
         super.onDestroy();
+    }
+
+    private void showSessionExpiredDialog(){
+        DialogUtils.showBasicMessage(context,  getString(R.string.payment_session_expired),
+                getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        paymentSessionExpired();
+                    }
+                },false);
+
+    }
+    private String secondsToString(long pTime) {
+        return String.format("%02d:%02d", pTime / 60, pTime % 60);
     }
 }

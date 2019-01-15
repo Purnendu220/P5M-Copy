@@ -4,8 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 
-import com.p5m.me.MyApp;
-import com.p5m.me.R;
+import com.facebook.login.LoginManager;
 import com.p5m.me.data.City;
 import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.FollowResponse;
@@ -192,12 +191,14 @@ public class NetworkCommunicator {
             public void onFailure(Call<ResponseModel<User>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator loginFB onFailure " + message);
                 requestListener.onApiFailure(message, requestCode);
+                LoginManager.getInstance().logOut();
             }
 
             @Override
             public void onResponse(Call<ResponseModel<User>> call, Response<ResponseModel<User>> restResponse, ResponseModel<User> response) {
                 LogUtils.networkSuccess("NetworkCommunicator loginFB onResponse data " + response);
                 TempStorage.setAuthToken(restResponse.headers().get(AppConstants.ApiParamKey.MYU_AUTH_TOKEN));
+                MyPreferences.getInstance().setLoginWithFacebook(true);
                 requestListener.onApiSuccess(response, requestCode);
 
 //                EventBroadcastHelper.sendDeviceUpdate(context);
@@ -1320,7 +1321,7 @@ public class NetworkCommunicator {
 //                requestListener.onApiSuccess(response, requestCode);
 
                 try {
-                    ToastUtils.show(context, classModel.getTitle() + context.getString(R.string.successfully_added_to_your_wishlist));
+                    ToastUtils.show(context, classModel.getTitle() + " successfully added to your wishlist");
                     classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
                     EventBroadcastHelper.sendWishAdded(classModel);
                 } catch (Exception e) {
