@@ -426,6 +426,8 @@
     <string name="class_one_at">1 Class at </string>
     <string name="at">at</string>
     <string name="permission_location">Please allow P5M to access location on your device.</string>
+    <string name="payment_session_expired">You ran out of time.</string>
+
 
     <string-array name="schedule_list">
         <item>@string/upcoming</item>

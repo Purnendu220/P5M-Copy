@@ -154,29 +154,13 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         openRateAlertDialog();
 
         networkCommunicator.getRatingParameters(this, true);
+        checkFacebookSessionStatus();
+
     }
 
-        networkCommunicator.getRatingParameters(this,true);
-        checkFacebookSessionStatus();
-        }
 
-    public static String[] PERMISSIONS_LOCATION = {
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
-    };
 
-    /*    public void requestLocationPermission(){
-            requestPermission(PERMISSIONS_LOCATION, REQUEST_LOCATION);
-        }
-        @Override
-        public void onPermissionFailed(int PermissionCode) {
-                ToastUtils.show(this,"Permission Deny");
-        }
 
-        @Override
-        public void onPermissionGranted(int PermissionCode) {
-            ToastUtils.show(this,"Permission Granted");
-        }*/
     @Override
     public void onDestroy() {
         super.onDestroy();
