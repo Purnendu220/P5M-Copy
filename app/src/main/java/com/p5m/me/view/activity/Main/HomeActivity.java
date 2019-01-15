@@ -30,8 +30,6 @@ import com.p5m.me.data.request.LogoutRequest;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
-import com.p5m.me.ratemanager.RateAlarmReceiver;
-import com.p5m.me.ratemanager.ScheduleAlarmManager;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -43,7 +41,6 @@ import com.p5m.me.utils.RefrenceWrapper;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.activity.custom.BottomTapLayout;
-import com.p5m.me.view.custom.CustomDialogThankYou;
 import com.p5m.me.view.custom.CustomRateAlertDialog;
 import com.p5m.me.view.fragment.ViewPagerFragmentSelection;
 
@@ -56,6 +53,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 
 public class HomeActivity extends BaseActivity implements BottomTapLayout.TabListener, ViewPager.OnPageChangeListener,View.OnClickListener,NetworkCommunicator.RequestListener {
 
@@ -88,7 +86,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
                 Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra(AppConstants.DataKey.HOME_TAB_POSITION, tabPosition);
         intent.putExtra(AppConstants.DataKey.HOME_TABS_INNER_TAB_POSITION, innerTabPosition);
-        intent.putExtra(AppConstants.DataKey.CLASS_MODEL,model);
+        intent.putExtra(AppConstants.DataKey.CLASS_MODEL, model);
         return intent;
     }
 
@@ -106,10 +104,10 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
     private final int TOTAL_TABS = 4;
     private int INITIAL_POSITION = AppConstants.Tab.TAB_FIND_CLASS;
-    private int currentTab =INITIAL_POSITION;
+    private int currentTab = INITIAL_POSITION;
 
     private Handler handler;
-    public  CustomRateAlertDialog   mCustomMatchDialog;
+    public CustomRateAlertDialog mCustomMatchDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,14 +115,13 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         setContentView(R.layout.activity_home);
         // If coming from a shared link, then open that link after login..
         if (DeepLinkActivity.url != null) {
-            overridePendingTransition(0 ,0 );
+            overridePendingTransition(0, 0);
             DeepLinkActivity.open(context, DeepLinkActivity.url);
             finish();
             return;
         }
-
         ButterKnife.bind(activity);
-        if(getIntent()!=null){
+        if (getIntent() != null) {
             INITIAL_POSITION = getIntent().getIntExtra(AppConstants.DataKey.HOME_TAB_POSITION,
                     AppConstants.Tab.TAB_FIND_CLASS);
         }
@@ -149,19 +146,37 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         });
 
         setNotificationIcon();
-        try{
-            List<ClassModel> classList= TempStorage.getSavedClasses();
-        }catch (Exception e){
+        try {
+            List<ClassModel> classList = TempStorage.getSavedClasses();
+        } catch (Exception e) {
             e.printStackTrace();
         }
-            openRateAlertDialog();
+        openRateAlertDialog();
 
+        networkCommunicator.getRatingParameters(this, true);
+    }
 
         networkCommunicator.getRatingParameters(this,true);
         checkFacebookSessionStatus();
         }
 
+    public static String[] PERMISSIONS_LOCATION = {
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
+    };
 
+    /*    public void requestLocationPermission(){
+            requestPermission(PERMISSIONS_LOCATION, REQUEST_LOCATION);
+        }
+        @Override
+        public void onPermissionFailed(int PermissionCode) {
+                ToastUtils.show(this,"Permission Deny");
+        }
+
+        @Override
+        public void onPermissionGranted(int PermissionCode) {
+            ToastUtils.show(this,"Permission Granted");
+        }*/
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -230,7 +245,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
     @Override
     public void onPageSelected(int position) {
-        currentTab=position;
+        currentTab = position;
         try {
             ((ViewPagerFragmentSelection) homeAdapter.getFragments().get(position)).onTabSelection(position);
         } catch (Exception e) {
@@ -239,9 +254,9 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         }
         bottomTapLayout.setTab(position);
         if(position == AppConstants.Tab.TAB_FIND_CLASS){
+//            handleApptimize();
             handleBuyClassesButton();
-        }
-        else{
+        } else {
             buyClasses.setVisibility(View.GONE);
 
         }
@@ -269,18 +284,18 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         }, 2000);
     }
 
-    private void handleBuyClassesButton(){
-        try{
-            User user=TempStorage.getUser();
-            if(user.isBuyMembership()){
+    private void handleBuyClassesButton() {
+        try {
+            User user = TempStorage.getUser();
+            if (user.isBuyMembership()) {
                 buyClasses.setVisibility(View.VISIBLE);
 
-            }else{
+            } else {
                 buyClasses.setVisibility(View.GONE);
 
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -292,8 +307,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         super.onResume();
         if(currentTab == AppConstants.Tab.TAB_FIND_CLASS){
             handleBuyClassesButton();
-        }
-        else{
+        } else {
             buyClasses.setVisibility(View.GONE);
 
         }
@@ -303,15 +317,15 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     @Override
     protected void onPause() {
         super.onPause();
-          if(mCustomMatchDialog!=null&&mCustomMatchDialog.isShowing()){
+        if (mCustomMatchDialog != null && mCustomMatchDialog.isShowing()) {
             mCustomMatchDialog.dismiss();
         }
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.buyClasses:{
+        switch (view.getId()) {
+            case R.id.buyClasses: {
                 MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
             }
             break;
@@ -319,28 +333,29 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
     }
 
-    private void openRateAlertDialog(){
+    private void openRateAlertDialog() {
         ClassModel model;
         model = (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_MODEL);
-        if(model!=null){
+        if (model != null) {
             showAlert(model);
-        }else{
-            networkCommunicator.getUnratedClassList(0,1,this,true);
+        } else {
+            networkCommunicator.getUnratedClassList(0, 1, this, true);
         }
-        }
-private void showAlert(ClassModel model){
-    if(currentTab == AppConstants.Tab.TAB_FIND_CLASS) {
-        mCustomMatchDialog = new CustomRateAlertDialog(this,model, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
-        try {
-            mCustomMatchDialog.show();
-            refrenceWrapper.setCustomRateAlertDialog(mCustomMatchDialog);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return;
     }
 
-}
+    private void showAlert(ClassModel model) {
+        if (currentTab == AppConstants.Tab.TAB_FIND_CLASS) {
+            mCustomMatchDialog = new CustomRateAlertDialog(this, model, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
+            try {
+                mCustomMatchDialog.show();
+                refrenceWrapper.setCustomRateAlertDialog(mCustomMatchDialog);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+
+    }
 
     @Override
     public void onApiSuccess(Object response, int requestCode) {
@@ -350,7 +365,7 @@ private void showAlert(ClassModel model){
                 break;
             case NetworkCommunicator.RequestCode.UNRATED_CLASS_COUNT:
                 UnratedClassData classModels = ((ResponseModel<UnratedClassData>) response).data;
-                if(classModels!=null&&classModels.getClassDetailList()!=null&&classModels.getClassDetailList().size()>0){
+                if (classModels != null && classModels.getClassDetailList() != null && classModels.getClassDetailList().size() > 0) {
                     showAlert(classModels.getClassDetailList().get(0));
                 }
 
@@ -423,7 +438,7 @@ private void showAlert(ClassModel model){
     }
 
 
-    public void navigateToMyProfile(){
+    public void navigateToMyProfile() {
         RefrenceWrapper.getRefrenceWrapper(this).setMyProfileTabPosition(ProfileHeaderTabViewHolder.TAB_2);
         viewPager.post(new Runnable() {
             @Override
@@ -432,5 +447,6 @@ private void showAlert(ClassModel model){
             }
         });
     }
+
 
 }

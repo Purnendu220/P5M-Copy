@@ -1,7 +1,11 @@
 package com.p5m.me.utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
@@ -225,4 +229,58 @@ public class DialogUtils {
                 })
                 .show();
     }
+
+    public void showPermissionMessage(Context context,
+                                      String title,
+                                      String msg,
+                                      final DialogUtils.OnClickListener onClickListener) {
+        new MaterialDialog.Builder(context)
+                .title(title)
+
+                .negativeText(context.getString(R.string.cancel))
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                        onClickListener.onNegativeClick();
+                    }
+                }) .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                        onClickListener.onPositiveClick();
+                    }
+                })
+                .show();
+    }
+
+    public static void showPermissionImportantAlert(final Activity context, String message){
+        DialogUtils.showBasicMessage(context,context.getResources().getString(R.string.permission_alert), message,
+                context.getResources().getString(R.string.go_to_settings), new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Intent i = new Intent();
+                        i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        i.addCategory(Intent.CATEGORY_DEFAULT);
+                        i.setData(Uri.parse("package:" + context.getPackageName()));
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                        context.startActivity(i);
+                        dialog.dismiss();
+                    }
+                },context.getResources().getString(R.string.cancel), new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                });
+    }
+
+    interface OnClickListener {
+        void onPositiveClick();
+        void onNegativeClick();
+    }
+
+
 }

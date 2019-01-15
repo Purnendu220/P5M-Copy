@@ -14,18 +14,16 @@ import android.widget.TextView;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.main.ClassModel;
-import com.p5m.me.fxn.utility.Constants;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
 import com.p5m.me.utils.LanguageUtils;
-import com.p5m.me.utils.WordUtils;
-
-import java.text.NumberFormat;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.p5m.me.utils.LanguageUtils.matchFitnessWord;
 
 /**
  * Created by MyU10 on 3/10/2018.
@@ -257,8 +255,8 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
                         relativeLayoutFitnessLevel.setVisibility(View.GONE);
                         break;
                 }
-                textViewFitnessLevel.setText(WordUtils.capitalize(model.getFitnessLevel().toLowerCase()));
-            } else {
+                setTextFitnessLevel(model);
+                } else {
                 relativeLayoutFitnessLevel.setVisibility(View.GONE);
             }
             textViewClassName.setText(model.getTitle());
@@ -328,5 +326,10 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
         } else {
             itemView.setVisibility(View.GONE);
         }
+    }
+
+    private void setTextFitnessLevel(ClassModel model) {
+       String fitnessLevel = matchFitnessWord(model.getFitnessLevel(),context);
+        textViewFitnessLevel.setText(fitnessLevel);
     }
 }

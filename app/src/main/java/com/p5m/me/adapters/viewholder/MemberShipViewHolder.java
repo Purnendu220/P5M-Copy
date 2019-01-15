@@ -29,6 +29,7 @@ import butterknife.ButterKnife;
 
 import static com.p5m.me.utils.LanguageUtils.currencyConverter;
 import static com.p5m.me.utils.LanguageUtils.numberConverter;
+import static com.p5m.me.utils.LanguageUtils.worldWideSetText;
 
 /**
  * Created by MyU10 on 3/10/2018.
@@ -123,7 +124,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                 if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
                     textViewPackageName.setText(model.getPackageName());
 
-                    textViewPageTitle.setText(model.getBalanceClass()+" " + AppConstants.pluralES(context.getString(R.string.classs), model.getBalanceClass()) + " " + context.getString(R.string.remaining));
+                    textViewPageTitle.setText(LanguageUtils.numberConverter(model.getBalanceClass())+" " + AppConstants.pluralES(context.getString(R.string.classs), model.getBalanceClass()) + " " + context.getString(R.string.remaining));
 
                     textViewPackageValidity.setText(context.getString(R.string.valid_till) + " " + DateUtils.getPackageClassDate(model.getExpiryDate()));
 
@@ -161,7 +162,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
 
                         textViewPackageName.setText(model.getName());
-                        textViewPageTitle.setText(numberConverter(model.getNoOfClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass())+" at any gym");
+                        textViewPageTitle.setText(numberConverter(model.getNoOfClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass())+" "+context.getString(R.string.at_any_gym));
 //                        LanguageUtils.setText(textViewPageTitle,model.getNoOfClass()," " + AppConstants.pluralES(context.getString(R.string.classs)
 //                                , model.getNoOfClass())+" "+context.getString(R.string.at_any_gym));
                       /*  validityPeriod = Helper.capitalize(validityPeriod);
@@ -213,9 +214,11 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
                         }
                         if (model.getNoOfClass() == 1) {
-                            textViewPageTitle.setText(context.getString(R.string.class_one)+" at "+ model.getGymName() );
+//                            worldWideSetText(textViewPageTitle,context.getString(R.string.class_one_at), model.getGymName());
+//
+                            textViewPageTitle.setText(context.getString(R.string.class_one_at)+" "+ model.getGymName() );
                         } else
-                            textViewPageTitle.setText(LanguageUtils.numberConverter(model.getNoOfClass()) +" "+ AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass()) + " at " + model.getGymName());
+                            textViewPageTitle.setText(LanguageUtils.numberConverter(model.getNoOfClass()) +" "+ AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass()) + " "+context.getString(R.string.at)+" " + model.getGymName());
 
                         textViewPackageValidity.setText(context.getString(R.string.valid_for) + " " + DateUtils.getPackageClassDate(classModel.getClassDate()) + " -" + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()));
                         textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getCost()) + " " + context.getString(R.string.currency).toUpperCase());
