@@ -69,6 +69,7 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
     private PaymentUrl paymentUrl;
     private CountDownTimer mTimmer;
     private String refId;
+    private long timeFortransaction = 420000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +80,7 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
         ButterKnife.bind(activity);
 
         openPage(getIntent());
-        mTimmer =  new CountDownTimer(10000, 1000) {
+        mTimmer =  new CountDownTimer(timeFortransaction, 1000) {
             public void onTick(long millisUntilFinished) {
                 text_timer.setText(secondsToString(millisUntilFinished/1000));
             }
@@ -163,12 +164,6 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
 
     }
 
-    private String getRefferenceId (String url) {
-        if(url.indexOf("refId=") == -1)
-            return "";
-        String id  = url.split("refId=")[1];
-        return id;
-    }
 
 
     @Override
