@@ -402,9 +402,9 @@
     <string name="class_booking_is_pending">Class booking is pending</string>
     <string name="package_booking_is_pending">Package booking is pending</string>
     <string name="n_a">N/A</string>
-    <string name="unfortunately_class">Unfortunately Class</string>
-    <string name="is_failed">is failed. Please contact the app support for a successful class booking.</string>
-    <string name="is_pending">is pending. You will receive a notice about booking a class during 2 days.</string>
+    <string name="unfortunately_class">Unfortunately </string>
+    <string name="is_failed">is failed. Please try again. Please contact support in case the amount is debited from your account.</string>
+    <string name="pending_detail">is pending. You will receive a confirmation within 4 hours.</string>
     <string name="for_key">for</string>
     <string name="purchase">Purchase</string>
     <string name="are_you_sure_you_want_to_remove">Are you sure you want to remove</string>
@@ -426,6 +426,9 @@
     <string name="class_one_at">1 Class at </string>
     <string name="at">at</string>
     <string name="permission_location">Please allow P5M to access location on your device.</string>
+    <string name="has_been_extended_for">has been extended for</string>
+    <string name="contactUs">Please identify the details of your issue below. A member of our staff will respond shortly.</string>
+    <string name="send_email">Send Email</string>
     <string name="payment_session_expired">You ran out of time.</string>
 
 

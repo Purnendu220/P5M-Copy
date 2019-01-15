@@ -74,7 +74,7 @@
                         android:fontFamily="sans-serif"
                         android:gravity="left"
                         android:letterSpacing="@dimen/text_title_letter_spacing"
-                        android:text="@string/package_name"
+                        android:text="@string/packages"
                         android:textColor="@color/theme_dark_light_text"
                         android:textSize="@dimen/text_medium"
                         android:textStyle="normal" />
