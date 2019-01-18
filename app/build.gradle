@@ -16,7 +16,7 @@ android {
         release {
             keyAlias 'p5m'
             keyPassword 'p5m12!@'
-            storeFile file('/Android/keystore_p5m/p5m_keystore.jks')
+            storeFile file('E:/android/keystore/p5m_keystore.jks')
             storePassword 'p5m12!@'
         }
     }

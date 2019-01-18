@@ -100,6 +100,7 @@
                             android:letterSpacing="@dimen/text_medium_letter_spacing"
                             android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                             android:text="Package Extended Successfully"
+                            android:textIsSelectable="true"
                             android:textColor="@color/blue_light"
                             android:textSize="@dimen/text_extra_large"
                             android:gravity="center"
@@ -117,6 +118,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_16"
                         android:layout_marginEnd="@dimen/margin_16"
+                        android:textIsSelectable="true"
                         android:fontFamily="sans-serif"
                         android:gravity="center"
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
@@ -222,8 +224,10 @@
                 </LinearLayout>
 
                 <View
+                    android:id="@+id/view"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:visibility="gone"
                     android:layout_marginLeft="@dimen/view_padding_setting"
                     android:background="@color/grey_line_dark" />
 
@@ -232,6 +236,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:visibility="gone"
                     android:orientation="horizontal"
                     android:padding="@dimen/view_padding_edit_profile">
 
@@ -271,6 +276,7 @@
                     android:background="@color/grey_line_dark" />
 
                 <LinearLayout
+                    android:id="@+id/layoutValidity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -285,7 +291,7 @@
                         android:fontFamily="sans-serif"
                         android:gravity="left"
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
-                        android:text="@string/validity"
+                        android:text="@string/valid_until"
                         android:textColor="@color/theme_medium_light_text"
                         android:textSize="@dimen/text_large"
                         android:textStyle="normal" />
@@ -326,7 +332,7 @@
                         android:fontFamily="sans-serif"
                         android:gravity="left"
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
-                        android:text="@string/amount"
+                        android:text="@string/total"
                         android:textColor="@color/theme_medium_light_text"
                         android:textSize="@dimen/text_large"
                         android:textStyle="normal" />
@@ -365,7 +371,6 @@
                 android:visibility="gone"
                 android:paddingStart="@dimen/margin_30"
                 android:paddingEnd="@dimen/margin_30"
-                android:text="@string/view_schedule"
                 android:textColor="@color/blue_light" />
             <LinearLayout
                 android:id="@+id/buttonsLayout"
@@ -401,7 +406,6 @@
                     android:fontFamily="sans-serif"
                     android:layout_weight="1.0"
                     android:minHeight="@dimen/margin_38"
-                    android:text="@string/view_schedule"
                     android:textColor="@color/blue_light" />
 
             </LinearLayout>

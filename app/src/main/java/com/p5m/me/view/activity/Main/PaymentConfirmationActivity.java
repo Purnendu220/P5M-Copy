@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -49,12 +50,14 @@ import com.p5m.me.view.activity.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.p5m.me.fxn.utility.Constants.CheckoutFor.EXTENSION;
 import static com.p5m.me.fxn.utility.Constants.CheckoutFor.PENDING_TRANSACTION;
+import static com.p5m.me.view.activity.Main.PaymentConfirmationActivity.PaymentStatus.SUCCESS;
 
 public class PaymentConfirmationActivity extends BaseActivity implements NetworkCommunicator.RequestListener, View.OnClickListener {
 
@@ -66,6 +69,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
     private PaymentConfirmationResponse paymentResponse;
     private Runnable nextScreenRunnable;
     private Handler handler;
+    private String referenceNo;
 
     public static void openActivity(Context context, int navigationFrom, String refId,
                                     Package aPackage, ClassModel classModel,
@@ -124,12 +128,16 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
     public TextView textViewAmount;
     @BindView(R.id.textViewSubTitle)
     public TextView textViewSubTitle;
-    @BindView(R.id.layoutClass)
-    public LinearLayout layoutClass;
+    @BindView(R.id.layoutValidity)
+    public LinearLayout layoutValidity;
     @BindView(R.id.layoutNoData)
     public LinearLayout layoutNoData;
     @BindView(R.id.viewClass)
     public View viewClass;
+    @BindView(R.id.layoutClass)
+    public LinearLayout layoutClass;
+    @BindView(R.id.view)
+    public View view;
     @BindView(R.id.textViewPaymentDetail)
     public TextView textViewPaymentDetail;
     @BindView(R.id.textViewPackageTitle)
@@ -138,11 +146,11 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
     public Button buttonViewSchedule;
     @BindView(R.id.buttonTryAgain)
     public Button buttonTryAgain;
-   @BindView(R.id.buttonInviteFriends)
+    @BindView(R.id.buttonInviteFriends)
     public Button buttonInviteFriends;
-   @BindView(R.id.buttonSchedule)
+    @BindView(R.id.buttonSchedule)
     public Button buttonSchedule;
-   @BindView(R.id.buttonsLayout)
+    @BindView(R.id.buttonsLayout)
     public LinearLayout buttonsLayout;
 
     @BindView(R.id.progressBarDone)
@@ -209,21 +217,22 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 
     /* Initialize the Variables*/
     private void initializeStringVariables(String startTitle, String endTitle) {
-        BOOKED_ON = getString(R.string.booked_on) + " ";
+        BOOKED_ON = getString(R.string.purchase_date) + " ";
         PAYMENT_REFERENCE = getString(R.string.payment_reference);
-        if (paymentResponse.getClassDetailDto() != null) {
-            CONGRATULATION = startTitle + " ";
-            CLASS = getString(R.string.classs);
-        } else {
-            CONGRATULATION = getString(R.string.congratulation_package) + " ";
-            CLASS = getString(R.string.packages);
 
-
-        }
-        SUCCESSFULLY_BOOKED = " " + endTitle;
         if (checkoutFor.equals(EXTENSION)) {
-            BOOKED_ON = getString(R.string.extend_on) + " ";
-            SUCCESSFULLY_BOOKED = " "+getString(R.string.has_been_extended_for) + selectedPacakageFromList.getDuration() + " " + getString(R.string.weeks) + ".";
+            if (paymentResponse.getStatus().equals(SUCCESS)) {
+                BOOKED_ON = getString(R.string.extend_on) + " ";
+                SUCCESSFULLY_BOOKED = " " + getString(R.string.has_been_extended_for) + " " + selectedPacakageFromList.getDuration() + " " + getString(R.string.weeks) + ".";
+                textViewPaymentStatus.setText(context.getString(R.string.package_extended_successfully));
+
+            } else if (paymentResponse.getStatus().equals(PaymentStatus.PENDING) ||
+                    paymentResponse.getStatus().equals(PaymentStatus.INITIALIZE)) {
+                BOOKED_ON = getString(R.string.extend_on) + " ";
+                SUCCESSFULLY_BOOKED = " " + "has been pending to extend.";
+                textViewPaymentStatus.setText(context.getString(R.string.package_extended_pending));
+
+            }
         }
 
     }
@@ -231,17 +240,17 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 
     /* Set Confirmation Booking Layout*/
     private void setConfirmBookingStyle() {
+        layoutClass.setVisibility(View.VISIBLE);
+        view.setVisibility(View.VISIBLE);
         layoutPaymentStatus.setBackgroundColor(getResources().getColor(R.color.light_green));
-        if (paymentResponse.getClassDetailDto() != null)
-            textViewPaymentStatus.setText(R.string.class_booked_successfully);
-        else
-            textViewPaymentStatus.setText(R.string.package_booked_successfully);
+        textViewPaymentStatus.setText(R.string.payment_sucessful);
 
         textViewPaymentStatus.setTextColor(getResources().getColor(R.color.green));
         buttonContactUs.setVisibility(View.GONE);
         textViewPaymentReference.setVisibility(View.VISIBLE);
         textViewBookedDate.setVisibility(View.VISIBLE);
         imageViewPaymentStatus.setImageDrawable(getResources().getDrawable(R.drawable.success));
+
         setConfirmBookingTitle();
 
     }
@@ -252,61 +261,79 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
     private void setConfirmBookingTitle() {
         if (paymentResponse.getClassDetailDto() != null) {
             if (!TextUtils.isEmpty(paymentResponse.getClassDetailDto().getTitle())) {
-                setTitleText(paymentResponse.getClassDetailDto().getTitle());
+                textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.congratulation_class_booked), "<b>" + paymentResponse.getClassDetailDto().getTitle() + "</b>")));
             }
         } else {
+            textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.congratulation_package_booked), "<b>" + getPurchasedPackageName() + "</b>")));
+        }
 
-            if (userPackage != null) {
-                setTitleText(userPackage.getPackageName());
-            } else if (!TextUtils.isEmpty(paymentResponse.getPackageName()))
-                setTitleText(paymentResponse.getPackageName());
+
+        setExtendedText();
+
+    }
+
+    public void setExtendedText() {
+        if (checkoutFor.equals(EXTENSION)) {
+            BOOKED_ON = getString(R.string.extend_on) + " ";
+
+            PaymentStatus paymentStatus = PaymentStatus.valueOf(paymentResponse.getStatus());
+            switch (paymentStatus) {
+                case SUCCESS:
+                    if (Constants.LANGUAGE == Locale.ENGLISH)
+                        textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.congratulation_package_extended_en), "<b>" + getPurchasedPackageName() + "</b>", LanguageUtils.numberConverter(selectedPacakageFromList.getDuration()))));
+                    else
+                        textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.congratulation_package_extended_ar), "<b>" + getPurchasedPackageName() + "</b>", LanguageUtils.numberConverter(selectedPacakageFromList.getDuration()))));
+
+                    break;
+                case PENDING:
+                case INITIALIZE:
+                    textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.pending_extension), "<b>" + getPurchasedPackageName() + "</b>")));
+
+                    break;
+                case FAILURE:
+                    if (Constants.LANGUAGE == Locale.ENGLISH)
+                        textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.failed_package_extension_en), "<b>" + getPurchasedPackageName() + "</b>", LanguageUtils.numberConverter(selectedPacakageFromList.getDuration()))));
+                    else
+                        textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.failed_package_extension_ar), "<b>" + getPurchasedPackageName() + "</b>", LanguageUtils.numberConverter(selectedPacakageFromList.getDuration()))));
+
+                    break;
+            }
 
         }
     }
 
-    private void setTitleText(String title) {
-        String paymentDetail = CONGRATULATION
-                + title + SUCCESSFULLY_BOOKED;
-        SpannableString spanBoldPayDetail = boldString(paymentDetail, CONGRATULATION.length(), CONGRATULATION.length() + title.length());
-        textViewPaymentDetail.setText(spanBoldPayDetail);
-    }
+
 
 
     private void setPendingBookingTitle() {
         if (paymentResponse.getClassDetailDto() != null) {
-            SUCCESSFULLY_BOOKED = " "+getString(R.string.pending_detail);
-            if (!TextUtils.isEmpty(paymentResponse.getClassDetailDto().getTitle())) {
-                CONGRATULATION = getString(R.string.classs)+" ";
-                String paymentDetail = CONGRATULATION
-                        + paymentResponse.getClassDetailDto().getTitle() + SUCCESSFULLY_BOOKED;
-                SpannableString spanBoldPayDetail = boldString(paymentDetail, CONGRATULATION.length(), CONGRATULATION.length() + paymentResponse.getClassDetailDto().getTitle().length());
-                textViewPaymentDetail.setText(spanBoldPayDetail);
-            }
+            textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.pending_start_class), "<b>" + paymentResponse.getClassDetailDto().getTitle() + "</b>")));
         } else {
-            CONGRATULATION = getString(R.string.packages)+" ";
-            String paymentDetail = CONGRATULATION
-                    + paymentResponse.getPackageName() + SUCCESSFULLY_BOOKED;
-            SpannableString spanBoldPayDetail = boldString(paymentDetail, CONGRATULATION.length(), CONGRATULATION.length() + paymentResponse.getPackageName().length());
-            textViewPaymentDetail.setText(spanBoldPayDetail);
+            String packageName = getPurchasedPackageName();
+            textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.pending_start_package), "<b>" + packageName + "</b>")));
+
         }
+        setExtendedText();
     }
+
+
+
+    public String getPurchasedPackageName() {
+        if (userPackage != null) {
+            return (userPackage.getPackageName());
+        } else if (!TextUtils.isEmpty(paymentResponse.getPackageName()))
+            return (paymentResponse.getPackageName());
+        else
+            return "";
+    }
+
     private void setFailureBookingTitle() {
         if (paymentResponse.getClassDetailDto() != null) {
-            SUCCESSFULLY_BOOKED = " "+getString(R.string.is_failed);
-            if (!TextUtils.isEmpty(paymentResponse.getClassDetailDto().getTitle())) {
-                CONGRATULATION = getString(R.string.unfortunately_class)+" "+getString(R.string.classs)+" ";
-                String paymentDetail = CONGRATULATION
-                        + paymentResponse.getClassDetailDto().getTitle() + SUCCESSFULLY_BOOKED;
-                SpannableString spanBoldPayDetail = boldString(paymentDetail, CONGRATULATION.length(), CONGRATULATION.length() + paymentResponse.getClassDetailDto().getTitle().length());
-                textViewPaymentDetail.setText(spanBoldPayDetail);
-            }
-        } else {
-            CONGRATULATION = getString(R.string.unfortunately_class)+" "+getString(R.string.packages)+" ";
-            String paymentDetail = CONGRATULATION
-                    + paymentResponse.getPackageName() + SUCCESSFULLY_BOOKED;
-            SpannableString spanBoldPayDetail = boldString(paymentDetail, CONGRATULATION.length(), CONGRATULATION.length() + paymentResponse.getPackageName().length());
-            textViewPaymentDetail.setText(spanBoldPayDetail);
-        }
+            textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.class_booking_failed), "<b>" + paymentResponse.getClassDetailDto().getTitle() + "</b>")));
+        } else
+            textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.package_booking_failed), "<b>" + getPurchasedPackageName() + "</b>")));
+
+        setExtendedText();
     }
 
     private void callPaymentDetailApi() {
@@ -324,80 +351,52 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
     private void redirectOnResult() {
         switch (checkoutFor) {
             case PACKAGE:
-
 //                EventBroadcastHelper.sendPackagePurchased();
                 HomeActivity.show(context, AppConstants.Tab.TAB_FIND_CLASS);
-                buttonsLayout.setVisibility(View.GONE);
-                buttonViewSchedule.setVisibility(View.VISIBLE);
                 finish();
                 break;
             case CLASS_PURCHASE_WITH_PACKAGE:
                 classModel.setUserJoinStatus(true);
-
                 EventBroadcastHelper.sendPackagePurchasedForClass(classModel);
                 HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE);
-                buttonsLayout.setVisibility(View.VISIBLE);
-                buttonViewSchedule.setVisibility(View.GONE);
-//                sendAutoJoinEvent();
                 break;
             case SPECIAL_CLASS:
                 classModel.setUserJoinStatus(true);
                 EventBroadcastHelper.sendClassPurchased(classModel);
                 HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE);
-                buttonsLayout.setVisibility(View.VISIBLE);
-                buttonViewSchedule.setVisibility(View.GONE);
-//                sendAutoJoinEvent();
                 break;
             case EXTENSION:
 //                if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE) {
                 HomeActivity.show(context, AppConstants.Tab.TAB_FIND_CLASS);
-                buttonsLayout.setVisibility(View.GONE);
 
-                buttonViewSchedule.setVisibility(View.VISIBLE);
-//
-//                } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MEMBERSHIP) {
-//                EventBroadcastHelper.sendPackagePurchased();
-
-//                } else {
-//                    HomeActivity.show(context, AppConstants.Tab.TAB_MY_PROFILE);
-//
-//                }
                 finish();
                 break;
             case PENDING_TRANSACTION:
                 TransactionHistoryActivity.openActivity(context);
-                buttonsLayout.setVisibility(View.GONE);
-
-                buttonViewSchedule.setVisibility(View.VISIBLE);
                 finish();
                 break;
         }
     }
 
- private void enterFrom() {
+    private void enterFrom() {
         switch (checkoutFor) {
             case PACKAGE:
 
                 buttonInviteFriends.setVisibility(View.GONE);
-//                buttonViewSchedule.setVisibility(View.VISIBLE);
                 break;
             case CLASS_PURCHASE_WITH_PACKAGE:
                 buttonInviteFriends.setVisibility(View.VISIBLE);
-//                buttonViewSchedule.setVisibility(View.GONE);
                 break;
             case SPECIAL_CLASS:
                 buttonInviteFriends.setVisibility(View.VISIBLE);
-//                buttonViewSchedule.setVisibility(View.GONE);
                 break;
             case EXTENSION:
                 buttonInviteFriends.setVisibility(View.GONE);
 
-//                buttonViewSchedule.setVisibility(View.VISIBLE);
                 break;
             case PENDING_TRANSACTION:
                 buttonsLayout.setVisibility(View.GONE);
 
-//                buttonViewSchedule.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -405,7 +404,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.buttonInviteFriends:
                 Helper.shareClass(context, classModel.getClassSessionId(), classModel.getTitle());
 
@@ -416,7 +415,6 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 
             case R.id.buttonViewSchedule:
             case R.id.buttonSchedule:
-
                 redirectOnResult();
                 break;
             case R.id.buttonContactUs:
@@ -449,9 +447,10 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 paymentResponse = ((ResponseModel<PaymentConfirmationResponse>) response).data;
                 setAnimation();
                 setData(PaymentStatus.valueOf(paymentResponse.getStatus()));
+
 //                paymentResponse.setStatus(PaymentStatus.FAILURE.name());
 //                setData(PaymentStatus.FAILURE);
-
+                buttonHandler();
 //                layoutNoData.setVisibility(View.VISIBLE);
         }
     }
@@ -459,22 +458,17 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
     private void setData(PaymentStatus paymentStatus) {
         switch (paymentStatus) {
             case SUCCESS:
-                initializeStringVariables(getString(R.string.congratulation_class), getString(R.string.is_successfully_booked));
                 setConfirmBookingStyle();
                 setStyle();
                 break;
             case FAILURE:
-                initializeStringVariables(getString(R.string.unfortunately_class), getString(R.string.is_failed));
+                layoutValidity.setVisibility(View.GONE);
+                viewClass.setVisibility(View.GONE);
                 setFailBookingStyle();
                 setStyle();
                 break;
             case PENDING:
-                initializeStringVariables(getString(R.string.classs), getString(R.string.pending_detail));
-                setPendingBookingStyle();
-                setStyle();
-                break;
             case INITIALIZE:
-                initializeStringVariables(getString(R.string.classs), getString(R.string.pending_detail));
                 setPendingBookingStyle();
                 setStyle();
                 break;
@@ -494,28 +488,26 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
     }
 
     private void buttonHandler() {
-        if (PaymentStatus.valueOf(paymentResponse.getStatus()) == PaymentStatus.SUCCESS) {
+        if (PaymentStatus.valueOf(paymentResponse.getStatus()) == SUCCESS) {
             if (paymentResponse.getClassDetailDto() != null) {
-                buttonViewSchedule.setText(getString(R.string.view_schedule));
+                buttonViewSchedule.setText(getString(R.string.book_classes));
                 buttonSchedule.setText(getString(R.string.view_schedule));
             } else {
-                buttonViewSchedule.setText(getString(R.string.book_classes));
+                buttonSchedule.setText(getString(R.string.book_classes));
+                buttonsLayout.setVisibility(View.VISIBLE);
             }
-        }
-        if (PaymentStatus.valueOf(paymentResponse.getStatus()) == PaymentStatus.INITIALIZE) {
-            buttonViewSchedule.setText(getString(R.string.transaction_history));
+        } else if (PaymentStatus.valueOf(paymentResponse.getStatus()) == PaymentStatus.INITIALIZE) {
+            buttonViewSchedule.setText(getString(R.string.payment_history));
             buttonsLayout.setVisibility(View.GONE);
             buttonViewSchedule.setVisibility(View.VISIBLE);
             checkoutFor = PENDING_TRANSACTION;
-        }
-        if (PaymentStatus.valueOf(paymentResponse.getStatus()) == PaymentStatus.PENDING) {
-            buttonViewSchedule.setText(getString(R.string.transaction_history));
+        } else if (PaymentStatus.valueOf(paymentResponse.getStatus()) == PaymentStatus.PENDING) {
+            buttonViewSchedule.setText(getString(R.string.payment_history));
             buttonsLayout.setVisibility(View.GONE);
             buttonViewSchedule.setVisibility(View.VISIBLE);
             checkoutFor = PENDING_TRANSACTION;
-        }
-        if (PaymentStatus.valueOf(paymentResponse.getStatus()) == PaymentStatus.FAILURE) {
-            buttonViewSchedule.setText(getString(R.string.transaction_history));
+        } else if (PaymentStatus.valueOf(paymentResponse.getStatus()) == PaymentStatus.FAILURE) {
+            buttonViewSchedule.setText(getString(R.string.payment_history));
             buttonsLayout.setVisibility(View.GONE);
             buttonViewSchedule.setVisibility(View.VISIBLE);
             checkoutFor = PENDING_TRANSACTION;
@@ -542,10 +534,9 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 
     private void setPendingBookingStyle() {
         layoutPaymentStatus.setBackgroundColor(getResources().getColor(R.color.blue));
-        if (paymentResponse.getClassDetailDto() != null)
-            textViewPaymentStatus.setText(R.string.class_booking_is_pending);
-        else
-            textViewPaymentStatus.setText(R.string.package_booking_is_pending);
+        layoutValidity.setVisibility(View.GONE);
+        viewClass.setVisibility(View.GONE);
+        textViewPaymentStatus.setText(R.string.payment_pending);
         textViewPaymentStatus.setTextColor(getResources().getColor(R.color.theme_book));
         buttonContactUs.setVisibility(View.GONE);
         textViewPaymentReference.setVisibility(View.VISIBLE);
@@ -564,10 +555,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         textViewValidity.setVisibility(View.GONE);
 
         layoutPaymentStatus.setBackgroundColor(getResources().getColor(R.color.wewak));
-        if (paymentResponse.getClassDetailDto() != null)
-            textViewPaymentStatus.setText(R.string.class_booking_is_failed);
-        else
-            textViewPaymentStatus.setText(R.string.package_booking_is_failed);
+        textViewPaymentStatus.setText(R.string.payment_unsucessful);
         textViewPaymentStatus.setTextColor(getResources().getColor(R.color.red));
         buttonContactUs.setVisibility(View.VISIBLE);
         textViewPaymentReference.setVisibility(View.GONE);
@@ -587,6 +575,8 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 
     @SuppressLint("SetTextI18n")
     private void setStyle() {
+        BOOKED_ON = getString(R.string.purchase_date) + " ";
+        PAYMENT_REFERENCE = getString(R.string.payment_reference);
 
         if (paymentResponse.getDate() != 0) {
             String bookedString = BOOKED_ON + DateUtils.getTransactionDate(paymentResponse.getDate());
@@ -594,7 +584,11 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
             textViewBookedDate.setText(spanBoldBooked);
         }
         if (!TextUtils.isEmpty(paymentResponse.getReferenceId())) {
-            String paymentReference = PAYMENT_REFERENCE + " " + '#' + paymentResponse.getReferenceId();
+            String data = String.valueOf(LanguageUtils.numberConverter(Double.parseDouble(paymentResponse.getReferenceId())));
+                referenceNo= data.replace(",","");
+                referenceNo= data.replace("٬","");
+            String paymentReference = PAYMENT_REFERENCE + " " + '#' + referenceNo;
+
             SpannableString spanBoldReferenceID = boldString(paymentReference, PAYMENT_REFERENCE.length(), paymentReference.length());
             textViewPaymentReference.setText(spanBoldReferenceID);
         }
@@ -604,7 +598,6 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
             textViewValidity.setText(DateUtils.getClassDate(paymentResponse.getExpiryDate()));
         }
         textViewAmount.setText(LanguageUtils.numberConverter(paymentResponse.getAmount()) + " " + context.getString(R.string.currency));
-        buttonHandler();
 
         switch (checkoutFor) {
             case PACKAGE:
@@ -634,8 +627,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                     textViewPackageName.setText(userPackage.getPackageName());
                     textViewClassName.setText(userPackage.getBalanceClass() + " " + AppConstants.pluralES(context.getString(R.string.classs), userPackage.getBalanceClass()));
                 }
-                textViewPaymentStatus.setText(context.getString(R.string.package_extended_successfully));
-
+                setExtendedText();
                 break;
 
         }
@@ -647,7 +639,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
     private void onRedirectBack() {
         switch (checkoutFor) {
             case PACKAGE:
-                classModel.setUserJoinStatus(true);
+//                classModel.setUserJoinStatus(true);
                 EventBroadcastHelper.sendPackagePurchased();
                 finish();
                 break;
@@ -712,4 +704,6 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                     }
                 });
     }
+
+
 }
