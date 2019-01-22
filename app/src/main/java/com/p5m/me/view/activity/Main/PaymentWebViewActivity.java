@@ -69,7 +69,7 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
     private PaymentUrl paymentUrl;
     private CountDownTimer mTimmer;
     private String refId;
-    private long timeFortransaction = 420000;
+    private long timeFortransaction = 600000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -291,10 +291,12 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
                 }, getString(R.string.leave_this_page), new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        overridePendingTransition(0, 0);
-                        MixPanel.trackSequentialUpdate(AppConstants.Tracker.PURCHASE_CANCEL);
-                        PaymentWebViewActivity.super.onBackPressed();
-                        overridePendingTransition(0, 0);
+                        paymentSessionExpired();
+
+//                        overridePendingTransition(0, 0);
+//                        MixPanel.trackSequentialUpdate(AppConstants.Tracker.PURCHASE_CANCEL);
+//                        PaymentWebViewActivity.super.onBackPressed();
+//                        overridePendingTransition(0, 0);
                         mTimmer.cancel();
                     }
                 });

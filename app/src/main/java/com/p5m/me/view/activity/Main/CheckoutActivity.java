@@ -332,7 +332,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
                 textViewCancellationPolicy.setText(classModel.getReminder());
                 Helper.setPackageImage(imageViewPackageImage, AppConstants.Values.SPECIAL_CLASS_ID);
-                validityUnit.setText(numberConverter(mNumberOfPackagesToBuy) + " " + AppConstants.pluralES(getString(R.string.one_class), mNumberOfPackagesToBuy));
+                validityUnit.setText(numberConverter(mNumberOfPackagesToBuy) + " " + AppConstants.pluralES(getString(R.string.one_class), mNumberOfPackagesToBuy)+ " "+context.getString(R.string.at)+" " + classModel.getGymBranchDetail().getGymName());
 
                 setPrice();
 
@@ -443,10 +443,15 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     DecimalFormat numberFormat = new DecimalFormat("#.00");
                     textViewTotal.setText(LanguageUtils.numberConverter(promoCode.getPriceAfterDiscount()) + " " + context.getString(R.string.currency));
                     textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(promoCode.getPriceAfterDiscount()) + " " + context.getString(R.string.currency));
-                    textViewPromoCodePrice.setText("- " + LanguageUtils.numberConverter(((promoCode.getPrice() - promoCode.getPriceAfterDiscount()))) + " " + context.getString(R.string.currency));
-                    layoutPromoCode.setVisibility(View.VISIBLE);
-                    buttonPromoCode.setText(context.getString(R.string.remove_promo_code));
-
+                    if(promoCode.getDiscount()!=0) {
+                        textViewPromoCodePrice.setText("- " + LanguageUtils.numberConverter(((promoCode.getPrice() - promoCode.getPriceAfterDiscount()))) + " " + context.getString(R.string.currency));
+                        layoutPromoCode.setVisibility(View.VISIBLE);
+                        buttonPromoCode.setText(context.getString(R.string.remove_promo_code));
+                    }
+                    else
+                    {
+                        layoutPromoCode.setVisibility(View.GONE);
+                    }
                     try {
                         if (materialDialog != null) {
                             materialDialog.dismiss();

@@ -254,8 +254,8 @@
     <string name="powered_by">Powered By</string>
 
     <string name="selection_limiter_pix">Can\'t select more than %d images.</string>
-    <string name="valid_for_weeks">Valid for (%d) weeks</string>
-    <string name="valid_for_months" >Valid for (%d) months</string>
+    <string name="valid_for_weeks">Valid for %d week(s)</string>
+    <string name="valid_for_months" >Valid for %d month(s)</string>
     <string name="message_to_drag_up">Drag images up for gallery</string>
     <string name="pix_ok">OK</string>
     <string name="pix_tap_to_select">Tap photo to select</string>
@@ -283,10 +283,10 @@
     <string name="continue_with">Continue</string>
 
     <string name="special_class">Special Class</string>
-    <string name="class_remaining_for">class remaining for</string>
+    <string name="class_remaining_for">Class remaining for</string>
     <string name="valid_for">Valid for</string>
     <string name="promo_code_applied">Promo Code Applied</string>
-    <string name="total">Total :</string>
+    <string name="total">Total </string>
     <string name="pay">Payment</string>
     <string name="no_more_notification">No more notifications</string>
     <string name="both">Both</string>
@@ -379,11 +379,15 @@
     <string name="view_schedule">View Schedule</string>
     <string name="terms_service">terms of service</string>
     <string name="amount">Amount</string>
-    <string name="booked_on">Booked On:</string>
+    <string name="purchase_date">Purchase Date:</string>
     <string name="payment_reference">Payment Reference:</string>
     <string name="congratulation_class">Congratulations! Class</string>
     <string name="congratulation_package">Congratulations! Package</string>
     <string name="classs">Class</string>
+    <string name="payment_pending">Payment pending</string>
+    <string name="payment_sucessful">Payment successful</string>
+    <string name="payment_unsucessful">Payment unsuccessful</string>
+
     <string name="is_successfully_booked">is successfully booked.</string>
     <string name="view_membership">View Membership</string>
     <string name="no_more_classes">No more classes</string>
@@ -400,9 +404,10 @@
     <string name="class_booking_is_pending">Class booking is pending</string>
     <string name="package_booking_is_pending">Package booking is pending</string>
     <string name="n_a">N/A</string>
-    <string name="unfortunately_class">Unfortunately </string>
-    <string name="is_failed">is failed. Please try again. Please contact support in case the amount is debited from your account.</string>
-    <string name="pending_detail">is pending. You will receive a confirmation within 4 hours.</string>
+    <string name="unfortunately_class">Unfortunately, </string>
+
+    <string name="is_failed">is unsuccessful. Please try again. Please contact support in case the amount is debited from your account.</string>
+    <string name="pending_detail">. You will receive a confirmation within 4 hours.</string>
     <string name="for_key">for</string>
     <string name="purchase">Purchase</string>
     <string name="are_you_sure_you_want_to_remove">Are you sure you want to remove</string>
@@ -417,7 +422,6 @@
     <string name="booking_details">Booking details</string>
     <string name="package_extended_successfully">Package extended successfully</string>
     <string name="class_name">Class Name</string>
-    <string name="req_permission">Location Permission is required by app</string>
     <string name="intermediate">Intermediate</string>
     <string name="advanced">Advanced</string>
     <string name="basic">Basic</string>
@@ -427,7 +431,35 @@
     <string name="has_been_extended_for">has been extended for</string>
     <string name="contactUs">Please identify the details of your issue below. A member of our staff will respond shortly.</string>
     <string name="send_email">Send Email</string>
-    <string name="payment_session_expired" translatable="false">You ran out of time.</string>
+    <string name="payment_session_expired" translatable="false">Session timed out.</string>
+    <string name="package_extended_pending">Package Extension Pending</string>
+    <string name="pending_to_extend">has been pending to extend.</string>
+    <string name="pending_start_class"><b>%s</b> Class booking is pending.If you have completed the transaction, your payment will be updated within 4 hours.
+</string>
+    <string name="pending_start_package"><b>%s</b> Package purchase is pending.If you have completed the transaction, your payment will be updated within 4 hours.
+    </string>
+    <string name="pending_extension"><b>%s</b> Package extension is pending.If you have completed the transaction, your payment will be updated within 4 hours.</string>
+
+
+
+    <string name="failed_start_class">your class booking for</string>
+    <string name="failed_start_package">your package purchase for </string>
+    <string name="package_extended_failed">Package extension is failed</string>
+    <string name="package_extension">package extension for</string>
+    <string name="congratulation">Congratulation</string>
+    <string name="package_is_successfully_booked">Package is successfully booked.</string>
+
+
+    <string name="congratulation_package_booked"> Congratulations! <b>%s</b> Package is successfully booked.</string>
+    <string name="congratulation_class_booked">Congratulations! <b>%s</b> Class is successfully booked.</string>
+    <string name="congratulation_package_extended_en" translatable="false"  >Congratulations! <b>%s</b> has been extended for %s Week(s)</string>
+    <string name="valid_until">Valid until</string>
+    <string name="class_booking_failed">Unfortunately, %s Class booking is failed. Please try again. Please contact support in case the amount is debited from your account.</string>
+    <string name="package_booking_failed">Unfortunately, %s Package purchase is failed. Please try again. Please contact support in case the amount is debited from your account.</string>
+    <string name="failed_package_extension_en" translatable="false">Unfortunately, <b>%s</b> Package extension is failed. Please try again. Please contact support in case the amount is debited from your account.</string>
+
+
+    <string name="no_of_class">Number of class(es)</string>
 
 
     <string-array name="schedule_list">
