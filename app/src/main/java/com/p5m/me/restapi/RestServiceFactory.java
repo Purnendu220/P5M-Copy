@@ -18,6 +18,8 @@ import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
 
+import static com.p5m.me.utils.LanguageUtils.getLocalLanguage;
+
 
 public class RestServiceFactory {
 
@@ -44,12 +46,14 @@ public class RestServiceFactory {
                 public Response intercept(Chain chain) throws IOException {
                     String auth = (TempStorage.getAuthToken() != null && !TempStorage.getAuthToken().isEmpty()) ?
                             TempStorage.getAuthToken() : AppConstants.ApiParamValue.NO_TOKEN;
+                    String language= getLocalLanguage();
                     LogUtils.debug("Token " + auth);
 
                     Request request = chain.request().newBuilder()
                             .addHeader(AppConstants.ApiParamKey.MYU_AUTH_TOKEN, auth)
                             .addHeader(AppConstants.ApiParamKey.USER_AGENT, AppConstants.ApiParamValue.USER_AGENT_ANDROID)
                             .addHeader(AppConstants.ApiParamKey.APP_VERSION, BuildConfig.VERSION_NAME)
+                            .addHeader(AppConstants.ApiParamKey.APP_Language, language)
                             .build();
                     return chain.proceed(request);
                 }

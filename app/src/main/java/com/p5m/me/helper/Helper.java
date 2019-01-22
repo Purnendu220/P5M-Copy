@@ -398,11 +398,11 @@ public class Helper {
 
     public static String getClassGenderText(String classType) {
         if (classType.equals(AppConstants.ApiParamValue.GENDER_MALE)) {
-            return "Male";
+            return MyApp.context.getString(R.string.male);
         } else if (classType.equals(AppConstants.ApiParamValue.GENDER_FEMALE)) {
-            return "Female";
+            return MyApp.context.getString(R.string.female);
         } else {
-            return "Both";
+            return MyApp.context.getString(R.string.both);
         }
     }
 

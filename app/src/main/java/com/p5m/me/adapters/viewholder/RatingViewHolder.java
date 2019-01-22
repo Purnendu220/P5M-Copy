@@ -3,23 +3,18 @@ package com.p5m.me.adapters.viewholder;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.ImageListAdapter;
 import com.p5m.me.data.ClassRatingListData;
-import com.p5m.me.data.main.ClassModel;
-import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
-import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.LanguageUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,7 +62,7 @@ public class RatingViewHolder extends RecyclerView.ViewHolder {
             itemView.setVisibility(View.VISIBLE);
             textViewUsername.setText(model.getUserDetail().getFirstName());
             textViewReviewDate.setText(DateUtils.getRatingDate(model.getCreateDate()));
-            textViewClassRating.setText(model.getRating()+"");
+            textViewClassRating.setText(LanguageUtils.numberConverter(model.getRating())+"");
             if(model.getUserDetail().getProfileImageThumbnail()!=null&&!model.getUserDetail().getProfileImageThumbnail().isEmpty()){
                 ImageUtils.setImage(context,
                         model.getUserDetail().getProfileImageThumbnail(),

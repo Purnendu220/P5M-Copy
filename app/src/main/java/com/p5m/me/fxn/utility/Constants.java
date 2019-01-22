@@ -3,12 +3,15 @@ package com.p5m.me.fxn.utility;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import java.util.Locale;
+
 /**
  * Created by akshay on 06/04/18.
  */
 
 public class Constants {
     public static final int sScrollbarAnimDuration = 300;
+    public static Locale LANGUAGE ;
     public static String[] PROJECTION = new String[]{
             MediaStore.Images.Media.DATA,
             MediaStore.Images.Media._ID,
@@ -21,4 +24,12 @@ public class Constants {
     public static Uri URI = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
     public static String ORDERBY = MediaStore.Images.Media.DATE_TAKEN + " DESC";
 
+    public enum CheckoutFor {
+        PACKAGE,
+        SPECIAL_CLASS,
+        CLASS_PURCHASE_WITH_PACKAGE,
+        EXTENSION,
+        BOOKWITHFRIEND,
+        PENDING_TRANSACTION
+    }
 }

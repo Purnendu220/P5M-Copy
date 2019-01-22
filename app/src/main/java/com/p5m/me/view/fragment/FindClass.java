@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.FilterActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.Main.SearchActivity;
@@ -35,13 +37,17 @@ import com.p5m.me.view.activity.base.BaseActivity;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.p5m.me.utils.LanguageUtils.numberConverter;
 
 public class FindClass extends BaseFragment implements ViewPagerFragmentSelection, View.OnClickListener, ViewPager.OnPageChangeListener {
 
@@ -218,7 +224,7 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
 
             tabLayout.getTabAt(index).setCustomView(linearLayout);
 
-            textViewSubtitle.setText(monthName + " " + day);
+            textViewSubtitle.setText(monthName + " " +numberConverter(day));
 
             if (index == 0) {
                 textViewTitle.setText(getString(R.string.today));
@@ -249,6 +255,7 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT));
         activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
+
     }
 
     @Override

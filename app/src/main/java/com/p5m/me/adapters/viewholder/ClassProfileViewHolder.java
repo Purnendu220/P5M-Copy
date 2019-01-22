@@ -18,10 +18,12 @@ import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
-import com.p5m.me.utils.WordUtils;
+import com.p5m.me.utils.LanguageUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.p5m.me.utils.LanguageUtils.matchFitnessWord;
 
 /**
  * Created by MyU10 on 3/10/2018.
@@ -146,7 +148,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
                 layoutMap.setVisibility(View.VISIBLE);
                 ImageUtils.setImage(context, ImageUtils.generateMapImageUrlClassDetail(model.getGymBranchDetail().getLatitude(), model.getGymBranchDetail().getLongitude()),
                         R.drawable.no_map, imageViewMap);
-                textViewMap.setText(Html.fromHtml("<b>ADDRESS:</b>" + context.getString(R.string.gaping) + model.getGymBranchDetail().getAddress()));
+                textViewMap.setText(Html.fromHtml(context.getString(R.string.address) + context.getString(R.string.gaping) + model.getGymBranchDetail().getAddress()));
             } else {
                 layoutMap.setVisibility(View.GONE);
             }
@@ -165,7 +167,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
                 StringBuffer stringBuffer = new StringBuffer("");
 
                 if (!model.getReminder().isEmpty()) {
-                    stringBuffer.append("<b>REMINDERS:</b>" + context.getString(R.string.gaping) + model.getReminder());
+                    stringBuffer.append(context.getString(R.string.remenders) + context.getString(R.string.gaping) + model.getReminder());
                 }
 
                 if (model.getGymBranchDetail() != null) {
@@ -173,7 +175,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
                         if (!stringBuffer.toString().isEmpty()) {
                             stringBuffer.append("<br/><br/>");
                         }
-                        stringBuffer.append("<b>STUDIO INSTRUCTION:</b>" + context.getString(R.string.gaping) + model.getGymBranchDetail().getStudioInstruction());
+                        stringBuffer.append(context.getString(R.string.studio_instruction) + context.getString(R.string.gaping) + model.getGymBranchDetail().getStudioInstruction());
                     }
                 }
 
@@ -181,7 +183,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
                     if (!stringBuffer.toString().isEmpty()) {
                         stringBuffer.append("<br/><br/>");
                     }
-                    stringBuffer.append("<b>SPECIAL NOTE BY TRAINER:</b>" + context.getString(R.string.gaping) + model.getSpecialNote());
+                    stringBuffer.append(context.getString(R.string.special_note_by_trainer) + context.getString(R.string.gaping) + model.getSpecialNote());
                 }
 
                 textViewMoreDetails.setText(Html.fromHtml(stringBuffer.toString()));
@@ -220,24 +222,24 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
             } else {
                 textViewLocation.setText("");
             }
-            if(model.getRating() >0 && model.getNumberOfRating()>0){
-                CharSequence text = String.format(context.getString(R.string.review_based_on),model.getNumberOfRating()+"");
+            if (model.getRating() > 0 && model.getNumberOfRating() > 0) {
+                CharSequence text = String.format(context.getString(R.string.review_based_on), model.getNumberOfRating() + "");
                 linearLayoutStudioRating.setVisibility(View.VISIBLE);
                 studioRating.setRating(model.getRating());
 
-                textViewRatingCount.setText(model.getRating()+"/5.0");
+                textViewRatingCount.setText(model.getRating() + "/5.0");
                 textViewReviewCountText.setText(text);
                 studioRating.setIsIndicator(true);
                 linearLayoutClassRating.setVisibility(View.GONE);
-                textViewClassRating.setText(model.getRating()+"");
-                }else{
+                textViewClassRating.setText(model.getRating() + "");
+            } else {
                 linearLayoutClassRating.setVisibility(View.GONE);
                 linearLayoutStudioRating.setVisibility(View.GONE);
-                }
+            }
 
-             if(model.getFitnessLevel()!=null && !model.getFitnessLevel().isEmpty()){
+            if (model.getFitnessLevel() != null && !model.getFitnessLevel().isEmpty()) {
                 relativeLayoutFitnessLevel.setVisibility(View.VISIBLE);
-                switch (model.getFitnessLevel()){
+                switch (model.getFitnessLevel()) {
                     case AppConstants.FitnessLevel.CLASS_LEVEL_BASIC:
                         imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_get);
                         break;
@@ -249,20 +251,21 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
                         imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_pro);
 
                         break;
-                        default:
-                            relativeLayoutFitnessLevel.setVisibility(View.GONE);
-                            break;
-                            }
-                textViewFitnessLevel.setText(WordUtils.capitalize(model.getFitnessLevel().toLowerCase()));
-                }else{
-                 relativeLayoutFitnessLevel.setVisibility(View.GONE);
+                    default:
+                        relativeLayoutFitnessLevel.setVisibility(View.GONE);
+                        break;
+                }
+                setTextFitnessLevel(model);
+                } else {
+                relativeLayoutFitnessLevel.setVisibility(View.GONE);
             }
             textViewClassName.setText(model.getTitle());
             textViewClassCategory.setText(model.getClassCategory());
             textViewClassDate.setText(DateUtils.getClassDate(model.getClassDate()));
-
-            textViewAvailable.setText(model.getAvailableSeat() + " available " +
-                    AppConstants.plural("seat", model.getAvailableSeat()));
+//            textViewAvailable.setText( NumberFormat.getNumberInstance(Constants.LANGUAGE).format(model.getAvailableSeat()) + " " + context.getString(R.string.available_seats) + " ");
+//                    +
+//                    AppConstants.plural(context.getString(R.string.seat), model.getAvailableSeat()));
+            LanguageUtils.setText(textViewAvailable,model.getAvailableSeat(),context.getString(R.string.available_seats) + " ");
 
             textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
             textViewGender.setText(Helper.getClassGenderText(model.getClassType()));
@@ -323,5 +326,10 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
         } else {
             itemView.setVisibility(View.GONE);
         }
+    }
+
+    private void setTextFitnessLevel(ClassModel model) {
+       String fitnessLevel = matchFitnessWord(model.getFitnessLevel(),context);
+        textViewFitnessLevel.setText(fitnessLevel);
     }
 }

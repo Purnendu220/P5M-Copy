@@ -69,7 +69,7 @@ public class TrainerListListenerHelper implements AdapterCallbacks, NetworkCommu
 
     private void dialogUnFollow(final RecyclerView.ViewHolder viewHolder, final TrainerModel trainerModel) {
 
-        DialogUtils.showBasic(context, "Are you sure you want to remove " + trainerModel.getFirstName() + "?", "Yes", new MaterialDialog.SingleButtonCallback() {
+        DialogUtils.showBasic(context, context.getString(R.string.are_you_sure_you_want_to_remove)+" " + trainerModel.getFirstName() + "?", context.getString(R.string.yes), new MaterialDialog.SingleButtonCallback() {
             @Override
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                 ((BaseActivity) activity).networkCommunicator.followUnFollow(!trainerModel.isIsfollow(), trainerModel, TrainerListListenerHelper.this, false);

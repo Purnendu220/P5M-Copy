@@ -55,7 +55,7 @@ public class TrainerProfileAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         headerSticky = new HeaderSticky(context.getString(R.string.upcoming_classes));
         this.showLoader = showLoader;
 
-        listLoader = new ListLoader(true, "No more upcoming classes");
+        listLoader = new ListLoader(true, context.getString(R.string.no_more_upcoming_classes));
     }
 
     public List<Object> getList() {

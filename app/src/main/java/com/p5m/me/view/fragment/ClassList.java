@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.ClassListAdapter;
+import com.p5m.me.adapters.RecommendedClassAdapter;
 import com.p5m.me.data.CityLocality;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.Filter;
@@ -34,6 +35,7 @@ import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
+import com.p5m.me.utils.Utility;
 import com.p5m.me.view.activity.Main.ClassProfileActivity;
 import com.p5m.me.view.activity.Main.GymProfileActivity;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
@@ -62,6 +64,8 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
     @BindView(R.id.recyclerViewClass)
     public RecyclerView recyclerViewClass;
+    @BindView(R.id.recyclerViewRecommendedClass)
+    public RecyclerView recyclerViewRecommendedClass;
     @BindView(R.id.swipeRefreshLayout)
     public SwipeRefreshLayout swipeRefreshLayout;
 
@@ -191,6 +195,15 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
         classListAdapter = new ClassListAdapter(context, shownInScreen, true, this);
         recyclerViewClass.setAdapter(classListAdapter);
+//        Utility.verifyLocationInfoPermissions(activ);
+        setRecommendedClassView();
+    }
+
+    private void setRecommendedClassView() {
+        recyclerViewRecommendedClass.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewRecommendedClass.setHasFixedSize(true);
+        RecommendedClassAdapter recommendedListAdapter = new RecommendedClassAdapter(context, shownInScreen, true, new ClassListListenerHelper(context, activity, shownInScreen, this));
+        recyclerViewRecommendedClass.setAdapter(recommendedListAdapter);
     }
 
     private ClassListRequest generateRequest() {
@@ -338,7 +351,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
     private void checkListData() {
         if (classListAdapter.getList().isEmpty()) {
             layoutNoData.setVisibility(View.VISIBLE);
-
+            classListAdapter.notifyDataSetChanged();
             textViewEmptyLayoutText.setText(R.string.no_data_class_list_main);
             imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_class);
         } else {

@@ -19,9 +19,17 @@ import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
+import com.p5m.me.utils.LanguageUtils;
+import com.p5m.me.view.activity.Main.PaymentConfirmationActivity;
+
+import org.intellij.lang.annotations.Language;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.p5m.me.utils.LanguageUtils.currencyConverter;
+import static com.p5m.me.utils.LanguageUtils.numberConverter;
+import static com.p5m.me.utils.LanguageUtils.worldWideSetText;
 
 /**
  * Created by MyU10 on 3/10/2018.
@@ -56,6 +64,10 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
     public LinearLayout linearLayoutOffer;
     @BindView(R.id.textViewOffer)
     public TextView textViewOffer;
+@BindView(R.id.textViewOr)
+    public TextView textViewOr;
+@BindView(R.id.viewOr)
+    public View viewOr;
 
     @BindView(R.id.textViewPackagePriceStrike)
     public TextView textViewPackagePriceStrike;
@@ -97,14 +109,13 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                 linearLayoutOffer.setVisibility(View.GONE);
                 textViewPackagePriceStrike.setVisibility(View.GONE);
                 button.setText(R.string.your_current_plan);
-                if(model.getBalanceClass()>0){
+                if (model.getBalanceClass() > 0) {
                     textViewExtendPackage.setVisibility(View.VISIBLE);
-
-                }else{
+                } else {
                     textViewExtendPackage.setVisibility(View.GONE);
 
                 }
-                if(model!=null&&model.getTotalRemainingWeeks()<1){
+                if (model != null && model.getTotalRemainingWeeks() < 1) {
                     textViewExtendPackage.setVisibility(View.GONE);
                 }
                 button.setEnabled(false);
@@ -116,9 +127,10 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
                 if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
                     textViewPackageName.setText(model.getPackageName());
-                    textViewPageTitle.setText(Html.fromHtml(model.getBalanceClass() +" "+
-                            AppConstants.pluralES("class",model.getBalanceClass())+ " remaining"));
-                    textViewPackageValidity.setText("Valid till " + DateUtils.getPackageClassDate(model.getExpiryDate()));
+
+                    textViewPageTitle.setText(LanguageUtils.numberConverter(model.getBalanceClass())+" " + AppConstants.pluralES(context.getString(R.string.classs), model.getBalanceClass()) + " " + context.getString(R.string.remaining));
+
+                    textViewPackageValidity.setText(context.getString(R.string.valid_till) + " " + DateUtils.getPackageClassDate(model.getExpiryDate()));
 
                     textViewViewLimit.setVisibility(View.VISIBLE);
 
@@ -133,10 +145,14 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                 } else if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
 
                     textViewPackageName.setText(model.getPackageName());
-                    textViewPageTitle.setText(model.getBalanceClass() + " class remaining for " + model.getGymName());
+//                    textViewPageTitle.setText(numberConverter(model.getBalanceClass()) + " "+context.getString(R.string.class_remaining_for)+" " + model.getGymName());
+                    LanguageUtils.setText(textViewPageTitle, model.getBalanceClass(), " " + context.getString(R.string.class_remaining_for) + " " + model.getGymName());
 
-                    textViewPackageValidity.setText("Valid till " + DateUtils.getPackageClassDate(model.getExpiryDate()));
-
+                    textViewPackageValidity.setText(context.getString(R.string.valid_till) + " " + DateUtils.getPackageClassDate(model.getExpiryDate()));
+                     if(model.getExpiryDate()==null || model.getExpiryDate().trim().length()==0){
+                         textViewPackageValidity.setVisibility(View.GONE);
+                         textViewExtendPackage.setVisibility(View.GONE);
+                     }
                     textViewViewLimit.setVisibility(View.GONE);
                     imageViewInfo.setVisibility(View.VISIBLE);
                 }
@@ -153,19 +169,18 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
 
                         textViewPackageName.setText(model.getName());
-                        textViewPageTitle.setText(model.getNoOfClass() + " " + AppConstants.pluralES("Class", model.getNoOfClass()));
-
-                        String validityPeriod = model.getValidityPeriod();
-                        validityPeriod = Helper.capitalize(validityPeriod);
+                        textViewPageTitle.setText(numberConverter(model.getNoOfClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass())+" "+context.getString(R.string.at_any_gym));
+//                        LanguageUtils.setText(textViewPageTitle,model.getNoOfClass()," " + AppConstants.pluralES(context.getString(R.string.classs)
+//                                , model.getNoOfClass())+" "+context.getString(R.string.at_any_gym));
+                      /*  validityPeriod = Helper.capitalize(validityPeriod);
 
                         // Removing s from last
                         if (validityPeriod.charAt(validityPeriod.length() - 1) == 's') {
                             validityPeriod = validityPeriod.substring(0, validityPeriod.length() - 1);
-                        }
+                        }*/
 
-                        textViewPackageValidity.setText("Valid for " + model.getDuration() + " " + AppConstants.plural(validityPeriod, model.getDuration()));
-
-                        textViewPackagePrice.setText(model.getCost() + " " + context.getString(R.string.currency).toUpperCase());
+                       setTextValidityPeriod(model);
+                        textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getCost()) + " " + context.getString(R.string.currency).toUpperCase());
 
                         textViewViewLimit.setVisibility(View.VISIBLE);
 
@@ -196,26 +211,33 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                         }
 
                     } else if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
-
+                        textViewOr.setVisibility(View.VISIBLE);
+                        viewOr.setVisibility(View.VISIBLE);
                         textViewPackageName.setText(model.getName());
-                        if(model.isBookingWithFriend() && model.getNoOfClass()==1){
-                            textViewPageTitle.setText(model.getNoOfClass() + " " + AppConstants.pluralES("Class", model.getNoOfClass())+" for friend");
-
-                        }else{
-                            textViewPageTitle.setText(model.getNoOfClass() + " " + AppConstants.pluralES("Class", model.getNoOfClass()));
+                        if (model.isBookingWithFriend() && model.getNoOfClass() == 1) {
+                            textViewPageTitle.setText(model.getNoOfClass() +" "+ AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass()) + " for friend");
+                        }
+                        else {
+                            textViewPageTitle.setText(LanguageUtils.numberConverter(model.getNoOfClass()) +" " +AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass()) + " " + context.getString(R.string.at_any_gym));
 
                         }
-                        //textViewPageTitle.setText(model.getNoOfClass() + " " + AppConstants.pluralES("Class", model.getNoOfClass()));
-                        textViewPackageValidity.setText("Valid for " + model.getGymName());
-                        textViewPackagePrice.setText(model.getCost() + " " + context.getString(R.string.currency).toUpperCase());
+                        if (model.getNoOfClass() == 1) {
+//                            worldWideSetText(textViewPageTitle,context.getString(R.string.class_one_at), model.getGymName());
+//
+                            textViewPageTitle.setText(context.getString(R.string.class_one_at)+" "+ model.getGymName() );
+                        } else
+                            textViewPageTitle.setText(LanguageUtils.numberConverter(model.getNoOfClass()) +" "+ AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass()) + " "+context.getString(R.string.at)+" " + model.getGymName());
+
+                        textViewPackageValidity.setText(context.getString(R.string.valid_for) + " " + DateUtils.getPackageClassDate(classModel.getClassDate()) + " -" + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()));
+                        textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getCost()) + " " + context.getString(R.string.currency).toUpperCase());
 
                         textViewViewLimit.setVisibility(View.GONE);
 
                         imageViewInfo.setVisibility(View.VISIBLE);
                     }
-                    if(model.getPromoResponseDto()!=null&& model.getPromoResponseDto().getDiscountType()!=null){
-                        setPackagePriceAfterDiscount(model,textViewPackagePrice,textViewPackagePriceStrike);
-                    }else{
+                    if (model.getPromoResponseDto() != null && model.getPromoResponseDto().getDiscountType() != null) {
+                        setPackagePriceAfterDiscount(model, textViewPackagePrice, textViewPackagePriceStrike);
+                    } else {
                         linearLayoutOffer.setVisibility(View.GONE);
                         textViewPackagePriceStrike.setVisibility(View.GONE);
                     }
@@ -253,29 +275,46 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
             itemView.setVisibility(View.GONE);
         }
     }
-   private void setPackagePriceAfterDiscount(Package model,TextView textViewPackagePrice,TextView textViewPackagePriceStrike){
-       linearLayoutOffer.setVisibility(View.VISIBLE);
-       textViewPackagePriceStrike.setVisibility(View.VISIBLE);
-       String offerText;
-       if(model.getPromoResponseDto().getDiscountType().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_OFFER_PERCENTAGE)){
-           offerText = context.getString(R.string.package_offer_percentage);
-           }
-           else{
-           offerText = context.getString(R.string.package_offer_kwd);
 
-       }
-       try{
-           textViewOffer.setText(Math.round(model.getPromoResponseDto().getDiscount())+offerText);
+    private void setTextValidityPeriod(Package model) {
+        if(model.getValidityPeriod().contains("MONTH"))
+//         textViewPackageValidity.setText(context.getString(R.string.valid_for) + " " + numberConverter(model.getDuration()) + " " + AppConstants.plural(validityPeriod, model.getDuration()));
+        textViewPackageValidity.setText( String.format(context.getResources().getString(R.string.valid_for_months), model.getDuration()));
+        else if (model.getValidityPeriod().contains("WEEK"))
+            textViewPackageValidity.setText( String.format(context.getResources().getString(R.string.valid_for_weeks), model.getDuration()));
 
-       }catch (Exception e){
-           textViewOffer.setText(model.getPromoResponseDto().getDiscount()+offerText);
+    }
 
-       }
+    private void setPackagePriceAfterDiscount(Package model, TextView textViewPackagePrice, TextView textViewPackagePriceStrike) {
+        linearLayoutOffer.setVisibility(View.VISIBLE);
+        textViewPackagePriceStrike.setVisibility(View.VISIBLE);
+        String offerText;
+        if (model.getPromoResponseDto().getDiscountType().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_OFFER_PERCENTAGE)) {
+            offerText = context.getString(R.string.package_offer_percentage);
+        } else {
+            offerText = context.getString(R.string.package_offer_kwd);
 
-       textViewPackagePrice.setText(model.getPromoResponseDto().getPriceAfterDiscount() + " " + context.getString(R.string.currency).toUpperCase());
-       textViewPackagePriceStrike.setText(model.getPromoResponseDto().getPrice() + " " + context.getString(R.string.currency).toUpperCase());
-       textViewPackagePriceStrike.setPaintFlags(textViewPackagePriceStrike.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        }
+        try {
+            if(Math.round(model.getPromoResponseDto().getDiscount())==0)
+            {
+                textViewPackagePriceStrike.setVisibility(View.GONE);
+                linearLayoutOffer.setVisibility(View.GONE);
+            }
+            else {
+                linearLayoutOffer.setVisibility(View.VISIBLE);
+                textViewOffer.setText(currencyConverter(Math.round(model.getPromoResponseDto().getDiscount())) + offerText);
+            }
+        } catch (Exception e) {
+            textViewOffer.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getDiscount()) + offerText);
+
+        }
+
+        textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getPriceAfterDiscount()) + " " + context.getString(R.string.currency).toUpperCase());
+        textViewPackagePriceStrike.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getPrice()) + " " + context.getString(R.string.currency).toUpperCase());
+        textViewPackagePriceStrike.setPaintFlags(textViewPackagePriceStrike.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
 
-   }
+    }
+
 }

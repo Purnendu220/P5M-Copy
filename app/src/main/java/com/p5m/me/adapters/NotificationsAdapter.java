@@ -36,7 +36,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
         this.context = context;
         list = new ArrayList<>();
         this.showLoader = showLoader;
-        listLoader = new ListLoader(true, "No more notifications");
+        listLoader = new ListLoader(true, context.getString(R.string.no_more_notification));
     }
 
     public List<Object> getList() {

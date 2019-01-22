@@ -112,12 +112,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     private void dialogContactUs() {
         final List<String> items = new ArrayList<>();
-        items.add("Mail Us");
-        items.add("Make a Call");
+        items.add(getString(R.string.mail_us));
+        items.add(getString(R.string.make_a_call));
 
         DialogUtils.showBasicList(
                 context,
-                "Contact Us",
+                getString(R.string.contact_us),
                 items,
                 new MaterialDialog.ListCallback() {
                     @Override
@@ -127,8 +127,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                             Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                                     "mailto", "info@p5m.me", null));
                             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
-                            emailIntent.putExtra(Intent.EXTRA_TEXT, "Please identify the details of your issue below. A member of our staff will respond shortly.");
-                            startActivity(Intent.createChooser(emailIntent, "Send Email"));
+                            emailIntent.putExtra(Intent.EXTRA_TEXT, R.string.contactUs);
+                            startActivity(Intent.createChooser(emailIntent, getString(R.string.send_email)));
 
                         } else if (position == 1) {
                             Intent intent = new Intent(Intent.ACTION_DIAL);

@@ -21,7 +21,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
                 android:gravity="left"
-                android:text="Are you sure ?"
+                android:text="@string/are_you_sure"
                 android:textColor="@color/theme_medium_dark_text"
                 android:textSize="@dimen/text_large"
                 android:visibility="visible" />

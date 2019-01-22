@@ -106,6 +106,10 @@
     <dimen name="fastscroll_scrollbar_padding_end">12dp</dimen>
     <dimen name="fastscroll_bubble_size">56dp</dimen>
     <dimen name="margin_200">200dp</dimen>
+    <dimen name="margin_38">38dp</dimen>
+    <dimen name="icon_size">19dp</dimen>
+    <dimen name="margin_7">7dp</dimen>
+    <dimen name="margin_45">45dp</dimen>
 
 
 </resources>

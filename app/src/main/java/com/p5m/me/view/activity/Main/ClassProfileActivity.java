@@ -225,11 +225,11 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         // Check if class is allowed for the gender..
         if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
                 && !Helper.isMalesAllowed(classModel)) {
-            ToastUtils.show(context, "This is a Females only class");
+            ToastUtils.show(context, context.getString(R.string.gender_females_only_error));
             return;
         } else if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
                 && !Helper.isFemalesAllowed(classModel)) {
-            ToastUtils.show(context, "This is a Males only class");
+            ToastUtils.show(context,  context.getString(R.string.gender_males_only_error));
             return;
         }
 
@@ -393,7 +393,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 }
                 else {
                  if(userHaveExpiredGeneralPackageForClass){
-                     DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), "Purchase", new MaterialDialog.SingleButtonCallback() {
+                     DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), getString(R.string.purchase), new MaterialDialog.SingleButtonCallback() {
                          @Override
                          public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                              dialog.dismiss();
@@ -538,7 +538,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 MixPanel.trackJoinClass(navigationFrom, classModel);
                 if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
                     DialogUtils.showBasicMessage(context,"",
-                            "Successfully joined " + classModel.getTitle()
+                            context.getString(R.string.successfully_joined)+" " + classModel.getTitle()
                           ,context.getResources().getString(R.string.invite_friends), new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -615,7 +615,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                         }else{
                             message=getString(R.string.join_fail_limit_exhaust);
                         }
-                        DialogUtils.showBasic(context,message, "Purchase", new MaterialDialog.SingleButtonCallback() {
+                        DialogUtils.showBasic(context,message, getString(R.string.purchase), new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 dialog.dismiss();
@@ -640,7 +640,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 }
                else if(errorMessage.equals("405")){
                     if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
-                        DialogUtils.showBasic(context, getString(R.string.join_share_limit_exhaust), "Purchase", new MaterialDialog.SingleButtonCallback() {
+                        DialogUtils.showBasic(context, getString(R.string.join_share_limit_exhaust), getString(R.string.purchase), new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 dialog.dismiss();
@@ -670,7 +670,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     if(isBookWithFriendInProgress&&mBookWithFriendData!=null){
                         final User errorResponse=MyPreferences.getInstance().getPaymentErrorResponse();
                         if(checkIfUserHaveExpiredPackage()){
-                                DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), "Purchase", new MaterialDialog.SingleButtonCallback() {
+                                DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), getString(R.string.purchase), new MaterialDialog.SingleButtonCallback() {
                                     @Override
                                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                         dialog.dismiss();
@@ -713,7 +713,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 swipeRefreshLayout.setEnabled(true);
 
                 if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
-                    DialogUtils.showBasicMessage(context, errorMessage, "ok", new MaterialDialog.SingleButtonCallback() {
+                    DialogUtils.showBasicMessage(context, errorMessage, getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             finish();

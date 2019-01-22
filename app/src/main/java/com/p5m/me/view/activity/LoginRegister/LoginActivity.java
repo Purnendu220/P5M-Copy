@@ -149,12 +149,12 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
         String pass = editTextPassword.getText().toString();
 
         if (user.isEmpty()) {
-            textInputLayoutEmail.setError("Please input your email");
+            textInputLayoutEmail.setError(getString(R.string.please_enter_your_email));
             return;
         }
 
         if (pass.isEmpty()) {
-            textInputLayoutPassword.setError("Please input your password");
+            textInputLayoutPassword.setError(getString(R.string.password_required_error));
             return;
         }
 
@@ -254,7 +254,7 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
 
                     finish();
                 } else {
-                    textInputLayoutPassword.setError("Please try again");
+                    textInputLayoutPassword.setError(getString(R.string.please_try_again));
                 }
 
                 buttonLogin.setVisibility(View.VISIBLE);

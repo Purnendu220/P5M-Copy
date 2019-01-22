@@ -32,7 +32,6 @@ import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
-import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -46,13 +45,13 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MemberShip extends BaseActivity implements AdapterCallbacks, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
+public class MemberShip extends BaseActivity implements AdapterCallbacks, NetworkCommunicator.RequestListener,
+        SwipeRefreshLayout.OnRefreshListener  {
 
     public static void openActivity(Context context, int navigationFrom) {
         context.startActivity(new Intent(context, MemberShip.class)
@@ -168,6 +167,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     public void packagePurchasedForClass(Events.PackagePurchasedForClass data) {
         refreshFromEvent();
         hasPurchased = true;
+        finish();
     }
 
     private void refreshFromEvent() {
@@ -331,7 +331,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                         }
                     if(mFriendsData!=null && aPackage.getGymVisitLimit()==1){
                         DialogUtils.showBasicMessage(context,"",
-                                "This package has "+aPackage.getGymVisitLimit()+" visit limit for this gym.So you need to buy diffrent package to book with friend."
+                                getString(R.string.this_package_has)+" "+aPackage.getGymVisitLimit()+getString(R.string.limit_for_this_gym)
                                 ,context.getResources().getString(R.string.continue_with), new MaterialDialog.SingleButtonCallback() {
                                     @Override
                                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -363,16 +363,16 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                 if (model instanceof Package) {
                     Package aPackage = (Package) model;
                     if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
-                        DialogUtils.showBasicMessage(context, aPackage.getName().toUpperCase(), "Ok", R.string.membership_package_limit_info);
+                        DialogUtils.showBasicMessage(context, aPackage.getName().toUpperCase(), context.getString(R.string.ok), R.string.membership_package_limit_info);
                     } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
-                        DialogUtils.showBasicMessage(context, aPackage.getName().toUpperCase(), "Ok", R.string.membership_drop_in_info);
+                        DialogUtils.showBasicMessage(context, aPackage.getName().toUpperCase(), context.getString(R.string.ok), R.string.membership_drop_in_info);
                     }
                 } else if (model instanceof UserPackage) {
                     UserPackage aPackage = (UserPackage) model;
                     if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
-                        DialogUtils.showBasicMessage(context, aPackage.getPackageName().toUpperCase(), "Ok", R.string.membership_package_limit_info);
+                        DialogUtils.showBasicMessage(context, aPackage.getPackageName().toUpperCase(), context.getString(R.string.ok), R.string.membership_package_limit_info);
                     } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
-                        DialogUtils.showBasicMessage(context, aPackage.getPackageName().toUpperCase(), "Ok", R.string.membership_drop_in_info);
+                        DialogUtils.showBasicMessage(context, aPackage.getPackageName().toUpperCase(), context.getString(R.string.ok), R.string.membership_drop_in_info);
                     }
                 }
             }
@@ -502,4 +502,5 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
             MixPanel.trackSequentialUpdate(AppConstants.Tracker.NO_ACTION);
         }
     }
+
 }
