@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.Settings;
 import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -431,6 +432,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             }
         });
     }
+
 
 
 }

@@ -167,7 +167,7 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
                 linearLayoutClassRating.setVisibility(View.GONE);
             }
             if(model.getFitnessLevel()!=null && !model.getFitnessLevel().isEmpty()){
-                layoutFitnessLevel.setVisibility(View.VISIBLE);
+                layoutFitnessLevel.setVisibility(View.GONE);
 
                 switch (model.getFitnessLevel()){
                     case AppConstants.FitnessLevel.CLASS_LEVEL_BASIC:

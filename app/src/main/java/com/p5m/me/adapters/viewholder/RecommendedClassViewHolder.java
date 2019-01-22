@@ -24,6 +24,27 @@ import butterknife.ButterKnife;
 
 public class RecommendedClassViewHolder extends RecyclerView.ViewHolder {
 
+
+    @BindView(R.id.textViewRatingCount)
+    public TextView textViewRatingCount;
+
+    @BindView(R.id.textViewClassName)
+    public TextView textViewClassName;
+
+    @BindView(R.id.textViewTime)
+    public TextView textViewTime;
+
+    @BindView(R.id.textViewLocation)
+    public TextView textViewLocation;
+
+    @BindView(R.id.imgClass)
+    public ImageView imgClass;
+
+
+
+
+
+
     private final Context context;
     private int shownInScreen;
 
@@ -36,8 +57,39 @@ public class RecommendedClassViewHolder extends RecyclerView.ViewHolder {
         this.shownInScreen = shownInScreen;
     }
 
-    public void bind(Object item, AdapterCallbacks<ClassRatingListData> adapterCallbacks, int position) {
+    public void bind(Object item, final AdapterCallbacks adapterCallbacks, final int position) {
+        if (item != null && item instanceof ClassModel) {
+            itemView.setVisibility(View.VISIBLE);
+            final ClassModel model = (ClassModel) item;
+            textViewClassName.setText(model.getTitle());
+            textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
+            if (model.getClassMedia() != null) {
+                ImageUtils.setImage(context,
+                        model.getClassMedia().getMediaUrl(),
+                        R.drawable.class_holder, imgClass);
+            } else {
+                ImageUtils.clearImage(context, imgClass);
+            }
+            if (model.getGymBranchDetail() != null) {
+                textViewLocation.setText(model.getGymBranchDetail().getGymName() + ", " + model.getGymBranchDetail().getBranchName());
+            }
+            if(model.getRating()!=0.0F&&model.getRating()>0){
+                textViewRatingCount.setVisibility(View.VISIBLE);
+                textViewRatingCount.setText(model.getRating()+"");
+            }else{
+                textViewRatingCount.setVisibility(View.GONE);
+            }
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(RecommendedClassViewHolder.this, itemView, model, position);
+                }
+            });
 
 
+        }else{
+            itemView.setVisibility(View.GONE);
+        }
     }
 }

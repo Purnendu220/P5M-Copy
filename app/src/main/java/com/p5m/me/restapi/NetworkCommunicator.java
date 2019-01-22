@@ -95,6 +95,8 @@ public class NetworkCommunicator {
 
 
         public static final int CLASS_LIST = 103;
+        public static final int RCOMENDED_CLASS_LIST = 151;
+
         public static final int TRAINER_LIST = 104;
 
         public static final int WISH_LIST = 105;
@@ -384,6 +386,26 @@ public class NetworkCommunicator {
     public Call getClassList(ClassListRequest classListRequest, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.CLASS_LIST;
         Call<ResponseModel<List<ClassModel>>> call = apiService.getClassList(classListRequest);
+        LogUtils.debug("NetworkCommunicator hitting getClassList");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<List<ClassModel>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getClassList onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<ClassModel>>> call, Response<ResponseModel<List<ClassModel>>> restResponse, ResponseModel<List<ClassModel>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getClassList onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+    public Call getRcomendedClassList(String date,double latitude,double longitude, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.RCOMENDED_CLASS_LIST;
+        Call<ResponseModel<List<ClassModel>>> call = apiService.getRecomendedClassList(date,latitude,longitude);
         LogUtils.debug("NetworkCommunicator hitting getClassList");
 
         call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>(context) {

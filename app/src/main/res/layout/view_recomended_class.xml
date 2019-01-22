@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/margin_10"
+    >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif"
+        android:textStyle="normal"
+        android:textColor="#262626"
+        android:text="Recommended for you:"
+        android:padding="@dimen/margin_12"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewRecommendedClass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:scrollbars="none"
+        android:paddingLeft="@dimen/margin_8"
+        />
+
+</LinearLayout>

@@ -111,6 +111,14 @@ public interface ApiService {
     Call<ResponseModel<List<ClassModel>>> getClassList(@Body ClassListRequest classListRequest);
 
     @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.RECOMENDED_CLASS_LIST)
+    Call<ResponseModel<List<ClassModel>>> getRecomendedClassList(@Query(AppConstants.ApiParamKey.DATE) String data,
+                                                                 @Query(AppConstants.ApiParamKey.LONGITUDE) double longitude,
+                                                                 @Query(AppConstants.ApiParamKey.LATITUDE) double latitude);
+
+
+
+    @Headers("Content-type: application/json")
     @GET(AppConstants.Url.TRAINER_LIST)
     Call<ResponseModel<List<TrainerModel>>> getTrainerList(@Query(AppConstants.ApiParamKey.CATEGORY_ID) int categoryId,
                                                            @Query(AppConstants.ApiParamKey.PAGE) int page,

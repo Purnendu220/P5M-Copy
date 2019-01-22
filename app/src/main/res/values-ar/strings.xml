@@ -413,6 +413,9 @@
 
 <string name="permission_message_camera">الرجاء السماح لـ P5M بالتقاط الصور وتسجيل الفيديو.</string>
 
+    <string name="permission_message_location">Please allow P5M to access your location.</string>
+
+
 <string name="pick_image">اختر الصورة</string>
 
 <string name="profile_changes_saved">تم حفظ التغييرات في ملف التعريف الخاص بك!</string>
