@@ -229,7 +229,6 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
             } else if (paymentResponse.getStatus().equals(PaymentStatus.PENDING) ||
                     paymentResponse.getStatus().equals(PaymentStatus.INITIALIZE)) {
                 BOOKED_ON = getString(R.string.extend_on) + " ";
-                SUCCESSFULLY_BOOKED = " " + "has been pending to extend.";
                 textViewPaymentStatus.setText(context.getString(R.string.package_extended_pending));
 
             }
@@ -292,9 +291,9 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                     break;
                 case FAILURE:
                     if (Constants.LANGUAGE == Locale.ENGLISH)
-                        textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.failed_package_extension_en), "<b>" + getPurchasedPackageName() + "</b>", LanguageUtils.numberConverter(selectedPacakageFromList.getDuration()))));
+                        textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.failed_package_extension_en), "<b>" + getPurchasedPackageName()+ "</b>")));
                     else
-                        textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.failed_package_extension_ar), "<b>" + getPurchasedPackageName() + "</b>", LanguageUtils.numberConverter(selectedPacakageFromList.getDuration()))));
+                        textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.failed_package_extension_ar), "<b>" + getPurchasedPackageName() + "</b>")));
 
                     break;
             }
@@ -351,7 +350,6 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
     private void redirectOnResult() {
         switch (checkoutFor) {
             case PACKAGE:
-//                EventBroadcastHelper.sendPackagePurchased();
                 HomeActivity.show(context, AppConstants.Tab.TAB_FIND_CLASS);
                 finish();
                 break;
@@ -366,7 +364,6 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE);
                 break;
             case EXTENSION:
-//                if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE) {
                 HomeActivity.show(context, AppConstants.Tab.TAB_FIND_CLASS);
 
                 finish();
@@ -451,7 +448,6 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 //                paymentResponse.setStatus(PaymentStatus.FAILURE.name());
 //                setData(PaymentStatus.FAILURE);
                 buttonHandler();
-//                layoutNoData.setVisibility(View.VISIBLE);
         }
     }
 
@@ -585,7 +581,9 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         }
         if (!TextUtils.isEmpty(paymentResponse.getReferenceId())) {
             String data = String.valueOf(LanguageUtils.numberConverter(Double.parseDouble(paymentResponse.getReferenceId())));
+            if(Locale.ENGLISH==Constants.LANGUAGE)
                 referenceNo= data.replace(",","");
+            else
                 referenceNo= data.replace("٬","");
             String paymentReference = PAYMENT_REFERENCE + " " + '#' + referenceNo;
 
@@ -625,14 +623,14 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
             case EXTENSION:
                 if (userPackage != null) {
                     textViewPackageName.setText(userPackage.getPackageName());
-                    textViewClassName.setText(userPackage.getBalanceClass() + " " + AppConstants.pluralES(context.getString(R.string.classs), userPackage.getBalanceClass()));
+                    textViewClassName.setText(LanguageUtils.numberConverter(userPackage.getBalanceClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs), userPackage.getBalanceClass()));
                 }
                 setExtendedText();
                 break;
 
         }
         if (paymentResponse.getNumberOfClasses() != 0)
-            textViewClassName.setText(paymentResponse.getNumberOfClasses() + " " + AppConstants.pluralES(context.getString(R.string.classs), paymentResponse.getNumberOfClasses()));
+            textViewClassName.setText(LanguageUtils.numberConverter(paymentResponse.getNumberOfClasses()) + " " + AppConstants.pluralES(context.getString(R.string.classs), paymentResponse.getNumberOfClasses()));
 
     }
 

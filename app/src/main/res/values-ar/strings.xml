@@ -679,7 +679,7 @@
 
     <string name="amount">"المبلغ "</string>
 
-    <string name="purchase_date"> تاريخ الشراء:</string>
+    <string name="purchase_date">تاريخ الشراء:</string>
     <string name="payment_pending"> الدفع قيد الانتظا</string>
     <string name="payment_sucessful">تم الدفع بنجاح</string>
     <string name="payment_unsucessful">لم يتم الدفع  بنجاح</string>
@@ -771,9 +771,7 @@
 
     <string name="package_extended_successfully">تم تمديد الاشتراك بنجاح</string>
 
-    <string name="class_name">اسم اكلاس</string>
-
-    <string name="req_permission">يرجى السماح لP5M بإستخدام موقعك</string>
+    <string name="class_name">اسم الكلاس</string>
 
     <string name="intermediate">متوسط</string>
 
@@ -795,9 +793,9 @@
 
     <string name="package_extended_pending">Package Extension Pending</string>
     <string name="pending_to_extend">has been pending to extend.</string>
-    <string name="pending_start_class"> حجز الكلاس <b>%s</b> قيد الانتظار. ستستلم رسالة تأكيد عبر البريد الإلكتروني خلال 4 ساعات.</string>
-    <string name="pending_start_package"> شراء إشتراك <b>%s</b>  قيد الانتظار. ستستلم رسالة تأكيد عبر البريد الإلكتروني خلال 4 ساعات. </string>
-    <string name="pending_extension"> تمديد إشتراك <b>%s</b> قيد الانتظار. ستستلم رسالة تأكيد عبر البريد الإلكتروني خلال 4 ساعات.</string>
+    <string name="pending_start_class"> حجز الكلاس <b>%s</b>إذا أكملت المعاملة ، فسيتم تحديث حسابك خلال أربع ساعات.</string>
+    <string name="pending_start_package"> شراء إشتراك <b>%s</b>إذا أكملت المعاملة ، فسيتم تحديث حسابك خلال أربع ساعات. </string>
+    <string name="pending_extension"> تمديد إشتراك <b>%s</b>إذا أكملت المعاملة ، فسيتم تحديث حسابك خلال أربع ساعات. </string>
 
     <string name="failed_start_class">لم يتم الحجز بنجاح</string>
     <string name="failed_start_package">لم يتم الإشتراك بنجاح</string>
@@ -811,10 +809,11 @@
 
     <string name="congratulation_package_extended_ar" translatable="false" >مبروك! تم تمديد إشتراك %s لمدة  %s اسابيع.</string>
 
-    <string name="valid_until">Valid Until</string>
+    <string name="valid_until">صالح حتى</string>
     <string name="class_booking_failed">للأسف, لم يتم الحجز الى الكلاس <b>%s</b> بنجاح. الرجاء المحاولة فى وقت لاحق. إذا تم خصم المبلغ من حسابك المصرفي، تواصل معنا على الفور.</string>
     <string name="package_booking_failed">للأسف, لم يتم شراء إشتراك  <b>%s</b> بنجاح. الرجاء المحاولة فى وقت لاحق. إذا تم خصم المبلغ من حسابك المصرفي، تواصل معنا على الفور.</string>
-    <string name="failed_package_extension_ar" translatable="false">للأسف, فشل تمديد إشتراك s%. الرجاء المحاولة فى وقت لاحق. إذا تم خصم المبلغ من حسابك المصرفي، تواصل معنا على الفور.</string>
+    <string name="failed_package_extension_ar" translatable="false">للأسف, فشل تمديد إشتراك %s. الرجاء المحاولة فى وقت لاحق. إذا تم خصم المبلغ من حسابك المصرفي، تواصل معنا على الفور.</string>
+    <string name="no_of_class">عدد الكلاسات</string>
     <string-array name="schedule_list">
 
     <item>@string/upcoming</item>

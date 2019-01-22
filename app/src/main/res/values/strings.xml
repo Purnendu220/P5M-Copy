@@ -286,7 +286,7 @@
     <string name="class_remaining_for">Class remaining for</string>
     <string name="valid_for">Valid for</string>
     <string name="promo_code_applied">Promo Code Applied</string>
-    <string name="total">Total :</string>
+    <string name="total">Total </string>
     <string name="pay">Payment</string>
     <string name="no_more_notification">No more notifications</string>
     <string name="both">Both</string>
@@ -422,7 +422,6 @@
     <string name="booking_details">Booking details</string>
     <string name="package_extended_successfully">Package extended successfully</string>
     <string name="class_name">Class Name</string>
-    <string name="req_permission">Location Permission is required by app</string>
     <string name="intermediate">Intermediate</string>
     <string name="advanced">Advanced</string>
     <string name="basic">Basic</string>
@@ -435,9 +434,11 @@
     <string name="payment_session_expired" translatable="false">Session timed out.</string>
     <string name="package_extended_pending">Package Extension Pending</string>
     <string name="pending_to_extend">has been pending to extend.</string>
-    <string name="pending_start_class"><b>%s</b> Class booking is pending. You will receive a confirmation within 4 hours </string>
-    <string name="pending_start_package"><b>%s</b> Package purchase is pending. You will receive a confirmation within 4 hours </string>
-    <string name="pending_extension"><b>%s</b> Package extension is pending. You will receive a confirmation within 4 hours.</string>
+    <string name="pending_start_class"><b>%s</b> Class booking is pending.If you have completed the transaction, your payment will be updated within 4 hours.
+</string>
+    <string name="pending_start_package"><b>%s</b> Package purchase is pending.If you have completed the transaction, your payment will be updated within 4 hours.
+    </string>
+    <string name="pending_extension"><b>%s</b> Package extension is pending.If you have completed the transaction, your payment will be updated within 4 hours.</string>
 
 
 
@@ -452,10 +453,13 @@
     <string name="congratulation_package_booked"> Congratulations! <b>%s</b> Package is successfully booked.</string>
     <string name="congratulation_class_booked">Congratulations! <b>%s</b> Class is successfully booked.</string>
     <string name="congratulation_package_extended_en" translatable="false"  >Congratulations! <b>%s</b> has been extended for %s Week(s)</string>
-    <string name="valid_until">Valid Until</string>
+    <string name="valid_until">Valid until</string>
     <string name="class_booking_failed">Unfortunately, %s Class booking is failed. Please try again. Please contact support in case the amount is debited from your account.</string>
     <string name="package_booking_failed">Unfortunately, %s Package purchase is failed. Please try again. Please contact support in case the amount is debited from your account.</string>
-    <string name="failed_package_extension_en" translatable="false">Unfortunately, %s Package extension is failed. Please try again. Please contact support in case the amount is debited from your account.</string>
+    <string name="failed_package_extension_en" translatable="false">Unfortunately, <b>%s</b> Package extension is failed. Please try again. Please contact support in case the amount is debited from your account.</string>
+
+
+    <string name="no_of_class">Number of class(es)</string>
 
 
     <string-array name="schedule_list">
