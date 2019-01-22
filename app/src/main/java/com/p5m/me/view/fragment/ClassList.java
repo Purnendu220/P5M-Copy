@@ -358,13 +358,23 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
 
     private void getLocation() {
+        double lat = 0;
+        double lang = 0;
         try {
             locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, this);
-        }
+            Location loc=  locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if(loc!=null){
+              lat = loc.getLatitude();
+              lang = loc.getLongitude();
+            }
+
+          }
         catch(SecurityException e) {
             e.printStackTrace();
+
         }
+        callRecomendedClassApi(lat,lang);
+
     }
 
     private void callApiClassList() {
@@ -456,28 +466,27 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
     @Override
     public void onLocationChanged(Location location) {
-        callRecomendedClassApi(location.getLatitude(),location.getLongitude());
-        Toast.makeText(context, "Latitude: " + location.getLatitude() + "\n Longitude: " + location.getLongitude(), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(context, "Latitude: " + location.getLatitude() + "\n Longitude: " + location.getLongitude(), Toast.LENGTH_SHORT).show();
 
     }
 
     @Override
     public void onStatusChanged(String s, int i, Bundle bundle) {
-        Toast.makeText(context, "onStatusChanged:- "+" "+s, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "onStatusChanged:- "+" "+s, Toast.LENGTH_SHORT).show();
 
 
     }
 
     @Override
     public void onProviderEnabled(String s) {
-        Toast.makeText(context, "onProviderEnabled:- "+" "+s, Toast.LENGTH_SHORT).show();
+       // Toast.makeText(context, "onProviderEnabled:- "+" "+s, Toast.LENGTH_SHORT).show();
 
 
     }
 
     @Override
     public void onProviderDisabled(String s) {
-        Toast.makeText(context, "onProviderDisabled:- "+" "+s, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "onProviderDisabled:- "+" "+s, Toast.LENGTH_SHORT).show();
 
 
     }
