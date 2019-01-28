@@ -820,6 +820,7 @@
     <string name="type_your_questions_and_comments_here">Type your questions and comments here</string>
     <string name="please_provide_your_query">Please provide your query</string>
     <string name="please_select_sender">Please select sender</string>
+    <string name="message_is_successfullt_send">Message is successfully send.</string>
     <string-array name="schedule_list">
 
     <item>@string/upcoming</item>

@@ -159,7 +159,7 @@ public class ContactActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onApiSuccess(Object response, int requestCode) {
         if (requestCode == NetworkCommunicator.RequestCode.SUPPORT_RESPONSE_CONTACT) {
-            ToastUtils.show(context, "Message is successfully send.");
+            ToastUtils.show(context, R.string.message_is_successfullt_send);
             etMessage.getText().clear();
         }
     }
