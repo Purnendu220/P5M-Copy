@@ -1,8 +1,11 @@
 package com.p5m.me.view.activity.Main;
 
+import android.Manifest;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,8 +13,10 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -126,7 +131,6 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             INITIAL_POSITION = getIntent().getIntExtra(AppConstants.DataKey.HOME_TAB_POSITION,
                     AppConstants.Tab.TAB_FIND_CLASS);
         }
-
         RefrenceWrapper.getRefrenceWrapper(this).setActivity(this);
         buyClasses.setOnClickListener(this);
         GlobalBus.getBus().register(this);
@@ -432,7 +436,6 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             }
         });
     }
-
 
 
 }

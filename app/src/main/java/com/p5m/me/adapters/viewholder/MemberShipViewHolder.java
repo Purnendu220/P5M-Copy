@@ -149,7 +149,10 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     LanguageUtils.setText(textViewPageTitle, model.getBalanceClass(), " " + context.getString(R.string.class_remaining_for) + " " + model.getGymName());
 
                     textViewPackageValidity.setText(context.getString(R.string.valid_till) + " " + DateUtils.getPackageClassDate(model.getExpiryDate()));
-
+                     if(model.getExpiryDate()==null || model.getExpiryDate().trim().length()==0){
+                         textViewPackageValidity.setVisibility(View.GONE);
+                         textViewExtendPackage.setVisibility(View.GONE);
+                     }
                     textViewViewLimit.setVisibility(View.GONE);
                     imageViewInfo.setVisibility(View.VISIBLE);
                 }
@@ -295,6 +298,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
         try {
             if(Math.round(model.getPromoResponseDto().getDiscount())==0)
             {
+                textViewPackagePriceStrike.setVisibility(View.GONE);
                 linearLayoutOffer.setVisibility(View.GONE);
             }
             else {

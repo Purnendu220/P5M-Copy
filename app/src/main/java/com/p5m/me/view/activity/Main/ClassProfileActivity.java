@@ -393,7 +393,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 }
                 else {
                  if(userHaveExpiredGeneralPackageForClass){
-                     DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), "Purchase", new MaterialDialog.SingleButtonCallback() {
+                     DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), getString(R.string.purchase), new MaterialDialog.SingleButtonCallback() {
                          @Override
                          public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                              dialog.dismiss();
@@ -640,7 +640,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 }
                else if(errorMessage.equals("405")){
                     if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
-                        DialogUtils.showBasic(context, getString(R.string.join_share_limit_exhaust), "Purchase", new MaterialDialog.SingleButtonCallback() {
+                        DialogUtils.showBasic(context, getString(R.string.join_share_limit_exhaust), getString(R.string.purchase), new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 dialog.dismiss();

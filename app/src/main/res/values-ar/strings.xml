@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="app_name">P5M</string>
@@ -29,8 +28,6 @@
     <string name="please_wait">يتم التحميل</string>
 
     <string name="terms_of_service">""عند تسجيل الدخول ، فإنك توافق على <u>شروط الخدمة</u>لدينا\nو <u>سياسة الخصوصية</u>""</string>
-    <!--<string name="terms_of_service">عن طريق تسجيل الدخول ، فإنك توافق على شروط الخدمة لدينا-->
-<!--وسياسة الخصوصية</string>-->
 
     <string name="whats_your_name">ما هو اسمك</string>
 
@@ -132,7 +129,7 @@
 
     <string name="login">""<b><u>تسجيل الدخول</u></b>""</string>
 
-    <string name="login_no_lines">تسجيل الدخول</string>
+    <string name="login_no_lines">"تسجيل الدخول"</string>
 
     <string name="sign_up_email">سجل عن طريق البريد الإلكتروني</string>
 
@@ -146,601 +143,694 @@
 
     <string name="email">الإيميل</string>
 
-<string name="password">كلمة السر</string>
+    <string name="password">كلمة السر</string>
 
+    <string name="reserve_class">احجز الكلاس</string>
 
+    <string name="favourite">مفضل</string>
 
+    <string name="favorited">مفضل</string>
 
-<string name="reserve_class">احجز الكلاس</string>
+    <string name="favorite_trainer">المدربون المفضلون</string>
 
-<string name="favourite">مفضل</string>
+    <string name="finished">الكلاسات المنتهية</string>
 
-<string name="favorited">مفضل</string>
+    <string name="addInWishList">أضيفت في قائمة أمنياتك</string>
 
-<string name="favorite_trainer">المدربون المفضلون</string>
+    <string name="add_to_WishList">إضافة لقائمة الأمنيات</string>
 
-<string name="finished">الكلاسات المنتهية</string>
+    <string name="remove_WishList">إزالة من قائمة الأمنيات</string>
 
-<string name="addInWishList">أضيفت في قائمة أمنياتك</string>
+    <string name="edit_profile">تعديل البروفايل</string>
 
-<string name="add_to_WishList">إضافة لقائمة الأمنيات</string>
+    <string name="settings">الإعدادات</string>
 
-<string name="remove_WishList">إزالة من قائمة الأمنيات</string>
+    <string name="dob">تاريخ الولادة</string>
 
-<string name="edit_profile">تعديل البروفايل</string>
+    <string name="nationality">الجنسية</string>
 
-<string name="settings">الإعدادات</string>
+    <string name="gender_profile">الجنس</string>
 
-<string name="dob">تاريخ الولادة</string>
+    <string name="change_password">تغيير كلمة المرور</string>
 
-<string name="nationality">الجنسية</string>
+    <string name="notifications">الإشعارات</string>
 
-<string name="gender_profile">الجنس</string>
+    <string name="membership">اشتراك</string>
 
+    <string name="language">اللغة</string>
 
-<string name="change_password">تغيير كلمة المرور</string>
+    <string name="about_us">عنا</string>
 
-<string name="notifications">الإشعارات</string>
+    <string name="log_out">تسجيل الخروج</string>
 
-<string name="membership">اشتراك</string>
+    <string name="classes">الكلاسات</string>
 
-<string name="language">اللغة</string>
+    <string name="trainers">المدربون</string>
 
-<string name="about_us">عنا</string>
+    <string name="myProfile">الصفحة الشخصية</string>
 
-<string name="log_out">تسجيل الخروج</string>
+    <string name="gyms">النوادي</string>
 
-<string name="classes">الكلاسات</string>
+    <string name="gym">النادي</string>
 
-<string name="trainers">المدربون</string>
+    <string name="gym_profile">صفحة النادي</string>
 
-<string name="myProfile">الصفحة الشخصية</string>
+    <string name="currency">KWD</string>
 
-<string name="gyms">النوادي</string>
+    <string name="valid">صالحة ل</string>
 
-<string name="gym">النادي</string>
+    <string name="clean_filter">امسح الكل</string>
 
-<string name="gym_profile">صفحة النادي</string>
+    <string name="filter">الفلتر</string>
 
-<string name="currency">KWD</string>
+    <string name="your_current_plan">اشتراكك الحالي</string>
 
-<string name="valid">صالحة ل</string>
+    <string name="select">تحديد</string>
 
-<string name="clean_filter">امسح الكل</string>
+    <string name="of"><b>من</b></string>
 
-<string name="filter">الفلتر</string>
+    <string name="classes_remaining">كلاسات متبقية</string>
 
-<string name="your_current_plan">اشتراكك الحالي</string>
+    <string name="valid_till">صالحة حتى</string>
 
-<string name="select">تحديد</string>
+    <string name="coach_at">مدرب في</string>
 
-<string name="of"><b>من</b></string>
+    <string name="recharge">""<u>شراء كلاسات</u>""</string>
 
-<string name="classes_remaining">كلاسات متبقية</string>
+    <string name="buy_classes">شراء كلاسات</string>
 
-<string name="valid_till">صالحة حتى</string>
+    <string name="email_error_text">يرجى استخدام عنوان بريد إلكتروني صالح.</string>
 
-<string name="coach_at">مدرب في</string>
+    <string name="password_required_error">نحن بحاجة إلى كلمة مرور لتسجيل الدخول.</string>
 
-<string name="recharge">""<u>شراء كلاسات</u>""</string>
+    <string name="email_required_error">البريد الالكتروني مطلوب.</string>
 
-<string name="buy_classes">شراء كلاسات</string>
+    <string name="name_required_error">اسمك الأول مطلوب.</string>
 
-<string name="email_error_text">يرجى استخدام عنوان بريد إلكتروني صالح.</string>
+    <string name="last_name_required_error">اسمك الأخير مطلوب.</string>
 
-<string name="password_required_error">نحن بحاجة إلى كلمة مرور لتسجيل الدخول.</string>
+    <string name="gender_required">جنسك مطلوب.</string>
 
-<string name="email_required_error">البريد الالكتروني مطلوب.</string>
+    <string name="promo_code_required">الشفرة مطلوبة</string>
 
-<string name="name_required_error">اسمك الأول مطلوب.</string>
+    <string name="email_required_validate">البريد الإلكتروني الذي أدخلته غير صحيح.</string>
 
-<string name="last_name_required_error">اسمك الأخير مطلوب.</string>
+    <string name="phone_email_required_validate">الهاتف والبريد الإلكتروني الذي أدخلتهما غير صحيحين.</string>
 
-<string name="gender_required">جنسك مطلوب.</string>
+    <string name="phone_required_validate">رقم الهاتف الذي أدخلته غير صحيح.</string>
 
-<string name="promo_code_required">الشفرة مطلوبة</string>
-
-<string name="email_required_validate">البريد الإلكتروني الذي أدخلته غير صحيح.</string>
-
-<string name="phone_email_required_validate">الهاتف والبريد الإلكتروني الذي أدخلتهما غير صحيحين.</string>
-
-<string name="phone_required_validate">رقم الهاتف الذي أدخلته غير صحيح.</string>
-
-<string name="something_went_wrong">حدث خطأ ما. أعد المحاولة من فضلك.</string>
+    <string name="something_went_wrong">حدث خطأ ما. أعد المحاولة من فضلك.</string>
 
     <!--<string name="no_classes">No classes are available.\n Try different days to find your match.</string>-->
 
 
-<string name="password_required">يرجى إدخال كلمة المرور</string>
+    <string name="password_required">يرجى إدخال كلمة المرور</string>
 
-<string name="password_weak">يجب أن تتكون كلمة المرور الخاصة بك من 6 أحرف أو أكثر</string>
+    <string name="password_weak">يجب أن تتكون كلمة المرور الخاصة بك من 6 أحرف أو أكثر</string>
 
-<string name="confirm_password_required">يرجى إدخال كلمة المرور الخاصة بك</string>
+    <string name="confirm_password_required">يرجى إدخال كلمة المرور الخاصة بك</string>
 
-<string name="confirm_password_not_matched">كلمة السر غير متطابقة</string>
+    <string name="confirm_password_not_matched">كلمة السر غير متطابقة</string>
 
 
     -<string-array name="gender_type">
 
-<item>ذكر</item>
+    <item>ذكر</item>
 
-<item>أنثى</item>
+    <item>أنثى</item>
 
 </string-array>
 
-<string name="upcoming_classes">الكلاسات القادمة</string>
+    <string name="upcoming_classes">الكلاسات القادمة</string>
 
-<string name="today">اليوم</string>
+    <string name="today">اليوم</string>
 
-<string name="sign_up">""<b><u>حساب جديد</u></b>""</string>
+    <string name="sign_up">""<b><u>حساب جديد</u></b>""</string>
 
-<string name="profile_package_expiry">"متبقية لنهاية صلاحية كلاساتك"</string>
+    <string name="profile_package_expiry">"متبقية لنهاية صلاحية كلاساتك"</string>
 
-<string name="view_gym_visit_limits"><u>الاطلاع على حدود زيارة النوادي</u></string>
+    <string name="view_gym_visit_limits"><u>الاطلاع على حدود زيارة النوادي</u></string>
 
-<string name="gym_visit_limits_no_lines">حدود زيارة النوادي</string>
+    <string name="gym_visit_limits_no_lines">حدود زيارة النوادي</string>
 
-<string name="select_plan">اختر خطة</string>
+    <string name="select_plan">اختر خطة</string>
 
-<string name="membership_no_package_heading_1">قم باختيار الاشتراك المناسب لك. خيار ال \'Get Set\' و ال \'Pro\' يمكنانك من زيارة كل النوادي المتوفرة بالتطبيق. قم بالاطلاع على حدود زيارة النوادي تحت كل اشتراك، واختر الاشتراك المناسب لك.</string>
+    <string name="membership_no_package_heading_1">قم باختيار الاشتراك المناسب لك. خيار ال \'Get Set\' و ال \'Pro\' يمكنانك من زيارة كل النوادي المتوفرة بالتطبيق. قم بالاطلاع على حدود زيارة النوادي تحت كل اشتراك، واختر الاشتراك المناسب لك.</string>
 
-<string name="membership_only_drop_in_package_heading_1">قم بشراء زيارة لمرة واحدة دون تغيير خطتك الحالية. لن تتم إعادة تعيين زيارات النادي مع عملية الشراء هذه. في حالة الإلغاء ، سيكون لديك أسبوع واحد لاستخدام هذا الكلاس.</string>
+    <string name="membership_only_drop_in_package_heading_1">قم بشراء زيارة لمرة واحدة دون تغيير خطتك الحالية. لن تتم إعادة تعيين زيارات النادي مع عملية الشراء هذه. في حالة الإلغاء ، سيكون لديك أسبوع واحد لاستخدام هذا الكلاس.</string>
 
-<string name="membership_only_drop_in_package_heading_2">لن يتم اضافة هذا الكلاس إلى خطتك التالية ، لذلك تأكد من استخدام صفك قبل انتهاء صلاحيته.</string>
+    <string name="membership_only_drop_in_package_heading_2">لن يتم اضافة هذا الكلاس إلى خطتك التالية ، لذلك تأكد من استخدام صفك قبل انتهاء صلاحيته.</string>
 
-<string name="membership_drop_in_package_heading_1">اختر خطة تناسب احتياجاتك للياقة البدنية. ستتيح لك خيارات \'Get Set\' و \'Pro\' زيارة جميع النوادي المتوفرة على P5M. تأكد من التحقق من حدود زيارة كل نادي للعثور على الخطة التي تناسبك.</string>
+    <string name="membership_drop_in_package_heading_1">اختر خطة تناسب احتياجاتك للياقة البدنية. ستتيح لك خيارات \'Get Set\' و \'Pro\' زيارة جميع النوادي المتوفرة على P5M. تأكد من التحقق من حدود زيارة كل نادي للعثور على الخطة التي تناسبك.</string>
 
-<string name="membership_drop_in_package_heading_2">لن يتم اضافة هذا الكلاس إلى خطتك التالية ، لذلك تأكد من استخدام صفك قبل انتهاء صلاحيته.</string>
+    <string name="membership_drop_in_package_heading_2">لن يتم اضافة هذا الكلاس إلى خطتك التالية ، لذلك تأكد من استخدام صفك قبل انتهاء صلاحيته.</string>
 
-<string name="membership_general_package_heading_2">الكلاسات الغير مستخدمة لا يتم ترحيلها للاشتراك القادم. تأكد من استخدام كل كلاساتك قبل انتهاء المدة.</string>
+    <string name="membership_general_package_heading_2">الكلاسات الغير مستخدمة لا يتم ترحيلها للاشتراك القادم. تأكد من استخدام كل كلاساتك قبل انتهاء المدة.</string>
 
-<string name="title_activity_class_profile">ClassProfile</string>
+    <string name="title_activity_class_profile">ClassProfile</string>
 
-<string name="title_activity_gym_profile">GymProfile</string>
+    <string name="title_activity_gym_profile">GymProfile</string>
 
-<string name="membership_drop_in_info">"\"يمكنك فقط الدخول إلى النادي التالي من خلال عملية الشراء هذه. في حالة الإلغاء ، لديك 7 أيام من تاريخ الإلغاء لحضور الكلاس في نفس النادي.\""</string>
+    <string name="membership_drop_in_info">"\"يمكنك فقط الدخول إلى النادي التالي من خلال عملية الشراء هذه. في حالة الإلغاء ، لديك 7 أيام من تاريخ الإلغاء لحضور الكلاس في نفس النادي.\""</string>
 
-<string name="membership_package_limit_info">"\"لا يمكنك شراء هذه الحزمة لأن صلاحيتها اقصر من الكلاس المختار"</string>
+    <string name="membership_package_limit_info">"\"لا يمكنك شراء هذه الحزمة لأن صلاحيتها اقصر من الكلاس المختار"</string>
 
-<string name="package_limit_header">هناك حد لعدد المرات التي يمكن أن تزور فيها كل نادي. قم بالاطلاع على ذلك تحت كل اشتراك. عند الوصول للحد، بالامكان مواصلة زيارة النادي المفضل لديك عن طريق شراء زيارة واحدة.</string>
+    <string name="package_limit_header">هناك حد لعدد المرات التي يمكن أن تزور فيها كل نادي. قم بالاطلاع على ذلك تحت كل اشتراك. عند الوصول للحد، بالامكان مواصلة زيارة النادي المفضل لديك عن طريق شراء زيارة واحدة.</string>
 
-<string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
 
-<string name="profile_validiy_no_package">قم بالتعبئة</string>
+    <string name="profile_validiy_no_package">قم بالتعبئة</string>
 
-<string name="your_fitness_freedom">حريتك الرياضية</string>
+    <string name="your_fitness_freedom">حريتك الرياضية</string>
 
-<string name="registration_done">اكتمل التسجيل بنجاح!</string>
+    <string name="registration_done">اكتمل التسجيل بنجاح!</string>
 
-<string name="join_fail_date_expire">ينتهي اشتراكك الحالي قبل موعد هذا الكلاس. هل ترغب بالاستمرار عن طريق شراء زيارة واحدة؟</string>
+    <string name="join_fail_date_expire">ينتهي اشتراكك الحالي قبل موعد هذا الكلاس. هل ترغب بالاستمرار عن طريق شراء زيارة واحدة؟</string>
 
-<string name="join_fail_limit_exhaust">لقد وصلت لحد الزيارات الخاص بهذا النادي. هل ترغب بالاستمرار عن طريق شراء زيارة واحدة من دون تغيير اشتراكك الحالي؟</string>
+    <string name="join_fail_limit_exhaust">لقد وصلت لحد الزيارات الخاص بهذا النادي. هل ترغب بالاستمرار عن طريق شراء زيارة واحدة من دون تغيير اشتراكك الحالي؟</string>
 
-<string name="join_fail_limit_exhaust_booking_with_friend">لقد وصلت لحد الزيارات المسموح لهذا النادي. هل ترغب بالاستمرار عن طريق شراء زيارة واحدة لصديقك؟</string>
+    <string name="join_share_limit_exhaust">لقد وصلت للحد المسموح به للمشاركة. هل ترغب في المتابعة وشراء زيارة واحدة، دون تغيير خطتك الحالية؟</string>
 
-<string name="join_fail_limit_exhaust_booking_with_friend_two_ready">لقد وصلت لحد الزيارات المسموح لهذا النادي. هل ترغب بالاستمرار عن طريق شراء %1d زيارة واحدة لنفسك ولصديقك؟</string>
+    <string name="title_activity_continue_user">ContinueUser</string>
 
-<string name="join_share_limit_exhaust">لقد وصلت للحد المسموح به للمشاركة. هل ترغب في المتابعة وشراء زيارة واحدة، دون تغيير خطتك الحالية؟</string>
+    <string name="switch_account">""<u>تبديل حساب</u>""</string>
 
-<string name="title_activity_continue_user">ContinueUser</string>
+    <string name="cancel">إلغاء</string>
 
-<string name="switch_account">""<u>تبديل حساب</u>""</string>
+    <string name="transaction_history">سجل المعاملات</string>
 
-<string name="cancel">إلغاء</string>
+    <string name="choose_nationality">اختر جنسيتك</string>
 
-<string name="transaction_history">سجل المعاملات</string>
+    <string name="checkout">الدفع</string>
 
+    <string name="promo_code">رمز ترويجي</string>
 
-<string name="choose_nationality">اختر جنسيتك</string>
+    <string name="apply_promo_code">اضف الشفرة هنا</string>
 
-<string name="checkout">الدفع</string>
+    <string name="remove_promo_code">إزالة الرمز الترويجي</string>
 
-<string name="promo_code">رمز ترويجي</string>
+    <string name="cancellation_policy">""<u>سياسة الإلغاء</u>""</string>
 
-<string name="apply_promo_code">اضف الشفرة هنا</string>
+    <string name="press_again_to_exit">اضغط مرة أخرى للخروج</string>
 
-<string name="remove_promo_code">إزالة الرمز الترويجي</string>
+    <string name="cancel_class">إلغاء الحجز</string>
 
-<string name="cancellation_policy">""<u>سياسة الإلغاء</u>""</string>
+    <string name="forgot_password">""<b><u>نسيت كلمة السر</u>؟</b>""</string>
 
-<string name="press_again_to_exit">اضغط مرة أخرى للخروج</string>
+    <string name="forgot_password_no_bold">"\"نسيت كلمة السر؟\""</string>
 
-<string name="cancel_class">إلغاء الحجز</string>
+    <string name="current_pass_new_pass_same">كلمة المرور الجديدة وكلمة المرور الحالية هي نفسها</string>
 
-<string name="cancel_class_self">الغاء حجزي</string>
+    <string name="unjoin_class">إلغاء الحجز</string>
 
-<string name="cancel_class_friend">الغاء حجز صديقي</string>
+    <string name="no_thanks">لا، شكرا</string>
 
-<string name="cancel_class_both">الغاء حجز الاثنين</string>
+    <string name="please_wait_no_dots">نرجو الانتظار</string>
 
-<string name="forgot_password">""<b><u>نسيت كلمة السر</u>؟</b>""</string>
+    <string name="no_data_class_list_main">لا يوجد كلاسات متاحة. قم بتغيير الفلتر أو اليوم</string>
 
-<string name="forgot_password_no_bold">"\"نسيت كلمة السر؟\""</string>
+    <string name="no_data_trainer_list_main">غير متوفر\nقم بالبحث عن مدربين آخرين</string>
 
-<string name="current_pass_new_pass_same">كلمة المرور الجديدة وكلمة المرور الحالية هي نفسها</string>
+    <string name="no_data_search_trainer_list">غير متوفر\nقم بالبحث عن مدربين آخرين</string>
 
-<string name="unjoin_class">إلغاء الحجز</string>
+    <string name="no_data_search_gym_list">غير متوفر\nقم بالبحث عن نوادي أخرى</string>
 
-<string name="no_thanks">لا، شكرا</string>
+    <string name="no_data_search_class_list">غير متوفر\nقم بالبحث عن كلاسات أخرى</string>
 
-<string name="please_wait_no_dots">نرجو الانتظار</string>
+    <string name="no_data_schedule_upcoming_list">"\"لم تنضم إلى أي كلاس بعد. ابدأ بالحجز!\""</string>
 
-<string name="no_data_class_list_main">لا يوجد كلاسات متاحة. قم بتغيير الفلتر أو اليوم</string>
+    <string name="no_data_schedule_wishist_list">"\"لم تضف أي كلاس إلى قائمة المفضلات حتى الآن. انقر فوق أيقونة الحفظ في صفحة الكلاس الذي تريد الانضمام إليه لاحقًا.\""</string>
 
-<string name="no_data_trainer_list_main">غير متوفر\nقم بالبحث عن مدربين آخرين</string>
+    <string name="no_data_notifications">لا إشعارات بعد.</string>
 
-<string name="no_data_search_trainer_list">غير متوفر\nقم بالبحث عن مدربين آخرين</string>
+    <string name="search_hint">البحث</string>
 
-<string name="no_data_search_gym_list">غير متوفر\nقم بالبحث عن نوادي أخرى</string>
+    <string name="title_activity_demo">عرض</string>
 
-<string name="no_data_search_class_list">غير متوفر\nقم بالبحث عن كلاسات أخرى</string>
+    <string name="reset_pass">إعادة تعيين كلمة المرور</string>
 
-<string name="no_data_schedule_upcoming_list">"\"لم تنضم إلى أي كلاس بعد. ابدأ بالحجز!\""</string>
+    <string name="apply_filter">تفعيل الفلتر</string>
 
-<string name="no_data_schedule_wishist_list">"\"لم تضف أي كلاس إلى قائمة المفضلات حتى الآن. انقر فوق أيقونة الحفظ في صفحة الكلاس الذي تريد الانضمام إليه لاحقًا.\""</string>
+    <string name="please_enter_your_email">الرجاء ادخل بريدك الإلكتروني</string>
 
-<string name="no_data_notifications">لا إشعارات بعد.</string>
+    <string name="p5m_app">تطبيق P5M</string>
 
-<string name="search_hint">البحث</string>
+    <string name="share">دعوة الأصدقاء</string>
 
-<string name="title_activity_demo">عرض</string>
+    <string name="sure_unjoin">هل أنت متأكد من أنك تريد إلغاء الاشتراك؟</string>
 
-<string name="reset_pass">إعادة تعيين كلمة المرور</string>
+    <string name="mention_email">يرجى ذكر البريد الإلكتروني الخاص بك أولا</string>
 
-<string name="apply_filter">تفعيل الفلتر</string>
+    <string name="total_locations">المواقع (%1$d)</string>
 
-<string name="please_enter_your_email">الرجاء ادخل بريدك الإلكتروني</string>
+    <string name="go_to_settings">اذهب للاعدادات</string>
 
-<string name="p5m_app">تطبيق P5M</string>
+    <string name="permission_alert">تنبيه إذن</string>
 
-<string name="share">دعوة الأصدقاء</string>
+    <string name="permission_message_media">يرجى السماح لـ P5M بالوصول إلى الصور والوسائط والملفات على جهازك لالتقاط صورة.</string>
 
-<string name="sure_unjoin">هل أنت متأكد من أنك تريد إلغاء الاشتراك؟</string>
+    <string name="permission_message_camera">الرجاء السماح لـ P5M بالتقاط الصور وتسجيل الفيديو.</string>
 
-<string name="sure_unjoin_both">هل انت متأكد من الغاء حجزك وحجز صديقك؟</string>
+    <string name="pick_image">اختر الصورة</string>
 
-<string name="sure_unjoin_friend">هل انت متأكد من الغاء حجز صديقك؟</string>
+    <string name="profile_changes_saved">تم حفظ التغييرات في ملف التعريف الخاص بك!</string>
 
-<string name="mention_email">يرجى ذكر البريد الإلكتروني الخاص بك أولا</string>
+    <string name="package_offer_percentage">٪ خصم</string>
 
-<string name="total_locations">المواقع (%1$d)</string>
+    <string name="package_offer_kwd">دينار كويتي خصم</string>
 
-<string name="go_to_settings">اذهب للاعدادات</string>
+    <string name="local_service_stopped">تدمير الخدمة</string>
 
-<string name="permission_alert">تنبيه إذن</string>
+    <string name="rate_class_message">تم الانتهاء من فصل دراسي %1s.قم بتقييم هذا الفصل للحصول على تجربة أفضل في الزيارة التالية.</string>
 
-<string name="permission_message_media">يرجى السماح لـ P5M بالوصول إلى الصور والوسائط والملفات على جهازك لالتقاط صورة.</string>
+    <string name="what_was_good_here">ما هو جيد هنا؟</string>
 
-<string name="permission_message_camera">الرجاء السماح لـ P5M بالتقاط الصور وتسجيل الفيديو.</string>
+    <string name="take_photo">تصوير</string>
 
-    <string name="permission_message_location">Please allow P5M to access your location.</string>
+    <string name="open_gallery">فتح معرض</string>
 
+    <string name="rate_class_tilte">فئة السعر</string>
 
-<string name="pick_image">اختر الصورة</string>
+    <string name="add_photos">أضف صورة من الفصل. ما يصل إلى 4 صور.</string>
 
-<string name="profile_changes_saved">تم حفظ التغييرات في ملف التعريف الخاص بك!</string>
+    <string name="submit_review">إرسال مراجعة</string>
 
-<string name="package_offer_percentage">٪ خصم</string>
+    <string name="retry_review">إعادة المحاولة</string>
 
-<string name="package_offer_kwd">دينار كويتي خصم</string>
+    <string name="how_was_your_class">كيف كان صفك <b>%s</b>؟</string>
 
-<string name="local_service_stopped">تدمير الخدمة</string>
+    <string name="how_was_your_class_v_two">كيف كانت خبرتك مع فئة <b>%s</b>؟</string>
 
-<string name="rate_class_message">تم الانتهاء من فصل دراسي %1s.قم بتقييم هذا الفصل للحصول على تجربة أفضل في الزيارة التالية.</string>
+    <string name="submiting_review">تقديم المراجعة ...</string>
 
-<string name="what_was_good_here">ما هو جيد هنا؟</string>
+    <string name="got_it">فهمتك</string>
 
-<string name="take_photo">تصوير</string>
+    <string name="rate">معدل</string>
 
-<string name="open_gallery">فتح معرض</string>
+    <string name="rating_view">عرض التقييم</string>
 
-<string name="rate_class_tilte">فئة السعر</string>
+    <string name="studio_rating">تصنيف الدرجة:</string>
 
-<string name="add_photos">أضف صورة من الفصل. ما يصل إلى 4 صور.</string>
+    <string name="review_based_on">على أساس %1s تقييم (تقييمات)</string>
 
-<string name="submit_review">إرسال مراجعة</string>
+    <string name="edit_rating">تعديل التقييم</string>
 
-<string name="retry_review">إعادة المحاولة</string>
+    <string name="powered_by">مشغل بواسطة</string>
 
-<string name="how_was_your_class">كيف كان صفك <b>%s</b>؟</string>
+    <string name="selection_limiter_pix">لا يمكن تحديد أكثر من صور %d.</string>
 
-<string name="how_was_your_class_v_two">كيف كانت خبرتك مع فئة <b>%s</b>؟</string>
+    <string name="valid_for_weeks">أسبوع %d صالحة لمدة</string>
 
-<string name="submiting_review">تقديم المراجعة ...</string>
+    <string name="valid_for_months">شهر %d صالح لمدة</string>
 
-<string name="got_it">فهمتك</string>
+    <string name="message_to_drag_up">اسحب الصور لأعلى للمعرض</string>
 
-<string name="rate">معدل</string>
+    <string name="pix_ok">حسنا</string>
 
-<string name="rating_view">عرض التقييم</string>
+    <string name="pix_tap_to_select">اضغط على الصورة لتحديدها</string>
 
-<string name="studio_rating">تصنيف الدرجة:</string>
+    <string name="pix_selected">مختار</string>
 
-<string name="review_based_on">على أساس %1s تقييم (تقييمات)</string>
+    <string name="pix_recent">الأخيرة</string>
 
-<string name="edit_rating">تعديل التقييم</string>
+    <string name="pix_last_month">الشهر الماضي</string>
 
-<string name="powered_by">مشغل بواسطة</string>
+    <string name="pix_last_week">الاسبوع الماضي</string>
 
-<string name="selection_limiter_pix">لا يمكن تحديد أكثر من صور %d.</string>
+    <string name="invite_friends">دعوة الأصدقاء</string>
 
-<string name="message_to_drag_up">اسحب الصور لأعلى للمعرض</string>
+    <string name="add_more_time">توسيع العضوية</string>
 
-<string name="pix_ok">حسنا</string>
+    <string name="proceed">تقدم</string>
 
-<string name="pix_tap_to_select">اضغط على الصورة لتحديدها</string>
+    <string name="share_message">مهلا. هل تريد ممارسة التمارين الرياضية معي؟ فلننضم إلى %1s معًا.</string>
 
-<string name="pix_selected">مختار</string>
+    <string name="extend_package">تمديد حزمة</string>
 
-<string name="pix_recent">الأخيرة</string>
+    <string name="share_message_gym">مهلا. هل تريد ممارسة التمارين الرياضية معي؟ دعنا ننضم إلى صفوف %1s معًا.</string>
 
-<string name="pix_last_month">الشهر الماضي</string>
+    <string name="share_message_trainer">اهلا. هل ترغب بالتمرن معي؟ دعنا ننضم إلى الكلاس %1s معًا.</string>
 
-<string name="pix_last_week">الاسبوع الماضي</string>
+    <string name="valid_intil">(حتى %1s)</string>
 
-<string name="invite_friends">دعوة الأصدقاء</string>
+    <string name="extend_message">أضف المزيد من الوقت إلى خطتك الحالية. لا تزال حدود زيارة النوادي سارية ، ولن يتم إعادة ضبطها بهذه الإضافة.</string>
 
-<string name="add_more_time">توسيع العضوية</string>
+    <string name="extend_term">لن يتم إعادة ضبط حدود زيارة النادي بعملية الشراء هذه. لقد قمت للتو بتمديد عضويتك (%1d أسبوع). لديك (%1d) أسبوع متبقي.</string>
 
-<string name="proceed">تقدم</string>
+    <string name="extend">""<u>توسيع</u>""</string>
 
-<string name="share_message">مهلا. هل تريد ممارسة التمارين الرياضية معي؟ فلننضم إلى %1s معًا.</string>
+    <string name="extention_policy">سياسة تمديد العضوية</string>
 
-<string name="extend_package">تمديد حزمة</string>
+    <string name="yourfriendsname">اسم مميز</string>
 
-<string name="share_message_gym">مهلا. هل تريد ممارسة التمارين الرياضية معي؟ دعنا ننضم إلى صفوف %1s معًا.</string>
+    <string name="friendsemail">البريد الإليكترونى للأصدقاء</string>
 
-<string name="share_message_trainer">اهلا. هل ترغب بالتمرن معي؟ دعنا ننضم إلى الكلاس %1s معًا.</string>
+    <string name="bookWithFriend">احجز مع صديق</string>
 
-<string name="valid_intil">(حتى %1s)</string>
+    <string name="whojoiningyou">من سيشاركك؟</string>
 
-<string name="extend_message">أضف المزيد من الوقت إلى خطتك الحالية. لا تزال حدود زيارة النوادي سارية ، ولن يتم إعادة ضبطها بهذه الإضافة.</string>
+    <string name="reserve_class_with_friend">احجز مع صديق</string>
 
-<string name="extend_term">لن يتم إعادة ضبط حدود زيارة النادي بعملية الشراء هذه. لقد قمت للتو بتمديد عضويتك (%1d أسبوع). لديك (%1d) أسبوع متبقي.</string>
+    <string name="continue_with">استمر</string>
 
-<string name="extend">""<u>توسيع</u>""</string>
+    <string name="special_class">كلاسات خاصة</string>
 
-<string name="extention_policy">سياسة تمديد العضوية</string>
+    <string name="class_remaining_for">كلاسات متبقية حتى</string>
 
-<string name="yourfriendsname">اسم مميز</string>
+    <string name="valid_for">صالح حتى</string>
 
-<string name="friendsemail">البريد الإليكترونى للأصدقاء</string>
+    <string name="promo_code_applied">رمز الكوبون المستخدم</string>
 
-<string name="bookWithFriend">احجز مع صديق</string>
+    <string name="total">الاجمالي</string>
 
-<string name="whojoiningyou">من سيشاركك؟</string>
+    <string name="pay">الدفع</string>
 
-<string name="reserve_class_with_friend">احجز مع صديق</string>
+    <string name="no_more_notification">لا يوجد إشعارات</string>
 
-<string name="continue_with">استمر</string>
+    <string name="both">مختلط</string>
 
-<string name="booked_with_friend">حجزان</string>
+    <string name="enter_promo_code">ادخل رمز الكوبون</string>
 
-<string name="own_email_error_text">لا يمكنك استخدام ايميلك</string>
+    <string name="invalid_code">الرمز غير متاح</string>
 
-<string name="gender_females_only_error">هذا الكلاس للإناث فقط</string>
+    <string name="apply">استخدم</string>
 
-<string name="gender_males_only_error">هذا الكلاس للذكور فقط</string>
+    <string name="more">المزيد</string>
 
-<string name="contact_us">تواصل معنا</string>
+    <string name="no_more_upcoming_classes">لا يوجد كلاسات قادمة</string>
 
-<string name="privacy_policy">سياسة الخصوصية</string>
+    <string name="successfully_added_to_your_wishlist">تمت الإضافة بنجاح لقائمة الأمنيات</string>
+
+    <string name="gallery">معرض الصور</string>
+
+    <string name="followers">متابعين</string>
+
+    <string name="no_followers">لا يوجد متابعين</string>
+
+    <string name="no_upcoming_classes">لا يوجد كلاسات قادمة</string>
+
+    <string name="new_version_available">الإصدار الجديد متوفر</string>
+
+    <string name="please_update_p5m_to_the_newer_version_to_continue_using">يرجى تحديث P5M الى أحدث إصدار للإستمرار في الاستخدام</string>
+
+    <string name="update">تحديث</string>
+
+    <string name="date_of_birth">تاريخ الميلاد</string>
+
+    <string name="mobile_no">رقم الهاتف</string>
+
+    <string name="choose_your_focus">اختر نشاطك المفضل</string>
+
+    <string name="you_have_registered_using_facebook">قمت بالتسجيل باستخدام facebook</string>
+
+    <string name="create_password">إنشاء كلمة المرور</string>
+
+    <string name="are_you_sure">هل أنت متأكد؟</string>
+
+    <string name="see_all_reviews">شاهد كل المراجعات</string>
+
+    <string name="thank_you">شكرا!</string>
+
+    <string name="your_review_has_been_submitted">لقد تم إرسال مراجعتك</string>
+
+    <string name="rate_past_classes">تقييم الكلاسات الماضية</string>
+
+    <string name="i_l_do_it_later">سوف أفعلها لاحقًا</string>
+
+    <string name="reference_id">الرقم المرجعي</string>
+
+    <string name="amount_kd">المبلغ (دينار كويتي)</string>
+
+    <string name="date">التاريخ</string>
+
+    <string name="status">الحالة</string>
+
+    <string name="enter_your_current_password">أدخل كلمة المرور الحالية</string>
+
+    <string name="enter_your_new_password">أدخل كلمة المرور الجديدة</string>
+
+    <string name="confirm_your_new_password">يرجى تأكيد كلمة المرور الجديدة</string>
+
+    <string name="please_enter_current_password">يرجى إدخال كلمة المرور الحالية</string>
+
+    <string name="please_enter_a_new_password">يرجى إدخال كلمة مرور جديدة</string>
+
+    <string name="weeks">أسابيع</string>
+
+    <string name="please_allow_location">يرجى السماح لP5M بإستخدام موقعك</string>
+
+    <string name="need_location">نحتاج الموقع</string>
+
+    <string name="this_package_has">هذا الاشتراك يشمل</string>
+
+    <string name="to_complete_the_payment_you_should_stay_on_this_page">لإتمام عملية الدفع, يرجى البقاء على هذه الصفحة</string>
+
+    <string name="stay_on_this_page">ابقى على هذه الصفحة</string>
+
+    <string name="leave_this_page">اترك هذه الصفحة</string>
+
+    <string name="no_more_gyms">لا يوجد المزيد من النوادي</string>
+
+    <string name="no_more_ratings">لا يوجد المزيد من التقييمات</string>
+
+    <string name="image_upload_failed">فشل تحميل الصورة</string>
+
+    <string name="no_more_trainers">لا يوجد المزيد من المدربين</string>
+
+    <string name="booked_with_friend">حجزان</string>
+
+    <string name="own_email_error_text">لا يمكنك استخدام ايميلك</string>
+
+    <string name="gender_females_only_error">هذا الكلاس للإناث فقط</string>
+
+    <string name="gender_males_only_error">هذا الكلاس للذكور فقط</string>
+
+    <string name="contact_us">تواصل معنا</string>
+
+    <string name="privacy_policy">سياسة الخصوصية</string>
 
 
     -<string name="terms_n_condition">
 
--<![CDATA[شروط الاستخدام]]>
+-<![CDATA[-شروط الاستخدام]]>
 </string>
 
-<string name="mail_us">راسلنا</string>
+    <string name="mail_us">راسلنا</string>
 
-<string name="make_a_call">اتصل</string>
+    <string name="make_a_call">اتصل</string>
 
-<string name="enter_first_name">قم بإدخال اسمك الأول</string>
+    <string name="enter_first_name">قم بإدخال اسمك الأول</string>
 
-<string name="enter_last_name">قم بإدخال اسمك الأخير</string>
+    <string name="enter_last_name">قم بإدخال اسمك الأخير</string>
 
-<string name="one_class">الكلاس</string>
+    <string name="one_class">الكلاس</string>
+
+    <string name="remaining">متبقي</string>
+
+    <string name="day">يوم</string>
+
+    <string name="class_for">كلاس ل</string>
+
+    <string name="package_name">الحزمة</string>
+
+    <string name="all">الجميع</string>
+
+    <string name="successfully_joined">تم الحجز بنجاح</string>
+
+    <string name="upcoming">القادم</string>
+
+    <string name="wish_list">صفحة الأمنيات</string>
+
+    <string name="please_try_again">حاول مرة اخرى</string>
+
+    <string name="needs_your_email_and_gender">نحتاج الايميل والجنس من فضلك</string>
+
+    <string name="needs_your_email">نحتاج الايميل من فضلك</string>
+
+    <string name="needs_your_gender">نحتاج معلومات الجنس من فضلك</string>
+
+    <string name="sure_unjoin_both">هل انت متأكد من الغاء حجزك وحجز صديقك؟</string>
+
+    <string name="sure_unjoin_friend">هل انت متأكد من الغاء حجز صديقك؟</string>
+
+    <string name="join_fail_limit_exhaust_booking_with_friend">لقد وصلت لحد الزيارات المسموح لهذا النادي. هل ترغب بالاستمرار عن طريق شراء زيارة واحدة لصديقك؟</string>
+
+    <string name="join_fail_limit_exhaust_booking_with_friend_two_ready">لقد وصلت لحد الزيارات المسموح لهذا النادي. هل ترغب بالاستمرار عن طريق شراء %1d زيارة واحدة لنفسك ولصديقك؟</string>
+
+    <string name="cancel_class_self">الغاء حجزي</string>
+
+    <string name="cancel_class_friend">الغاء حجز صديقي</string>
+
+    <string name="cancel_class_both">الغاء حجز الاثنين</string>
+
+    <string name="by_making_this_booking_2_classes_will_be_deducted_from_your_balance_book_with_a_friend">مع إجراء هذا الحجز ، سيتم خصم كلاسين من رصيدك</string>
+
+    <string name="package_details">تفاصيل الاشتراكك</string>
+
+    <string name="packages">الاشتراك</string>
+
+    <string name="validity">صلاحية</string>
+
+    <string name="payment_confirmation">تأكيد الدفعة</string>
+
+    <string name="view_schedule">عرض الجدول</string>
+
+    <string name="terms_service">شروط الخدمة</string>
+
+    <string name="amount">"المبلغ "</string>
+
+    <string name="purchase_date">تاريخ الشراء:</string>
+    <string name="payment_pending"> الدفع قيد الانتظا</string>
+    <string name="payment_sucessful">تم الدفع بنجاح</string>
+    <string name="payment_unsucessful">لم يتم الدفع  بنجاح</string>
+    <string name="payment_reference">إشارة دفع:</string>
+
+    <string name="congratulation_class">مبروك!</string>
+
+    <string name="congratulation_package">مبروك! تم شراء الإشتراك بنجاح.</string>
+
     <string name="classs">كلاسات</string>
-<string name="remaining">متبقي</string>
 
-<string name="day">يوم</string>
+    <string name="is_successfully_booked">تم حجز الكلاس بنجاح.</string>
 
-<string name="class_for">كلاس ل</string>
+    <string name="view_membership">عرض الإشتراك</string>
 
-<string name="package_name">الحزمة</string>
+    <string name="no_more_classes">لا مزيد من الطبقات</string>
 
-<string name="all">الجميع</string>
 
-<string name="successfully_joined">تم الحجز بنجاح</string>
+    -<string name="remenders">
 
-<string name="upcoming">القادم</string>
+-<![CDATA[<b>نقاط هامة:</b>]]>
+</string>
 
-<string name="wish_list">صفحة الأمنيات</string>
 
-<string name="please_try_again">حاول مرة اخرى</string>
+    -<string name="address">
 
-<string name="needs_your_email_and_gender">نحتاج الايميل والجنس من فضلك</string>
+-<![CDATA[<b>عنوان:</b>]]>
+</string>
 
-<string name="needs_your_email">نحتاج الايميل من فضلك</string>
 
-<string name="needs_your_gender">نحتاج معلومات الجنس من فضلك</string>
+    -<string name="studio_instruction">
 
-<string name="special_class">كلاسات خاصة</string>
+-<![CDATA[<b>تعليمات النادي:</b>]]>
+</string>
 
-<string name="class_remaining_for">كلاسات متبقية حتى</string>
 
-<string name="valid_for">صالح حتى</string>
+    -<string name="special_note_by_trainer">
 
-<string name="promo_code_applied">رمز الكوبون المستخدم</string>
+-<![CDATA[<b>تعليمات خاصة من المدرب :</b>]]>
+</string>
 
-<string name="total">الاجمالي:</string>
+    <string name="available_seats">المقاعد المتاحة</string>
 
-<string name="pay">الدفع</string>
+    <string name="view_all_results">عرض جميع النتائج</string>
 
-<string name="no_more_notification">لا يوجد إشعارات</string>
+    <string name="class_booking_is_failed">لم يتم الحجز بنجاح.</string>
 
-<string name="both">مختلط</string>
+    <string name="package_booking_is_failed">لم يتم الإشتراك بنجاح.</string>
 
-<string name="enter_promo_code">ادخل رمز الكوبون</string>
+    <string name="class_booked_successfully">تم حجز الكلاس بنجاح.</string>
 
-<string name="invalid_code">الرمز غير متاح</string>
+    <string name="package_booked_successfully">تم شراء الإشتراك بنجاح</string>
 
-<string name="apply">استخدم</string>
+    <string name="class_booking_is_pending">حجز الكلاس قيد الانتظار</string>
 
-<string name="more">المزيد</string>
+    <string name="package_booking_is_pending">شراء الإشتراك قيد الانتظار</string>
 
-<string name="no_more_upcoming_classes">لا يوجد كلاسات قادمة</string>
+    <string name="n_a">N/A</string>
 
-<string name="successfully_added_to_your_wishlist">تمت الإضافة بنجاح لقائمة الأمنيات</string>
+    <string name="unfortunately_class">للأسف</string>
 
-<string name="gallery">معرض الصور</string>
+    <string name="is_failed">. الرجاء المحاولة فى وقت لاحق. إذا تم خصم المبلغ من حسابك المصرفي، تواصل معنا على الفور</string>
 
-<string name="followers">متابعين</string>
+    <string name="pending_detail">. ستستلم رسالة تأكيدا عبر البريد الإلكتروني خلال 4 ساعات.</string>
 
-<string name="no_followers">لا يوجد متابعين</string>
+    <string name="for_key">"إلى "</string>
 
-<string name="no_upcoming_classes">لا يوجد كلاسات قادمة</string>
+    <string name="purchase">شراء</string>
 
-<string name="new_version_available">الإصدار الجديد متوفر</string>
+    <string name="are_you_sure_you_want_to_remove">هل أنت متأكد من أنك تريد إزالة</string>
 
-<string name="please_update_p5m_to_the_newer_version_to_continue_using">يرجى تحديث P5M الى أحدث إصدار للإستمرار في الاستخدام</string>
+    <string name="week">أسبوع</string>
 
-<string name="update">تحديث</string>
+    <string name="month">شهر</string>
 
-<string name="date_of_birth">تاريخ الميلاد</string>
+    <string name="at_any_gym"></string>
 
-<string name="mobile_no">رقم الهاتف</string>
+    <string name="book_classes">حجز الكلاس</string>
 
-<string name="choose_your_focus">اختر نشاطك المفضل</string>
+    <string name="payment_history">عرض تاريخ الدفع</string>
 
-<string name="you_have_registered_using_facebook">قمت بالتسجيل باستخدام facebook</string>
+    <string name="class_one">كلاس واحد</string>
 
-<string name="create_password">إنشاء كلمة المرور</string>
+    <string name="extend_package_limit">يمكنك تمديد اشتراكك حتى</string>
 
-<string name="are_you_sure">هل أنت متأكد؟</string>
+    <string name="extend_on">تمديد الإشتراك في:</string>
 
-<string name="see_all_reviews">شاهد كل المراجعات</string>
+    <string name="booking_details">تفاصيل الحجز</string>
 
-<string name="thank_you">شكرا!</string>
+    <string name="package_extended_successfully">تم تمديد الاشتراك بنجاح</string>
 
-<string name="your_review_has_been_submitted">لقد تم إرسال مراجعتك</string>
-
-<string name="rate_past_classes">تقييم الكلاسات الماضية</string>
-
-<string name="i_l_do_it_later">سوف أفعلها لاحقًا</string>
-
-<string name="reference_id">الرقم المرجعي</string>
-
-<string name="amount_kd">المبلغ (دينار كويتي)</string>
-
-<string name="date">التاريخ</string>
-
-<string name="status">الحالة</string>
-
-<string name="enter_your_current_password">أدخل كلمة المرور الحالية</string>
-
-<string name="enter_your_new_password">أدخل كلمة المرور الجديدة</string>
-
-<string name="confirm_your_new_password">يرجى تأكيد كلمة المرور الجديدة</string>
-
-<string name="please_enter_current_password">يرجى إدخال كلمة المرور الحالية</string>
-
-<string name="please_enter_a_new_password">يرجى إدخال كلمة مرور جديدة</string>
-
-<string name="weeks">أسابيع</string>
-
-<string name="please_allow_location">يرجى السماح لP5M بإستخدام موقعك</string>
-
-<string name="need_location">نحتاج الموقع</string>
-
-<string name="this_package_has">هذا الاشتراك يشمل</string>
-
-<string name="to_complete_the_payment_you_should_stay_on_this_page">لإتمام عملية الدفع, يرجى البقاء على هذه الصفحة</string>
-
-<string name="stay_on_this_page">ابقى على هذه الصفحة</string>
-
-<string name="leave_this_page">اترك هذه الصفحة</string>
-
-<string name="no_more_gyms">لا يوجد المزيد من النوادي</string>
-
-<string name="no_more_ratings">لا يوجد المزيد من التقييمات</string>
-
-<string name="image_upload_failed">فشل تحميل الصورة</string>
-
-<string name="no_more_trainers">لا يوجد المزيد من المدربين</string>
+    <string name="class_name">اسم الكلاس</string>
 
     <string name="intermediate">متوسط</string>
+
     <string name="advanced">متقدم</string>
+
     <string name="basic">مبتدئ</string>
+
     <string name="class_one_at">كلاس واحد في</string>
-    <string name="at"></string>
-    <string name="terms_service">شروط الخدمة</string>
-    <string name="no_more_classes">لا مزيد من الطبقات</string>
-    <string name="remenders"><![CDATA[<b>نقاط هامة:</b>]]></string>
-    <string name="studio_instruction"><![CDATA[<b>تعليمات النادي:</b>]]></string>
-    <string name="available_seats">المقاعد المتاحة</string>
-    <string name="address"><![CDATA[<b>عنوان:</b>]]></string>
-    <string name="special_note_by_trainer"><![CDATA[<b>تعليمات خاصة من المدرب :</b>]]></string>
-    <string name="view_all_results">عرض جميع النتائج</string>
-    <string name="purchase">شراء</string>
-    <string name="are_you_sure_you_want_to_remove">هل أنت متأكد من أنك تريد إزالة</string>
-    <string name="week">أسبوع</string>
-    <string name="month">شهر</string>
-    <string name="at_any_gym"> </string>
-    <string name="class_one">كلاس واحد</string>
-    <string name="extend_package_limit">يمكنك تمديد اشتراكك حتى</string>
-    <string name="packages">الحزمة</string>
-    <string name="valid_for_weeks"> أسبوع (%d) صالحة لمدة</string>
-    <string name="valid_for_months"> شهر (%d) صالح لمدة </string>
-    <string name="by_making_this_booking_2_classes_will_be_deducted_from_your_balance_book_with_a_friend">مع إجراء هذا الحجز ، سيتم خصم كلاسين من رصيدك </string>
 
-    <string name="package_details">Package details</string>
+    <string name="at">في</string>
 
-    <string name="validity">Validity</string>
-    <string name="payment_confirmation">Payment Confirmation</string>
-    <string name="view_schedule">View Schedule</string>
+    <string name="permission_location">يرجى السماح لP5M بإستخدام موقعك</string>
 
-    <string name="amount">Amount</string>
-    <string name="pending_detail">is pending. You will receive a booking confirmation within 4 hours.</string>
-    <string name="booked_on">Booked On:</string>
-    <string name="payment_reference">Payment Reference:</string>
-    <string name="congratulation_class">Congratulations! Class</string>
-    <string name="congratulation_package">Congratulations! Package</string>
+    <string name="has_been_extended_for">وقد تم تمديد ل</string>
 
-    <string name="is_successfully_booked">is successfully booked.</string>
-    <string name="view_membership">View Membership</string>
+    <string name="contactUs">يرجى تحديد تفاصيل مشكلتك أدناه. سيستجيب أحد أعضاء فريقنا قريبًا.</string>
 
-    <string name="class_booking_is_failed">Class booking is failed</string>
-    <string name="package_booking_is_failed">Package booking is failed</string>
-    <string name="class_booked_successfully">Class booked successfully</string>
-    <string name="package_booked_successfully">Package booked successfully</string>
-    <string name="class_booking_is_pending">Class booking is pending</string>
-    <string name="package_booking_is_pending">Package booking is pending</string>
-    <string name="n_a">N/A</string>
-    <string name="unfortunately_class">Unfortunately Class</string>
-    <string name="is_failed">is failed. Please try again. Please contact support in case the amount is debited from your account.</string>
-    <string name="for_key">for</string>
-    <string name="book_classes">Book Classes</string>
-    <string name="payment_history">View Payment History</string>
-    <string name="extend_on">Extended On :</string>
-    <string name="booking_details">Booking details</string>
-    <string name="package_extended_successfully">Package extended successfully</string>
-    <string name="class_name">Class Name</string>
-    <string name="req_permission">Location Permission is required by app</string>
+    <string name="send_email">ارسل بريد الكتروني</string>
 
-    <string name="permission_location">Please allow P5M location permission</string>
-    <string name="has_been_extended_for">has been extended for</string>
-    <string name="contactUs">Please identify the details of your issue below. A member of our staff will respond shortly.</string>
-    <string name="send_email">Send Email</string>
+    <string name="package_extended_pending">Package Extension Pending</string>
+    <string name="pending_to_extend">has been pending to extend.</string>
+    <string name="pending_start_class"> حجز الكلاس <b>%s</b>إذا أكملت المعاملة ، فسيتم تحديث حسابك خلال أربع ساعات.</string>
+    <string name="pending_start_package"> شراء إشتراك <b>%s</b>إذا أكملت المعاملة ، فسيتم تحديث حسابك خلال أربع ساعات. </string>
+    <string name="pending_extension"> تمديد إشتراك <b>%s</b>إذا أكملت المعاملة ، فسيتم تحديث حسابك خلال أربع ساعات. </string>
 
+    <string name="failed_start_class">لم يتم الحجز بنجاح</string>
+    <string name="failed_start_package">لم يتم الإشتراك بنجاح</string>
+    <string name="package_extended_failed">Package extension is failed</string>
+    <string name="package_extension">package extension</string>
+    <string name="congratulation">مبروك</string>
+    <string name="package_is_successfully_booked">تم شراء الإشتراك بنجاح</string>
+
+    <string name="congratulation_package_booked"> مبروك! تم شراء إشتراك <b>%s</b> بنجاح.</string>
+    <string name="congratulation_class_booked"> مبروك! تم حجز الكلاس <b>%s</b> بنجاح. </string>
+
+    <string name="congratulation_package_extended_ar" translatable="false" >مبروك! تم تمديد إشتراك %s لمدة  %s اسابيع.</string>
+
+    <string name="valid_until">صالح حتى</string>
+    <string name="class_booking_failed">للأسف, لم يتم الحجز الى الكلاس <b>%s</b> بنجاح. الرجاء المحاولة فى وقت لاحق. إذا تم خصم المبلغ من حسابك المصرفي، تواصل معنا على الفور.</string>
+    <string name="package_booking_failed">للأسف, لم يتم شراء إشتراك  <b>%s</b> بنجاح. الرجاء المحاولة فى وقت لاحق. إذا تم خصم المبلغ من حسابك المصرفي، تواصل معنا على الفور.</string>
+    <string name="failed_package_extension_ar" translatable="false">للأسف, فشل تمديد إشتراك %s. الرجاء المحاولة فى وقت لاحق. إذا تم خصم المبلغ من حسابك المصرفي، تواصل معنا على الفور.</string>
+    <string name="no_of_class">عدد الكلاسات</string>
     <string-array name="schedule_list">
-        <item>@string/upcoming</item>
-        <item>@string/wish_list</item>
-    </string-array>
+
+    <item>@string/upcoming</item>
+
+    <item>@string/wish_list</item>
+
+</string-array>
+
+
     <string-array name="setting_header">
-        <item>@string/classes</item>
-        <item>@string/trainers</item>
-        <item>@string/gym</item>
-    </string-array>
+
+    <item>@string/classes</item>
+
+    <item>@string/trainers</item>
+
+    <item>@string/gym</item>
+
+</string-array>
+
 </resources>

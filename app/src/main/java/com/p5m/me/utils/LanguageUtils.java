@@ -40,6 +40,7 @@ public class LanguageUtils {
     public static String numberConverter(double value)
     {
         String localLanguage=NumberFormat.getNumberInstance(Locale.getDefault()).format(value);
+
         return localLanguage;
     }
     public static String currencyConverter(long value)
