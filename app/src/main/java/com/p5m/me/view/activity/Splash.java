@@ -2,11 +2,18 @@ package com.p5m.me.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.view.animation.BounceInterpolator;
 import android.widget.ImageView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.MyApp;
 import com.p5m.me.R;
 import com.p5m.me.eventbus.EventBroadcastHelper;
@@ -15,6 +22,9 @@ import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.DialogUtils;
+import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.PermissionUtility;
 import com.p5m.me.view.activity.Main.ForceUpdateActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
@@ -45,6 +55,8 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
 
         setContentView(R.layout.activity_splash);
 
+
+
         boolean booleanExtra = getIntent().getBooleanExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, false);
         if (booleanExtra) {
             finish();
@@ -61,10 +73,17 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
             networkCommunicator.getMyUser(Splash.this, false);
             EventBroadcastHelper.sendDeviceUpdate(context);
         }
-
-        startTimerForGoToNextScreen();
         networkCommunicator.getActivities(this, false);
 
+        if (Build.VERSION.SDK_INT >= 23 ) {
+            if(PermissionUtility.verifyLocationPermissions(Splash.this)){
+                startTimerForGoToNextScreen();
+
+            }
+        }
+        else{
+            startTimerForGoToNextScreen();
+        }
     }
 
     private void startTimerForGoToNextScreen() {
@@ -110,5 +129,54 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
 
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case PermissionUtility.REQUEST_LOCATION:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startTimerForGoToNextScreen();
+
+
+                } else {
+                    showPermissionImportantAlert(context.getResources().getString(R.string.permission_message_media));
+
+                }
+                break;
+
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LogUtils.debug("gjhg hgjh gjgh gjhghj hj  gjjh j j j  g ");
+
+
+    }
+
+    private void showPermissionImportantAlert(String message){
+        DialogUtils.showBasicMessage(context,context.getResources().getString(R.string.permission_alert), message,
+                context.getResources().getString(R.string.go_to_settings), new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Intent i = new Intent();
+                        i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        i.addCategory(Intent.CATEGORY_DEFAULT);
+                        i.setData(Uri.parse("package:" + context.getPackageName()));
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                        context.startActivity(i);
+                        dialog.dismiss();
+
+                    }
+                },context.getResources().getString(R.string.cancel), new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                        startTimerForGoToNextScreen();
+                    }
+                });
     }
 }

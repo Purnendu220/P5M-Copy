@@ -1,6 +1,10 @@
 package com.p5m.me.view.fragment;
 
 
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
@@ -21,6 +26,7 @@ import com.p5m.me.adapters.RecommendedClassAdapter;
 import com.p5m.me.data.CityLocality;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.Filter;
+import com.p5m.me.data.RecomendedClassData;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.GymDataModel;
@@ -49,7 +55,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ClassList extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks<ClassModel>, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
+public class ClassList extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks<ClassModel>, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener, LocationListener {
+
+    private LocationManager locationManager;
 
     public static Fragment createFragment(String date, int position, int shownIn) {
         Fragment tabFragment = new ClassList();
@@ -64,8 +72,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
     @BindView(R.id.recyclerViewClass)
     public RecyclerView recyclerViewClass;
-    @BindView(R.id.recyclerViewRecommendedClass)
-    public RecyclerView recyclerViewRecommendedClass;
+
     @BindView(R.id.swipeRefreshLayout)
     public SwipeRefreshLayout swipeRefreshLayout;
 
@@ -196,15 +203,62 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
         classListAdapter = new ClassListAdapter(context, shownInScreen, true, this);
         recyclerViewClass.setAdapter(classListAdapter);
 //        Utility.verifyLocationInfoPermissions(activ);
-        setRecommendedClassView();
     }
 
-    private void setRecommendedClassView() {
-        recyclerViewRecommendedClass.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerViewRecommendedClass.setHasFixedSize(true);
-        RecommendedClassAdapter recommendedListAdapter = new RecommendedClassAdapter(context, shownInScreen, true, new ClassListListenerHelper(context, activity, shownInScreen, this));
-        recyclerViewRecommendedClass.setAdapter(recommendedListAdapter);
+    private ClassListRequest generateRecomendedClassRequest() {
+
+        if (classListRequest == null) {
+            classListRequest = new ClassListRequest();
+        }
+
+        classListRequest.setClassDate(date);
+        classListRequest.setPage(page);
+        classListRequest.setSize(5);
+        classListRequest.setUserId(TempStorage.getUser().getId());
+
+        classListRequest.setActivityList(null);
+        classListRequest.setGenderList(null);
+        classListRequest.setTimingList(null);
+        classListRequest.setLocationList(null);
+
+        List<String> times = new ArrayList<>();
+        List<String> activities = new ArrayList<>();
+        List<String> gymList = new ArrayList<>();
+        List<String> genders = new ArrayList<>();
+
+        List<CityLocality> cityLocalities = new ArrayList<>();
+
+        for (ClassesFilter classesFilter : TempStorage.getFilters()) {
+            if (classesFilter.getObject() instanceof CityLocality) {
+                cityLocalities.add((CityLocality) classesFilter.getObject());
+            } else if (classesFilter.getObject() instanceof Filter.Time) {
+                times.add(((Filter.Time) classesFilter.getObject()).getId());
+            } else if (classesFilter.getObject() instanceof Filter.Gender) {
+                genders.add(((Filter.Gender) classesFilter.getObject()).getId());
+            } else if (classesFilter.getObject() instanceof ClassActivity) {
+                activities.add(String.valueOf(((ClassActivity) classesFilter.getObject()).getId()));
+            }
+            else if (classesFilter.getObject() instanceof GymDataModel) {
+                gymList.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getId()));
+            }
+        }
+
+        /******************************** To remove gender filter **********************************/
+        genders.clear();
+        genders.add(AppConstants.ApiParamValue.GENDER_BOTH);
+        genders.add(TempStorage.getUser().getGender());
+        /********************************************************************************/
+
+        classListRequest.setActivityList(activities);
+        classListRequest.setGenderList(genders);
+        classListRequest.setTimingList(times);
+        classListRequest.setLocationList(cityLocalities);
+        classListRequest.setGymList(gymList);
+
+
+        return classListRequest;
     }
+
 
     private ClassListRequest generateRequest() {
 
@@ -299,24 +353,44 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
         swipeRefreshLayout.setRefreshing(true);
         page = 0;
         classListAdapter.loaderReset();
-        callApiClassList();
+        getLocation();
+    }
+
+
+    private void getLocation() {
+        double lat = 0;
+        double lang = 0;
+        try {
+            locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+            Location loc=  locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if(loc!=null){
+              lat = loc.getLatitude();
+              lang = loc.getLongitude();
+            }
+
+          }
+        catch(SecurityException e) {
+            e.printStackTrace();
+
+        }
+        callRecomendedClassApi(lat,lang);
+
     }
 
     private void callApiClassList() {
         networkCommunicator.getClassList(generateRequest(), this, false);
     }
 
+    private void callRecomendedClassApi(double latitude,double longitude){
+        networkCommunicator.getRcomendedClassList(date,latitude,longitude, this, false);
+
+    }
+
     @Override
     public void onApiSuccess(Object response, int requestCode) {
-
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.CLASS_LIST:
                 swipeRefreshLayout.setRefreshing(false);
-
-                if (page == 0) {
-                    classListAdapter.clearAll();
-                }
-
                 List<ClassModel> classModels = ((ResponseModel<List<ClassModel>>) response).data;
 
                 if (!classModels.isEmpty()) {
@@ -333,6 +407,16 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                 checkListData();
 
                 break;
+
+            case NetworkCommunicator.RequestCode.RCOMENDED_CLASS_LIST:
+                classListAdapter.clearAll();
+                List<ClassModel> recomendedClassModels = ((ResponseModel<List<ClassModel>>) response).data;
+                if(!recomendedClassModels.isEmpty()){
+                    classListAdapter.addRecomendedClasses(new RecomendedClassData(recomendedClassModels));
+                    }
+                callApiClassList();
+
+                break;
         }
     }
 
@@ -344,6 +428,9 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                 swipeRefreshLayout.setRefreshing(false);
                 ToastUtils.showLong(context, errorMessage);
 
+                break;
+            case NetworkCommunicator.RequestCode.RCOMENDED_CLASS_LIST:
+                callApiClassList();
                 break;
         }
     }
@@ -375,5 +462,32 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                 onRefresh();
             }
         }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+       // Toast.makeText(context, "Latitude: " + location.getLatitude() + "\n Longitude: " + location.getLongitude(), Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+        //Toast.makeText(context, "onStatusChanged:- "+" "+s, Toast.LENGTH_SHORT).show();
+
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+       // Toast.makeText(context, "onProviderEnabled:- "+" "+s, Toast.LENGTH_SHORT).show();
+
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+        //Toast.makeText(context, "onProviderDisabled:- "+" "+s, Toast.LENGTH_SHORT).show();
+
+
     }
 }

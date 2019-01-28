@@ -227,6 +227,8 @@
     <string name="go_to_settings">Go to Settings</string>
     <string name="permission_alert">Permission Alert</string>
     <string name="permission_message_media">Please allow P5M to access photos,media and files on your device to take photo.</string>
+    <string name="permission_message_location">Please allow P5M to access your location.</string>
+
     <string name="permission_message_camera">\"Please allow P5M to take pictures and record video.\"</string>
     <string name="pick_image">Pick Image</string>
     <string name="profile_changes_saved">Changes to your profile have been saved!</string>
