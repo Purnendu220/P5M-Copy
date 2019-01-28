@@ -7,14 +7,18 @@
     android:paddingBottom="@dimen/margin_10"
     >
     <TextView
+        android:id="@+id/textViewRecomended"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp"
         android:fontFamily="sans-serif"
         android:textStyle="normal"
-        android:textColor="#262626"
-        android:text="Recommended for you:"
-        android:padding="@dimen/margin_12"
+        android:textColor="@color/theme_dark_light_text"
+        android:text="@string/recomended_for_you"
+        android:paddingLeft="@dimen/margin_12"
+        android:paddingRight="@dimen/margin_12"
+        android:paddingTop="@dimen/margin_5"
+        android:paddingBottom="@dimen/margin_5"
         />
 
     <android.support.v7.widget.RecyclerView

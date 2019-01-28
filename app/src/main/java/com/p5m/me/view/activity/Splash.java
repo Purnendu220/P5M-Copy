@@ -150,7 +150,6 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
     @Override
     protected void onResume() {
         super.onResume();
-        LogUtils.debug("gjhg hgjh gjgh gjhghj hj  gjjh j j j  g ");
 
 
     }
@@ -169,6 +168,8 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
                         i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
                         context.startActivity(i);
                         dialog.dismiss();
+                        finish();
+
 
                     }
                 },context.getResources().getString(R.string.cancel), new MaterialDialog.SingleButtonCallback() {

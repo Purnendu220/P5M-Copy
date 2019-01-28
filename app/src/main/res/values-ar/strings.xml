@@ -832,5 +832,8 @@
     <item>@string/gym</item>
 
 </string-array>
+    <string name="added_to_wishlist">تم إضافته كلاس  %s إلى قائمة الأمنيات.</string>
+    <string name="recomended_for_you">Recommended for you:</string>
+
 
 </resources>

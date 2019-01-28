@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 
 import com.facebook.login.LoginManager;
+import com.p5m.me.R;
 import com.p5m.me.data.City;
 import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.FollowResponse;
@@ -403,9 +404,9 @@ public class NetworkCommunicator {
         });
         return call;
     }
-    public Call getRcomendedClassList(String date,double latitude,double longitude, final RequestListener requestListener, boolean useCache) {
+    public Call getRcomendedClassList(String date,Double latitude,Double longitude, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.RCOMENDED_CLASS_LIST;
-        Call<ResponseModel<List<ClassModel>>> call = apiService.getRecomendedClassList(date,latitude,longitude);
+        Call<ResponseModel<List<ClassModel>>> call = apiService.getRecomendedClassList(date,latitude,longitude,TempStorage.getUser().getId());
         LogUtils.debug("NetworkCommunicator hitting getClassList");
 
         call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>(context) {
@@ -423,6 +424,7 @@ public class NetworkCommunicator {
         });
         return call;
     }
+
 
     public Call deviceUpdate(DeviceUpdate deviceUpdate, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.DEVICE;
@@ -1343,7 +1345,8 @@ public class NetworkCommunicator {
 //                requestListener.onApiSuccess(response, requestCode);
 
                 try {
-                    ToastUtils.show(context, classModel.getTitle() + " successfully added to your wishlist");
+                   String message = String.format(context.getString(R.string.added_to_wishlist),classModel.getTitle());
+                    ToastUtils.show(context, message);
                     classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
                     EventBroadcastHelper.sendWishAdded(classModel);
                 } catch (Exception e) {

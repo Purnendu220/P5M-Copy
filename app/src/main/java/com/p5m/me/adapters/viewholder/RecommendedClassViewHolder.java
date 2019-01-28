@@ -77,7 +77,7 @@ public class RecommendedClassViewHolder extends RecyclerView.ViewHolder {
                 textViewRatingCount.setVisibility(View.VISIBLE);
                 textViewRatingCount.setText(model.getRating()+"");
             }else{
-                textViewRatingCount.setVisibility(View.GONE);
+                textViewRatingCount.setVisibility(View.INVISIBLE);
             }
 
             itemView.setOnClickListener(new View.OnClickListener() {

@@ -4,12 +4,14 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.RecommendedClassAdapter;
 import com.p5m.me.data.RecomendedClassData;
 import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.storage.TempStorage;
 
 import java.util.List;
 
@@ -20,6 +22,9 @@ public class RecommendedItemViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.recyclerViewRecommendedClass)
     public RecyclerView recyclerViewRecommendedClass;
+
+    @BindView(R.id.textViewRecomended)
+    public TextView textViewRecomended;
 
     private final Context context;
     private int shownInScreen;
@@ -32,6 +37,9 @@ public class RecommendedItemViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(final Object data, final AdapterCallbacks adapterCallbacks, final int position) {
         if (data != null && data instanceof RecomendedClassData) {
+            if(TempStorage.getDefault()!=null && TempStorage.getDefault().getPopularClassesText()!=null){
+                textViewRecomended.setText(TempStorage.getDefault().getPopularClassesText());
+            }
             final RecomendedClassData model = (RecomendedClassData) data;
             setRecommendedClassView(model.getRecomendedClassesList(),adapterCallbacks);
 

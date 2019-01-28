@@ -113,8 +113,9 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.RECOMENDED_CLASS_LIST)
     Call<ResponseModel<List<ClassModel>>> getRecomendedClassList(@Query(AppConstants.ApiParamKey.DATE) String data,
-                                                                 @Query(AppConstants.ApiParamKey.LONGITUDE) double longitude,
-                                                                 @Query(AppConstants.ApiParamKey.LATITUDE) double latitude);
+                                                                 @Query(AppConstants.ApiParamKey.LONGITUDE) Double longitude,
+                                                                 @Query(AppConstants.ApiParamKey.LATITUDE) Double latitude,
+                                                                 @Query(AppConstants.ApiParamKey.USER_ID) long userId);
 
 
 

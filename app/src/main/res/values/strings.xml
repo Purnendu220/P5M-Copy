@@ -462,6 +462,8 @@
 
 
     <string name="no_of_class">Number of class(es)</string>
+    <string name="added_to_wishlist"> %s successfully added to your wishlist.</string>
+    <string name="recomended_for_you">Recommended for you:</string>
 
 
     <string-array name="schedule_list">
