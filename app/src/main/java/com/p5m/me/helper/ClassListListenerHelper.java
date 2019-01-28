@@ -32,6 +32,7 @@ import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.RefrenceWrapper;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.ClassProfileActivity;
+import com.p5m.me.view.activity.Main.ContactActivity;
 import com.p5m.me.view.activity.Main.FullRatingActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomRateAlertDialog;
@@ -67,13 +68,13 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                     if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
                         popupOptionsRemove(context, ((BaseActivity) activity).networkCommunicator, view, classModel, shownIn);
                     } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
-                        if(classModel.getRefBookingId()!=null&&classModel.getRefBookingId()>0){
+                        if (classModel.getRefBookingId() != null && classModel.getRefBookingId() > 0) {
                             popupOptionsCancelClassBookedWithFriend(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
 
-                        }else{
-                                    popupOptionsCancelClass(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
+                        } else {
+                            popupOptionsCancelClass(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
 
-                                }
+                        }
                     } else {
                         popupOptionsAdd(context, ((BaseActivity) activity).networkCommunicator, view, classModel, shownIn);
                     }
@@ -81,19 +82,27 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                 break;
             case R.id.buttonEditRating:
                 ClassModel classData = (ClassModel) model;
-                FullRatingActivity.open(context,shownIn,classData,0);
+                FullRatingActivity.open(context, shownIn, classData, 0);
                 break;
             case R.id.buttonJoin:
                 if (model instanceof ClassModel) {
-                        ClassModel classModel = (ClassModel) model;
-                        ClassProfileActivity.open(context, classModel, shownIn);
-                    }
+                    ClassModel classModel = (ClassModel) model;
+                    ClassProfileActivity.open(context, classModel, shownIn);
+                }
 
 
-                    break;
+                break;
             case R.id.buttonClassRating:
-                if (shownIn == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED&&model instanceof ClassModel) {
+                if (shownIn == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED && model instanceof ClassModel) {
                     openRateAlertDialog((ClassModel) model);
+                }
+                break;
+            case R.id.imageViewChat:
+                if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
+                    if (model instanceof ClassModel) {
+                        ClassModel classModel = (ClassModel) model;
+                        ContactActivity.openActivity(context, classModel);
+                    }
                 }
                 break;
 
@@ -119,7 +128,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             @Override
             public void onClick(View view) {
                 popupWindow.dismiss();
-                dialogConfirmUnJoin(context, networkCommunicator, model,model.getJoinClassId());
+                dialogConfirmUnJoin(context, networkCommunicator, model, model.getJoinClassId());
             }
         });
 
@@ -141,6 +150,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         popupWindow.showAtLocation(view, Gravity.NO_GRAVITY, location[0], location[1]);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
+
     public static void popupOptionsCancelClassBookedWithFriend(final Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model) {
         final View viewRoot = LayoutInflater.from(context).inflate(R.layout.popup_options, null);
         CardView cardView1 = viewRoot.findViewById(R.id.card_view);
@@ -164,7 +174,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             @Override
             public void onClick(View view) {
                 popupWindow.dismiss();
-                dialogConfirmUnJoinBookWithFriend(context, networkCommunicator, model,model.getJoinClassId(),AppConstants.Values.UNJOIN_BOTH_CLASS);
+                dialogConfirmUnJoinBookWithFriend(context, networkCommunicator, model, model.getJoinClassId(), AppConstants.Values.UNJOIN_BOTH_CLASS);
             }
         });
 
@@ -172,14 +182,14 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             @Override
             public void onClick(View view) {
                 popupWindow.dismiss();
-                dialogConfirmUnJoinBookWithFriend(context, networkCommunicator, model,model.getRefBookingId(),AppConstants.Values.UNJOIN_FRIEND_CLASS);
+                dialogConfirmUnJoinBookWithFriend(context, networkCommunicator, model, model.getRefBookingId(), AppConstants.Values.UNJOIN_FRIEND_CLASS);
             }
         });
         textViewBothUnjoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 popupWindow.dismiss();
-                dialogConfirmUnJoinBookWithFriend(context, networkCommunicator, model,model.getJoinClassId(),AppConstants.Values.UNJOIN_BOTH_CLASS);
+                dialogConfirmUnJoinBookWithFriend(context, networkCommunicator, model, model.getJoinClassId(), AppConstants.Values.UNJOIN_BOTH_CLASS);
             }
         });
 
@@ -293,7 +303,6 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         }
 
 
-
         if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model)) {
             message = serverMessageSpecialClass;
 
@@ -360,7 +369,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             }
         });
     }
-    private static void dialogConfirmUnJoinBookWithFriend(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, final int unJoinClassId,final int unJoinType) {
+
+    private static void dialogConfirmUnJoinBookWithFriend(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, final int unJoinClassId, final int unJoinType) {
 
         String message = context.getString(R.string.sure_unjoin);
 
@@ -377,7 +387,6 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         }
 
 
-
         if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model)) {
             message = serverMessageSpecialClass;
 
@@ -386,12 +395,10 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
         } else if (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) <= cancelTime) {
             message = serverMessageNormalClass;
-        }
-        else if(unJoinType == AppConstants.Values.UNJOIN_BOTH_CLASS){
+        } else if (unJoinType == AppConstants.Values.UNJOIN_BOTH_CLASS) {
             message = context.getString(R.string.sure_unjoin_both);
 
-        }
-        else if(unJoinType == AppConstants.Values.UNJOIN_FRIEND_CLASS){
+        } else if (unJoinType == AppConstants.Values.UNJOIN_FRIEND_CLASS) {
             message = context.getString(R.string.sure_unjoin_friend);
 
         }
@@ -451,6 +458,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             }
         });
     }
+
     private static void dialogConfirmDelete(Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, int shownIn) {
         networkCommunicator.removeFromWishList(model);
 
@@ -492,18 +500,18 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 //                break;
 //        }
     }
-    private void openRateAlertDialog(ClassModel model){
-        if(model!=null){
-            CustomRateAlertDialog mCustomMatchDialog = new CustomRateAlertDialog(context,model,AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED);
+
+    private void openRateAlertDialog(ClassModel model) {
+        if (model != null) {
+            CustomRateAlertDialog mCustomMatchDialog = new CustomRateAlertDialog(context, model, AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED);
             try {
                 mCustomMatchDialog.show();
                 RefrenceWrapper.getRefrenceWrapper(context).setCustomRateAlertDialog(mCustomMatchDialog);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return;
         }
-
 
 
     }

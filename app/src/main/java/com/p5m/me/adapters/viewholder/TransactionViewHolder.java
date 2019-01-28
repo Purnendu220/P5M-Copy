@@ -8,7 +8,13 @@ import android.widget.TextView;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.main.Transaction;
+import com.p5m.me.fxn.utility.Constants;
 import com.p5m.me.utils.DateUtils;
+import com.p5m.me.utils.LanguageUtils;
+
+import org.intellij.lang.annotations.Language;
+
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,9 +55,16 @@ public class TransactionViewHolder extends RecyclerView.ViewHolder {
 
             Transaction model = (Transaction) data;
 
-            textViewRefId.setText(model.getReferenceId());
+            String refId = String.valueOf(LanguageUtils.numberConverter(Double.parseDouble(model.getReferenceId())));
+
+            if(Locale.ENGLISH==Constants.LANGUAGE)
+                refId= refId.replace(",","");
+            else
+                refId= refId.replace("٬","");
+
+            textViewRefId.setText(refId);
             textViewPackageName.setText(model.getPackageName());
-            textViewPackagePrice.setText(model.getAmount() + "");
+            textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getAmount()) + "");
             textViewPackageDate.setText(DateUtils.getTransactionDate(model.getDate()));
             textViewPackageStatus.setText(model.getStatus().toUpperCase());
 
