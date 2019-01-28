@@ -358,8 +358,8 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
 
     private void getLocation() {
-        double lat = 0;
-        double lang = 0;
+        Double lat = null;
+        Double lang = null;
         try {
             locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             Location loc=  locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -381,7 +381,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
         networkCommunicator.getClassList(generateRequest(), this, false);
     }
 
-    private void callRecomendedClassApi(double latitude,double longitude){
+    private void callRecomendedClassApi(Double latitude,Double longitude){
         networkCommunicator.getRcomendedClassList(date,latitude,longitude, this, false);
 
     }
