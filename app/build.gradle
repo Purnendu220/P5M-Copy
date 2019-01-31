@@ -14,10 +14,10 @@ allprojects {
 android {
     signingConfigs {
         release {
-            keyAlias 'p5m'
-            keyPassword 'p5m12!@'
-            storeFile file('E:/android/keystore/p5m_keystore.jks')
-            storePassword 'p5m12!@'
+            storeFile file(RELEASE_STORE_FILE)
+            storePassword RELEASE_STORE_PASSWORD
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
         }
     }
     compileSdkVersion COMPILE_SDK_VERSION as int
@@ -188,7 +188,6 @@ dependencies {
     implementation 'io.fotoapparat.fotoapparat:library:2.3.1'
     implementation 'me.zhanghai.android.materialratingbar:library:1.3.1'
     implementation 'com.github.DanielMartinus:Stepper-Touch:0.6'
-
 
 
 }

@@ -110,6 +110,7 @@
     <dimen name="icon_size">19dp</dimen>
     <dimen name="margin_7">7dp</dimen>
     <dimen name="margin_45">45dp</dimen>
+    <dimen name="margin_8">8dp</dimen>
 
 
 </resources>

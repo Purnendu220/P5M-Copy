@@ -5,8 +5,11 @@ import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 
 import com.facebook.login.LoginManager;
+import com.p5m.me.R;
 import com.p5m.me.data.City;
 import com.p5m.me.data.ClassRatingUserData;
+import com.p5m.me.data.ContactRequestModel;
+import com.p5m.me.data.ContactResponse;
 import com.p5m.me.data.FollowResponse;
 import com.p5m.me.data.MediaResponse;
 import com.p5m.me.data.PackageLimitModel;
@@ -137,6 +140,7 @@ public class NetworkCommunicator {
 
 
         public static final int PAYMENT_CONFIRMATION_DETAIL = 150;
+        public static final int SUPPORT_RESPONSE_CONTACT = 160;
     }
 
     private Context context;
@@ -1321,7 +1325,7 @@ public class NetworkCommunicator {
 //                requestListener.onApiSuccess(response, requestCode);
 
                 try {
-                    ToastUtils.show(context, classModel.getTitle() + " successfully added to your wishlist");
+                    ToastUtils.show(context, classModel.getTitle() + " successfully added to wishlist");
                     classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
                     EventBroadcastHelper.sendWishAdded(classModel);
                 } catch (Exception e) {
@@ -1433,7 +1437,7 @@ public class NetworkCommunicator {
         return call;
     }
 
-    /*---------------------------Payment Caonfirmation--------------------------*/
+    /*---------------------------Payment Confirmation-------------------------*/
     public Call getPaymentDetail(long refId, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.PAYMENT_CONFIRMATION_DETAIL;
         Call<ResponseModel<PaymentConfirmationResponse>> call = apiService.getPaymentDetail(refId);
@@ -1455,5 +1459,26 @@ public class NetworkCommunicator {
         return call;
     }
 
+    /*---------------------------SUPPORT CONTACT-------------------------*/
+    public Call sendQuery(ContactRequestModel contactRequestModel, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.SUPPORT_RESPONSE_CONTACT;
+        Call<ResponseModel<Object>> call = apiService.getContactResponse(contactRequestModel);
+        LogUtils.debug("NetworkCommunicator hitting Contact");
+
+        call.enqueue(new RestCallBack<ResponseModel<Object>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<Object>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator contact onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<Object>> call, Response<ResponseModel<Object>> restResponse, ResponseModel<Object> response) {
+                LogUtils.networkSuccess("NetworkCommunicator contact onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
 }
 

@@ -2,6 +2,8 @@ package com.p5m.me.restapi;
 
 import com.p5m.me.data.City;
 import com.p5m.me.data.ClassRatingUserData;
+import com.p5m.me.data.ContactRequestModel;
+import com.p5m.me.data.ContactResponse;
 import com.p5m.me.data.MediaResponse;
 import com.p5m.me.data.PackageLimitModel;
 import com.p5m.me.data.PaymentConfirmationResponse;
@@ -347,5 +349,9 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.GET_PAYMENT_DETAIL )
     Call<ResponseModel<PaymentConfirmationResponse>> getPaymentDetail(@Path("id") long id);
+
+    @Headers("Content-type: application/json")
+    @POST(AppConstants.Url.SUPPORT_CONTACT )
+    Call<ResponseModel<Object>> getContactResponse(@Body ContactRequestModel contactRequestModel);
 
 }
