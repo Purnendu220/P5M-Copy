@@ -562,6 +562,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 swipeRefreshLayout.setRefreshing(false);
                 swipeRefreshLayout.setEnabled(false);
                 classModel = ((ResponseModel<ClassModel>) response).data;
+                Helper.setJoinStatusProfile(context, textViewBook,textViewBookWithFriend, classModel);
+
                 if(classModel.getAvailableSeat()<2){
 
                 }else{
@@ -572,8 +574,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     classProfileAdapter.setClass(classModel);
                     classProfileAdapter.notifyDataSetChanged();
                 }
-                layoutButton.setVisibility(View.VISIBLE);
-                Helper.setJoinStatusProfile(context, textViewBook,textViewBookWithFriend, classModel);
+//                layoutButton.setVisibility(View.VISIBLE);
                 if (Helper.isSpecialClass(classModel)) {
                     if (Helper.isFreeClass(classModel)){
                         textViewBookWithFriend.setVisibility(View.GONE);
