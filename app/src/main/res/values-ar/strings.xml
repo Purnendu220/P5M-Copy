@@ -821,6 +821,8 @@
     <string name="please_provide_your_query">Please provide your query</string>
     <string name="please_select_sender">Please select sender</string>
     <string name="message_is_successfullt_send">Message is successfully send.</string>
+    <string name="message_send_info">Message Sending Info</string>
+    <string name="success">Success</string>
     <string-array name="schedule_list">
 
     <item>@string/upcoming</item>

@@ -158,7 +158,49 @@
 
 
                 </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:orientation="horizontal">
 
+                    <ImageView
+                        android:id="@+id/imageViewClassCategory"
+                        style="@style/ClassIconSmall"
+                        android:layout_marginTop="4dp"
+                        android:src="@drawable/class_icon" />
+
+                    <TextView
+                        android:id="@+id/textViewClassCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginBottom="12dp"
+                        android:layout_marginLeft="13dp"
+                        android:layout_marginTop="@dimen/text_drawable_adjustment"
+                        android:layout_toEndOf="@+id/imageViewClassCategory"
+                        android:layout_toStartOf="@+id/imageViewOptions"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left"
+                        android:letterSpacing="@dimen/text_medium_letter_spacing"
+                        android:lineSpacingExtra="@dimen/line_spacing_extra"
+                        android:paddingTop="4dp"
+                        android:text="Class A: fitness, strength training and cardio"
+                        android:textColor="@color/theme_dark_text"
+                        android:textSize="@dimen/text_medium"
+                        android:textStyle="normal" />
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="36dp"
+                        android:layout_alignParentRight="true"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:paddingBottom="14dp"
+                        android:paddingTop="6dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/more_options"
+                        android:visibility="gone" />
+                </RelativeLayout>
                 <LinearLayout
                     android:id="@+id/layoutTrainer"
                     android:layout_width="wrap_content"
@@ -210,49 +252,7 @@
 
                 </LinearLayout>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:orientation="horizontal">
 
-                    <ImageView
-                        android:id="@+id/imageViewClassCategory"
-                        style="@style/ClassIconSmall"
-                        android:layout_marginTop="4dp"
-                        android:src="@drawable/class_icon" />
-
-                    <TextView
-                        android:id="@+id/textViewClassCategory"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginBottom="12dp"
-                        android:layout_marginLeft="13dp"
-                        android:layout_marginTop="@dimen/text_drawable_adjustment"
-                        android:layout_toEndOf="@+id/imageViewClassCategory"
-                        android:layout_toStartOf="@+id/imageViewOptions"
-                        android:fontFamily="sans-serif"
-                        android:gravity="left"
-                        android:letterSpacing="@dimen/text_medium_letter_spacing"
-                        android:lineSpacingExtra="@dimen/line_spacing_extra"
-                        android:paddingTop="4dp"
-                        android:text="Class A: fitness, strength training and cardio"
-                        android:textColor="@color/theme_dark_text"
-                        android:textSize="@dimen/text_medium"
-                        android:textStyle="normal" />
-
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="36dp"
-                        android:layout_alignParentRight="true"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:paddingBottom="14dp"
-                        android:paddingTop="6dp"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/more_options"
-                        android:visibility="gone" />
-                </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"

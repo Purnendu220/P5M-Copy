@@ -26,6 +26,7 @@ import com.p5m.me.data.ContactResponse;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 
@@ -159,7 +160,9 @@ public class ContactActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onApiSuccess(Object response, int requestCode) {
         if (requestCode == NetworkCommunicator.RequestCode.SUPPORT_RESPONSE_CONTACT) {
-            ToastUtils.show(context, R.string.message_is_successfullt_send);
+            DialogUtils.showBasicMessage(context, getString(R.string.success), context.getString(R.string.ok), R.string.message_is_successfullt_send);
+
+//            ToastUtils.show(context, R.string.message_is_successfullt_send);
             etMessage.getText().clear();
         }
     }
