@@ -203,6 +203,9 @@ public class AppConstants {
         public static final String CLASS_DETAILS = "api/v1/class";
 
         public static final String CLASS_LIST = "api/v1/class/getClassList";
+        public static final String RECOMENDED_CLASS_LIST = "api/v1/class/recommendClasses";
+
+
         public static final String TRAINER_LIST = "api/v1/user/getTrainerList";
         public static final String NOTIFICATIONS = "api/v1/notification";
         public static final String WISH_LIST = "api/v1/wish/getWishList";
@@ -304,6 +307,13 @@ public class AppConstants {
 
         public static final String NUMBER_OF_FRIENDS = "numberOfFriends" ;
         public static final String APP_Language = "language";
+        public static final String DATE = "date";
+        public static final String LONGITUDE = "longitude";
+        public static final String LATITUDE = "latitude";
+
+
+
+
     }
 
     public static final class Notification {

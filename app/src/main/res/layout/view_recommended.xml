@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v7.widget.CardView android:id="@+id/cardView"
+<android.support.v7.widget.CardView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cardView"
     android:layout_width="180dp"
     android:layout_height="100dp"
     app:cardPreventCornerOverlap="false"
     app:cardElevation="@dimen/margin_4"
     app:cardCornerRadius="@dimen/margin_4"
     android:layout_margin="@dimen/margin_4"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    >
     <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
          >
     <ImageView
+        android:id="@+id/imgClass"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        android:src="@drawable/info_screen_1"/>
+        android:scaleType="centerCrop"
+        android:src="@drawable/class_holder"/>
 
     <LinearLayout
-        android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/text_icon_gap"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@color/black_transparent"
        >
 
@@ -36,9 +38,12 @@
             android:textStyle="bold"
             android:textColor="#ffffff"
             android:gravity="center_horizontal"
-            android:text="4.5"/>
+            android:text="4.5"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:layout_marginTop="@dimen/margin_5"
+            />
         <TextView
-            android:id="@+id/textViewGymName"
+            android:id="@+id/textViewClassName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_medium"
@@ -47,18 +52,29 @@
             android:textColor="#ffffff"
             android:layout_marginTop="@dimen/margin_4"
             android:lineSpacingExtra="6sp"
-            android:text="ENDURANCE"/>
+            android:text="FNDURANCE"
+            android:textAllCaps="true"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:maxLines="1"
+            android:ellipsize="end"
+
+            />
 
         <TextView
             android:id="@+id/textViewTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_small"
-            android:fontFamily="sans-serif"
+            android:fontFamily="sans-serif-medium"
             android:textStyle="normal"
-            android:text="7:00-8:00PM"
+            android:text="1:00-8:00PM"
             android:textColor="@color/white"
-           />
+            android:layout_marginLeft="@dimen/margin_3"
+            android:maxLines="1"
+            android:ellipsize="end"
+
+
+            />
 
         <TextView
             android:id="@+id/textViewLocation"
@@ -68,7 +84,7 @@
             android:drawableTint="@color/white"
             android:layout_marginTop="@dimen/margin_6"
             android:ellipsize="end"
-            android:layout_marginLeft="-5dp"
+            android:layout_marginLeft="-1dp"
             android:textSize="@dimen/text_medium"
             android:gravity="center_vertical|left"
             android:fontFamily="sans-serif"

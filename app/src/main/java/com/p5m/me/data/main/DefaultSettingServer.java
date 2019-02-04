@@ -11,6 +11,7 @@ public class DefaultSettingServer implements java.io.Serializable {
     private float refundAllowedbefore;
     private String cancellationPolicy;
     private List<ValidityPackageList> validityPackageList = null;
+    private String popularClassesText;
 
     public String getSpecialClassCancellationPolicy() {
         return this.specialClassCancellationPolicy;
@@ -46,5 +47,13 @@ public class DefaultSettingServer implements java.io.Serializable {
 
     public void setValidityPackageList(List<ValidityPackageList> validityPackageList) {
         this.validityPackageList = validityPackageList;
+    }
+
+    public String getPopularClassesText() {
+        return popularClassesText;
+    }
+
+    public void setPopularClassesText(String popularClassesText) {
+        this.popularClassesText = popularClassesText;
     }
 }

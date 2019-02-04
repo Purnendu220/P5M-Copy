@@ -11,7 +11,9 @@ import com.p5m.me.R;
 import com.p5m.me.adapters.viewholder.ClassViewHolder;
 import com.p5m.me.adapters.viewholder.EmptyViewHolder;
 import com.p5m.me.adapters.viewholder.LoaderViewHolder;
+import com.p5m.me.adapters.viewholder.RecommendedItemViewHolder;
 import com.p5m.me.data.ListLoader;
+import com.p5m.me.data.RecomendedClassData;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.utils.LogUtils;
 
@@ -23,6 +25,7 @@ public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private static final int VIEW_TYPE_UNKNOWN = -1;
     private static final int VIEW_TYPE_CLASS = 1;
     private static final int VIEW_TYPE_LOADER = 2;
+    private static final int VIEW_TYPE_RECOMENDED = 4;
 
     private final AdapterCallbacks<ClassModel> adapterCallbacks;
 
@@ -56,6 +59,10 @@ public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void addAllClass(List<ClassModel> models) {
         list.addAll(models);
         addLoader();
+    }
+    public void addRecomendedClasses(RecomendedClassData recomendedClass){
+        list.add(0,recomendedClass);
+        notifyDataSetChanged();
     }
 
     public void clearAll() {
@@ -94,6 +101,9 @@ public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         } else if (item instanceof ListLoader) {
             itemViewType = VIEW_TYPE_LOADER;
         }
+     else if (item instanceof RecomendedClassData) {
+        itemViewType = VIEW_TYPE_RECOMENDED;
+    }
 
         return itemViewType;
     }
@@ -104,7 +114,14 @@ public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_class, parent, false);
             return new ClassViewHolder(view, shownInScreen);
 
-        } else if (viewType == VIEW_TYPE_LOADER) {
+        }
+        else if (viewType == VIEW_TYPE_RECOMENDED) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_recomended_class, parent, false);
+            return new RecommendedItemViewHolder(view, shownInScreen);
+
+        }
+
+        else if (viewType == VIEW_TYPE_LOADER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_list_progress, parent, false);
             return new LoaderViewHolder(view);
         }
@@ -115,7 +132,12 @@ public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ClassViewHolder) {
             ((ClassViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
-        } else if (holder instanceof LoaderViewHolder) {
+        }
+        else if (holder instanceof RecommendedItemViewHolder){
+            ((RecommendedItemViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
+
+        }
+        else if (holder instanceof LoaderViewHolder) {
             ((LoaderViewHolder) holder).bind(listLoader, adapterCallbacks);
             if (position == getItemCount() - 1 && !listLoader.isFinish()) {
                 adapterCallbacks.onShowLastItem();

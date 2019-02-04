@@ -98,6 +98,8 @@ public class NetworkCommunicator {
 
 
         public static final int CLASS_LIST = 103;
+        public static final int RCOMENDED_CLASS_LIST = 151;
+
         public static final int TRAINER_LIST = 104;
 
         public static final int WISH_LIST = 105;
@@ -405,6 +407,27 @@ public class NetworkCommunicator {
         });
         return call;
     }
+    public Call getRcomendedClassList(String date,Double latitude,Double longitude, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.RCOMENDED_CLASS_LIST;
+        Call<ResponseModel<List<ClassModel>>> call = apiService.getRecomendedClassList(date,latitude,longitude,TempStorage.getUser().getId());
+        LogUtils.debug("NetworkCommunicator hitting getClassList");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<List<ClassModel>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getClassList onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<ClassModel>>> call, Response<ResponseModel<List<ClassModel>>> restResponse, ResponseModel<List<ClassModel>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getClassList onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
 
     public Call deviceUpdate(DeviceUpdate deviceUpdate, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.DEVICE;
@@ -1325,7 +1348,8 @@ public class NetworkCommunicator {
 //                requestListener.onApiSuccess(response, requestCode);
 
                 try {
-                    ToastUtils.show(context, classModel.getTitle() + " successfully added to wishlist");
+                   String message = String.format(context.getString(R.string.added_to_wishlist),classModel.getTitle());
+                    ToastUtils.show(context, message);
                     classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
                     EventBroadcastHelper.sendWishAdded(classModel);
                 } catch (Exception e) {
