@@ -50,6 +50,7 @@
     <color name="colorPrimaryLightPix">#031d22</color>
     <color name="text_color_light">#858d9e</color>
     <color name="grey_line_dark">#c3c5cd</color>
+    <color name="text_shadow_color">#66000000</color>
 
     <color name="blue">#EBF2FC</color>
 
@@ -57,7 +58,7 @@
 
     <color name="light_green">#DFF5D9</color>
 
-    <color name="black_transparent">#99000000</color>
+    <color name="black_transparent">#80000000</color>
 
     <color name="blue_light">#42A1ED</color>
 
@@ -69,5 +70,7 @@
 
     <drawable name="no_map">#c7cfd4</drawable>
     <drawable name="grey_drawable">#999999</drawable>
+    <color name="TransparentGrey">#7F000000</color>
+
 
 </resources>

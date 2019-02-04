@@ -14,6 +14,7 @@ import com.p5m.me.adapters.viewholder.RatingViewHolder;
 import com.p5m.me.adapters.viewholder.RecommendedClassViewHolder;
 import com.p5m.me.data.ClassRatingListData;
 import com.p5m.me.data.ListLoader;
+import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.utils.LogUtils;
 
 import java.util.ArrayList;
@@ -43,11 +44,11 @@ public class RecommendedClassAdapter extends RecyclerView.Adapter<RecyclerView.V
         return list;
     }
 
-    public void addClass(ClassRatingListData model) {
+    public void addClass(ClassModel model) {
         list.add(model);
     }
 
-    public void addAllClass(List<ClassRatingListData> models) {
+    public void addAllClass(List<ClassModel> models) {
         list.addAll(models);
     }
 
@@ -68,19 +69,19 @@ public class RecommendedClassAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof RecommendedClassViewHolder) {
-//            ((RecommendedClassViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
+            ((RecommendedClassViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
         }
     }
 
     @Override
     public int getItemCount() {
-        return 5;
+        return list.size();
     }
 
-   /* public Object getItem(int position) {
+    public Object getItem(int position) {
         if (list != null && list.size() > 0)
             return list.get(position);
         else
             return null;
-    }*/
+    }
 }
