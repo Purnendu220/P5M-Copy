@@ -247,6 +247,7 @@ public class AppConstants {
 
 
         public static final String GET_PAYMENT_DETAIL = "api/v1/payment/package-purchase/{id}";
+        public static final String SUPPORT_CONTACT = "api/v1/support/save";
     }
 
     public class ApiParamValue {

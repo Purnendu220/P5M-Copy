@@ -810,10 +810,19 @@
     <string name="congratulation_package_extended_ar" translatable="false" >مبروك! تم تمديد إشتراك %s لمدة  %s اسابيع.</string>
 
     <string name="valid_until">صالح حتى</string>
-    <string name="class_booking_failed">للأسف, لم يتم الحجز الى الكلاس <b>%s</b> بنجاح. الرجاء المحاولة فى وقت لاحق. إذا تم خصم المبلغ من حسابك المصرفي، تواصل معنا على الفور.</string>
-    <string name="package_booking_failed">للأسف, لم يتم شراء إشتراك  <b>%s</b> بنجاح. الرجاء المحاولة فى وقت لاحق. إذا تم خصم المبلغ من حسابك المصرفي، تواصل معنا على الفور.</string>
+    <string name="class_booking_failed"> للأسف, لم يتم الحجز الى الكلاس <b>%s</b> بنجاح. الرجاء المحاولة فى وقت لاحق. إذا تم خصم المبلغ من حسابك المصرفي، تواصل معنا على الفور.</string>
+    <string name="package_booking_failed"> للأسف, لم يتم شراء إشتراك  <b>%s</b> بنجاح. الرجاء المحاولة فى وقت لاحق. إذا تم خصم المبلغ من حسابك المصرفي، تواصل معنا على الفور.</string>
     <string name="failed_package_extension_ar" translatable="false">للأسف, فشل تمديد إشتراك %s. الرجاء المحاولة فى وقت لاحق. إذا تم خصم المبلغ من حسابك المصرفي، تواصل معنا على الفور.</string>
     <string name="no_of_class">عدد الكلاسات</string>
+    <string name="contact_gym_trainer">CONTACT THE GYM OR TRAINER</string>
+    <string name="send_message">Send Message</string>
+    <string name="you_will_receive_the_response_via_email">*You will receive the response via email</string>
+    <string name="type_your_questions_and_comments_here">Type your questions and comments here</string>
+    <string name="please_provide_your_query">Please provide your query</string>
+    <string name="please_select_sender">Please select sender</string>
+    <string name="message_is_successfullt_send">Message is successfully send.</string>
+    <string name="message_send_info">Message Sending Info</string>
+    <string name="success">Success</string>
     <string-array name="schedule_list">
 
     <item>@string/upcoming</item>

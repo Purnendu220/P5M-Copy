@@ -144,15 +144,15 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
             }
 
             if (model.getGymBranchDetail() != null) {
-                textViewLocation.setText(model.getGymBranchDetail().getGymName() + ", " + model.getGymBranchDetail().getBranchName());
+                textViewLocation.setText(model.getGymBranchDetail().getGymName());
             }
 
             textViewClassName.setText(model.getTitle());
             textViewClassCategory.setText(model.getClassCategory());
             textViewClassDate.setText(DateUtils.getClassDate(model.getClassDate()));
 
-            textViewAvailable.setText(model.getAvailableSeat() + " available " +
-                    AppConstants.plural("seat", model.getAvailableSeat()));
+            textViewAvailable.setText(model.getAvailableSeat() + " "+
+                    AppConstants.plural(context.getString(R.string.available_seats), model.getAvailableSeat()));
 
             Helper.setJoinButton(context, buttonJoin, model);
 
