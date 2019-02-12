@@ -3,11 +3,13 @@ package com.p5m.me.view.activity.Main;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,14 +21,15 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
 import com.p5m.me.data.ContactRequestModel;
-import com.p5m.me.data.ContactResponse;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.DialogUtils;
+import com.p5m.me.utils.ImageUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 
@@ -40,6 +43,7 @@ public class ContactActivity extends BaseActivity implements View.OnClickListene
     private int receiverId;
     private ContactRequestModel contactRequestModel;
     private int classSessionId;
+    private Spanned msg;
 
     public static void openActivity(Context context, ClassModel classModel) {
         Intent intent = new Intent(context, ContactActivity.class);
@@ -84,13 +88,22 @@ public class ContactActivity extends BaseActivity implements View.OnClickListene
             radioButtonSendTrainer.setEnabled(false);
             radioButtonSendGym.setChecked(true);
             receiverId = classModel.getGymBranchDetail().getGymId();
+            msg=Html.fromHtml(String.format(context.getResources().getString(R.string.message_is_successfully_send),  classModel.getGymBranchDetail().getGymName()));
+
         }
     }
 
     private void getterSetter() {
-        Glide.with(context)
-                .load(classModel.getGymBranchDetail().getMediaThumbNailUrl())
-                .into(imageViewClass);
+       /* Glide.with(context)
+                .load(classModel.getGymBranchDetail().getMediaUrl())
+                .into(imageViewClass);*/
+        if (classModel.getClassMedia() != null) {
+            ImageUtils.setImage(context,
+                    classModel.getClassMedia().getMediaThumbNailUrl(),
+                    R.drawable.image_holder, imageViewClass);
+        } else {
+            ImageUtils.clearImage(context, imageViewClass);
+        }
         senderId = TempStorage.getUser().getId();
         classSessionId = classModel.getClassSessionId();
         textViewClassName.setText(classModel.getTitle());
@@ -123,6 +136,7 @@ public class ContactActivity extends BaseActivity implements View.OnClickListene
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT));
         activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
+
     }
 
     @Override
@@ -160,9 +174,15 @@ public class ContactActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onApiSuccess(Object response, int requestCode) {
         if (requestCode == NetworkCommunicator.RequestCode.SUPPORT_RESPONSE_CONTACT) {
-            DialogUtils.showBasicMessage(context, getString(R.string.success), context.getString(R.string.ok), R.string.message_is_successfullt_send);
 
-//            ToastUtils.show(context, R.string.message_is_successfullt_send);
+//            DialogUtils.showBasicMessage(context, "", context.getString(R.string.ok), R.string.message_is_successfullt_send);
+            DialogUtils.showBasicMessage(context, String.valueOf(msg), context.getResources().getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    dialog.dismiss();
+                    finish();
+                }
+            },false);
             etMessage.getText().clear();
         }
     }
@@ -177,9 +197,14 @@ public class ContactActivity extends BaseActivity implements View.OnClickListene
         int checkedId = radioGroup.getCheckedRadioButtonId();
         switch (checkedId) {
             case R.id.radioButtonSendTrainer:
+                 msg=Html.fromHtml(String.format(context.getResources().getString(R.string.message_is_successfully_send),  classModel.getTrainerDetail().getFirstName()));
+
                 receiverId = classModel.getTrainerDetail().getId();
                 break;
             case R.id.radioButtonSendGym:
+                 msg=Html.fromHtml(String.format(context.getResources().getString(R.string.message_is_successfully_send),  classModel.getGymBranchDetail().getGymName()));
+
+
                 receiverId = classModel.getGymBranchDetail().getGymId();
                 break;
 

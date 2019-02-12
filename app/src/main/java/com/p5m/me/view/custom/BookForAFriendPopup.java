@@ -22,6 +22,7 @@ import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.RefrenceWrapper;
 import com.p5m.me.utils.ToastUtils;
 
@@ -39,6 +40,8 @@ public class BookForAFriendPopup extends Dialog implements View.OnClickListener 
 
     @BindView(R.id.textInputLayoutFriendsName)
     TextInputLayout textInputLayoutFriendsName;
+    @BindView(R.id.textViewWarningRefund)
+    public TextView textViewWarningRefund;
 
     @BindView(R.id.editTextFriendsName)
     EditText editTextFriendsName;
@@ -85,8 +88,23 @@ public class BookForAFriendPopup extends Dialog implements View.OnClickListener 
         lp.width = (int) (mContext.getResources().getDisplayMetrics().widthPixels * 0.90);
         lp.gravity = Gravity.CENTER;
         getWindow().setAttributes(lp);
+        warningNonRefundableMsg();
         setListeners();
        // selectGender(model.getClassType());
+
+
+    }
+    public void warningNonRefundableMsg() {
+        float cancelTime = 2;
+        if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model)) {
+            textViewWarningRefund.setVisibility(View.VISIBLE);
+        } else if (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) <= cancelTime) {
+            textViewWarningRefund.setVisibility(View.VISIBLE);
+        }
+        else{
+            textViewWarningRefund.setVisibility(View.GONE);
+        }
+
 
 
     }

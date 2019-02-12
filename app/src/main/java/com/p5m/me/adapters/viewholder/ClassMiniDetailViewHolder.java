@@ -117,7 +117,8 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
 
             if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
                 imageViewChat.setVisibility(View.VISIBLE);
-
+                imageViewOptions1.setVisibility(View.VISIBLE);
+                imageViewOptions2.setVisibility(View.GONE);
                 trainerImage.setVisibility(View.VISIBLE);
                 textViewTrainerName.setVisibility(View.VISIBLE);
                 if (model.getRefBookingId() != null && model.getRefBookingId() > 0) {
@@ -128,8 +129,8 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 }
 
                 buttonJoin.setVisibility(View.GONE);
-                imageViewOptions1.setVisibility(View.GONE);
-                imageViewOptions2.setVisibility(View.VISIBLE);
+//                imageViewOptions1.setVisibility(View.GONE);
+//                imageViewOptions2.setVisibility(View.VISIBLE);
 
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
                 trainerImage.setVisibility(View.VISIBLE);

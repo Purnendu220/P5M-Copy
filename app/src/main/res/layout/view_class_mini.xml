@@ -366,12 +366,7 @@
                                 android:text="Fikra Edutech, Noida Sector 132"
                                 android:textColor="@color/theme_dark_text"
                                 android:textSize="@dimen/text_medium" />
-                            <ImageView
-                                android:id="@+id/imageViewChat"
-                                style="@style/ChatIcon"
-                                android:visibility="gone"
-                                android:layout_alignParentEnd="true"
-                                android:src="@drawable/chat_icon" />
+
 
                         </RelativeLayout>
 
@@ -485,6 +480,13 @@
                         android:layout_gravity="bottom|right"
                         android:padding="16dp"
                         android:src="@drawable/more_options" />
+                    <ImageView
+                        android:id="@+id/imageViewChat"
+                        style="@style/ChatIcon"
+                        android:visibility="gone"
+                        android:layout_gravity="bottom|right"
+                        android:layout_marginBottom="@dimen/margin_10"
+                        android:src="@drawable/chat_icon" />
                 </FrameLayout>
 
                 <View

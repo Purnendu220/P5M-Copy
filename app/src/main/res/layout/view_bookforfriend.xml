@@ -156,6 +156,14 @@
                 android:text="@string/gender_required"
                 android:textColor="@color/theme_error_text"
                 android:visibility="invisible" />
+            <TextView
+                android:id="@+id/textViewWarningRefund"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="@string/non_refundable_warning"
+                android:textColor="@color/theme_error_text"
+                android:visibility="gone" />
         </LinearLayout>
 
 

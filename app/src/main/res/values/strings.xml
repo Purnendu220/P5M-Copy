@@ -189,7 +189,7 @@
     <string name="cancel">Cancel</string>
     <string name="transaction_history">Transaction History</string>
     <string name="choose_nationality">Choose your Nationality</string>
-    <string name="checkout">checkout</string>
+    <string name="secure_checkout">secure checkout</string>
     <string name="promo_code">Promo Code</string>
     <string name="apply_promo_code">Enter Promo Code</string>
     <string name="remove_promo_code">Remove Promo Code</string>
@@ -227,7 +227,7 @@
     <string name="go_to_settings">Go to Settings</string>
     <string name="permission_alert">Permission Alert</string>
     <string name="permission_message_media">Please allow P5M to access photos,media and files on your device to take photo.</string>
-    <string name="permission_message_location">Please allow P5M to access your location.</string>
+    <string name="permission_message_location" translatable="false">Please allow P5M to access your location.</string>
 
     <string name="permission_message_camera">\"Please allow P5M to take pictures and record video.\"</string>
     <string name="pick_image">Pick Image</string>
@@ -415,7 +415,7 @@
     <string name="are_you_sure_you_want_to_remove">Are you sure you want to remove</string>
     <string name="week">Week</string>
     <string name="month">Month</string>
-    <string name="at_any_gym">at any gym</string>
+    <string name="at_any_gym" translatable="false">at any gym</string>
     <string name="book_classes">Book Classes</string>
     <string name="payment_history">View Payment History</string>
     <string name="class_one">1 Class</string>
@@ -458,20 +458,23 @@
     <string name="class_booking_failed">Unfortunately, %s Class booking is failed. Please try again. Please contact support in case the amount is debited from your account.</string>
     <string name="package_booking_failed">Unfortunately, %s Package purchase is failed. Please try again. Please contact support in case the amount is debited from your account.</string>
     <string name="failed_package_extension_en" translatable="false">Unfortunately, <b>%s</b> Package extension is failed. Please try again. Please contact support in case the amount is debited from your account.</string>
-
-
     <string name="no_of_class">Number of class(es)</string>
-    <string name="contact_gym_trainer">CONTACT THE GYM OR TRAINER</string>
+    <string name="contact_gym_trainer"> Have a question?</string>
     <string name="send_message">Send Message</string>
-    <string name="you_will_receive_the_response_via_email">*You will receive the response via email</string>
-    <string name="type_your_questions_and_comments_here">Type your questions and comments here</string>
-    <string name="please_provide_your_query">Please provide your query</string>
-    <string name="please_select_sender">Please select sender</string>
-    <string name="message_is_successfullt_send">Message is successfully send.</string>
-    <string name="message_send_info">Message Sending Info</string>
-    <string name="success">Success</string>
+    <string name="you_will_receive_the_response_via_email">*You will receive the response on your email</string>
+    <string name="type_your_questions_and_comments_here">Please enter your query</string>
+    <string name="please_provide_your_query">Please enter your query</string>
+    <string name="please_select_sender">Please select the recipient</string>
+    <string name="message_is_successfully_send">Your message was sent to %s. You will receive a response from them on your email. </string>
     <string name="added_to_wishlist"> %s successfully added to your wishlist.</string>
     <string name="recomended_for_you">Recommended for you:</string>
+    <string name="contact_gym">Contact gym</string>
+    <string name="contact_trainer">Contact trainer</string>
+    <string name="are_you_sure_leave_page">Are you sure you want to leave this page?</string>
+    <string name="non_refundable_warning_msg">This class is non-refundable after purchase. Do you want to continue?</string>
+    <string name="non_refundable_warning">*This class is non-refundable after purchase.</string>
+    <string name="on_ya">Oh Ya!</string>
+    <string name="maybe_next_time">Maybe next time</string>
 
 
     <string-array name="schedule_list">
