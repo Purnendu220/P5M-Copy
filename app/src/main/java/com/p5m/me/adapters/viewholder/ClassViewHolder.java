@@ -16,6 +16,7 @@ import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.WordUtils;
 
 import butterknife.BindView;
@@ -144,15 +145,15 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
             }
 
             if (model.getGymBranchDetail() != null) {
-                textViewLocation.setText(model.getGymBranchDetail().getGymName() + ", " + model.getGymBranchDetail().getBranchName());
+                textViewLocation.setText(model.getGymBranchDetail().getGymName());
             }
 
             textViewClassName.setText(model.getTitle());
             textViewClassCategory.setText(model.getClassCategory());
             textViewClassDate.setText(DateUtils.getClassDate(model.getClassDate()));
 
-            textViewAvailable.setText(model.getAvailableSeat() + " available " +
-                    AppConstants.plural("seat", model.getAvailableSeat()));
+            textViewAvailable.setText(model.getAvailableSeat() + " "+
+                    AppConstants.plural(context.getString(R.string.available_seats), model.getAvailableSeat()));
 
             Helper.setJoinButton(context, buttonJoin, model);
 
@@ -162,7 +163,7 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
             textViewGender.setText(Helper.getClassGenderText(model.getClassType()));
             if(model.getRating()!=0.0F&&model.getRating()>0){
                 linearLayoutClassRating.setVisibility(View.VISIBLE);
-                textViewClassRating.setText(model.getRating()+"");
+                textViewClassRating.setText(LanguageUtils.numberConverter(model.getRating())+"");
             }else{
                 linearLayoutClassRating.setVisibility(View.GONE);
             }

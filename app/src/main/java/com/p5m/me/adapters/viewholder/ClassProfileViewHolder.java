@@ -223,15 +223,16 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
                 textViewLocation.setText("");
             }
             if (model.getRating() > 0 && model.getNumberOfRating() > 0) {
-                CharSequence text = String.format(context.getString(R.string.review_based_on), model.getNumberOfRating() + "");
+
+                CharSequence text = String.format(context.getString(R.string.review_based_on), LanguageUtils.numberConverter(model.getNumberOfRating()) + "");
                 linearLayoutStudioRating.setVisibility(View.VISIBLE);
                 studioRating.setRating(model.getRating());
 
-                textViewRatingCount.setText(model.getRating() + "/5.0");
+                textViewRatingCount.setText(LanguageUtils.numberConverter(model.getRating()) + "/"+LanguageUtils.numberConverter(5.0));
                 textViewReviewCountText.setText(text);
                 studioRating.setIsIndicator(true);
                 linearLayoutClassRating.setVisibility(View.GONE);
-                textViewClassRating.setText(model.getRating() + "");
+                textViewClassRating.setText(LanguageUtils.numberConverter(model.getRating()) + "");
             } else {
                 linearLayoutClassRating.setVisibility(View.GONE);
                 linearLayoutStudioRating.setVisibility(View.GONE);

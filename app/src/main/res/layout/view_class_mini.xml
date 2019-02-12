@@ -139,6 +139,8 @@
                                 android:src="@drawable/more_options"
                                 android:visibility="visible" />
 
+
+
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -225,6 +227,7 @@
                         android:text="Class A: Boxing, "
                         android:textColor="@color/theme_accent_text"
                         android:textSize="@dimen/text_medium" />
+
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -337,9 +340,8 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
+                            android:layout_marginBottom="5dp"
                             android:layout_marginLeft="16dp"
-                            android:layout_marginRight="48dp"
                             android:orientation="horizontal">
 
                             <ImageView
@@ -349,7 +351,7 @@
 
                             <TextView
                                 android:id="@+id/textViewLocation"
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
                                 android:layout_marginLeft="@dimen/text_icon_gap"
@@ -364,6 +366,7 @@
                                 android:text="Fikra Edutech, Noida Sector 132"
                                 android:textColor="@color/theme_dark_text"
                                 android:textSize="@dimen/text_medium" />
+
 
                         </RelativeLayout>
 
@@ -391,7 +394,7 @@
                                 android:layout_marginTop="@dimen/text_drawable_adjustment"
                                 android:layout_toEndOf="@+id/imageViewClassGender"
                                 android:fontFamily="sans-serif"
-                                android:gravity="left"
+                                android:gravity="left|center_vertical"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
                                 android:lineSpacingExtra="@dimen/line_spacing_extra"
                                 android:text="Female only"
@@ -410,7 +413,7 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="48dp"
                             android:orientation="horizontal"
-                            android:visibility="gone">
+                            android:visibility="visible">
 
                             <ImageView
                                 android:id="@+id/imageViewClassFitnessLevel"
@@ -426,7 +429,7 @@
                                 android:layout_marginTop="@dimen/text_drawable_adjustment"
                                 android:layout_toEndOf="@+id/imageViewClassFitnessLevel"
                                 android:fontFamily="sans-serif"
-                                android:gravity="left"
+                                android:gravity="left|center_vertical"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
                                 android:lineSpacingExtra="@dimen/line_spacing_extra"
                                 android:text="INTERMEDIATE"
@@ -477,6 +480,13 @@
                         android:layout_gravity="bottom|right"
                         android:padding="16dp"
                         android:src="@drawable/more_options" />
+                    <ImageView
+                        android:id="@+id/imageViewChat"
+                        style="@style/ChatIcon"
+                        android:visibility="gone"
+                        android:layout_gravity="bottom|right"
+                        android:layout_marginBottom="@dimen/margin_10"
+                        android:src="@drawable/chat_icon" />
                 </FrameLayout>
 
                 <View
@@ -487,6 +497,17 @@
                     android:layout_marginTop="4dp"
                     android:background="@color/separator" />
             </LinearLayout>
+           <!-- <ImageView
+                android:id="@+id/imageViewChat"
+                android:visibility="gone"
+                android:layout_width="@dimen/margin_30"
+                android:layout_height="@dimen/margin_30"
+                android:padding="4dp"
+                android:paddingTop="1dp"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:layout_marginTop="@dimen/margin_40"
+                android:layout_gravity="right"
+                android:src="@drawable/special" />-->
         </LinearLayout>
     </LinearLayout>
 

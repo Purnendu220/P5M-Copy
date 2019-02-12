@@ -286,8 +286,6 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
                 selectedTabImage.setVisibility(View.INVISIBLE);
             }
             tabLayout.getTabAt(index).setCustomView(customView);
-
-
         }
     }
 }

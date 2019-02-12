@@ -189,7 +189,7 @@
     <string name="cancel">Cancel</string>
     <string name="transaction_history">Transaction History</string>
     <string name="choose_nationality">Choose your Nationality</string>
-    <string name="checkout">checkout</string>
+    <string name="secure_checkout">secure checkout</string>
     <string name="promo_code">Promo Code</string>
     <string name="apply_promo_code">Enter Promo Code</string>
     <string name="remove_promo_code">Remove Promo Code</string>
@@ -227,7 +227,7 @@
     <string name="go_to_settings">Go to Settings</string>
     <string name="permission_alert">Permission Alert</string>
     <string name="permission_message_media">Please allow P5M to access photos,media and files on your device to take photo.</string>
-    <string name="permission_message_location">Please allow P5M to access your location.</string>
+    <string name="permission_message_location" translatable="false">Please allow P5M to access your location.</string>
 
     <string name="permission_message_camera">\"Please allow P5M to take pictures and record video.\"</string>
     <string name="pick_image">Pick Image</string>
@@ -257,7 +257,7 @@
 
     <string name="selection_limiter_pix">Can\'t select more than %d images.</string>
     <string name="valid_for_weeks">Valid for %d week(s)</string>
-    <string name="valid_for_months" >Valid for %d month(s)</string>
+    <string name="valid_for_months">Valid for %d month(s)</string>
     <string name="message_to_drag_up">Drag images up for gallery</string>
     <string name="pix_ok">OK</string>
     <string name="pix_tap_to_select">Tap photo to select</string>
@@ -335,7 +335,7 @@
     <string name="no_more_gyms">No more gyms</string>
     <string name="no_more_ratings">No more ratifngs</string>
     <string name="image_upload_failed">Image upload failed</string>
-    <string name="gaping" translatable="false" >" "</string>
+    <string name="gaping" translatable="false">" "</string>
     <string name="membership_general_package_heading_1" translatable="false" />
     <string name="membership_no_package_heading_2" translatable="false" />
     <string name="no_more_trainers">No more trainers</string>
@@ -397,7 +397,7 @@
     <string name="address"><![CDATA[<b>ADDRESS:</b>]]></string>
     <string name="studio_instruction"><![CDATA[<b>STUDIO INSTRUCTION:</b>]]></string>
     <string name="special_note_by_trainer"><![CDATA[<b>SPECIAL NOTE BY THE TRAINER:</b>]]></string>
-    <string name="available_seats" >available seat(s)</string>
+    <string name="available_seats">available seat(s)</string>
     <string name="view_all_results">View All Results</string>
     <string name="class_booking_is_failed">Class booking is failed</string>
     <string name="package_booking_is_failed">Package booking is failed</string>
@@ -415,7 +415,7 @@
     <string name="are_you_sure_you_want_to_remove">Are you sure you want to remove</string>
     <string name="week">Week</string>
     <string name="month">Month</string>
-    <string name="at_any_gym">at any gym</string>
+    <string name="at_any_gym" translatable="false">at any gym</string>
     <string name="book_classes">Book Classes</string>
     <string name="payment_history">View Payment History</string>
     <string name="class_one">1 Class</string>
@@ -443,7 +443,6 @@
     <string name="pending_extension"><b>%s</b> Package extension is pending.If you have completed the transaction, your payment will be updated within 4 hours.</string>
 
 
-
     <string name="failed_start_class">your class booking for</string>
     <string name="failed_start_package">your package purchase for </string>
     <string name="package_extended_failed">Package extension is failed</string>
@@ -454,16 +453,28 @@
 
     <string name="congratulation_package_booked"> Congratulations! <b>%s</b> Package is successfully booked.</string>
     <string name="congratulation_class_booked">Congratulations! <b>%s</b> Class is successfully booked.</string>
-    <string name="congratulation_package_extended_en" translatable="false"  >Congratulations! <b>%s</b> has been extended for %s Week(s)</string>
+    <string name="congratulation_package_extended_en" translatable="false">Congratulations! <b>%s</b> has been extended for %s Week(s)</string>
     <string name="valid_until">Valid until</string>
     <string name="class_booking_failed">Unfortunately, %s Class booking is failed. Please try again. Please contact support in case the amount is debited from your account.</string>
     <string name="package_booking_failed">Unfortunately, %s Package purchase is failed. Please try again. Please contact support in case the amount is debited from your account.</string>
     <string name="failed_package_extension_en" translatable="false">Unfortunately, <b>%s</b> Package extension is failed. Please try again. Please contact support in case the amount is debited from your account.</string>
-
-
     <string name="no_of_class">Number of class(es)</string>
+    <string name="contact_gym_trainer"> Have a question?</string>
+    <string name="send_message">Send Message</string>
+    <string name="you_will_receive_the_response_via_email">*You will receive the response on your email</string>
+    <string name="type_your_questions_and_comments_here">Please enter your query</string>
+    <string name="please_provide_your_query">Please enter your query</string>
+    <string name="please_select_sender">Please select the recipient</string>
+    <string name="message_is_successfully_send">Your message was sent to %s. You will receive a response from them on your email. </string>
     <string name="added_to_wishlist"> %s successfully added to your wishlist.</string>
     <string name="recomended_for_you">Recommended for you:</string>
+    <string name="contact_gym">Contact gym</string>
+    <string name="contact_trainer">Contact trainer</string>
+    <string name="are_you_sure_leave_page">Are you sure you want to leave this page?</string>
+    <string name="non_refundable_warning_msg">This class is non-refundable after purchase. Do you want to continue?</string>
+    <string name="non_refundable_warning">*This class is non-refundable after purchase.</string>
+    <string name="on_ya">Oh Ya!</string>
+    <string name="maybe_next_time">Maybe next time</string>
 
 
     <string-array name="schedule_list">

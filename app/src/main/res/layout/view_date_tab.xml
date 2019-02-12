@@ -30,6 +30,11 @@
             android:textSize="13sp"
             tools:text="Mar 12" />
 
+        <ImageView
+            android:id="@+id/imageViewArrow"
+            android:layout_width="@dimen/margin_20"
+            android:layout_height="@dimen/margin_20"
+            android:background="@color/red"/>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

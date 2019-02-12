@@ -15,8 +15,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <permission
         android:name="com.p5m.me.permission.C2D_MESSAGE"
@@ -296,9 +296,13 @@
             android:name=".fxn.pix.Pix"
             android:noHistory="true"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.activity.Main.PaymentConfirmationActivity"
-            android:screenOrientation="portrait"></activity>
-
+        <activity
+            android:name=".view.activity.Main.PaymentConfirmationActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.activity.Main.ContactActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
+            ></activity>
     </application>
 
 </manifest>

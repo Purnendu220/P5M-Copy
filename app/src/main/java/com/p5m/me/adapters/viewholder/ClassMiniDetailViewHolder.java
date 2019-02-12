@@ -47,6 +47,9 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.buttonJoin)
     public Button buttonJoin;
 
+    @BindView(R.id.imageViewChat)
+    public ImageView imageViewChat;
+
     @BindView(R.id.layoutGender)
     public View layoutGender;
     @BindView(R.id.textViewClassGender)
@@ -87,6 +90,7 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.classBookedWithFriend)
     public RelativeLayout classBookedWithFriend;
 
+
     public ClassMiniDetailViewHolder(View view, int shownInScreen) {
         super(view);
 
@@ -112,18 +116,21 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
             }
 
             if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
+                imageViewChat.setVisibility(View.VISIBLE);
+                imageViewOptions1.setVisibility(View.VISIBLE);
+                imageViewOptions2.setVisibility(View.GONE);
                 trainerImage.setVisibility(View.VISIBLE);
                 textViewTrainerName.setVisibility(View.VISIBLE);
-                if(model.getRefBookingId()!=null && model.getRefBookingId()>0){
+                if (model.getRefBookingId() != null && model.getRefBookingId() > 0) {
                     classBookedWithFriend.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     classBookedWithFriend.setVisibility(View.GONE);
 
                 }
 
                 buttonJoin.setVisibility(View.GONE);
-                imageViewOptions1.setVisibility(View.GONE);
-                imageViewOptions2.setVisibility(View.VISIBLE);
+//                imageViewOptions1.setVisibility(View.GONE);
+//                imageViewOptions2.setVisibility(View.VISIBLE);
 
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
                 trainerImage.setVisibility(View.VISIBLE);
@@ -170,14 +177,14 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 buttonJoin.setVisibility(View.GONE);
                 imageViewOptions1.setVisibility(View.GONE);
                 imageViewOptions2.setVisibility(View.GONE);
-                try{
-                    if(model.getRefBookingId()!=null && model.getRefBookingId()>0){
+                try {
+                    if (model.getRefBookingId() != null && model.getRefBookingId() > 0) {
                         classBookedWithFriend.setVisibility(View.VISIBLE);
-                    }else{
+                    } else {
                         classBookedWithFriend.setVisibility(View.GONE);
 
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                     classBookedWithFriend.setVisibility(View.GONE);
 
@@ -234,20 +241,19 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
             textViewClassDate.setText(DateUtils.getClassDate(model.getClassDate()));
 
             Helper.setJoinButton(context, buttonJoin, model);
-             if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED) {
-                 if(model.getRatingResDto()==null||model.getRatingResDto().getRating()==0){
-                     buttonClassRating.setVisibility(View.VISIBLE);
-                     buttonEditRating.setVisibility(View.GONE);
-                 }
-                 else{
-                     buttonClassRating.setVisibility(View.GONE);
-                     buttonEditRating.setVisibility(View.VISIBLE);
-                 }
+            if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED) {
+                if (model.getRatingResDto() == null || model.getRatingResDto().getRating() == 0) {
+                    buttonClassRating.setVisibility(View.VISIBLE);
+                    buttonEditRating.setVisibility(View.GONE);
+                } else {
+                    buttonClassRating.setVisibility(View.GONE);
+                    buttonEditRating.setVisibility(View.VISIBLE);
+                }
 
             }
-            if(model.getFitnessLevel()!=null && !model.getFitnessLevel().isEmpty()){
+            if (model.getFitnessLevel() != null && !model.getFitnessLevel().isEmpty()) {
                 relativeLayoutFitnessLevel.setVisibility(View.VISIBLE);
-                switch (model.getFitnessLevel()){
+                switch (model.getFitnessLevel()) {
                     case AppConstants.FitnessLevel.CLASS_LEVEL_BASIC:
                         imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_get);
                         break;
@@ -265,7 +271,7 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 }
                 setTextFitnessLevel(model);
 //                textViewFitnessLevel.setText(WordUtils.capitalize(model.getFitnessLevel().toLowerCase()));
-            }else{
+            } else {
                 relativeLayoutFitnessLevel.setVisibility(View.GONE);
             }
 
@@ -275,6 +281,12 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 @Override
                 public void onClick(View view) {
                     adapterCallbacks.onAdapterItemClick(ClassMiniDetailViewHolder.this, buttonJoin, model, position);
+                }
+            });
+            imageViewChat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ClassMiniDetailViewHolder.this, imageViewChat, model, position);
                 }
             });
             buttonClassRating.setOnClickListener(new View.OnClickListener() {
@@ -316,7 +328,7 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void setTextFitnessLevel(ClassModel model) {
-        String fitnessLevel = matchFitnessWord(model.getFitnessLevel(),context);
+        String fitnessLevel = matchFitnessWord(model.getFitnessLevel(), context);
         textViewFitnessLevel.setText(fitnessLevel);
     }
 }

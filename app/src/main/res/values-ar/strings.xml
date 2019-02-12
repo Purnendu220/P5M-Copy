@@ -253,13 +253,14 @@
     <string name="confirm_password_not_matched">كلمة السر غير متطابقة</string>
 
 
-    -<string-array name="gender_type">
+    -
+    <string-array name="gender_type">
 
-    <item>ذكر</item>
+        <item>ذكر</item>
 
-    <item>أنثى</item>
+        <item>أنثى</item>
 
-</string-array>
+    </string-array>
 
     <string name="upcoming_classes">الكلاسات القادمة</string>
 
@@ -321,7 +322,6 @@
 
     <string name="choose_nationality">اختر جنسيتك</string>
 
-    <string name="checkout">الدفع</string>
 
     <string name="promo_code">رمز ترويجي</string>
 
@@ -610,7 +610,8 @@
     <string name="privacy_policy">سياسة الخصوصية</string>
 
 
-    -<string name="terms_n_condition">
+    -
+    <string name="terms_n_condition">
 
 -<![CDATA[-شروط الاستخدام]]>
 </string>
@@ -698,25 +699,29 @@
     <string name="no_more_classes">لا مزيد من الطبقات</string>
 
 
-    -<string name="remenders">
+    -
+    <string name="remenders">
 
 -<![CDATA[<b>نقاط هامة:</b>]]>
 </string>
 
 
-    -<string name="address">
+    -
+    <string name="address">
 
 -<![CDATA[<b>عنوان:</b>]]>
 </string>
 
 
-    -<string name="studio_instruction">
+    -
+    <string name="studio_instruction">
 
 -<![CDATA[<b>تعليمات النادي:</b>]]>
 </string>
 
 
-    -<string name="special_note_by_trainer">
+    -
+    <string name="special_note_by_trainer">
 
 -<![CDATA[<b>تعليمات خاصة من المدرب :</b>]]>
 </string>
@@ -806,34 +811,49 @@
 
     <string name="congratulation_package_booked"> مبروك! تم شراء إشتراك <b>%s</b> بنجاح.</string>
     <string name="congratulation_class_booked"> مبروك! تم حجز الكلاس <b>%s</b> بنجاح. </string>
-
-    <string name="congratulation_package_extended_ar" translatable="false" >مبروك! تم تمديد إشتراك %s لمدة  %s اسابيع.</string>
+    <string name="secure_checkout">دفع آمن</string>
+    <string name="congratulation_package_extended_ar" translatable="false">مبروك! تم تمديد إشتراك %s لمدة  %s اسابيع.</string>
 
     <string name="valid_until">صالح حتى</string>
-    <string name="class_booking_failed">للأسف, لم يتم الحجز الى الكلاس <b>%s</b> بنجاح. الرجاء المحاولة فى وقت لاحق. إذا تم خصم المبلغ من حسابك المصرفي، تواصل معنا على الفور.</string>
-    <string name="package_booking_failed">للأسف, لم يتم شراء إشتراك  <b>%s</b> بنجاح. الرجاء المحاولة فى وقت لاحق. إذا تم خصم المبلغ من حسابك المصرفي، تواصل معنا على الفور.</string>
+    <string name="class_booking_failed"> للأسف, لم يتم الحجز الى الكلاس <b>%s</b> بنجاح. الرجاء المحاولة فى وقت لاحق. إذا تم خصم المبلغ من حسابك المصرفي، تواصل معنا على الفور.</string>
+    <string name="package_booking_failed"> للأسف, لم يتم شراء إشتراك  <b>%s</b> بنجاح. الرجاء المحاولة فى وقت لاحق. إذا تم خصم المبلغ من حسابك المصرفي، تواصل معنا على الفور.</string>
     <string name="failed_package_extension_ar" translatable="false">للأسف, فشل تمديد إشتراك %s. الرجاء المحاولة فى وقت لاحق. إذا تم خصم المبلغ من حسابك المصرفي، تواصل معنا على الفور.</string>
     <string name="no_of_class">عدد الكلاسات</string>
+    <string name="contact_gym_trainer">هل لديك سؤال؟</string>
+
+    <string name="send_message">أرسل رسالة</string>
+
+    <string name="you_will_receive_the_response_via_email">* سوف تستلم الرد على البريد الإلكتروني الخاص بك</string>
+
+    <string name="type_your_questions_and_comments_here">الرجاء ادخال استفسارك</string>
+
+    <string name="please_provide_your_query">الرجاء ادخال استفسارك</string>
+
+    <string name="please_select_sender">الرجاء اختيار المستلم</string>
+    <string name="recomended_for_you">مقترح لك</string>
+
+    <string name="contact_gym">تواصل مع النادي الصحي</string>
+
+    <string name="contact_trainer">تواصل مع المدرب</string>
+
+
     <string-array name="schedule_list">
+        <item>@string/upcoming</item>
+        <item>@string/wish_list</item>
 
-    <item>@string/upcoming</item>
+    </string-array>
 
-    <item>@string/wish_list</item>
-
-</string-array>
+    <string name="message_is_successfully_send">ًتم إرسال رسالتك إلى %s. ستستلم ردا منهم على بريدك الإلكتروني.</string>
 
 
     <string-array name="setting_header">
 
-    <item>@string/classes</item>
+        <item>@string/classes</item>
+        <item>@string/trainers</item>
+        <item>@string/gym</item>
 
-    <item>@string/trainers</item>
-
-    <item>@string/gym</item>
-
-</string-array>
+    </string-array>
     <string name="added_to_wishlist">تم إضافته كلاس  %s إلى قائمة الأمنيات.</string>
-    <string name="recomended_for_you">Recommended for you:</string>
-
+    <string name="are_you_sure_leave_page">هل أنت متأكد أنك تريد ترك هذه الصفحة</string>
 
 </resources>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
 import com.p5m.me.analytics.MixPanel;
@@ -35,6 +37,7 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
+import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
@@ -348,6 +351,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 textViewTopTitle.setVisibility(View.GONE);
                 textViewPackageName.setText(R.string.add_more_time);
                 textViewCancellationPolicyToggle.setText(R.string.extention_policy);
+
 //                textViewPrice.setText(selectedPacakageFromList.getCost() + " " + context.getString(R.string.currency));
                 textViewPrice.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost()) + " " + context.getString(R.string.currency));
                 int remainigExtension;
@@ -368,6 +372,9 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
 
         }
+        textViewLimit.setVisibility(View.GONE);
+        textViewCancellationPolicyGeneralToggle.setVisibility(View.GONE);
+        textViewCancellationPolicyToggle.setVisibility(View.GONE);
         if (aPackage != null && aPackage.getPromoResponseDto() != null && aPackage.getPromoResponseDto().getDiscountType() != null) {
             applyPromocode(aPackage.getPromoResponseDto());
         }
@@ -383,27 +390,28 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
     @OnClick(R.id.imageViewBack)
     public void imageViewBack(View view) {
-        finish();
+        dialogBackPress();
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.textViewCancellationPolicyToggle:
-
-                if (textViewCancellationPolicy.getVisibility() == View.VISIBLE) {
+                textViewCancellationPolicy.setVisibility(View.GONE);
+               /* if (textViewCancellationPolicy.getVisibility() == View.VISIBLE) {
                     textViewCancellationPolicy.setVisibility(View.GONE);
                 } else {
                     textViewCancellationPolicy.setVisibility(View.VISIBLE);
-                }
+                }*/
                 break;
 
             case R.id.textViewCancellationPolicyGeneralToggle:
-                if (textViewCancellationPolicyGenral.getVisibility() == View.VISIBLE) {
+                textViewCancellationPolicyGenral.setVisibility(View.GONE);
+              /*  if (textViewCancellationPolicyGenral.getVisibility() == View.VISIBLE) {
                     textViewCancellationPolicyGenral.setVisibility(View.GONE);
                 } else {
                     textViewCancellationPolicyGenral.setVisibility(View.VISIBLE);
-                }
+                }*/
                 break;
             case R.id.textViewLimit:
                 try {
@@ -482,6 +490,23 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 break;
 
         }
+    }
+    private void dialogBackPress(){
+        DialogUtils.showBasicMessage(context, "",context.getResources().getString(R.string.are_you_sure_leave_page),
+                context.getResources().getString(R.string.ok),
+                new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                dialog.dismiss();
+                CheckoutActivity.super.onBackPressed();
+            }
+        },context.getString(R.string.cancel),new MaterialDialog.SingleButtonCallback(){
+
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                });
     }
 
     private void dialogPromoCode() {
@@ -681,6 +706,10 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        dialogBackPress();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
