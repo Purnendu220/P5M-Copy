@@ -121,8 +121,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_15"
-        android:layout_marginEnd="8dp"
-
+        android:layout_marginEnd="4dp"
         android:scrollHorizontally="false"
         android:imeOptions="actionDone"
         app:layout_constrainedWidth="true"
@@ -131,6 +130,8 @@
         android:letterSpacing="@dimen/text_medium_letter_spacing"
         android:lineSpacingExtra="@dimen/line_spacing_extra_title"
         android:minLines="1"
+        android:gravity="start"
+        android:textAlignment="gravity"
         android:textColorHint="@color/grey"
         android:textSize="@dimen/text_medium"
         app:layout_constraintEnd_toEndOf="@+id/radioGroupSender"
@@ -140,19 +141,20 @@
 
     <TextView
         android:id="@+id/textViewGuide"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_4"
+        android:layout_marginLeft="@dimen/margin_20"
+        android:layout_marginEnd="@dimen/margin_20"
         android:layout_marginTop="@dimen/margin_8"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:text="@string/you_will_receive_the_response_via_email"
         android:textColor="@color/black"
+
+        android:textAlignment="gravity"
+        android:gravity="start"
         app:layout_constraintEnd_toEndOf="@+id/etMessage"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/cardProfile"
-        app:layout_constraintTop_toBottomOf="@+id/etMessage"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toStartOf="@+id/etMessage"
+        app:layout_constraintTop_toBottomOf="@+id/etMessage" />
 
 
     <android.support.constraint.Group

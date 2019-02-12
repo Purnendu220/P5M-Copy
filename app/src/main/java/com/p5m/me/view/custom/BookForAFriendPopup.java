@@ -97,9 +97,9 @@ public class BookForAFriendPopup extends Dialog implements View.OnClickListener 
     public void warningNonRefundableMsg() {
         float cancelTime = 2;
         if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model)) {
-            textViewWarningRefund.setVisibility(View.VISIBLE);
+            textViewWarningRefund.setVisibility(View.GONE);
         } else if (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) <= cancelTime) {
-            textViewWarningRefund.setVisibility(View.VISIBLE);
+            textViewWarningRefund.setVisibility(View.GONE);
         }
         else{
             textViewWarningRefund.setVisibility(View.GONE);

@@ -16,6 +16,7 @@ import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.WordUtils;
 
 import butterknife.BindView;
@@ -162,7 +163,7 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
             textViewGender.setText(Helper.getClassGenderText(model.getClassType()));
             if(model.getRating()!=0.0F&&model.getRating()>0){
                 linearLayoutClassRating.setVisibility(View.VISIBLE);
-                textViewClassRating.setText(model.getRating()+"");
+                textViewClassRating.setText(LanguageUtils.numberConverter(model.getRating())+"");
             }else{
                 linearLayoutClassRating.setVisibility(View.GONE);
             }

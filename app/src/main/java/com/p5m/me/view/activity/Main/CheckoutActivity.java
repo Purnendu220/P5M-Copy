@@ -390,7 +390,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
     @OnClick(R.id.imageViewBack)
     public void imageViewBack(View view) {
-        finish();
+        dialogBackPress();
     }
 
     @Override
