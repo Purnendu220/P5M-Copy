@@ -61,6 +61,8 @@ import static com.p5m.me.utils.AppConstants.Limit.PAGE_LIMIT_MAIN_CLASS_LIST;
 
 public class ClassProfileActivity extends BaseActivity implements AdapterCallbacks, View.OnClickListener, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
 
+    private String message;
+
     public static void open(Context context, ClassModel classModel, int navigationFrom) {
         context.startActivity(new Intent(context, ClassProfileActivity.class)
                 .putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom)
@@ -269,6 +271,52 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+  /*  @OnClick(R.id.textViewBook)
+    public void clickBookButton() {
+        float cancelTime = 2;
+        String warningMsg=activity.getString(R.string.non_refundable_warning_msg);
+        if (Helper.isSpecialClass(classModel) && !Helper.isFreeClass(classModel)) {
+            message = warningMsg;
+            alertNonRefundMsg();
+
+        } else if (DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime()) <= cancelTime) {
+            message = warningMsg;
+            alertNonRefundMsg();
+        }
+
+
+
+    }*/
+    private void alertNonRefundMsg(){
+        final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
+                .cancelable(false)
+                .customView(R.layout.dialog_unjoin_class, false)
+                .build();
+        materialDialog.show();
+
+        final TextView textViewMessage = (TextView) materialDialog.findViewById(R.id.textViewMessage);
+        final TextView textViewUnJoin = (TextView) materialDialog.findViewById(R.id.textViewOk);
+        final TextView textViewClose = (TextView) materialDialog.findViewById(R.id.textViewCancel);
+
+        textViewMessage.setText(message);
+        textViewUnJoin.setText(activity.getString(R.string.on_ya));
+        textViewClose.setText(activity.getString(R.string.maybe_next_time));
+
+        textViewClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                materialDialog.dismiss();
+            }
+        });
+
+        textViewUnJoin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                performJoinProcess();
+//                MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel,mBookWithFriendData,2);
+
+            }});
     }
 
     public void bookWithAFriend(final BookWithFriendData data){

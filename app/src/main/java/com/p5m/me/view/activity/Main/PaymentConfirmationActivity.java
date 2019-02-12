@@ -617,7 +617,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 textViewPackageTitle.setText(R.string.class_name);
                 textViewValidity.setText(DateUtils.getPackageClassDate(classModel.getClassDate()) + "\n" + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()));
 
-                if (!TextUtils.isEmpty(paymentResponse.getClassDetailDto().getTitle()))
+                if (paymentResponse.getClassDetailDto() != null)
                     textViewPackageName.setText(paymentResponse.getClassDetailDto().getTitle());
                 break;
             case EXTENSION:
