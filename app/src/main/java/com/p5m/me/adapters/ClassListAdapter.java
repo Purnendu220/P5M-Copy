@@ -60,8 +60,9 @@ public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         list.addAll(models);
         addLoader();
     }
-    public void addRecomendedClasses(RecomendedClassData recomendedClass){
-        list.add(0,recomendedClass);
+
+    public void addRecomendedClasses(RecomendedClassData recomendedClass) {
+        list.add(0, recomendedClass);
         notifyDataSetChanged();
     }
 
@@ -100,10 +101,9 @@ public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             itemViewType = VIEW_TYPE_CLASS;
         } else if (item instanceof ListLoader) {
             itemViewType = VIEW_TYPE_LOADER;
+        } else if (item instanceof RecomendedClassData) {
+            itemViewType = VIEW_TYPE_RECOMENDED;
         }
-     else if (item instanceof RecomendedClassData) {
-        itemViewType = VIEW_TYPE_RECOMENDED;
-    }
 
         return itemViewType;
     }
@@ -114,14 +114,10 @@ public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_class, parent, false);
             return new ClassViewHolder(view, shownInScreen);
 
-        }
-        else if (viewType == VIEW_TYPE_RECOMENDED) {
+        } else if (viewType == VIEW_TYPE_RECOMENDED) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_recomended_class, parent, false);
             return new RecommendedItemViewHolder(view, shownInScreen);
-
-        }
-
-        else if (viewType == VIEW_TYPE_LOADER) {
+        } else if (viewType == VIEW_TYPE_LOADER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_list_progress, parent, false);
             return new LoaderViewHolder(view);
         }
@@ -131,13 +127,13 @@ public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ClassViewHolder) {
-            ((ClassViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
-        }
-        else if (holder instanceof RecommendedItemViewHolder){
+            if (getItem(position) != null)
+                ((ClassViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
+
+        } else if (holder instanceof RecommendedItemViewHolder) {
             ((RecommendedItemViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
 
-        }
-        else if (holder instanceof LoaderViewHolder) {
+        } else if (holder instanceof LoaderViewHolder) {
             ((LoaderViewHolder) holder).bind(listLoader, adapterCallbacks);
             if (position == getItemCount() - 1 && !listLoader.isFinish()) {
                 adapterCallbacks.onShowLastItem();

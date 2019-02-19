@@ -152,7 +152,7 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
             textViewClassCategory.setText(model.getClassCategory());
             textViewClassDate.setText(DateUtils.getClassDate(model.getClassDate()));
 
-            textViewAvailable.setText(model.getAvailableSeat() + " "+
+            textViewAvailable.setText(model.getAvailableSeat() + " " +
                     AppConstants.plural(context.getString(R.string.available_seats), model.getAvailableSeat()));
 
             Helper.setJoinButton(context, buttonJoin, model);
@@ -161,16 +161,16 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
 
             textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
             textViewGender.setText(Helper.getClassGenderText(model.getClassType()));
-            if(model.getRating()!=0.0F&&model.getRating()>0){
+            if (model.getRating() != 0.0F && model.getRating() > 0) {
                 linearLayoutClassRating.setVisibility(View.VISIBLE);
-                textViewClassRating.setText(LanguageUtils.numberConverter(model.getRating())+"");
-            }else{
+                textViewClassRating.setText(LanguageUtils.numberConverter(model.getRating()) + "");
+            } else {
                 linearLayoutClassRating.setVisibility(View.GONE);
             }
-            if(model.getFitnessLevel()!=null && !model.getFitnessLevel().isEmpty()){
+            if (model.getFitnessLevel() != null && !model.getFitnessLevel().isEmpty()) {
                 layoutFitnessLevel.setVisibility(View.GONE);
 
-                switch (model.getFitnessLevel()){
+                switch (model.getFitnessLevel()) {
                     case AppConstants.FitnessLevel.CLASS_LEVEL_BASIC:
                         imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_get);
                         break;
@@ -188,7 +188,7 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
                 }
                 setTextFitnessLevel(model);
 //                textViewFitnessLevel.setText(WordUtils.capitalize(model.getFitnessLevel().toLowerCase()));
-            }else{
+            } else {
                 layoutFitnessLevel.setVisibility(View.GONE);
             }
 
@@ -237,8 +237,10 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
             itemView.setVisibility(View.GONE);
         }
     }
+
+
     private void setTextFitnessLevel(ClassModel model) {
-        String fitnessLevel = matchFitnessWord(model.getFitnessLevel(),context);
+        String fitnessLevel = matchFitnessWord(model.getFitnessLevel(), context);
         textViewFitnessLevel.setText(fitnessLevel);
     }
 }
