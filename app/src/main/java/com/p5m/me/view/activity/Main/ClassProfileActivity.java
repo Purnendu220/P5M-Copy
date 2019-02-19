@@ -27,6 +27,7 @@ import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.data.request.JoinClassRequest;
@@ -97,7 +98,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public TextView textViewBookWithFriend;
     @BindView(R.id.swipeRefreshLayout)
     public SwipeRefreshLayout swipeRefreshLayout;
-
+    private User user;
     public View imageViewOptions;
     private ClassProfileAdapter classProfileAdapter;
     private ClassModel classModel;
@@ -106,7 +107,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     private boolean isNavigationFromSharing;
     private int navigationFrom;
     ClassRatingUserData ratingData;
-    private boolean isBookWithFriendInProgress=false;
+    private boolean isBookWithFriendInProgress = false;
     private BookWithFriendData mBookWithFriendData;
 
     @Override
@@ -124,10 +125,11 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public void packagePurchasedForClass(Events.PackagePurchasedForClass data) {
         handleClassJoined(data.data);
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void bookwithFriend(Events.BookWithFriend data) {
-        isBookWithFriendInProgress=true;
-        mBookWithFriendData=data.friendData;
+        isBookWithFriendInProgress = true;
+        mBookWithFriendData = data.friendData;
         bookWithAFriend(data.friendData);
     }
 
@@ -146,7 +148,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 e.printStackTrace();
                 LogUtils.exception(e);
             }
-            Helper.setJoinStatusProfile(context, textViewBook,textViewBookWithFriend,classModel);
+            Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -182,17 +184,18 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(classProfileAdapter);
+        message = activity.getString(R.string.non_refundable_warning_msg);
 
         if (classModel != null) {
             classSessionId = classModel.getClassSessionId();
             classProfileAdapter.setClass(classModel);
             classProfileAdapter.notifyDataSetChanged();
 
-            Helper.setJoinStatusProfile(context, textViewBook,textViewBookWithFriend, classModel);
+            Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
         } else {
             layoutButton.setVisibility(View.VISIBLE);
         }
-
+        user = TempStorage.getUser();
         onRefresh();
 
         try {
@@ -222,8 +225,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
     @OnClick(R.id.textViewBook)
     public void textViewBook() {
-        isBookWithFriendInProgress=false;
-        mBookWithFriendData=null;
+        isBookWithFriendInProgress = false;
+        mBookWithFriendData = null;
         // Check if class is allowed for the gender..
         if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
                 && !Helper.isMalesAllowed(classModel)) {
@@ -231,7 +234,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             return;
         } else if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
                 && !Helper.isFemalesAllowed(classModel)) {
-            ToastUtils.show(context,  context.getString(R.string.gender_males_only_error));
+            ToastUtils.show(context, context.getString(R.string.gender_males_only_error));
             return;
         }
 
@@ -239,7 +242,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             if (Helper.isFreeClass(classModel))
                 joinClass();
             else {
-                CheckoutActivity.openActivity(context, classModel,1);
+                alertNonRefundMsg();
             }
             return;
         }
@@ -250,45 +253,64 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         networkCommunicator.getMyUser(new NetworkCommunicator.RequestListener() {
             @Override
             public void onApiSuccess(Object response, int requestCode) {
-                performJoinProcess();
-                Helper.setJoinStatusProfile(context, textViewBook,textViewBookWithFriend, classModel);
+//                performJoinProcess();
+                warningNonRefundablePopUp();
+                Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
             }
 
             @Override
             public void onApiFailure(String errorMessage, int requestCode) {
                 ToastUtils.show(context, errorMessage);
-                Helper.setJoinStatusProfile(context, textViewBook,textViewBookWithFriend, classModel);
+                Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
             }
         }, false);
+    }
+
+    public void warningNonRefundablePopUp() {
+        float cancelTime = 2;
+
+        if (Helper.isSpecialClass(classModel) && !Helper.isFreeClass(classModel)) {
+//            message = warningMsg;
+            alertNonRefundMsg();
+
+        } else if (DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime()) <= cancelTime) {
+//            message = warningMsg;
+            alertNonRefundMsg();
+        } else {
+            performJoinProcess();
+        }
+
+
     }
 
     @OnClick(R.id.textViewBookWithFriend)
     public void textViewBookWithFriend() {
 
-        BookForAFriendPopup mBookForAFriendPopup = new BookForAFriendPopup(this,classModel,navigationFrom);
+        BookForAFriendPopup mBookForAFriendPopup = new BookForAFriendPopup(this, classModel, navigationFrom);
         try {
             mBookForAFriendPopup.show();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-  /*  @OnClick(R.id.textViewBook)
-    public void clickBookButton() {
-        float cancelTime = 2;
-        String warningMsg=activity.getString(R.string.non_refundable_warning_msg);
-        if (Helper.isSpecialClass(classModel) && !Helper.isFreeClass(classModel)) {
-            message = warningMsg;
-            alertNonRefundMsg();
 
-        } else if (DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime()) <= cancelTime) {
-            message = warningMsg;
-            alertNonRefundMsg();
-        }
+    /*  @OnClick(R.id.textViewBook)
+      public void clickBookButton() {
+          float cancelTime = 2;
+          String warningMsg=activity.getString(R.string.non_refundable_warning_msg);
+          if (Helper.isSpecialClass(classModel) && !Helper.isFreeClass(classModel)) {
+              message = warningMsg;
+              alertNonRefundMsg();
+
+          } else if (DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime()) <= cancelTime) {
+              message = warningMsg;
+              alertNonRefundMsg();
+          }
 
 
 
-    }*/
-    private void alertNonRefundMsg(){
+      }*/
+    private void alertNonRefundMsg() {
         final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
                 .cancelable(false)
                 .customView(R.layout.dialog_unjoin_class, false)
@@ -313,13 +335,22 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         textViewUnJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                performJoinProcess();
-//                MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel,mBookWithFriendData,2);
+                materialDialog.dismiss();
+                if (Helper.isSpecialClass(classModel) &&
+                        !Helper.isFreeClass(classModel)
+                        ) {
 
-            }});
+                    CheckoutActivity.openActivity(context, classModel, 1);
+
+                } else {
+                    joinClass();
+
+                                   }
+            }
+        });
     }
 
-    public void bookWithAFriend(final BookWithFriendData data){
+    public void bookWithAFriend(final BookWithFriendData data) {
 
         // Check if class is allowed for the gender..
         if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
@@ -346,7 +377,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             if (Helper.isFreeClass(classModel))
                 joinClassWithFriend(data);
             else {
-                CheckoutActivity.openActivity(context, classModel,2,data);
+                CheckoutActivity.openActivity(context, classModel, 2, data);
             }
             return;
         }
@@ -357,14 +388,15 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         networkCommunicator.getMyUser(new NetworkCommunicator.RequestListener() {
             @Override
             public void onApiSuccess(Object response, int requestCode) {
+
                 performJoinProcessWithFriend(data);
-                Helper.setJoinStatusProfile(context, textViewBook,textViewBookWithFriend, classModel);
+                Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
             }
 
             @Override
             public void onApiFailure(String errorMessage, int requestCode) {
                 ToastUtils.show(context, errorMessage);
-                Helper.setJoinStatusProfile(context, textViewBook,textViewBookWithFriend, classModel);
+                Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
             }
         }, false);
     }
@@ -375,42 +407,41 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             joinClassWithFriend(dataFriend);
         } else {
             // 3rt condition : have no packages..
-           // MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
-            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel,mBookWithFriendData,2);
-
+            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, 2);
         }
     }
+
     private void joinClassWithFriend(BookWithFriendData data) {
-        List<BookWithFriendData> friendList=new ArrayList<>();
+        List<BookWithFriendData> friendList = new ArrayList<>();
         friendList.add(data);
         textViewBookWithFriend.setText(context.getResources().getString(R.string.please_wait));
         textViewBookWithFriend.setEnabled(false);
-        networkCommunicator.joinClass(new JoinClassRequest(TempStorage.getUser().getId(), classModel.getClassSessionId(),friendList), this, false);
+        networkCommunicator.joinClass(new JoinClassRequest(TempStorage.getUser().getId(), classModel.getClassSessionId(), friendList), this, false);
     }
 
     private void performJoinProcess() {
         boolean userHaveDropinForClass = false;
         boolean userHaveExpiredDropinForClass = false;
-        boolean userHaveExpiredGeneralPackageForClass=false;
+        boolean userHaveExpiredGeneralPackageForClass = false;
 
 
-        boolean userHaveGeneralPackageForClass=false;
-        ArrayList<Integer> list=new ArrayList<>();
+        boolean userHaveGeneralPackageForClass = false;
+        ArrayList<Integer> list = new ArrayList<>();
         UserPackageInfo userPackageInfo = new UserPackageInfo(TempStorage.getUser());
 
         if (userPackageInfo.havePackages) {
 
             // 1st condition : have drop-in for class..
             if (userPackageInfo.haveDropInPackage && classModel.getGymBranchDetail() != null) {
-                 userHaveDropinForClass=false;
+                userHaveDropinForClass = false;
                 for (UserPackage userPackage : userPackageInfo.userPackageReady) {
-                    if ((userPackage.getGymId() == classModel.getGymBranchDetail().getGymId())&&(userPackage.getExpiryDate()==null || DateUtils.canJoinClass(classModel.getClassDate(), userPackage.getExpiryDate()) >= 0)) {
-                        userHaveDropinForClass=true;
+                    if ((userPackage.getGymId() == classModel.getGymBranchDetail().getGymId()) && (userPackage.getExpiryDate() == null || DateUtils.canJoinClass(classModel.getClassDate(), userPackage.getExpiryDate()) >= 0)) {
+                        userHaveDropinForClass = true;
                         list.add(userPackage.getGymId());
-                        }
-                    if ((userPackage.getGymId() == classModel.getGymBranchDetail().getGymId())&&(userPackage.getExpiryDate()!=null && DateUtils.canJoinClass(classModel.getClassDate(), userPackage.getExpiryDate()) < 0)) {
-                            userHaveExpiredDropinForClass=true;
-                        }
+                    }
+                    if ((userPackage.getGymId() == classModel.getGymBranchDetail().getGymId()) && (userPackage.getExpiryDate() != null && DateUtils.canJoinClass(classModel.getClassDate(), userPackage.getExpiryDate()) < 0)) {
+                        userHaveExpiredDropinForClass = true;
+                    }
                 }
 
             }
@@ -418,46 +449,44 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             if (userPackageInfo.haveGeneralPackage) {
                 if (userPackageInfo.userPackageGeneral != null) {
 
-                    if (userPackageInfo.userPackageGeneral.getBalanceClass() == 0&&!userHaveDropinForClass) {
+                    if (userPackageInfo.userPackageGeneral.getBalanceClass() == 0 && !userHaveDropinForClass) {
                         MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
                         return;
                     }
 
                     if (DateUtils.canJoinClass(classModel.getClassDate(), userPackageInfo.userPackageGeneral.getExpiryDate()) >= 0) {
-                        userHaveGeneralPackageForClass=true;
+                        userHaveGeneralPackageForClass = true;
 
                     }
                     if (DateUtils.canJoinClass(classModel.getClassDate(), userPackageInfo.userPackageGeneral.getExpiryDate()) < 0) {
-                        userHaveExpiredGeneralPackageForClass=true;
+                        userHaveExpiredGeneralPackageForClass = true;
 
                     }
 
                 }
             }
-            try{
-                if(userHaveDropinForClass||userHaveGeneralPackageForClass){
+            try {
+                if (userHaveDropinForClass || userHaveGeneralPackageForClass) {
                     joinClass();
                     return;
-                }
-                else {
-                 if(userHaveExpiredGeneralPackageForClass){
-                     DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), getString(R.string.purchase), new MaterialDialog.SingleButtonCallback() {
-                         @Override
-                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                             dialog.dismiss();
-                             MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
-                         }
-                     });
-                     return;
-                 }else{
-                     joinClass();
-                     return;
-                 }
+                } else {
+                    if (userHaveExpiredGeneralPackageForClass) {
+                        DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), getString(R.string.purchase), new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                dialog.dismiss();
+                                MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+                            }
+                        });
+                        return;
+                    } else {
+                        joinClass();
+                        return;
+                    }
 
                 }
 
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 joinClass();
                 return;
@@ -503,7 +532,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         switch (view.getId()) {
             case R.id.imageViewClass:
                 if (classModel.getClassMedia() != null) {
-                    Helper.openImageViewer(context, activity, view, classModel.getClassMedia().getMediaUrl(),AppConstants.ImageViewHolderType.CLASS_IMAGE_HOLDER);
+                    Helper.openImageViewer(context, activity, view, classModel.getClassMedia().getMediaUrl(), AppConstants.ImageViewHolderType.CLASS_IMAGE_HOLDER);
                 }
                 break;
             case R.id.layoutTrainer:
@@ -581,13 +610,13 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
                 classModel.setUserJoinStatus(true);
 
-                Helper.setJoinStatusProfile(context, textViewBook,textViewBookWithFriend, classModel);
+                Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
                 MixPanel.trackJoinClass(navigationFrom, classModel);
                 if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
-                    DialogUtils.showBasicMessage(context,"",
-                            context.getString(R.string.successfully_joined)+" " + classModel.getTitle()
-                          ,context.getResources().getString(R.string.invite_friends), new MaterialDialog.SingleButtonCallback() {
+                    DialogUtils.showBasicMessage(context, "",
+                            context.getString(R.string.successfully_joined) + " " + classModel.getTitle()
+                            , context.getResources().getString(R.string.invite_friends), new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();
@@ -595,7 +624,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                                     finish();
 
                                 }
-                            },  context.getResources().getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
+                            }, context.getResources().getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();
@@ -610,11 +639,11 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 swipeRefreshLayout.setRefreshing(false);
                 swipeRefreshLayout.setEnabled(false);
                 classModel = ((ResponseModel<ClassModel>) response).data;
-                Helper.setJoinStatusProfile(context, textViewBook,textViewBookWithFriend, classModel);
+                Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
-                if(classModel.getAvailableSeat()<2){
+                if (classModel.getAvailableSeat() < 2) {
 
-                }else{
+                } else {
 
                 }
                 if (classModel != null) {
@@ -624,7 +653,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 }
 //                layoutButton.setVisibility(View.VISIBLE);
                 if (Helper.isSpecialClass(classModel)) {
-                    if (Helper.isFreeClass(classModel)){
+                    if (Helper.isFreeClass(classModel)) {
                         textViewBookWithFriend.setVisibility(View.GONE);
                     }
 
@@ -632,13 +661,36 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
                 break;
             case NetworkCommunicator.RequestCode.CLASS_RATING_LIST:
-                 ratingData=((ResponseModel<ClassRatingUserData>) response).data;
-                if(classModel!=null&&ratingData.getCount()>0){
+                ratingData = ((ResponseModel<ClassRatingUserData>) response).data;
+                if (classModel != null && ratingData.getCount() > 0) {
                     classModel.setNumberOfRating(ratingData.getCount());
                     classProfileAdapter.setClass(classModel);
                     classProfileAdapter.notifyDataSetChanged();
                 }
 
+                break;
+
+            case NetworkCommunicator.RequestCode.PACKAGES_FOR_USER:
+                List<Package> packagesTemp = ((ResponseModel<List<Package>>) response).data;
+                if (packagesTemp != null && !packagesTemp.isEmpty()) {
+                    List<Package> packages = new ArrayList<>(packagesTemp.size());
+
+                    for (Package aPackage : packagesTemp) {
+                       if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
+                            aPackage.setGymName(classModel.getGymBranchDetail().getGymName());
+                            packages.add(aPackage);
+                        }
+                    }
+                    Package aPackage = packages.get(0);
+                    if (mBookWithFriendData != null) {
+                        CheckoutActivity.openActivity(context, aPackage, classModel, aPackage.getNoOfClass(), mBookWithFriendData);
+
+                    } else {
+                        CheckoutActivity.openActivity(context, aPackage, classModel, 1, mBookWithFriendData);
+
+                    }
+
+                }
                 break;
 
         }
@@ -650,93 +702,87 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             case NetworkCommunicator.RequestCode.JOIN_CLASS:
                 if (errorMessage.equals("498")) {
                     if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
-                        final User errorResponse=MyPreferences.getInstance().getPaymentErrorResponse();
+                        final User errorResponse = MyPreferences.getInstance().getPaymentErrorResponse();
 
                         String message;
-                        if(isBookWithFriendInProgress&&mBookWithFriendData!=null){
-                            if(errorResponse.getReadyPckSize()==1){
-                                message=String.format(mContext.getString(R.string.join_fail_limit_exhaust_booking_with_friend));
+                        if (isBookWithFriendInProgress && mBookWithFriendData != null) {
+                            if (errorResponse.getReadyPckSize() == 1) {
+                                message = String.format(mContext.getString(R.string.join_fail_limit_exhaust_booking_with_friend));
 
-                            }else{
-                                message=String.format(mContext.getString(R.string.join_fail_limit_exhaust_booking_with_friend_two_ready),errorResponse.getReadyPckSize());
+                            } else {
+                                message = String.format(mContext.getString(R.string.join_fail_limit_exhaust_booking_with_friend_two_ready), errorResponse.getReadyPckSize());
 
                             }
-                        }else{
-                            message=getString(R.string.join_fail_limit_exhaust);
+                        } else {
+                            message = getString(R.string.join_fail_limit_exhaust);
                         }
-                        DialogUtils.showBasic(context,message, getString(R.string.purchase), new MaterialDialog.SingleButtonCallback() {
+                        DialogUtils.showBasic(context, message, getString(R.string.purchase), new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 dialog.dismiss();
-                                if(isBookWithFriendInProgress&&mBookWithFriendData!=null){
-                                    //MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
-                                    if(errorResponse!=null){
-                                        MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel,mBookWithFriendData,errorResponse.getReadyPckSize());
-
-                                    }else{
+                                if (isBookWithFriendInProgress && mBookWithFriendData != null) {
+                                    if (errorResponse != null) {
+                                        callPackageListApi(errorResponse.getReadyPckSize());
+                                    } else {
                                         ToastUtils.showLong(context, errorMessage);
 
                                     }
 
-                                }else{
-                                    MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
-
+                                } else {
+                                    callPackageListApi(1);
                                 }
                             }
                         });
                     }
 
-                }
-               else if(errorMessage.equals("405")){
+                } else if (errorMessage.equals("405")) {
                     if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
                         DialogUtils.showBasic(context, getString(R.string.join_share_limit_exhaust), getString(R.string.purchase), new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 dialog.dismiss();
-                                if(isBookWithFriendInProgress&&mBookWithFriendData!=null){
-                                    User errorResponse=MyPreferences.getInstance().getPaymentErrorResponse();
-                                    //MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
-                                    if(errorResponse!=null){
-                                        MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel,mBookWithFriendData,errorResponse.getReadyPckSize());
-
-                                    }else{
+                                if (isBookWithFriendInProgress && mBookWithFriendData != null) {
+                                    User errorResponse = MyPreferences.getInstance().getPaymentErrorResponse();
+                                    if (errorResponse != null) {
+                                        callPackageListApi(errorResponse.getReadyPckSize());
+                                    } else {
                                         ToastUtils.showLong(context, errorMessage);
 
                                     }
 
 
-                                }else{
-                                    MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
-
+                                } else {
+                                    callPackageListApi(1);
                                 }
                             }
                         });
                     }
 
-                }
-
-                else if (errorMessage.equals("402")) {
-                    if(isBookWithFriendInProgress&&mBookWithFriendData!=null){
+                } else if (errorMessage.equals("402")) {
+                    if(isBookWithFriendInProgress && mBookWithFriendData!=null){
                         final User errorResponse=MyPreferences.getInstance().getPaymentErrorResponse();
                         if(checkIfUserHaveExpiredPackage()){
-                                DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), getString(R.string.purchase), new MaterialDialog.SingleButtonCallback() {
-                                    @Override
-                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                        dialog.dismiss();
-                                        if(errorResponse!=null){
-                                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel,mBookWithFriendData,errorResponse.getReadyPckSize());
+                            DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), getString(R.string.purchase), new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    dialog.dismiss();
+                                    if(errorResponse!=null){
+                                            callPackageListApi(errorResponse.getReadyPckSize());
+                                    }else{
+                                        ToastUtils.showLong(context, errorMessage);
 
-                                        }else{
-                                            ToastUtils.showLong(context, errorMessage);
-
-                                        }                                    }
-                                });
+                                    } }
+                            });
 
                         }else{
-                            if(errorResponse!=null){
+                            if(errorResponse!=null&&errorResponse.getReadyPckSize()==1){
+                                callPackageListApi(errorResponse.getReadyPckSize());
+                            }
+                            else if(errorResponse!=null&&errorResponse.getReadyPckSize()>1){
                                 MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel,mBookWithFriendData,errorResponse.getReadyPckSize());
 
-                            }else{
+                            }
+                            else{
                                 ToastUtils.showLong(context, errorMessage);
 
                             }
@@ -744,7 +790,12 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
 
                     }else{
-                        MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+                        if(checkIfUserHaveExpiredPackage()){
+                            callPackageListApi(1);
+                        }else{
+                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+
+                        }
 
                     }
 
@@ -754,7 +805,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     ToastUtils.showLong(context, errorMessage);
                 }
 
-                Helper.setJoinStatusProfile(context, textViewBook,textViewBookWithFriend, classModel);
+                Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
                 break;
             case NetworkCommunicator.RequestCode.CLASS_DETAIL:
@@ -771,28 +822,46 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 }
 
                 break;
+            case NetworkCommunicator.RequestCode.PACKAGES_FOR_USER:
+                break;
         }
     }
 
-    private boolean checkIfUserHaveExpiredPackage(){
+    private void callPackageListApi(Integer readyPckSize) {
+            if (mBookWithFriendData != null) {
+                networkCommunicator.getPackagesForClass(user.getId(), classModel.getGymBranchDetail().getGymId(), classModel.getClassSessionId(),Integer.parseInt( readyPckSize.toString()), this, false);
+
+            } else {
+                networkCommunicator.getPackagesForClass(user.getId(), classModel.getGymBranchDetail().getGymId(), classModel.getClassSessionId(), Integer.parseInt( readyPckSize.toString()), this, false);
+            }
+
+//        else
+//        {
+//            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, 2);
+//
+//        }
+    }
+
+
+    private boolean checkIfUserHaveExpiredPackage() {
         boolean userHaveDropinForClass = false;
         boolean userHaveExpiredDropinForClass = false;
-        boolean userHaveExpiredGeneralPackageForClass=false;
+        boolean userHaveExpiredGeneralPackageForClass = false;
 
 
-        boolean userHaveGeneralPackageForClass=false;
-        ArrayList<Integer> list=new ArrayList<>();
+        boolean userHaveGeneralPackageForClass = false;
+        ArrayList<Integer> list = new ArrayList<>();
         UserPackageInfo userPackageInfo = new UserPackageInfo(TempStorage.getUser());
 
         if (userPackageInfo.haveDropInPackage && classModel.getGymBranchDetail() != null) {
-            userHaveDropinForClass=false;
+            userHaveDropinForClass = false;
             for (UserPackage userPackage : userPackageInfo.userPackageReady) {
-                if ((userPackage.getGymId() == classModel.getGymBranchDetail().getGymId())&&(userPackage.getExpiryDate()==null || DateUtils.canJoinClass(classModel.getClassDate(), userPackage.getExpiryDate()) >= 0)) {
-                    userHaveDropinForClass=true;
+                if ((userPackage.getGymId() == classModel.getGymBranchDetail().getGymId()) && (userPackage.getExpiryDate() == null || DateUtils.canJoinClass(classModel.getClassDate(), userPackage.getExpiryDate()) >= 0)) {
+                    userHaveDropinForClass = true;
                     list.add(userPackage.getGymId());
                 }
-                if ((userPackage.getGymId() == classModel.getGymBranchDetail().getGymId())&&(userPackage.getExpiryDate()!=null && DateUtils.canJoinClass(classModel.getClassDate(), userPackage.getExpiryDate()) < 0)) {
-                    userHaveExpiredDropinForClass=true;
+                if ((userPackage.getGymId() == classModel.getGymBranchDetail().getGymId()) && (userPackage.getExpiryDate() != null && DateUtils.canJoinClass(classModel.getClassDate(), userPackage.getExpiryDate()) < 0)) {
+                    userHaveExpiredDropinForClass = true;
                 }
             }
 
@@ -800,25 +869,26 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         if (userPackageInfo.haveGeneralPackage) {
             if (userPackageInfo.userPackageGeneral != null) {
                 if (DateUtils.canJoinClass(classModel.getClassDate(), userPackageInfo.userPackageGeneral.getExpiryDate()) >= 0) {
-                    userHaveGeneralPackageForClass=true;
+                    userHaveGeneralPackageForClass = true;
 
                 }
                 if (userPackageInfo.userPackageGeneral.getBalanceClass() > 0 && DateUtils.canJoinClass(classModel.getClassDate(), userPackageInfo.userPackageGeneral.getExpiryDate()) < 0) {
-                    userHaveExpiredGeneralPackageForClass=true;
+                    userHaveExpiredGeneralPackageForClass = true;
 
                 }
 
             }
         }
         return userHaveExpiredGeneralPackageForClass;
-        }
+    }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
-    private void getCountRating(){
-        networkCommunicator.getClassRatingList(classModel.getClassId(),page,PAGE_LIMIT_MAIN_CLASS_LIST,this,false);
+
+    private void getCountRating() {
+        networkCommunicator.getClassRatingList(classModel.getClassId(), page, PAGE_LIMIT_MAIN_CLASS_LIST, this, false);
 
     }
 

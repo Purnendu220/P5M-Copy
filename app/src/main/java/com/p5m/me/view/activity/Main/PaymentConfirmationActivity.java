@@ -1,13 +1,16 @@
 package com.p5m.me.view.activity.Main;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.CalendarContract;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -28,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
@@ -41,7 +45,9 @@ import com.p5m.me.fxn.utility.Constants;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.CalendarHelper;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LanguageUtils;
@@ -49,8 +55,11 @@ import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,6 +79,8 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
     private Runnable nextScreenRunnable;
     private Handler handler;
     private String referenceNo;
+    private Hashtable<String, String> calendarIdTable;
+    private int calendar_id = -1;
 
     public static void openActivity(Context context, int navigationFrom, String refId,
                                     Package aPackage, ClassModel classModel,
@@ -291,7 +302,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                     break;
                 case FAILURE:
                     if (Constants.LANGUAGE == Locale.ENGLISH)
-                        textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.failed_package_extension_en), "<b>" + getPurchasedPackageName()+ "</b>")));
+                        textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.failed_package_extension_en), "<b>" + getPurchasedPackageName() + "</b>")));
                     else
                         textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.failed_package_extension_ar), "<b>" + getPurchasedPackageName() + "</b>")));
 
@@ -300,8 +311,6 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 
         }
     }
-
-
 
 
     private void setPendingBookingTitle() {
@@ -314,7 +323,6 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         }
         setExtendedText();
     }
-
 
 
     public String getPurchasedPackageName() {
@@ -455,6 +463,8 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         switch (paymentStatus) {
             case SUCCESS:
                 setConfirmBookingStyle();
+//                TODO CALENDER
+//                bookEvent();
                 setStyle();
                 break;
             case FAILURE:
@@ -472,15 +482,93 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         }
     }
 
-    private void sendAutoJoinEvent() {
-        nextScreenRunnable = new Runnable() {
-            @Override
-            public void run() {
-                EventBroadcastHelper.classAutoJoin(context, classModel);
-            }
-        };
+    private void bookEvent() {
+        if (CalendarHelper.haveCalendarReadWritePermissions(PaymentConfirmationActivity.this)) {
+            addNewEvent();
+        } else {
+            CalendarHelper.requestCalendarReadWritePermission(PaymentConfirmationActivity.this);
+        }
+        if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
+            //Load calendars
+            calendarIdTable = CalendarHelper.listCalendarId(this);
 
-        handler.postDelayed(nextScreenRunnable, 1000);
+
+        }
+    }
+
+    private void addNewEvent() {
+        if (calendarIdTable == null) {
+            //Load calendars
+            calendarIdTable = CalendarHelper.listCalendarId(this);
+//            return;
+        }
+//        String calendarString = calendarIdSpinner.getSelectedItem().toString();
+        String calendarString = TempStorage.getUser().getEmail();
+        if(calendarIdTable.keySet().contains(calendarString)) {
+            calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
+        }
+        else {
+            calendarString = "Local calendar";
+            calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
+
+        }
+        final long oneHour = 1000 * 60 * 60;
+        final long tenMinutes = 1000 * 60 * 2;
+
+//        calendar_id=getCalenderId();
+        long oneHourFromNow = (new Date()).getTime() + oneHour;
+        long eventStartTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getFromTime());
+//        long oneHourFromNow = (new Date()).getTime() + eventStartTime;
+//        long tenMinutesFromNow = eventStartTime;
+        long tenMinutesFromNow = (new Date()).getTime() + tenMinutes;
+
+
+            CalendarHelper.MakeNewCalendarEntry(this, classModel.getTitle(), "Your Class is schedule at " + DateUtils.getClassTime(paymentResponse.getClassDetailDto().getFromTime(), paymentResponse.getClassDetailDto().getToTime()), "Somewhere", tenMinutesFromNow,tenMinutesFromNow+oneHour, false, true, calendar_id, 3);
+    }
+
+    private int getCalenderId() {
+        int calenderId = -1;
+        if(calendarIdTable.contains("guman.urvashi@gmail.com")) {
+            String calenderEmaillAddress = "info@p5m.me";
+            String[] projection = new String[]{
+                    CalendarContract.Calendars._ID,
+                    CalendarContract.Calendars.ACCOUNT_NAME};
+            ContentResolver cr = getContentResolver();
+            Cursor cursor = cr.query(Uri.parse("content://com.android.calendar/calendars"), projection,
+                    CalendarContract.Calendars.ACCOUNT_NAME + "=? and (" +
+                            CalendarContract.Calendars.NAME + "=? or " +
+                            CalendarContract.Calendars.CALENDAR_DISPLAY_NAME + "=?)",
+                    new String[]{calenderEmaillAddress, calenderEmaillAddress,
+                            calenderEmaillAddress}, null);
+
+            if (cursor.moveToFirst()) {
+
+                if (cursor.getString(1).equals(calenderEmaillAddress))
+                    calenderId = cursor.getInt(0); //you're calender id to be insered in above your cod
+            }
+
+
+        }
+        else
+        {
+            String calendarString = "Local calendar";
+            calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
+
+        }
+        return calenderId;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+
+        if (requestCode == CalendarHelper.CALENDARHELPER_PERMISSION_REQUEST_CODE) {
+            if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
+                addNewEvent();
+            }
+
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private void buttonHandler() {
@@ -581,10 +669,10 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         }
         if (!TextUtils.isEmpty(paymentResponse.getReferenceId())) {
             String data = String.valueOf(LanguageUtils.numberConverter(Double.parseDouble(paymentResponse.getReferenceId())));
-            if(Locale.ENGLISH==Constants.LANGUAGE)
-                referenceNo= data.replace(",","");
+            if (Locale.ENGLISH == Constants.LANGUAGE)
+                referenceNo = data.replace(",", "");
             else
-                referenceNo= data.replace("٬","");
+                referenceNo = data.replace("٬", "");
             String paymentReference = PAYMENT_REFERENCE + " " + '#' + referenceNo;
 
             SpannableString spanBoldReferenceID = boldString(paymentReference, PAYMENT_REFERENCE.length(), paymentReference.length());

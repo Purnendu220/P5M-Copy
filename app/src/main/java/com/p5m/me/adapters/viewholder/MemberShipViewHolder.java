@@ -64,9 +64,9 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
     public LinearLayout linearLayoutOffer;
     @BindView(R.id.textViewOffer)
     public TextView textViewOffer;
-@BindView(R.id.textViewOr)
+    @BindView(R.id.textViewOr)
     public TextView textViewOr;
-@BindView(R.id.viewOr)
+    @BindView(R.id.viewOr)
     public View viewOr;
 
     @BindView(R.id.textViewPackagePriceStrike)
@@ -128,7 +128,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                 if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
                     textViewPackageName.setText(model.getPackageName());
 
-                    textViewPageTitle.setText(LanguageUtils.numberConverter(model.getBalanceClass())+" " + AppConstants.pluralES(context.getString(R.string.classs), model.getBalanceClass()) + " " + context.getString(R.string.remaining));
+                    textViewPageTitle.setText(LanguageUtils.numberConverter(model.getBalanceClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs), model.getBalanceClass()) + " " + context.getString(R.string.remaining));
 
                     textViewPackageValidity.setText(context.getString(R.string.valid_till) + " " + DateUtils.getPackageClassDate(model.getExpiryDate()));
 
@@ -149,10 +149,10 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     LanguageUtils.setText(textViewPageTitle, model.getBalanceClass(), " " + context.getString(R.string.class_remaining_for) + " " + model.getGymName());
 
                     textViewPackageValidity.setText(context.getString(R.string.valid_till) + " " + DateUtils.getPackageClassDate(model.getExpiryDate()));
-                     if(model.getExpiryDate()==null || model.getExpiryDate().trim().length()==0){
-                         textViewPackageValidity.setVisibility(View.GONE);
-                         textViewExtendPackage.setVisibility(View.GONE);
-                     }
+                    if (model.getExpiryDate() == null || model.getExpiryDate().trim().length() == 0) {
+                        textViewPackageValidity.setVisibility(View.GONE);
+                        textViewExtendPackage.setVisibility(View.GONE);
+                    }
                     textViewViewLimit.setVisibility(View.GONE);
                     imageViewInfo.setVisibility(View.VISIBLE);
                 }
@@ -169,7 +169,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
 
                         textViewPackageName.setText(model.getName());
-                        textViewPageTitle.setText(numberConverter(model.getNoOfClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass())+" "+context.getString(R.string.at_any_gym));
+                        textViewPageTitle.setText(numberConverter(model.getNoOfClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass()) + " " + context.getString(R.string.at_any_gym));
 //                        LanguageUtils.setText(textViewPageTitle,model.getNoOfClass()," " + AppConstants.pluralES(context.getString(R.string.classs)
 //                                , model.getNoOfClass())+" "+context.getString(R.string.at_any_gym));
                       /*  validityPeriod = Helper.capitalize(validityPeriod);
@@ -179,7 +179,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                             validityPeriod = validityPeriod.substring(0, validityPeriod.length() - 1);
                         }*/
 
-                       setTextValidityPeriod(model);
+                        setTextValidityPeriod(model);
                         textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getCost()) + " " + context.getString(R.string.currency).toUpperCase());
 
                         textViewViewLimit.setVisibility(View.VISIBLE);
@@ -215,18 +215,17 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                         viewOr.setVisibility(View.VISIBLE);
                         textViewPackageName.setText(model.getName());
                         if (model.isBookingWithFriend() && model.getNoOfClass() == 1) {
-                            textViewPageTitle.setText(model.getNoOfClass() +" "+ AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass()) + " for friend");
-                        }
-                        else {
-                            textViewPageTitle.setText(LanguageUtils.numberConverter(model.getNoOfClass()) +" " +AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass()) + " " + context.getString(R.string.at_any_gym));
+                            textViewPageTitle.setText(model.getNoOfClass() + " " + AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass()) + " for friend");
+                        } else {
+                            textViewPageTitle.setText(LanguageUtils.numberConverter(model.getNoOfClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass()) + " " + context.getString(R.string.at_any_gym));
 
                         }
                         if (model.getNoOfClass() == 1) {
 //                            worldWideSetText(textViewPageTitle,context.getString(R.string.class_one_at), model.getGymName());
 //
-                            textViewPageTitle.setText(context.getString(R.string.class_one_at)+" "+ model.getGymName() );
+                            textViewPageTitle.setText(context.getString(R.string.class_one_at) + " " + model.getGymName());
                         } else
-                            textViewPageTitle.setText(LanguageUtils.numberConverter(model.getNoOfClass()) +" "+ AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass()) + " "+context.getString(R.string.at)+" " + model.getGymName());
+                            textViewPageTitle.setText(LanguageUtils.numberConverter(model.getNoOfClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass()) + " " + context.getString(R.string.at) + " " + model.getGymName());
 
                         textViewPackageValidity.setText(context.getString(R.string.valid_for) + " " + DateUtils.getPackageClassDate(classModel.getClassDate()) + " -" + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()));
                         textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getCost()) + " " + context.getString(R.string.currency).toUpperCase());
@@ -277,11 +276,11 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void setTextValidityPeriod(Package model) {
-        if(model.getValidityPeriod().contains("MONTH"))
+        if (model.getValidityPeriod().contains("MONTH"))
 //         textViewPackageValidity.setText(context.getString(R.string.valid_for) + " " + numberConverter(model.getDuration()) + " " + AppConstants.plural(validityPeriod, model.getDuration()));
-        textViewPackageValidity.setText( String.format(context.getResources().getString(R.string.valid_for_months), model.getDuration()));
+            textViewPackageValidity.setText(String.format(context.getResources().getString(R.string.valid_for_months), model.getDuration()));
         else if (model.getValidityPeriod().contains("WEEK"))
-            textViewPackageValidity.setText( String.format(context.getResources().getString(R.string.valid_for_weeks), model.getDuration()));
+            textViewPackageValidity.setText(String.format(context.getResources().getString(R.string.valid_for_weeks), model.getDuration()));
 
     }
 
@@ -296,12 +295,10 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
         }
         try {
-            if(Math.round(model.getPromoResponseDto().getDiscount())==0)
-            {
+            if (Math.round(model.getPromoResponseDto().getDiscount()) == 0) {
                 textViewPackagePriceStrike.setVisibility(View.GONE);
                 linearLayoutOffer.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 linearLayoutOffer.setVisibility(View.VISIBLE);
                 textViewOffer.setText(currencyConverter(Math.round(model.getPromoResponseDto().getDiscount())) + offerText);
             }
