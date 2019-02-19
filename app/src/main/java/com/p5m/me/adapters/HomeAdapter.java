@@ -20,6 +20,16 @@ public class HomeAdapter extends FragmentStatePagerAdapter {
     private int tabsCount;
     private int myProfileTabPosition=ProfileHeaderTabViewHolder.TAB_1;
 
+    public HomeAdapter(FragmentManager fm, int tabsCount,int myProfileTabPosition) {
+        super(fm);
+        this.tabsCount = tabsCount;
+        this.myProfileTabPosition =myProfileTabPosition;
+        fragments = new ArrayList<>(tabsCount);
+
+        for (int index = 0; index < tabsCount; index++) {
+            fragments.add(null);
+        }
+    }
     public HomeAdapter(FragmentManager fm, int tabsCount) {
         super(fm);
         this.tabsCount = tabsCount;
