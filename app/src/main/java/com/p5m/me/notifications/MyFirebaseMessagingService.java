@@ -12,7 +12,9 @@ import android.support.v4.app.TaskStackBuilder;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.p5m.me.BuildConfig;
 import com.p5m.me.R;
+import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.ratemanager.RateAlarmReceiver;
@@ -22,9 +24,14 @@ import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.Main.ClassProfileActivity;
+import com.p5m.me.view.activity.Main.EditProfileActivity;
+import com.p5m.me.view.activity.Main.GymProfileActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.Main.MemberShip;
+import com.p5m.me.view.activity.Main.NotificationActivity;
+import com.p5m.me.view.activity.Main.SettingActivity;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
+import com.p5m.me.view.activity.Main.TransactionHistoryActivity;
 
 import org.json.JSONObject;
 
@@ -400,6 +407,20 @@ e.printStackTrace();
                 case "onMappedTrainerToGym":
                     /////////////////////////////////////////////////////
                     break;
+                case "CMS":
+                    String url = jsonObject.optString(AppConstants.Notification.URL);
+                    if(url!=null){
+                        navigationIntent =   handleNotificationDeeplinking(url);
+
+                    }
+                    else{
+                        navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
+
+                    }
+
+
+
+                    break;
 
                 //******************** UNUSED **************************//
 //                case "OnClassApprovalToTrainer":
@@ -474,6 +495,135 @@ e.printStackTrace();
             notificationManager.notify((int) (System.currentTimeMillis() - 10000000), notification);
 
         }
+    }
+
+    private Intent handleNotificationDeeplinking(String url){
+        Intent navigationIntent;
+
+        try {
+            if(url.contains(BuildConfig.BASE_URL+"/classes/") || url.contains(BuildConfig.BASE_URL+"/share/classes/") ||url.contains(BuildConfig.BASE_URL_HTTPS+"/classes/") || url.contains(BuildConfig.BASE_URL_HTTPS+"/share/classes/")){
+                String classId = null;
+                String[] stringlist=url.split("/classes/");
+                if(stringlist!=null && stringlist.length>1){
+                    classId = stringlist[1].split("/")[0];
+                }
+                try{
+                    navigationIntent = ClassProfileActivity.createIntent(context,Integer.parseInt(classId),AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
+
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                    navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
+
+                }
+
+            }
+            else if(url.contains(BuildConfig.BASE_URL+"/share/gym/") ||url.contains(BuildConfig.BASE_URL+"/gym/")||url.contains(BuildConfig.BASE_URL_HTTPS+"/share/gym/") ||url.contains(BuildConfig.BASE_URL_HTTPS+"/gym/") ){
+                String gymId = null;
+                String[] stringlist=url.split("/gym/");
+                if(stringlist!=null && stringlist.length>1){
+                    gymId = stringlist[1].split("/")[0];
+                }
+                try{
+                    navigationIntent = GymProfileActivity.createIntent(context,Integer.parseInt(gymId),AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
+
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                    navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
+
+                }
+
+            }
+            else if(url.contains(BuildConfig.BASE_URL+"/share/trainer/") ||url.contains(BuildConfig.BASE_URL+"/trainer/")||url.contains(BuildConfig.BASE_URL_HTTPS+"/share/trainer/") ||url.contains(BuildConfig.BASE_URL_HTTPS+"/trainer/") ){
+                String trainerId = null;
+                String[] stringlist=url.split("/trainer/");
+                if(stringlist!=null && stringlist.length>1){
+                    trainerId = stringlist[1].split("/")[0];
+                }
+                try{
+                    navigationIntent = TrainerProfileActivity.createIntent(context,Integer.parseInt(trainerId),AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
+
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                    navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
+
+                }
+            }
+            else if(url.contains(BuildConfig.BASE_URL+"/classes")||url.contains(BuildConfig.BASE_URL_HTTPS+"/classes")){
+                navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
+
+
+
+            }
+            else if(url.contains(BuildConfig.BASE_URL+"/trainers")||url.contains(BuildConfig.BASE_URL_HTTPS+"/trainers")){
+                navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_TRAINER, 0);
+
+
+            }
+            else if(url.contains(BuildConfig.BASE_URL+"/userschedule")||url.contains(BuildConfig.BASE_URL_HTTPS+"/userschedule")){
+                navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, 0);
+
+
+            }
+            else if(url.contains(BuildConfig.BASE_URL+"/profile?type=favTrainer")||url.contains(BuildConfig.BASE_URL_HTTPS+"/profile?type=favTrainer")){
+                navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_MY_PROFILE, 0, ProfileHeaderTabViewHolder.TAB_1);
+
+
+            }
+            else if(url.contains(BuildConfig.BASE_URL+"/profile?type=finishedClasses")||url.contains(BuildConfig.BASE_URL_HTTPS+"/profile?type=finishedClasses")){
+                navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_MY_PROFILE, 0,ProfileHeaderTabViewHolder.TAB_2);
+
+
+            }
+            else if(url.contains(BuildConfig.BASE_URL+"/profile")||url.contains(BuildConfig.BASE_URL_HTTPS+"/profile")){
+                navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_MY_PROFILE, 0);
+
+
+            }
+            else if(url.contains(BuildConfig.BASE_URL+"/editprofile")||url.contains(BuildConfig.BASE_URL_HTTPS+"/editprofile")){
+                navigationIntent = EditProfileActivity.createIntent(context);
+
+
+            }
+            else if(url.contains(BuildConfig.BASE_URL+"/settings/membership")||url.contains(BuildConfig.BASE_URL_HTTPS+"/settings/membership")){
+                navigationIntent = MemberShip.createIntent(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
+
+
+            }
+            else if(url.contains(BuildConfig.BASE_URL+"/settings/transaction")||url.contains(BuildConfig.BASE_URL_HTTPS+"/settings/transaction")){
+                navigationIntent = TransactionHistoryActivity.createIntent(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
+
+
+            }
+            else if(url.contains(BuildConfig.BASE_URL+"/settings/notification")||url.contains(BuildConfig.BASE_URL_HTTPS+"/settings/notification")){
+                navigationIntent = NotificationActivity.createIntent(context);
+
+            }
+            else if(url.contains(BuildConfig.BASE_URL+"/settings/aboutus")||url.contains(BuildConfig.BASE_URL_HTTPS+"/settings/aboutus")){
+                navigationIntent = SettingActivity.createIntent(context, AppConstants.Tab.OPEN_ABOUT_US);
+
+            }
+            else if(url.contains(BuildConfig.BASE_URL+"/notifications")||url.contains(BuildConfig.BASE_URL_HTTPS+"/notifications")){
+                navigationIntent = NotificationActivity.createIntent(context);
+
+            }
+            else {
+                navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
+
+        }
+
+
+
+
+        return navigationIntent;
+
     }
 
 

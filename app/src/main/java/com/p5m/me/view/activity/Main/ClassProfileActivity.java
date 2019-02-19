@@ -193,7 +193,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
             Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
         } else {
-            layoutButton.setVisibility(View.GONE);
+            layoutButton.setVisibility(View.VISIBLE);
         }
         user = TempStorage.getUser();
         onRefresh();
