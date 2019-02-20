@@ -63,6 +63,7 @@ import static com.p5m.me.utils.AppConstants.Limit.PAGE_LIMIT_MAIN_CLASS_LIST;
 public class ClassProfileActivity extends BaseActivity implements AdapterCallbacks, View.OnClickListener, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
 
     private String message;
+    private Package aPackage;
 
     public static void open(Context context, ClassModel classModel, int navigationFrom) {
         context.startActivity(new Intent(context, ClassProfileActivity.class)
@@ -680,8 +681,20 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             aPackage.setGymName(classModel.getGymBranchDetail().getGymName());
                             packages.add(aPackage);
                         }
+                        this.aPackage = packages.get(0);
                     }
-                    Package aPackage = packages.get(0);
+                    if(mBookWithFriendData!=null) {
+                        List<Package> packagesWithVisitLimit = new ArrayList<>();
+                        for (Package aPackage : packages) {
+                            aPackage.setBookingWithFriend(true);
+                            if (aPackage.getGymVisitLimit() != 1) {
+                                packagesWithVisitLimit.add(aPackage);
+                            }
+
+                        }
+
+                        aPackage = packagesWithVisitLimit.get(0);
+                    }
                     if (mBookWithFriendData != null) {
                         CheckoutActivity.openActivity(context, aPackage, classModel, aPackage.getNoOfClass(), mBookWithFriendData);
 
@@ -775,7 +788,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             });
 
                         }else{
-                            if(errorResponse!=null&&errorResponse.getReadyPckSize()==1){
+                            if(errorResponse!=null&&errorResponse.getReadyPckSize()==1 ){
                                 callPackageListApi(errorResponse.getReadyPckSize());
                             }
                             else if(errorResponse!=null&&errorResponse.getReadyPckSize()>1){

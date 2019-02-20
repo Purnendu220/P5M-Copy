@@ -239,6 +239,9 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     } else {
                         linearLayoutOffer.setVisibility(View.GONE);
                         textViewPackagePriceStrike.setVisibility(View.GONE);
+                        textViewOr.setVisibility(View.GONE);
+                        viewOr.setVisibility(View.GONE);
+
                     }
 
                 }
