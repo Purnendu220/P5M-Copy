@@ -31,7 +31,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
@@ -55,11 +54,9 @@ import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -224,27 +221,6 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
      * */
     private void getIntentData() {
         navigatedFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
-    }
-
-    /* Initialize the Variables*/
-    private void initializeStringVariables(String startTitle, String endTitle) {
-        BOOKED_ON = getString(R.string.purchase_date) + " ";
-        PAYMENT_REFERENCE = getString(R.string.payment_reference);
-
-        if (checkoutFor.equals(EXTENSION)) {
-            if (paymentResponse.getStatus().equals(SUCCESS)) {
-                BOOKED_ON = getString(R.string.extend_on) + " ";
-                SUCCESSFULLY_BOOKED = " " + getString(R.string.has_been_extended_for) + " " + selectedPacakageFromList.getDuration() + " " + getString(R.string.weeks) + ".";
-                textViewPaymentStatus.setText(context.getString(R.string.package_extended_successfully));
-
-            } else if (paymentResponse.getStatus().equals(PaymentStatus.PENDING) ||
-                    paymentResponse.getStatus().equals(PaymentStatus.INITIALIZE)) {
-                BOOKED_ON = getString(R.string.extend_on) + " ";
-                textViewPaymentStatus.setText(context.getString(R.string.package_extended_pending));
-
-            }
-        }
-
     }
 
 
@@ -463,8 +439,8 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         switch (paymentStatus) {
             case SUCCESS:
                 setConfirmBookingStyle();
-//                TODO CALENDER
-//                bookEvent();
+//                if (paymentResponse.getClassDetailDto() != null)
+//                    bookEvent();
                 setStyle();
                 break;
             case FAILURE:
@@ -489,46 +465,33 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
             CalendarHelper.requestCalendarReadWritePermission(PaymentConfirmationActivity.this);
         }
         if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
-            //Load calendars
             calendarIdTable = CalendarHelper.listCalendarId(this);
-
-
         }
     }
 
     private void addNewEvent() {
+        final long oneHour = 1000 * 60 * 60;
         if (calendarIdTable == null) {
-            //Load calendars
             calendarIdTable = CalendarHelper.listCalendarId(this);
-//            return;
         }
-//        String calendarString = calendarIdSpinner.getSelectedItem().toString();
         String calendarString = TempStorage.getUser().getEmail();
-        if(calendarIdTable.keySet().contains(calendarString)) {
+        if (calendarIdTable.keySet().contains(calendarString)) {
             calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
-        }
-        else {
+        } else {
             calendarString = "Local calendar";
             calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
 
         }
-        final long oneHour = 1000 * 60 * 60;
-        final long tenMinutes = 1000 * 60 * 2;
 
-//        calendar_id=getCalenderId();
-        long oneHourFromNow = (new Date()).getTime() + oneHour;
         long eventStartTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getFromTime());
-//        long oneHourFromNow = (new Date()).getTime() + eventStartTime;
-//        long tenMinutesFromNow = eventStartTime;
-        long tenMinutesFromNow = (new Date()).getTime() + tenMinutes;
-
-
-            CalendarHelper.MakeNewCalendarEntry(this, classModel.getTitle(), "Your Class is schedule at " + DateUtils.getClassTime(paymentResponse.getClassDetailDto().getFromTime(), paymentResponse.getClassDetailDto().getToTime()), "Somewhere", tenMinutesFromNow,tenMinutesFromNow+oneHour, false, true, calendar_id, 3);
+        long eventEndtTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getToTime());
+        if(eventStartTime-oneHour>0)
+            CalendarHelper.MakeNewCalendarEntry(this, classModel.getTitle(), getString(R.string.your_class_schedule_at)+" " + DateUtils.getClassTime(paymentResponse.getClassDetailDto().getFromTime(), paymentResponse.getClassDetailDto().getToTime()), "Somewhere", eventStartTime-oneHour, eventStartTime, false, true, calendar_id, 3);
     }
 
     private int getCalenderId() {
         int calenderId = -1;
-        if(calendarIdTable.contains("guman.urvashi@gmail.com")) {
+        if (calendarIdTable.contains("guman.urvashi@gmail.com")) {
             String calenderEmaillAddress = "info@p5m.me";
             String[] projection = new String[]{
                     CalendarContract.Calendars._ID,
@@ -548,9 +511,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
             }
 
 
-        }
-        else
-        {
+        } else {
             String calendarString = "Local calendar";
             calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
 
@@ -561,7 +522,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
-        if (requestCode == CalendarHelper.CALENDARHELPER_PERMISSION_REQUEST_CODE) {
+        if (requestCode == CalendarHelper.CALENDARED_PERMISSION_REQUEST_CODE) {
             if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
                 addNewEvent();
             }
