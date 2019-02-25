@@ -218,19 +218,14 @@ public class DateUtils {
         long today = Calendar.getInstance().getTimeInMillis();
         try {
             long expiryTime = classDateExpiry.parse(date).getTime();
-           final long twoHours = 7200000;
-            final long halfHour = 600000;
 
-            long diff = (expiryTime - today);
-            if(diff>twoHours)
-            {
-                return (diff-twoHours);
-            }
-            else
-                return  (diff-halfHour);
-//            long minute = TimeUnit.MILLISECONDS.convert(diff, TimeUnit.MILLISECONDS);
 
-         } catch (Exception e) {
+            long diff = (expiryTime );
+
+
+            long minute = TimeUnit.MILLISECONDS.convert(diff, TimeUnit.MILLISECONDS);
+            return minute;
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

@@ -74,7 +74,7 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         }
 
         TempStorage.setUser(this, MyPreferences.initialize(this).getUser());
-        TempStorage.version = myVersionName;
+        TempStorage.version = BuildConfig.VERSION_NAME_API;
         String android_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
         RefrenceWrapper.getRefrenceWrapper(this).setDeviceId(android_id);
         LogUtils.debug("version : " + TempStorage.version);

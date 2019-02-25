@@ -5,16 +5,19 @@ package com.p5m.me.utils;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
 import android.provider.CalendarContract.Reminders;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -26,10 +29,9 @@ public class CalendarHelper {
     //Remember to initialize this activityObj first, by calling initActivityObj(this) from
 //your activity
     private static final String TAG = "CalendarHelper";
-    public static final int CALENDARHELPER_PERMISSION_REQUEST_CODE = 99;
+    public static final int CALENDARED_PERMISSION_REQUEST_CODE = 99;
 
-
-    public static void MakeNewCalendarEntry(Activity caller, String title, String description, String location, long startTime, long endTime, boolean allDay, boolean hasAlarm, int calendarId, int selectedReminderValue) {
+    public static void MakeNewCalendarEntry(Context caller, String title, String description, String location, long startTime, long endTime, boolean allDay, boolean hasAlarm, int calendarId, int selectedReminderValue) {
 
         ContentResolver cr = caller.getContentResolver();
         ContentValues values = new ContentValues();
@@ -74,12 +76,13 @@ public class CalendarHelper {
                 return;
             }
             Uri uri2 = cr.insert(Reminders.CONTENT_URI, reminders);
+
         }
 
 
     }
 
-    public static void requestCalendarReadWritePermission(Activity caller)
+    public static void requestCalendarReadWritePermission(Context caller)
     {
         List<String> permissionList = new ArrayList<String>();
 
@@ -104,9 +107,9 @@ public class CalendarHelper {
                 permissionArray[i] = permissionList.get(i);
             }
 
-            ActivityCompat.requestPermissions(caller,
+            ActivityCompat.requestPermissions((Activity) caller,
                     permissionArray,
-                    CALENDARHELPER_PERMISSION_REQUEST_CODE);
+                    CALENDARED_PERMISSION_REQUEST_CODE);
         }
 
     }
@@ -150,7 +153,7 @@ public class CalendarHelper {
 
     }
 
-    public static boolean haveCalendarReadWritePermissions(Activity caller)
+    public static boolean haveCalendarReadWritePermissions(Context caller)
     {
         int permissionCheck = ContextCompat.checkSelfPermission(caller,
                 Manifest.permission.READ_CALENDAR);
@@ -169,4 +172,74 @@ public class CalendarHelper {
         return false;
     }
 
+    public static int deleteEvent(Context caller, int entryID) {
+        int iNumRowsDeleted = 0;
+
+        Uri eventUri = ContentUris
+                .withAppendedId(getCalendarUriBase(), entryID);
+        iNumRowsDeleted = caller.getContentResolver().delete(eventUri, null, null);
+
+        return iNumRowsDeleted;
+    }
+
+    private static Uri getCalendarUriBase() {
+        Uri eventUri;
+        if (android.os.Build.VERSION.SDK_INT <= 7) {
+            // the old way
+
+            eventUri = Uri.parse("content://calendar/events");
+        } else {
+            // the new way
+
+            eventUri = Uri.parse("content://com.android.calendar/events");
+        }
+
+        return eventUri;
+    }
+    public static void deleteEventId(String eventtitle, Context caller) {
+        deleteEvent(caller,getEventId(eventtitle,caller));
+    }
+
+
+        public static int getEventId(String eventtitle,Context caller) {
+
+        ContentResolver cr = caller.getContentResolver();
+        Uri eventUri;
+        if (android.os.Build.VERSION.SDK_INT <= 7) {
+            // the old way
+
+            eventUri = Uri.parse("content://calendar/events");
+        } else {
+            // the new way
+
+            eventUri = Uri.parse("content://com.android.calendar/events");
+        }
+
+        int result = 0;
+        String projection[] = { "_id", "title" };
+        Cursor cursor = cr.query(eventUri, null, null, null,
+                null);
+
+        if (cursor.moveToFirst()) {
+
+            String calName;
+            String calID;
+
+            int nameCol = cursor.getColumnIndex(projection[1]);
+            int idCol = cursor.getColumnIndex(projection[0]);
+            do {
+                calName = cursor.getString(nameCol);
+                calID = cursor.getString(idCol);
+
+                if (calName != null && calName.contains(eventtitle)) {
+                    result = Integer.parseInt(calID);
+                }
+
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+
+        return result;
+
+    }
 }

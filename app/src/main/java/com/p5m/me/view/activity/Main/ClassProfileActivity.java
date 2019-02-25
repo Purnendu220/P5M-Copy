@@ -41,6 +41,7 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.CalendarHelper;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
@@ -52,6 +53,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 import butterknife.BindView;
@@ -109,6 +111,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     ClassRatingUserData ratingData;
     private boolean isBookWithFriendInProgress = false;
     private BookWithFriendData mBookWithFriendData;
+    private Hashtable<String, String> calendarIdTable;
+    private int calendar_id = -1;
 
     @Override
     public void onDestroy() {
@@ -345,7 +349,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 } else {
                     joinClass();
 
-                                   }
+                }
             }
         });
     }
@@ -403,8 +407,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
     private void performJoinProcessWithFriend(BookWithFriendData dataFriend) {
         UserPackageInfo userPackageInfo = new UserPackageInfo(TempStorage.getUser());
-       // if (userPackageInfo.havePackages) {
-            joinClassWithFriend(dataFriend);
+        // if (userPackageInfo.havePackages) {
+        joinClassWithFriend(dataFriend);
 //        } else {
 //            // 3rt condition : have no packages..
 //            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, 2);
@@ -449,10 +453,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             if (userPackageInfo.haveGeneralPackage) {
                 if (userPackageInfo.userPackageGeneral != null) {
 
-                    if (userPackageInfo.userPackageGeneral.getBalanceClass() == 0 && !userHaveDropinForClass) {
-                        MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
-                        return;
-                    }
 
                     if (DateUtils.canJoinClass(classModel.getClassDate(), userPackageInfo.userPackageGeneral.getExpiryDate()) >= 0) {
                         userHaveGeneralPackageForClass = true;
@@ -475,7 +475,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 dialog.dismiss();
-                                MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+                                joinClass();
+
                             }
                         });
                         return;
@@ -493,7 +494,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             }
         } else {
             // 3rt condition : have no packages..
-            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+            callPackageListApi(1);
         }
     }
 
@@ -621,6 +622,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();
                                     Helper.shareClass(context, classModel.getClassSessionId(), classModel.getTitle());
+//                                    bookEvent();
                                     finish();
 
                                 }
@@ -628,6 +630,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();
+//                                    bookEvent();
                                     finish();
                                 }
                             });
@@ -674,42 +677,82 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 List<Package> packagesTemp = ((ResponseModel<List<Package>>) response).data;
                 if (packagesTemp != null && !packagesTemp.isEmpty()) {
                     List<Package> packages = new ArrayList<>(packagesTemp.size());
-
+                    user = TempStorage.getUser();
                     if (mBookWithFriendData != null) {
                         for (Package aPackage : packagesTemp) {
-                            aPackage.setBookingWithFriend(true);
-                            if(aPackage.getGymVisitLimit()!=1){
+                            if (aPackage.getGymVisitLimit() != 1) {
                                 packages.add(aPackage);
                             }
-
                         }
-                        if(packages.size()==1){
+
+                        if (packages.size() == 1) {
                             Package aPackage = packages.get(0);
                             CheckoutActivity.openActivity(context, aPackage, classModel, aPackage.getNoOfClass(), mBookWithFriendData);
+                            return;
+                        } else if (packages.size() != 1) {
+                            List<Package> listPack = new ArrayList<>();
+                            for (Package aPackage : packages) {
+                                if ((DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > aPackage.getDuration())) {
+                                    listPack.add(aPackage);
+                                }
+                            }
+                            if (listPack.size() == 0) {
+                                Package aPackage = packages.get(0);
+//                                if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
+                                CheckoutActivity.openActivity(context, aPackage, classModel, aPackage.getNoOfClass(), mBookWithFriendData);
 
+//                                }
+                            } else {
+                                Package aPackage = packages.get(0);
+                                MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
+                            }
                         }
-                        else{
-                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
-
-                        }
-
-
-                    }else{
+                  /*   else {
+                        Package aPackage = packages.get(0);
+                        MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
+                    }
+*/
+                    } else {
                         for (Package aPackage : packagesTemp) {
-                            if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
+                            if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
+                                if (user.isBuyMembership()) {
+                                    packages.add(aPackage);
+                                }
+                            } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                                 aPackage.setGymName(classModel.getGymBranchDetail().getGymName());
                                 packages.add(aPackage);
                             }
                         }
-                        Package aPackage = packages.get(0);
-                        CheckoutActivity.openActivity(context, aPackage, classModel);
+
+                        if (packages.size() == 1) {
+                            Package aPackage = packages.get(0);
+                            CheckoutActivity.openActivity(context, aPackage, classModel, aPackage.getNoOfClass(), mBookWithFriendData);
+
+                        } else if (packages.size() != 1) {
+                            List<Package> listPack = new ArrayList<>();
+                            for (Package aPackage : packages) {
+                                if ((DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > aPackage.getDuration())) {
+                                    listPack.add(aPackage);
+                                }
+                            }
+                            if (listPack.size() == 0) {
+                                Package aPackage = packages.get(0);
+                                CheckoutActivity.openActivity(context, aPackage, classModel, aPackage.getNoOfClass(), mBookWithFriendData);
+
+                            } else {
+                                Package aPackage = packages.get(0);
+                                MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
+                            }
+                        }
 
 
                     }
+
                 }
                 break;
 
         }
+
     }
 
     @Override
@@ -775,42 +818,38 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     }
 
                 } else if (errorMessage.equals("402")) {
-                    if(isBookWithFriendInProgress && mBookWithFriendData!=null){
-                        final User errorResponse=MyPreferences.getInstance().getPaymentErrorResponse();
-                        if(checkIfUserHaveExpiredPackage()){
+                    if (isBookWithFriendInProgress && mBookWithFriendData != null) {
+                        final User errorResponse = MyPreferences.getInstance().getPaymentErrorResponse();
+                        if (checkIfUserHaveExpiredPackage()) {
                             DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), getString(R.string.purchase), new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();
-                                    if(errorResponse!=null){
-                                            callPackageListApi(errorResponse.getReadyPckSize());
-                                    }else{
+                                    if (errorResponse != null) {
+                                        callPackageListApi(errorResponse.getReadyPckSize());
+                                    } else {
                                         ToastUtils.showLong(context, errorMessage);
 
-                                    } }
+                                    }
+                                }
                             });
 
-                        }else{
-                            if(errorResponse!=null){
+                        } else {
+                            if (errorResponse != null) {
                                 callPackageListApi(errorResponse.getReadyPckSize());
-                            }
-                            else{
+                            } else {
                                 ToastUtils.showLong(context, errorMessage);
 
                             }
                         }
 
 
-                    }else{
-                        if(checkIfUserHaveExpiredPackage()){
-                            callPackageListApi(1);
-                        }else{
-                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+                    } else {
+                        callPackageListApi(1);
+//                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
 
-                        }
 
                     }
-
 
 
                 } else {
@@ -840,18 +879,13 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     }
 
     private void callPackageListApi(Integer readyPckSize) {
-            if (mBookWithFriendData != null) {
-                networkCommunicator.getPackagesForClass(user.getId(), classModel.getGymBranchDetail().getGymId(), classModel.getClassSessionId(),Integer.parseInt( readyPckSize.toString()), this, false);
+        if (mBookWithFriendData != null) {
+            networkCommunicator.getPackagesForClass(user.getId(), classModel.getGymBranchDetail().getGymId(), classModel.getClassSessionId(), Integer.parseInt(readyPckSize.toString()), this, false);
 
-            } else {
-                networkCommunicator.getPackagesForClass(user.getId(), classModel.getGymBranchDetail().getGymId(), classModel.getClassSessionId(), Integer.parseInt( readyPckSize.toString()), this, false);
-            }
+        } else {
+            networkCommunicator.getPackagesForClass(user.getId(), classModel.getGymBranchDetail().getGymId(), classModel.getClassSessionId(), Integer.parseInt(readyPckSize.toString()), this, false);
+        }
 
-//        else
-//        {
-//            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, 2);
-//
-//        }
     }
 
 
@@ -903,5 +937,36 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         networkCommunicator.getClassRatingList(classModel.getClassId(), page, PAGE_LIMIT_MAIN_CLASS_LIST, this, false);
 
     }
+
+    private void bookEvent() {
+        if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
+            addNewEvent();
+        } else {
+            CalendarHelper.requestCalendarReadWritePermission(this);
+        }
+        if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
+            calendarIdTable = CalendarHelper.listCalendarId(this);
+        }
+    }
+
+    private void addNewEvent() {
+        if (calendarIdTable == null) {
+            calendarIdTable = CalendarHelper.listCalendarId(this);
+        }
+        String calendarString = TempStorage.getUser().getEmail();
+        if (calendarIdTable.keySet().contains(calendarString)) {
+            calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
+        } else {
+            calendarString = "Local calendar";
+            calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
+
+        }
+
+        long eventStartTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getFromTime());
+        long eventEndtTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getToTime());
+
+        CalendarHelper.MakeNewCalendarEntry(this, classModel.getTitle(), getString(R.string.your_class_schedule_at) + " " + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()), "Somewhere", eventStartTime, eventEndtTime, false, true, calendar_id, 3);
+    }
+
 
 }

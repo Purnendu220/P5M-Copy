@@ -689,6 +689,7 @@ public class MixPanel {
 
             trackEvent(props, "Unjoin");
             trackEvent(props, "Booking Cancel");
+
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);

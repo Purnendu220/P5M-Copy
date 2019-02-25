@@ -1,9 +1,11 @@
 package com.p5m.me.helper;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +29,7 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.CalendarHelper;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.RefrenceWrapper;
@@ -37,7 +40,7 @@ import com.p5m.me.view.activity.Main.FullRatingActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomRateAlertDialog;
 
-import java.util.List;
+import java.util.Hashtable;
 
 /**
  * Created by Varun John on 4/19/2018.
@@ -45,10 +48,14 @@ import java.util.List;
 
 public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommunicator.RequestListener {
 
-    public Context context;
+    @SuppressLint("StaticFieldLeak")
+    public static Context context;
     public Activity activity;
     private final AdapterCallbacks adapterCallbacks;
     private int shownIn;
+    private static Hashtable<String, String> calendarIdTable;
+    private static int calendar_id = -1;
+
 
     public ClassListListenerHelper(Context context, Activity activity, int shownIn, AdapterCallbacks adapterCallbacks) {
         this.context = context;
@@ -314,7 +321,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             message = serverMessageNormalClass;
         }
 
-        final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
+        final MaterialDialog materialDialog = new MaterialDialog.Builder(context )
                 .cancelable(false)
                 .customView(R.layout.dialog_unjoin_class, false)
                 .build();
@@ -347,6 +354,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                             EventBroadcastHelper.sendClassJoin(context, model);
                             EventBroadcastHelper.sendUserUpdate(context, ((ResponseModel<User>) response).data);
                             MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
+                            //TODO Calender Delete Event
+//                            CalendarHelper.deleteEventId(model.getTitle(),context);
                             materialDialog.dismiss();
 
                         } catch (Exception e) {
@@ -368,6 +377,37 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                 });
             }
         });
+    }
+    private static void deleteEvent() {
+        if (CalendarHelper.haveCalendarReadWritePermissions(context)) {
+            onDeleteEvent();
+        } else {
+            CalendarHelper.requestCalendarReadWritePermission(context);
+        }
+        if (CalendarHelper.haveCalendarReadWritePermissions(context)) {
+            calendarIdTable = CalendarHelper.listCalendarId(context);
+        }
+    }
+    private static void onDeleteEvent() {
+        Uri eventsUri;
+
+        if (calendarIdTable == null) {
+            calendarIdTable = CalendarHelper.listCalendarId(context);
+        }
+        String calendarString = TempStorage.getUser().getEmail();
+        if (calendarIdTable.keySet().contains(calendarString)) {
+            calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
+        } else {
+            calendarString = "Local calendar";
+            calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
+
+        }
+        int osVersion = android.os.Build.VERSION.SDK_INT;
+        if (osVersion <= 7) { //up-to Android 2.1
+            eventsUri = Uri.parse("content://calendar/events");
+        } else { //8 is Android 2.2 (Froyo) (http://developer.android.com/reference/android/os/Build.VERSION_CODES.html)
+            eventsUri = Uri.parse("content://com.android.calendar/events");
+        }
     }
 
     private static void dialogConfirmUnJoinBookWithFriend(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, final int unJoinClassId, final int unJoinType) {
