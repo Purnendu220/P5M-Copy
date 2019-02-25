@@ -335,9 +335,9 @@
 
     <string name="cancel_class">إلغاء الحجز</string>
 
-    <string name="forgot_password">"<b><u>نسيت كلمة السر</u>؟</b>"</string>
+    <string name="forgot_password"><b><u>نسيت كلمة السر</u>؟</b></string>
 
-    <string name="forgot_password_no_bold">"\"نسيت كلمة السر؟\""</string>
+    <string name="forgot_password_no_bold">نسيت كلمة السر؟</string>
 
     <string name="current_pass_new_pass_same">كلمة المرور الجديدة وكلمة المرور الحالية هي نفسها</string>
 
