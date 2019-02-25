@@ -692,7 +692,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                         } else if (packages.size() != 1) {
                             List<Package> listPack = new ArrayList<>();
                             for (Package aPackage : packages) {
-                                if ((DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > aPackage.getDuration())) {
+                                if (!(DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > aPackage.getDuration())) {
                                     listPack.add(aPackage);
                                 }
                             }
@@ -731,7 +731,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                         } else if (packages.size() != 1) {
                             List<Package> listPack = new ArrayList<>();
                             for (Package aPackage : packages) {
-                                if ((DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > aPackage.getDuration())) {
+                                if (!(DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > aPackage.getDuration())) {
                                     listPack.add(aPackage);
                                 }
                             }
@@ -845,8 +845,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
 
                     } else {
-                        callPackageListApi(1);
-//                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+//                        callPackageListApi(1);
+                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
 
 
                     }
