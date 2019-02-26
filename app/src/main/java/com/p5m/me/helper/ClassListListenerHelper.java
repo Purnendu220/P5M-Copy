@@ -1,6 +1,5 @@
 package com.p5m.me.helper;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -48,7 +47,6 @@ import java.util.Hashtable;
 
 public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommunicator.RequestListener {
 
-    @SuppressLint("StaticFieldLeak")
     public static Context context;
     public Activity activity;
     private final AdapterCallbacks adapterCallbacks;

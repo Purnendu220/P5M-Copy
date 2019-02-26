@@ -65,6 +65,7 @@ import static com.p5m.me.utils.AppConstants.Limit.PAGE_LIMIT_MAIN_CLASS_LIST;
 public class ClassProfileActivity extends BaseActivity implements AdapterCallbacks, View.OnClickListener, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
 
     private String message;
+    private int errorMsg;
 
     public static void open(Context context, ClassModel classModel, int navigationFrom) {
         context.startActivity(new Intent(context, ClassProfileActivity.class)
@@ -704,8 +705,11 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 //                                }
                             } else {
                                 Package aPackage = packages.get(0);
+                                if (errorMsg==405) {
+                                    CheckoutActivity.openActivity(context, aPackage, classModel, aPackage.getNoOfClass(), mBookWithFriendData);
+                                } else {
                                 MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
-                            }
+                            }}
                         }
                   /*   else {
                         Package aPackage = packages.get(0);
@@ -741,7 +745,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
                             } else {
                                 Package aPackage = packages.get(0);
-                                MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
+
+                                    MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
+
                             }
                         }
 
@@ -803,6 +809,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                                 if (isBookWithFriendInProgress && mBookWithFriendData != null) {
                                     User errorResponse = MyPreferences.getInstance().getPaymentErrorResponse();
                                     if (errorResponse != null) {
+                                        errorMsg = 405;
                                         callPackageListApi(errorResponse.getReadyPckSize());
                                     } else {
                                         ToastUtils.showLong(context, errorMessage);
@@ -845,8 +852,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
 
                     } else {
-//                        callPackageListApi(1);
-                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+                        callPackageListApi(1);
+//                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
 
 
                     }
