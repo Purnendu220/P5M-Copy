@@ -26,6 +26,10 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.p5m.me.BuildConfig;
 import com.p5m.me.R;
 import com.p5m.me.adapters.HomeAdapter;
@@ -37,6 +41,7 @@ import com.p5m.me.data.request.LogoutRequest;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
+import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -56,7 +61,9 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -176,11 +183,8 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
         networkCommunicator.getRatingParameters(this, true);
         checkFacebookSessionStatus();
-
-
+        new RemoteConfigSetUp().setConfig(this,buyClasses);
     }
-
-
 
 
     @Override
