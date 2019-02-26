@@ -71,6 +71,24 @@ public class DateUtils {
         }
         return "";
     }
+    public static int getPackageNumberOfDays(int duration,String pakageValidity){
+        int numberOfDays = duration;
+        switch (pakageValidity) {
+            case "DAYS":
+                numberOfDays *= 1;
+                break;
+            case "WEEKS":
+                numberOfDays *= 7;
+                break;
+            case "MONTHS":
+                numberOfDays *= 30;
+                break;
+            case "YEARS":
+                numberOfDays *= 365;
+                break;
+        }
+        return numberOfDays;
+    }
 
     public static int getDaysLeftFromPackageExpiryDate(String date) {
         try {

@@ -679,75 +679,39 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     List<Package> packages = new ArrayList<>(packagesTemp.size());
                     user = TempStorage.getUser();
                     if (mBookWithFriendData != null) {
+
                         for (Package aPackage : packagesTemp) {
-                            if (aPackage.getGymVisitLimit() != 1) {
-                                packages.add(aPackage);
+                            int numberOfDays =DateUtils.getPackageNumberOfDays(aPackage.getDuration(),aPackage.getValidityPeriod());
+                            if (!(aPackage.getDuration()>0 && DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays)) {
+                                if (aPackage.getGymVisitLimit() != 1) {
+                                    packages.add(aPackage);
+                                }
                             }
                         }
-
-                        if (packages.size() == 1) {
+                        if (packages.size() == 1 || !user.isBuyMembership()) {
                             Package aPackage = packages.get(0);
                             CheckoutActivity.openActivity(context, aPackage, classModel, aPackage.getNoOfClass(), mBookWithFriendData);
                             return;
-                        } else if (packages.size() != 1) {
-                            List<Package> listPack = new ArrayList<>();
-                            for (Package aPackage : packages) {
-                                if (!(DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > aPackage.getDuration())) {
-                                    listPack.add(aPackage);
-                                }
-                            }
-                            if (listPack.size() == 0) {
-                                Package aPackage = packages.get(0);
-//                                if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
-                                CheckoutActivity.openActivity(context, aPackage, classModel, aPackage.getNoOfClass(), mBookWithFriendData);
 
-//                                }
-                            } else {
-                                Package aPackage = packages.get(0);
-                                MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
-                            }
-                        }
-                  /*   else {
+                        } else {
                         Package aPackage = packages.get(0);
                         MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
                     }
-*/
+
                     } else {
                         for (Package aPackage : packagesTemp) {
-                            if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
-                                if (user.isBuyMembership()) {
-                                    packages.add(aPackage);
-                                }
-                            } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
-                                aPackage.setGymName(classModel.getGymBranchDetail().getGymName());
+                            int numberOfDays =DateUtils.getPackageNumberOfDays(aPackage.getDuration(),aPackage.getValidityPeriod());
+                            if (!(aPackage.getDuration()>0 && DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays)) {
                                 packages.add(aPackage);
                             }
-                        }
-
-                        if (packages.size() == 1) {
+                        }if (packages.size() == 1 || !user.isBuyMembership()) {
                             Package aPackage = packages.get(0);
-                            CheckoutActivity.openActivity(context, aPackage, classModel, aPackage.getNoOfClass(), mBookWithFriendData);
-
-                        } else if (packages.size() != 1) {
-                            List<Package> listPack = new ArrayList<>();
-                            for (Package aPackage : packages) {
-                                if (!(DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > aPackage.getDuration())) {
-                                    listPack.add(aPackage);
-                                }
-                            }
-                            if (listPack.size() == 0) {
-                                Package aPackage = packages.get(0);
-                                CheckoutActivity.openActivity(context, aPackage, classModel, aPackage.getNoOfClass(), mBookWithFriendData);
-
-                            } else {
-                                Package aPackage = packages.get(0);
-                                MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
-                            }
+                            CheckoutActivity.openActivity(context, aPackage, classModel);
+                            return;
+                        } else {
+                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
                         }
-
-
                     }
-
                 }
                 break;
 
@@ -781,6 +745,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                                 dialog.dismiss();
                                 if (isBookWithFriendInProgress && mBookWithFriendData != null) {
                                     if (errorResponse != null) {
+
                                         callPackageListApi(errorResponse.getReadyPckSize());
                                     } else {
                                         ToastUtils.showLong(context, errorMessage);
@@ -845,8 +810,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
 
                     } else {
-//                        callPackageListApi(1);
-                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+                              callPackageListApi(1);
+                            //MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
 
 
                     }

@@ -46,7 +46,8 @@ public class RecommendedItemViewHolder extends RecyclerView.ViewHolder {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    adapterCallbacks.onAdapterItemClick(RecommendedItemViewHolder.this, itemView, model, position);
+
+                   // adapterCallbacks.onAdapterItemClick(RecommendedItemViewHolder.this, itemView, model, position);
                 }
             });
         }else{
