@@ -41,6 +41,7 @@ import com.p5m.me.data.request.LogoutRequest;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
+import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
@@ -183,9 +184,12 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
         networkCommunicator.getRatingParameters(this, true);
         checkFacebookSessionStatus();
-        new RemoteConfigSetUp().setConfig(this,buyClasses);
-    }
 
+        new RemoteConfigSetUp().setConfig(HomeActivity.this,buyClasses,
+                RemoteConfigConst.BUY_CLASS,getString(R.string.buy_classes),RemoteConfigConst.ConfigStatus.TEXT);
+        new RemoteConfigSetUp().setConfig(HomeActivity.this,buyClasses,
+                RemoteConfigConst.BUY_CLASS_BUTTON_COLOR,"#3d85ea",RemoteConfigConst.ConfigStatus.COLOR);
+    }
 
     @Override
     public void onDestroy() {

@@ -605,8 +605,12 @@ e.printStackTrace();
                 navigationIntent = SettingActivity.createIntent(context, AppConstants.Tab.OPEN_ABOUT_US);
 
             }
-            else if(url.contains(BuildConfig.BASE_URL+"/notifications")||url.contains(BuildConfig.BASE_URL_HTTPS+"/notifications")){
+            else if(url.contains(BuildConfig.BASE_URL+"/settings/notifications")||url.contains(BuildConfig.BASE_URL_HTTPS+"/settings/notifications")){
                 navigationIntent = NotificationActivity.createIntent(context);
+
+            }
+            else if(url.contains(BuildConfig.BASE_URL+"/searchresults/")||url.contains(BuildConfig.BASE_URL_HTTPS+"/searchresults/")){
+                navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
 
             }
             else {

@@ -209,7 +209,7 @@
             android:theme="@style/AppThemeTranslucent" />
         <activity
             android:name=".view.activity.Main.PaymentWebViewActivity"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemePayment" />
         <activity

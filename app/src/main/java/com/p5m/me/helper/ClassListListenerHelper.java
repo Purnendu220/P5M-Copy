@@ -1,5 +1,6 @@
 package com.p5m.me.helper;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -47,7 +48,8 @@ import java.util.Hashtable;
 
 public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommunicator.RequestListener {
 
-    public static Context context;
+    @SuppressLint("StaticFieldLeak")
+    public Context context;
     public Activity activity;
     private final AdapterCallbacks adapterCallbacks;
     private int shownIn;
@@ -376,9 +378,9 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             }
         });
     }
-    private static void deleteEvent() {
+    private static void deleteEvent(Context context) {
         if (CalendarHelper.haveCalendarReadWritePermissions(context)) {
-            onDeleteEvent();
+            onDeleteEvent(context);
         } else {
             CalendarHelper.requestCalendarReadWritePermission(context);
         }
@@ -386,7 +388,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             calendarIdTable = CalendarHelper.listCalendarId(context);
         }
     }
-    private static void onDeleteEvent() {
+    private static void onDeleteEvent(Context context) {
         Uri eventsUri;
 
         if (calendarIdTable == null) {
