@@ -280,7 +280,11 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
         } else if (DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime()) <= cancelTime) {
 //            message = warningMsg;
-            alertNonRefundMsg();
+            if(!user.isBuyMembership())
+                alertNonRefundMsg();
+            else{
+                    joinClass();
+            }
         } else {
             performJoinProcess();
         }
