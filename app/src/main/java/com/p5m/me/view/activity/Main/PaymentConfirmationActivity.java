@@ -439,8 +439,8 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         switch (paymentStatus) {
             case SUCCESS:
                 setConfirmBookingStyle();
-//                if (paymentResponse.getClassDetailDto() != null)
-//                    bookEvent();
+                if (paymentResponse.getClassDetailDto() != null)
+                    bookEvent();
                 setStyle();
                 break;
             case FAILURE:
@@ -486,7 +486,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         long eventStartTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getFromTime());
         long eventEndtTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getToTime());
         if(eventStartTime-oneHour>0)
-            CalendarHelper.MakeNewCalendarEntry(this, classModel.getTitle(), getString(R.string.your_class_schedule_at)+" " + DateUtils.getClassTime(paymentResponse.getClassDetailDto().getFromTime(), paymentResponse.getClassDetailDto().getToTime()), "Somewhere", eventStartTime-oneHour, eventStartTime, false, true, calendar_id, 3);
+            CalendarHelper.MakeNewCalendarEntry(this, classModel.getTitle()+" <"+DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime())+">", getString(R.string.your_class_schedule_at)+" " + DateUtils.getClassTime(paymentResponse.getClassDetailDto().getFromTime(), paymentResponse.getClassDetailDto().getToTime()), "Somewhere", eventStartTime-oneHour, eventStartTime, false, true, calendar_id, 3);
     }
 
     private int getCalenderId() {

@@ -47,7 +47,7 @@ import java.util.Hashtable;
 
 public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommunicator.RequestListener {
 
-    public static Context context;
+    public Context context;
     public Activity activity;
     private final AdapterCallbacks adapterCallbacks;
     private int shownIn;
@@ -353,7 +353,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                             EventBroadcastHelper.sendUserUpdate(context, ((ResponseModel<User>) response).data);
                             MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
                             //TODO Calender Delete Event
-//                            CalendarHelper.deleteEventId(model.getTitle(),context);
+                            CalendarHelper.deleteEventId(model.getTitle()+" <"+DateUtils.getClassTime(model.getFromTime(), model.getToTime())+">"
+                                    ,context);
                             materialDialog.dismiss();
 
                         } catch (Exception e) {
@@ -376,9 +377,9 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             }
         });
     }
-    private static void deleteEvent() {
+    private static void deleteEvent(Context context) {
         if (CalendarHelper.haveCalendarReadWritePermissions(context)) {
-            onDeleteEvent();
+            onDeleteEvent(context);
         } else {
             CalendarHelper.requestCalendarReadWritePermission(context);
         }
@@ -386,7 +387,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             calendarIdTable = CalendarHelper.listCalendarId(context);
         }
     }
-    private static void onDeleteEvent() {
+    private static void onDeleteEvent(Context context) {
         Uri eventsUri;
 
         if (calendarIdTable == null) {

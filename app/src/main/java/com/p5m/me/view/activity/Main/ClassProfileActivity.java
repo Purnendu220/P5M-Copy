@@ -623,7 +623,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();
                                     Helper.shareClass(context, classModel.getClassSessionId(), classModel.getTitle());
-//                                    bookEvent();
+                                    bookEvent();
                                     finish();
 
                                 }
@@ -631,7 +631,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();
-//                                    bookEvent();
+                                    bookEvent();
                                     finish();
                                 }
                             });
@@ -705,11 +705,12 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 //                                }
                             } else {
                                 Package aPackage = packages.get(0);
-                                if (errorMsg==405) {
+                                if (errorMsg == 405) {
                                     CheckoutActivity.openActivity(context, aPackage, classModel, aPackage.getNoOfClass(), mBookWithFriendData);
                                 } else {
-                                MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
-                            }}
+                                    MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
+                                }
+                            }
                         }
                   /*   else {
                         Package aPackage = packages.get(0);
@@ -746,7 +747,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             } else {
                                 Package aPackage = packages.get(0);
 
-                                    MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
+                                MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
 
                             }
                         }
@@ -960,6 +961,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         if (calendarIdTable == null) {
             calendarIdTable = CalendarHelper.listCalendarId(this);
         }
+        final long oneHour = 1000 * 60 * 60;
+
         String calendarString = TempStorage.getUser().getEmail();
         if (calendarIdTable.keySet().contains(calendarString)) {
             calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
@@ -971,8 +974,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
         long eventStartTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getFromTime());
         long eventEndtTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getToTime());
-
-        CalendarHelper.MakeNewCalendarEntry(this, classModel.getTitle(), getString(R.string.your_class_schedule_at) + " " + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()), "Somewhere", eventStartTime, eventEndtTime, false, true, calendar_id, 3);
+        if (eventStartTime - oneHour > 0)
+            CalendarHelper.MakeNewCalendarEntry(this, classModel.getTitle() + " <" + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime())+ ">", getString(R.string.your_class_schedule_at) + " " + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()), "Somewhere", eventStartTime, eventEndtTime, false, true, calendar_id, 3);
     }
 
 
