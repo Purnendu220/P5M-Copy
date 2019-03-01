@@ -402,6 +402,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                     classListAdapter.notifyDataSetChanged();
                 } else {
                     classListAdapter.loaderDone();
+
                 }
 
                 checkListData();
@@ -415,7 +416,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                     classListAdapter.addRecomendedClasses(new RecomendedClassData(recomendedClassModels));
                     }
                 callApiClassList();
-
+//                checkListData();
                 break;
         }
     }
@@ -436,7 +437,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
     }
 
     private void checkListData() {
-        if (classListAdapter.getList().isEmpty()) {
+        if (classListAdapter.getList().isEmpty() || classListAdapter.getList().size()==1) {
             layoutNoData.setVisibility(View.VISIBLE);
             classListAdapter.notifyDataSetChanged();
             textViewEmptyLayoutText.setText(R.string.no_data_class_list_main);

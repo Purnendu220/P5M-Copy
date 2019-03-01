@@ -26,6 +26,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.p5m.me.BuildConfig;
 import com.p5m.me.R;
 import com.p5m.me.adapters.HomeAdapter;
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
@@ -86,6 +87,18 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         intent.putExtra(AppConstants.DataKey.HOME_TABS_INNER_TAB_POSITION, innerTabPosition);
         return intent;
     }
+    public static Intent createIntent(Context context, int tabPosition, int innerTabPosition,int profileTabPosition) {
+        Intent intent = new Intent(context, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra(AppConstants.DataKey.HOME_TAB_POSITION, tabPosition);
+        intent.putExtra(AppConstants.DataKey.HOME_TABS_INNER_TAB_POSITION, innerTabPosition);
+        intent.putExtra(AppConstants.DataKey.HOME_TABS_PROFILE_INNER_TAB_POSITION, profileTabPosition);
+
+
+
+        return intent;
+    }
     public static Intent createIntent(Context context, int tabPosition, int innerTabPosition,ClassModel model) {
         Intent intent = new Intent(context, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
@@ -111,6 +124,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     private final int TOTAL_TABS = 4;
     private int INITIAL_POSITION = AppConstants.Tab.TAB_FIND_CLASS;
     private int currentTab = INITIAL_POSITION;
+    private int PROFILE_TAB_POSITION;
 
     private Handler handler;
     public CustomRateAlertDialog mCustomMatchDialog;
@@ -130,6 +144,8 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         if (getIntent() != null) {
             INITIAL_POSITION = getIntent().getIntExtra(AppConstants.DataKey.HOME_TAB_POSITION,
                     AppConstants.Tab.TAB_FIND_CLASS);
+            PROFILE_TAB_POSITION = getIntent().getIntExtra(AppConstants.DataKey.HOME_TABS_PROFILE_INNER_TAB_POSITION,
+                    ProfileHeaderTabViewHolder.TAB_1);
         }
         RefrenceWrapper.getRefrenceWrapper(this).setActivity(this);
         buyClasses.setOnClickListener(this);
@@ -138,7 +154,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         handler = new Handler(Looper.getMainLooper());
         setupBottomTabs();
 
-        homeAdapter = new HomeAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_TABS);
+        homeAdapter = new HomeAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_TABS,PROFILE_TAB_POSITION);
         viewPager.setAdapter(homeAdapter);
         viewPager.addOnPageChangeListener(this);
         viewPager.setOffscreenPageLimit(TOTAL_TABS);
@@ -160,6 +176,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
         networkCommunicator.getRatingParameters(this, true);
         checkFacebookSessionStatus();
+
 
     }
 
@@ -436,6 +453,8 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             }
         });
     }
+
+
 
 
 }

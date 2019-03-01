@@ -335,9 +335,9 @@
 
     <string name="cancel_class">إلغاء الحجز</string>
 
-    <string name="forgot_password">""<b><u>نسيت كلمة السر</u>؟</b>""</string>
+    <string name="forgot_password"><b><u>نسيت كلمة السر</u>؟</b></string>
 
-    <string name="forgot_password_no_bold">"\"نسيت كلمة السر؟\""</string>
+    <string name="forgot_password_no_bold">نسيت كلمة السر؟</string>
 
     <string name="current_pass_new_pass_same">كلمة المرور الجديدة وكلمة المرور الحالية هي نفسها</string>
 
@@ -796,16 +796,12 @@
 
     <string name="send_email">ارسل بريد الكتروني</string>
 
-    <string name="package_extended_pending">Package Extension Pending</string>
-    <string name="pending_to_extend">has been pending to extend.</string>
     <string name="pending_start_class"> حجز الكلاس <b>%s</b>إذا أكملت المعاملة ، فسيتم تحديث حسابك خلال أربع ساعات.</string>
     <string name="pending_start_package"> شراء إشتراك <b>%s</b>إذا أكملت المعاملة ، فسيتم تحديث حسابك خلال أربع ساعات. </string>
     <string name="pending_extension"> تمديد إشتراك <b>%s</b>إذا أكملت المعاملة ، فسيتم تحديث حسابك خلال أربع ساعات. </string>
 
     <string name="failed_start_class">لم يتم الحجز بنجاح</string>
     <string name="failed_start_package">لم يتم الإشتراك بنجاح</string>
-    <string name="package_extended_failed">Package extension is failed</string>
-    <string name="package_extension">package extension</string>
     <string name="congratulation">مبروك</string>
     <string name="package_is_successfully_booked">تم شراء الإشتراك بنجاح</string>
 
@@ -855,5 +851,11 @@
     </string-array>
     <string name="added_to_wishlist">تم إضافته كلاس  %s إلى قائمة الأمنيات.</string>
     <string name="are_you_sure_leave_page">هل أنت متأكد أنك تريد ترك هذه الصفحة</string>
+
+    <string name="non_refundable_warning_msg">This class is non-refundable after purchase. Do you want to continue?</string>
+    <string name="non_refundable_warning">*This class is non-refundable after purchase.</string>
+    <string name="on_ya">Oh Ya!</string>
+    <string name="maybe_next_time">Maybe next time</string>
+    <string name="your_class_schedule_at">Your Class is schedule at</string>
 
 </resources>

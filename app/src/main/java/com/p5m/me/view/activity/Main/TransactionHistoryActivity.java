@@ -15,6 +15,7 @@ import com.p5m.me.data.main.Transaction;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.utils.AppConstants;
 import com.p5m.me.view.activity.base.BaseActivity;
 
 import java.util.List;
@@ -27,6 +28,10 @@ public class TransactionHistoryActivity extends BaseActivity implements SwipeRef
 
     public static void openActivity(Context context) {
         context.startActivity(new Intent(context, TransactionHistoryActivity.class));
+    }
+    public static Intent createIntent(Context context, int navigationFrom) {
+        return new Intent(context, TransactionHistoryActivity.class)
+                .putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom);
     }
 
     @BindView(R.id.recyclerView)

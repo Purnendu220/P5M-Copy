@@ -333,7 +333,7 @@
     <string name="stay_on_this_page">Stay on this page</string>
     <string name="leave_this_page">Leave this page</string>
     <string name="no_more_gyms">No more gyms</string>
-    <string name="no_more_ratings">No more ratifngs</string>
+    <string name="no_more_ratings">No more ratings</string>
     <string name="image_upload_failed">Image upload failed</string>
     <string name="gaping" translatable="false">" "</string>
     <string name="membership_general_package_heading_1" translatable="false" />
@@ -434,8 +434,6 @@
     <string name="contactUs">Please identify the details of your issue below. A member of our staff will respond shortly.</string>
     <string name="send_email">Send Email</string>
     <string name="payment_session_expired" translatable="false">Session timed out.</string>
-    <string name="package_extended_pending">Package Extension Pending</string>
-    <string name="pending_to_extend">has been pending to extend.</string>
     <string name="pending_start_class"><b>%s</b> Class booking is pending.If you have completed the transaction, your payment will be updated within 4 hours.
 </string>
     <string name="pending_start_package"><b>%s</b> Package purchase is pending.If you have completed the transaction, your payment will be updated within 4 hours.
@@ -445,8 +443,6 @@
 
     <string name="failed_start_class">your class booking for</string>
     <string name="failed_start_package">your package purchase for </string>
-    <string name="package_extended_failed">Package extension is failed</string>
-    <string name="package_extension">package extension for</string>
     <string name="congratulation">Congratulation</string>
     <string name="package_is_successfully_booked">Package is successfully booked.</string>
 
@@ -475,6 +471,7 @@
     <string name="non_refundable_warning">*This class is non-refundable after purchase.</string>
     <string name="on_ya">Oh Ya!</string>
     <string name="maybe_next_time">Maybe next time</string>
+    <string name="your_class_schedule_at">Your Class is schedule at</string>
 
 
     <string-array name="schedule_list">

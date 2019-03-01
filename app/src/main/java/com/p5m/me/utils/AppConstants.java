@@ -45,6 +45,12 @@ public class AppConstants {
 
         public static final int COUNT_FB_REGISTRATION = 3;
         public static final int COUNT_NORMAL_REGISTRATION = 4;
+        public static final int OPEN_ABOUT_US = 100;
+        public static final int OPEN_PRIVACY = 101;
+        public static final int OPEN_TERMS = 102;
+
+
+
     }
 
     public static class Values {
@@ -54,6 +60,7 @@ public class AppConstants {
         public static final int SPECIAL_CLASS_ID = 1010;
         public static final int UNJOIN_BOTH_CLASS = 1000;
         public static final int UNJOIN_FRIEND_CLASS = 1001;
+
 
 
     }
@@ -161,12 +168,16 @@ public class AppConstants {
         public static final String TRAINER_ID_INT = "trainer_id_int";
         public static final String HOME_TAB_POSITION = "home_tab_position";
         public static final String HOME_TABS_INNER_TAB_POSITION = "home_tabs_inner_tab_position";
+        public static final String HOME_TABS_PROFILE_INNER_TAB_POSITION = "home_tabs_profile_inner_tab_position";
+
         public static final String PACKAGE_NAME_STRING = "package_name";
         public static final String IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN = "is_from_notification_stack_builder_boolean";
         public static final String RATING_VALUE = "Rating_Value";
         public static final String CLASS_MODEL = "class_model";
         public static final String BOOK_WITH_FRIEND_DATA = "book_with_friend_data";
         public static final String NUMBER_OF_PACKAGES_TO_BUY = "number_of_packages_to_buy";
+        public static final String PAGES_TO_OPEN = "pages_to_open";
+
 
 
         public static final String REFERENCE_ID = "Reference_Id";
@@ -323,6 +334,8 @@ public class AppConstants {
         public static final String OBJECT_DATA_ID = "objectDataId";
         public static final String NOTIFICATION_TYPE = "notificationCategory";
         public static final String USER_ID_TO_NOTIFY = "userIdToNotify";
+        public static final String URL = "url";
+
         public static final String CLASS_FROM_TIME = "fromTime";
         public static final String CLASS_TO_TIME = "toTime";
         public static final String CLASS_DATE = "classDate";
