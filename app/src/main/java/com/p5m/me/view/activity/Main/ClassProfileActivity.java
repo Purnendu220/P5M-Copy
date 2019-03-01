@@ -247,7 +247,20 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             if (Helper.isFreeClass(classModel))
                 joinClass();
             else {
-                alertNonRefundMsg();
+                if (!user.isBuyMembership())
+                    alertNonRefundMsg();
+                else {
+                    if (Helper.isSpecialClass(classModel) &&
+                            !Helper.isFreeClass(classModel)
+                            ) {
+
+                        CheckoutActivity.openActivity(context, classModel, 1);
+
+                    } else {
+                        joinClass();
+
+                    }
+                }
             }
             return;
         }
@@ -280,10 +293,19 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
         } else if (DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime()) <= cancelTime) {
 //            message = warningMsg;
-            if(!user.isBuyMembership())
+            if (!user.isBuyMembership())
                 alertNonRefundMsg();
-            else{
+            else {
+                if (Helper.isSpecialClass(classModel) &&
+                        !Helper.isFreeClass(classModel)
+                        ) {
+
+                    CheckoutActivity.openActivity(context, classModel, 1);
+
+                } else {
                     joinClass();
+
+                }
             }
         } else {
             performJoinProcess();
@@ -303,22 +325,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         }
     }
 
-    /*  @OnClick(R.id.textViewBook)
-      public void clickBookButton() {
-          float cancelTime = 2;
-          String warningMsg=activity.getString(R.string.non_refundable_warning_msg);
-          if (Helper.isSpecialClass(classModel) && !Helper.isFreeClass(classModel)) {
-              message = warningMsg;
-              alertNonRefundMsg();
-
-          } else if (DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime()) <= cancelTime) {
-              message = warningMsg;
-              alertNonRefundMsg();
-          }
-
-
-
-      }*/
     private void alertNonRefundMsg() {
         final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
                 .cancelable(false)
@@ -962,24 +968,28 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     }
 
     private void addNewEvent() {
+        final long oneHour = 1000 * 60 * 60;
         if (calendarIdTable == null) {
             calendarIdTable = CalendarHelper.listCalendarId(this);
         }
-        final long oneHour = 1000 * 60 * 60;
+//        String calendarString = TempStorage.getUser().getEmail();
+//        if (calendarIdTable.keySet().contains(calendarString)) {
+        if(calendarIdTable.size()!=0) {
+            String calendarString = "@";
 
-        String calendarString = TempStorage.getUser().getEmail();
-        if (calendarIdTable.keySet().contains(calendarString)) {
-            calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
-        } else {
-            calendarString = "Local calendar";
-            calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
+            for (Hashtable.Entry<String, String> entry : calendarIdTable.entrySet()) {
 
+                if (entry.getKey().contains(calendarString)) {
+                    calendar_id = Integer.parseInt(entry.getValue());
+                    break;
+                }
+            }
+            long eventStartTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getFromTime());
+            long eventEndtTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getToTime());
+            if(eventStartTime-oneHour>0)
+                CalendarHelper.MakeNewCalendarEntry(this, classModel.getTitle()+DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()), getString(R.string.your_class_schedule_at)+" " + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()), "Somewhere", eventStartTime-oneHour, eventStartTime, false, true, calendar_id, 3, classModel.getClassSessionId());
         }
 
-        long eventStartTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getFromTime());
-        long eventEndtTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getToTime());
-        if (eventStartTime - oneHour > 0)
-            CalendarHelper.MakeNewCalendarEntry(this, classModel.getTitle() + " <" + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime())+ ">", getString(R.string.your_class_schedule_at) + " " + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()), "Somewhere", eventStartTime, eventEndtTime, false, true, calendar_id, 3);
     }
 
 

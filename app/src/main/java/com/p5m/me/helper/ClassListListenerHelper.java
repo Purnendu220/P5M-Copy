@@ -352,8 +352,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                             EventBroadcastHelper.sendClassJoin(context, model);
                             EventBroadcastHelper.sendUserUpdate(context, ((ResponseModel<User>) response).data);
                             MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
-                            //TODO Calender Delete Event
-                            CalendarHelper.deleteEventId(model.getTitle()+" <"+DateUtils.getClassTime(model.getFromTime(), model.getToTime())+">"
+
+                            CalendarHelper.deleteEventId(model.getClassSessionId()
                                     ,context);
                             materialDialog.dismiss();
 

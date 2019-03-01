@@ -44,7 +44,6 @@ import com.p5m.me.fxn.utility.Constants;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
-import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CalendarHelper;
 import com.p5m.me.utils.DateUtils;
@@ -474,20 +473,25 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         if (calendarIdTable == null) {
             calendarIdTable = CalendarHelper.listCalendarId(this);
         }
-        String calendarString = TempStorage.getUser().getEmail();
-        if (calendarIdTable.keySet().contains(calendarString)) {
-            calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
-        } else {
-            calendarString = "Local calendar";
-            calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
+//        String calendarString = TempStorage.getUser().getEmail();
+//        if (calendarIdTable.keySet().contains(calendarString)) {
+        if(calendarIdTable.size()!=0) {
+            String calendarString = "@";
 
+            for (Hashtable.Entry<String, String> entry : calendarIdTable.entrySet()) {
+
+                if (entry.getKey().contains(calendarString)) {
+                    calendar_id = Integer.parseInt(entry.getValue());
+                    break;
+                }
+            }
+            long eventStartTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getFromTime());
+            long eventEndtTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getToTime());
+            if(eventStartTime-oneHour>0)
+                CalendarHelper.MakeNewCalendarEntry(this, classModel.getTitle()+DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()), getString(R.string.your_class_schedule_at)+" " + DateUtils.getClassTime(paymentResponse.getClassDetailDto().getFromTime(), paymentResponse.getClassDetailDto().getToTime()), "Somewhere", eventStartTime-oneHour, eventStartTime, false, true, calendar_id, 3, classModel.getClassSessionId());
         }
 
-        long eventStartTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getFromTime());
-        long eventEndtTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getToTime());
-        if(eventStartTime-oneHour>0)
-            CalendarHelper.MakeNewCalendarEntry(this, classModel.getTitle()+" <"+DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime())+">", getString(R.string.your_class_schedule_at)+" " + DateUtils.getClassTime(paymentResponse.getClassDetailDto().getFromTime(), paymentResponse.getClassDetailDto().getToTime()), "Somewhere", eventStartTime-oneHour, eventStartTime, false, true, calendar_id, 3);
-    }
+         }
 
     private int getCalenderId() {
         int calenderId = -1;
