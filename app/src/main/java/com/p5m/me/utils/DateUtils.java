@@ -239,8 +239,6 @@ public class DateUtils {
 
 
             long diff = (expiryTime );
-
-
             long minute = TimeUnit.MILLISECONDS.convert(diff, TimeUnit.MILLISECONDS);
             return minute;
         } catch (Exception e) {

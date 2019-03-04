@@ -1,7 +1,6 @@
 package com.p5m.me.utils;
 
 
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -11,13 +10,11 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
 import android.provider.CalendarContract.Reminders;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -31,7 +28,7 @@ public class CalendarHelper {
     private static final String TAG = "CalendarHelper";
     public static final int CALENDARED_PERMISSION_REQUEST_CODE = 99;
 
-    public static void MakeNewCalendarEntry(Context caller, String title, String description, String location, long startTime, long endTime, boolean allDay, boolean hasAlarm, int calendarId, int selectedReminderValue) {
+    public static void MakeNewCalendarEntry(Context caller, String title, String description, String location, long startTime, long endTime, boolean allDay, boolean hasAlarm, int calendarId, int selectedReminderValue, int classSessionId) {
 
         ContentResolver cr = caller.getContentResolver();
         ContentValues values = new ContentValues();
@@ -41,6 +38,8 @@ public class CalendarHelper {
         values.put(Events.DESCRIPTION, description);
         values.put(Events.CALENDAR_ID, calendarId);
         values.put(Events.STATUS, Events.STATUS_CONFIRMED);
+        values.put(Events._ID,classSessionId);
+
 
 
         if (allDay) {
@@ -57,7 +56,7 @@ public class CalendarHelper {
         Uri uri = cr.insert(Events.CONTENT_URI, values);
         Log.i(TAG, "Uri returned=>" + uri.toString());
         // get the event ID that is the last element in the Uri
-        long eventID = Long.parseLong(uri.getLastPathSegment());
+        long eventID = classSessionId;
 
         if (hasAlarm) {
             ContentValues reminders = new ContentValues();
@@ -82,28 +81,23 @@ public class CalendarHelper {
 
     }
 
-    public static void requestCalendarReadWritePermission(Context caller)
-    {
+    public static void requestCalendarReadWritePermission(Context caller) {
         List<String> permissionList = new ArrayList<String>();
 
-        if  (ContextCompat.checkSelfPermission(caller,Manifest.permission.WRITE_CALENDAR)!=PackageManager.PERMISSION_GRANTED)
-        {
+        if (ContextCompat.checkSelfPermission(caller, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             permissionList.add(Manifest.permission.WRITE_CALENDAR);
 
         }
 
-        if  (ContextCompat.checkSelfPermission(caller,Manifest.permission.READ_CALENDAR)!=PackageManager.PERMISSION_GRANTED)
-        {
+        if (ContextCompat.checkSelfPermission(caller, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             permissionList.add(Manifest.permission.READ_CALENDAR);
 
         }
 
-        if (permissionList.size()>0)
-        {
+        if (permissionList.size() > 0) {
             String[] permissionArray = new String[permissionList.size()];
 
-            for (int i=0;i<permissionList.size();i++)
-            {
+            for (int i = 0; i < permissionList.size(); i++) {
                 permissionArray[i] = permissionList.get(i);
             }
 
@@ -116,7 +110,7 @@ public class CalendarHelper {
 
     public static Hashtable listCalendarId(Context c) {
 
-        if (haveCalendarReadWritePermissions((Activity)c)) {
+        if (haveCalendarReadWritePermissions((Activity) c)) {
 
             String projection[] = {"_id", "calendar_displayName"};
             Uri calendars;
@@ -125,21 +119,19 @@ public class CalendarHelper {
             ContentResolver contentResolver = c.getContentResolver();
             Cursor managedCursor = contentResolver.query(calendars, projection, null, null, null);
 
-            if (managedCursor.moveToFirst())
-            {
+            if (managedCursor.moveToFirst()) {
                 String calName;
                 String calID;
                 int cont = 0;
                 int nameCol = managedCursor.getColumnIndex(projection[1]);
                 int idCol = managedCursor.getColumnIndex(projection[0]);
-                Hashtable<String,String> calendarIdTable = new Hashtable<>();
+                Hashtable<String, String> calendarIdTable = new Hashtable<>();
 
-                do
-                {
+                do {
                     calName = managedCursor.getString(nameCol);
                     calID = managedCursor.getString(idCol);
                     Log.v(TAG, "CalendarName:" + calName + " ,id:" + calID);
-                    calendarIdTable.put(calName,calID);
+                    calendarIdTable.put(calName, calID);
                     cont++;
                 } while (managedCursor.moveToNext());
                 managedCursor.close();
@@ -153,18 +145,15 @@ public class CalendarHelper {
 
     }
 
-    public static boolean haveCalendarReadWritePermissions(Context caller)
-    {
+    public static boolean haveCalendarReadWritePermissions(Context caller) {
         int permissionCheck = ContextCompat.checkSelfPermission(caller,
                 Manifest.permission.READ_CALENDAR);
 
-        if (permissionCheck== PackageManager.PERMISSION_GRANTED)
-        {
+        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
             permissionCheck = ContextCompat.checkSelfPermission(caller,
                     Manifest.permission.WRITE_CALENDAR);
 
-            if (permissionCheck== PackageManager.PERMISSION_GRANTED)
-            {
+            if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
                 return true;
             }
         }
@@ -196,12 +185,45 @@ public class CalendarHelper {
 
         return eventUri;
     }
-    public static void deleteEventId(String eventtitle, Context caller) {
-        deleteEvent(caller,getEventId(eventtitle,caller));
+
+    public static void deleteEventId(int classSessionId, Context caller) {
+        deleteEvent(caller, classSessionId);
+    }
+    public static int UpdateCalendarEntry(Context context, String title, String description, String location, long startTime, long endTime, boolean allDay, boolean hasAlarm, int calendarId, int selectedReminderValue, int classSessionId) {
+       int eventId=classSessionId;
+        int iNumRowsUpdated = 0;
+
+        ContentValues values = new ContentValues();
+        values.put(Events.DTSTART, startTime);
+        values.put(Events.DTEND, endTime);
+        values.put(Events.TITLE, title);
+        values.put(Events.DESCRIPTION, description);
+        values.put(Events.CALENDAR_ID, calendarId);
+        values.put(Events.STATUS, Events.STATUS_CONFIRMED);
+        values.put(Events._ID,classSessionId);
+
+
+        if (allDay) {
+            values.put(Events.ALL_DAY, true);
+        }
+
+        if (hasAlarm) {
+            values.put(Events.HAS_ALARM, true);
+        }
+
+        values.put(Events.EVENT_TIMEZONE, TimeZone.getDefault().getID());
+        Log.i(TAG, "Timezone retrieved=>" + TimeZone.getDefault().getID());
+        Uri eventUri = ContentUris
+                .withAppendedId(getCalendarUriBase(), classSessionId);
+
+        iNumRowsUpdated = context.getContentResolver().update(eventUri, values, null,
+                null);
+
+
+        return iNumRowsUpdated;
     }
 
-
-        public static int getEventId(String eventtitle,Context caller) {
+    public static int getEventId(String eventtitle, Context caller) {
 
         ContentResolver cr = caller.getContentResolver();
         Uri eventUri;
@@ -216,7 +238,7 @@ public class CalendarHelper {
         }
 
         int result = 0;
-        String projection[] = { "_id", "title" };
+        String projection[] = {"_id", "title"};
         Cursor cursor = cr.query(eventUri, null, null, null,
                 null);
 

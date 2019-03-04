@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.p5m.me.R;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.data.main.User;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.storage.TempStorage;
@@ -42,7 +43,7 @@ public class BookForAFriendPopup extends Dialog implements View.OnClickListener 
     TextInputLayout textInputLayoutFriendsName;
     @BindView(R.id.textViewWarningRefund)
     public TextView textViewWarningRefund;
-
+    private User user;
     @BindView(R.id.editTextFriendsName)
     EditText editTextFriendsName;
 
@@ -83,6 +84,7 @@ public class BookForAFriendPopup extends Dialog implements View.OnClickListener 
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         ButterKnife.bind(this);
         setCancelable(true);
+        user = TempStorage.getUser();
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(getWindow().getAttributes());
         lp.width = (int) (mContext.getResources().getDisplayMetrics().widthPixels * 0.90);
@@ -99,6 +101,7 @@ public class BookForAFriendPopup extends Dialog implements View.OnClickListener 
         if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model)) {
             textViewWarningRefund.setVisibility(View.VISIBLE);
         } else if (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) <= cancelTime) {
+            if(!user.isBuyMembership())
             textViewWarningRefund.setVisibility(View.VISIBLE);
         }
         else{
