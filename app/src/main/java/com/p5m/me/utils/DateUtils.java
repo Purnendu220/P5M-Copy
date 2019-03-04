@@ -29,7 +29,7 @@ public class DateUtils {
     private static SimpleDateFormat packageDateFormat = new SimpleDateFormat("d MMM yyyy", Locale.getDefault());
     private static SimpleDateFormat notificationDate = new SimpleDateFormat("h:mm a, MMM d", Locale.getDefault());
     private static SimpleDateFormat classRatingDate = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
-    private static SimpleDateFormat classTime24Format = new SimpleDateFormat("HH:mm",Locale.getDefault());
+    private static SimpleDateFormat classTime24Format = new SimpleDateFormat("HH:mm", Locale.getDefault());
     private static SimpleDateFormat classTime12Format = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
     private static SimpleDateFormat ExtendedDateFormat = new SimpleDateFormat("d MMM ", Locale.getDefault());
 
@@ -71,6 +71,24 @@ public class DateUtils {
         }
         return "";
     }
+    public static int getPackageNumberOfDays(int duration,String pakageValidity){
+        int numberOfDays = duration;
+        switch (pakageValidity) {
+            case "DAYS":
+                numberOfDays *= 1;
+                break;
+            case "WEEKS":
+                numberOfDays *= 7;
+                break;
+            case "MONTHS":
+                numberOfDays *= 30;
+                break;
+            case "YEARS":
+                numberOfDays *= 365;
+                break;
+        }
+        return numberOfDays;
+    }
 
     public static int getDaysLeftFromPackageExpiryDate(String date) {
         try {
@@ -88,11 +106,11 @@ public class DateUtils {
         return 0;
     }
 
-    public static String getExtendedExpiryDate(String date,int days) {
+    public static String getExtendedExpiryDate(String date, int days) {
         try {
             date = date + " 23:59:00";
             Date expiryDate = classDateExpiry.parse(date);
-            return addDaysToDate(expiryDate,days*7);
+            return addDaysToDate(expiryDate, days * 7);
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -100,13 +118,13 @@ public class DateUtils {
         return date;
     }
 
-    public static String addDaysToDate(Date date,int days){
+    public static String addDaysToDate(Date date, int days) {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         c.add(Calendar.DATE, days);
         String output = ExtendedDateFormat.format(c.getTime());
         return output;
-        }
+    }
 
     public static int canJoinClass(String classDateText, String packageExpiryDateText) {
         try {
@@ -151,7 +169,6 @@ public class DateUtils {
     }
 
 
-
     public static String getDateFormatter(Date date) {
         try {
             return packageDateFormat.format(date);
@@ -176,7 +193,8 @@ public class DateUtils {
         }
         return "";
     }
-    public static String getRatingDate(long time){
+
+    public static String getRatingDate(long time) {
         try {
             return classRatingDate.format(new Date(time));
         } catch (Exception e) {
@@ -212,6 +230,24 @@ public class DateUtils {
         }
 
         return 2;
+    }
+
+    public static long eventStartTime(String date) {
+        long today = Calendar.getInstance().getTimeInMillis();
+        try {
+            long expiryTime = classDateExpiry.parse(date).getTime();
+
+
+            long diff = (expiryTime );
+
+
+            long minute = TimeUnit.MILLISECONDS.convert(diff, TimeUnit.MILLISECONDS);
+            return minute;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return today;
     }
 
     public static String getHourDiff(float hourDiff) {
@@ -254,26 +290,27 @@ public class DateUtils {
         return timing;
     }
 
-    public static Date getClassDate(String classDate,String classTime){
+    public static Date getClassDate(String classDate, String classTime) {
         try {
             TimeZone tz = TimeZone.getDefault();
             classDateTime.setTimeZone(tz);
             String time24 = classTime24Format.format(classTime12Format.parse(classTime));
-            Date classDateObject = classDateTime.parse(classDate+" "+time24);
+            Date classDateObject = classDateTime.parse(classDate + " " + time24);
 
             return classDateObject;
         } catch (ParseException e) {
             e.printStackTrace();
             return null;
-            }
+        }
 
     }
-    public static Date getClassDate24hour(String classDate,String classtime){
+
+    public static Date getClassDate24hour(String classDate, String classtime) {
         try {
             TimeZone tz = TimeZone.getDefault();
             classDateTime.setTimeZone(tz);
             String time24 = classTime.format(classtime);
-            Date classDateObject = classDateTime.parse(classDate+" "+time24);
+            Date classDateObject = classDateTime.parse(classDate + " " + time24);
 
             return classDateObject;
         } catch (ParseException e) {
