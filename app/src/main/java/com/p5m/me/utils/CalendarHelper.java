@@ -110,7 +110,7 @@ public class CalendarHelper {
 
     public static Hashtable listCalendarId(Context c) {
 
-        if (haveCalendarReadWritePermissions((Activity) c)) {
+        if (haveCalendarReadWritePermissions( c)) {
 
             String projection[] = {"_id", "calendar_displayName"};
             Uri calendars;
