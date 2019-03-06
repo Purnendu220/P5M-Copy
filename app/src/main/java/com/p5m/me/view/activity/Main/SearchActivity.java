@@ -42,6 +42,7 @@ import com.p5m.me.data.main.TrainerModel;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.utils.AppConstants;
@@ -58,6 +59,8 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
+
+import static com.p5m.me.remote_config.RemoteConfigSetUp.setConfig;
 
 public class SearchActivity extends BaseActivity implements NetworkCommunicator.RequestListener, AdapterCallbacks, View.OnClickListener, ViewPager.OnPageChangeListener {
 
@@ -141,6 +144,11 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
         tabLayout.setTabTextColors(ContextCompat.getColorStateList(context, R.color.date_tabs));
 
         viewPager.addOnPageChangeListener(this);
+
+       setConfig(this, editTextSearch,
+                RemoteConfigConst.SEARCH_TEXT,getString(R.string.search_hint),RemoteConfigConst.ConfigStatus.HINT
+        );
+
 
         try {
             ((SimpleItemAnimator) recyclerViewSearch.getItemAnimator()).setSupportsChangeAnimations(false);

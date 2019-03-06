@@ -27,6 +27,8 @@ import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.data.main.MediaModel;
 import com.p5m.me.data.main.TrainerDetailModel;
 import com.p5m.me.data.main.TrainerModel;
+import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.KeyboardUtils;
@@ -162,15 +164,32 @@ public class Helper {
     }
 
     public static void setJoinButton(Context context, Button buttonJoin, ClassModel model) {
+
         if (model.isUserJoinStatus()) {
-            buttonJoin.setText(context.getString(R.string.booked));
-            buttonJoin.setBackgroundResource(R.drawable.joined_rect);
+
+//            buttonJoin.setText(context.getString(R.string.booked));
+            buttonJoin.setText(RemoteConfigConst.BOOKED);
+            RemoteConfigSetUp.setColor(buttonJoin,RemoteConfigConst.BOOKED_COLOR);
+
+//            buttonJoin.setBackgroundResource(R.drawable.joined_rect);
+
+
         } else if (model.getAvailableSeat() == 0) {
-            buttonJoin.setText(context.getString(R.string.full));
-            buttonJoin.setBackgroundResource(R.drawable.full_rect);
+
+//            buttonJoin.setText(context.getString(R.string.full));
+//            buttonJoin.setBackgroundResource(R.drawable.full_rect);
+            buttonJoin.setText(RemoteConfigConst.FULL);
+            RemoteConfigSetUp.setColor(buttonJoin,RemoteConfigConst.FULL_COLOR);
+
+
         } else {
-            buttonJoin.setText(context.getString(R.string.book));
-            buttonJoin.setBackgroundResource(R.drawable.join_rect);
+
+//            buttonJoin.setText(context.getString(R.string.book));
+//            buttonJoin.setBackgroundResource(R.drawable.join_rect);
+            buttonJoin.setText(RemoteConfigConst.BOOK);
+            RemoteConfigSetUp.setColor(buttonJoin,RemoteConfigConst.BOOK_COLOR);
+
+
         }
     }
 

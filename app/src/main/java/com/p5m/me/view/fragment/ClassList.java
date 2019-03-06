@@ -17,12 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.ClassListAdapter;
-import com.p5m.me.adapters.RecommendedClassAdapter;
 import com.p5m.me.data.CityLocality;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.Filter;
@@ -35,13 +33,13 @@ import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.helper.ClassListListenerHelper;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
-import com.p5m.me.utils.Utility;
 import com.p5m.me.view.activity.Main.ClassProfileActivity;
 import com.p5m.me.view.activity.Main.GymProfileActivity;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
@@ -54,6 +52,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.p5m.me.remote_config.RemoteConfigSetUp.setValue;
 
 public class ClassList extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks<ClassModel>, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener, LocationListener {
 
@@ -174,6 +174,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.fragment_class_list, container, false);
     }
 
@@ -191,7 +192,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
         recyclerViewClass.setLayoutManager(new LinearLayoutManager(activity));
         recyclerViewClass.setHasFixedSize(false);
-       // recyclerViewClass.scrollToPosition(0);
+        // recyclerViewClass.scrollToPosition(0);
 
         try {
             ((SimpleItemAnimator) recyclerViewClass.getItemAnimator()).setSupportsChangeAnimations(false);
@@ -199,6 +200,26 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
             e.printStackTrace();
             LogUtils.exception(e);
         }
+        setValue(RemoteConfigConst.BOOKED_BUTTON_VALUE,
+                RemoteConfigConst.BOOKED_BUTTON, context.getString(R.string.booked));
+        setValue(RemoteConfigConst.FULL_BUTTON_VALUE,
+                RemoteConfigConst.FULL_BUTTON, context.getString(R.string.full));
+        setValue(RemoteConfigConst.BOOK_BUTTON_VALUE,
+                RemoteConfigConst.BOOK_BUTTON, context.getString(R.string.book));
+
+        setValue(RemoteConfigConst.BOOK_WITH_FRIEND_BUTTON_VALUE,
+                RemoteConfigConst.BOOK_WITH_FRIEND, context.getString(R.string.reserve_class_with_friend));
+
+         setValue(RemoteConfigConst.FULL_BUTTON_COLOR_VALUE,
+                RemoteConfigConst.FULL_BUTTON_COLOR, "#3d85ea");
+        setValue(RemoteConfigConst.BOOK_BUTTON_COLOR_VALUE,
+                RemoteConfigConst.BOOK_BUTTON_COLOR, "#3d85ea");
+        setValue(RemoteConfigConst.BOOK_BUTTON_COLOR_VALUE,
+                RemoteConfigConst.BOOKED_BUTTON_COLOR, "#3d85ea");
+
+        /*setConfig(buttonJoin,
+                RemoteConfigConst.BOOKED_BUTTON_COLOR,"#3f5560",RemoteConfigConst.ConfigStatus.COLOR);
+*/
 
         classListAdapter = new ClassListAdapter(context, shownInScreen, true, this);
         recyclerViewClass.setAdapter(classListAdapter);
@@ -237,8 +258,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                 genders.add(((Filter.Gender) classesFilter.getObject()).getId());
             } else if (classesFilter.getObject() instanceof ClassActivity) {
                 activities.add(String.valueOf(((ClassActivity) classesFilter.getObject()).getId()));
-            }
-            else if (classesFilter.getObject() instanceof GymDataModel) {
+            } else if (classesFilter.getObject() instanceof GymDataModel) {
                 gymList.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getId()));
             }
         }
@@ -292,8 +312,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                 genders.add(((Filter.Gender) classesFilter.getObject()).getId());
             } else if (classesFilter.getObject() instanceof ClassActivity) {
                 activities.add(String.valueOf(((ClassActivity) classesFilter.getObject()).getId()));
-            }
-            else if (classesFilter.getObject() instanceof GymDataModel) {
+            } else if (classesFilter.getObject() instanceof GymDataModel) {
                 gymList.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getId()));
             }
         }
@@ -362,18 +381,17 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
         Double lang = null;
         try {
             locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-            Location loc=  locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if(loc!=null){
-              lat = loc.getLatitude();
-              lang = loc.getLongitude();
+            Location loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (loc != null) {
+                lat = loc.getLatitude();
+                lang = loc.getLongitude();
             }
 
-          }
-        catch(SecurityException e) {
+        } catch (SecurityException e) {
             e.printStackTrace();
 
         }
-        callRecomendedClassApi(lat,lang);
+        callRecomendedClassApi(lat, lang);
 
     }
 
@@ -381,8 +399,8 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
         networkCommunicator.getClassList(generateRequest(), this, false);
     }
 
-    private void callRecomendedClassApi(Double latitude,Double longitude){
-        networkCommunicator.getRcomendedClassList(date,latitude,longitude, this, false);
+    private void callRecomendedClassApi(Double latitude, Double longitude) {
+        networkCommunicator.getRcomendedClassList(date, latitude, longitude, this, false);
 
     }
 
@@ -412,9 +430,9 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
             case NetworkCommunicator.RequestCode.RCOMENDED_CLASS_LIST:
                 classListAdapter.clearAll();
                 List<ClassModel> recomendedClassModels = ((ResponseModel<List<ClassModel>>) response).data;
-                if(!recomendedClassModels.isEmpty()){
+                if (!recomendedClassModels.isEmpty()) {
                     classListAdapter.addRecomendedClasses(new RecomendedClassData(recomendedClassModels));
-                    }
+                }
                 callApiClassList();
 //                checkListData();
                 break;
@@ -437,7 +455,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
     }
 
     private void checkListData() {
-        if (classListAdapter.getList().isEmpty() || classListAdapter.getList().size()==1) {
+        if (classListAdapter.getList().isEmpty() || classListAdapter.getList().size() == 1) {
             layoutNoData.setVisibility(View.VISIBLE);
             classListAdapter.notifyDataSetChanged();
             textViewEmptyLayoutText.setText(R.string.no_data_class_list_main);
@@ -467,7 +485,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
     @Override
     public void onLocationChanged(Location location) {
-       // Toast.makeText(context, "Latitude: " + location.getLatitude() + "\n Longitude: " + location.getLongitude(), Toast.LENGTH_SHORT).show();
+        // Toast.makeText(context, "Latitude: " + location.getLatitude() + "\n Longitude: " + location.getLongitude(), Toast.LENGTH_SHORT).show();
 
     }
 
@@ -480,7 +498,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
     @Override
     public void onProviderEnabled(String s) {
-       // Toast.makeText(context, "onProviderEnabled:- "+" "+s, Toast.LENGTH_SHORT).show();
+        // Toast.makeText(context, "onProviderEnabled:- "+" "+s, Toast.LENGTH_SHORT).show();
 
 
     }
