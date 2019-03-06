@@ -37,7 +37,6 @@ import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.helper.ClassListListenerHelper;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
-import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -62,6 +61,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.p5m.me.remote_config.RemoteConfigSetUp.setConfig;
 import static com.p5m.me.utils.AppConstants.Limit.PAGE_LIMIT_MAIN_CLASS_LIST;
 
 public class ClassProfileActivity extends BaseActivity implements AdapterCallbacks, View.OnClickListener, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
@@ -221,17 +221,17 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
         MixPanel.trackClassDetails();
 
-        new RemoteConfigSetUp().setConfig(this,textViewBook,
+        setConfig(this,textViewBook,
                 RemoteConfigConst.BOOK_IN_CLASS,getString(R.string.reserve_class),RemoteConfigConst.ConfigStatus.TEXT
         );
-       /* new RemoteConfigSetUp().setConfig(this,textViewBookWithFriend,
+        textViewBookWithFriend.setText(RemoteConfigConst.BOOK_WITH_FRIEND_VALUE);
+      /* setConfig(this, textViewBookWithFriend,
                 RemoteConfigConst.BOOK_WITH_FRIEND,getString(R.string.reserve_class_with_friend),RemoteConfigConst.ConfigStatus.TEXT
         );*/
-        new RemoteConfigSetUp().setConfig(this,textViewBook,
+        setConfig(this, textViewBook,
                 RemoteConfigConst.BOOK_IN_CLASS_COLOR,"#3d85ea",RemoteConfigConst.ConfigStatus.COLOR);
-       /* new RemoteConfigSetUp().setConfig(this,textViewBookWithFriend,
-                RemoteConfigConst.BOOK_WITH_FRIEND_COLOR,"#3d85ea",RemoteConfigConst.ConfigStatus.COLOR);
-*/
+//        setConfig(this, textViewBookWithFriend,
+//                RemoteConfigConst.BOOK_WITH_FRIEND_COLOR,"#3d85ea",RemoteConfigConst.ConfigStatus.COLOR);
 
     }
 

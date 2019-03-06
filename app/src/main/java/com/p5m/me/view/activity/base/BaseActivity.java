@@ -15,6 +15,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.p5m.me.analytics.MixPanel;
+import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.RefrenceWrapper;
@@ -47,6 +48,7 @@ public class BaseActivity extends AppCompatActivity {
         refrenceWrapper= RefrenceWrapper.getRefrenceWrapper(this);
 
         MixPanel.setup(activity);
+        RemoteConfigSetUp.setup(activity);
 
         networkCommunicator = NetworkCommunicator.getInstance(context);
         LogUtils.debug(activityRef.getComponentName().getClassName());

@@ -43,7 +43,6 @@ import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
-import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.utils.AppConstants;
@@ -60,6 +59,8 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
+
+import static com.p5m.me.remote_config.RemoteConfigSetUp.setConfig;
 
 public class SearchActivity extends BaseActivity implements NetworkCommunicator.RequestListener, AdapterCallbacks, View.OnClickListener, ViewPager.OnPageChangeListener {
 
@@ -144,7 +145,7 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
 
         viewPager.addOnPageChangeListener(this);
 
-        new RemoteConfigSetUp().setConfig(this,editTextSearch,
+       setConfig(this, editTextSearch,
                 RemoteConfigConst.SEARCH_TEXT,getString(R.string.search_hint),RemoteConfigConst.ConfigStatus.HINT
         );
 

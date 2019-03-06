@@ -1,22 +1,13 @@
 package com.p5m.me.view.activity.Main;
 
-import android.Manifest;
-import android.app.NotificationManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.Settings;
-import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -26,11 +17,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
-import com.p5m.me.BuildConfig;
 import com.p5m.me.R;
 import com.p5m.me.adapters.HomeAdapter;
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
@@ -42,7 +28,6 @@ import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.remote_config.RemoteConfigConst;
-import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -62,12 +47,12 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.p5m.me.remote_config.RemoteConfigSetUp.setConfig;
 
 
 public class HomeActivity extends BaseActivity implements BottomTapLayout.TabListener, ViewPager.OnPageChangeListener,View.OnClickListener,NetworkCommunicator.RequestListener {
@@ -185,9 +170,9 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         networkCommunicator.getRatingParameters(this, true);
         checkFacebookSessionStatus();
 
-        new RemoteConfigSetUp().setConfig(HomeActivity.this,buyClasses,
+        setConfig(this, buyClasses,
                 RemoteConfigConst.BUY_CLASS,getString(R.string.buy_classes),RemoteConfigConst.ConfigStatus.TEXT);
-        new RemoteConfigSetUp().setConfig(HomeActivity.this,buyClasses,
+       setConfig(this, buyClasses,
                 RemoteConfigConst.BUY_CLASS_BUTTON_COLOR,"#3d85ea",RemoteConfigConst.ConfigStatus.COLOR);
     }
 

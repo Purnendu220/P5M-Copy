@@ -1,6 +1,7 @@
 package com.p5m.me.remote_config;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -18,40 +19,101 @@ import com.p5m.me.BuildConfig;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
+import static com.p5m.me.remote_config.RemoteConfigConst.BOOKED_BUTTON_COLOR_VALUE;
+import static com.p5m.me.remote_config.RemoteConfigConst.BOOKED_BUTTON_VALUE;
+import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_BUTTON_COLOR_VALUE;
+import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_BUTTON_VALUE;
+import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_WITH_FRIEND_BUTTON_VALUE;
+import static com.p5m.me.remote_config.RemoteConfigConst.FULL_BUTTON_COLOR_VALUE;
+import static com.p5m.me.remote_config.RemoteConfigConst.FULL_BUTTON_VALUE;
+
 public class RemoteConfigSetUp {
-    public FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-    public Activity context;
+    public static final FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+
+    private static Activity context;
 
 
-    public void setConfig(final Activity context, final View view, final String key, String defaultValue, final RemoteConfigConst.ConfigStatus configStatus) {
-        this.context = context;
+    public static void setup(Activity activity) {
+
         firebaseRemoteConfig.setConfigSettings(new FirebaseRemoteConfigSettings.Builder()
                 .setDeveloperModeEnabled(true)
                 .build());
 
+        context = activity;
+
+    }
+
+    public static void setConfig(Activity activity, final View view, final String key, final String defaultValue, final RemoteConfigConst.ConfigStatus configStatus) {
+
+
         HashMap<String, Object> defaults = new HashMap<>();
         defaults.put(key, defaultValue);
         firebaseRemoteConfig.setDefaults(defaults);
-        final Task<Void> fetch = firebaseRemoteConfig.fetch(BuildConfig.DEBUG ? 0 : TimeUnit.HOURS.toSeconds(2));
-        fetch.addOnSuccessListener(context, new OnSuccessListener<Void>() {
+        final Task<Void> fetch = firebaseRemoteConfig.fetch(BuildConfig.DEBUG ? 0 : TimeUnit.HOURS.toSeconds(1));
+        fetch.addOnSuccessListener(activity, new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 firebaseRemoteConfig.activateFetched();
-                methodOfUpdate(view, key, configStatus);
+                methodOfUpdate(view, key, defaultValue, configStatus);
             }
 
         });
     }
 
+    public static void setValue(final int constValue, final String key, final String defaultValue) {
 
-    public void methodOfUpdate(View view, String key, RemoteConfigConst.ConfigStatus configStatus) {
-        String keyValue = firebaseRemoteConfig.getString(key);
-        firebaseRemoteConfig.activateFetched();
-        onSetValue(view, keyValue, configStatus);
+        HashMap<String, Object> defaults = new HashMap<>();
+        defaults.put(key, defaultValue);
+        firebaseRemoteConfig.setDefaults(defaults);
 
+        final Task<Void> fetch = firebaseRemoteConfig.fetch(BuildConfig.DEBUG ? 0 : TimeUnit.HOURS.toSeconds(1));
+        fetch.addOnSuccessListener(context, new OnSuccessListener<Void>() {
+
+            @Override
+            public void onSuccess(Void aVoid) {
+                firebaseRemoteConfig.activateFetched();
+                String keyValue = firebaseRemoteConfig.getString(key);
+                firebaseRemoteConfig.activateFetched();
+                switch (constValue) {
+                    case BOOKED_BUTTON_VALUE:
+                        RemoteConfigConst.BOOKED = keyValue;
+                        break;
+                    case BOOK_BUTTON_VALUE:
+                        RemoteConfigConst.BOOK = keyValue;
+                        break;
+                    case FULL_BUTTON_VALUE:
+                        RemoteConfigConst.FULL = keyValue;
+                        break;
+                     case BOOK_WITH_FRIEND_BUTTON_VALUE:
+                        RemoteConfigConst.BOOK_WITH_FRIEND_VALUE = keyValue;
+                        break;
+                    case BOOKED_BUTTON_COLOR_VALUE:
+                        RemoteConfigConst.BOOKED_COLOR = keyValue;
+                        break;
+                    case BOOK_BUTTON_COLOR_VALUE:
+                        RemoteConfigConst.BOOK_COLOR = keyValue;
+                        break;
+                    case FULL_BUTTON_COLOR_VALUE:
+                        RemoteConfigConst.FULL_COLOR = keyValue;
+                        break;
+
+
+                }
+            }
+        });
     }
 
-    private void onSetValue(View view, String keyValue, RemoteConfigConst.ConfigStatus configStatus) {
+
+    public static void methodOfUpdate(View view, String key, String defaultValue, RemoteConfigConst.ConfigStatus configStatus) {
+        String keyValue = firebaseRemoteConfig.getString(key);
+        firebaseRemoteConfig.activateFetched();
+        if (keyValue != null)
+            onSetValue(view, keyValue, configStatus);
+        else
+            onSetValue(view, defaultValue, configStatus);
+    }
+
+    private static void onSetValue(View view, String keyValue, RemoteConfigConst.ConfigStatus configStatus) {
         switch (configStatus) {
             case TEXT:
                 setText(view, keyValue);
@@ -65,23 +127,30 @@ public class RemoteConfigSetUp {
         }
     }
 
-    private void setColor(View view, String keyValue) {
+    public static void setColor(View view, String keyValue) {
+        int color;
+        try {
+            color = Color.parseColor(keyValue);
+        } catch (IllegalArgumentException e) {
+            color = Color.parseColor("#3d85ea");
+        }
         if (view instanceof TextView) {
             Drawable wrappedDrawable = DrawableCompat.wrap(view.getBackground());
             if (wrappedDrawable != null) {
-                DrawableCompat.setTint(wrappedDrawable.mutate(), Color.parseColor(keyValue));
+                DrawableCompat.setTint(wrappedDrawable.mutate(), color);
                 setBackgroundDrawable(view, wrappedDrawable);
-            }
-            else
-                ((TextView) view).setBackgroundColor(Color.parseColor(keyValue));
+
+
+            } else
+                ((TextView) view).setBackgroundColor(color);
 
         } else if (view instanceof Button) {
             Drawable wrappedDrawable = DrawableCompat.wrap(view.getBackground());
             if (wrappedDrawable != null) {
-                DrawableCompat.setTint(wrappedDrawable.mutate(), Color.parseColor(keyValue));
+                DrawableCompat.setTint(wrappedDrawable.mutate(), color);
                 setBackgroundDrawable(view, wrappedDrawable);
-            }else
-                ((Button) view).setBackgroundColor(Color.parseColor(keyValue));
+            } else
+                ((Button) view).setBackgroundColor(color);
         }
     }
 
@@ -94,14 +163,14 @@ public class RemoteConfigSetUp {
         }
     }
 
-    private void setText(View view, String keyValue) {
+    private static void setText(View view, String keyValue) {
         if (view instanceof TextView)
             ((TextView) view).setText(keyValue);
         else if (view instanceof Button)
             ((Button) view).setText(keyValue);
     }
 
-    private void setHint(View view, String keyValue) {
+    private static void setHint(View view, String keyValue) {
         if (view instanceof TextView)
             ((TextView) view).setHint(keyValue);
     }

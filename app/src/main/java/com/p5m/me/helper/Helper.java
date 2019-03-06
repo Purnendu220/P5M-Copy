@@ -35,10 +35,7 @@ import com.p5m.me.utils.KeyboardUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.LoginRegister.ContinueUser;
 import com.p5m.me.view.activity.LoginRegister.InfoScreen;
-import com.p5m.me.view.activity.Main.ClassProfileActivity;
-import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.Main.LocationActivity;
-import com.p5m.me.view.activity.Main.SearchActivity;
 import com.p5m.me.view.custom.GalleryActivity;
 
 import java.io.InputStream;
@@ -167,20 +164,32 @@ public class Helper {
     }
 
     public static void setJoinButton(Context context, Button buttonJoin, ClassModel model) {
-        if (model.isUserJoinStatus()) {
-            new RemoteConfigSetUp().setConfig(ClassProfileActivity.activityRef,buttonJoin,
-                    RemoteConfigConst.BOOKED_BUTTON,context.getString(R.string.booked),RemoteConfigConst.ConfigStatus.TEXT);
-            buttonJoin.setText(context.getString(R.string.booked));
-            buttonJoin.setBackgroundResource(R.drawable.joined_rect);
-        } else if (model.getAvailableSeat() == 0) {
-            buttonJoin.setText(context.getString(R.string.full));
-            buttonJoin.setBackgroundResource(R.drawable.full_rect);
-        } else {
-            new RemoteConfigSetUp().setConfig(ClassProfileActivity.activityRef,buttonJoin,
-                    RemoteConfigConst.BOOK_BUTTON,context.getString(R.string.book),RemoteConfigConst.ConfigStatus.TEXT);
 
-            buttonJoin.setText(context.getString(R.string.book));
-            buttonJoin.setBackgroundResource(R.drawable.join_rect);
+        if (model.isUserJoinStatus()) {
+
+//            buttonJoin.setText(context.getString(R.string.booked));
+            buttonJoin.setText(RemoteConfigConst.BOOKED);
+            RemoteConfigSetUp.setColor(buttonJoin,RemoteConfigConst.BOOKED_COLOR);
+
+//            buttonJoin.setBackgroundResource(R.drawable.joined_rect);
+
+
+        } else if (model.getAvailableSeat() == 0) {
+
+//            buttonJoin.setText(context.getString(R.string.full));
+//            buttonJoin.setBackgroundResource(R.drawable.full_rect);
+            buttonJoin.setText(RemoteConfigConst.FULL);
+            RemoteConfigSetUp.setColor(buttonJoin,RemoteConfigConst.FULL_COLOR);
+
+
+        } else {
+
+//            buttonJoin.setText(context.getString(R.string.book));
+//            buttonJoin.setBackgroundResource(R.drawable.join_rect);
+            buttonJoin.setText(RemoteConfigConst.BOOK);
+            RemoteConfigSetUp.setColor(buttonJoin,RemoteConfigConst.BOOK_COLOR);
+
+
         }
     }
 

@@ -100,8 +100,6 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
 
         context = view.getContext();
         ButterKnife.bind(this, view);
-        new RemoteConfigSetUp().setConfig(SearchActivity.activityRef,buttonJoin,
-                RemoteConfigConst.BOOK_BUTTON_COLOR,"#3f5560",RemoteConfigConst.ConfigStatus.COLOR);
 
 
         this.shownInScreen = shownInScreen;
