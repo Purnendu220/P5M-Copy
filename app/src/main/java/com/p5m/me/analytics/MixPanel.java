@@ -41,6 +41,7 @@ public class MixPanel {
 
     public static final String PROJECT_ID = BuildConfig.SENDER_ID;
 
+
     public static MixpanelAPI mixPanel;
 
     public static void setup(Context context) {
@@ -58,7 +59,7 @@ public class MixPanel {
             return;
         }
 
-        mixPanel = MixpanelAPI.getInstance(context, MIX_PANEL_TOKEN);
+        mixPanel = MixpanelAPI.getInstance(context, MIX_PANEL_TOKEN, true);
 
         try {
             mixPanel.identify(String.valueOf(TempStorage.getUser().getId()));
@@ -68,6 +69,7 @@ public class MixPanel {
             isSetupDone = true;
             LogUtils.debug("MixPanel setup done");
         } catch (Exception e) {
+            isSetupDone = false;
             e.printStackTrace();
             LogUtils.exception(e);
             LogUtils.debug("MixPanel setup error");
@@ -83,6 +85,12 @@ public class MixPanel {
             e.printStackTrace();
             LogUtils.exception(e);
         }
+    }
+
+    public static void login(Context context) {
+    }
+
+    public static void logout() {
     }
 
     public static void flush() {
@@ -107,6 +115,7 @@ public class MixPanel {
             e.printStackTrace();
             LogUtils.exception(e);
         }
+
     }
 
     public static void trackPastLogin(String pastLogin) {
@@ -349,7 +358,6 @@ public class MixPanel {
                 new Runnable() {
                     @Override
                     public void run() {
-
                         try {
                             List<String> times = new ArrayList<>();
                             List<String> activities = new ArrayList<>();

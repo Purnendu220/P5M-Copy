@@ -17,6 +17,7 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.ViewPagerIndicator;
 import com.p5m.me.view.activity.base.BaseActivity;
+import com.p5m.me.view.activity.custom.MyViewPager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,7 +40,7 @@ public class RegistrationActivity extends BaseActivity {
     @BindView(R.id.imageViewBack)
     public ImageView imageViewBack;
     @BindView(R.id.viewPager)
-    public ViewPager viewPager;
+    public MyViewPager viewPager;
     @BindView(R.id.layoutIndicator)
     public LinearLayout layoutIndicator;
 
@@ -108,13 +109,7 @@ public class RegistrationActivity extends BaseActivity {
         new ViewPagerIndicator(context, ViewPagerIndicator.STYLE_NORMAL).setup(viewPager, layoutIndicator, R.drawable.circle_black, R.drawable.circle_grey);
 
         // Un-Scrollable
-        viewPager.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                return true;
-            }
-        });
-
+       viewPager.setPagingEnabled(false);
         viewPager.post(new Runnable() {
             @Override
             public void run() {

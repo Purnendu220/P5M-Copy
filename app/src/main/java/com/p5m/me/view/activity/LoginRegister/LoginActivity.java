@@ -265,7 +265,6 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
 
                 if (response != null) {
                     User user = ((ResponseModel<User>) response).data;
-
                     EventBroadcastHelper.sendLogin(context, user);
 
                     HomeActivity.open(context);
