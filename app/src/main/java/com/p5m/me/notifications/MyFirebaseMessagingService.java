@@ -32,10 +32,11 @@ import com.p5m.me.view.activity.Main.NotificationActivity;
 import com.p5m.me.view.activity.Main.SettingActivity;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
 import com.p5m.me.view.activity.Main.TransactionHistoryActivity;
+import com.p5m.me.view.activity.base.BaseActivity;
 
 import org.json.JSONObject;
 
-import java.util.Calendar;
+
 import java.util.Hashtable;
 
 /**
@@ -112,42 +113,47 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
                     updateEvent(jsonObject, dataID);
-
-                    break;
+                   break;
                 case "OnClassUpdateByTrainer":
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
                     updateEvent(jsonObject, dataID);
+
                     break;
                 case "OnSessionUpdateByGYM":
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
                     updateEvent(jsonObject, dataID);
+
                     break;
                 case "OnSessionUpdateByTrainerOfGym":
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
                     updateEvent(jsonObject, dataID);
-                    break;
+
+                   break;
                 case "OnSessionUpdateByTrainer":
                     TempStorage.removeSavedClass((int) dataID, context);
-                    setNotification(jsonObject, dataID);
                     updateEvent(jsonObject, dataID);
+
                     break;
                 case "OnSessionUpdateByGymOfTrainer":
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
                     updateEvent(jsonObject, dataID);
+
                     break;
                 case "OnClassUpdateByCms":
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
                     updateEvent(jsonObject, dataID);
+
                     break;
                 case "OnGroupClassUpdateByCms":
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
                     updateEvent(jsonObject, dataID);
+
                     break;
                 case "OnJoinClass":
                     setNotification(jsonObject, dataID);
@@ -192,10 +198,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void bookEvent(ClassModel model) {
         if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
             CalendarHelper.scheduleCalenderEvent(this,model);
-        } else {
-            CalendarHelper.requestCalendarReadWritePermission(this);
         }
+
     }
+
+
 
 
 
@@ -460,7 +467,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     }
 
 
-
                     break;
 
                 //******************** UNUSED **************************//
@@ -641,6 +647,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             }
             else {
+
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
 
             }
@@ -649,8 +656,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
 
         }
-
-
 
 
         return navigationIntent;

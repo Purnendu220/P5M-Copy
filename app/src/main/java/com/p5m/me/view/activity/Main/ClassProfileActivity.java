@@ -261,7 +261,20 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             if (Helper.isFreeClass(classModel))
                 joinClass();
             else {
-                alertNonRefundMsg();
+                if (!user.isBuyMembership())
+                    alertNonRefundMsg();
+                else {
+                    if (Helper.isSpecialClass(classModel) &&
+                            !Helper.isFreeClass(classModel)
+                            ) {
+
+                        CheckoutActivity.openActivity(context, classModel, 1);
+
+                    } else {
+                        joinClass();
+
+                    }
+                }
             }
             return;
         }
@@ -291,21 +304,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
         if (Helper.isSpecialClass(classModel) && !Helper.isFreeClass(classModel)) {
 //            message = warningMsg;
-            if (!user.isBuyMembership())
-                alertNonRefundMsg();
-            else
-            {
-                if (Helper.isSpecialClass(classModel) &&
-                        !Helper.isFreeClass(classModel)
-                        ) {
-
-                    CheckoutActivity.openActivity(context, classModel, 1);
-
-                } else {
-                    joinClass();
-
-                }
-            }
+            alertNonRefundMsg();
 
         } else if (DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime()) <= cancelTime) {
 //            message = warningMsg;
@@ -341,22 +340,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         }
     }
 
-    /*  @OnClick(R.id.textViewBook)
-      public void clickBookButton() {
-          float cancelTime = 2;
-          String warningMsg=activity.getString(R.string.non_refundable_warning_msg);
-          if (Helper.isSpecialClass(classModel) && !Helper.isFreeClass(classModel)) {
-              message = warningMsg;
-              alertNonRefundMsg();
-
-          } else if (DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime()) <= cancelTime) {
-              message = warningMsg;
-              alertNonRefundMsg();
-          }
-
-
-
-      }*/
     private void alertNonRefundMsg() {
         final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
                 .cancelable(false)
@@ -665,7 +648,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();
                                     Helper.shareClass(context, classModel.getClassSessionId(), classModel.getTitle());
-//                                    bookEvent();
+
                                     finish();
 
                                 }
@@ -673,7 +656,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();
-//                                    bookEvent();
+
                                     finish();
                                 }
                             });
@@ -737,6 +720,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             return;
 
                         } else {
+
                         Package aPackage = packages.get(0);
                         MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
                     }
@@ -753,6 +737,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             return;
                         } else {
                             MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+
                         }
                     }
                 }
@@ -858,6 +843,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             //MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
 
 
+
                     }
 
 
@@ -960,6 +946,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             }
 
         }
+
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }

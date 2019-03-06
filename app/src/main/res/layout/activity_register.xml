@@ -15,6 +15,7 @@
             android:layout_weight="1">
 
             <com.p5m.me.view.custom.NonSwipeableViewPager
+
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

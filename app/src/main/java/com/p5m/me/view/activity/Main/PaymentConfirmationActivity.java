@@ -440,6 +440,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         switch (paymentStatus) {
             case SUCCESS:
                 setConfirmBookingStyle();
+
                 setStyle();
                 break;
             case FAILURE:
@@ -456,6 +457,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 
         }
     }
+
 
 
 
