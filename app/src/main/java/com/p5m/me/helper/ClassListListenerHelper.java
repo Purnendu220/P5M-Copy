@@ -380,8 +380,6 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
     private static void deleteEvent(Context context) {
         if (CalendarHelper.haveCalendarReadWritePermissions(context)) {
             onDeleteEvent(context);
-        } else {
-            CalendarHelper.requestCalendarReadWritePermission(context);
         }
         if (CalendarHelper.haveCalendarReadWritePermissions(context)) {
             calendarIdTable = CalendarHelper.listCalendarId(context);
