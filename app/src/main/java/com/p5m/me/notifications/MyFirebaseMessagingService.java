@@ -35,7 +35,7 @@ import com.p5m.me.view.activity.Main.TransactionHistoryActivity;
 
 import org.json.JSONObject;
 
-import java.util.Calendar;
+
 import java.util.Hashtable;
 
 /**
@@ -112,42 +112,47 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
                     updateEvent(jsonObject, dataID);
-
-                    break;
+                   break;
                 case "OnClassUpdateByTrainer":
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
                     updateEvent(jsonObject, dataID);
+
                     break;
                 case "OnSessionUpdateByGYM":
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
                     updateEvent(jsonObject, dataID);
+
                     break;
                 case "OnSessionUpdateByTrainerOfGym":
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
                     updateEvent(jsonObject, dataID);
-                    break;
+
+                   break;
                 case "OnSessionUpdateByTrainer":
                     TempStorage.removeSavedClass((int) dataID, context);
-                    setNotification(jsonObject, dataID);
                     updateEvent(jsonObject, dataID);
+
                     break;
                 case "OnSessionUpdateByGymOfTrainer":
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
                     updateEvent(jsonObject, dataID);
+
                     break;
                 case "OnClassUpdateByCms":
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
                     updateEvent(jsonObject, dataID);
+
                     break;
                 case "OnGroupClassUpdateByCms":
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
                     updateEvent(jsonObject, dataID);
+
                     break;
                 case "OnJoinClass":
                     setNotification(jsonObject, dataID);
@@ -194,7 +199,30 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             CalendarHelper.scheduleCalenderEvent(this,model);
         } else {
             CalendarHelper.requestCalendarReadWritePermission(this);
+
         }
+
+    }
+
+    private void removeEvent(JSONObject jsonObject, long dataID) {
+        String title = jsonObject.optString(AppConstants.Notification.CLASS_TITLE);
+        String classDate = jsonObject.optString(AppConstants.Notification.CLASS_DATE);
+        String fromTime = jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME);
+        String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
+        ClassModel model = new ClassModel(title, classDate, fromTime, toTime, dataID);
+//        updateEvent(model);
+        CalendarHelper.deleteEventId(model.getClassSessionId()
+                ,context);
+    }
+    private void updateEvent(JSONObject jsonObject, long dataID) {
+        String title = jsonObject.optString(AppConstants.Notification.CLASS_TITLE);
+        String classDate = jsonObject.optString(AppConstants.Notification.CLASS_DATE);
+        String fromTime = jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME);
+        String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
+        ClassModel model = new ClassModel(title, classDate, fromTime, toTime, dataID);
+        updateEvent(model);
+//        CalendarHelper.deleteEventId(model.getTitle()+DateUtils.getClassTime(model.getFromTime(), model.getToTime())
+//                ,context);
     }
 
 
@@ -460,7 +488,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     }
 
 
-
                     break;
 
                 //******************** UNUSED **************************//
@@ -641,6 +668,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             }
             else {
+
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
 
             }
@@ -649,8 +677,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
 
         }
-
-
 
 
         return navigationIntent;

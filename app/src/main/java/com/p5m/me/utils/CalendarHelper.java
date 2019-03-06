@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
 import android.provider.CalendarContract.Reminders;
 import android.support.v4.app.ActivityCompat;
@@ -19,6 +18,7 @@ import android.util.Log;
 
 import com.p5m.me.R;
 import com.p5m.me.data.main.ClassModel;
+
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -32,7 +32,6 @@ public class CalendarHelper {
     private static final String TAG = "CalendarHelper";
     public static final int CALENDARED_PERMISSION_REQUEST_CODE = 99;
     public static long oneHour = 1000 * 60 * 60;
-
 
     public static void scheduleCalenderEvent(Context caller,ClassModel model) {
 
@@ -50,8 +49,10 @@ public class CalendarHelper {
         values.put(Events._ID,model.getClassSessionId());
         values.put(Events.ALL_DAY, false);
         values.put(Events.HAS_ALARM, true);
+
         values.put(Events.EVENT_TIMEZONE, TimeZone.getDefault().getID());
         Uri uri = cr.insert(Events.CONTENT_URI, values);
+
             ContentValues reminders = new ContentValues();
             reminders.put(Reminders.EVENT_ID, model.getClassSessionId());
             reminders.put(Reminders.METHOD, Reminders.METHOD_ALERT);
@@ -98,6 +99,7 @@ public class CalendarHelper {
     public static Hashtable listCalendarId(Context c) {
 
         if (haveCalendarReadWritePermissions(c)) {
+
 
             String projection[] = {"_id", "calendar_displayName"};
             Uri calendars;
@@ -178,6 +180,7 @@ public class CalendarHelper {
     }
 
 
+
     public static void updateEvent(Context caller, ClassModel classModel ) {
         long eventStartTime = DateUtils.eventTime(classModel.getClassDate() + " " + classModel.getFromTime());
         long eventEndTime = DateUtils.eventTime(classModel.getClassDate() + " " + classModel.getToTime());
@@ -204,6 +207,7 @@ public class CalendarHelper {
             String calendarString = "@";
 
             for (Hashtable.Entry<String, String> entry : calendarIdTable.entrySet()) {
+
 
                 if (entry.getKey().contains(calendarString)) {
                     calendar_id = Integer.parseInt(entry.getValue());

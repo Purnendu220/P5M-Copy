@@ -633,6 +633,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();
                                     Helper.shareClass(context, classModel.getClassSessionId(), classModel.getTitle());
+
                                     finish();
 
                                 }
@@ -640,6 +641,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();
+
                                     finish();
                                 }
                             });
@@ -703,6 +705,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             return;
 
                         } else {
+
                         Package aPackage = packages.get(0);
                         MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
                     }
@@ -719,6 +722,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             return;
                         } else {
                             MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+
                         }
                     }
                 }
@@ -824,6 +828,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             //MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
 
 
+
                     }
 
 
@@ -926,6 +931,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             }
 
         }
+
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
