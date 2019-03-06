@@ -12,10 +12,14 @@ import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
 import com.p5m.me.utils.WordUtils;
+import com.p5m.me.view.activity.Main.HomeActivity;
+import com.p5m.me.view.activity.Main.SearchActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -96,6 +100,7 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
 
         context = view.getContext();
         ButterKnife.bind(this, view);
+
 
         this.shownInScreen = shownInScreen;
     }
