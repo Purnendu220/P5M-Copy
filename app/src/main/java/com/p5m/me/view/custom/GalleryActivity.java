@@ -41,12 +41,14 @@ public class GalleryActivity extends BaseActivity implements ViewPager.OnPageCha
     private GalleryMediaSlider viewPagerAdapter;
     public static List<String> images = new ArrayList<>();
     public static int DEFAULT_SELECTED_POSITION;
+    public static String mViewHolderType;
 
     private Animation slideUpAnimation, slideDownAnimation;
 
-    public static void openActivity(Context context, Activity activity, View sharedElement, int selectedPosition, List<String> images) {
+    public static void openActivity(Context context, Activity activity, View sharedElement, int selectedPosition, List<String> images,String viewHolderType) {
         GalleryActivity.DEFAULT_SELECTED_POSITION = selectedPosition;
         GalleryActivity.images = images;
+        GalleryActivity.mViewHolderType = viewHolderType;
 
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //            sharedElement.setTransitionName("imageViewTransition");
@@ -146,6 +148,7 @@ public class GalleryActivity extends BaseActivity implements ViewPager.OnPageCha
             MediaGalleryFragment galleryMediaFragment = new MediaGalleryFragment();
             Bundle bundle = new Bundle();
             bundle.putString("uri", images.get(position));
+            bundle.putString("viewHolder",GalleryActivity.mViewHolderType);
             galleryMediaFragment.setArguments(bundle);
             mediaGalleryFragments.set(position, galleryMediaFragment);
             return galleryMediaFragment;

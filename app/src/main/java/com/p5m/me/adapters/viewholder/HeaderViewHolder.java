@@ -45,7 +45,7 @@ public class HeaderViewHolder extends RecyclerView.ViewHolder {
 
             if (isNoUpcomingClasses) {
                 textView.setTextColor(ContextCompat.getColor(context, R.color.theme_medium_dark_text));
-                textView.setText("No Upcoming Classes");
+                textView.setText(R.string.no_upcoming_classes);
             } else {
                 textView.setTextColor(ContextCompat.getColor(context, R.color.theme_accent_text));
             }

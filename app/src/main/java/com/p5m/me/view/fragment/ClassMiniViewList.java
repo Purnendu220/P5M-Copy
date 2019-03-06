@@ -327,7 +327,9 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
                     if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
                         for (ClassModel classModel : classModels) {
                             classModel.setUserJoinStatus(true);
-                        }
+                            }
+
+
                     }
 
                     classListAdapter.addAllClass(classModels);
@@ -343,6 +345,9 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
                 checkListData();
 
                 classListAdapter.notifyDataSetChanged();
+               // filterList(classModels);
+
+
                 break;
         }
     }
@@ -383,4 +388,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
             layoutNoData.setVisibility(View.GONE);
         }
     }
+
+
+
 }

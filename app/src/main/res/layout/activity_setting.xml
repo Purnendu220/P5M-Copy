@@ -88,7 +88,7 @@
                                 android:layout_weight="1"
                                 android:fontFamily="sans-serif"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
-                                android:text="Notification"
+                                android:text="@string/notification"
                                 android:textColor="@color/theme_dark_light_text"
                                 android:textSize="@dimen/text_large"
                                 android:textStyle="normal" />
@@ -133,7 +133,7 @@
                                 android:layout_weight="1"
                                 android:fontFamily="sans-serif"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
-                                android:text="Membership"
+                                android:text="@string/membership"
                                 android:textColor="@color/theme_dark_light_text"
                                 android:textSize="@dimen/text_large"
                                 android:textStyle="normal" />
@@ -178,7 +178,7 @@
                                 android:gravity="left"
                                 android:fontFamily="sans-serif"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
-                                android:text="Transaction History"
+                                android:text="@string/transaction_history"
                                 android:textColor="@color/theme_dark_light_text"
                                 android:textSize="@dimen/text_large"
                                 android:textStyle="normal" />
@@ -231,7 +231,7 @@
                                 android:gravity="left"
                                 android:fontFamily="sans-serif"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
-                                android:text="Contact Us"
+                                android:text="@string/contact_us"
                                 android:textColor="@color/theme_dark_light_text"
                                 android:textSize="@dimen/text_large"
                                 android:textStyle="normal" />
@@ -275,7 +275,7 @@
                                 android:fontFamily="sans-serif"
                                 android:gravity="left"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
-                                android:text="Privacy Policy"
+                                android:text="@string/privacy_policy"
                                 android:textColor="@color/theme_dark_light_text"
                                 android:textSize="@dimen/text_large"
                                 android:textStyle="normal" />
@@ -319,7 +319,7 @@
                                 android:gravity="left"
                                 android:fontFamily="sans-serif"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
-                                android:text="Terms &amp; Condition"
+                                android:text="@string/terms_n_condition"
                                 android:textColor="@color/theme_dark_light_text"
                                 android:textSize="@dimen/text_large"
                                 android:textStyle="normal" />
@@ -364,7 +364,7 @@
                                 android:gravity="left"
                                 android:fontFamily="sans-serif"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
-                                android:text="About Us"
+                                android:text="@string/about_us"
                                 android:textColor="@color/theme_dark_light_text"
                                 android:textSize="@dimen/text_large"
                                 android:textStyle="normal" />
@@ -418,7 +418,7 @@
                                 android:fontFamily="sans-serif"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
                                 android:gravity="left"
-                                android:text="Logout"
+                                android:text="@string/log_out"
                                 android:textColor="@color/theme_dark_light_text"
                                 android:textSize="@dimen/text_large"
                                 android:textStyle="normal" />

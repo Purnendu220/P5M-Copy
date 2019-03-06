@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
+import com.p5m.me.BuildConfig;
 import com.p5m.me.MyApp;
 import com.p5m.me.data.CityLocality;
 import com.p5m.me.data.ClassesFilter;
@@ -12,6 +13,7 @@ import com.p5m.me.data.Filter;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.storage.TempStorage;
@@ -35,7 +37,10 @@ public class MixPanel {
     private static Handler handlerBg;
 
     private static boolean isSetupDone;
-    public static final String MIX_PANEL_TOKEN = MyApp.MIX_PANEL_TOKEN;
+    public static final String MIX_PANEL_TOKEN = BuildConfig.MIXPANEL_KEY;
+
+    public static final String PROJECT_ID = BuildConfig.SENDER_ID;
+
 
     public static MixpanelAPI mixPanel;
 
@@ -100,16 +105,17 @@ public class MixPanel {
     }
 
     private static void trackUser(String id, JSONObject props) {
-//        try {
-//            if (MyApp.USE_MIX_PANEL) {
-//                mixPanel.getPeople().identify(id);
-//                mixPanel.getPeople().set(props);
-////                mixPanel.getPeople().initPushHandling(MyApp.GOOGLE_API_PROJECT);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            LogUtils.exception(e);
-//        }
+        try {
+            if (MyApp.USE_MIX_PANEL) {
+                mixPanel.getPeople().identify(id);
+                mixPanel.getPeople().set(props);
+                mixPanel.getPeople().initPushHandling(MixPanel.PROJECT_ID);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+
     }
 
     public static void trackPastLogin(String pastLogin) {
@@ -175,6 +181,16 @@ public class MixPanel {
             LogUtils.exception(e);
         }
     }
+    public static void trackRatingImageView() {
+        try {
+                JSONObject props = new JSONObject();
+                props.put("action", "looking_rating_images");
+                trackEvent(props, "Event_On_Rating");
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
 
     public static void trackAddFav(int shownInScreen, String name) {
 
@@ -226,6 +242,9 @@ public class MixPanel {
             origin = AppConstants.Tracker.USER_PROFILE;
         } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE) {
             origin = AppConstants.Tracker.TRAINER_PROFILE;
+        }
+        else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FAV_TRAINERS){
+            origin = AppConstants.Tracker.USER_PROFILE;
         }
 
         if (origin.isEmpty()) {
@@ -344,6 +363,9 @@ public class MixPanel {
                             List<String> activities = new ArrayList<>();
                             List<String> activityNames = new ArrayList<>();
                             List<String> genders = new ArrayList<>();
+                            List<String> gymList = new ArrayList<>();
+                            List<String> gymNames = new ArrayList<>();
+
                             List<CityLocality> cityLocalities = new ArrayList<>();
 
                             for (ClassesFilter classesFilter : classesFilters) {
@@ -357,12 +379,19 @@ public class MixPanel {
                                     activities.add(String.valueOf(((ClassActivity) classesFilter.getObject()).getId()));
                                     activityNames.add(String.valueOf(((ClassActivity) classesFilter.getObject()).getName()));
                                 }
+                                else if (classesFilter.getObject() instanceof GymDataModel) {
+                                    gymList.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getId()));
+                                    gymNames.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getStudioName()));
+                                }
                             }
 
                             JSONObject props = new JSONObject();
 
                             if (!activityNames.isEmpty()) {
                                 props.put("using_Activity", activityNames);
+                            }
+                            if (!gymList.isEmpty()) {
+                                props.put("using_Gym", gymNames);
                             }
                             if (!times.isEmpty()) {
                                 props.put("using_Time", times);
@@ -410,7 +439,7 @@ public class MixPanel {
         } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_HOME_FIND_CLASSES) {
             origin = AppConstants.Tracker.CLASS_CARD;
         } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE) {
-            origin = AppConstants.Tracker.CLASS_PROFILE;
+            origin = AppConstants.Tracker.CLASS_DETAILS;
         } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE) {
             origin = AppConstants.Tracker.TRAINER_PROFILE;
         } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN) {
@@ -455,11 +484,11 @@ public class MixPanel {
         if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_SEARCH) {
             origin = AppConstants.Tracker.SEARCH;
         } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_SEARCH_RESULTS) {
-            origin = AppConstants.Tracker.SEARCH_GYM;
+            origin = AppConstants.Tracker.SEARCH_TRAINER;
         } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_HOME_FIND_CLASSES) {
             origin = AppConstants.Tracker.CLASS_CARD;
         } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE) {
-            origin = AppConstants.Tracker.CLASS_PROFILE;
+            origin = AppConstants.Tracker.CLASS_DETAILS;
         } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE) {
             origin = AppConstants.Tracker.TRAINER_PROFILE;
         } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN) {
@@ -468,6 +497,12 @@ public class MixPanel {
             origin = AppConstants.Tracker.PUSH_NOTIFICATION;
         } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SHARE) {
             origin = AppConstants.Tracker.SHARED_GYM;
+        } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE_TRAINERS) {
+            origin = AppConstants.Tracker.GYM_PROFILE_TRAINERS;
+        } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_HOME_TRAINERS) {
+            origin = AppConstants.Tracker.TRAINER_TAB;
+        } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FAV_TRAINERS) {
+            origin = AppConstants.Tracker.USER_PROFILE;
         }
 
         if (origin.isEmpty()) {
@@ -537,6 +572,9 @@ public class MixPanel {
         } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN) {
             origin = AppConstants.Tracker.PUSH_NOTIFICATION;
         }
+        else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS){
+            origin = AppConstants.Tracker.FIND_CLASS;
+        }
 
         if (origin.isEmpty()) {
             return;
@@ -566,6 +604,17 @@ public class MixPanel {
         }
     }
 
+    public static void trackPayButtonClick(String packageName) {
+        try {
+            JSONObject props = new JSONObject();
+            props.put("package_name", packageName);
+
+            trackEvent(props, "Pay_Clicked");
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
     public static void trackSequentialUpdate(String failureReason) {
         try {
             JSONObject props = new JSONObject();
@@ -648,6 +697,7 @@ public class MixPanel {
 
             trackEvent(props, "Unjoin");
             trackEvent(props, "Booking Cancel");
+
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -683,7 +733,7 @@ public class MixPanel {
             props.put("Location", user.getLocation());
             props.put("Nationality", user.getNationality());
             props.put("FacebookId", user.getFacebookId());
-            props.put("Category List", user.getClassCategoryList());
+            props.put("Category List", MixPanel.getCategoryList(user.getClassCategoryList()));
             props.put("Number of Transactions", user.getNumberOfTransactions() + "");
             props.put("General Package", userPackageInfo.haveGeneralPackage ?
                     userPackageInfo.userPackageGeneral.getPackageName() : "");
@@ -692,6 +742,22 @@ public class MixPanel {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static String getCategoryList(List<ClassActivity> list){
+        StringBuffer categoryList=new StringBuffer("");
+        try{
+            if(list!=null && list.size()>0){
+                for (ClassActivity object : list) {
+                    categoryList.append(object.getClassCategoryName()+",");
+                }
+                return categoryList.toString().substring(0,categoryList.toString().length()-1);
+            }
+
+        }catch(Exception e){
+
+        }
+        return categoryList.toString();
     }
 
 }

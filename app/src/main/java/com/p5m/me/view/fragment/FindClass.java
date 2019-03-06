@@ -11,11 +11,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,6 +29,7 @@ import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.FilterActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.Main.SearchActivity;
@@ -35,13 +38,17 @@ import com.p5m.me.view.activity.base.BaseActivity;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.p5m.me.utils.LanguageUtils.numberConverter;
 
 public class FindClass extends BaseFragment implements ViewPagerFragmentSelection, View.OnClickListener, ViewPager.OnPageChangeListener {
 
@@ -141,6 +148,7 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
         tabLayout.setupWithViewPager(viewPager);
 
         generateTabs();
+        tabLayout.setSelectedTabIndicatorHeight(0);
         setToolBar();
 
         findClassAdapter.setCalendarList(calendarList);
@@ -191,34 +199,15 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
             String monthName = DateUtils.getMonthName(gregorianCalendar.get(GregorianCalendar.MONTH));
             String weekdayName = DateUtils.getWeekDaysName(gregorianCalendar.get(GregorianCalendar.DAY_OF_WEEK));
             int day = gregorianCalendar.get(GregorianCalendar.DAY_OF_MONTH);
+            View tabView = (View) LayoutInflater.from(context).inflate(R.layout.item_tabs, null);
+            TextView textViewTitle = (TextView) tabView.findViewById(R.id.textViewTitle);
+            TextView textViewSubtitle = (TextView) tabView.findViewById(R.id.textViewSubtitle);
+            ImageView selectedTabImage = (ImageView)tabView.findViewById(R.id.selectedTabImage);
 
-            LinearLayout linearLayout = new LinearLayout(context);
-            linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            linearLayout.setOrientation(LinearLayout.VERTICAL);
-            linearLayout.setGravity(Gravity.CENTER);
 
-            TextView textViewTitle = new TextView(context);
-            textViewTitle.setGravity(Gravity.CENTER);
-            textViewTitle.setTypeface(Typeface.SANS_SERIF);
-            textViewTitle.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
-            textViewTitle.setAllCaps(true);
-            textViewTitle.setTextColor(ContextCompat.getColorStateList(context, R.color.date_tabs));
-            textViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            tabLayout.getTabAt(index).setCustomView(tabView);
 
-            TextView textViewSubtitle = new TextView(context);
-            textViewSubtitle.setPadding(dp, dp * 2, dp, dp);
-            textViewTitle.setGravity(Gravity.CENTER);
-            textViewSubtitle.setTypeface(Typeface.SANS_SERIF);
-            textViewSubtitle.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
-            textViewSubtitle.setTextColor(ContextCompat.getColorStateList(context, R.color.date_tabs));
-            textViewSubtitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
-
-            linearLayout.addView(textViewTitle);
-            linearLayout.addView(textViewSubtitle);
-
-            tabLayout.getTabAt(index).setCustomView(linearLayout);
-
-            textViewSubtitle.setText(monthName + " " + day);
+            textViewSubtitle.setText(monthName + " " +numberConverter(day));
 
             if (index == 0) {
                 textViewTitle.setText(getString(R.string.today));
@@ -249,6 +238,7 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT));
         activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
+
     }
 
     @Override
@@ -270,6 +260,7 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
 
     @Override
     public void onPageSelected(int position) {
+        markSelectedTab(position);
         SELECTED_POSITION = position;
         try {
             ((ViewPagerFragmentSelection) findClassAdapter.getFragments().get(position)).onTabSelection(position);
@@ -282,5 +273,19 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    private void markSelectedTab(int position){
+        for (int index = 0; index < TOTAL_DATE_TABS; index++) {
+            View customView = tabLayout.getTabAt(index).getCustomView();
+            ImageView selectedTabImage = (ImageView)customView.findViewById(R.id.selectedTabImage);
+            if(position==index){
+                selectedTabImage.setVisibility(View.VISIBLE);
+
+            }else{
+                selectedTabImage.setVisibility(View.INVISIBLE);
+            }
+            tabLayout.getTabAt(index).setCustomView(customView);
+        }
     }
 }

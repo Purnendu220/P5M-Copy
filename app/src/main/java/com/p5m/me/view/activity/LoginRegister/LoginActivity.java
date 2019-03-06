@@ -149,12 +149,12 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
         String pass = editTextPassword.getText().toString();
 
         if (user.isEmpty()) {
-            textInputLayoutEmail.setError("Please input your email");
+            textInputLayoutEmail.setError(getString(R.string.please_enter_your_email));
             return;
         }
 
         if (pass.isEmpty()) {
-            textInputLayoutPassword.setError("Please input your password");
+            textInputLayoutPassword.setError(getString(R.string.password_required_error));
             return;
         }
 
@@ -185,14 +185,16 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                                     public void onCompleted(JSONObject object, GraphResponse response) {
                                         LogUtils.debug("Facebook newMeRequest : " + object.toString());
 
-                                        String name = "";
+                                        String first_name = "";
+                                        String last_name = "";
                                         String gender = "";
                                         String email = "";
                                         String id = "";
 
                                         try {
                                             id = object.getString("id");
-                                            name = object.getString("name");
+                                            first_name = object.getString("first_name");
+                                            last_name = object.getString("last_name");
                                             gender = object.getString("gender").toUpperCase();
                                             email = object.getString("email");
 
@@ -201,13 +203,13 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                                             LogUtils.exception(e);
                                         }
 
-                                        faceBookUser = new FaceBookUser(id, name, gender, email);
+                                        faceBookUser = new FaceBookUser(id, first_name,last_name, gender, email);
 
-                                        networkCommunicator.loginFb(new LoginRequest(id, name, email, gender), LoginActivity.this, false);
+                                        networkCommunicator.loginFb(new LoginRequest(id, first_name,last_name, email, gender), LoginActivity.this, false);
                                     }
                                 });
                         Bundle parameters = new Bundle();
-                        parameters.putString("fields", "id,name,birthday,gender,email,location");
+                        parameters.putString("fields", "id,name,first_name,last_name,birthday,gender,email,location");
                         request.setParameters(parameters);
                         request.executeAsync();
                     }
@@ -229,7 +231,7 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
             @Override
             public void onClick(View view) {
                 loginTime = System.currentTimeMillis() - 5 * 1000;
-                LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile", "email"));
+                LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile", "email","user_gender"));
                 layoutProgressRoot.setVisibility(View.VISIBLE);
             }
         });
@@ -252,7 +254,7 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
 
                     finish();
                 } else {
-                    textInputLayoutPassword.setError("Please try again");
+                    textInputLayoutPassword.setError(getString(R.string.please_try_again));
                 }
 
                 buttonLogin.setVisibility(View.VISIBLE);

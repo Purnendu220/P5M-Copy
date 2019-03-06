@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.p5m.me.eventbus.EventBroadcastHelper;
+import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.NetworkUtil;
@@ -86,7 +87,8 @@ public abstract class RestCallBack<T> implements Callback<T> {
                     return;
 
                     // While joining class..
-                } else if (code.equals("498") || code.equals("402")) {
+                } else if (code.equals("498") || code.equals("402") || code.equals("405")) {
+                    MyPreferences.getInstance().savePaymentErrorResponse(responseModel);
                     onFailure(call, code);
 
                     // Force Update..

@@ -1,11 +1,14 @@
 package com.p5m.me.eventbus;
 
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.provider.Settings;
 
+import com.facebook.login.LoginManager;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.p5m.me.analytics.MixPanel;
+import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
@@ -49,13 +52,15 @@ public class EventBroadcastHelper {
         try {
             User user = MyPreferences.getInstance().getUser();
             List<ClassActivity> activities = MyPreferences.getInstance().getActivities();
-
+            List<ClassModel> list=TempStorage.getSavedClasses();
+            TempStorage.removeAllSavedClasses(list,context);
             MyPreferences.getInstance().clear();
             MyPreferences.getInstance().saveUser(user);
             MyPreferences.getInstance().saveActivities(activities);
 
             //Remove Filters
             MyPreferences.getInstance().saveFilters(new ArrayList<ClassesFilter>());
+            TempStorage.setFilterList(new ArrayList<ClassesFilter>());
 
             TempStorage.setAuthToken(null);
 
@@ -64,6 +69,7 @@ public class EventBroadcastHelper {
             NotificationManager notificationManager = (NotificationManager) context
                     .getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.cancelAll();
+            LoginManager.getInstance().logOut();
 
             ContinueUser.open(context);
         } catch (Exception e) {
@@ -111,7 +117,12 @@ public class EventBroadcastHelper {
 
         GlobalBus.getBus().post(new Events.ClassJoin(classModel));
     }
-
+    public static void sendclassRating(Context context,String className){
+        GlobalBus.getBus().post(new Events.ClassRating(className))  ;
+    }
+    public static void classAutoJoin(Context context,ClassModel classModel){
+        GlobalBus.getBus().post(new Events.ClassAutoJoin(classModel))  ;
+    }
     public static void sendPackagePurchasedForClass(ClassModel classModel) {
         if (classModel.isUserJoinStatus()) {
             classModel.setAvailableSeat(classModel.getAvailableSeat() - 1);
@@ -138,7 +149,9 @@ public class EventBroadcastHelper {
     public static void sendWishRemoved(ClassModel classModel) {
         GlobalBus.getBus().post(new Events.WishRemoved(classModel));
     }
-
+public static void sendBookWithFriendEvent(BookWithFriendData friendData){
+        GlobalBus.getBus().post(new Events.BookWithFriend(friendData));
+}
     public static void trainerFollowUnFollow(TrainerModel trainerModel, boolean isFollowed) {
         GlobalBus.getBus().post(new Events.TrainerFollowed(trainerModel, isFollowed));
     }
@@ -201,6 +214,7 @@ public class EventBroadcastHelper {
             LogUtils.exception(e);
         }
     }
+
 
 
 }

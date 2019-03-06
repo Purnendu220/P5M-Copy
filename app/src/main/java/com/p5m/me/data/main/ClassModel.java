@@ -1,5 +1,7 @@
 package com.p5m.me.data.main;
 
+import com.p5m.me.data.ClassRatingListData;
+
 public class ClassModel implements java.io.Serializable {
     private static final long serialVersionUID = -7121053493736355823L;
 
@@ -23,6 +25,7 @@ public class ClassModel implements java.io.Serializable {
     private String toTime;
     private int totalSeat;
     private GymBranchDetail gymBranchDetail;
+    private Integer refBookingId;
 
     /*************Special Class Addition****************/
     private String priceModel;
@@ -37,6 +40,38 @@ public class ClassModel implements java.io.Serializable {
     private String classDay;
     private int wishListId;
     private String classImage;
+
+    /***********************For Class Rating********************/
+    private long numberOfRating;
+    private float rating;
+    private ClassRatingListData ratingResDto;
+
+    private String fitnessLevel;
+    private boolean isExpired;
+
+    public boolean isExpired() {
+        return isExpired;
+    }
+
+    public void setExpired(boolean expired) {
+        isExpired = expired;
+    }
+
+    public String getFitnessLevel() {
+        return fitnessLevel;
+    }
+
+    public void setFitnessLevel(String fitnessLevel) {
+        this.fitnessLevel = fitnessLevel;
+    }
+
+    public ClassModel(String title, String classDate, String fromTime, String toTime, long dataID) {
+        this.title=title;
+        this.classDate=classDate;
+        this.fromTime=fromTime;
+        this.toTime=toTime;
+        this.classSessionId=(int)dataID;
+    }
     //////////////////////////////////
 
     @Override
@@ -45,6 +80,14 @@ public class ClassModel implements java.io.Serializable {
             return true;
         }
         return super.equals(obj);
+    }
+
+    public ClassRatingListData getRatingResDto() {
+        return ratingResDto;
+    }
+
+    public void setRatingResDto(ClassRatingListData ratingResDto) {
+        this.ratingResDto = ratingResDto;
     }
 
     public int getNumberOfParticipants() {
@@ -269,5 +312,29 @@ public class ClassModel implements java.io.Serializable {
 
     public void setJoinClassId(int joinClassId) {
         this.joinClassId = joinClassId;
+    }
+
+    public long getNumberOfRating() {
+        return numberOfRating;
+    }
+
+    public void setNumberOfRating(long numberOfRating) {
+        this.numberOfRating = numberOfRating;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public Integer getRefBookingId() {
+        return refBookingId;
+    }
+
+    public void setRefBookingId(Integer refBookingId) {
+        this.refBookingId = refBookingId;
     }
 }

@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.p5m.me.R;
@@ -14,9 +15,12 @@ import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
+import com.p5m.me.utils.WordUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.p5m.me.utils.LanguageUtils.matchFitnessWord;
 
 /**
  * Created by MyU10 on 3/10/2018.
@@ -43,6 +47,9 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.buttonJoin)
     public Button buttonJoin;
 
+    @BindView(R.id.imageViewChat)
+    public ImageView imageViewChat;
+
     @BindView(R.id.layoutGender)
     public View layoutGender;
     @BindView(R.id.textViewClassGender)
@@ -63,8 +70,26 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.textViewTrainerName)
     public TextView textViewTrainerName;
 
+    @BindView(R.id.buttonEditRating)
+    public Button buttonEditRating;
+
+    @BindView(R.id.buttonClassRating)
+    public Button buttonClassRating;
+
     private final Context context;
     private int shownInScreen;
+    @BindView(R.id.relativeLayoutFitnessLevel)
+    public RelativeLayout relativeLayoutFitnessLevel;
+
+    @BindView(R.id.imageViewClassFitnessLevel)
+    public ImageView imageViewClassFitnessLevel;
+
+    @BindView(R.id.textViewFitnessLevel)
+    public TextView textViewFitnessLevel;
+
+    @BindView(R.id.classBookedWithFriend)
+    public RelativeLayout classBookedWithFriend;
+
 
     public ClassMiniDetailViewHolder(View view, int shownInScreen) {
         super(view);
@@ -82,7 +107,7 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
             final ClassModel model = (ClassModel) data;
 
             layoutGender.setVisibility(View.GONE);
-
+            buttonClassRating.setVisibility(View.GONE);
             if (Helper.isSpecialClass(model)) {
                 layoutSpecial.setVisibility(View.VISIBLE);
                 textViewSpecialClass.setText(Helper.getSpecialClassText(model));
@@ -91,12 +116,21 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
             }
 
             if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
-                trainerImage.setVisibility(View.VISIBLE);
-                textViewTrainerName.setVisibility(View.VISIBLE);
-
-                buttonJoin.setVisibility(View.GONE);
+                imageViewChat.setVisibility(View.VISIBLE);
                 imageViewOptions1.setVisibility(View.VISIBLE);
                 imageViewOptions2.setVisibility(View.GONE);
+                trainerImage.setVisibility(View.VISIBLE);
+                textViewTrainerName.setVisibility(View.VISIBLE);
+                if (model.getRefBookingId() != null && model.getRefBookingId() > 0) {
+                    classBookedWithFriend.setVisibility(View.VISIBLE);
+                } else {
+                    classBookedWithFriend.setVisibility(View.GONE);
+
+                }
+
+                buttonJoin.setVisibility(View.GONE);
+//                imageViewOptions1.setVisibility(View.GONE);
+//                imageViewOptions2.setVisibility(View.VISIBLE);
 
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
                 trainerImage.setVisibility(View.VISIBLE);
@@ -143,6 +177,18 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 buttonJoin.setVisibility(View.GONE);
                 imageViewOptions1.setVisibility(View.GONE);
                 imageViewOptions2.setVisibility(View.GONE);
+                try {
+                    if (model.getRefBookingId() != null && model.getRefBookingId() > 0) {
+                        classBookedWithFriend.setVisibility(View.VISIBLE);
+                    } else {
+                        classBookedWithFriend.setVisibility(View.GONE);
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    classBookedWithFriend.setVisibility(View.GONE);
+
+                }
 
             } else {
                 trainerImage.setVisibility(View.VISIBLE);
@@ -195,6 +241,39 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
             textViewClassDate.setText(DateUtils.getClassDate(model.getClassDate()));
 
             Helper.setJoinButton(context, buttonJoin, model);
+            if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED) {
+                if (model.getRatingResDto() == null || model.getRatingResDto().getRating() == 0) {
+                    buttonClassRating.setVisibility(View.VISIBLE);
+                    buttonEditRating.setVisibility(View.GONE);
+                } else {
+                    buttonClassRating.setVisibility(View.GONE);
+                    buttonEditRating.setVisibility(View.VISIBLE);
+                }
+
+            }
+            if (model.getFitnessLevel() != null && !model.getFitnessLevel().isEmpty()) {
+                relativeLayoutFitnessLevel.setVisibility(View.VISIBLE);
+                switch (model.getFitnessLevel()) {
+                    case AppConstants.FitnessLevel.CLASS_LEVEL_BASIC:
+                        imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_get);
+                        break;
+                    case AppConstants.FitnessLevel.CLASS_LEVEL_INTERMEDIATE:
+                        imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_set);
+
+                        break;
+                    case AppConstants.FitnessLevel.CLASS_LEVEL_ADVANCED:
+                        imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_pro);
+
+                        break;
+                    default:
+                        relativeLayoutFitnessLevel.setVisibility(View.GONE);
+                        break;
+                }
+                setTextFitnessLevel(model);
+//                textViewFitnessLevel.setText(WordUtils.capitalize(model.getFitnessLevel().toLowerCase()));
+            } else {
+                relativeLayoutFitnessLevel.setVisibility(View.GONE);
+            }
 
             textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
 
@@ -202,6 +281,24 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 @Override
                 public void onClick(View view) {
                     adapterCallbacks.onAdapterItemClick(ClassMiniDetailViewHolder.this, buttonJoin, model, position);
+                }
+            });
+            imageViewChat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ClassMiniDetailViewHolder.this, imageViewChat, model, position);
+                }
+            });
+            buttonClassRating.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ClassMiniDetailViewHolder.this, buttonClassRating, model, position);
+                }
+            });
+            buttonEditRating.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ClassMiniDetailViewHolder.this, buttonEditRating, model, position);
                 }
             });
 
@@ -228,5 +325,10 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
         } else {
             itemView.setVisibility(View.GONE);
         }
+    }
+
+    private void setTextFitnessLevel(ClassModel model) {
+        String fitnessLevel = matchFitnessWord(model.getFitnessLevel(), context);
+        textViewFitnessLevel.setText(fitnessLevel);
     }
 }

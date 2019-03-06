@@ -141,9 +141,6 @@ public class PackageLimitsActivity extends BaseActivity implements NetworkCommun
         swipeRefreshLayout.setRefreshing(false);
     }
 
-    private void checkListData() {
-    }
-
     @Override
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
 
@@ -157,6 +154,9 @@ public class PackageLimitsActivity extends BaseActivity implements NetworkCommun
     @Override
     public void onShowLastItem() {
 
+    }
+
+    private void checkListData() {
     }
 
     private void setToolBar() {

@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
-        >
+       >
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,6 +54,29 @@
                         android:fontFamily="sans-serif"
                         android:gravity="left"
                         android:inputType="textPersonName"
+                        android:hint="@string/first_name"
+
+                        android:maxLines="1"
+                        android:textSize="@dimen/text_large" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/textInputLayoutLastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_name_title"
+                    android:gravity="left"
+                    app:errorEnabled="true">
+
+                    <EditText
+                        android:id="@+id/editTextLastName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left"
+                        android:inputType="textPersonName"
+                        android:hint="@string/last_name"
                         android:maxLines="1"
                         android:textSize="@dimen/text_large" />
 
@@ -62,7 +86,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="left"
-                    android:visibility="invisible"
+                    android:visibility="gone"
                     app:errorEnabled="true">
 
                     <EditText

@@ -51,12 +51,15 @@ public class ImageViewHolder extends RecyclerView.ViewHolder {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Helper.openImageListViewer(context, imageListAdapter.getList(), position);
+                    Helper.openImageListViewer(context, imageListAdapter.getList(), position,AppConstants.ImageViewHolderType.GALLERY_IMAGE_HOLDER);
 
                     if (showIn == AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE) {
                         MixPanel.trackGymProfileEvent(AppConstants.Tracker.LOOKING_GALLERY);
                     } else if (showIn == AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE) {
                         MixPanel.trackTrainerProfileEvent(AppConstants.Tracker.LOOKING_GALLERY);
+                    }
+                    else if(showIn == AppConstants.AppNavigation.SHOWN_IN_RATING_LIST){
+                        MixPanel.trackRatingImageView();
                     }
                 }
             });

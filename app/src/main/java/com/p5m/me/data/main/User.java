@@ -1,5 +1,7 @@
 package com.p5m.me.data.main;
 
+import com.p5m.me.data.BookWithFriendData;
+
 import java.util.List;
 
 public class User implements java.io.Serializable {
@@ -10,9 +12,11 @@ public class User implements java.io.Serializable {
     private int numberOfTrainer;
     private boolean favTrainerNotification;
     private long lastActiveDate;
-    private long facebookId;
+    private String facebookId;
     private String profileImage;
     private String firstName;
+    private String lastName;
+
     private long dateOfJoining;
     private String nationality;
     private String userCategory;
@@ -28,6 +32,14 @@ public class User implements java.io.Serializable {
     private boolean status;
     private List<UserPackage> userPackageDetailDtoList;
     private List<ClassActivity> classCategoryList;
+    private boolean buyMembership;
+
+    Integer gymId;
+    Integer numberOfWeek;
+    Integer readyPckSize;
+    Boolean generalPck;
+    List<BookWithFriendData> userList;
+
 
     public int getNumberOfTransactions() {
         return numberOfTransactions;
@@ -37,11 +49,11 @@ public class User implements java.io.Serializable {
         this.numberOfTransactions = numberOfTransactions;
     }
 
-    public long getFacebookId() {
+    public String getFacebookId() {
         return facebookId;
     }
 
-    public void setFacebookId(long facebookId) {
+    public void setFacebookId(String facebookId) {
         this.facebookId = facebookId;
     }
 
@@ -219,5 +231,73 @@ public class User implements java.io.Serializable {
 
     public void setClassCategoryList(List<ClassActivity> classCategoryList) {
         this.classCategoryList = classCategoryList;
+    }
+
+    public boolean isBuyMembership() {
+        return buyMembership;
+    }
+
+    public void setBuyMembership(boolean buyMembership) {
+        this.buyMembership = buyMembership;
+    }
+
+    public String getLastName() {
+        return this.lastName == null ? "" : lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public boolean isFavTrainerNotification() {
+        return favTrainerNotification;
+    }
+
+    public boolean isIsfollow() {
+        return isfollow;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public Integer getGymId() {
+        return gymId;
+    }
+
+    public void setGymId(Integer gymId) {
+        this.gymId = gymId;
+    }
+
+    public Integer getNumberOfWeek() {
+        return numberOfWeek;
+    }
+
+    public void setNumberOfWeek(Integer numberOfWeek) {
+        this.numberOfWeek = numberOfWeek;
+    }
+
+    public Integer getReadyPckSize() {
+        return readyPckSize;
+    }
+
+    public void setReadyPckSize(Integer readyPckSize) {
+        this.readyPckSize = readyPckSize;
+    }
+
+    public Boolean getGeneralPck() {
+        return generalPck;
+    }
+
+    public void setGeneralPck(Boolean generalPck) {
+        this.generalPck = generalPck;
+    }
+
+    public List<BookWithFriendData> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<BookWithFriendData> userList) {
+        this.userList = userList;
     }
 }

@@ -30,6 +30,7 @@ import com.p5m.me.data.CityLocality;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.Filter;
 import com.p5m.me.data.main.ClassActivity;
+import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
@@ -99,6 +100,7 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
 
         networkCommunicator.getCities(this, true);
         networkCommunicator.getActivities(this, true);
+        networkCommunicator.getGymsList(this,true);
 
         setToolBar();
     }
@@ -150,7 +152,11 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
             imageLeft.setImageResource(R.drawable.filter_activity);
         } else if (classesFilter.getObject() instanceof Filter.Time) {
             imageLeft.setImageResource(R.drawable.filter_time);
-        } else {
+        }
+        else if (classesFilter.getObject() instanceof GymDataModel) {
+            imageLeft.setImageResource(R.drawable.filter_gym);
+        }
+        else {
             imageLeft.setImageResource(R.drawable.filter_activity);
         }
 
@@ -246,17 +252,17 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
     private void setListAdapter() {
         List<ClassesFilter> classesFilterList = new ArrayList<>(4);
 
-        classesFilterList.add(new ClassesFilter<CityLocality>("", true, "CityLocality", "Location", R.drawable.filter_location_main, ClassesFilter.TYPE_HEADER));
-        classesFilterList.add(new ClassesFilter<ClassActivity>("", true, "ClassActivity", "Activity", R.drawable.filter_activity_main, ClassesFilter.TYPE_HEADER));
-        classesFilterList.add(new ClassesFilter<Filter.Time>("", true, "Time", "Time", R.drawable.filter_time_main, ClassesFilter.TYPE_HEADER));
-//        classesFilterList.add(new ClassesFilter<Filter.Gender>("", true,"Gender", "Gender", R.drawable.gender, ClassesFilter.TYPE_HEADER));
+        classesFilterList.add(new ClassesFilter<CityLocality>("", true, "CityLocality", getString(R.string.location), R.drawable.filter_location_main, ClassesFilter.TYPE_HEADER));
+        classesFilterList.add(new ClassesFilter<ClassActivity>("", true, "ClassActivity", getString(R.string.activity), R.drawable.filter_activity_main, ClassesFilter.TYPE_HEADER));
+        classesFilterList.add(new ClassesFilter<Filter.Time>("", true, "Time", getString(R.string.time), R.drawable.filter_time_main, ClassesFilter.TYPE_HEADER));
+        classesFilterList.add(new ClassesFilter<Filter.Gym>("", true,"Gym", getString(R.string.gym), R.drawable.filter_gym_main, ClassesFilter.TYPE_HEADER));
 
         filterAdapter.setClassesFilterList(classesFilterList);
 
         List<ClassesFilter> timeList = new ArrayList<>(4);
-        addClassFilterTime(timeList, new Filter.Time("MORNING", "Morning"));
-        addClassFilterTime(timeList, new Filter.Time("AFTERNOON", "After Noon"));
-        addClassFilterTime(timeList, new Filter.Time("EVENING", "Evening"));
+        addClassFilterTime(timeList, new Filter.Time("MORNING", getString(R.string.morning)));
+        addClassFilterTime(timeList, new Filter.Time("AFTERNOON", getString(R.string.after_Noon)));
+        addClassFilterTime(timeList, new Filter.Time("EVENING", getString(R.string.evening)));
 
         filterAdapter.getClassesFilterList().get(2).setList(timeList);
 
@@ -336,6 +342,23 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
                 }
             }
             break;
+            case NetworkCommunicator.RequestCode.ALL_GYM_LIST:{
+                final List<GymDataModel> list = (List<GymDataModel>) response.data;
+                if(!list.isEmpty()){
+                    List<ClassesFilter> classesFilters = new ArrayList<>();
+                    for(GymDataModel gymData:list){
+                        ClassesFilter classesFilter = new ClassesFilter(gymData.getId() + "", true, "Gym", gymData.getStudioName(), 0, ClassesFilter.TYPE_ITEM);
+                        classesFilter.setObject(gymData);
+                        classesFilters.add(classesFilter);
+                    }
+                    filterAdapter.getClassesFilterList().get(3).setList(classesFilters);
+                    filterAdapter.refreshList();
+
+                }
+
+            }
+            break;
+
         }
     }
 

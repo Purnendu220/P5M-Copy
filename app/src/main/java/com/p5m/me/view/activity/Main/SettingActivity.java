@@ -27,9 +27,16 @@ import butterknife.OnClick;
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener, NetworkCommunicator.RequestListener {
 
+    private int pageToOpen;
+
     public static void openActivity(Context context) {
         context.startActivity(new Intent(context, SettingActivity.class));
     }
+    public static Intent createIntent(Context context,int pageToOpen) {
+        return new Intent(context, SettingActivity.class)
+                .putExtra(AppConstants.DataKey.PAGES_TO_OPEN, pageToOpen);
+    }
+
 
     @BindView(R.id.layoutNotification)
     public View layoutNotification;
@@ -62,6 +69,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         setContentView(R.layout.activity_setting);
 
         ButterKnife.bind(activity);
+        pageToOpen = getIntent().getIntExtra(AppConstants.DataKey.PAGES_TO_OPEN, -1);
 
         layoutNotification.setOnClickListener(this);
         layoutMembership.setOnClickListener(this);
@@ -71,6 +79,17 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         layoutTermsCondition.setOnClickListener(this);
         layoutAboutUs.setOnClickListener(this);
         layoutLogout.setOnClickListener(this);
+        if(pageToOpen == AppConstants.Tab.OPEN_ABOUT_US){
+            Helper.openWebPage(context, AppConstants.Url.WEBSITE + "aboutus");
+
+        }
+        if(pageToOpen == AppConstants.Tab.OPEN_PRIVACY){
+            Helper.openWebPage(context, AppConstants.Url.WEBSITE + "privacy");
+
+        }if(pageToOpen == AppConstants.Tab.OPEN_TERMS){
+            Helper.openWebPage(context, AppConstants.Url.WEBSITE + "terms");
+
+        }
     }
 
     @OnClick(R.id.imageViewBack)
@@ -112,12 +131,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     private void dialogContactUs() {
         final List<String> items = new ArrayList<>();
-        items.add("Mail Us");
-        items.add("Make a Call");
+        items.add(getString(R.string.mail_us));
+        items.add(getString(R.string.make_a_call));
 
         DialogUtils.showBasicList(
                 context,
-                "Contact Us",
+                getString(R.string.contact_us),
                 items,
                 new MaterialDialog.ListCallback() {
                     @Override
@@ -127,8 +146,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                             Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                                     "mailto", "info@p5m.me", null));
                             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
-                            emailIntent.putExtra(Intent.EXTRA_TEXT, "Please identify the details of your issue below. A member of our staff will respond shortly.");
-                            startActivity(Intent.createChooser(emailIntent, "Send Email"));
+                            emailIntent.putExtra(Intent.EXTRA_TEXT, R.string.contactUs);
+                            startActivity(Intent.createChooser(emailIntent, getString(R.string.send_email)));
 
                         } else if (position == 1) {
                             Intent intent = new Intent(Intent.ACTION_DIAL);
@@ -145,7 +164,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case NetworkCommunicator.RequestCode.LOGOUT:
                 imageViewLogout.setVisibility(View.VISIBLE);
                 progressBarLogout.setVisibility(View.GONE);
-
                 EventBroadcastHelper.logout(context);
                 break;
         }

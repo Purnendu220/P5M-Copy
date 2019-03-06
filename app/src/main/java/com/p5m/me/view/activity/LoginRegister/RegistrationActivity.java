@@ -64,16 +64,16 @@ public class RegistrationActivity extends BaseActivity {
         if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FB_LOGIN) {
 //            TOTAL_STEPS = AppConstants.Tab.COUNT_FB_REGISTRATION;
             String message = "";
-            registrationRequest = new RegistrationRequest(faceBookUser.getId(), faceBookUser.getName());
+            registrationRequest = new RegistrationRequest(faceBookUser.getId(), faceBookUser.getName(),faceBookUser.getLastName());
 
             if (faceBookUser.getEmail().isEmpty()) {
 
                 INITIAL_STEP = AppConstants.Tab.REGISTRATION_STEP_EMAIL;
 
                 if (faceBookUser.getGender().isEmpty()) {
-                    message = "P5M needs your Email and Gender";
+                    message = getString(R.string.needs_your_email_and_gender);
                 } else {
-                    message = "P5M needs your Email";
+                    message = getString(R.string.needs_your_email);
                     registrationRequest.setGender(faceBookUser.getGender());
                 }
 
@@ -81,7 +81,7 @@ public class RegistrationActivity extends BaseActivity {
                 if (faceBookUser.getGender().isEmpty()) {
                     INITIAL_STEP = AppConstants.Tab.REGISTRATION_STEP_GENDER;
 
-                    message = "P5M needs your Gender";
+                    message = getString(R.string.needs_your_gender);
                 } else {
                     registrationRequest.setGender(faceBookUser.getGender());
                 }
@@ -90,7 +90,7 @@ public class RegistrationActivity extends BaseActivity {
             }
 
             if (!message.isEmpty()) {
-                DialogUtils.showBasicMessage(context, context.getString(R.string.app_name), "ok", message);
+                DialogUtils.showBasicMessage(context, context.getString(R.string.app_name), getString(R.string.ok), message);
             }
         } else {
 //            TOTAL_STEPS = AppConstants.Tab.COUNT_NORMAL_REGISTRATION;
@@ -121,7 +121,9 @@ public class RegistrationActivity extends BaseActivity {
     public void setName(String name) {
         registrationRequest.setFirstName(name);
     }
-
+    public void setLastName(String lastname) {
+        registrationRequest.setLastName(lastname);
+    }
     public void setEmail(String email) {
         registrationRequest.setEmail(email);
     }

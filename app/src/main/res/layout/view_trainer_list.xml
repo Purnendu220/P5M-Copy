@@ -94,25 +94,48 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="16dp">
 
-                <Button
+                <!--<Button-->
+                    <!--android:id="@+id/buttonFav"-->
+                    <!--android:layout_width="72dp"-->
+                    <!--android:layout_height="28dp"-->
+                    <!--android:layout_alignParentEnd="true"-->
+                    <!--android:layout_below="@+id/imageViewClass"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:layout_marginBottom="12dp"-->
+                    <!--android:layout_marginLeft="10dp"-->
+                    <!--android:layout_marginRight="16dp"-->
+                    <!--android:layout_marginTop="8dp"-->
+                    <!--android:background="@drawable/join_rect"-->
+                    <!--android:fontFamily="sans-serif"-->
+                    <!--android:letterSpacing="@dimen/button_letter_spacing_very_little"-->
+                    <!--android:maxLines="1"-->
+                    <!--android:text="@string/favorited"-->
+                    <!--android:textAllCaps="true"-->
+                    <!--android:textColor="@color/white"-->
+                    <!--android:textSize="@dimen/button_text_very_small"-->
+                    <!--android:visibility="gone"-->
+
+                    <!--/>-->
+                <ImageButton
                     android:id="@+id/buttonFav"
-                    android:layout_width="72dp"
-                    android:layout_height="28dp"
-                    android:layout_alignParentEnd="true"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_below="@+id/imageViewClass"
                     android:layout_gravity="center"
                     android:layout_marginBottom="12dp"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="16dp"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/join_rect"
-                    android:fontFamily="sans-serif"
-                    android:letterSpacing="@dimen/button_letter_spacing_very_little"
-                    android:maxLines="1"
-                    android:text="@string/favorited"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/button_text_very_small" />
+                    android:layout_marginRight="14dp"
+                    android:visibility="visible"
+                    android:src="@drawable/heart_unfav"
+                    android:padding="10dp"
+                    android:elevation="10dp"
+                    android:background="@drawable/transparent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+
+                    />
+
             </LinearLayout>
         </RelativeLayout>
 

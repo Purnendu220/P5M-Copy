@@ -7,7 +7,17 @@ public class PromoCodeRequest implements java.io.Serializable {
     private String name;
     private int packageId;
     private int userId;
+    private Integer numOfClass;
 
+
+
+    public PromoCodeRequest(Integer gymId, String name, int packageId, int userId,Integer numOfClass) {
+        this.gymId = gymId;
+        this.name = name;
+        this.packageId = packageId;
+        this.userId = userId;
+        this.numOfClass = numOfClass;
+    }
     public PromoCodeRequest(Integer gymId, String name, int packageId, int userId) {
         this.gymId = gymId;
         this.name = name;
@@ -15,10 +25,18 @@ public class PromoCodeRequest implements java.io.Serializable {
         this.userId = userId;
     }
 
+    public PromoCodeRequest(String name, int packageId, int userId,Integer numOfClass) {
+        this.name = name;
+        this.packageId = packageId;
+        this.userId = userId;
+        this.numOfClass = numOfClass;
+
+    }
     public PromoCodeRequest(String name, int packageId, int userId) {
         this.name = name;
         this.packageId = packageId;
         this.userId = userId;
+
     }
 
     public Integer getGymId() {
@@ -51,5 +69,13 @@ public class PromoCodeRequest implements java.io.Serializable {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public Integer getNumOfClass() {
+        return numOfClass;
+    }
+
+    public void setNumOfClass(Integer numOfClass) {
+        this.numOfClass = numOfClass;
     }
 }

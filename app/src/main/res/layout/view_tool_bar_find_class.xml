@@ -33,7 +33,8 @@
             android:id="@+id/layoutFilter"
             android:layout_width="56dp"
             android:layout_height="match_parent"
-            android:gravity="center">
+            android:gravity="end"
+            android:textAlignment="gravity">
 
             <ImageView
                 android:id="@+id/imageViewFilterer"

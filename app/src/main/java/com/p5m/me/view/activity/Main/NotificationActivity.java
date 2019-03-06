@@ -38,6 +38,10 @@ public class NotificationActivity extends BaseActivity implements SwipeRefreshLa
     public static void openActivity(Context context) {
         context.startActivity(new Intent(context, NotificationActivity.class));
     }
+    public static Intent createIntent(Context context) {
+        Intent intent = new Intent(context, NotificationActivity.class);
+        return intent;
+    }
 
     @BindView(R.id.toolbar)
     public Toolbar toolbar;

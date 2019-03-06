@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.p5m.me.R;
@@ -15,9 +16,13 @@ import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
+import com.p5m.me.utils.LanguageUtils;
+import com.p5m.me.utils.WordUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.p5m.me.utils.LanguageUtils.matchFitnessWord;
 
 /**
  * Created by MyU10 on 3/10/2018.
@@ -59,8 +64,22 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.layoutTrainer)
     public LinearLayout layoutTrainer;
 
+    @BindView(R.id.linearLayoutClassRating)
+    public LinearLayout linearLayoutClassRating;
+
+    @BindView(R.id.textViewClassRating)
+    public TextView textViewClassRating;
+
     @BindView(R.id.layoutLocation)
     public View layoutLocation;
+    @BindView(R.id.layoutFitnessLevel)
+    public LinearLayout layoutFitnessLevel;
+
+    @BindView(R.id.imageViewClassFitnessLevel)
+    public ImageView imageViewClassFitnessLevel;
+
+    @BindView(R.id.textViewFitnessLevel)
+    public TextView textViewFitnessLevel;
 
     private final Context context;
     private int shownInScreen;
@@ -126,15 +145,15 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
             }
 
             if (model.getGymBranchDetail() != null) {
-                textViewLocation.setText(model.getGymBranchDetail().getGymName() + ", " + model.getGymBranchDetail().getBranchName());
+                textViewLocation.setText(model.getGymBranchDetail().getGymName());
             }
 
             textViewClassName.setText(model.getTitle());
             textViewClassCategory.setText(model.getClassCategory());
             textViewClassDate.setText(DateUtils.getClassDate(model.getClassDate()));
 
-            textViewAvailable.setText(model.getAvailableSeat() + " available " +
-                    AppConstants.plural("seat", model.getAvailableSeat()));
+            textViewAvailable.setText(model.getAvailableSeat() + " " +
+                    AppConstants.plural(context.getString(R.string.available_seats), model.getAvailableSeat()));
 
             Helper.setJoinButton(context, buttonJoin, model);
 
@@ -142,6 +161,36 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
 
             textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
             textViewGender.setText(Helper.getClassGenderText(model.getClassType()));
+            if (model.getRating() != 0.0F && model.getRating() > 0) {
+                linearLayoutClassRating.setVisibility(View.VISIBLE);
+                textViewClassRating.setText(LanguageUtils.numberConverter(model.getRating()) + "");
+            } else {
+                linearLayoutClassRating.setVisibility(View.GONE);
+            }
+            if (model.getFitnessLevel() != null && !model.getFitnessLevel().isEmpty()) {
+                layoutFitnessLevel.setVisibility(View.GONE);
+
+                switch (model.getFitnessLevel()) {
+                    case AppConstants.FitnessLevel.CLASS_LEVEL_BASIC:
+                        imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_get);
+                        break;
+                    case AppConstants.FitnessLevel.CLASS_LEVEL_INTERMEDIATE:
+                        imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_set);
+
+                        break;
+                    case AppConstants.FitnessLevel.CLASS_LEVEL_ADVANCED:
+                        imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_pro);
+
+                        break;
+                    default:
+                        layoutFitnessLevel.setVisibility(View.GONE);
+                        break;
+                }
+                setTextFitnessLevel(model);
+//                textViewFitnessLevel.setText(WordUtils.capitalize(model.getFitnessLevel().toLowerCase()));
+            } else {
+                layoutFitnessLevel.setVisibility(View.GONE);
+            }
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -187,5 +236,11 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
         } else {
             itemView.setVisibility(View.GONE);
         }
+    }
+
+
+    private void setTextFitnessLevel(ClassModel model) {
+        String fitnessLevel = matchFitnessWord(model.getFitnessLevel(), context);
+        textViewFitnessLevel.setText(fitnessLevel);
     }
 }

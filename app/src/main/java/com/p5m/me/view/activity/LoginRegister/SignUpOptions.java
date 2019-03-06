@@ -69,9 +69,9 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
 
         ButterKnife.bind(activity);
 
-        String spanText = "By login you are agree to our terms of service and privacy policy";
-        String terms = "terms of service";
-        String policy = "privacy policy";
+        String spanText = activity.getString(R.string.terms_of_service);
+        String terms = activity.getString(R.string.terms_service);
+        String policy = activity.getString(R.string.privacy_policy);
 
         Spannable span = Spannable.Factory.getInstance().newSpannable(spanText);
 
@@ -120,14 +120,16 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
 
                                         LogUtils.debug("Facebook newMeRequest : " + object.toString());
 
-                                        String name = "";
+                                        String first_name = "";
+                                        String last_name = "";
                                         String gender = "";
                                         String email = "";
                                         String id = "";
 
                                         try {
                                             id = object.getString("id");
-                                            name = object.getString("name");
+                                            first_name = object.getString("first_name");
+                                            last_name = object.getString("last_name");
                                             gender = object.getString("gender").toUpperCase();
                                             email = object.getString("email");
 
@@ -136,13 +138,13 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                                             LogUtils.exception(e);
                                         }
 
-                                        faceBookUser = new FaceBookUser(id, name, gender, email);
+                                        faceBookUser = new FaceBookUser(id, first_name,last_name, gender, email);
 
-                                        networkCommunicator.loginFb(new LoginRequest(id, name, email, gender), SignUpOptions.this, false);
+                                        networkCommunicator.loginFb(new LoginRequest(id,first_name,last_name, email, gender), SignUpOptions.this, false);
                                     }
                                 });
                         Bundle parameters = new Bundle();
-                        parameters.putString("fields", "id,name,birthday,gender,email,location");
+                        parameters.putString("fields", "id,name,first_name,last_name,birthday,gender,email,location");
                         request.setParameters(parameters);
                         request.executeAsync();
                     }
@@ -164,7 +166,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
             @Override
             public void onClick(View view) {
                 loginTime = System.currentTimeMillis() - 5 * 1000;
-                LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile", "email"));
+                LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile", "email","user_gender"));
                 layoutProgress.setVisibility(View.VISIBLE);
             }
         });

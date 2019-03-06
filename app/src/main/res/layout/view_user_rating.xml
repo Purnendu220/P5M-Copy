@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <android.support.v7.widget.CardView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:elevation="12dp"
+            android:id="@+id/view2"
+            app:cardCornerRadius="4dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginRight="@dimen/margin_10"
+            android:layout_marginBottom="@dimen/margin_10"
+            >
+            <ImageView
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:id="@+id/imageViewUserProfile"
+                android:src="@drawable/profile_holder"
+                android:scaleType="centerCrop"
+
+                >
+            </ImageView>
+        </android.support.v7.widget.CardView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginRight="@dimen/margin_10"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginBottom="@dimen/margin_5"
+
+            >
+            <TextView
+                android:id="@+id/textViewUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="purnendu"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_large"
+                android:fontFamily="sans-serif-medium"
+                android:textAllCaps="true"
+
+                />
+            <TextView
+                android:id="@+id/textViewReviewDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="17 Jan 2018"
+                android:textSize="@dimen/text_extra_small"
+                android:textColor="@color/dark_grey"
+                android:fontFamily="sans-serif"
+                android:layout_marginTop="@dimen/margin_5"
+                />
+            <TextView
+                android:id="@+id/textViewReviewComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Could be improved parking, amenities, changing rooms. This class description is longer than the one on the class list view but it should be confined to one paragraph so that it’s easy to  read! It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.  "
+                android:textSize="@dimen/text_small"
+                android:textColor="@color/black"
+                android:fontFamily="sans-serif"
+                android:layout_marginTop="@dimen/margin_5"
+                android:visibility="gone"
+
+                />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerViewGallery"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewGallery"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp"
+                android:paddingRight="12dp"
+                android:paddingTop="4dp"
+                android:scrollbars="none" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+    android:layout_marginTop="@dimen/margin_20"
+    android:layout_marginRight="@dimen/margin_20"
+    android:orientation="horizontal"
+    >
+    <TextView
+        android:id="@+id/textViewClassRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2.5"
+        android:textColor="@color/theme_accent_text"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_extra_large"
+
+        />
+    <TextView
+        android:id="@+id/textViewClassRatingBase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="/5"
+        android:textColor="@color/theme_accent_text"
+        android:fontFamily="sans-serif-medium"
+        android:textSize="@dimen/text_large"
+
+        />
+</LinearLayout>
+
+
+</RelativeLayout>

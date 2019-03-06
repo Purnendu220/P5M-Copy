@@ -11,6 +11,8 @@ public class UserPackage implements java.io.Serializable {
     private String packageName;
     private String packageType;
     private int totalNumberOfClass;
+    private long id;
+    private Integer totalRemainingWeeks;
 
     public String getExpiryDate() {
         return this.expiryDate == null ? "" : expiryDate;
@@ -74,5 +76,21 @@ public class UserPackage implements java.io.Serializable {
 
     public void setTotalNumberOfClass(int totalNumberOfClass) {
         this.totalNumberOfClass = totalNumberOfClass;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Integer getTotalRemainingWeeks() {
+        return totalRemainingWeeks;
+    }
+
+    public void setTotalRemainingWeeks(Integer totalRemainingWeeks) {
+        this.totalRemainingWeeks = totalRemainingWeeks;
     }
 }

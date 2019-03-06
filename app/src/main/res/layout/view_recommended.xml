@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cardView"
+    android:layout_width="180dp"
+    android:layout_height="100dp"
+    app:cardPreventCornerOverlap="false"
+    app:cardElevation="@dimen/margin_4"
+    app:cardCornerRadius="@dimen/margin_4"
+    android:layout_margin="@dimen/margin_4"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         >
+    <ImageView
+        android:id="@+id/imgClass"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/class_holder"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_transparent"
+       >
+
+        <TextView
+            android:id="@+id/textViewRatingCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_s_medium"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:gravity="center_horizontal"
+            android:text="4.5"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:layout_marginTop="@dimen/margin_5"
+            />
+        <TextView
+            android:id="@+id/textViewClassName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_medium"
+            android:fontFamily="sans-serif-medium"
+            android:textStyle="normal"
+            android:textColor="#ffffff"
+            android:layout_marginTop="@dimen/margin_4"
+            android:lineSpacingExtra="6sp"
+            android:text="FNDURANCE"
+            android:textAllCaps="true"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:maxLines="1"
+            android:ellipsize="end"
+
+            />
+
+        <TextView
+            android:id="@+id/textViewTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_small"
+            android:fontFamily="sans-serif-medium"
+            android:textStyle="normal"
+            android:text="1:00-8:00PM"
+            android:textColor="@color/white"
+            android:layout_marginLeft="@dimen/margin_3"
+            android:maxLines="1"
+            android:ellipsize="end"
+
+
+            />
+
+        <TextView
+            android:id="@+id/textViewLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/small_location_icon"
+            android:drawableTint="@color/white"
+            android:layout_marginTop="@dimen/margin_6"
+            android:ellipsize="end"
+            android:layout_marginLeft="-1dp"
+            android:textSize="@dimen/text_medium"
+            android:gravity="center_vertical|left"
+            android:fontFamily="sans-serif"
+            android:textStyle="normal"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:text="5512 Will Ferry Suite 86498 hhj iji ijoko oo"
+            android:textColor="@color/white"
+            />
+    </LinearLayout>
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

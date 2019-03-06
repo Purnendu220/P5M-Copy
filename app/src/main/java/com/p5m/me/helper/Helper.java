@@ -12,10 +12,12 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.p5m.me.BuildConfig;
 import com.p5m.me.MyApp;
 import com.p5m.me.R;
 import com.p5m.me.data.main.ClassActivity;
@@ -172,31 +174,56 @@ public class Helper {
         }
     }
 
-    public static void setJoinStatusProfile(Context context, TextView view, ClassModel model) {
-        if (model.isUserJoinStatus()) {
+    public static void setJoinStatusProfile(Context context, TextView view,TextView view1, ClassModel model) {
+        if(model.isExpired()){
+            view.setText(context.getString(R.string.expired));
+            view.setBackgroundResource(R.drawable.theme_bottom_text_button_full);
+            view.setEnabled(false);
+            view1.setVisibility(View.GONE);
+        }
+        else if (model.isUserJoinStatus()) {
             view.setText(context.getString(R.string.booked));
             view.setBackgroundResource(R.drawable.theme_bottom_text_button_booked);
             view.setEnabled(false);
+            view1.setVisibility(View.GONE);
+
         } else if (model.getAvailableSeat() == 0) {
             view.setText(context.getString(R.string.full));
             view.setBackgroundResource(R.drawable.theme_bottom_text_button_full);
             view.setEnabled(false);
-        } else {
+            view1.setVisibility(View.GONE);
+
+        }
+        else if(model.getAvailableSeat()<2){
+            view1.setVisibility(View.GONE);
+
+        }
+        else {
             view.setText(context.getString(R.string.reserve_class));
             view.setBackgroundResource(R.drawable.theme_bottom_text_button_book);
             view.setEnabled(true);
+            view1.setVisibility(View.VISIBLE);
+            view1.setText(context.getString(R.string.reserve_class_with_friend));
+            view1.setBackgroundResource(R.drawable.theme_bottom_text_button_book);
+            view1.setEnabled(true);
+
+
         }
     }
-
     public static void setFavButtonTemp(Context context, Button buttonFav, boolean isFollow) {
+        setFavButton(context, buttonFav, isFollow);
+    }
+    public static void setFavButtonTemp(Context context, ImageButton buttonFav, boolean isFollow) {
         setFavButton(context, buttonFav, isFollow);
     }
 
     public static void setFavButton(Context context, Button buttonFav, TrainerModel model) {
         setFavButton(context, buttonFav, model.isIsfollow());
     }
-
-    public static void setFavButton(Context context, Button buttonFav, TrainerDetailModel model) {
+    public static void setFavButton(Context context, ImageButton buttonFav, TrainerModel model) {
+        setFavButtonGray(context, buttonFav, model.isIsfollow());
+    }
+    public static void setFavButton(Context context, ImageButton buttonFav, TrainerDetailModel model) {
         setFavButton(context, buttonFav, model.isIsfollow());
     }
 
@@ -215,15 +242,32 @@ public class Helper {
             buttonFav.setBackgroundResource(R.drawable.button_white);
         }
     }
+    private static void setFavButton(Context context, ImageButton buttonFav, boolean isFollow) {
+        if (isFollow) {
+            buttonFav.setImageResource(R.drawable.heart_fav);
+            } else {
+            buttonFav.setImageResource(R.drawable.heart_white_unfav);
 
-    public static void openImageListViewer(Context context, List<MediaModel> list, int position) {
+        }
+    }
+
+    private static void setFavButtonGray(Context context, ImageButton buttonFav, boolean isFollow) {
+
+        if (isFollow) {
+            buttonFav.setImageResource(R.drawable.heart_fav);
+        } else {
+            buttonFav.setImageResource(R.drawable.heart_unfav);
+
+        }
+    }
+     public static void openImageListViewer(Context context, List<MediaModel> list, int position,String viewholderType) {
 
         List<String> images = new ArrayList<>(list.size());
         for (MediaModel mediaModel : list) {
             images.add(mediaModel.getMediaUrl());
         }
 
-        GalleryActivity.openActivity(context, null, null, position, images);
+        GalleryActivity.openActivity(context, null, null, position, images,viewholderType);
 
 
 //        Fresco.initialize(context);
@@ -246,7 +290,7 @@ public class Helper {
 //                .show();
     }
 
-    public static void openImageViewer(Context context, Activity activity, View sharedElement, String url) {
+    public static void openImageViewer(Context context, Activity activity, View sharedElement, String url,String viewholderType) {
 
         if (url == null || url.isEmpty()) {
             return;
@@ -255,7 +299,7 @@ public class Helper {
         List<String> images = new ArrayList<>(1);
         images.add(url);
 
-        GalleryActivity.openActivity(context, activity, sharedElement, 0, images);
+        GalleryActivity.openActivity(context, activity, sharedElement, 0, images,viewholderType);
 
 //        Fresco.initialize(context);
 //
@@ -354,11 +398,11 @@ public class Helper {
 
     public static String getClassGenderText(String classType) {
         if (classType.equals(AppConstants.ApiParamValue.GENDER_MALE)) {
-            return "Male";
+            return MyApp.context.getString(R.string.male);
         } else if (classType.equals(AppConstants.ApiParamValue.GENDER_FEMALE)) {
-            return "Female";
+            return MyApp.context.getString(R.string.female);
         } else {
-            return "Both";
+            return MyApp.context.getString(R.string.both);
         }
     }
 
@@ -377,21 +421,21 @@ public class Helper {
         classModel.setAvailableSeat(joinedData.getAvailableSeat());
     }
 
-    public static void setPackageImage(ImageView imageView, String packageName) {
-        switch (packageName.toLowerCase()) {
-            case "ready":
+    public static void setPackageImage(ImageView imageView, int packageId) {
+        switch (packageId) {
+            case 1:
                 imageView.setImageResource(R.drawable.ready_icon);
                 break;
-            case "visit":
+            case 4:
                 imageView.setImageResource(R.drawable.star);
                 break;
-            case "get set":
+            case 2:
                 imageView.setImageResource(R.drawable.set);
                 break;
-            case "pro":
+            case 3:
                 imageView.setImageResource(R.drawable.pro_icon);
                 break;
-            case "special":
+            case AppConstants.Values.SPECIAL_CLASS_ID:
                 imageView.setImageResource(R.drawable.set_icon);
                 break;
             default:
@@ -417,31 +461,28 @@ public class Helper {
     }
 
     public static void shareGym(Context context, int id, String name) {
+        CharSequence gymShareMessage = String.format(context.getString(R.string.share_message_gym),name+"");
 
         String url = getUrlBase() + "/share/gym/" + id + "/" + name;
-        shareUrl(context, url);
+        shareUrl(context, gymShareMessage+url.replace(" ", ""));
     }
 
     public static void shareTrainer(Context context, int id, String name) {
+        CharSequence trainerShareMessage = String.format(context.getString(R.string.share_message_trainer),name+"");
 
         String url = getUrlBase() + "/share/trainer/" + id + "/" + name;
-        shareUrl(context, url);
+        shareUrl(context, trainerShareMessage+url.replace(" ", ""));
     }
 
     public static void shareClass(Context context, int id, String name) {
-
+        CharSequence classShareMessage = String.format(context.getString(R.string.share_message),name+"");
         String url = getUrlBase() + "/share/classes/" + id + "/" + name;
-        shareUrl(context, url);
+        shareUrl(context, classShareMessage+url.replace(" ", ""));
     }
 
     private static String getUrlBase() {
-        String urlBase = "";
+        String urlBase = BuildConfig.BASE_URL_SHARE;
 
-        if (MyApp.apiMode.equals(MyApp.ApiMode.LIVE)) {
-            urlBase = "http://www.p5m.me";
-        } else {
-            urlBase = "http://qa.profive.co";
-        }
         return urlBase;
     }
 
@@ -449,7 +490,7 @@ public class Helper {
 
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, url.replace(" ", ""));
+        sendIntent.putExtra(Intent.EXTRA_TEXT, url);
         sendIntent.setType("text/plain");
         context.startActivity(Intent.createChooser(sendIntent, "Share with"));
     }

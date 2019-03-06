@@ -8,6 +8,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.p5m.me.R;
@@ -18,9 +19,12 @@ import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.ImageUtils;
+import com.p5m.me.utils.LanguageUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.p5m.me.utils.LanguageUtils.numberConverter;
 
 /**
  * Created by MyU10 on 3/10/2018.
@@ -30,6 +34,10 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.imageViewProfile)
     public ImageView imageViewProfile;
+
+    @BindView(R.id.imageViewCover)
+    public ImageView imageViewCover;
+
     @BindView(R.id.imageViewMap)
     public ImageView imageViewMap;
 
@@ -67,6 +75,13 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.recyclerViewGallery)
     public RecyclerView recyclerViewGallery;
 
+    @BindView(R.id.linearLayoutTotalLocations)
+    public LinearLayout linearLayoutTotalLocations;
+
+    @BindView(R.id.textViewTotalLocations)
+    public TextView textViewTotalLocations;
+
+
     private final int dp;
     private Context context;
 
@@ -90,6 +105,8 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
 
             if (model.getGymBranchResponseList() != null && !model.getGymBranchResponseList().isEmpty()) {
                 layoutMap.setVisibility(View.VISIBLE);
+
+
                 GymBranchDetail gymBranchDetail = model.getGymBranchResponseList().get(0);
 
                 ImageUtils.setImage(context, ImageUtils.generateMapImageUrGymDetail(gymBranchDetail.getLatitude(), gymBranchDetail.getLongitude()),
@@ -108,31 +125,50 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
                 layoutLocationPhone.setVisibility(View.INVISIBLE);
 
                 if (model.getGymBranchResponseList().size() > 1) {
-                    textViewMore.setText(Html.fromHtml("<b>+" + (model.getGymBranchResponseList().size() - 1) + " more</b>"));
+                    textViewMore.setText(Html.fromHtml("<b>+" + numberConverter(model.getGymBranchResponseList().size() - 1) + " " + context.getString(R.string.more) + "</b>"));
                     textViewMore.setVisibility(View.VISIBLE);
                 } else {
                     textViewMore.setVisibility(View.GONE);
                 }
+                try {
+                    String locationsString = String.format(context.getString(R.string.total_locations), model.getGymBranchResponseList().size());
+                    linearLayoutTotalLocations.setVisibility(View.VISIBLE);
+                    textViewTotalLocations.setText(locationsString);
+                } catch (Exception e) {
+                    linearLayoutTotalLocations.setVisibility(View.GONE);
 
+                }
             } else {
                 layoutMap.setVisibility(View.GONE);
             }
 
             if (model.getNumberOfTrainer() == -1) {
-                textViewTrainers.setText(Html.fromHtml("trainers"));
+                textViewTrainers.setText(Html.fromHtml(context.getString(R.string.trainer).toLowerCase()));
             } else {
-                textViewTrainers.setText(Html.fromHtml("<b>" + (model.getNumberOfTrainer() + "</b>" + AppConstants.plural(" trainer", model.getNumberOfTrainer()))));
+               /* String src = "<b dir=\"ltr\">"+(numberConverter(model.getNumberOfTrainer())) +"</b> ";
+                String trainer=AppConstants.plural(context.getString(R.string.trainer), model.getNumberOfTrainer());
+
+//                textViewTrainers.setText(Html.fromHtml("<b>" + (numberConverter(model.getNumberOfTrainer()) + "</b>" +" "+ AppConstants.plural(context.getString(R.string.trainer), model.getNumberOfTrainer()))));
+                textViewTrainers.setText(trainer);
+                textViewTrainers.append(Html.fromHtml(src));*/
+                LanguageUtils.setText(textViewTrainers,model.getNumberOfTrainer() ,AppConstants.plural(context.getString(R.string.trainer), model.getNumberOfTrainer()));
+
+
+
             }
 
             ImageUtils.setImage(context,
                     model.getProfileImage(),
-                    R.drawable.profile_holder_big, imageViewProfile);
+                    R.drawable.profile_holder, imageViewProfile);
+            ImageUtils.setImage(context,
+                    model.getCoverImage(),
+                    R.drawable.cover_stub, imageViewCover);
 
             Helper.setFavButton(context, button, model);
 
             if (model.getMediaResponseDtoList() != null && !model.getMediaResponseDtoList().isEmpty()) {
                 layoutGallery.setVisibility(View.VISIBLE);
-                textViewGallery.setText(Html.fromHtml("Gallery" + " <b>(" + model.getMediaResponseDtoList().size() + ")</b>"));
+                textViewGallery.setText(Html.fromHtml(context.getString(R.string.gallery)+" " + " <b>(" + numberConverter(model.getMediaResponseDtoList().size()) + ")</b>"));
 
                 ImageListAdapter adapter = new ImageListAdapter(context, AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE, model.getMediaResponseDtoList());
                 recyclerViewGallery.setAdapter(adapter);
@@ -188,6 +224,12 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
                 @Override
                 public void onClick(View view) {
                     adapterCallbacks.onAdapterItemClick(GymProfileViewHolder.this, imageViewProfile, model, position);
+                }
+            });
+            imageViewCover.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(GymProfileViewHolder.this, imageViewCover, model, position);
                 }
             });
 

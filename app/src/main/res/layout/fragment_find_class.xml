@@ -23,7 +23,6 @@
             android:contentInsetLeft="0dp"
             android:contentInsetRight="0dp"
             android:contentInsetStart="0dp"
-            android:elevation="4dp"
             app:contentInsetEnd="0dp"
             app:contentInsetLeft="0dp"
             app:contentInsetRight="0dp"
@@ -36,7 +35,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/tab_layout_height_find_class"
             android:background="@color/colorPrimaryDark"
-            android:elevation="4dp"
             app:tabGravity="center"
             app:tabIndicatorColor="@color/white"
             app:tabMode="scrollable" />
@@ -46,5 +44,6 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 </android.support.design.widget.CoordinatorLayout>

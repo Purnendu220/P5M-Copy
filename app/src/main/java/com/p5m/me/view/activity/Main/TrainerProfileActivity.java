@@ -263,10 +263,16 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
         switch (view.getId()) {
             case R.id.imageViewProfile:
-                if (trainerDetailModel != null && !trainerDetailModel.getProfileImage().isEmpty()) {
-                    Helper.openImageViewer(context, activity, view, trainerDetailModel.getProfileImage());
+                if (trainerDetailModel != null &&trainerDetailModel.getProfileImage() != null&& !trainerDetailModel.getProfileImage().isEmpty()) {
+                    Helper.openImageViewer(context, activity, view, trainerDetailModel.getProfileImage(),AppConstants.ImageViewHolderType.PROFILE_IMAGE_HOLDER);
                 }
                 break;
+            case R.id.imageViewCover:
+                if (trainerDetailModel != null &&trainerDetailModel.getCoverImage() != null&& !trainerDetailModel.getCoverImage().isEmpty()) {
+                    Helper.openImageViewer(context, activity, view, trainerDetailModel.getCoverImage(),AppConstants.ImageViewHolderType.COVER_IMAGE_HOLDER);
+                }
+                break;
+
             case R.id.button:
                 if (viewHolder instanceof TrainerProfileViewHolder) {
                     if (trainerModel != null) {
@@ -281,12 +287,14 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
                     }
                 }
                 break;
+
+
         }
     }
 
     private void dialogUnFollow(final RecyclerView.ViewHolder viewHolder, final TrainerModel trainerModel) {
 
-        DialogUtils.showBasic(context, "Are you sure you want to remove " + trainerModel.getFirstName() + "?", "Yes", new MaterialDialog.SingleButtonCallback() {
+        DialogUtils.showBasic(context, getString(R.string.are_you_sure_you_want_to_remove)+" " + trainerModel.getFirstName() + "?", context.getString(R.string.yes), new MaterialDialog.SingleButtonCallback() {
             @Override
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                 networkCommunicator.followUnFollow(!trainerModel.isIsfollow(), trainerModel, TrainerProfileActivity.this, false);
@@ -349,7 +357,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
 
                 callApiClasses();
                 swipeRefreshLayout.setRefreshing(false);
-                TrainerDetailModel trainerDetailModel = ((ResponseModel<TrainerDetailModel>) response).data;
+                trainerDetailModel = ((ResponseModel<TrainerDetailModel>) response).data;
                 trainerModel = trainerDetailModel.getTrainer();
 
                 trainerProfileAdapter.setTrainerModel(trainerDetailModel);

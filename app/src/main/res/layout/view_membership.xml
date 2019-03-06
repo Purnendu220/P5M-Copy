@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/theme_bg">
 
     <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:paddingTop="4dp">
 
         <android.support.v7.widget.CardView
             style="@style/CardViewMembershipTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
             android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
             android:layout_marginTop="18dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="12dp"
             android:elevation="0dp"
             android:orientation="vertical">
 
@@ -42,12 +46,12 @@
                             android:layout_gravity="left|center_vertical"
                             android:ellipsize="end"
                             android:fontFamily="sans-serif"
-                            android:letterSpacing="@dimen/button_letter_spacing_very_little"
                             android:gravity="left"
+                            android:letterSpacing="@dimen/button_letter_spacing_very_little"
                             android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                             android:maxLines="1"
-                            android:paddingBottom="12dp"
                             android:paddingTop="16dp"
+                            android:paddingBottom="12dp"
                             android:text="READY"
                             android:textAllCaps="true"
                             android:textColor="@color/theme_medium_light_text"
@@ -60,56 +64,111 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:fontFamily="sans-serif"
-                            android:letterSpacing="@dimen/text_medium_letter_spacing"
-                            android:paddingRight="12dp"
                             android:gravity="left"
+                            android:letterSpacing="@dimen/text_medium_letter_spacing"
                             android:lineSpacingExtra="@dimen/line_spacing_extra_title"
+                            android:paddingRight="12dp"
                             android:paddingBottom="4dp"
                             android:text="10 of 10 Classes remaining"
                             android:textColor="@color/theme_dark_text"
                             android:textSize="20sp"
                             android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/textViewPackagePrice"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:fontFamily="sans-serif-medium"
-                            android:letterSpacing="@dimen/text_medium_letter_spacing"
-                            android:lineSpacingExtra="@dimen/line_spacing_extra_title"
-                            android:gravity="left"
-                            android:maxLines="1"
-                            android:paddingTop="6dp"
-                            android:text="50 KWD"
-                            android:textColor="@color/theme_dark_text"
-                            android:textSize="@dimen/text_medium"
-                            android:visibility="visible" />
+                            android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/textViewPackageValidity"
+                            <TextView
+                                android:id="@+id/textViewPackagePriceStrike"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="10dp"
+                                android:ellipsize="end"
+                                android:fontFamily="sans-serif-medium"
+                                android:gravity="left"
+                                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                                android:lineSpacingExtra="@dimen/line_spacing_extra_title"
+                                android:maxLines="1"
+                                android:paddingTop="6dp"
+                                android:text="50 KWD"
+                                android:textColor="@color/theme_medium_dark_text"
+                                android:textSize="@dimen/text_medium"
+                                android:visibility="gone"
+
+                                />
+
+                            <TextView
+                                android:id="@+id/textViewPackagePrice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:fontFamily="sans-serif-medium"
+                                android:gravity="left"
+                                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                                android:lineSpacingExtra="@dimen/line_spacing_extra_title"
+                                android:maxLines="1"
+                                android:paddingTop="6dp"
+                                android:text="50 KWD"
+                                android:textColor="@color/theme_dark_text"
+                                android:textSize="@dimen/text_medium"
+                                android:visibility="visible" />
+
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:fontFamily="sans-serif"
-                            android:letterSpacing="@dimen/text_medium_letter_spacing"
-                            android:gravity="left"
-                            android:lineSpacingExtra="@dimen/line_spacing_extra_title"
-                            android:maxLines="1"
-                            android:paddingBottom="12dp"
-                            android:paddingTop="12dp"
-                            android:text="Valid for P5M Studio"
-                            android:textColor="@color/theme_light_text"
-                            android:textSize="@dimen/text_extra_large"
-                            android:textStyle="normal" />
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/textViewPackageValidity"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:fontFamily="sans-serif"
+                                android:gravity="left"
+                                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                                android:lineSpacingExtra="@dimen/line_spacing_extra_title"
+                                android:maxLines="1"
+                                android:paddingTop="12dp"
+                                android:paddingBottom="12dp"
+                                android:text="Valid for P5M Studio"
+                                android:textColor="@color/theme_dark_text"
+                                android:textSize="@dimen/text_medium"
+
+                                android:textStyle="normal" />
+
+                            <TextView
+                                android:id="@+id/textViewExtendPackage"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/margin_10"
+                                android:fontFamily="sans-serif"
+                                android:gravity="left"
+                                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                                android:lineSpacingExtra="@dimen/line_spacing_extra"
+                                android:paddingTop="12dp"
+
+                                android:text="@string/extend"
+                                android:textColor="@color/theme_accent_text"
+                                android:textSize="@dimen/text_medium"
+                                android:textStyle="bold"
+                                android:visibility="gone" />
+
+
+                        </LinearLayout>
+
 
                         <TextView
                             android:id="@+id/textViewViewLimit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif"
-                            android:letterSpacing="@dimen/text_medium_letter_spacing"
                             android:gravity="left"
+                            android:letterSpacing="@dimen/text_medium_letter_spacing"
                             android:lineSpacingExtra="@dimen/line_spacing_extra"
                             android:text="@string/view_gym_visit_limits"
                             android:textColor="@color/theme_accent_text"
@@ -133,15 +192,50 @@
 
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/imageViewInfo"
-                    style="@style/ToolBarIcon"
-                    android:layout_height="48dp"
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginTop="4dp"
-                    android:padding="12dp"
-                    android:src="@drawable/info_membership" />
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal"
+
+                    >
+
+                    <ImageView
+                        android:id="@+id/imageViewInfo"
+                        style="@style/ToolBarIcon"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="-8dp"
+                        android:layout_marginRight="8dp"
+                        android:padding="12dp"
+                        android:src="@drawable/info_membership"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:id="@+id/linearLayoutOffer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:background="@color/green"
+                        android:gravity="center"
+                        android:paddingLeft="@dimen/margin_20"
+                        android:paddingTop="5dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="5dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/textViewOffer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="15% off"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/margin_14" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
 
             </FrameLayout>
         </android.support.v7.widget.CardView>
@@ -162,5 +256,32 @@
 
         </android.support.v7.widget.CardView>
     </FrameLayout>
+
+    <TextView
+        android:id="@+id/textViewOr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OR"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_extra_large"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+
+    <View
+        android:id="@+id/viewOr"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/grey_line_dark"
+        android:paddingBottom="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewOr" />
 
 </android.support.constraint.ConstraintLayout>

@@ -2,16 +2,27 @@ package com.p5m.me.restapi;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.v7.app.AppCompatActivity;
 
+import com.facebook.login.LoginManager;
+import com.p5m.me.R;
 import com.p5m.me.data.City;
+import com.p5m.me.data.ClassRatingUserData;
+import com.p5m.me.data.ContactRequestModel;
+import com.p5m.me.data.ContactResponse;
 import com.p5m.me.data.FollowResponse;
 import com.p5m.me.data.MediaResponse;
 import com.p5m.me.data.PackageLimitModel;
+import com.p5m.me.data.PaymentConfirmationResponse;
 import com.p5m.me.data.PromoCode;
+import com.p5m.me.data.RatingParamModel;
+import com.p5m.me.data.RatingResponseModel;
+import com.p5m.me.data.UnratedClassData;
 import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.DefaultSettingServer;
+import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.data.main.NotificationModel;
 import com.p5m.me.data.main.Package;
@@ -24,6 +35,7 @@ import com.p5m.me.data.main.User;
 import com.p5m.me.data.request.ChangePasswordRequest;
 import com.p5m.me.data.request.ChooseFocusRequest;
 import com.p5m.me.data.request.ClassListRequest;
+import com.p5m.me.data.request.ClassRatingRequest;
 import com.p5m.me.data.request.DeviceUpdate;
 import com.p5m.me.data.request.FollowRequest;
 import com.p5m.me.data.request.JoinClassRequest;
@@ -31,7 +43,9 @@ import com.p5m.me.data.request.LoginRequest;
 import com.p5m.me.data.request.LogoutRequest;
 import com.p5m.me.data.request.PaymentUrlRequest;
 import com.p5m.me.data.request.PromoCodeRequest;
+import com.p5m.me.data.request.PublishRequest;
 import com.p5m.me.data.request.RegistrationRequest;
+import com.p5m.me.data.request.SelectedFileData;
 import com.p5m.me.data.request.UserInfoUpdate;
 import com.p5m.me.data.request.UserUpdateRequest;
 import com.p5m.me.data.request.WishListRequest;
@@ -39,6 +53,7 @@ import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.CommonUtillity;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 
@@ -79,8 +94,12 @@ public class NetworkCommunicator {
         public static final int LOGIN = 100;
         public static final int ALL_CITY = 101;
         public static final int ALL_CLASS_ACTIVITY = 102;
+        public static final int ALL_GYM_LIST = 131;
+
 
         public static final int CLASS_LIST = 103;
+        public static final int RCOMENDED_CLASS_LIST = 151;
+
         public static final int TRAINER_LIST = 104;
 
         public static final int WISH_LIST = 105;
@@ -111,6 +130,19 @@ public class NetworkCommunicator {
         public static final int PHOTO_UPLOAD = 128;
         public static final int GYM_LIST = 129;
         public static final int CLASS_DETAIL = 130;
+        public static final int RATING_PARAMS = 131;
+        public static final int CLASS_RATING = 132;
+        public static final int CLASS_RATING_LIST = 134;
+        public static final int IMAGE_UPLOAD_PROGRESS = 135;
+        public static final int IMAGE_UPLOAD_FAILED =136;
+        public static final int CLASS_RATING_PUBLISH = 137;
+        public static final int UNRATED_CLASS_COUNT = 138;
+        public static final int CLASS_RATING_UPDATE = 139;
+        public static final int MEDIA_DELETE=140;
+
+
+        public static final int PAYMENT_CONFIRMATION_DETAIL = 150;
+        public static final int SUPPORT_RESPONSE_CONTACT = 160;
     }
 
     private Context context;
@@ -165,12 +197,14 @@ public class NetworkCommunicator {
             public void onFailure(Call<ResponseModel<User>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator loginFB onFailure " + message);
                 requestListener.onApiFailure(message, requestCode);
+                LoginManager.getInstance().logOut();
             }
 
             @Override
             public void onResponse(Call<ResponseModel<User>> call, Response<ResponseModel<User>> restResponse, ResponseModel<User> response) {
                 LogUtils.networkSuccess("NetworkCommunicator loginFB onResponse data " + response);
                 TempStorage.setAuthToken(restResponse.headers().get(AppConstants.ApiParamKey.MYU_AUTH_TOKEN));
+                MyPreferences.getInstance().setLoginWithFacebook(true);
                 requestListener.onApiSuccess(response, requestCode);
 
 //                EventBroadcastHelper.sendDeviceUpdate(context);
@@ -310,6 +344,26 @@ public class NetworkCommunicator {
         });
         return call;
     }
+    public Call getGymsList(final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.ALL_GYM_LIST;
+        Call<ResponseModel<List<GymDataModel>>> call = apiService.getGymList(3 );
+        LogUtils.debug("NetworkCommunicator hitting getGymList");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<GymDataModel>>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<List<GymDataModel>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getGymList onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<GymDataModel>>> call, Response<ResponseModel<List<GymDataModel>>> restResponse, ResponseModel<List<GymDataModel>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getGymList onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
 
     public Call getDefault() {
 //        final int requestCode = RequestCode.ALL_CLASS_ACTIVITY;
@@ -353,6 +407,27 @@ public class NetworkCommunicator {
         });
         return call;
     }
+    public Call getRcomendedClassList(String date,Double latitude,Double longitude, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.RCOMENDED_CLASS_LIST;
+        Call<ResponseModel<List<ClassModel>>> call = apiService.getRecomendedClassList(date,latitude,longitude,TempStorage.getUser().getId());
+        LogUtils.debug("NetworkCommunicator hitting getClassList");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<List<ClassModel>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getClassList onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<ClassModel>>> call, Response<ResponseModel<List<ClassModel>>> restResponse, ResponseModel<List<ClassModel>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getClassList onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
 
     public Call deviceUpdate(DeviceUpdate deviceUpdate, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.DEVICE;
@@ -503,7 +578,7 @@ public class NetworkCommunicator {
 
     public Call getFinishedClassList(int userId, int page, int size, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.CLASS_LIST;
-        Call<ResponseModel<List<ClassModel>>> call = apiService.getFinishedClassList(userId);
+        Call<ResponseModel<List<ClassModel>>> call = apiService.getFinishedClassList(userId,page,size);
         LogUtils.debug("NetworkCommunicator hitting getFinishedClassList");
 
         call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>(context) {
@@ -606,9 +681,9 @@ public class NetworkCommunicator {
         return call;
     }
 
-    public Call getPackagesForClass(int userId, int gymId, int sessionId, final RequestListener requestListener, boolean useCache) {
+    public Call getPackagesForClass(int userId, int gymId, int sessionId,int numberOfFriends, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.PACKAGES_FOR_USER;
-        Call<ResponseModel<List<Package>>> call = apiService.getClassPackageList(userId, gymId, sessionId);
+        Call<ResponseModel<List<Package>>> call = apiService.getClassPackageList(userId, gymId, sessionId,numberOfFriends);
         LogUtils.debug("NetworkCommunicator hitting getPackagesForClass");
 
         call.enqueue(new RestCallBack<ResponseModel<List<Package>>>(context) {
@@ -952,6 +1027,13 @@ public class NetworkCommunicator {
 
     public Call uploadUserImage(Context context, File file, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.PHOTO_UPLOAD;
+        String uniqueChar;
+        try{
+            uniqueChar= CommonUtillity.getnerateUniqueToken(context);
+        }catch (Exception e){
+            uniqueChar= System.currentTimeMillis()+"";
+        }
+
         LogUtils.debug("NetworkCommunicator hitting uploadImage");
 
         int mediaId = TempStorage.getUser().getUserProfileImageId();
@@ -995,7 +1077,8 @@ public class NetworkCommunicator {
                 TempStorage.getUser().getId(),
                 "UserProfile",
                 "Image",
-                file.getName());
+                file.getName(),
+                uniqueChar);
 
         if (mediaId == 0) {
             call = RestServiceFactory.createService().uploadMediaImage(
@@ -1004,7 +1087,8 @@ public class NetworkCommunicator {
                     TempStorage.getUser().getId(),
                     "UserProfile",
                     "Image",
-                    file.getName());
+                    file.getName(),
+                    uniqueChar);
 
         }
 
@@ -1023,6 +1107,69 @@ public class NetworkCommunicator {
                 LogUtils.networkSuccess("NetworkCommunicator uploadImage onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
 
+                finalFile.delete();
+            }
+        });
+        return call;
+    }
+    public Call uploadRatingImages(Context context, final SelectedFileData selectedFileData, int mediaId, File file, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.PHOTO_UPLOAD;
+        LogUtils.debug("NetworkCommunicator hitting uploadImage");
+        try {
+            file = new Compressor.Builder(context)
+                    .setMaxWidth(AppConstants.Values.IMAGE_RESOLUTION_COMPRESSION)
+                    .setMaxHeight(AppConstants.Values.IMAGE_RESOLUTION_COMPRESSION)
+                    .setQuality(AppConstants.Values.IMAGE_QUALITY)
+                    .setCompressFormat(Bitmap.CompressFormat.JPEG)
+                    .setDestinationDirectoryPath(context.getCacheDir().getPath())
+                    .build()
+                    .compressToFile(file);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+        ProgressRequestBody fileBody = new ProgressRequestBody(file, new ProgressRequestBody.UploadCallbacks() {
+            @Override
+            public void onProgressUpdate(int percentage) {
+                SelectedFileData selectedFileDataLocal=selectedFileData;
+                selectedFileDataLocal.setFileUploadProgress(percentage);
+                requestListener.onApiSuccess(selectedFileDataLocal, RequestCode.IMAGE_UPLOAD_PROGRESS);
+                LogUtils.debug("UPLOAD PERCENTAGE FOR IMAGE "+selectedFileData.getFilepath()+" UPLOAD "+percentage);
+
+            }
+
+            @Override
+            public void onError() {
+            }
+
+            @Override
+            public void onFinish() {
+            }
+        });
+
+        MultipartBody.Part filePart = MultipartBody.Part.createFormData(AppConstants.ApiParamKey.MEDIA, file.getName(), fileBody);
+        Call<ResponseModel<MediaResponse>> call = RestServiceFactory.createService().uploadMediaImage(
+                     filePart,
+                    "rating",
+                     mediaId,
+                    "rating",
+                    "Image",
+                     file.getName(),
+                selectedFileData.getSpecialToken());
+        final File finalFile = file;
+        call.enqueue(new RestCallBack<ResponseModel<MediaResponse>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<MediaResponse>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator uploadImage onFailure " + message);
+                requestListener.onApiSuccess(selectedFileData, RequestCode.IMAGE_UPLOAD_FAILED);
+                finalFile.delete();
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<MediaResponse>> call, Response<ResponseModel<MediaResponse>> restResponse, ResponseModel<MediaResponse> response) {
+                LogUtils.networkSuccess("NetworkCommunicator uploadImage onResponse data " + response);
+                requestListener.onApiSuccess(selectedFileData, requestCode);
                 finalFile.delete();
             }
         });
@@ -1059,7 +1206,129 @@ public class NetworkCommunicator {
         });
         return call;
     }
+    public Call submitClassRating(ClassRatingRequest classRatingRequest, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.CLASS_RATING;
+        Call<ResponseModel<RatingResponseModel>> call = apiService.submitClassRating(classRatingRequest);
+        LogUtils.debug("NetworkCommunicator hitting changePass");
 
+        call.enqueue(new RestCallBack<ResponseModel<RatingResponseModel>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<RatingResponseModel>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator changePass onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<RatingResponseModel>> call, Response<ResponseModel<RatingResponseModel>> restResponse, ResponseModel<RatingResponseModel> response) {
+                LogUtils.networkSuccess("NetworkCommunicator changePass onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+    public Call updateClassRating(long ratingId,ClassRatingRequest classRatingRequest, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.CLASS_RATING_UPDATE;
+        Call<ResponseModel<RatingResponseModel>> call = apiService.updateClassRating(ratingId,classRatingRequest);
+        LogUtils.debug("NetworkCommunicator hitting changePass");
+
+        call.enqueue(new RestCallBack<ResponseModel<RatingResponseModel>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<RatingResponseModel>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator changePass onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<RatingResponseModel>> call, Response<ResponseModel<RatingResponseModel>> restResponse, ResponseModel<RatingResponseModel> response) {
+                LogUtils.networkSuccess("NetworkCommunicator changePass onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+    public Call deleteMedia(long mediaId,final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.MEDIA_DELETE;
+        Call<ResponseModel<User>> call = apiService.deleteMedia(mediaId);
+        LogUtils.debug("NetworkCommunicator hitting changePass");
+
+        call.enqueue(new RestCallBack<ResponseModel<User>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<User>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator mediaDelete onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<User>> call, Response<ResponseModel<User>> restResponse, ResponseModel<User> response) {
+                LogUtils.networkSuccess("NetworkCommunicator mediaDelete onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call publishClassRating(long ratingId, PublishRequest classRatingRequest, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.CLASS_RATING_PUBLISH;
+        Call<ResponseModel<RatingResponseModel>> call = apiService.publishClassRating(ratingId,classRatingRequest);
+        LogUtils.debug("NetworkCommunicator hitting changePass");
+
+        call.enqueue(new RestCallBack<ResponseModel<RatingResponseModel>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<RatingResponseModel>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator changePass onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<RatingResponseModel>> call, Response<ResponseModel<RatingResponseModel>> restResponse, ResponseModel<RatingResponseModel> response) {
+                LogUtils.networkSuccess("NetworkCommunicator changePass onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+    public Call getUnratedClassList(int page,int size,final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.UNRATED_CLASS_COUNT;
+        Call<ResponseModel<UnratedClassData>> call = apiService.unRatedClassList(TempStorage.getUser().getId(),page,size);
+        LogUtils.debug("NetworkCommunicator hitting changePass");
+
+        call.enqueue(new RestCallBack<ResponseModel<UnratedClassData>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<UnratedClassData>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator changePass onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<UnratedClassData>> call, Response<ResponseModel<UnratedClassData>> restResponse, ResponseModel<UnratedClassData> response) {
+                LogUtils.networkSuccess("NetworkCommunicator changePass onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+
+    public Call getClassRatingList(int classId,int page,int pageSize, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.CLASS_RATING_LIST;
+        Call<ResponseModel<ClassRatingUserData>> call = apiService.getRatingList(classId,1, page, pageSize);
+        LogUtils.debug("NetworkCommunicator hitting getWishList");
+
+        call.enqueue(new RestCallBack<ResponseModel<ClassRatingUserData>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<ClassRatingUserData>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getWishList onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<ClassRatingUserData>> call, Response<ResponseModel<ClassRatingUserData>> restResponse, ResponseModel<ClassRatingUserData> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getWishList onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
     public Call addToWishList(final ClassModel classModel, final int classSessionId) {
         final int requestCode = RequestCode.ADD_TO_WISH_LIST;
         Call<ResponseModel<WishListResponse>> call = apiService.addToWishList(new WishListRequest(TempStorage.getUser().getId(), classSessionId));
@@ -1079,7 +1348,8 @@ public class NetworkCommunicator {
 //                requestListener.onApiSuccess(response, requestCode);
 
                 try {
-                    ToastUtils.show(context, classModel.getTitle() + " successfully added to your wishlist");
+                   String message = String.format(context.getString(R.string.added_to_wishlist),classModel.getTitle());
+                    ToastUtils.show(context, message);
                     classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
                     EventBroadcastHelper.sendWishAdded(classModel);
                 } catch (Exception e) {
@@ -1163,6 +1433,72 @@ public class NetworkCommunicator {
                 if (response.data != null) {
                     response.data.searchText = queryString;
                 }
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call getRatingParameters(final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.RATING_PARAMS;
+        Call<ResponseModel<List<RatingParamModel>>> call = apiService.getClassRatingPArameters();
+        LogUtils.debug("NetworkCommunicator hitting RATING params");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<RatingParamModel>>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<List<RatingParamModel>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator RATINGParams onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<RatingParamModel>>> call, Response<ResponseModel<List<RatingParamModel>>> restResponse, ResponseModel<List<RatingParamModel>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator RATINGParams onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+                TempStorage.setRatingParams(response.data);
+            }
+        });
+        return call;
+    }
+
+    /*---------------------------Payment Confirmation-------------------------*/
+    public Call getPaymentDetail(long refId, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.PAYMENT_CONFIRMATION_DETAIL;
+        Call<ResponseModel<PaymentConfirmationResponse>> call = apiService.getPaymentDetail(refId);
+        LogUtils.debug("NetworkCommunicator hitting Payment Detail");
+
+        call.enqueue(new RestCallBack<ResponseModel<PaymentConfirmationResponse>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<PaymentConfirmationResponse>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator paymentDetail onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<PaymentConfirmationResponse>> call, Response<ResponseModel<PaymentConfirmationResponse>> restResponse, ResponseModel<PaymentConfirmationResponse> response) {
+                LogUtils.networkSuccess("NetworkCommunicator paymentDetail onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    /*---------------------------SUPPORT CONTACT-------------------------*/
+    public Call sendQuery(ContactRequestModel contactRequestModel, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.SUPPORT_RESPONSE_CONTACT;
+        Call<ResponseModel<Object>> call = apiService.getContactResponse(contactRequestModel);
+        LogUtils.debug("NetworkCommunicator hitting Contact");
+
+        call.enqueue(new RestCallBack<ResponseModel<Object>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<Object>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator contact onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<Object>> call, Response<ResponseModel<Object>> restResponse, ResponseModel<Object> response) {
+                LogUtils.networkSuccess("NetworkCommunicator contact onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
             }
         });

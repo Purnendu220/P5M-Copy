@@ -8,7 +8,7 @@ import android.text.Html;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,10 +19,14 @@ import com.p5m.me.adapters.ImageListAdapter;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.GymBranchDetail;
 import com.p5m.me.data.main.TrainerDetailModel;
+import com.p5m.me.fxn.utility.Constants;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.ImageUtils;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.view.activity.Main.GymProfileActivity;
+
+import java.text.NumberFormat;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,8 +40,16 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.imageViewProfile)
     public ImageView imageViewProfile;
 
+    @BindView(R.id.imageViewCover)
+    public ImageView imageViewCover;
+
+
     @BindView(R.id.button)
-    public Button button;
+    public ImageButton button;
+
+
+
+
 
     @BindView(R.id.textViewName)
     public TextView textViewName;
@@ -80,22 +92,27 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
             final TrainerDetailModel model = (TrainerDetailModel) data;
 
             if (model.getFollowerCount() == -1) {
-                textViewFollowers.setText(Html.fromHtml("followers"));
+                textViewFollowers.setText(Html.fromHtml(context.getString(R.string.followers)));
             } else if (model.getFollowerCount() == 0) {
-                textViewFollowers.setText(Html.fromHtml("No followers"));
+                textViewFollowers.setText(Html.fromHtml(context.getString(R.string.no_followers)));
             } else {
-                textViewFollowers.setText(Html.fromHtml("<b>" + (model.getFollowerCount() + "</b>" + " followers")));
+//                textViewFollowers.setText(Html.fromHtml("<b>" + NumberFormat.getNumberInstance(Constants.LANGUAGE).format(model.getFollowerCount()) + "</b>" + " "+context.getString(R.string.followers)));
+                LanguageUtils.setText(textViewFollowers,model.getFollowerCount(), " "+context.getString(R.string.followers));
             }
 
             ImageUtils.setImage(context,
                     model.getProfileImage(),
-                    R.drawable.profile_holder_big, imageViewProfile);
+                    R.drawable.profile_holder, imageViewProfile);
+
+            ImageUtils.setImage(context,
+                    model.getCoverImage(),
+                    R.drawable.cover_stub, imageViewCover);
 
             Helper.setFavButton(context, button, model);
 
             if (model.getMediaResponseDtoList() != null && !model.getMediaResponseDtoList().isEmpty()) {
                 layoutGallery.setVisibility(View.VISIBLE);
-                textViewGallery.setText(Html.fromHtml("Gallery" + " <b>(" + model.getMediaResponseDtoList().size() + ")</b>"));
+                textViewGallery.setText(Html.fromHtml(context.getString(R.string.gallery) + " <b>(" + model.getMediaResponseDtoList().size() + ")</b>"));
 
                 ImageListAdapter adapter = new ImageListAdapter(context, AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE, model.getMediaResponseDtoList());
                 recyclerViewGallery.setAdapter(adapter);
@@ -146,7 +163,7 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
                         textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                         textView.setPadding(0, dp * 2, 0, dp * 4);
                         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-                        textView.setText(Html.fromHtml("Coach at <b>" + gymBranchDetail.getGymName() + "</b>"));
+                        textView.setText(Html.fromHtml(context.getString(R.string.coach_at)+" <b>" + gymBranchDetail.getGymName() + "</b>"));
                         textView.setClickable(true);
                         textView.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
 
@@ -155,9 +172,8 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
                         textView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                GymProfileActivity.open(context, gymBranchDetail.getGymId(), shownIn);
+                                GymProfileActivity.open(context, gymBranchDetail.getGymId(), AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE);
                                 MixPanel.trackTrainerProfileEvent(AppConstants.Tracker.VISIT_GYM_PROFILE);
-                                MixPanel.trackGymVisit(AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE);
                             }
                         });
                     }
@@ -175,6 +191,12 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
                 @Override
                 public void onClick(View view) {
                     adapterCallbacks.onAdapterItemClick(TrainerProfileViewHolder.this, imageViewProfile, model, position);
+                }
+            });
+            imageViewCover.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(TrainerProfileViewHolder.this, imageViewCover, model, position);
                 }
             });
 
