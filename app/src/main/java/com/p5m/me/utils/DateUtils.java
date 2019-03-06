@@ -25,6 +25,8 @@ public class DateUtils {
     private static SimpleDateFormat classDateSec = new SimpleDateFormat("dd-mm-yyyy", Locale.getDefault());
     private static SimpleDateFormat classDateExpiry = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     private static SimpleDateFormat classDateTime = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault());
+    private static SimpleDateFormat eventDateTime = new SimpleDateFormat("dd-MM-yyyy hh:mm aa", Locale.getDefault());
+
     private static SimpleDateFormat classDateFormat = new SimpleDateFormat("EEE, d MMM yyyy", Locale.getDefault());
     private static SimpleDateFormat packageDateFormat = new SimpleDateFormat("d MMM yyyy", Locale.getDefault());
     private static SimpleDateFormat notificationDate = new SimpleDateFormat("h:mm a, MMM d", Locale.getDefault());
@@ -236,6 +238,21 @@ public class DateUtils {
         long today = Calendar.getInstance().getTimeInMillis();
         try {
             long expiryTime = classDateExpiry.parse(date).getTime();
+
+
+            long diff = (expiryTime );
+            long minute = TimeUnit.MILLISECONDS.convert(diff, TimeUnit.MILLISECONDS);
+            return minute;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return today;
+    }
+    public static long eventTime(String date) {
+        long today = Calendar.getInstance().getTimeInMillis();
+        try {
+            long expiryTime = eventDateTime.parse(date).getTime();
 
 
             long diff = (expiryTime );

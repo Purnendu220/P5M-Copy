@@ -633,7 +633,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();
                                     Helper.shareClass(context, classModel.getClassSessionId(), classModel.getTitle());
-                                    bookEvent();
                                     finish();
 
                                 }
@@ -641,7 +640,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();
-                                    bookEvent();
                                     finish();
                                 }
                             });
@@ -915,41 +913,21 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
     }
 
-    private void bookEvent() {
-        if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
-            addNewEvent();
-        } else {
-            CalendarHelper.requestCalendarReadWritePermission(this);
-        }
-        if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
-            calendarIdTable = CalendarHelper.listCalendarId(this);
-        }
-    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
-    private void addNewEvent() {
-        final long oneHour = 1000 * 60 * 60;
-        if (calendarIdTable == null) {
-            calendarIdTable = CalendarHelper.listCalendarId(this);
-        }
-//        String calendarString = TempStorage.getUser().getEmail();
-//        if (calendarIdTable.keySet().contains(calendarString)) {
-        if(calendarIdTable.size()!=0) {
-            String calendarString = "@";
-
-            for (Hashtable.Entry<String, String> entry : calendarIdTable.entrySet()) {
-
-                if (entry.getKey().contains(calendarString)) {
-                    calendar_id = Integer.parseInt(entry.getValue());
-                    break;
+        if (requestCode == CalendarHelper.CALENDARED_PERMISSION_REQUEST_CODE) {
+            if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
+                if (classModel != null){
+                    CalendarHelper.scheduleCalenderEvent(this,classModel);
                 }
+
+
             }
-            long eventStartTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getFromTime());
-            long eventEndtTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getToTime());
-            if(eventStartTime-oneHour>0)
-                CalendarHelper.MakeNewCalendarEntry(this, classModel.getTitle()+DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()), getString(R.string.your_class_schedule_at)+" " + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()), "Somewhere", eventStartTime-oneHour, eventStartTime, false, true, calendar_id, 3, classModel.getClassSessionId());
+
         }
 
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-
 
 }

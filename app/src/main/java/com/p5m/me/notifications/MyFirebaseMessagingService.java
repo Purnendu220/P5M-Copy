@@ -111,56 +111,43 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 case "OnClassUpdateByGYM":
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
-                    removeEvent(jsonObject, dataID);
-                    addEvent(jsonObject, dataID);
-                    //updateNotificationSchedule(TempStorage.getSavedClasses(),dataID,jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME),jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME));
+                    updateEvent(jsonObject, dataID);
+
                     break;
                 case "OnClassUpdateByTrainer":
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
-                    removeEvent(jsonObject, dataID);
-                    addEvent(jsonObject, dataID);
-                    // updateNotificationSchedule(TempStorage.getSavedClasses(),dataID,jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME),jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME));
+                    updateEvent(jsonObject, dataID);
                     break;
                 case "OnSessionUpdateByGYM":
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
                     updateEvent(jsonObject, dataID);
-                    // updateNotificationSchedule(TempStorage.getSavedClasses(),dataID,jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME),jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME));
                     break;
                 case "OnSessionUpdateByTrainerOfGym":
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
-                    removeEvent(jsonObject, dataID);
-                    addEvent(jsonObject, dataID);
-                    // updateNotificationSchedule(TempStorage.getSavedClasses(),dataID,jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME),jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME));
+                    updateEvent(jsonObject, dataID);
                     break;
                 case "OnSessionUpdateByTrainer":
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
-                    removeEvent(jsonObject, dataID);
-                    addEvent(jsonObject, dataID);
-                    //updateNotificationSchedule(TempStorage.getSavedClasses(),dataID,jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME),jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME));
+                    updateEvent(jsonObject, dataID);
                     break;
                 case "OnSessionUpdateByGymOfTrainer":
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
-                    removeEvent(jsonObject, dataID);
-                    addEvent(jsonObject, dataID);
-                    // updateNotificationSchedule(TempStorage.getSavedClasses(),dataID,jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME),jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME));
+                    updateEvent(jsonObject, dataID);
                     break;
                 case "OnClassUpdateByCms":
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
                     updateEvent(jsonObject, dataID);
-                    // updateNotificationSchedule(TempStorage.getSavedClasses(),dataID,jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME),jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME));
                     break;
                 case "OnGroupClassUpdateByCms":
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
-                    removeEvent(jsonObject, dataID);
-                    addEvent(jsonObject, dataID);
-                    // updateNotificationSchedule(TempStorage.getSavedClasses(),dataID,jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME),jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME));
+                    updateEvent(jsonObject, dataID);
                     break;
                 case "OnJoinClass":
                     setNotification(jsonObject, dataID);
@@ -181,52 +168,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         bookEvent(model);
     }
 
-    private void updateEvent(ClassModel classModel) {
-
-       // long eventStartTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getFromTime());
-       // long eventEndTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getToTime());
-
-        CalendarHelper.UpdateCalendarEntry(this, classModel.getTitle() + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()),
-                getString(R.string.your_class_schedule_at) + " " + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()), "Somewhere", DateUtils.getClassDate(classModel.getClassDate(),classModel.getFromTime()).getTime(), DateUtils.getClassDate(classModel.getClassDate(),classModel.getToTime()).getTime(), false, true, calendar_id, 3,classModel.getClassSessionId());
-
-    }
-
-    private void bookEvent(ClassModel model) {
-        if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
-            addNewEvent(model);
-        } else {
-            CalendarHelper.requestCalendarReadWritePermission(this);
-        }
-        if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
-            calendarIdTable = CalendarHelper.listCalendarId(this);
-        }
-    }
-
-    private void addNewEvent(ClassModel classModel) {
-        final long oneHour = 1000 * 60 * 60;
-        if (calendarIdTable == null) {
-            calendarIdTable = CalendarHelper.listCalendarId(this);
-        }
-//        String calendarString = TempStorage.getUser().getEmail();
-//        if (calendarIdTable.keySet().contains(calendarString)) {
-        if(calendarIdTable.size()!=0) {
-            String calendarString = "@";
-
-            for (Hashtable.Entry<String, String> entry : calendarIdTable.entrySet()) {
-
-                if (entry.getKey().contains(calendarString)) {
-                    calendar_id = Integer.parseInt(entry.getValue());
-                    break;
-                }
-            }
-            long eventStartTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getFromTime());
-            long eventEndtTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getToTime());
-            if(eventStartTime-oneHour>0)
-                CalendarHelper.MakeNewCalendarEntry(this, classModel.getTitle(), getString(R.string.your_class_schedule_at)+" " + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()), "Somewhere", eventStartTime-oneHour, eventStartTime, false, true, calendar_id, 3, classModel.getClassSessionId());
-        }
-
-    }
-
     private void removeEvent(JSONObject jsonObject, long dataID) {
         String title = jsonObject.optString(AppConstants.Notification.CLASS_TITLE);
         String classDate = jsonObject.optString(AppConstants.Notification.CLASS_DATE);
@@ -242,11 +183,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String classDate = jsonObject.optString(AppConstants.Notification.CLASS_DATE);
         String fromTime = jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME);
         String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
-        ClassModel model = new ClassModel(title, classDate, fromTime, toTime, dataID);
-        updateEvent(model);
-//        CalendarHelper.deleteEventId(model.getTitle()+DateUtils.getClassTime(model.getFromTime(), model.getToTime())
-//                ,context);
+        ClassModel classModel = new ClassModel(title, classDate, fromTime, toTime, dataID);
+        CalendarHelper.updateEvent(this,classModel);
     }
+
+
+
+    private void bookEvent(ClassModel model) {
+        if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
+            CalendarHelper.scheduleCalenderEvent(this,model);
+        } else {
+            CalendarHelper.requestCalendarReadWritePermission(this);
+        }
+    }
+
+
 
     private void handleDataMessage(JSONObject json) {
 
