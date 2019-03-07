@@ -11,6 +11,8 @@ import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.RecommendedClassAdapter;
 import com.p5m.me.data.RecomendedClassData;
 import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.storage.TempStorage;
 
 import java.util.List;
@@ -33,12 +35,16 @@ public class RecommendedItemViewHolder extends RecyclerView.ViewHolder {
         context = itemView.getContext();
         ButterKnife.bind(this, itemView);
         this.shownInScreen = shownInScreen;
+
+        RemoteConfigSetUp.setTextColor(textViewRecomended,RemoteConfigConst.RECOMMENDED_FOR_YOU_COLOR_VALUE,context.getResources().getColor(R.color.theme_dark_light_text));
+
     }
 
     public void bind(final Object data, final AdapterCallbacks adapterCallbacks, final int position) {
         if (data != null && data instanceof RecomendedClassData) {
             if(TempStorage.getDefault()!=null && TempStorage.getDefault().getPopularClassesText()!=null){
-                textViewRecomended.setText(TempStorage.getDefault().getPopularClassesText());
+//                textViewRecomended.setText(TempStorage.getDefault().getPopularClassesText());
+                textViewRecomended.setText(RemoteConfigConst.RECOMMENDED_FOR_YOU_VALUE);
             }
             final RecomendedClassData model = (RecomendedClassData) data;
             setRecommendedClassView(model.getRecomendedClassesList(),adapterCallbacks);

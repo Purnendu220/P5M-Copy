@@ -1,7 +1,6 @@
 package com.p5m.me.remote_config;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -15,17 +14,26 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.p5m.me.BuildConfig;
+import com.p5m.me.R;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
-import static com.p5m.me.remote_config.RemoteConfigConst.BOOKED_BUTTON_COLOR_VALUE;
-import static com.p5m.me.remote_config.RemoteConfigConst.BOOKED_BUTTON_VALUE;
-import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_BUTTON_COLOR_VALUE;
-import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_BUTTON_VALUE;
-import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_WITH_FRIEND_BUTTON_VALUE;
-import static com.p5m.me.remote_config.RemoteConfigConst.FULL_BUTTON_COLOR_VALUE;
-import static com.p5m.me.remote_config.RemoteConfigConst.FULL_BUTTON_VALUE;
+import static com.p5m.me.remote_config.RemoteConfigConst.BOOKED_BUTTON_COLOR_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.BOOKED_BUTTON_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_BUTTON_COLOR_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_BUTTON_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_IN_CLASS_PROFILE_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_WITH_FRIEND_BUTTON_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_WITH_FRIEND_COLOR_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.BUY_CLASS_COLOR_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.BUY_CLASS_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.FULL_BUTTON_COLOR_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.FULL_BUTTON_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.RECOMMENDED_FOR_YOU_COLOR_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.RECOMMENDED_FOR_YOU_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.SEARCH_BAR_TEXT_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.UPCOMING_CLASSES_KEY;
 
 public class RemoteConfigSetUp {
     public static final FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
@@ -75,28 +83,55 @@ public class RemoteConfigSetUp {
                 String keyValue = firebaseRemoteConfig.getString(key);
                 firebaseRemoteConfig.activateFetched();
                 switch (constValue) {
-                    case BOOKED_BUTTON_VALUE:
-                        RemoteConfigConst.BOOKED = keyValue;
+                    case BOOKED_BUTTON_KEY:
+                        RemoteConfigConst.BOOKED_VALUE = keyValue;
                         break;
-                    case BOOK_BUTTON_VALUE:
-                        RemoteConfigConst.BOOK = keyValue;
+                    case BOOK_BUTTON_KEY:
+                        RemoteConfigConst.BOOK_VALUE = keyValue;
                         break;
-                    case FULL_BUTTON_VALUE:
-                        RemoteConfigConst.FULL = keyValue;
+                    case FULL_BUTTON_KEY:
+                        RemoteConfigConst.FULL_VALUE = keyValue;
                         break;
-                     case BOOK_WITH_FRIEND_BUTTON_VALUE:
+                    case BOOK_WITH_FRIEND_BUTTON_KEY:
                         RemoteConfigConst.BOOK_WITH_FRIEND_VALUE = keyValue;
                         break;
-                    case BOOKED_BUTTON_COLOR_VALUE:
-                        RemoteConfigConst.BOOKED_COLOR = keyValue;
+                    case BOOK_WITH_FRIEND_COLOR_KEY:
+                        RemoteConfigConst.BOOK_WITH_FRIEND_COLOR_VALUE = keyValue;
                         break;
-                    case BOOK_BUTTON_COLOR_VALUE:
-                        RemoteConfigConst.BOOK_COLOR = keyValue;
+                    case SEARCH_BAR_TEXT_KEY:
+                        RemoteConfigConst.SEARCH_BAR_TEXT_VALUE = keyValue;
                         break;
-                    case FULL_BUTTON_COLOR_VALUE:
-                        RemoteConfigConst.FULL_COLOR = keyValue;
+                    case BOOK_IN_CLASS_PROFILE_KEY:
+                        RemoteConfigConst.BOOK_IN_CLASS_VALUE = keyValue;
+                        break;
+                    case BOOKED_BUTTON_COLOR_KEY:
+                        RemoteConfigConst.BOOKED_COLOR_VALUE = keyValue;
+                        break;
+                    case BOOK_BUTTON_COLOR_KEY:
+                        RemoteConfigConst.BOOK_COLOR_VALUE = keyValue;
+                        break;
+                    case FULL_BUTTON_COLOR_KEY:
+                        RemoteConfigConst.FULL_COLOR_VALUE = keyValue;
+                        break;
+                    case UPCOMING_CLASSES_KEY:
+                        RemoteConfigConst.UPCOMING_CLASSES_VALUE = keyValue;
                         break;
 
+                    case RECOMMENDED_FOR_YOU_KEY:
+                        RemoteConfigConst.RECOMMENDED_FOR_YOU_VALUE = keyValue;
+                        break;
+
+                    case RECOMMENDED_FOR_YOU_COLOR_KEY:
+                        RemoteConfigConst.RECOMMENDED_FOR_YOU_COLOR_VALUE = keyValue;
+                        break;
+
+                    case BUY_CLASS_KEY:
+                        RemoteConfigConst.BUY_CLASS_VALUE = keyValue;
+                        break;
+
+                    case BUY_CLASS_COLOR_KEY:
+                        RemoteConfigConst.BUY_CLASS_COLOR_VALUE = keyValue;
+                        break;
 
                 }
             }
@@ -121,18 +156,18 @@ public class RemoteConfigSetUp {
             case HINT:
                 setHint(view, keyValue);
                 break;
-            case COLOR:
-                setColor(view, keyValue);
-                break;
+//            case COLOR:
+//                setBackgroundColor(view, keyValue);
+//                break;
         }
     }
 
-    public static void setColor(View view, String keyValue) {
+    public static void setBackgroundColor(View view, String keyValue, int defaultColor) {
         int color;
         try {
             color = Color.parseColor(keyValue);
         } catch (IllegalArgumentException e) {
-            color = Color.parseColor("#3d85ea");
+            color = defaultColor;
         }
         if (view instanceof TextView) {
             Drawable wrappedDrawable = DrawableCompat.wrap(view.getBackground());
@@ -170,9 +205,84 @@ public class RemoteConfigSetUp {
             ((Button) view).setText(keyValue);
     }
 
+    public static void setTextColor(View view, String keyValue, int defaultColor) {
+        int color;
+        try {
+            color = Color.parseColor(keyValue);
+        } catch (IllegalArgumentException e) {
+            color = defaultColor;
+        }
+        if (view instanceof TextView)
+            ((TextView) view).setTextColor(color);
+        else if (view instanceof Button)
+            ((Button) view).setTextColor(color);
+    }
+
     private static void setHint(View view, String keyValue) {
         if (view instanceof TextView)
             ((TextView) view).setHint(keyValue);
     }
 
+    public static void getValues() {
+        /* Text Changes */
+        setValue(RemoteConfigConst.BOOKED_BUTTON_KEY,
+                RemoteConfigConst.BOOKED_BUTTON,
+                context.getString(R.string.booked));
+
+        setValue(RemoteConfigConst.FULL_BUTTON_KEY,
+                RemoteConfigConst.FULL_BUTTON,
+                context.getString(R.string.full));
+
+        setValue(RemoteConfigConst.BOOK_BUTTON_KEY,
+                RemoteConfigConst.BOOK_BUTTON,
+                context.getString(R.string.book));
+
+        setValue(RemoteConfigConst.BOOK_WITH_FRIEND_BUTTON_KEY,
+                RemoteConfigConst.BOOK_WITH_FRIEND,
+                context.getString(R.string.reserve_class_with_friend));
+
+        setValue(BOOK_IN_CLASS_PROFILE_KEY,
+                RemoteConfigConst.BOOK_IN_CLASS,
+                context.getString(R.string.reserve_class));
+
+        setValue(SEARCH_BAR_TEXT_KEY,
+                RemoteConfigConst.SEARCH_TEXT,
+                context.getString(R.string.search_hint));
+
+        /* Color Changes */
+        setValue(RemoteConfigConst.FULL_BUTTON_COLOR_KEY,
+                RemoteConfigConst.FULL_BUTTON_COLOR, "#3d85ea");
+
+        setValue(RemoteConfigConst.BOOK_BUTTON_COLOR_KEY,
+                RemoteConfigConst.BOOK_BUTTON_COLOR, "#3d85ea");
+
+        setValue(RemoteConfigConst.BOOKED_BUTTON_COLOR_KEY,
+                RemoteConfigConst.BOOKED_BUTTON_COLOR, "#3d85ea");
+
+        setValue(RemoteConfigConst.UPCOMING_CLASSES_KEY,
+                RemoteConfigConst.UPCOMING_CLASSES, context.getString(R.string.upcoming_classes));
+
+        setValue(RemoteConfigConst.RECOMMENDED_FOR_YOU_KEY,
+                RemoteConfigConst.RECOMMENDED_FOR_YOU, context.getString(R.string.recomended_for_you));
+
+        setValue(RemoteConfigConst.BUY_CLASS_KEY,
+                RemoteConfigConst.BUY_CLASS, context.getString(R.string.buy_classes));
+        setValue(RemoteConfigConst.BUY_CLASS_COLOR_KEY,
+                RemoteConfigConst.BUY_CLASS_BUTTON_COLOR, "#3d85ea");
+        setValue(RemoteConfigConst.BOOK_BUTTON_COLOR_KEY,
+                RemoteConfigConst.BOOK_IN_CLASS_COLOR, "#3d85ea");
+        setValue(BOOK_WITH_FRIEND_COLOR_KEY,
+                RemoteConfigConst.BOOK_WITH_FRIEND_COLOR, "#3d85ea");
+
+
+        setValue(RemoteConfigConst.RECOMMENDED_FOR_YOU_COLOR_KEY,
+                RemoteConfigConst.RECOMMENDED_FOR_YOU_COLOR, "#3d85ea");
+        setValue(RemoteConfigConst.SESSION_EXPIRED_COLOR_KEY,
+                RemoteConfigConst.SESSION_EXPIRED_COLOR, "#CCFF0000");
+
+        setValue(RemoteConfigConst.SESSION_EXPIRED_KEY,
+                RemoteConfigConst.SESSION_EXPIRED, context.getResources().getString(R.string.expired));
+
+
+    }
 }

@@ -50,6 +50,8 @@ public class BaseActivity extends AppCompatActivity {
         MixPanel.setup(activity);
         RemoteConfigSetUp.setup(activity);
 
+        RemoteConfigSetUp.getValues();
+
         networkCommunicator = NetworkCommunicator.getInstance(context);
         LogUtils.debug(activityRef.getComponentName().getClassName());
 
