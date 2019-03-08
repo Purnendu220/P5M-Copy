@@ -20,6 +20,12 @@ public class RemoteConfigConst {
     public static final String RECOMMENDED_FOR_YOU_COLOR = "RECOMMENDED_FOR_YOU_COLOR";
     public static final String SESSION_EXPIRED = "SESSION_EXPIRED";
     public static final String SESSION_EXPIRED_COLOR = "SESSION_EXPIRED_COLOR";
+    public static final String INVITE_FRIENDS = "INVITE_FRIENDS";
+    public static final String ADD_TO_WISHLIST = "ADD_TO_WISHLIST";
+    public static final String PAYMENT_SUCCESSFUL = "PAYMENT_SUCCESSFUL";
+    public static final String PAYMENT_PENDING = "PAYMENT_PENDING";
+    public static final String PAYMENT_FAILURE = "PAYMENT_FAILURE";
+
 
 
     /*------KEY VALUES------*/
@@ -40,6 +46,12 @@ public class RemoteConfigConst {
     public static final int BOOK_WITH_FRIEND_COLOR_KEY = 941;
     public static final int SESSION_EXPIRED_KEY = 942;
     public static final int SESSION_EXPIRED_COLOR_KEY = 943;
+    public static final int INVITE_FRIENDS_KEY = 944;
+    public static final int ADD_TO_WISHLIST_KEY = 945;
+    public static final int PAYMENT_SUCCESSFUL_KEY = 946;
+    public static final int PAYMENT_PENDING_KEY = 947;
+    public static final int PAYMENT_FAILURE_KEY = 948;
+
 
 
     /* ------VALUES---------*/
@@ -60,6 +72,11 @@ public class RemoteConfigConst {
     public static String RECOMMENDED_FOR_YOU_COLOR_VALUE = "#3d85ea";
     public static String BOOK_WITH_FRIEND_COLOR_VALUE = "#3d85ea";
     public static String SESSION_EXPIRED_COLOR_VALUE = "#3d85ea";
+    public static String INVITE_FRIENDS_VALUE = "Invite Friends";
+    public static String ADD_TO_WISHLIST_VALUE = "Add to wishlist";
+    public static String PAYMENT_SUCCESSFUL_VALUE = "Payment Successful";
+    public static String PAYMENT_PENDING_VALUE = "Payment Pending";
+    public static String PAYMENT_FAILURE_VALUE = "Payment Failure";
 
 
     public enum ConfigStatus {

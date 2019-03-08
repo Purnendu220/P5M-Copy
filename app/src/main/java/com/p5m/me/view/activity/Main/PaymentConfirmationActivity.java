@@ -187,7 +187,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         ButterKnife.bind(activity);
         handler = new Handler();
         progressBarDone.setVisibility(View.VISIBLE);
-
+        buttonInviteFriends.setText(RemoteConfigConst.INVITE_FRIENDS_VALUE);
         layoutConfirmation.setVisibility(View.GONE);
         setToolBar();
         handleClickEvent();
@@ -460,16 +460,6 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         }
     }
 
-    private void bookEvent() {
-        if (CalendarHelper.haveCalendarReadWritePermissions(PaymentConfirmationActivity.this)) {
-            addNewEvent();
-        } else {
-            CalendarHelper.requestCalendarReadWritePermission(PaymentConfirmationActivity.this);
-        }
-        if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
-            calendarIdTable = CalendarHelper.listCalendarId(this);
-        }
-    }
 
     private void addNewEvent() {
         final long oneHour = 1000 * 60 * 60;
@@ -489,36 +479,6 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         long eventEndtTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getToTime());
         if(eventStartTime-oneHour>0)
             CalendarHelper.MakeNewCalendarEntry(this, classModel.getTitle(), getString(R.string.your_class_schedule_at)+" " + DateUtils.getClassTime(paymentResponse.getClassDetailDto().getFromTime(), paymentResponse.getClassDetailDto().getToTime()), "Somewhere", eventStartTime-oneHour, eventStartTime, false, true, calendar_id, 3);
-    }
-
-    private int getCalenderId() {
-        int calenderId = -1;
-        if (calendarIdTable.contains("guman.urvashi@gmail.com")) {
-            String calenderEmaillAddress = "info@p5m.me";
-            String[] projection = new String[]{
-                    CalendarContract.Calendars._ID,
-                    CalendarContract.Calendars.ACCOUNT_NAME};
-            ContentResolver cr = getContentResolver();
-            Cursor cursor = cr.query(Uri.parse("content://com.android.calendar/calendars"), projection,
-                    CalendarContract.Calendars.ACCOUNT_NAME + "=? and (" +
-                            CalendarContract.Calendars.NAME + "=? or " +
-                            CalendarContract.Calendars.CALENDAR_DISPLAY_NAME + "=?)",
-                    new String[]{calenderEmaillAddress, calenderEmaillAddress,
-                            calenderEmaillAddress}, null);
-
-            if (cursor.moveToFirst()) {
-
-                if (cursor.getString(1).equals(calenderEmaillAddress))
-                    calenderId = cursor.getInt(0); //you're calender id to be insered in above your cod
-            }
-
-
-        } else {
-            String calendarString = "Local calendar";
-            calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
-
-        }
-        return calenderId;
     }
 
     @Override

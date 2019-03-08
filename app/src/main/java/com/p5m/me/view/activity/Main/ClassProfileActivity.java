@@ -657,9 +657,10 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
                 MixPanel.trackJoinClass(navigationFrom, classModel);
                 if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
+//                    context.getResources().getString(R.string.invite_friends)
                     DialogUtils.showBasicMessage(context, "",
                             context.getString(R.string.successfully_joined) + " " + classModel.getTitle()
-                            , context.getResources().getString(R.string.invite_friends), new MaterialDialog.SingleButtonCallback() {
+                            , RemoteConfigConst.INVITE_FRIENDS_VALUE, new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();
