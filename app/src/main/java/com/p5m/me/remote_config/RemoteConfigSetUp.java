@@ -39,7 +39,7 @@ import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_PENDING_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.RECOMMENDED_FOR_YOU_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.RECOMMENDED_FOR_YOU_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.SEARCH_BAR_TEXT_KEY;
-import static com.p5m.me.remote_config.RemoteConfigConst.UPCOMING_CLASSES_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.CLASS_CARD_TEXT_KEY;
 
 public class RemoteConfigSetUp {
     public static final FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
@@ -119,8 +119,8 @@ public class RemoteConfigSetUp {
                     case FULL_BUTTON_COLOR_KEY:
                         RemoteConfigConst.FULL_COLOR_VALUE = keyValue;
                         break;
-                    case UPCOMING_CLASSES_KEY:
-                        RemoteConfigConst.UPCOMING_CLASSES_VALUE = keyValue;
+                    case CLASS_CARD_TEXT_KEY:
+                        RemoteConfigConst.CLASS_CARD_TEXT_VALUE = keyValue;
                         break;
 
                     case RECOMMENDED_FOR_YOU_KEY:
@@ -283,8 +283,8 @@ public class RemoteConfigSetUp {
         setValue(RemoteConfigConst.BOOKED_BUTTON_COLOR_KEY,
                 RemoteConfigConst.BOOKED_BUTTON_COLOR, "#3d85ea");
 
-        setValue(RemoteConfigConst.UPCOMING_CLASSES_KEY,
-                RemoteConfigConst.UPCOMING_CLASSES, context.getString(R.string.upcoming_classes));
+        setValue(RemoteConfigConst.CLASS_CARD_TEXT_KEY,
+                RemoteConfigConst.CLASS_CARD_TEXT, context.getString(R.string.reserve_class));
 
         setValue(RemoteConfigConst.RECOMMENDED_FOR_YOU_KEY,
                 RemoteConfigConst.RECOMMENDED_FOR_YOU, context.getString(R.string.recomended_for_you));

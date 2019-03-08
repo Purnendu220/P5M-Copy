@@ -52,8 +52,7 @@ public class GymProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.context = context;
         this.shownIn = shownIn;
         list = new ArrayList<>();
-//        headerSticky = new HeaderSticky(context.getString(R.string.upcoming_classes));
-        headerSticky = new HeaderSticky(RemoteConfigConst.UPCOMING_CLASSES_VALUE);
+        headerSticky = new HeaderSticky(context.getString(R.string.upcoming_classes));
         this.showLoader = showLoader;
 
         listLoader = new ListLoader(true, context.getString(R.string.no_more_upcoming_classes));

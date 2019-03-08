@@ -15,7 +15,7 @@ public class RemoteConfigConst {
     public static final String BOOKED_BUTTON_COLOR = "BookedButtonColor";
     public static final String BUY_CLASS_BUTTON_COLOR = "buyClassButtonColor";
     public static final String BUY_CLASS = "buyClasses";
-    public static final String UPCOMING_CLASSES = "Upcoming_Classes";
+    public static final String CLASS_CARD_TEXT = "CLASS_CARD_TEXT";
     public static final String RECOMMENDED_FOR_YOU = "Recommended_For_You";
     public static final String RECOMMENDED_FOR_YOU_COLOR = "RECOMMENDED_FOR_YOU_COLOR";
     public static final String SESSION_EXPIRED = "SESSION_EXPIRED";
@@ -39,7 +39,7 @@ public class RemoteConfigConst {
     public static final int BOOK_WITH_FRIEND_BUTTON_KEY = 933;
     public static final int BOOK_IN_CLASS_PROFILE_KEY = 934;
     public static final int SEARCH_BAR_TEXT_KEY = 935;
-    public static final int UPCOMING_CLASSES_KEY = 936;
+    public static final int CLASS_CARD_TEXT_KEY = 936;
     public static final int RECOMMENDED_FOR_YOU_KEY = 937;
     public static final int BUY_CLASS_KEY = 938;
     public static final int BUY_CLASS_COLOR_KEY = 939;
@@ -62,7 +62,7 @@ public class RemoteConfigConst {
     public static String FULL_VALUE = "Full";
     public static String BOOK_WITH_FRIEND_VALUE = "Book with a friend";
     public static String SEARCH_BAR_TEXT_VALUE = "Search";
-    public static String UPCOMING_CLASSES_VALUE = "Upcoming Classes";
+    public static String CLASS_CARD_TEXT_VALUE = "BOOK CLASS";
     public static String RECOMMENDED_FOR_YOU_VALUE = "Recommended for you";
     public static String BUY_CLASS_VALUE = "Buy Classes";
     public static String BUY_CLASS_COLOR_VALUE = "#3d85ea";
