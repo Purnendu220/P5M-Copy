@@ -32,9 +32,10 @@ import static com.p5m.me.remote_config.RemoteConfigConst.BUY_CLASS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.FULL_BUTTON_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.FULL_BUTTON_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.INVITE_FRIENDS_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_CLASS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_FAILURE_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_PACKAGE_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_PENDING_KEY;
-import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_SUCCESSFUL_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.RECOMMENDED_FOR_YOU_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.RECOMMENDED_FOR_YOU_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.SEARCH_BAR_TEXT_KEY;
@@ -143,14 +144,17 @@ public class RemoteConfigSetUp {
                     case INVITE_FRIENDS_KEY:
                         RemoteConfigConst.INVITE_FRIENDS_VALUE = keyValue;
                         break;
-                    case PAYMENT_SUCCESSFUL_KEY:
-                        RemoteConfigConst.PAYMENT_SUCCESSFUL_VALUE = keyValue;
+                    case PAYMENT_PACKAGE_KEY:
+                        RemoteConfigConst.PAYMENT_PACKAGE_VALUE = keyValue;
                         break;
                     case PAYMENT_PENDING_KEY:
                         RemoteConfigConst.PAYMENT_PENDING_VALUE = keyValue;
                         break;
                     case PAYMENT_FAILURE_KEY:
                         RemoteConfigConst.PAYMENT_FAILURE_VALUE = keyValue;
+                        break;
+                    case PAYMENT_CLASS_KEY:
+                        RemoteConfigConst.PAYMENT_CLASS_VALUE = keyValue;
                         break;
 
                 }
@@ -308,12 +312,14 @@ public class RemoteConfigSetUp {
 
         setValue(ADD_TO_WISHLIST_KEY,
                 RemoteConfigConst.ADD_TO_WISHLIST, context.getResources().getString(R.string.add_to_WishList));
-        setValue(PAYMENT_SUCCESSFUL_KEY,
-                RemoteConfigConst.PAYMENT_SUCCESSFUL, context.getResources().getString(R.string.payment_sucessful));
+        setValue(PAYMENT_PACKAGE_KEY,
+                RemoteConfigConst.PAYMENT_PACKAGE, context.getResources().getString(R.string.book_classes));
+        setValue(PAYMENT_CLASS_KEY,
+                RemoteConfigConst.PAYMENT_CLASS, context.getResources().getString(R.string.view_schedule));
         setValue(PAYMENT_PENDING_KEY,
-                RemoteConfigConst.PAYMENT_PENDING, context.getResources().getString(R.string.payment_pending));
+                RemoteConfigConst.PAYMENT_PENDING, context.getResources().getString(R.string.payment_history));
         setValue(PAYMENT_FAILURE_KEY,
-                RemoteConfigConst.PAYMENT_FAILURE, context.getResources().getString(R.string.payment_unsucessful));
+                RemoteConfigConst.PAYMENT_FAILURE, context.getResources().getString(R.string.payment_history));
 
 
     }
