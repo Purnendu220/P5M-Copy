@@ -99,7 +99,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
         if (data != null && (data instanceof UserPackage || data instanceof Package)) {
             textViewViewLimit.setText(Html.fromHtml(RemoteConfigConst.GYM_VISIT_LIMIT_VALUE));
 
-            RemoteConfigSetUp.setBackgroundColor(linearLayoutOffer, RemoteConfigConst.MEMBERSHIP_OFFER_COLOR_VALUE, context.getResources().getColor(R.color.blue));
+            RemoteConfigSetUp.setBackgroundColor(linearLayoutOffer, RemoteConfigConst.MEMBERSHIP_OFFER_COLOR_VALUE, context.getResources().getColor(R.color.green));
 
             itemView.setVisibility(View.VISIBLE);
             imageViewInfo.setVisibility(View.GONE);
