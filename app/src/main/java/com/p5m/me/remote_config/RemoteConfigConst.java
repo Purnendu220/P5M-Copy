@@ -30,6 +30,7 @@ public class RemoteConfigConst {
     public static final String SELECT_PLAN_TEXT = "SELECT_PLAN_TEXT";
     public static final String SELECT_PLAN_COLOR = "SELECT_PLAN_COLOR";
     public static final String GYM_VISIT_LIMIT_DETAIL_TEXT = "GYM_VISIT_LIMIT_DETAIL_TEXT";
+    public static final String MEMBERSHIP_OFFER_COLOR = "MEMBERSHIP_OFFER_COLOR";
 
 
 
@@ -61,6 +62,7 @@ public class RemoteConfigConst {
     public static final int SELECT_PLAN_TEXT_KEY = 951;
     public static final int SELECT_PLAN_COLOR_KEY = 952;
     public static final int GYM_VISIT_LIMIT_DETAIL_TEXT_KEY = 953;
+    public static final int MEMBERSHIP_OFFER_COLOR_KEY = 954;
 
 
 
@@ -93,6 +95,7 @@ public class RemoteConfigConst {
     public static String SELECT_PLAN_TEXT_VALUE = "Select Plan";
     public static String SELECT_PLAN_COLOR_VALUE = "#3d85ea";
     public static String GYM_VISIT_LIMIT_DETAIL_TEXT_VALUE = "text";
+    public static String MEMBERSHIP_OFFER_COLOR_VALUE = "#3d85ea";
 
 
     public enum ConfigStatus {

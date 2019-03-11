@@ -34,6 +34,7 @@ import static com.p5m.me.remote_config.RemoteConfigConst.FULL_BUTTON_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.GYM_VISIT_LIMIT_DETAIL_TEXT_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.GYM_VISIT_LIMIT_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.INVITE_FRIENDS_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.MEMBERSHIP_OFFER_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_CLASS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_FAILURE_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_PACKAGE_KEY;
@@ -171,6 +172,9 @@ public class RemoteConfigSetUp {
                         break;
                     case GYM_VISIT_LIMIT_DETAIL_TEXT_KEY:
                         RemoteConfigConst.GYM_VISIT_LIMIT_DETAIL_TEXT_VALUE = keyValue;
+                        break;
+                    case MEMBERSHIP_OFFER_COLOR_KEY:
+                        RemoteConfigConst.MEMBERSHIP_OFFER_COLOR_VALUE = keyValue;
                         break;
 
                 }
@@ -344,6 +348,8 @@ public class RemoteConfigSetUp {
                 RemoteConfigConst.SELECT_PLAN_COLOR, "#3d85ea");
         setValue(GYM_VISIT_LIMIT_DETAIL_TEXT_KEY,
                 RemoteConfigConst.GYM_VISIT_LIMIT_DETAIL_TEXT, context.getResources().getString(R.string.package_limit_header));
+        setValue(MEMBERSHIP_OFFER_COLOR_KEY,
+                RemoteConfigConst.MEMBERSHIP_OFFER_COLOR, "#1FB257");
 
 
     }

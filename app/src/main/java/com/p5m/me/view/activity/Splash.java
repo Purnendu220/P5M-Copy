@@ -44,7 +44,7 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
 
     private Handler handler;
     private Runnable nextScreenRunnable;
-    private long DELAY_NAVIGATION = 2000; // 1.4 sec
+    private long DELAY_NAVIGATION = 2500; // 1.4 sec
 
     @BindView(R.id.imageViewImage)
     public ImageView imageViewImage;
