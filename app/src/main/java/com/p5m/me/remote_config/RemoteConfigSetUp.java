@@ -31,6 +31,8 @@ import static com.p5m.me.remote_config.RemoteConfigConst.BUY_CLASS_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BUY_CLASS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.FULL_BUTTON_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.FULL_BUTTON_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.GYM_VISIT_LIMIT_DETAIL_TEXT_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.GYM_VISIT_LIMIT_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.INVITE_FRIENDS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_CLASS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_FAILURE_KEY;
@@ -40,6 +42,8 @@ import static com.p5m.me.remote_config.RemoteConfigConst.RECOMMENDED_FOR_YOU_COL
 import static com.p5m.me.remote_config.RemoteConfigConst.RECOMMENDED_FOR_YOU_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.SEARCH_BAR_TEXT_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.CLASS_CARD_TEXT_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.SELECT_PLAN_COLOR_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.SELECT_PLAN_TEXT_KEY;
 
 public class RemoteConfigSetUp {
     public static final FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
@@ -155,6 +159,18 @@ public class RemoteConfigSetUp {
                         break;
                     case PAYMENT_CLASS_KEY:
                         RemoteConfigConst.PAYMENT_CLASS_VALUE = keyValue;
+                        break;
+                    case GYM_VISIT_LIMIT_KEY:
+                        RemoteConfigConst.GYM_VISIT_LIMIT_VALUE = keyValue;
+                        break;
+                    case SELECT_PLAN_TEXT_KEY:
+                        RemoteConfigConst.SELECT_PLAN_TEXT_VALUE = keyValue;
+                        break;
+                    case SELECT_PLAN_COLOR_KEY:
+                        RemoteConfigConst.SELECT_PLAN_COLOR_VALUE = keyValue;
+                        break;
+                    case GYM_VISIT_LIMIT_DETAIL_TEXT_KEY:
+                        RemoteConfigConst.GYM_VISIT_LIMIT_DETAIL_TEXT_VALUE = keyValue;
                         break;
 
                 }
@@ -295,10 +311,9 @@ public class RemoteConfigSetUp {
                 RemoteConfigConst.BUY_CLASS_BUTTON_COLOR, "#3d85ea");
         setValue(RemoteConfigConst.BOOK_BUTTON_COLOR_KEY,
                 RemoteConfigConst.BOOK_IN_CLASS_COLOR, "#3d85ea");
+
         setValue(BOOK_WITH_FRIEND_COLOR_KEY,
                 RemoteConfigConst.BOOK_WITH_FRIEND_COLOR, "#3d85ea");
-
-
         setValue(RemoteConfigConst.RECOMMENDED_FOR_YOU_COLOR_KEY,
                 RemoteConfigConst.RECOMMENDED_FOR_YOU_COLOR, "#3d85ea");
         setValue(RemoteConfigConst.SESSION_EXPIRED_COLOR_KEY,
@@ -320,6 +335,15 @@ public class RemoteConfigSetUp {
                 RemoteConfigConst.PAYMENT_PENDING, context.getResources().getString(R.string.payment_history));
         setValue(PAYMENT_FAILURE_KEY,
                 RemoteConfigConst.PAYMENT_FAILURE, context.getResources().getString(R.string.payment_history));
+        setValue(GYM_VISIT_LIMIT_KEY,
+                RemoteConfigConst.GYM_VISIT_LIMIT_TEXT, context.getResources().getString(R.string.view_gym_visit_limits));
+        setValue(SELECT_PLAN_TEXT_KEY,
+                RemoteConfigConst.SELECT_PLAN_TEXT, context.getResources().getString(R.string.select_plan));
+
+        setValue(SELECT_PLAN_COLOR_KEY,
+                RemoteConfigConst.SELECT_PLAN_COLOR, "#3d85ea");
+        setValue(GYM_VISIT_LIMIT_DETAIL_TEXT_KEY,
+                RemoteConfigConst.GYM_VISIT_LIMIT_DETAIL_TEXT, context.getResources().getString(R.string.package_limit_header));
 
 
     }

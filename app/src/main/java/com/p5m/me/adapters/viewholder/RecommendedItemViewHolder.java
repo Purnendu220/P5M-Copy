@@ -36,15 +36,16 @@ public class RecommendedItemViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
         this.shownInScreen = shownInScreen;
 
-        RemoteConfigSetUp.setTextColor(textViewRecomended,RemoteConfigConst.RECOMMENDED_FOR_YOU_COLOR_VALUE,context.getResources().getColor(R.color.theme_dark_light_text));
-
     }
 
     public void bind(final Object data, final AdapterCallbacks adapterCallbacks, final int position) {
         if (data != null && data instanceof RecomendedClassData) {
+
             if(TempStorage.getDefault()!=null && TempStorage.getDefault().getPopularClassesText()!=null){
 //                textViewRecomended.setText(TempStorage.getDefault().getPopularClassesText());
                 textViewRecomended.setText(RemoteConfigConst.RECOMMENDED_FOR_YOU_VALUE);
+                RemoteConfigSetUp.setTextColor(textViewRecomended,RemoteConfigConst.RECOMMENDED_FOR_YOU_COLOR_VALUE,context.getResources().getColor(R.color.theme_dark_light_text));
+
             }
             final RecomendedClassData model = (RecomendedClassData) data;
             setRecommendedClassView(model.getRecomendedClassesList(),adapterCallbacks);

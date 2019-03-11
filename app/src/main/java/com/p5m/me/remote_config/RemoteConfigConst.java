@@ -26,6 +26,10 @@ public class RemoteConfigConst {
     public static final String PAYMENT_PENDING = "PAYMENT_PENDING";
     public static final String PAYMENT_FAILURE = "PAYMENT_FAILURE";
     public static final String PAYMENT_CLASS = "PAYMENT_CLASS";
+    public static final String GYM_VISIT_LIMIT_TEXT = "GYM_VISIT_LIMIT_TEXT";
+    public static final String SELECT_PLAN_TEXT = "SELECT_PLAN_TEXT";
+    public static final String SELECT_PLAN_COLOR = "SELECT_PLAN_COLOR";
+    public static final String GYM_VISIT_LIMIT_DETAIL_TEXT = "GYM_VISIT_LIMIT_DETAIL_TEXT";
 
 
 
@@ -53,6 +57,11 @@ public class RemoteConfigConst {
     public static final int PAYMENT_PENDING_KEY = 947;
     public static final int PAYMENT_FAILURE_KEY = 948;
     public static final int PAYMENT_CLASS_KEY = 949;
+    public static final int GYM_VISIT_LIMIT_KEY = 950;
+    public static final int SELECT_PLAN_TEXT_KEY = 951;
+    public static final int SELECT_PLAN_COLOR_KEY = 952;
+    public static final int GYM_VISIT_LIMIT_DETAIL_TEXT_KEY = 953;
+
 
 
 
@@ -80,6 +89,10 @@ public class RemoteConfigConst {
     public static String PAYMENT_PENDING_VALUE = "View Payment History";
     public static String PAYMENT_FAILURE_VALUE = "View Payment History";
     public static String PAYMENT_CLASS_VALUE = "View Schedule";
+    public static String GYM_VISIT_LIMIT_VALUE = "View gym visit limits";
+    public static String SELECT_PLAN_TEXT_VALUE = "Select Plan";
+    public static String SELECT_PLAN_COLOR_VALUE = "#3d85ea";
+    public static String GYM_VISIT_LIMIT_DETAIL_TEXT_VALUE = "text";
 
 
     public enum ConfigStatus {

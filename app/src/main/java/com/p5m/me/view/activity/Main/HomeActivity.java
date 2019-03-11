@@ -168,8 +168,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
         networkCommunicator.getRatingParameters(this, true);
         checkFacebookSessionStatus();
-       buyClasses.setText(RemoteConfigConst.BUY_CLASS_VALUE);
-        RemoteConfigSetUp.setBackgroundColor(buyClasses,RemoteConfigConst.BUY_CLASS_COLOR_VALUE,context.getResources().getColor(R.color.theme_book));
+
 
     }
 
@@ -301,6 +300,9 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     @Override
     protected void onResume() {
         super.onResume();
+        buyClasses.setText(RemoteConfigConst.BUY_CLASS_VALUE);
+        RemoteConfigSetUp.setBackgroundColor(buyClasses, RemoteConfigConst.BUY_CLASS_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+
         if(currentTab == AppConstants.Tab.TAB_FIND_CLASS){
             handleBuyClassesButton();
         } else {
