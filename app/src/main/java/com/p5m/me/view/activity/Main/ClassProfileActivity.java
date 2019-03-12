@@ -37,6 +37,7 @@ import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.helper.ClassListListenerHelper;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -61,7 +62,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.p5m.me.remote_config.RemoteConfigSetUp.setConfig;
 import static com.p5m.me.utils.AppConstants.Limit.PAGE_LIMIT_MAIN_CLASS_LIST;
 
 public class ClassProfileActivity extends BaseActivity implements AdapterCallbacks, View.OnClickListener, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
@@ -221,15 +221,14 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
         MixPanel.trackClassDetails();
 
-        setConfig(this,textViewBook,
-                RemoteConfigConst.BOOK_IN_CLASS,getString(R.string.reserve_class),RemoteConfigConst.ConfigStatus.TEXT
-        );
-        textViewBookWithFriend.setText(RemoteConfigConst.BOOK_WITH_FRIEND_VALUE);
+//        textViewBookWithFriend.setText(RemoteConfigConst.BOOK_WITH_FRIEND_VALUE);
       /* setConfig(this, textViewBookWithFriend,
                 RemoteConfigConst.BOOK_WITH_FRIEND,getString(R.string.reserve_class_with_friend),RemoteConfigConst.ConfigStatus.TEXT
         );*/
-        setConfig(this, textViewBook,
-                RemoteConfigConst.BOOK_IN_CLASS_COLOR,"#3d85ea",RemoteConfigConst.ConfigStatus.COLOR);
+//        RemoteConfigSetUp.setBackgroundColor(textViewBook,RemoteConfigConst.BOOK_COLOR_VALUE,context.getResources().getColor(R.color.theme_book));
+
+//        setConfig(this, textViewBook,
+//                RemoteConfigConst.BOOK_IN_CLASS_COLOR,"#3d85ea",RemoteConfigConst.ConfigStatus.COLOR);
 //        setConfig(this, textViewBookWithFriend,
 //                RemoteConfigConst.BOOK_WITH_FRIEND_COLOR,"#3d85ea",RemoteConfigConst.ConfigStatus.COLOR);
 
@@ -565,6 +564,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         v.findViewById(R.id.imageViewBack).setOnClickListener(this);
         imageViewOptions = v.findViewById(R.id.imageViewOptions);
         imageViewOptions.setOnClickListener(this);
+        ((TextView)(v.findViewById(R.id.textViewTitle))).setText(RemoteConfigConst.CLASS_CARD_TEXT_VALUE);
 
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT));
@@ -658,9 +658,10 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
                 MixPanel.trackJoinClass(navigationFrom, classModel);
                 if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
+//                    context.getResources().getString(R.string.invite_friends)
                     DialogUtils.showBasicMessage(context, "",
                             context.getString(R.string.successfully_joined) + " " + classModel.getTitle()
-                            , context.getResources().getString(R.string.invite_friends), new MaterialDialog.SingleButtonCallback() {
+                            , RemoteConfigConst.INVITE_FRIENDS_VALUE, new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();

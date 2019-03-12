@@ -60,8 +60,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
 
-import static com.p5m.me.remote_config.RemoteConfigSetUp.setConfig;
-
 public class SearchActivity extends BaseActivity implements NetworkCommunicator.RequestListener, AdapterCallbacks, View.OnClickListener, ViewPager.OnPageChangeListener {
 
     public static void openActivity(Context context, Activity activity, View sharedElement, int navigationFrom) {
@@ -145,10 +143,7 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
 
         viewPager.addOnPageChangeListener(this);
 
-       setConfig(this, editTextSearch,
-                RemoteConfigConst.SEARCH_TEXT,getString(R.string.search_hint),RemoteConfigConst.ConfigStatus.HINT
-        );
-
+        editTextSearch.setHint(RemoteConfigConst.SEARCH_BAR_TEXT_VALUE);
 
         try {
             ((SimpleItemAnimator) recyclerViewSearch.getItemAnimator()).setSupportsChangeAnimations(false);

@@ -21,7 +21,7 @@
             android:id="@+id/buyClasses"
             android:layout_width="match_parent"
             android:layout_height="@dimen/bottom_text_button_height"
-            android:background="@drawable/theme_bottom_text_button_book"
+            android:background="@color/colorAccent"
             android:clickable="true"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"

@@ -28,6 +28,7 @@ import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -51,8 +52,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.p5m.me.remote_config.RemoteConfigSetUp.setConfig;
 
 
 public class HomeActivity extends BaseActivity implements BottomTapLayout.TabListener, ViewPager.OnPageChangeListener,View.OnClickListener,NetworkCommunicator.RequestListener {
@@ -170,10 +169,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         networkCommunicator.getRatingParameters(this, true);
         checkFacebookSessionStatus();
 
-        setConfig(this, buyClasses,
-                RemoteConfigConst.BUY_CLASS,getString(R.string.buy_classes),RemoteConfigConst.ConfigStatus.TEXT);
-       setConfig(this, buyClasses,
-                RemoteConfigConst.BUY_CLASS_BUTTON_COLOR,"#3d85ea",RemoteConfigConst.ConfigStatus.COLOR);
+
     }
 
     @Override
@@ -304,6 +300,9 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     @Override
     protected void onResume() {
         super.onResume();
+        buyClasses.setText(RemoteConfigConst.BUY_CLASS_VALUE);
+        RemoteConfigSetUp.setBackgroundColor(buyClasses, RemoteConfigConst.BUY_CLASS_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+
         if(currentTab == AppConstants.Tab.TAB_FIND_CLASS){
             handleBuyClassesButton();
         } else {

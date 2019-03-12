@@ -187,7 +187,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         ButterKnife.bind(activity);
         handler = new Handler();
         progressBarDone.setVisibility(View.VISIBLE);
-
+        buttonInviteFriends.setText(RemoteConfigConst.INVITE_FRIENDS_VALUE);
         layoutConfirmation.setVisibility(View.GONE);
         setToolBar();
         handleClickEvent();
@@ -460,16 +460,6 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         }
     }
 
-    private void bookEvent() {
-        if (CalendarHelper.haveCalendarReadWritePermissions(PaymentConfirmationActivity.this)) {
-            addNewEvent();
-        } else {
-            CalendarHelper.requestCalendarReadWritePermission(PaymentConfirmationActivity.this);
-        }
-        if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
-            calendarIdTable = CalendarHelper.listCalendarId(this);
-        }
-    }
 
     private void addNewEvent() {
         final long oneHour = 1000 * 60 * 60;
@@ -491,36 +481,6 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
             CalendarHelper.MakeNewCalendarEntry(this, classModel.getTitle(), getString(R.string.your_class_schedule_at)+" " + DateUtils.getClassTime(paymentResponse.getClassDetailDto().getFromTime(), paymentResponse.getClassDetailDto().getToTime()), "Somewhere", eventStartTime-oneHour, eventStartTime, false, true, calendar_id, 3);
     }
 
-    private int getCalenderId() {
-        int calenderId = -1;
-        if (calendarIdTable.contains("guman.urvashi@gmail.com")) {
-            String calenderEmaillAddress = "info@p5m.me";
-            String[] projection = new String[]{
-                    CalendarContract.Calendars._ID,
-                    CalendarContract.Calendars.ACCOUNT_NAME};
-            ContentResolver cr = getContentResolver();
-            Cursor cursor = cr.query(Uri.parse("content://com.android.calendar/calendars"), projection,
-                    CalendarContract.Calendars.ACCOUNT_NAME + "=? and (" +
-                            CalendarContract.Calendars.NAME + "=? or " +
-                            CalendarContract.Calendars.CALENDAR_DISPLAY_NAME + "=?)",
-                    new String[]{calenderEmaillAddress, calenderEmaillAddress,
-                            calenderEmaillAddress}, null);
-
-            if (cursor.moveToFirst()) {
-
-                if (cursor.getString(1).equals(calenderEmaillAddress))
-                    calenderId = cursor.getInt(0); //you're calender id to be insered in above your cod
-            }
-
-
-        } else {
-            String calendarString = "Local calendar";
-            calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
-
-        }
-        return calenderId;
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
@@ -538,23 +498,29 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         if (PaymentStatus.valueOf(paymentResponse.getStatus()) == SUCCESS) {
             if (paymentResponse.getClassDetailDto() != null) {
                 buttonViewSchedule.setText(getString(R.string.book_classes));
-                buttonSchedule.setText(getString(R.string.view_schedule));
+//                buttonSchedule.setText(getString(R.string.view_schedule));
+                buttonSchedule.setText(RemoteConfigConst.PAYMENT_CLASS_VALUE);
             } else {
-                buttonSchedule.setText(getString(R.string.book_classes));
+//                buttonSchedule.setText(getString(R.string.book_classes));
+                buttonSchedule.setText(RemoteConfigConst.PAYMENT_PACKAGE_VALUE);
                 buttonsLayout.setVisibility(View.VISIBLE);
             }
         } else if (PaymentStatus.valueOf(paymentResponse.getStatus()) == PaymentStatus.INITIALIZE) {
-            buttonViewSchedule.setText(getString(R.string.payment_history));
+//            buttonViewSchedule.setText(getString(R.string.payment_history));
+            buttonViewSchedule.setText(RemoteConfigConst.PAYMENT_FAILURE_VALUE);
             buttonsLayout.setVisibility(View.GONE);
             buttonViewSchedule.setVisibility(View.VISIBLE);
             checkoutFor = PENDING_TRANSACTION;
         } else if (PaymentStatus.valueOf(paymentResponse.getStatus()) == PaymentStatus.PENDING) {
-            buttonViewSchedule.setText(getString(R.string.payment_history));
+//            buttonViewSchedule.setText(getString(R.string.payment_history));
+
+            buttonViewSchedule.setText(RemoteConfigConst.PAYMENT_PENDING_VALUE);
             buttonsLayout.setVisibility(View.GONE);
             buttonViewSchedule.setVisibility(View.VISIBLE);
             checkoutFor = PENDING_TRANSACTION;
         } else if (PaymentStatus.valueOf(paymentResponse.getStatus()) == PaymentStatus.FAILURE) {
-            buttonViewSchedule.setText(getString(R.string.payment_history));
+//            buttonViewSchedule.setText(getString(R.string.payment_history));
+            buttonViewSchedule.setText(RemoteConfigConst.PAYMENT_FAILURE_VALUE);
             buttonsLayout.setVisibility(View.GONE);
             buttonViewSchedule.setVisibility(View.VISIBLE);
             checkoutFor = PENDING_TRANSACTION;

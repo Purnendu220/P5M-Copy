@@ -21,6 +21,8 @@ import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
@@ -91,6 +93,10 @@ public class BookForAFriendPopup extends Dialog implements View.OnClickListener 
         if (!user.isBuyMembership())
             warningNonRefundableMsg();
         setListeners();
+
+        RemoteConfigSetUp.setBackgroundColor(textViewBookWithFriend, RemoteConfigConst.BOOK_WITH_FRIEND_COLOR_VALUE, context.getResources().getColor(R.color.colorAccent));
+        textViewBookWithFriend.setText(RemoteConfigConst.BOOK_WITH_FRIEND_VALUE);
+
         // selectGender(model.getClassType());
 
 
