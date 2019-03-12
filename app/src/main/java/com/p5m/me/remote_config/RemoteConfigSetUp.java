@@ -7,6 +7,7 @@ import android.os.Build;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -230,6 +231,13 @@ public class RemoteConfigSetUp {
                 setBackgroundDrawable(view, wrappedDrawable);
             } else
                 ((Button) view).setBackgroundColor(color);
+        }else if (view instanceof LinearLayout) {
+            Drawable wrappedDrawable = DrawableCompat.wrap(view.getBackground());
+            if (wrappedDrawable != null) {
+                DrawableCompat.setTint(wrappedDrawable.mutate(), color);
+                setBackgroundDrawable(view, wrappedDrawable);
+            } else
+                ((LinearLayout) view).setBackgroundColor(color);
         }
     }
 

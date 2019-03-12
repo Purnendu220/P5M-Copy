@@ -79,10 +79,10 @@ public class RemoteConfigConst {
     public static String BUY_CLASS_COLOR_VALUE = "#3d85ea";
     public static String BOOK_IN_CLASS_VALUE = "Book Class";
     public static String SESSION_EXPIRED_VALUE = "Session Expired";
-    public static String BOOKED_COLOR_VALUE = "#3d85ea";
+    public static String BOOKED_COLOR_VALUE = "#FF8C00";
     public static String BOOK_COLOR_VALUE = "#3d85ea";
-    public static String FULL_COLOR_VALUE = "#3d85ea";
-    public static String RECOMMENDED_FOR_YOU_COLOR_VALUE = "#3d85ea";
+    public static String FULL_COLOR_VALUE = "#FF0000";
+    public static String RECOMMENDED_FOR_YOU_COLOR_VALUE = "#262626";
     public static String BOOK_WITH_FRIEND_COLOR_VALUE = "#3d85ea";
     public static String SESSION_EXPIRED_COLOR_VALUE = "#3d85ea";
     public static String INVITE_FRIENDS_VALUE = "Invite Friends";
@@ -94,8 +94,8 @@ public class RemoteConfigConst {
     public static String GYM_VISIT_LIMIT_VALUE = "View gym visit limits";
     public static String SELECT_PLAN_TEXT_VALUE = "Select Plan";
     public static String SELECT_PLAN_COLOR_VALUE = "#3d85ea";
-    public static String GYM_VISIT_LIMIT_DETAIL_TEXT_VALUE = "text";
-    public static String MEMBERSHIP_OFFER_COLOR_VALUE = "#3d85ea";
+    public static String GYM_VISIT_LIMIT_DETAIL_TEXT_VALUE = "Under each plan, there are limits to the number of times you can visit each gym. Check below for the number of time you can visit a gym per plan. Once the limit is reached, you may still visit your favorite gym by purchasing a single visit pass.";
+    public static String MEMBERSHIP_OFFER_COLOR_VALUE = "#1FB257";
 
 
     public enum ConfigStatus {
