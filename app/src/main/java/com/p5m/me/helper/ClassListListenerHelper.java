@@ -1,6 +1,5 @@
 package com.p5m.me.helper;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -49,7 +48,6 @@ import java.util.Hashtable;
 
 public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommunicator.RequestListener {
 
-    @SuppressLint("StaticFieldLeak")
     public Context context;
     public Activity activity;
     private final AdapterCallbacks adapterCallbacks;
@@ -360,8 +358,9 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                             EventBroadcastHelper.sendClassJoin(context, model);
                             EventBroadcastHelper.sendUserUpdate(context, ((ResponseModel<User>) response).data);
                             MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
-                            //TODO Calender Delete Event
-//                            CalendarHelper.deleteEventId(model.getTitle(),context);
+
+                            CalendarHelper.deleteEventId(model.getClassSessionId()
+                                    ,context);
                             materialDialog.dismiss();
 
                         } catch (Exception e) {

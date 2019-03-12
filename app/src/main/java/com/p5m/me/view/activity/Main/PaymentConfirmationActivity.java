@@ -46,7 +46,6 @@ import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
-import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CalendarHelper;
 import com.p5m.me.utils.DateUtils;
@@ -441,8 +440,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         switch (paymentStatus) {
             case SUCCESS:
                 setConfirmBookingStyle();
-//                if (paymentResponse.getClassDetailDto() != null)
-//                    bookEvent();
+
                 setStyle();
                 break;
             case FAILURE:
@@ -461,32 +459,20 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
     }
 
 
-    private void addNewEvent() {
-        final long oneHour = 1000 * 60 * 60;
-        if (calendarIdTable == null) {
-            calendarIdTable = CalendarHelper.listCalendarId(this);
-        }
-        String calendarString = TempStorage.getUser().getEmail();
-        if (calendarIdTable.keySet().contains(calendarString)) {
-            calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
-        } else {
-            calendarString = "Local calendar";
-            calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
 
-        }
 
-        long eventStartTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getFromTime());
-        long eventEndtTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getToTime());
-        if(eventStartTime-oneHour>0)
-            CalendarHelper.MakeNewCalendarEntry(this, classModel.getTitle(), getString(R.string.your_class_schedule_at)+" " + DateUtils.getClassTime(paymentResponse.getClassDetailDto().getFromTime(), paymentResponse.getClassDetailDto().getToTime()), "Somewhere", eventStartTime-oneHour, eventStartTime, false, true, calendar_id, 3);
-    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
         if (requestCode == CalendarHelper.CALENDARED_PERMISSION_REQUEST_CODE) {
             if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
-                addNewEvent();
+                if (paymentResponse.getClassDetailDto() != null){
+                    CalendarHelper.scheduleCalenderEvent(this,classModel);
+                }
+
+
             }
 
         }

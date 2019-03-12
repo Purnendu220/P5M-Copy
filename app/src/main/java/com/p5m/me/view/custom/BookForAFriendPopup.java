@@ -46,7 +46,7 @@ public class BookForAFriendPopup extends Dialog implements View.OnClickListener 
     TextInputLayout textInputLayoutFriendsName;
     @BindView(R.id.textViewWarningRefund)
     public TextView textViewWarningRefund;
-
+    private User user;
     @BindView(R.id.editTextFriendsName)
     EditText editTextFriendsName;
 
@@ -84,6 +84,7 @@ public class BookForAFriendPopup extends Dialog implements View.OnClickListener 
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         ButterKnife.bind(this);
         setCancelable(true);
+        user = TempStorage.getUser();
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(getWindow().getAttributes());
         lp.width = (int) (mContext.getResources().getDisplayMetrics().widthPixels * 0.90);
@@ -107,6 +108,7 @@ public class BookForAFriendPopup extends Dialog implements View.OnClickListener 
         if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model)) {
             textViewWarningRefund.setVisibility(View.VISIBLE);
         } else if (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) <= cancelTime) {
+            if(!user.isBuyMembership())
             textViewWarningRefund.setVisibility(View.VISIBLE);
         } else {
             textViewWarningRefund.setVisibility(View.GONE);
