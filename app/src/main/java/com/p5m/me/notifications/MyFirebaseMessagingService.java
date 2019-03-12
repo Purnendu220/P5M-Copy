@@ -32,6 +32,7 @@ import com.p5m.me.view.activity.Main.NotificationActivity;
 import com.p5m.me.view.activity.Main.SettingActivity;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
 import com.p5m.me.view.activity.Main.TransactionHistoryActivity;
+import com.p5m.me.view.activity.base.BaseActivity;
 
 import org.json.JSONObject;
 
@@ -197,33 +198,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void bookEvent(ClassModel model) {
         if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
             CalendarHelper.scheduleCalenderEvent(this,model);
-        } else {
-            CalendarHelper.requestCalendarReadWritePermission(this);
-
         }
 
     }
 
-    private void removeEvent(JSONObject jsonObject, long dataID) {
-        String title = jsonObject.optString(AppConstants.Notification.CLASS_TITLE);
-        String classDate = jsonObject.optString(AppConstants.Notification.CLASS_DATE);
-        String fromTime = jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME);
-        String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
-        ClassModel model = new ClassModel(title, classDate, fromTime, toTime, dataID);
-//        updateEvent(model);
-        CalendarHelper.deleteEventId(model.getClassSessionId()
-                ,context);
-    }
-    private void updateEvent(JSONObject jsonObject, long dataID) {
-        String title = jsonObject.optString(AppConstants.Notification.CLASS_TITLE);
-        String classDate = jsonObject.optString(AppConstants.Notification.CLASS_DATE);
-        String fromTime = jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME);
-        String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
-        ClassModel model = new ClassModel(title, classDate, fromTime, toTime, dataID);
-        updateEvent(model);
-//        CalendarHelper.deleteEventId(model.getTitle()+DateUtils.getClassTime(model.getFromTime(), model.getToTime())
-//                ,context);
-    }
+
 
 
 

@@ -116,6 +116,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     private BookWithFriendData mBookWithFriendData;
     private Hashtable<String, String> calendarIdTable;
     private int calendar_id = -1;
+    private int errorMsg;
+
 
     @Override
     public void onDestroy() {
@@ -304,26 +306,13 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
         if (Helper.isSpecialClass(classModel) && !Helper.isFreeClass(classModel)) {
 //            message = warningMsg;
-            if (!user.isBuyMembership())
-                alertNonRefundMsg();
-            else
-            {
-                if (Helper.isSpecialClass(classModel) &&
-                        !Helper.isFreeClass(classModel)
-                        ) {
-
-                    CheckoutActivity.openActivity(context, classModel, 1);
-
-                } else {
-                    joinClass();
-
-                }
-            }
+            alertNonRefundMsg();
 
         } else if (DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime()) <= cancelTime) {
 //            message = warningMsg;
             if (!user.isBuyMembership())
                 alertNonRefundMsg();
+            else{
 
 
                 if (Helper.isSpecialClass(classModel) &&
@@ -967,5 +956,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
 
 }
