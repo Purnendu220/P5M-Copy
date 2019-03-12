@@ -200,26 +200,6 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
             e.printStackTrace();
             LogUtils.exception(e);
         }
-        setValue(RemoteConfigConst.BOOKED_BUTTON_VALUE,
-                RemoteConfigConst.BOOKED_BUTTON, context.getString(R.string.booked));
-        setValue(RemoteConfigConst.FULL_BUTTON_VALUE,
-                RemoteConfigConst.FULL_BUTTON, context.getString(R.string.full));
-        setValue(RemoteConfigConst.BOOK_BUTTON_VALUE,
-                RemoteConfigConst.BOOK_BUTTON, context.getString(R.string.book));
-
-        setValue(RemoteConfigConst.BOOK_WITH_FRIEND_BUTTON_VALUE,
-                RemoteConfigConst.BOOK_WITH_FRIEND, context.getString(R.string.reserve_class_with_friend));
-
-         setValue(RemoteConfigConst.FULL_BUTTON_COLOR_VALUE,
-                RemoteConfigConst.FULL_BUTTON_COLOR, "#3d85ea");
-        setValue(RemoteConfigConst.BOOK_BUTTON_COLOR_VALUE,
-                RemoteConfigConst.BOOK_BUTTON_COLOR, "#3d85ea");
-        setValue(RemoteConfigConst.BOOK_BUTTON_COLOR_VALUE,
-                RemoteConfigConst.BOOKED_BUTTON_COLOR, "#3d85ea");
-
-        /*setConfig(buttonJoin,
-                RemoteConfigConst.BOOKED_BUTTON_COLOR,"#3f5560",RemoteConfigConst.ConfigStatus.COLOR);
-*/
 
         classListAdapter = new ClassListAdapter(context, shownInScreen, true, this);
         recyclerViewClass.setAdapter(classListAdapter);

@@ -19,6 +19,7 @@ import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.PackageLimitAdapter;
 import com.p5m.me.data.PackageLimitListItem;
 import com.p5m.me.data.PackageLimitModel;
+import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.utils.AppConstants;
@@ -124,7 +125,8 @@ public class PackageLimitsActivity extends BaseActivity implements NetworkCommun
                         packageLimitListItem.getList().add(model);
                     }
 
-                    packageLimitAdapter.addHeader(context.getString(R.string.package_limit_header));
+//                    packageLimitAdapter.addHeader(context.getString(R.string.package_limit_header));
+                    packageLimitAdapter.addHeader(RemoteConfigConst.GYM_VISIT_LIMIT_DETAIL_TEXT_VALUE);
                     packageLimitAdapter.addAll(packageLimitListItems);
                     packageLimitAdapter.notifyDataSetChanges();
 
