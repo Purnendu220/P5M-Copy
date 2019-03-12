@@ -568,6 +568,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                 }
 
                 if (!String.valueOf(user.getDob()).equals(String.valueOf(userOld.getDob()))) {
+
                     MixPanel.trackEditProfile(AppConstants.Tracker.DOB_CHANGED);
                 }
 

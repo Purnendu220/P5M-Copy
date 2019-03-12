@@ -323,7 +323,7 @@ public class ClassModel implements java.io.Serializable {
     }
 
     public float getRating() {
-        return rating;
+        return Math.round(rating*100)/10.f;
     }
 
     public void setRating(float rating) {

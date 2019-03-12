@@ -40,6 +40,10 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
 
     public final static List<Activity> ACTIVITIES = new ArrayList<>();
 
+    public final static String MIX_PANEL_TOKEN = "705daac4d807e105c1ddc350c9324ca2";
+//    public final static String MIX_PANEL_TOKEN = "ac8ac225ea9618bad16a7fe25dfd548e";
+    public final static String GOOGLE_API_PROJECT = "109210713388";
+
     public boolean isAppForeground;
     public long appBackgroundTime;
 

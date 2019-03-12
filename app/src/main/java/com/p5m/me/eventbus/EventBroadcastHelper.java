@@ -45,6 +45,7 @@ public class EventBroadcastHelper {
         NetworkCommunicator.getInstance(context).getDefault();
 
         EventBroadcastHelper.sendDeviceUpdate(context);
+        MixPanel.login(context);
     }
 
     public static void logout(Context context) {
@@ -62,6 +63,8 @@ public class EventBroadcastHelper {
             TempStorage.setFilterList(new ArrayList<ClassesFilter>());
 
             TempStorage.setAuthToken(null);
+
+            MixPanel.logout();
 
             NotificationManager notificationManager = (NotificationManager) context
                     .getSystemService(Context.NOTIFICATION_SERVICE);

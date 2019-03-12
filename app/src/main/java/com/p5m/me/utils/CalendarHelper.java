@@ -1,7 +1,6 @@
 package com.p5m.me.utils;
 
 
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -17,7 +16,10 @@ import android.provider.CalendarContract.Reminders;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.widget.Toast;
+
+import com.p5m.me.R;
+import com.p5m.me.data.main.ClassModel;
+
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -30,49 +32,35 @@ public class CalendarHelper {
 //your activity
     private static final String TAG = "CalendarHelper";
     public static final int CALENDARED_PERMISSION_REQUEST_CODE = 99;
+    public static long oneHour = 1000 * 60 * 60;
 
-    public static void MakeNewCalendarEntry(Context caller, String title, String description, String location, long startTime, long endTime, boolean allDay, boolean hasAlarm, int calendarId, int selectedReminderValue) {
+    public static void scheduleCalenderEvent(Context caller, ClassModel model) {
 
-        ContentResolver cr = caller.getContentResolver();
-        ContentValues values = new ContentValues();
-        values.put(Events.DTSTART, startTime);
-        values.put(Events.DTEND, endTime);
-        values.put(Events.TITLE, title);
-        values.put(Events.DESCRIPTION, description);
-        values.put(Events.CALENDAR_ID, calendarId);
-        values.put(Events.STATUS, Events.STATUS_CONFIRMED);
-
-
-        if (allDay) {
-            values.put(Events.ALL_DAY, true);
-        }
-
-        if (hasAlarm) {
+        long eventStartTime = DateUtils.eventTime(model.getClassDate() + " " + model.getFromTime());
+        int calendarId = CalendarHelper.getCalenderId(caller);
+        if (eventStartTime - oneHour > 0 && calendarId > -1) {
+            ContentResolver cr = caller.getContentResolver();
+            ContentValues values = new ContentValues();
+            values.put(Events.DTSTART, eventStartTime - oneHour);
+            values.put(Events.DTEND, eventStartTime);
+            values.put(Events.TITLE, model.getTitle());
+            values.put(Events.DESCRIPTION, caller.getString(R.string.your_class_schedule_at) + " " + model.getFromTime() + " - " + model.getToTime());
+            values.put(Events.CALENDAR_ID, calendarId);
+            values.put(Events.STATUS, Events.STATUS_CONFIRMED);
+            values.put(Events._ID, model.getClassSessionId());
+            values.put(Events.ALL_DAY, false);
             values.put(Events.HAS_ALARM, true);
-        }
 
-        //Get current timezone
-        values.put(Events.EVENT_TIMEZONE, TimeZone.getDefault().getID());
-        Log.i(TAG, "Timezone retrieved=>" + TimeZone.getDefault().getID());
-        Uri uri = cr.insert(Events.CONTENT_URI, values);
-        Log.i(TAG, "Uri returned=>" + uri.toString());
-        // get the event ID that is the last element in the Uri
-        long eventID = Long.parseLong(uri.getLastPathSegment());
+            values.put(Events.EVENT_TIMEZONE, TimeZone.getDefault().getID());
+            Uri uri = cr.insert(Events.CONTENT_URI, values);
 
-        if (hasAlarm) {
             ContentValues reminders = new ContentValues();
-            reminders.put(Reminders.EVENT_ID, eventID);
+            reminders.put(Reminders.EVENT_ID, model.getClassSessionId());
             reminders.put(Reminders.METHOD, Reminders.METHOD_ALERT);
-            reminders.put(Reminders.MINUTES, selectedReminderValue);
+            reminders.put(Reminders.MINUTES, model.getClassSessionId());
 
             if (ActivityCompat.checkSelfPermission(caller, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
+
                 return;
             }
             Uri uri2 = cr.insert(Reminders.CONTENT_URI, reminders);
@@ -82,41 +70,11 @@ public class CalendarHelper {
 
     }
 
-    public static void requestCalendarReadWritePermission(Context caller)
-    {
-        List<String> permissionList = new ArrayList<String>();
-
-        if  (ContextCompat.checkSelfPermission(caller,Manifest.permission.WRITE_CALENDAR)!=PackageManager.PERMISSION_GRANTED)
-        {
-            permissionList.add(Manifest.permission.WRITE_CALENDAR);
-
-        }
-
-        if  (ContextCompat.checkSelfPermission(caller,Manifest.permission.READ_CALENDAR)!=PackageManager.PERMISSION_GRANTED)
-        {
-            permissionList.add(Manifest.permission.READ_CALENDAR);
-
-        }
-
-        if (permissionList.size()>0)
-        {
-            String[] permissionArray = new String[permissionList.size()];
-
-            for (int i=0;i<permissionList.size();i++)
-            {
-                permissionArray[i] = permissionList.get(i);
-            }
-
-            ActivityCompat.requestPermissions((Activity) caller,
-                    permissionArray,
-                    CALENDARED_PERMISSION_REQUEST_CODE);
-        }
-
-    }
 
     public static Hashtable listCalendarId(Context c) {
 
-        if (haveCalendarReadWritePermissions((Activity)c)) {
+        if (haveCalendarReadWritePermissions(c)) {
+
 
             String projection[] = {"_id", "calendar_displayName"};
             Uri calendars;
@@ -125,21 +83,19 @@ public class CalendarHelper {
             ContentResolver contentResolver = c.getContentResolver();
             Cursor managedCursor = contentResolver.query(calendars, projection, null, null, null);
 
-            if (managedCursor.moveToFirst())
-            {
+            if (managedCursor.moveToFirst()) {
                 String calName;
                 String calID;
                 int cont = 0;
                 int nameCol = managedCursor.getColumnIndex(projection[1]);
                 int idCol = managedCursor.getColumnIndex(projection[0]);
-                Hashtable<String,String> calendarIdTable = new Hashtable<>();
+                Hashtable<String, String> calendarIdTable = new Hashtable<>();
 
-                do
-                {
+                do {
                     calName = managedCursor.getString(nameCol);
                     calID = managedCursor.getString(idCol);
                     Log.v(TAG, "CalendarName:" + calName + " ,id:" + calID);
-                    calendarIdTable.put(calName,calID);
+                    calendarIdTable.put(calName, calID);
                     cont++;
                 } while (managedCursor.moveToNext());
                 managedCursor.close();
@@ -153,18 +109,15 @@ public class CalendarHelper {
 
     }
 
-    public static boolean haveCalendarReadWritePermissions(Context caller)
-    {
+    public static boolean haveCalendarReadWritePermissions(Context caller) {
         int permissionCheck = ContextCompat.checkSelfPermission(caller,
                 Manifest.permission.READ_CALENDAR);
 
-        if (permissionCheck== PackageManager.PERMISSION_GRANTED)
-        {
+        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
             permissionCheck = ContextCompat.checkSelfPermission(caller,
                     Manifest.permission.WRITE_CALENDAR);
 
-            if (permissionCheck== PackageManager.PERMISSION_GRANTED)
-            {
+            if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
                 return true;
             }
         }
@@ -196,50 +149,45 @@ public class CalendarHelper {
 
         return eventUri;
     }
-    public static void deleteEventId(String eventtitle, Context caller) {
-        deleteEvent(caller,getEventId(eventtitle,caller));
+
+    public static void deleteEventId(int classSessionId, Context caller) {
+        deleteEvent(caller, classSessionId);
     }
 
 
-        public static int getEventId(String eventtitle,Context caller) {
-
+    public static void updateEvent(Context caller, ClassModel classModel) {
+        long eventStartTime = DateUtils.eventTime(classModel.getClassDate() + " " + classModel.getFromTime());
         ContentResolver cr = caller.getContentResolver();
-        Uri eventUri;
-        if (android.os.Build.VERSION.SDK_INT <= 7) {
-            // the old way
+        ContentValues values = new ContentValues();
+        values.put(CalendarContract.Events.TITLE, classModel.getTitle());
+        values.put(Events.DTSTART, eventStartTime - oneHour);
+        values.put(Events.DTEND, eventStartTime);
+        values.put(Events.DESCRIPTION, caller.getString(R.string.your_class_schedule_at) + " " + classModel.getFromTime() + " - " + classModel.getToTime());
 
-            eventUri = Uri.parse("content://calendar/events");
-        } else {
-            // the new way
+        Uri updateUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, classModel.getClassSessionId());
+        int rows = caller.getContentResolver().update(updateUri, values, null, null);
+        Log.i("Calendar", "Rows updated: " + rows);
+    }
 
-            eventUri = Uri.parse("content://com.android.calendar/events");
+    public static int getCalenderId(Context context) {
+        int calendar_id = -1;
+        Hashtable<String, String> calendarIdTable = null;
+        if (calendarIdTable == null) {
+            calendarIdTable = CalendarHelper.listCalendarId(context);
         }
+//        String calendarString = TempStorage.getUser().getEmail();
+//        if (calendarIdTable.keySet().contains(calendarString)) {
+        if (calendarIdTable.size() != 0) {
+            String calendarString = "@";
 
-        int result = 0;
-        String projection[] = { "_id", "title" };
-        Cursor cursor = cr.query(eventUri, null, null, null,
-                null);
+            for (Hashtable.Entry<String, String> entry : calendarIdTable.entrySet()) {
 
-        if (cursor.moveToFirst()) {
-
-            String calName;
-            String calID;
-
-            int nameCol = cursor.getColumnIndex(projection[1]);
-            int idCol = cursor.getColumnIndex(projection[0]);
-            do {
-                calName = cursor.getString(nameCol);
-                calID = cursor.getString(idCol);
-
-                if (calName != null && calName.contains(eventtitle)) {
-                    result = Integer.parseInt(calID);
+                if (entry.getKey().contains(calendarString)) {
+                    calendar_id = Integer.parseInt(entry.getValue());
+                    break;
                 }
-
-            } while (cursor.moveToNext());
-            cursor.close();
+            }
         }
-
-        return result;
-
+        return calendar_id;
     }
 }

@@ -67,6 +67,7 @@ import static com.p5m.me.utils.AppConstants.Limit.PAGE_LIMIT_MAIN_CLASS_LIST;
 public class ClassProfileActivity extends BaseActivity implements AdapterCallbacks, View.OnClickListener, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
 
     private String message;
+    private int errorMsg;
 
     public static void open(Context context, ClassModel classModel, int navigationFrom) {
         context.startActivity(new Intent(context, ClassProfileActivity.class)
@@ -115,6 +116,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     private BookWithFriendData mBookWithFriendData;
     private Hashtable<String, String> calendarIdTable;
     private int calendar_id = -1;
+    private int errorMsg;
+
 
     @Override
     public void onDestroy() {
@@ -260,7 +263,20 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             if (Helper.isFreeClass(classModel))
                 joinClass();
             else {
-                alertNonRefundMsg();
+                if (!user.isBuyMembership())
+                    alertNonRefundMsg();
+                else {
+                    if (Helper.isSpecialClass(classModel) &&
+                            !Helper.isFreeClass(classModel)
+                            ) {
+
+                        CheckoutActivity.openActivity(context, classModel, 1);
+
+                    } else {
+                        joinClass();
+
+                    }
+                }
             }
             return;
         }
@@ -290,27 +306,15 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
         if (Helper.isSpecialClass(classModel) && !Helper.isFreeClass(classModel)) {
 //            message = warningMsg;
-            if (!user.isBuyMembership())
-                alertNonRefundMsg();
-            else
-            {
-                if (Helper.isSpecialClass(classModel) &&
-                        !Helper.isFreeClass(classModel)
-                        ) {
-
-                    CheckoutActivity.openActivity(context, classModel, 1);
-
-                } else {
-                    joinClass();
-
-                }
-            }
+            alertNonRefundMsg();
 
         } else if (DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime()) <= cancelTime) {
 //            message = warningMsg;
             if (!user.isBuyMembership())
                 alertNonRefundMsg();
             else{
+
+
                 if (Helper.isSpecialClass(classModel) &&
                         !Helper.isFreeClass(classModel)
                         ) {
@@ -340,22 +344,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         }
     }
 
-    /*  @OnClick(R.id.textViewBook)
-      public void clickBookButton() {
-          float cancelTime = 2;
-          String warningMsg=activity.getString(R.string.non_refundable_warning_msg);
-          if (Helper.isSpecialClass(classModel) && !Helper.isFreeClass(classModel)) {
-              message = warningMsg;
-              alertNonRefundMsg();
-
-          } else if (DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime()) <= cancelTime) {
-              message = warningMsg;
-              alertNonRefundMsg();
-          }
-
-
-
-      }*/
     private void alertNonRefundMsg() {
         final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
                 .cancelable(false)
@@ -666,7 +654,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();
                                     Helper.shareClass(context, classModel.getClassSessionId(), classModel.getTitle());
-//                                    bookEvent();
+
                                     finish();
 
                                 }
@@ -674,7 +662,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();
-//                                    bookEvent();
+
                                     finish();
                                 }
                             });
@@ -738,6 +726,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             return;
 
                         } else {
+
                         Package aPackage = packages.get(0);
                         MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
                     }
@@ -754,6 +743,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             return;
                         } else {
                             MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+
                         }
                     }
                 }
@@ -812,6 +802,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                                 if (isBookWithFriendInProgress && mBookWithFriendData != null) {
                                     User errorResponse = MyPreferences.getInstance().getPaymentErrorResponse();
                                     if (errorResponse != null) {
+                                        errorMsg = 405;
                                         callPackageListApi(errorResponse.getReadyPckSize());
                                     } else {
                                         ToastUtils.showLong(context, errorMessage);
@@ -856,6 +847,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     } else {
                               callPackageListApi(1);
                             //MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+
 
 
                     }
@@ -947,34 +939,22 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
     }
 
-    private void bookEvent() {
-        if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
-            addNewEvent();
-        } else {
-            CalendarHelper.requestCalendarReadWritePermission(this);
-        }
-        if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
-            calendarIdTable = CalendarHelper.listCalendarId(this);
-        }
-    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
-    private void addNewEvent() {
-        if (calendarIdTable == null) {
-            calendarIdTable = CalendarHelper.listCalendarId(this);
-        }
-        String calendarString = TempStorage.getUser().getEmail();
-        if (calendarIdTable.keySet().contains(calendarString)) {
-            calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
-        } else {
-            calendarString = "Local calendar";
-            calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
+        if (requestCode == CalendarHelper.CALENDARED_PERMISSION_REQUEST_CODE) {
+            if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
+                if (classModel != null){
+                    CalendarHelper.scheduleCalenderEvent(this,classModel);
+                }
+
+
+            }
 
         }
 
-        long eventStartTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getFromTime());
-        long eventEndtTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getToTime());
 
-        CalendarHelper.MakeNewCalendarEntry(this, classModel.getTitle(), getString(R.string.your_class_schedule_at) + " " + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()), "Somewhere", eventStartTime, eventEndtTime, false, true, calendar_id, 3);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
 
