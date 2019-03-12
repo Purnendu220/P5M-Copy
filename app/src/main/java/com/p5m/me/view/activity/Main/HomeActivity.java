@@ -1,22 +1,13 @@
 package com.p5m.me.view.activity.Main;
 
-import android.Manifest;
-import android.app.NotificationManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.Settings;
-import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -26,7 +17,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.p5m.me.BuildConfig;
 import com.p5m.me.R;
 import com.p5m.me.adapters.HomeAdapter;
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
@@ -37,6 +27,8 @@ import com.p5m.me.data.request.LogoutRequest;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
+import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -180,9 +172,6 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
     }
 
-
-
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -311,6 +300,9 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     @Override
     protected void onResume() {
         super.onResume();
+        buyClasses.setText(RemoteConfigConst.BUY_CLASS_VALUE);
+        RemoteConfigSetUp.setBackgroundColor(buyClasses, RemoteConfigConst.BUY_CLASS_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+
         if(currentTab == AppConstants.Tab.TAB_FIND_CLASS){
             handleBuyClassesButton();
         } else {
