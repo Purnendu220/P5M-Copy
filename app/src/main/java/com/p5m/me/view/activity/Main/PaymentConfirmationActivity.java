@@ -440,6 +440,9 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 setConfirmBookingStyle();
 
                 setStyle();
+                if (!CalendarHelper.haveCalendarReadWritePermissions(this)) {
+                    CalendarHelper.requestCalendarReadWritePermission(this);
+                }
                 break;
             case FAILURE:
                 layoutValidity.setVisibility(View.GONE);

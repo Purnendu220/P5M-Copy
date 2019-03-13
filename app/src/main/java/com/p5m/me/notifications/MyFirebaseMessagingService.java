@@ -170,7 +170,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String fromTime = jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME);
         String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
         ClassModel model = new ClassModel(title, classDate, fromTime, toTime, dataID);
-        bookEvent(model);
+        if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
+            CalendarHelper.scheduleCalenderEvent(this,model);
+        }
     }
 
     private void removeEvent(JSONObject jsonObject, long dataID) {
@@ -179,9 +181,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String fromTime = jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME);
         String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
         ClassModel model = new ClassModel(title, classDate, fromTime, toTime, dataID);
-//        updateEvent(model);
-        CalendarHelper.deleteEventId(model.getClassSessionId()
-                ,context);
+        if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
+            CalendarHelper.deleteEvent(model.getClassSessionId(),context);
+
+        }
+
     }
     private void updateEvent(JSONObject jsonObject, long dataID) {
         String title = jsonObject.optString(AppConstants.Notification.CLASS_TITLE);
@@ -189,44 +193,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String fromTime = jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME);
         String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
         ClassModel classModel = new ClassModel(title, classDate, fromTime, toTime, dataID);
-        CalendarHelper.updateEvent(this,classModel);
-    }
-
-
-
-    private void bookEvent(ClassModel model) {
         if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
-            CalendarHelper.scheduleCalenderEvent(this,model);
-        } else {
-            CalendarHelper.requestCalendarReadWritePermission(this);
+            CalendarHelper.updateEvent(this,classModel);
 
         }
-
     }
-
-    private void removeEvent(JSONObject jsonObject, long dataID) {
-        String title = jsonObject.optString(AppConstants.Notification.CLASS_TITLE);
-        String classDate = jsonObject.optString(AppConstants.Notification.CLASS_DATE);
-        String fromTime = jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME);
-        String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
-        ClassModel model = new ClassModel(title, classDate, fromTime, toTime, dataID);
-//        updateEvent(model);
-        CalendarHelper.deleteEventId(model.getClassSessionId()
-                ,context);
-    }
-    private void updateEvent(JSONObject jsonObject, long dataID) {
-        String title = jsonObject.optString(AppConstants.Notification.CLASS_TITLE);
-        String classDate = jsonObject.optString(AppConstants.Notification.CLASS_DATE);
-        String fromTime = jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME);
-        String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
-        ClassModel model = new ClassModel(title, classDate, fromTime, toTime, dataID);
-        updateEvent(model);
-//        CalendarHelper.deleteEventId(model.getTitle()+DateUtils.getClassTime(model.getFromTime(), model.getToTime())
-//                ,context);
-    }
-
-
-
     private void handleDataMessage(JSONObject json) {
 
         try {
