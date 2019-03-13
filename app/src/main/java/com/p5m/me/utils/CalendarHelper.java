@@ -39,12 +39,14 @@ public class CalendarHelper {
     public static void scheduleCalenderEvent(Context caller,ClassModel model) {
 
         long eventStartTime = DateUtils.eventTime(model.getClassDate() + " " + model.getFromTime());
+        long eventEndTime = DateUtils.eventTime(model.getClassDate() + " " + model.getToTime());
+
         int calendarId = CalendarHelper.getCalenderId(caller);
-        if(eventStartTime-oneHour>0 && calendarId>-1){
+        if(eventStartTime>0 && calendarId>-1){
             ContentResolver cr = caller.getContentResolver();
         ContentValues values = new ContentValues();
-        values.put(Events.DTSTART, eventStartTime - oneHour);
-        values.put(Events.DTEND, eventStartTime);
+        values.put(Events.DTSTART, eventStartTime);
+        values.put(Events.DTEND, eventEndTime);
         values.put(Events.TITLE, model.getTitle());
         String url = getUrlBase() + "/share/classes/" + model.getClassSessionId() + "/" + model.getTitle();
         values.put(Events.DESCRIPTION, url);
@@ -60,7 +62,7 @@ public class CalendarHelper {
             ContentValues reminders = new ContentValues();
             reminders.put(Reminders.EVENT_ID, model.getClassSessionId());
             reminders.put(Reminders.METHOD, Reminders.METHOD_ALERT);
-            reminders.put(Reminders.MINUTES, model.getClassSessionId());
+            reminders.put(Reminders.MINUTES, 60);
 
             if (ActivityCompat.checkSelfPermission(caller, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
 
@@ -75,12 +77,13 @@ public class CalendarHelper {
 
     public static void updateEvent(Context caller, ClassModel classModel ) {
         long eventStartTime = DateUtils.eventTime(classModel.getClassDate() + " " + classModel.getFromTime());
+        long eventEndTime = DateUtils.eventTime(classModel.getClassDate() + " " + classModel.getToTime());
+
         ContentResolver cr = caller.getContentResolver();
         ContentValues values = new ContentValues();
         values.put(CalendarContract.Events.TITLE, classModel.getTitle());
-        values.put(Events.DTSTART, eventStartTime - oneHour);
-        values.put(Events.DTEND, eventStartTime);
-        values.put(Events.DESCRIPTION, caller.getString(R.string.your_class_schedule_at)+" " + classModel.getFromTime()+" - "+ classModel.getToTime());
+        values.put(Events.DTSTART, eventStartTime);
+        values.put(Events.DTEND, eventEndTime);
 
         Uri updateUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, classModel.getClassSessionId());
         int rows = caller.getContentResolver().update(updateUri, values, null, null);
