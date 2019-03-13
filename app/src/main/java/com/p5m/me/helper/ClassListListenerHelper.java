@@ -376,6 +376,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
 
 
+
     private static void dialogConfirmUnJoinBookWithFriend(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, final int unJoinClassId, final int unJoinType) {
 
         String message = context.getString(R.string.sure_unjoin);

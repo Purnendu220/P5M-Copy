@@ -32,6 +32,7 @@ import com.p5m.me.view.activity.Main.NotificationActivity;
 import com.p5m.me.view.activity.Main.SettingActivity;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
 import com.p5m.me.view.activity.Main.TransactionHistoryActivity;
+import com.p5m.me.view.activity.base.BaseActivity;
 
 import org.json.JSONObject;
 
@@ -195,6 +196,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         ClassModel classModel = new ClassModel(title, classDate, fromTime, toTime, dataID);
         if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
             CalendarHelper.updateEvent(this,classModel);
+
 
         }
     }

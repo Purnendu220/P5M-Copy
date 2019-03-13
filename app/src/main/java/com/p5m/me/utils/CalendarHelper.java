@@ -36,7 +36,7 @@ public class CalendarHelper {
     public static final int CALENDARED_PERMISSION_REQUEST_CODE = 99;
     public static long oneHour = 1000 * 60 * 60;
 
-    public static void scheduleCalenderEvent(Context caller,ClassModel model) {
+    public static void scheduleCalenderEvent(Context caller, ClassModel model) {
 
         long eventStartTime = DateUtils.eventTime(model.getClassDate() + " " + model.getFromTime());
         long eventEndTime = DateUtils.eventTime(model.getClassDate() + " " + model.getToTime());
@@ -58,6 +58,7 @@ public class CalendarHelper {
 
         values.put(Events.EVENT_TIMEZONE, TimeZone.getDefault().getID());
         Uri uri = cr.insert(Events.CONTENT_URI, values);
+
 
             ContentValues reminders = new ContentValues();
             reminders.put(Reminders.EVENT_ID, model.getClassSessionId());
@@ -147,6 +148,7 @@ public class CalendarHelper {
 
     }
 
+
     public static boolean haveCalendarReadWritePermissions(Context caller) {
         int permissionCheck = ContextCompat.checkSelfPermission(caller,
                 Manifest.permission.READ_CALENDAR);
@@ -217,6 +219,7 @@ public class CalendarHelper {
                     calendar_id = Integer.parseInt(entry.getCalenderId());
                     break;
 
+
                 }
             }
             String calendarString = "@";
@@ -232,6 +235,7 @@ public class CalendarHelper {
 
     }
     return calendar_id;
+
     }
     private static String getUrlBase() {
         String urlBase = BuildConfig.BASE_URL_SHARE;
