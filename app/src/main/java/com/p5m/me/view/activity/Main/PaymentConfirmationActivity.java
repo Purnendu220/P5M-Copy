@@ -44,7 +44,6 @@ import com.p5m.me.fxn.utility.Constants;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
-import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CalendarHelper;
 import com.p5m.me.utils.DateUtils;
@@ -439,9 +438,11 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         switch (paymentStatus) {
             case SUCCESS:
                 setConfirmBookingStyle();
-//                if (paymentResponse.getClassDetailDto() != null)
-//                    bookEvent();
+
                 setStyle();
+                if (!CalendarHelper.haveCalendarReadWritePermissions(this)) {
+                    CalendarHelper.requestCalendarReadWritePermission(this);
+                }
                 break;
             case FAILURE:
                 layoutValidity.setVisibility(View.GONE);
@@ -458,73 +459,21 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         }
     }
 
-    private void bookEvent() {
-        if (CalendarHelper.haveCalendarReadWritePermissions(PaymentConfirmationActivity.this)) {
-            addNewEvent();
-        } else {
-            CalendarHelper.requestCalendarReadWritePermission(PaymentConfirmationActivity.this);
-        }
-        if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
-            calendarIdTable = CalendarHelper.listCalendarId(this);
-        }
-    }
-
-    private void addNewEvent() {
-        final long oneHour = 1000 * 60 * 60;
-        if (calendarIdTable == null) {
-            calendarIdTable = CalendarHelper.listCalendarId(this);
-        }
-        String calendarString = TempStorage.getUser().getEmail();
-        if (calendarIdTable.keySet().contains(calendarString)) {
-            calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
-        } else {
-            calendarString = "Local calendar";
-            calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
-
-        }
-
-        long eventStartTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getFromTime());
-        long eventEndtTime = DateUtils.eventStartTime(classModel.getClassDate() + " " + classModel.getToTime());
-        if(eventStartTime-oneHour>0)
-            CalendarHelper.MakeNewCalendarEntry(this, classModel.getTitle(), getString(R.string.your_class_schedule_at)+" " + DateUtils.getClassTime(paymentResponse.getClassDetailDto().getFromTime(), paymentResponse.getClassDetailDto().getToTime()), "Somewhere", eventStartTime-oneHour, eventStartTime, false, true, calendar_id, 3);
-    }
-
-    private int getCalenderId() {
-        int calenderId = -1;
-        if (calendarIdTable.contains("guman.urvashi@gmail.com")) {
-            String calenderEmaillAddress = "info@p5m.me";
-            String[] projection = new String[]{
-                    CalendarContract.Calendars._ID,
-                    CalendarContract.Calendars.ACCOUNT_NAME};
-            ContentResolver cr = getContentResolver();
-            Cursor cursor = cr.query(Uri.parse("content://com.android.calendar/calendars"), projection,
-                    CalendarContract.Calendars.ACCOUNT_NAME + "=? and (" +
-                            CalendarContract.Calendars.NAME + "=? or " +
-                            CalendarContract.Calendars.CALENDAR_DISPLAY_NAME + "=?)",
-                    new String[]{calenderEmaillAddress, calenderEmaillAddress,
-                            calenderEmaillAddress}, null);
-
-            if (cursor.moveToFirst()) {
-
-                if (cursor.getString(1).equals(calenderEmaillAddress))
-                    calenderId = cursor.getInt(0); //you're calender id to be insered in above your cod
-            }
 
 
-        } else {
-            String calendarString = "Local calendar";
-            calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
 
-        }
-        return calenderId;
-    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
         if (requestCode == CalendarHelper.CALENDARED_PERMISSION_REQUEST_CODE) {
             if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
-                addNewEvent();
+                if (paymentResponse.getClassDetailDto() != null){
+                    CalendarHelper.scheduleCalenderEvent(this,classModel);
+                }
+
+
             }
 
         }

@@ -17,11 +17,11 @@ import com.p5m.me.R;
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
-import com.p5m.me.ratemanager.RateAlarmReceiver;
-import com.p5m.me.ratemanager.ScheduleAlarmManager;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.CalendarHelper;
+import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.Main.ClassProfileActivity;
 import com.p5m.me.view.activity.Main.EditProfileActivity;
@@ -35,7 +35,8 @@ import com.p5m.me.view.activity.Main.TransactionHistoryActivity;
 
 import org.json.JSONObject;
 
-import java.util.List;
+
+import java.util.Hashtable;
 
 /**
  * Created by Varun John on 4/12/2018.
@@ -44,6 +45,8 @@ import java.util.List;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private Context context;
+    private Hashtable<String, String> calendarIdTable;
+    private int calendar_id = -1;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -71,92 +74,130 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             LogUtils.exception(e);
         }
     }
-    private void handleDataMessageForNotificationSchedule(JSONObject json){
-        try{
 
-
-        JSONObject jsonObject = json;
-        String type = jsonObject.optString(AppConstants.Notification.TYPE);
-
-        long dataID = jsonObject.optLong(AppConstants.Notification.OBJECT_DATA_ID);
+    private void handleDataMessageForNotificationSchedule(JSONObject json) {
         try {
-            String userIdToNotify = jsonObject.optString(AppConstants.Notification.USER_ID_TO_NOTIFY);
-            int userId = Integer.parseInt(userIdToNotify);
 
-            if (TempStorage.getUser() != null && TempStorage.getUser().getId() != userId) {
-                return;
+
+            JSONObject jsonObject = json;
+            String type = jsonObject.optString(AppConstants.Notification.TYPE);
+
+            long dataID = jsonObject.optLong(AppConstants.Notification.OBJECT_DATA_ID);
+            try {
+                String userIdToNotify = jsonObject.optString(AppConstants.Notification.USER_ID_TO_NOTIFY);
+                int userId = Integer.parseInt(userIdToNotify);
+
+                if (TempStorage.getUser() != null && TempStorage.getUser().getId() != userId) {
+                    return;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                LogUtils.exception(e);
+            }
+
+            switch (type) {
+                case "OnClassRefund":
+                    if (dataID != 0L && dataID > 0) {
+                        TempStorage.removeSavedClass((int) dataID, context);
+                        removeEvent(jsonObject, dataID);
+                    }
+                    break;
+                case "CustomerCancelClass":
+                    if (dataID != 0L && dataID > 0) {
+                        TempStorage.removeSavedClass((int) dataID, context);
+                        removeEvent(jsonObject, dataID);
+                    }
+                    break;
+                case "OnClassUpdateByGYM":
+                    TempStorage.removeSavedClass((int) dataID, context);
+                    setNotification(jsonObject, dataID);
+                    updateEvent(jsonObject, dataID);
+                   break;
+                case "OnClassUpdateByTrainer":
+                    TempStorage.removeSavedClass((int) dataID, context);
+                    setNotification(jsonObject, dataID);
+                    updateEvent(jsonObject, dataID);
+
+                    break;
+                case "OnSessionUpdateByGYM":
+                    TempStorage.removeSavedClass((int) dataID, context);
+                    setNotification(jsonObject, dataID);
+                    updateEvent(jsonObject, dataID);
+
+                    break;
+                case "OnSessionUpdateByTrainerOfGym":
+                    TempStorage.removeSavedClass((int) dataID, context);
+                    setNotification(jsonObject, dataID);
+                    updateEvent(jsonObject, dataID);
+
+                   break;
+                case "OnSessionUpdateByTrainer":
+                    TempStorage.removeSavedClass((int) dataID, context);
+                    updateEvent(jsonObject, dataID);
+
+                    break;
+                case "OnSessionUpdateByGymOfTrainer":
+                    TempStorage.removeSavedClass((int) dataID, context);
+                    setNotification(jsonObject, dataID);
+                    updateEvent(jsonObject, dataID);
+
+                    break;
+                case "OnClassUpdateByCms":
+                    TempStorage.removeSavedClass((int) dataID, context);
+                    setNotification(jsonObject, dataID);
+                    updateEvent(jsonObject, dataID);
+
+                    break;
+                case "OnGroupClassUpdateByCms":
+                    TempStorage.removeSavedClass((int) dataID, context);
+                    setNotification(jsonObject, dataID);
+                    updateEvent(jsonObject, dataID);
+
+                    break;
+                case "OnJoinClass":
+                    setNotification(jsonObject, dataID);
+                    addEvent(jsonObject, dataID);
+                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            LogUtils.exception(e);
-        }
-
-        switch (type){
-            case "OnClassRefund":
-                if(dataID!=0L&&dataID>0) {
-                    TempStorage.removeSavedClass((int)dataID,context);
-                    }
-                break;
-            case "CustomerCancelClass":
-                if(dataID!=0L&&dataID>0){
-                    TempStorage.removeSavedClass((int)dataID,context);
-                }
-                break;
-            case "OnClassUpdateByGYM":
-                TempStorage.removeSavedClass((int)dataID,context);
-                setNotification(jsonObject,dataID);
-
-                //updateNotificationSchedule(TempStorage.getSavedClasses(),dataID,jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME),jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME));
-                break;
-            case "OnClassUpdateByTrainer":
-                TempStorage.removeSavedClass((int)dataID,context);
-                setNotification(jsonObject,dataID);
-
-               // updateNotificationSchedule(TempStorage.getSavedClasses(),dataID,jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME),jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME));
-                break;
-            case "OnSessionUpdateByGYM":
-                TempStorage.removeSavedClass((int)dataID,context);
-                setNotification(jsonObject,dataID);
-
-               // updateNotificationSchedule(TempStorage.getSavedClasses(),dataID,jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME),jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME));
-                break;
-            case "OnSessionUpdateByTrainerOfGym":
-                TempStorage.removeSavedClass((int)dataID,context);
-                setNotification(jsonObject,dataID);
-
-               // updateNotificationSchedule(TempStorage.getSavedClasses(),dataID,jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME),jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME));
-                break;
-            case "OnSessionUpdateByTrainer":
-                TempStorage.removeSavedClass((int)dataID,context);
-                setNotification(jsonObject,dataID);
-
-                //updateNotificationSchedule(TempStorage.getSavedClasses(),dataID,jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME),jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME));
-                break;
-            case "OnSessionUpdateByGymOfTrainer":
-                TempStorage.removeSavedClass((int)dataID,context);
-                setNotification(jsonObject,dataID);
-
-               // updateNotificationSchedule(TempStorage.getSavedClasses(),dataID,jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME),jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME));
-                break;
-            case "OnClassUpdateByCms":
-                TempStorage.removeSavedClass((int)dataID,context);
-                setNotification(jsonObject,dataID);
-                // updateNotificationSchedule(TempStorage.getSavedClasses(),dataID,jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME),jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME));
-                break;
-            case "OnGroupClassUpdateByCms":
-                TempStorage.removeSavedClass((int)dataID,context);
-                setNotification(jsonObject,dataID);
-                // updateNotificationSchedule(TempStorage.getSavedClasses(),dataID,jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME),jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME));
-                break;
-            case "OnJoinClass":
-                setNotification(jsonObject,dataID);
-                break;
-                }
-        }catch (Exception e){
-e.printStackTrace();
         }
     }
 
+    private void addEvent(JSONObject jsonObject, long dataID) {
+        String title = jsonObject.optString(AppConstants.Notification.CLASS_TITLE);
+        String classDate = jsonObject.optString(AppConstants.Notification.CLASS_DATE);
+        String fromTime = jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME);
+        String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
+        ClassModel model = new ClassModel(title, classDate, fromTime, toTime, dataID);
+        if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
+            CalendarHelper.scheduleCalenderEvent(this,model);
+        }
+    }
+
+    private void removeEvent(JSONObject jsonObject, long dataID) {
+        String title = jsonObject.optString(AppConstants.Notification.CLASS_TITLE);
+        String classDate = jsonObject.optString(AppConstants.Notification.CLASS_DATE);
+        String fromTime = jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME);
+        String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
+        ClassModel model = new ClassModel(title, classDate, fromTime, toTime, dataID);
+        if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
+            CalendarHelper.deleteEvent(model.getClassSessionId(),context);
+
+        }
+
+    }
+    private void updateEvent(JSONObject jsonObject, long dataID) {
+        String title = jsonObject.optString(AppConstants.Notification.CLASS_TITLE);
+        String classDate = jsonObject.optString(AppConstants.Notification.CLASS_DATE);
+        String fromTime = jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME);
+        String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
+        ClassModel classModel = new ClassModel(title, classDate, fromTime, toTime, dataID);
+        if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
+            CalendarHelper.updateEvent(this,classModel);
+
+        }
+    }
     private void handleDataMessage(JSONObject json) {
 
         try {
@@ -296,7 +337,7 @@ e.printStackTrace();
             String title = "P5M";
 
             // If no message body found then its a silent push (just to increase the notification count)
-            if (message == null||message.isEmpty()||message.equalsIgnoreCase("null")) {
+            if (message == null || message.isEmpty() || message.equalsIgnoreCase("null")) {
                 return;
             }
 
@@ -409,15 +450,13 @@ e.printStackTrace();
                     break;
                 case "CMS":
                     String url = jsonObject.optString(AppConstants.Notification.URL);
-                    if(url!=null){
-                        navigationIntent =   handleNotificationDeeplinking(url);
+                    if (url != null) {
+                        navigationIntent = handleNotificationDeeplinking(url);
 
-                    }
-                    else{
+                    } else {
                         navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
 
                     }
-
 
 
                     break;
@@ -497,111 +536,97 @@ e.printStackTrace();
         }
     }
 
-    private Intent handleNotificationDeeplinking(String url){
+    private Intent handleNotificationDeeplinking(String url) {
         Intent navigationIntent;
 
         try {
-            if(url.contains(BuildConfig.BASE_URL+"/classes/") || url.contains(BuildConfig.BASE_URL+"/share/classes/") ||url.contains(BuildConfig.BASE_URL_HTTPS+"/classes/") || url.contains(BuildConfig.BASE_URL_HTTPS+"/share/classes/")){
+            if (url.contains(BuildConfig.BASE_URL + "/classes/") || url.contains(BuildConfig.BASE_URL + "/share/classes/") || url.contains(BuildConfig.BASE_URL_HTTPS + "/classes/") || url.contains(BuildConfig.BASE_URL_HTTPS + "/share/classes/")) {
                 String classId = null;
-                String[] stringlist=url.split("/classes/");
-                if(stringlist!=null && stringlist.length>1){
+                String[] stringlist = url.split("/classes/");
+                if (stringlist != null && stringlist.length > 1) {
                     classId = stringlist[1].split("/")[0];
                 }
-                try{
-                    navigationIntent = ClassProfileActivity.createIntent(context,Integer.parseInt(classId),AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
+                try {
+                    navigationIntent = ClassProfileActivity.createIntent(context, Integer.parseInt(classId), AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
 
 
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                     navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
 
                 }
 
-            }
-            else if(url.contains(BuildConfig.BASE_URL+"/share/gym/") ||url.contains(BuildConfig.BASE_URL+"/gym/")||url.contains(BuildConfig.BASE_URL_HTTPS+"/share/gym/") ||url.contains(BuildConfig.BASE_URL_HTTPS+"/gym/") ){
+            } else if (url.contains(BuildConfig.BASE_URL + "/share/gym/") || url.contains(BuildConfig.BASE_URL + "/gym/") || url.contains(BuildConfig.BASE_URL_HTTPS + "/share/gym/") || url.contains(BuildConfig.BASE_URL_HTTPS + "/gym/")) {
                 String gymId = null;
-                String[] stringlist=url.split("/gym/");
-                if(stringlist!=null && stringlist.length>1){
+                String[] stringlist = url.split("/gym/");
+                if (stringlist != null && stringlist.length > 1) {
                     gymId = stringlist[1].split("/")[0];
                 }
-                try{
-                    navigationIntent = GymProfileActivity.createIntent(context,Integer.parseInt(gymId),AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
+                try {
+                    navigationIntent = GymProfileActivity.createIntent(context, Integer.parseInt(gymId), AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
 
 
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                     navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
 
                 }
 
-            }
-            else if(url.contains(BuildConfig.BASE_URL+"/share/trainer/") ||url.contains(BuildConfig.BASE_URL+"/trainer/")||url.contains(BuildConfig.BASE_URL_HTTPS+"/share/trainer/") ||url.contains(BuildConfig.BASE_URL_HTTPS+"/trainer/") ){
+            } else if (url.contains(BuildConfig.BASE_URL + "/share/trainer/") || url.contains(BuildConfig.BASE_URL + "/trainer/") || url.contains(BuildConfig.BASE_URL_HTTPS + "/share/trainer/") || url.contains(BuildConfig.BASE_URL_HTTPS + "/trainer/")) {
                 String trainerId = null;
-                String[] stringlist=url.split("/trainer/");
-                if(stringlist!=null && stringlist.length>1){
+                String[] stringlist = url.split("/trainer/");
+                if (stringlist != null && stringlist.length > 1) {
                     trainerId = stringlist[1].split("/")[0];
                 }
-                try{
-                    navigationIntent = TrainerProfileActivity.createIntent(context,Integer.parseInt(trainerId),AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
+                try {
+                    navigationIntent = TrainerProfileActivity.createIntent(context, Integer.parseInt(trainerId), AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
 
 
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                     navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
 
                 }
-            }
-            else if(url.contains(BuildConfig.BASE_URL+"/classes")||url.contains(BuildConfig.BASE_URL_HTTPS+"/classes")){
+            } else if (url.contains(BuildConfig.BASE_URL + "/classes") || url.contains(BuildConfig.BASE_URL_HTTPS + "/classes")) {
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
 
 
-
-            }
-            else if(url.contains(BuildConfig.BASE_URL+"/trainers")||url.contains(BuildConfig.BASE_URL_HTTPS+"/trainers")){
+            } else if (url.contains(BuildConfig.BASE_URL + "/trainers") || url.contains(BuildConfig.BASE_URL_HTTPS + "/trainers")) {
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_TRAINER, 0);
 
 
-            }
-            else if(url.contains(BuildConfig.BASE_URL+"/userschedule")||url.contains(BuildConfig.BASE_URL_HTTPS+"/userschedule")){
+            } else if (url.contains(BuildConfig.BASE_URL + "/userschedule") || url.contains(BuildConfig.BASE_URL_HTTPS + "/userschedule")) {
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, 0);
 
 
-            }
-            else if(url.contains(BuildConfig.BASE_URL+"/profile?type=favTrainer")||url.contains(BuildConfig.BASE_URL_HTTPS+"/profile?type=favTrainer")){
+            } else if (url.contains(BuildConfig.BASE_URL + "/profile?type=favTrainer") || url.contains(BuildConfig.BASE_URL_HTTPS + "/profile?type=favTrainer")) {
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_MY_PROFILE, 0, ProfileHeaderTabViewHolder.TAB_1);
 
 
-            }
-            else if(url.contains(BuildConfig.BASE_URL+"/profile?type=finishedClasses")||url.contains(BuildConfig.BASE_URL_HTTPS+"/profile?type=finishedClasses")){
-                navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_MY_PROFILE, 0,ProfileHeaderTabViewHolder.TAB_2);
+            } else if (url.contains(BuildConfig.BASE_URL + "/profile?type=finishedClasses") || url.contains(BuildConfig.BASE_URL_HTTPS + "/profile?type=finishedClasses")) {
+                navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_MY_PROFILE, 0, ProfileHeaderTabViewHolder.TAB_2);
 
 
-            }
-            else if(url.contains(BuildConfig.BASE_URL+"/profile")||url.contains(BuildConfig.BASE_URL_HTTPS+"/profile")){
+            } else if (url.contains(BuildConfig.BASE_URL + "/profile") || url.contains(BuildConfig.BASE_URL_HTTPS + "/profile")) {
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_MY_PROFILE, 0);
 
 
-            }
-            else if(url.contains(BuildConfig.BASE_URL+"/editprofile")||url.contains(BuildConfig.BASE_URL_HTTPS+"/editprofile")){
+            } else if (url.contains(BuildConfig.BASE_URL + "/editprofile") || url.contains(BuildConfig.BASE_URL_HTTPS + "/editprofile")) {
                 navigationIntent = EditProfileActivity.createIntent(context);
 
 
-            }
-            else if(url.contains(BuildConfig.BASE_URL+"/settings/membership")||url.contains(BuildConfig.BASE_URL_HTTPS+"/settings/membership")){
+            } else if (url.contains(BuildConfig.BASE_URL + "/settings/membership") || url.contains(BuildConfig.BASE_URL_HTTPS + "/settings/membership")) {
                 navigationIntent = MemberShip.createIntent(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
 
 
-            }
-            else if(url.contains(BuildConfig.BASE_URL+"/settings/transaction")||url.contains(BuildConfig.BASE_URL_HTTPS+"/settings/transaction")){
+            } else if (url.contains(BuildConfig.BASE_URL + "/settings/transaction") || url.contains(BuildConfig.BASE_URL_HTTPS + "/settings/transaction")) {
                 navigationIntent = TransactionHistoryActivity.createIntent(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
 
 
-            }
-            else if(url.contains(BuildConfig.BASE_URL+"/settings/notification")||url.contains(BuildConfig.BASE_URL_HTTPS+"/settings/notification")){
+            } else if (url.contains(BuildConfig.BASE_URL + "/settings/notification") || url.contains(BuildConfig.BASE_URL_HTTPS + "/settings/notification")) {
                 navigationIntent = NotificationActivity.createIntent(context);
 
-            }
-            else if(url.contains(BuildConfig.BASE_URL+"/settings/aboutus")||url.contains(BuildConfig.BASE_URL_HTTPS+"/settings/aboutus")){
+            } else if (url.contains(BuildConfig.BASE_URL + "/settings/aboutus") || url.contains(BuildConfig.BASE_URL_HTTPS + "/settings/aboutus")) {
                 navigationIntent = SettingActivity.createIntent(context, AppConstants.Tab.OPEN_ABOUT_US);
 
             }
@@ -614,16 +639,15 @@ e.printStackTrace();
 
             }
             else {
+
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
 
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
 
         }
-
-
 
 
         return navigationIntent;
@@ -631,12 +655,12 @@ e.printStackTrace();
     }
 
 
-    private void setNotification(JSONObject jsonObject,long dataID){
-        String title=jsonObject.optString(AppConstants.Notification.CLASS_TITLE);
-        String classDate=jsonObject.optString(AppConstants.Notification.CLASS_DATE);
-        String fromTime=jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME);
-        String toTime=jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
-        ClassModel model=new ClassModel(title,classDate,fromTime,toTime,dataID);
-        TempStorage.setSavedClasses(model,context);
+    private void setNotification(JSONObject jsonObject, long dataID) {
+        String title = jsonObject.optString(AppConstants.Notification.CLASS_TITLE);
+        String classDate = jsonObject.optString(AppConstants.Notification.CLASS_DATE);
+        String fromTime = jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME);
+        String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
+        ClassModel model = new ClassModel(title, classDate, fromTime, toTime, dataID);
+        TempStorage.setSavedClasses(model, context);
     }
 }
