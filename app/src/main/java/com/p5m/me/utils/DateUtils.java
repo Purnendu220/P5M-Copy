@@ -251,8 +251,11 @@ public class DateUtils {
     }
     public static long eventTime(String date) {
         long today = Calendar.getInstance().getTimeInMillis();
+        SimpleDateFormat eventDateTimeLocal = new SimpleDateFormat("dd-MM-yyyy hh:mm aa", Locale.getDefault());
         try {
-            long expiryTime = eventDateTime.parse(date).getTime();
+            String timezoneID = TimeZone.getDefault().getID();
+            eventDateTimeLocal.setTimeZone(TimeZone.getTimeZone(timezoneID));
+            long expiryTime = eventDateTimeLocal.parse(date).getTime();
 
 
             long diff = (expiryTime );
