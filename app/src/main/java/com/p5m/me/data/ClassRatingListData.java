@@ -40,8 +40,8 @@ public class ClassRatingListData implements Serializable {
         this.id = id;
     }
 
-    public Double getRating() {
-        return rating;
+    public Float getRating() {
+        return Math.round(rating*10)/10.f;
     }
 
     public void setRating(Double rating) {

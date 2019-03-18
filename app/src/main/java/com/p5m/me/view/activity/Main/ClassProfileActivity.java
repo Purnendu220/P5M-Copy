@@ -116,7 +116,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     private BookWithFriendData mBookWithFriendData;
     private Hashtable<String, String> calendarIdTable;
     private int calendar_id = -1;
-    private int errorMsg;
 
 
     @Override

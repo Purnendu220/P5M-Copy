@@ -314,8 +314,8 @@ public class ClassModel implements java.io.Serializable {
         this.joinClassId = joinClassId;
     }
 
-    public long getNumberOfRating() {
-        return numberOfRating;
+    public float getNumberOfRating() {
+        return Math.round(numberOfRating*10)/10.f;
     }
 
     public void setNumberOfRating(long numberOfRating) {
@@ -323,7 +323,7 @@ public class ClassModel implements java.io.Serializable {
     }
 
     public float getRating() {
-        return Math.round(rating*100)/10.f;
+        return Math.round(rating*10)/10.f;
     }
 
     public void setRating(float rating) {

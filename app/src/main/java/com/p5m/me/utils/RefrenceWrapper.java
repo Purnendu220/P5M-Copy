@@ -9,7 +9,7 @@ import com.p5m.me.view.custom.CustomRateAlertDialog;
 
 public class RefrenceWrapper {
     public static RefrenceWrapper refrenceWrapper;
-    private Context context;
+    private Context context,appContext;
     private CustomRateAlertDialog customRateAlertDialog;
     private HomeActivity activity;
     private RefrenceWrapper(Context activity) {
@@ -56,5 +56,13 @@ public class RefrenceWrapper {
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
+    }
+
+    public Context getAppContext() {
+        return appContext;
+    }
+
+    public void setAppContext(Context appContext) {
+        this.appContext = appContext;
     }
 }

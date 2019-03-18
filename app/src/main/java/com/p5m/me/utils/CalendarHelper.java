@@ -184,6 +184,7 @@ public class CalendarHelper {
 
                 if (entry.getKey().contains(calendarString)) {
                     calendar_id = Integer.parseInt(entry.getValue());
+
                     break;
                 }
             }
