@@ -30,6 +30,7 @@ import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.Main.MemberShip;
 import com.p5m.me.view.activity.Main.NotificationActivity;
 import com.p5m.me.view.activity.Main.SettingActivity;
+import com.p5m.me.view.activity.Main.SettingNotification;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
 import com.p5m.me.view.activity.Main.TransactionHistoryActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
@@ -626,9 +627,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
             } else if (url.contains(BuildConfig.BASE_URL + "/settings/notification") || url.contains(BuildConfig.BASE_URL_HTTPS + "/settings/notification")) {
-                navigationIntent = NotificationActivity.createIntent(context);
+                navigationIntent = SettingNotification.createIntent(context);
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/settings/aboutus") || url.contains(BuildConfig.BASE_URL_HTTPS + "/settings/aboutus")) {
+            } else if (url.contains(BuildConfig.BASE_URL + "/settings/aboutus") || url.contains(BuildConfig.BASE_URL_HTTPS + "/settings/aboutus")||
+                    url.contains(BuildConfig.BASE_URL + "/aboutus") || url.contains(BuildConfig.BASE_URL_HTTPS + "/aboutus")) {
                 navigationIntent = SettingActivity.createIntent(context, AppConstants.Tab.OPEN_ABOUT_US);
 
             }

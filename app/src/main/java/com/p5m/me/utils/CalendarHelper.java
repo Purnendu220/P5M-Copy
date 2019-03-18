@@ -21,6 +21,7 @@ import com.p5m.me.BuildConfig;
 import com.p5m.me.R;
 import com.p5m.me.data.CalenderData;
 import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.helper.Helper;
 
 
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class CalendarHelper {
         values.put(Events.DTSTART, eventStartTime);
         values.put(Events.DTEND, eventEndTime);
         values.put(Events.TITLE, model.getTitle());
-        String url = getUrlBase() + "/share/classes/" + model.getClassSessionId() + "/" + model.getTitle();
+        String url = Helper.classEventDescription(caller,model.getClassSessionId(),model.getTitle());
         values.put(Events.DESCRIPTION, url);
         values.put(Events.CALENDAR_ID, calendarId);
         values.put(Events.STATUS, Events.STATUS_CONFIRMED);

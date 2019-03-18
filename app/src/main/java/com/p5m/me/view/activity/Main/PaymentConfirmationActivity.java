@@ -443,6 +443,11 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 if (!CalendarHelper.haveCalendarReadWritePermissions(this)) {
                     CalendarHelper.requestCalendarReadWritePermission(this);
                 }
+                else{
+                    if (paymentResponse.getClassDetailDto() != null){
+                        CalendarHelper.scheduleCalenderEvent(this,classModel);
+                    }
+                }
                 break;
             case FAILURE:
                 layoutValidity.setVisibility(View.GONE);

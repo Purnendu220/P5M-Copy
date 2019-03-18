@@ -25,6 +25,10 @@ public class SettingNotification extends BaseActivity implements NetworkCommunic
     public static void openActivity(Context context) {
         context.startActivity(new Intent(context, SettingNotification.class));
     }
+    public static Intent createIntent(Context context) {
+        Intent intent = new Intent(context, SettingNotification.class);
+        return intent;
+    }
 
     @BindView(R.id.switchCompatNotifyFavClass)
     public SwitchCompat switchCompatNotifyFavClass;
