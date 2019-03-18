@@ -25,6 +25,7 @@ import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
@@ -82,9 +83,10 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
         final ClassModel classModel=data.classModel;
             if(classModel!=null){
                 try{
+//                    context.getResources().getString(R.string.invite_friends)
                     DialogUtils.showBasicMessage(context,"",
                             getString(R.string.successfully_joined)+" " + classModel.getTitle()
-                            ,context.getResources().getString(R.string.invite_friends), new MaterialDialog.SingleButtonCallback() {
+                            ,RemoteConfigConst.INVITE_FRIENDS_VALUE, new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();

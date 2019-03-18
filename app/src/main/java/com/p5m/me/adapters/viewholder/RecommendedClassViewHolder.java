@@ -13,6 +13,8 @@ import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.ClassRatingListData;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
@@ -31,6 +33,7 @@ public class RecommendedClassViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.textViewClassName)
     public TextView textViewClassName;
+
 
     @BindView(R.id.textViewTime)
     public TextView textViewTime;
@@ -54,7 +57,6 @@ public class RecommendedClassViewHolder extends RecyclerView.ViewHolder {
 
         context = view.getContext();
         ButterKnife.bind(this, view);
-
         this.shownInScreen = shownInScreen;
     }
 

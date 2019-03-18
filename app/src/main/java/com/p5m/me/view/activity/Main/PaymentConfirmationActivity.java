@@ -42,6 +42,8 @@ import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.fxn.utility.Constants;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.utils.AppConstants;
@@ -184,7 +186,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         ButterKnife.bind(activity);
         handler = new Handler();
         progressBarDone.setVisibility(View.VISIBLE);
-
+        buttonInviteFriends.setText(RemoteConfigConst.INVITE_FRIENDS_VALUE);
         layoutConfirmation.setVisibility(View.GONE);
         setToolBar();
         handleClickEvent();
@@ -490,23 +492,29 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         if (PaymentStatus.valueOf(paymentResponse.getStatus()) == SUCCESS) {
             if (paymentResponse.getClassDetailDto() != null) {
                 buttonViewSchedule.setText(getString(R.string.book_classes));
-                buttonSchedule.setText(getString(R.string.view_schedule));
+//                buttonSchedule.setText(getString(R.string.view_schedule));
+                buttonSchedule.setText(RemoteConfigConst.PAYMENT_CLASS_VALUE);
             } else {
-                buttonSchedule.setText(getString(R.string.book_classes));
+//                buttonSchedule.setText(getString(R.string.book_classes));
+                buttonSchedule.setText(RemoteConfigConst.PAYMENT_PACKAGE_VALUE);
                 buttonsLayout.setVisibility(View.VISIBLE);
             }
         } else if (PaymentStatus.valueOf(paymentResponse.getStatus()) == PaymentStatus.INITIALIZE) {
-            buttonViewSchedule.setText(getString(R.string.payment_history));
+//            buttonViewSchedule.setText(getString(R.string.payment_history));
+            buttonViewSchedule.setText(RemoteConfigConst.PAYMENT_FAILURE_VALUE);
             buttonsLayout.setVisibility(View.GONE);
             buttonViewSchedule.setVisibility(View.VISIBLE);
             checkoutFor = PENDING_TRANSACTION;
         } else if (PaymentStatus.valueOf(paymentResponse.getStatus()) == PaymentStatus.PENDING) {
-            buttonViewSchedule.setText(getString(R.string.payment_history));
+//            buttonViewSchedule.setText(getString(R.string.payment_history));
+
+            buttonViewSchedule.setText(RemoteConfigConst.PAYMENT_PENDING_VALUE);
             buttonsLayout.setVisibility(View.GONE);
             buttonViewSchedule.setVisibility(View.VISIBLE);
             checkoutFor = PENDING_TRANSACTION;
         } else if (PaymentStatus.valueOf(paymentResponse.getStatus()) == PaymentStatus.FAILURE) {
-            buttonViewSchedule.setText(getString(R.string.payment_history));
+//            buttonViewSchedule.setText(getString(R.string.payment_history));
+            buttonViewSchedule.setText(RemoteConfigConst.PAYMENT_FAILURE_VALUE);
             buttonsLayout.setVisibility(View.GONE);
             buttonViewSchedule.setVisibility(View.VISIBLE);
             checkoutFor = PENDING_TRANSACTION;

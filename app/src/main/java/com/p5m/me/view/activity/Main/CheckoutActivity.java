@@ -32,6 +32,7 @@ import com.p5m.me.data.request.PromoCodeRequest;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.fxn.utility.Constants;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -279,6 +280,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
 //                    textViewPackageValidity.setText(context.getString(R.string.valid_for)+" " + numberConverter(aPackage.getDuration()) + " " + AppConstants.plural(validityPeriod, aPackage.getDuration()));
                     textViewLimit.setVisibility(View.VISIBLE);
+                    textViewLimit.setText(RemoteConfigConst.GYM_VISIT_LIMIT_VALUE);
                     textViewPackageClasses.setText(numberConverter(aPackage.getNoOfClass()) + " " + AppConstants.pluralES(getString(R.string.one_class), aPackage.getNoOfClass())+" "+context.getString(R.string.at_any_gym));
 
 
