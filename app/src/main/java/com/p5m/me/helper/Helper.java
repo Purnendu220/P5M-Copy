@@ -479,7 +479,11 @@ public class Helper {
         String url = getUrlBase() + "/share/classes/" + id + "/" + name;
         shareUrl(context, classShareMessage+url.replace(" ", ""));
     }
-
+    public static String classEventDescription(Context context, int id, String name) {
+        CharSequence classShareMessage = String.format(context.getString(R.string.class_event_description),name+"");
+        String url = getUrlBase() + "/share/classes/" + id + "/" + name;
+        return classShareMessage+url.replace(" ", "");
+    }
     private static String getUrlBase() {
         String urlBase = BuildConfig.BASE_URL_SHARE;
 
