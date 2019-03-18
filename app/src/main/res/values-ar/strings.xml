@@ -465,6 +465,9 @@
 
     <string name="share_message">مهلا. هل تريد ممارسة التمارين الرياضية معي؟ فلننضم إلى %1s معًا.</string>
 
+    <string name="class_event_description">For more details on the %1s class use this link. \n</string>
+
+
     <string name="extend_package">تمديد حزمة</string>
 
     <string name="share_message_gym">مهلا. هل تريد ممارسة التمارين الرياضية معي؟ دعنا ننضم إلى صفوف %1s معًا.</string>
