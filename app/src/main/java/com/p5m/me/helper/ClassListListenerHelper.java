@@ -52,7 +52,6 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
     public Activity activity;
     private final AdapterCallbacks adapterCallbacks;
     private int shownIn;
-    private static Hashtable<String, String> calendarIdTable;
     private static int calendar_id = -1;
 
 
@@ -358,9 +357,6 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                             EventBroadcastHelper.sendClassJoin(context, model);
                             EventBroadcastHelper.sendUserUpdate(context, ((ResponseModel<User>) response).data);
                             MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
-
-                            CalendarHelper.deleteEventId(model.getClassSessionId()
-                                    ,context);
                             materialDialog.dismiss();
 
                         } catch (Exception e) {
@@ -383,35 +379,10 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             }
         });
     }
-    private static void deleteEvent(Context context) {
-        if (CalendarHelper.haveCalendarReadWritePermissions(context)) {
-            onDeleteEvent(context);
-        }
-        if (CalendarHelper.haveCalendarReadWritePermissions(context)) {
-            calendarIdTable = CalendarHelper.listCalendarId(context);
-        }
-    }
-    private static void onDeleteEvent(Context context) {
-        Uri eventsUri;
 
-        if (calendarIdTable == null) {
-            calendarIdTable = CalendarHelper.listCalendarId(context);
-        }
-        String calendarString = TempStorage.getUser().getEmail();
-        if (calendarIdTable.keySet().contains(calendarString)) {
-            calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
-        } else {
-            calendarString = "Local calendar";
-            calendar_id = Integer.parseInt(calendarIdTable.get(calendarString));
 
-        }
-        int osVersion = android.os.Build.VERSION.SDK_INT;
-        if (osVersion <= 7) { //up-to Android 2.1
-            eventsUri = Uri.parse("content://calendar/events");
-        } else { //8 is Android 2.2 (Froyo) (http://developer.android.com/reference/android/os/Build.VERSION_CODES.html)
-            eventsUri = Uri.parse("content://com.android.calendar/events");
-        }
-    }
+
+
 
     private static void dialogConfirmUnJoinBookWithFriend(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, final int unJoinClassId, final int unJoinType) {
 
