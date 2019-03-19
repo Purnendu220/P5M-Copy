@@ -30,6 +30,7 @@ import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.Main.MemberShip;
 import com.p5m.me.view.activity.Main.NotificationActivity;
 import com.p5m.me.view.activity.Main.SettingActivity;
+import com.p5m.me.view.activity.Main.SettingNotification;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
 import com.p5m.me.view.activity.Main.TransactionHistoryActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
@@ -171,7 +172,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String fromTime = jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME);
         String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
         ClassModel model = new ClassModel(title, classDate, fromTime, toTime, dataID);
-        bookEvent(model);
+        if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
+            CalendarHelper.scheduleCalenderEvent(this,model);
+        }
     }
 
     private void removeEvent(JSONObject jsonObject, long dataID) {
@@ -180,9 +183,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String fromTime = jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME);
         String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
         ClassModel model = new ClassModel(title, classDate, fromTime, toTime, dataID);
-//        updateEvent(model);
-        CalendarHelper.deleteEventId(model.getClassSessionId()
-                ,context);
+        if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
+            CalendarHelper.deleteEvent(model.getClassSessionId(),context);
+
+        }
+
     }
     private void updateEvent(JSONObject jsonObject, long dataID) {
         String title = jsonObject.optString(AppConstants.Notification.CLASS_TITLE);
@@ -190,22 +195,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String fromTime = jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME);
         String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
         ClassModel classModel = new ClassModel(title, classDate, fromTime, toTime, dataID);
-        CalendarHelper.updateEvent(this,classModel);
-    }
-
-
-
-    private void bookEvent(ClassModel model) {
         if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
-            CalendarHelper.scheduleCalenderEvent(this,model);
+            CalendarHelper.updateEvent(this,classModel);
+
+
+
         }
-
     }
-
-
-
-
-
     private void handleDataMessage(JSONObject json) {
 
         try {
@@ -632,9 +628,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
             } else if (url.contains(BuildConfig.BASE_URL + "/settings/notification") || url.contains(BuildConfig.BASE_URL_HTTPS + "/settings/notification")) {
-                navigationIntent = NotificationActivity.createIntent(context);
+                navigationIntent = SettingNotification.createIntent(context);
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/settings/aboutus") || url.contains(BuildConfig.BASE_URL_HTTPS + "/settings/aboutus")) {
+            } else if (url.contains(BuildConfig.BASE_URL + "/settings/aboutus") || url.contains(BuildConfig.BASE_URL_HTTPS + "/settings/aboutus")||
+                    url.contains(BuildConfig.BASE_URL + "/aboutus") || url.contains(BuildConfig.BASE_URL_HTTPS + "/aboutus")) {
                 navigationIntent = SettingActivity.createIntent(context, AppConstants.Tab.OPEN_ABOUT_US);
 
             }

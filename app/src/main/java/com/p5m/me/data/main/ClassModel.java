@@ -2,6 +2,10 @@ package com.p5m.me.data.main;
 
 import com.p5m.me.data.ClassRatingListData;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class ClassModel implements java.io.Serializable {
     private static final long serialVersionUID = -7121053493736355823L;
 
@@ -314,8 +318,8 @@ public class ClassModel implements java.io.Serializable {
         this.joinClassId = joinClassId;
     }
 
-    public float getNumberOfRating() {
-        return Math.round(numberOfRating*10)/10.f;
+    public long getNumberOfRating() {
+        return numberOfRating;
     }
 
     public void setNumberOfRating(long numberOfRating) {
@@ -323,7 +327,9 @@ public class ClassModel implements java.io.Serializable {
     }
 
     public float getRating() {
-        return Math.round(rating*10)/10.f;
+
+        return Float.parseFloat(new DecimalFormat("##.#").format(rating));
+
     }
 
     public void setRating(float rating) {

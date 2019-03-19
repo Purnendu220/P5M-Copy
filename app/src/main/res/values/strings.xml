@@ -269,6 +269,8 @@
     <string name="add_more_time">Extend Membership</string>
     <string name="proceed">Proceed</string>
     <string name="share_message">Hey. Want to workout with me? Let’s join %1s together.\n</string>
+    <string name="class_event_description">For more details on the %1s class use this link. \n</string>
+
     <string name="extend_package">Extend Package</string>
     <string name="share_message_gym">Hey. Want to workout with me? Let’s join %1s\'s classes together.\n</string>
     <string name="share_message_trainer">Hey. Want to workout with me? Let’s join %1s‘s classes together.\n</string>

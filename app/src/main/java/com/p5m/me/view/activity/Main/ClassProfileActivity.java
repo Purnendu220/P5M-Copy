@@ -667,6 +667,13 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             });
 
                 }
+                if (!CalendarHelper.haveCalendarReadWritePermissions(this)) {
+                    CalendarHelper.requestCalendarReadWritePermission(this);
+                }
+                else{
+                    CalendarHelper.scheduleCalenderEvent(this,classModel);
+
+                }
                 break;
 
             case NetworkCommunicator.RequestCode.CLASS_DETAIL:

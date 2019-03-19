@@ -18,6 +18,7 @@ import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.WordUtils;
 
 import butterknife.BindView;
@@ -77,7 +78,7 @@ public class RecommendedClassViewHolder extends RecyclerView.ViewHolder {
             }
             if(model.getRating()!=0.0F&&model.getRating()>0){
                 textViewRatingCount.setVisibility(View.VISIBLE);
-                textViewRatingCount.setText(model.getRating()+"");
+                textViewRatingCount.setText(LanguageUtils.numberConverter(model.getRating()) + "");
             }else{
                 textViewRatingCount.setVisibility(View.INVISIBLE);
             }
