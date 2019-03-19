@@ -466,11 +466,6 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         }
     }
 
-
-
-
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
@@ -501,7 +496,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
             }
         } else if (PaymentStatus.valueOf(paymentResponse.getStatus()) == PaymentStatus.INITIALIZE) {
 //            buttonViewSchedule.setText(getString(R.string.payment_history));
-            buttonViewSchedule.setText(RemoteConfigConst.PAYMENT_FAILURE_VALUE);
+            buttonViewSchedule.setText(RemoteConfigConst.PAYMENT_PENDING_VALUE);
             buttonsLayout.setVisibility(View.GONE);
             buttonViewSchedule.setVisibility(View.VISIBLE);
             checkoutFor = PENDING_TRANSACTION;

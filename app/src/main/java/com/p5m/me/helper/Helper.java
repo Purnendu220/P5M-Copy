@@ -216,6 +216,8 @@ public class Helper {
             view1.setVisibility(View.GONE);
         } else if (model.getAvailableSeat() < 2) {
             view1.setVisibility(View.GONE);
+            view.setText(RemoteConfigConst.BOOK_IN_CLASS_VALUE);
+            RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOK_IN_CLASS_COLOR_VALUE, context.getResources().getColor(R.color.colorAccent));
 
         } else {
 //            view.setText(context.getString(R.string.reserve_class));
