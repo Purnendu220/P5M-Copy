@@ -279,9 +279,10 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     }*/
 
 //                    textViewPackageValidity.setText(context.getString(R.string.valid_for)+" " + numberConverter(aPackage.getDuration()) + " " + AppConstants.plural(validityPeriod, aPackage.getDuration()));
-                    textViewLimit.setVisibility(View.VISIBLE);
+                    textViewLimit.setVisibility(View.GONE);
                     textViewLimit.setText(RemoteConfigConst.GYM_VISIT_LIMIT_VALUE);
                     textViewPackageClasses.setText(numberConverter(aPackage.getNoOfClass()) + " " + AppConstants.pluralES(getString(R.string.one_class), aPackage.getNoOfClass())+" "+context.getString(R.string.at_any_gym));
+                    textViewCancellationPolicyGeneralToggle.setVisibility(View.GONE);
 
 
                 } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
@@ -292,12 +293,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     textViewCancellationPolicyGeneralToggle.setVisibility(View.VISIBLE);
                     textViewCancellationPolicyGenral.setText(R.string.membership_drop_in_info);
 
-//                    textViewPackageClasses.setText(numberConverter(mNumberOfPackagesToBuy) + " " + AppConstants.pluralES(getString(R.string.one_class), mNumberOfPackagesToBuy)+" "+ context.getString(R.string.at)+classModel.getGymBranchDetail().getGymName());
-
-
                     if (mNumberOfPackagesToBuy == 1) {
-//                            worldWideSetText(textViewPageTitle,context.getString(R.string.class_one_at), model.getGymName());
-//
                         textViewPackageClasses.setText(context.getString(R.string.class_one_at)+" "+ classModel.getGymBranchDetail().getGymName() );
                     } else
                         textViewPackageClasses.setText(LanguageUtils.numberConverter(mNumberOfPackagesToBuy) +" "+ AppConstants.pluralES(context.getString(R.string.classs), mNumberOfPackagesToBuy) + " "+context.getString(R.string.at)+" " + classModel.getGymBranchDetail().getGymName());
@@ -305,7 +301,6 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 }
 
                 textViewPackageName.setText(Html.fromHtml(numberConverter(mNumberOfPackagesToBuy) + "X <b>" + aPackage.getName() + "</b>"));
-//                textViewPrice.setText(aPackage.getCost() + " " + context.getString(R.string.currency));
                 textViewPrice.setText(LanguageUtils.numberConverter(aPackage.getCost()) + " " + context.getString(R.string.currency));
 
                 textViewPackageInfo.setVisibility(aPackage.getDescription().isEmpty() ? View.GONE : View.VISIBLE);
@@ -326,11 +321,9 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
                 textViewPackageName.setText(Html.fromHtml("<b>" + classModel.getTitle() + "</b>"));
                 if (mNumberOfPackagesToBuy > 1) {
-//                    textViewPrice.setText(mNumberOfPackagesToBuy + "x " + classModel.getPrice() + " " + context.getString(R.string.currency));
                     textViewPrice.setText(numberConverter(mNumberOfPackagesToBuy) + "x " + NumberFormat.getNumberInstance(Constants.LANGUAGE).format(classModel.getPrice())+ " " + context.getString(R.string.currency));
 
                 } else {
-//                    textViewPrice.setText(classModel.getPrice() + " " + context.getString(R.string.currency));
                     textViewPrice.setText(LanguageUtils.numberConverter(classModel.getPrice()) + " " + context.getString(R.string.currency));
 
                 }
@@ -338,6 +331,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 textViewCancellationPolicy.setText(classModel.getReminder());
                 Helper.setPackageImage(imageViewPackageImage, AppConstants.Values.SPECIAL_CLASS_ID);
                 validityUnit.setText(numberConverter(mNumberOfPackagesToBuy) + " " + AppConstants.pluralES(getString(R.string.one_class), mNumberOfPackagesToBuy)+ " "+context.getString(R.string.at)+" " + classModel.getGymBranchDetail().getGymName());
+                textViewCancellationPolicyGeneralToggle.setVisibility(View.VISIBLE);
 
                 setPrice();
 
@@ -354,7 +348,6 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 textViewPackageName.setText(R.string.add_more_time);
                 textViewCancellationPolicyToggle.setText(R.string.extention_policy);
 
-//                textViewPrice.setText(selectedPacakageFromList.getCost() + " " + context.getString(R.string.currency));
                 textViewPrice.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost()) + " " + context.getString(R.string.currency));
                 int remainigExtension;
                 if (userPackage.getTotalRemainingWeeks() != null) {
@@ -375,8 +368,8 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
         }
         textViewLimit.setVisibility(View.GONE);
-        textViewCancellationPolicyGeneralToggle.setVisibility(View.GONE);
-        textViewCancellationPolicyToggle.setVisibility(View.GONE);
+//        textViewCancellationPolicyGeneralToggle.setVisibility(View.GONE);
+//        textViewCancellationPolicyToggle.setVisibility(View.GONE);
         if (aPackage != null && aPackage.getPromoResponseDto() != null && aPackage.getPromoResponseDto().getDiscountType() != null) {
             applyPromocode(aPackage.getPromoResponseDto());
         }
@@ -399,21 +392,21 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.textViewCancellationPolicyToggle:
-                textViewCancellationPolicy.setVisibility(View.GONE);
-               /* if (textViewCancellationPolicy.getVisibility() == View.VISIBLE) {
+//                textViewCancellationPolicy.setVisibility(View.GONE);
+                if (textViewCancellationPolicy.getVisibility() == View.VISIBLE) {
                     textViewCancellationPolicy.setVisibility(View.GONE);
                 } else {
                     textViewCancellationPolicy.setVisibility(View.VISIBLE);
-                }*/
+                }
                 break;
 
             case R.id.textViewCancellationPolicyGeneralToggle:
-                textViewCancellationPolicyGenral.setVisibility(View.GONE);
-              /*  if (textViewCancellationPolicyGenral.getVisibility() == View.VISIBLE) {
+//                textViewCancellationPolicyGenral.setVisibility(View.GONE);
+                if (textViewCancellationPolicyGenral.getVisibility() == View.VISIBLE) {
                     textViewCancellationPolicyGenral.setVisibility(View.GONE);
                 } else {
                     textViewCancellationPolicyGenral.setVisibility(View.VISIBLE);
-                }*/
+                }
                 break;
             case R.id.textViewLimit:
                 try {

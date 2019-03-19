@@ -263,7 +263,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 joinClass();
             else {
                 if (!user.isBuyMembership())
-                    alertNonRefundMsg();
+                    CheckoutActivity.openActivity(context, classModel, 1);
+
                 else {
                     if (Helper.isSpecialClass(classModel) &&
                             !Helper.isFreeClass(classModel)
@@ -286,9 +287,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         networkCommunicator.getMyUser(new NetworkCommunicator.RequestListener() {
             @Override
             public void onApiSuccess(Object response, int requestCode) {
-//                performJoinProcess();
+                performJoinProcess();
 
-                warningNonRefundablePopUp();
+//                warningNonRefundablePopUp();
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
             }
 
@@ -298,38 +299,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
             }
         }, false);
-    }
-
-    public void warningNonRefundablePopUp() {
-        float cancelTime = 2;
-
-        if (Helper.isSpecialClass(classModel) && !Helper.isFreeClass(classModel)) {
-//            message = warningMsg;
-            alertNonRefundMsg();
-
-        } else if (DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime()) <= cancelTime) {
-//            message = warningMsg;
-            if (!user.isBuyMembership())
-                alertNonRefundMsg();
-            else{
-
-
-                if (Helper.isSpecialClass(classModel) &&
-                        !Helper.isFreeClass(classModel)
-                        ) {
-
-                    CheckoutActivity.openActivity(context, classModel, 1);
-
-                } else {
-                    joinClass();
-
-                }
-            }
-        } else {
-            performJoinProcess();
-        }
-
-
     }
 
     @OnClick(R.id.textViewBookWithFriend)
@@ -343,45 +312,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         }
     }
 
-    private void alertNonRefundMsg() {
-        final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
-                .cancelable(false)
-                .customView(R.layout.dialog_unjoin_class, false)
-                .build();
-        materialDialog.show();
 
-        final TextView textViewMessage = (TextView) materialDialog.findViewById(R.id.textViewMessage);
-        final TextView textViewUnJoin = (TextView) materialDialog.findViewById(R.id.textViewOk);
-        final TextView textViewClose = (TextView) materialDialog.findViewById(R.id.textViewCancel);
-
-        textViewMessage.setText(message);
-        textViewUnJoin.setText(activity.getString(R.string.on_ya));
-        textViewClose.setText(activity.getString(R.string.maybe_next_time));
-
-        textViewClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                materialDialog.dismiss();
-            }
-        });
-
-        textViewUnJoin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                materialDialog.dismiss();
-                if (Helper.isSpecialClass(classModel) &&
-                        !Helper.isFreeClass(classModel)
-                        ) {
-
-                    CheckoutActivity.openActivity(context, classModel, 1);
-
-                } else {
-                    joinClass();
-
-                }
-            }
-        });
-    }
 
     public void bookWithAFriend(final BookWithFriendData data) {
 
