@@ -224,7 +224,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
             }
             if (model.getRating() > 0 && model.getNumberOfRating() > 0) {
 
-                CharSequence text = String.format(context.getString(R.string.review_based_on),model.getRating() + "");
+                CharSequence text = String.format(context.getString(R.string.review_based_on),LanguageUtils.numberConverter(model.getNumberOfRating()) + "");
                 linearLayoutStudioRating.setVisibility(View.VISIBLE);
                 studioRating.setRating(model.getRating());
 

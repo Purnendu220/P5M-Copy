@@ -52,7 +52,6 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
     public Activity activity;
     private final AdapterCallbacks adapterCallbacks;
     private int shownIn;
-    private static int calendar_id = -1;
 
 
     public ClassListListenerHelper(Context context, Activity activity, int shownIn, AdapterCallbacks adapterCallbacks) {
