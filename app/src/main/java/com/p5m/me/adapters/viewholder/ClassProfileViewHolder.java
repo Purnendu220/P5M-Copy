@@ -224,7 +224,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
             }
             if (model.getRating() > 0 && model.getNumberOfRating() > 0) {
 
-                CharSequence text = String.format(context.getString(R.string.review_based_on), LanguageUtils.numberConverter(model.getNumberOfRating()) + "");
+                CharSequence text = String.format(context.getString(R.string.review_based_on),model.getRating() + "");
                 linearLayoutStudioRating.setVisibility(View.VISIBLE);
                 studioRating.setRating(model.getRating());
 
@@ -232,7 +232,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
                 textViewReviewCountText.setText(text);
                 studioRating.setIsIndicator(true);
                 linearLayoutClassRating.setVisibility(View.GONE);
-                textViewClassRating.setText(LanguageUtils.numberConverter(model.getRating()) + "");
+                textViewClassRating.setText(model.getRating() + "");
             } else {
                 linearLayoutClassRating.setVisibility(View.GONE);
                 linearLayoutStudioRating.setVisibility(View.GONE);

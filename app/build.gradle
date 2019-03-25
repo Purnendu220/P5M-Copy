@@ -183,8 +183,9 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
     implementation 'com.robertlevonyan.components:Picker:1.1.1'
     implementation 'com.google.android:flexbox:0.3.2'
-    implementation 'com.google.firebase:firebase-core:15.0.2'
-    implementation 'com.google.firebase:firebase-messaging:15.0.2'
+    implementation 'com.google.firebase:firebase-core:16.0.7'
+    implementation 'com.google.firebase:firebase-messaging:17.4.0'
+    implementation 'com.google.firebase:firebase-config:16.4.0'
 
     implementation 'com.google.android.gms:play-services-location:15.0.1'
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
@@ -211,3 +212,4 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
+com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true

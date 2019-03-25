@@ -329,6 +329,7 @@ public class ClassModel implements java.io.Serializable {
     public float getRating() {
 
         return Float.parseFloat(new DecimalFormat("##.#").format(rating));
+
     }
 
     public void setRating(float rating) {

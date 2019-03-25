@@ -36,6 +36,8 @@ import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.helper.ClassListListenerHelper;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -114,6 +116,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     private BookWithFriendData mBookWithFriendData;
     private Hashtable<String, String> calendarIdTable;
     private int calendar_id = -1;
+
 
     @Override
     public void onDestroy() {
@@ -219,6 +222,18 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 //        }
 
         MixPanel.trackClassDetails();
+
+//        textViewBookWithFriend.setText(RemoteConfigConst.BOOK_WITH_FRIEND_VALUE);
+      /* setConfig(this, textViewBookWithFriend,
+                RemoteConfigConst.BOOK_WITH_FRIEND,getString(R.string.reserve_class_with_friend),RemoteConfigConst.ConfigStatus.TEXT
+        );*/
+//        RemoteConfigSetUp.setBackgroundColor(textViewBook,RemoteConfigConst.BOOK_COLOR_VALUE,context.getResources().getColor(R.color.theme_book));
+
+//        setConfig(this, textViewBook,
+//                RemoteConfigConst.BOOK_IN_CLASS_COLOR,"#3d85ea",RemoteConfigConst.ConfigStatus.COLOR);
+//        setConfig(this, textViewBookWithFriend,
+//                RemoteConfigConst.BOOK_WITH_FRIEND_COLOR,"#3d85ea",RemoteConfigConst.ConfigStatus.COLOR);
+
     }
 
     @Override
@@ -248,7 +263,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 joinClass();
             else {
                 if (!user.isBuyMembership())
-                    alertNonRefundMsg();
+                    CheckoutActivity.openActivity(context, classModel, 1);
+
                 else {
                     if (Helper.isSpecialClass(classModel) &&
                             !Helper.isFreeClass(classModel)
@@ -271,8 +287,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         networkCommunicator.getMyUser(new NetworkCommunicator.RequestListener() {
             @Override
             public void onApiSuccess(Object response, int requestCode) {
-//                performJoinProcess();
-                warningNonRefundablePopUp();
+                performJoinProcess();
+
+//                warningNonRefundablePopUp();
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
             }
 
@@ -282,36 +299,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
             }
         }, false);
-    }
-
-    public void warningNonRefundablePopUp() {
-        float cancelTime = 2;
-
-        if (Helper.isSpecialClass(classModel) && !Helper.isFreeClass(classModel)) {
-//            message = warningMsg;
-            alertNonRefundMsg();
-
-        } else if (DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime()) <= cancelTime) {
-//            message = warningMsg;
-            if (!user.isBuyMembership())
-                alertNonRefundMsg();
-            else {
-                if (Helper.isSpecialClass(classModel) &&
-                        !Helper.isFreeClass(classModel)
-                        ) {
-
-                    CheckoutActivity.openActivity(context, classModel, 1);
-
-                } else {
-                    joinClass();
-
-                }
-            }
-        } else {
-            performJoinProcess();
-        }
-
-
     }
 
     @OnClick(R.id.textViewBookWithFriend)
@@ -325,45 +312,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         }
     }
 
-    private void alertNonRefundMsg() {
-        final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
-                .cancelable(false)
-                .customView(R.layout.dialog_unjoin_class, false)
-                .build();
-        materialDialog.show();
 
-        final TextView textViewMessage = (TextView) materialDialog.findViewById(R.id.textViewMessage);
-        final TextView textViewUnJoin = (TextView) materialDialog.findViewById(R.id.textViewOk);
-        final TextView textViewClose = (TextView) materialDialog.findViewById(R.id.textViewCancel);
-
-        textViewMessage.setText(message);
-        textViewUnJoin.setText(activity.getString(R.string.on_ya));
-        textViewClose.setText(activity.getString(R.string.maybe_next_time));
-
-        textViewClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                materialDialog.dismiss();
-            }
-        });
-
-        textViewUnJoin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                materialDialog.dismiss();
-                if (Helper.isSpecialClass(classModel) &&
-                        !Helper.isFreeClass(classModel)
-                        ) {
-
-                    CheckoutActivity.openActivity(context, classModel, 1);
-
-                } else {
-                    joinClass();
-
-                }
-            }
-        });
-    }
 
     public void bookWithAFriend(final BookWithFriendData data) {
 
@@ -533,6 +482,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         v.findViewById(R.id.imageViewBack).setOnClickListener(this);
         imageViewOptions = v.findViewById(R.id.imageViewOptions);
         imageViewOptions.setOnClickListener(this);
+        ((TextView)(v.findViewById(R.id.textViewTitle))).setText(RemoteConfigConst.CLASS_CARD_TEXT_VALUE);
 
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT));
@@ -626,9 +576,10 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
                 MixPanel.trackJoinClass(navigationFrom, classModel);
                 if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
+//                    context.getResources().getString(R.string.invite_friends)
                     DialogUtils.showBasicMessage(context, "",
                             context.getString(R.string.successfully_joined) + " " + classModel.getTitle()
-                            , context.getResources().getString(R.string.invite_friends), new MaterialDialog.SingleButtonCallback() {
+                            , RemoteConfigConst.INVITE_FRIENDS_VALUE, new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();
@@ -942,5 +893,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
 
 }

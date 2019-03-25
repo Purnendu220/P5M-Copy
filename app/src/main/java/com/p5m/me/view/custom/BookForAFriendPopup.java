@@ -21,7 +21,11 @@ import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigSetUp;
+import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.RefrenceWrapper;
@@ -36,7 +40,6 @@ public class BookForAFriendPopup extends Dialog implements View.OnClickListener 
     private final int navigationFrom;
     private Context mContext;
     private ClassModel model;
-
 
 
     @BindView(R.id.textInputLayoutFriendsName)
@@ -68,17 +71,14 @@ public class BookForAFriendPopup extends Dialog implements View.OnClickListener 
     private String gender;
 
 
-
-
-
-
     public BookForAFriendPopup(@NonNull Context context, ClassModel model, int navigatinFrom) {
         super(context, R.style.AdvanceDialogTheme);
-        this.mContext=context;
-        this.navigationFrom=navigatinFrom;
-        this.model=model;
+        this.mContext = context;
+        this.navigationFrom = navigatinFrom;
+        this.model = model;
         init(context);
     }
+
     private void init(Context context) {
         setContentView(R.layout.view_bookforfriend);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -90,37 +90,26 @@ public class BookForAFriendPopup extends Dialog implements View.OnClickListener 
         lp.width = (int) (mContext.getResources().getDisplayMetrics().widthPixels * 0.90);
         lp.gravity = Gravity.CENTER;
         getWindow().setAttributes(lp);
-        warningNonRefundableMsg();
+        User user = MyPreferences.getInstance().getUser();
         setListeners();
-       // selectGender(model.getClassType());
+
+        RemoteConfigSetUp.setBackgroundColor(textViewBookWithFriend, RemoteConfigConst.BOOK_WITH_FRIEND_COLOR_VALUE, context.getResources().getColor(R.color.colorAccent));
+        textViewBookWithFriend.setText(RemoteConfigConst.BOOK_WITH_FRIEND_VALUE);
+
+        // selectGender(model.getClassType());
 
 
     }
-    public void warningNonRefundableMsg() {
-        float cancelTime = 2;
-        if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model)) {
-            textViewWarningRefund.setVisibility(View.VISIBLE);
-        } else if (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) <= cancelTime) {
-            if(!user.isBuyMembership())
-            textViewWarningRefund.setVisibility(View.VISIBLE);
-        }
-        else{
-            textViewWarningRefund.setVisibility(View.GONE);
-        }
-
-
-
-    }
-
-    private void setListeners(){
+    private void setListeners() {
         textViewBookWithFriend.setOnClickListener(this);
         buttonFemale.setOnClickListener(this);
         buttonMale.setOnClickListener(this);
-        }
+    }
+
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.textViewBookWithFriend:{
+        switch (view.getId()) {
+            case R.id.textViewBookWithFriend: {
                 String name = editTextFriendsName.getText().toString().trim();
                 String email = editTextFriendsEmail.getText().toString().trim();
                 textInputLayoutFriendsName.setError(null);
@@ -140,7 +129,7 @@ public class BookForAFriendPopup extends Dialog implements View.OnClickListener 
                     return;
                 }
 
-                if(email.equals(TempStorage.getUser().getEmail())){
+                if (email.equals(TempStorage.getUser().getEmail())) {
                     textInputLayoutFriendsEmail.setError(mContext.getResources().getString(R.string.own_email_error_text));
                     return;
 
@@ -163,12 +152,12 @@ public class BookForAFriendPopup extends Dialog implements View.OnClickListener 
                 }
 
 
-                EventBroadcastHelper.sendBookWithFriendEvent(new BookWithFriendData(name,email,gender));
+                EventBroadcastHelper.sendBookWithFriendEvent(new BookWithFriendData(name, email, gender));
                 dismiss();
 
             }
             break;
-            case R.id.textViewIWillDoLater:{
+            case R.id.textViewIWillDoLater: {
                 dismiss();
 
             }
@@ -187,8 +176,8 @@ public class BookForAFriendPopup extends Dialog implements View.OnClickListener 
 
     }
 
-    private void selectGender(String classCategory){
-        if(classCategory.equalsIgnoreCase(AppConstants.ApiParamValue.GENDER_FEMALE)){
+    private void selectGender(String classCategory) {
+        if (classCategory.equalsIgnoreCase(AppConstants.ApiParamValue.GENDER_FEMALE)) {
             textViewGenderError.setVisibility(View.INVISIBLE);
 
             buttonMale.setBackgroundResource(R.drawable.button_white);
@@ -198,7 +187,7 @@ public class BookForAFriendPopup extends Dialog implements View.OnClickListener 
 
             gender = AppConstants.ApiParamValue.GENDER_FEMALE;
         }
-        if(classCategory.equalsIgnoreCase(AppConstants.ApiParamValue.GENDER_MALE)){
+        if (classCategory.equalsIgnoreCase(AppConstants.ApiParamValue.GENDER_MALE)) {
             textViewGenderError.setVisibility(View.INVISIBLE);
 
             buttonMale.setBackgroundResource(R.drawable.join_rect);

@@ -27,6 +27,8 @@ import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.data.main.MediaModel;
 import com.p5m.me.data.main.TrainerDetailModel;
 import com.p5m.me.data.main.TrainerModel;
+import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.KeyboardUtils;
@@ -142,9 +144,7 @@ public class Helper {
 
     public static String getBranchList(List<GymBranchDetail> list) {
         String name = "";
-
         if (list != null && !list.isEmpty()) {
-
             try {
                 for (int index = 0; index < list.size(); index++) {
                     String value = list.get(index).getBranchName();
@@ -157,62 +157,91 @@ public class Helper {
                 LogUtils.exception(e);
             }
         }
-
         return name;
     }
 
     public static void setJoinButton(Context context, Button buttonJoin, ClassModel model) {
+
         if (model.isUserJoinStatus()) {
-            buttonJoin.setText(context.getString(R.string.booked));
-            buttonJoin.setBackgroundResource(R.drawable.joined_rect);
+
+//            buttonJoin.setText(context.getString(R.string.booked));
+            buttonJoin.setText(RemoteConfigConst.BOOKED_VALUE);
+            RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
+
+//            buttonJoin.setBackgroundResource(R.drawable.joined_rect);
+
+
         } else if (model.getAvailableSeat() == 0) {
-            buttonJoin.setText(context.getString(R.string.full));
-            buttonJoin.setBackgroundResource(R.drawable.full_rect);
+
+//            buttonJoin.setText(context.getString(R.string.full));
+//            buttonJoin.setBackgroundResource(R.drawable.full_rect);
+            buttonJoin.setText(RemoteConfigConst.FULL_VALUE);
+            RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.FULL_COLOR_VALUE, context.getResources().getColor(R.color.theme_full));
+
+
         } else {
-            buttonJoin.setText(context.getString(R.string.book));
-            buttonJoin.setBackgroundResource(R.drawable.join_rect);
+
+//            buttonJoin.setText(context.getString(R.string.book));
+//            buttonJoin.setBackgroundResource(R.drawable.join_rect);
+            buttonJoin.setText(RemoteConfigConst.BOOK_VALUE);
+            RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+
+
         }
     }
 
-    public static void setJoinStatusProfile(Context context, TextView view,TextView view1, ClassModel model) {
-        if(model.isExpired()){
-            view.setText(context.getString(R.string.expired));
-            view.setBackgroundResource(R.drawable.theme_bottom_text_button_full);
+    public static void setJoinStatusProfile(Context context, TextView view, TextView view1, ClassModel model) {
+        if (model.isExpired()) {
+//            view.setText(context.getString(R.string.expired));
+//            view.setBackgroundResource(R.drawable.theme_bottom_text_button_full);
+            view.setText(RemoteConfigConst.SESSION_EXPIRED_VALUE);
+            RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.SESSION_EXPIRED_COLOR_VALUE, context.getResources().getColor(R.color.theme_full));
             view.setEnabled(false);
             view1.setVisibility(View.GONE);
-        }
-        else if (model.isUserJoinStatus()) {
-            view.setText(context.getString(R.string.booked));
-            view.setBackgroundResource(R.drawable.theme_bottom_text_button_booked);
+        } else if (model.isUserJoinStatus()) {
+//            view.setText(context.getString(R.string.booked));
+            view.setText(RemoteConfigConst.BOOKED_VALUE);
+//            view.setBackgroundResource(R.drawable.theme_bottom_text_button_booked);
+            RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
+
             view.setEnabled(false);
             view1.setVisibility(View.GONE);
 
         } else if (model.getAvailableSeat() == 0) {
-            view.setText(context.getString(R.string.full));
-            view.setBackgroundResource(R.drawable.theme_bottom_text_button_full);
+//            view.setText(context.getString(R.string.full));
+            view.setText(RemoteConfigConst.FULL_VALUE);
+//            view.setBackgroundResource(R.drawable.theme_bottom_text_button_full);
+            RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.FULL_COLOR_VALUE, context.getResources().getColor(R.color.theme_full));
             view.setEnabled(false);
             view1.setVisibility(View.GONE);
-
-        }
-        else if(model.getAvailableSeat()<2){
+        } else if (model.getAvailableSeat() < 2) {
             view1.setVisibility(View.GONE);
+            view.setText(RemoteConfigConst.BOOK_IN_CLASS_VALUE);
+            RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOK_IN_CLASS_COLOR_VALUE, context.getResources().getColor(R.color.colorAccent));
 
-        }
-        else {
-            view.setText(context.getString(R.string.reserve_class));
-            view.setBackgroundResource(R.drawable.theme_bottom_text_button_book);
+        } else {
+//            view.setText(context.getString(R.string.reserve_class));
+            view.setText(RemoteConfigConst.BOOK_IN_CLASS_VALUE);
+
+//            view.setBackgroundResource(R.drawable.theme_bottom_text_button_book);
+            RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOK_IN_CLASS_COLOR_VALUE, context.getResources().getColor(R.color.colorAccent));
+
             view.setEnabled(true);
             view1.setVisibility(View.VISIBLE);
-            view1.setText(context.getString(R.string.reserve_class_with_friend));
-            view1.setBackgroundResource(R.drawable.theme_bottom_text_button_book);
-            view1.setEnabled(true);
+//            view1.setText(context.getString(R.string.reserve_class_with_friend));
 
+//            view1.setBackgroundResource(R.drawable.theme_bottom_text_button_book);
+            RemoteConfigSetUp.setBackgroundColor(view1, RemoteConfigConst.BOOK_WITH_FRIEND_COLOR_VALUE, context.getResources().getColor(R.color.colorAccent));
+            view1.setText(RemoteConfigConst.BOOK_WITH_FRIEND_VALUE);
+            view1.setEnabled(true);
 
         }
     }
+
     public static void setFavButtonTemp(Context context, Button buttonFav, boolean isFollow) {
         setFavButton(context, buttonFav, isFollow);
     }
+
     public static void setFavButtonTemp(Context context, ImageButton buttonFav, boolean isFollow) {
         setFavButton(context, buttonFav, isFollow);
     }
@@ -220,9 +249,11 @@ public class Helper {
     public static void setFavButton(Context context, Button buttonFav, TrainerModel model) {
         setFavButton(context, buttonFav, model.isIsfollow());
     }
+
     public static void setFavButton(Context context, ImageButton buttonFav, TrainerModel model) {
         setFavButtonGray(context, buttonFav, model.isIsfollow());
     }
+
     public static void setFavButton(Context context, ImageButton buttonFav, TrainerDetailModel model) {
         setFavButton(context, buttonFav, model.isIsfollow());
     }
@@ -242,10 +273,11 @@ public class Helper {
             buttonFav.setBackgroundResource(R.drawable.button_white);
         }
     }
+
     private static void setFavButton(Context context, ImageButton buttonFav, boolean isFollow) {
         if (isFollow) {
             buttonFav.setImageResource(R.drawable.heart_fav);
-            } else {
+        } else {
             buttonFav.setImageResource(R.drawable.heart_white_unfav);
 
         }
@@ -260,14 +292,15 @@ public class Helper {
 
         }
     }
-     public static void openImageListViewer(Context context, List<MediaModel> list, int position,String viewholderType) {
+
+    public static void openImageListViewer(Context context, List<MediaModel> list, int position, String viewholderType) {
 
         List<String> images = new ArrayList<>(list.size());
         for (MediaModel mediaModel : list) {
             images.add(mediaModel.getMediaUrl());
         }
 
-        GalleryActivity.openActivity(context, null, null, position, images,viewholderType);
+        GalleryActivity.openActivity(context, null, null, position, images, viewholderType);
 
 
 //        Fresco.initialize(context);
@@ -290,7 +323,7 @@ public class Helper {
 //                .show();
     }
 
-    public static void openImageViewer(Context context, Activity activity, View sharedElement, String url,String viewholderType) {
+    public static void openImageViewer(Context context, Activity activity, View sharedElement, String url, String viewholderType) {
 
         if (url == null || url.isEmpty()) {
             return;
@@ -299,7 +332,7 @@ public class Helper {
         List<String> images = new ArrayList<>(1);
         images.add(url);
 
-        GalleryActivity.openActivity(context, activity, sharedElement, 0, images,viewholderType);
+        GalleryActivity.openActivity(context, activity, sharedElement, 0, images, viewholderType);
 
 //        Fresco.initialize(context);
 //
@@ -461,23 +494,23 @@ public class Helper {
     }
 
     public static void shareGym(Context context, int id, String name) {
-        CharSequence gymShareMessage = String.format(context.getString(R.string.share_message_gym),name+"");
+        CharSequence gymShareMessage = String.format(context.getString(R.string.share_message_gym), name + "");
 
         String url = getUrlBase() + "/share/gym/" + id + "/" + name;
-        shareUrl(context, gymShareMessage+url.replace(" ", ""));
+        shareUrl(context, gymShareMessage + url.replace(" ", ""));
     }
 
     public static void shareTrainer(Context context, int id, String name) {
-        CharSequence trainerShareMessage = String.format(context.getString(R.string.share_message_trainer),name+"");
+        CharSequence trainerShareMessage = String.format(context.getString(R.string.share_message_trainer), name + "");
 
         String url = getUrlBase() + "/share/trainer/" + id + "/" + name;
-        shareUrl(context, trainerShareMessage+url.replace(" ", ""));
+        shareUrl(context, trainerShareMessage + url.replace(" ", ""));
     }
 
     public static void shareClass(Context context, int id, String name) {
-        CharSequence classShareMessage = String.format(context.getString(R.string.share_message),name+"");
+        CharSequence classShareMessage = String.format(context.getString(R.string.share_message), name + "");
         String url = getUrlBase() + "/share/classes/" + id + "/" + name;
-        shareUrl(context, classShareMessage+url.replace(" ", ""));
+        shareUrl(context, classShareMessage + url.replace(" ", ""));
     }
     public static String classEventDescription(Context context, int id, String name) {
         CharSequence classShareMessage = String.format(context.getString(R.string.class_event_description),name+"");

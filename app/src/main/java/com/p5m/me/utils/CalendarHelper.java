@@ -61,6 +61,7 @@ public class CalendarHelper {
         Uri uri = cr.insert(Events.CONTENT_URI, values);
 
 
+
             ContentValues reminders = new ContentValues();
             reminders.put(Reminders.EVENT_ID, model.getClassSessionId());
             reminders.put(Reminders.METHOD, Reminders.METHOD_ALERT);
@@ -148,6 +149,7 @@ public class CalendarHelper {
         }
 
     }
+
 
 
     public static boolean haveCalendarReadWritePermissions(Context caller) {
@@ -242,5 +244,6 @@ public class CalendarHelper {
         String urlBase = BuildConfig.BASE_URL_SHARE;
 
         return urlBase;
+
     }
 }
