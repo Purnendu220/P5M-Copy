@@ -144,9 +144,7 @@ public class Helper {
 
     public static String getBranchList(List<GymBranchDetail> list) {
         String name = "";
-
         if (list != null && !list.isEmpty()) {
-
             try {
                 for (int index = 0; index < list.size(); index++) {
                     String value = list.get(index).getBranchName();
@@ -159,7 +157,6 @@ public class Helper {
                 LogUtils.exception(e);
             }
         }
-
         return name;
     }
 
@@ -196,17 +193,16 @@ public class Helper {
     public static void setJoinStatusProfile(Context context, TextView view, TextView view1, ClassModel model) {
         if (model.isExpired()) {
 //            view.setText(context.getString(R.string.expired));
-
 //            view.setBackgroundResource(R.drawable.theme_bottom_text_button_full);
             view.setText(RemoteConfigConst.SESSION_EXPIRED_VALUE);
-            RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.SESSION_EXPIRED_COLOR_VALUE, context.getResources().getColor(R.color.theme_full_highlight));
+            RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.SESSION_EXPIRED_COLOR_VALUE, context.getResources().getColor(R.color.theme_full));
             view.setEnabled(false);
             view1.setVisibility(View.GONE);
         } else if (model.isUserJoinStatus()) {
 //            view.setText(context.getString(R.string.booked));
             view.setText(RemoteConfigConst.BOOKED_VALUE);
 //            view.setBackgroundResource(R.drawable.theme_bottom_text_button_booked);
-            RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked_highlight));
+            RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
 
             view.setEnabled(false);
             view1.setVisibility(View.GONE);
@@ -215,20 +211,20 @@ public class Helper {
 //            view.setText(context.getString(R.string.full));
             view.setText(RemoteConfigConst.FULL_VALUE);
 //            view.setBackgroundResource(R.drawable.theme_bottom_text_button_full);
-            RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.FULL_COLOR_VALUE, context.getResources().getColor(R.color.theme_full_highlight));
-
+            RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.FULL_COLOR_VALUE, context.getResources().getColor(R.color.theme_full));
             view.setEnabled(false);
             view1.setVisibility(View.GONE);
-
         } else if (model.getAvailableSeat() < 2) {
             view1.setVisibility(View.GONE);
+            view.setText(RemoteConfigConst.BOOK_IN_CLASS_VALUE);
+            RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOK_IN_CLASS_COLOR_VALUE, context.getResources().getColor(R.color.colorAccent));
 
         } else {
 //            view.setText(context.getString(R.string.reserve_class));
             view.setText(RemoteConfigConst.BOOK_IN_CLASS_VALUE);
 
 //            view.setBackgroundResource(R.drawable.theme_bottom_text_button_book);
-            RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.colorAccent));
+            RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOK_IN_CLASS_COLOR_VALUE, context.getResources().getColor(R.color.colorAccent));
 
             view.setEnabled(true);
             view1.setVisibility(View.VISIBLE);
@@ -238,7 +234,6 @@ public class Helper {
             RemoteConfigSetUp.setBackgroundColor(view1, RemoteConfigConst.BOOK_WITH_FRIEND_COLOR_VALUE, context.getResources().getColor(R.color.colorAccent));
             view1.setText(RemoteConfigConst.BOOK_WITH_FRIEND_VALUE);
             view1.setEnabled(true);
-
 
         }
     }

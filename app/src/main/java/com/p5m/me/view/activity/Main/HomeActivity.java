@@ -2,12 +2,14 @@ package com.p5m.me.view.activity.Main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -54,7 +56,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class HomeActivity extends BaseActivity implements BottomTapLayout.TabListener, ViewPager.OnPageChangeListener,View.OnClickListener,NetworkCommunicator.RequestListener {
+public class HomeActivity extends BaseActivity implements BottomTapLayout.TabListener, ViewPager.OnPageChangeListener, View.OnClickListener, NetworkCommunicator.RequestListener {
 
     public static void open(Context context) {
         Intent intent = new Intent(context, HomeActivity.class);
@@ -79,7 +81,8 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         intent.putExtra(AppConstants.DataKey.HOME_TABS_INNER_TAB_POSITION, innerTabPosition);
         return intent;
     }
-    public static Intent createIntent(Context context, int tabPosition, int innerTabPosition,int profileTabPosition) {
+
+    public static Intent createIntent(Context context, int tabPosition, int innerTabPosition, int profileTabPosition) {
         Intent intent = new Intent(context, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -88,10 +91,10 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         intent.putExtra(AppConstants.DataKey.HOME_TABS_PROFILE_INNER_TAB_POSITION, profileTabPosition);
 
 
-
         return intent;
     }
-    public static Intent createIntent(Context context, int tabPosition, int innerTabPosition,ClassModel model) {
+
+    public static Intent createIntent(Context context, int tabPosition, int innerTabPosition, ClassModel model) {
         Intent intent = new Intent(context, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -132,6 +135,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             finish();
             return;
         }
+
         ButterKnife.bind(activity);
         if (getIntent() != null) {
             INITIAL_POSITION = getIntent().getIntExtra(AppConstants.DataKey.HOME_TAB_POSITION,
@@ -146,7 +150,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         handler = new Handler(Looper.getMainLooper());
         setupBottomTabs();
 
-        homeAdapter = new HomeAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_TABS,PROFILE_TAB_POSITION);
+        homeAdapter = new HomeAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_TABS, PROFILE_TAB_POSITION);
         viewPager.setAdapter(homeAdapter);
         viewPager.addOnPageChangeListener(this);
         viewPager.setOffscreenPageLimit(TOTAL_TABS);
@@ -169,6 +173,8 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         networkCommunicator.getRatingParameters(this, true);
         checkFacebookSessionStatus();
 
+
+//        RemoteConfigSetUp.getValues();
 
     }
 
@@ -248,7 +254,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             LogUtils.exception(e);
         }
         bottomTapLayout.setTab(position);
-        if(position == AppConstants.Tab.TAB_FIND_CLASS){
+        if (position == AppConstants.Tab.TAB_FIND_CLASS) {
 //            handleApptimize();
             handleBuyClassesButton();
         } else {
@@ -303,7 +309,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         buyClasses.setText(RemoteConfigConst.BUY_CLASS_VALUE);
         RemoteConfigSetUp.setBackgroundColor(buyClasses, RemoteConfigConst.BUY_CLASS_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
 
-        if(currentTab == AppConstants.Tab.TAB_FIND_CLASS){
+        if (currentTab == AppConstants.Tab.TAB_FIND_CLASS) {
             handleBuyClassesButton();
         } else {
             buyClasses.setVisibility(View.GONE);
@@ -392,29 +398,29 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         }
     }
 
-    private void checkFacebookSessionStatus(){
-        try{
-            if(MyPreferences.getInstance().isLoginWithFacebook()){
-                if(AccessToken.getCurrentAccessToken()!=null && AccessToken.getCurrentAccessToken().getToken()!=null&&!AccessToken.getCurrentAccessToken().isExpired()){
+    private void checkFacebookSessionStatus() {
+        try {
+            if (MyPreferences.getInstance().isLoginWithFacebook()) {
+                if (AccessToken.getCurrentAccessToken() != null && AccessToken.getCurrentAccessToken().getToken() != null && !AccessToken.getCurrentAccessToken().isExpired()) {
                     makeGraphRequest();
 
-                }else{
+                } else {
                     showFacebookSessionExpiredDialog();
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    private void makeGraphRequest(){
+    private void makeGraphRequest() {
         GraphRequest request = GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
-                        if(response.getError()!=null){
+                        if (response.getError() != null) {
                             showFacebookSessionExpiredDialog();
                             return;
                         }
@@ -426,7 +432,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         request.executeAsync();
     }
 
-    private void showFacebookSessionExpiredDialog(){
+    private void showFacebookSessionExpiredDialog() {
         DialogUtils.showBasicMessageCancelableFalse(context, "Your facebook session is expired.Please login again.", context.getResources().getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
             @Override
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -445,8 +451,6 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             }
         });
     }
-
-
 
 
 }

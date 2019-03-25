@@ -78,7 +78,7 @@ public class RecommendedClassViewHolder extends RecyclerView.ViewHolder {
             }
             if(model.getRating()!=0.0F&&model.getRating()>0){
                 textViewRatingCount.setVisibility(View.VISIBLE);
-                textViewRatingCount.setText(LanguageUtils.numberConverter(model.getRating()) + "");
+                textViewRatingCount.setText(model.getRating() + "");
             }else{
                 textViewRatingCount.setVisibility(View.INVISIBLE);
             }

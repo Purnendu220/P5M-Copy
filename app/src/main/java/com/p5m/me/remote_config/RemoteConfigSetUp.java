@@ -4,19 +4,25 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.p5m.me.BuildConfig;
 import com.p5m.me.R;
+import com.p5m.me.fxn.utility.Constants;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import static com.p5m.me.remote_config.RemoteConfigConst.ADD_TO_WISHLIST_KEY;
@@ -24,6 +30,7 @@ import static com.p5m.me.remote_config.RemoteConfigConst.BOOKED_BUTTON_COLOR_KEY
 import static com.p5m.me.remote_config.RemoteConfigConst.BOOKED_BUTTON_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_BUTTON_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_BUTTON_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_IN_CLASS_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_IN_CLASS_PROFILE_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_WITH_FRIEND_BUTTON_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_WITH_FRIEND_COLOR_KEY;
@@ -45,12 +52,11 @@ import static com.p5m.me.remote_config.RemoteConfigConst.SEARCH_BAR_TEXT_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.CLASS_CARD_TEXT_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.SELECT_PLAN_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.SELECT_PLAN_TEXT_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.SESSION_EXPIRED_COLOR_KEY;
 
 public class RemoteConfigSetUp {
     public static final FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-
     private static Activity context;
-
 
     public static void setup(Activity activity) {
 
@@ -62,147 +68,118 @@ public class RemoteConfigSetUp {
 
     }
 
-    public static void setConfig(Activity activity, final View view, final String key, final String defaultValue, final RemoteConfigConst.ConfigStatus configStatus) {
-
-
-        HashMap<String, Object> defaults = new HashMap<>();
-        defaults.put(key, defaultValue);
-        firebaseRemoteConfig.setDefaults(defaults);
-        final Task<Void> fetch = firebaseRemoteConfig.fetch(BuildConfig.DEBUG ? 0 : TimeUnit.HOURS.toSeconds(1));
-        fetch.addOnSuccessListener(activity, new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                firebaseRemoteConfig.activateFetched();
-                methodOfUpdate(view, key, defaultValue, configStatus);
-            }
-
-        });
-    }
 
     public static void setValue(final int constValue, final String key, final String defaultValue) {
 
         HashMap<String, Object> defaults = new HashMap<>();
         defaults.put(key, defaultValue);
         firebaseRemoteConfig.setDefaults(defaults);
-
-        final Task<Void> fetch = firebaseRemoteConfig.fetch(BuildConfig.DEBUG ? 0 : TimeUnit.HOURS.toSeconds(1));
-        fetch.addOnSuccessListener(context, new OnSuccessListener<Void>() {
-
-            @Override
-            public void onSuccess(Void aVoid) {
-                firebaseRemoteConfig.activateFetched();
-                String keyValue = firebaseRemoteConfig.getString(key);
-                firebaseRemoteConfig.activateFetched();
-                switch (constValue) {
-                    case BOOKED_BUTTON_KEY:
-                        RemoteConfigConst.BOOKED_VALUE = keyValue;
-                        break;
-                    case BOOK_BUTTON_KEY:
-                        RemoteConfigConst.BOOK_VALUE = keyValue;
-                        break;
-                    case FULL_BUTTON_KEY:
-                        RemoteConfigConst.FULL_VALUE = keyValue;
-                        break;
-                    case BOOK_WITH_FRIEND_BUTTON_KEY:
-                        RemoteConfigConst.BOOK_WITH_FRIEND_VALUE = keyValue;
-                        break;
-                    case BOOK_WITH_FRIEND_COLOR_KEY:
-                        RemoteConfigConst.BOOK_WITH_FRIEND_COLOR_VALUE = keyValue;
-                        break;
-                    case SEARCH_BAR_TEXT_KEY:
-                        RemoteConfigConst.SEARCH_BAR_TEXT_VALUE = keyValue;
-                        break;
-                    case BOOK_IN_CLASS_PROFILE_KEY:
-                        RemoteConfigConst.BOOK_IN_CLASS_VALUE = keyValue;
-                        break;
-                    case BOOKED_BUTTON_COLOR_KEY:
-                        RemoteConfigConst.BOOKED_COLOR_VALUE = keyValue;
-                        break;
-                    case BOOK_BUTTON_COLOR_KEY:
-                        RemoteConfigConst.BOOK_COLOR_VALUE = keyValue;
-                        break;
-                    case FULL_BUTTON_COLOR_KEY:
-                        RemoteConfigConst.FULL_COLOR_VALUE = keyValue;
-                        break;
-                    case CLASS_CARD_TEXT_KEY:
-                        RemoteConfigConst.CLASS_CARD_TEXT_VALUE = keyValue;
-                        break;
-
-                    case RECOMMENDED_FOR_YOU_KEY:
-                        RemoteConfigConst.RECOMMENDED_FOR_YOU_VALUE = keyValue;
-                        break;
-
-                    case RECOMMENDED_FOR_YOU_COLOR_KEY:
-                        RemoteConfigConst.RECOMMENDED_FOR_YOU_COLOR_VALUE = keyValue;
-                        break;
-
-                    case BUY_CLASS_KEY:
-                        RemoteConfigConst.BUY_CLASS_VALUE = keyValue;
-                        break;
-
-                    case BUY_CLASS_COLOR_KEY:
-                        RemoteConfigConst.BUY_CLASS_COLOR_VALUE = keyValue;
-                        break;
-                    case ADD_TO_WISHLIST_KEY:
-                        RemoteConfigConst.ADD_TO_WISHLIST_VALUE = keyValue;
-                        break;
-                    case INVITE_FRIENDS_KEY:
-                        RemoteConfigConst.INVITE_FRIENDS_VALUE = keyValue;
-                        break;
-                    case PAYMENT_PACKAGE_KEY:
-                        RemoteConfigConst.PAYMENT_PACKAGE_VALUE = keyValue;
-                        break;
-                    case PAYMENT_PENDING_KEY:
-                        RemoteConfigConst.PAYMENT_PENDING_VALUE = keyValue;
-                        break;
-                    case PAYMENT_FAILURE_KEY:
-                        RemoteConfigConst.PAYMENT_FAILURE_VALUE = keyValue;
-                        break;
-                    case PAYMENT_CLASS_KEY:
-                        RemoteConfigConst.PAYMENT_CLASS_VALUE = keyValue;
-                        break;
-                    case GYM_VISIT_LIMIT_KEY:
-                        RemoteConfigConst.GYM_VISIT_LIMIT_VALUE = keyValue;
-                        break;
-                    case SELECT_PLAN_TEXT_KEY:
-                        RemoteConfigConst.SELECT_PLAN_TEXT_VALUE = keyValue;
-                        break;
-                    case SELECT_PLAN_COLOR_KEY:
-                        RemoteConfigConst.SELECT_PLAN_COLOR_VALUE = keyValue;
-                        break;
-                    case GYM_VISIT_LIMIT_DETAIL_TEXT_KEY:
-                        RemoteConfigConst.GYM_VISIT_LIMIT_DETAIL_TEXT_VALUE = keyValue;
-                        break;
-                    case MEMBERSHIP_OFFER_COLOR_KEY:
-                        RemoteConfigConst.MEMBERSHIP_OFFER_COLOR_VALUE = keyValue;
-                        break;
-
+        setValueOfField(constValue, defaultValue);
+        if (Constants.LANGUAGE == Locale.ENGLISH) {
+            final Task<Void> fetch = firebaseRemoteConfig.fetch(BuildConfig.DEBUG ? 0 : TimeUnit.HOURS.toSeconds(0));
+            fetch.addOnSuccessListener(context, new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    firebaseRemoteConfig.activateFetched();
+                    String keyValue = firebaseRemoteConfig.getString(key);
+                    firebaseRemoteConfig.activateFetched();
+                    setValueOfField(constValue, keyValue);
                 }
-            }
-        });
+            });
+        }
     }
 
-
-    public static void methodOfUpdate(View view, String key, String defaultValue, RemoteConfigConst.ConfigStatus configStatus) {
-        String keyValue = firebaseRemoteConfig.getString(key);
-        firebaseRemoteConfig.activateFetched();
-        if (keyValue != null)
-            onSetValue(view, keyValue, configStatus);
-        else
-            onSetValue(view, defaultValue, configStatus);
-    }
-
-    private static void onSetValue(View view, String keyValue, RemoteConfigConst.ConfigStatus configStatus) {
-        switch (configStatus) {
-            case TEXT:
-                setText(view, keyValue);
+    private static void setValueOfField(int constValue, String keyValue) {
+        switch (constValue) {
+            case BOOKED_BUTTON_KEY:
+                RemoteConfigConst.BOOKED_VALUE = keyValue;
                 break;
-            case HINT:
-                setHint(view, keyValue);
+            case BOOK_BUTTON_KEY:
+                RemoteConfigConst.BOOK_VALUE = keyValue;
                 break;
-//            case COLOR:
-//                setBackgroundColor(view, keyValue);
-//                break;
+            case FULL_BUTTON_KEY:
+                RemoteConfigConst.FULL_VALUE = keyValue;
+                break;
+            case BOOK_WITH_FRIEND_BUTTON_KEY:
+                RemoteConfigConst.BOOK_WITH_FRIEND_VALUE = keyValue;
+                break;
+            case BOOK_WITH_FRIEND_COLOR_KEY:
+                RemoteConfigConst.BOOK_WITH_FRIEND_COLOR_VALUE = keyValue;
+                break;
+            case SEARCH_BAR_TEXT_KEY:
+                RemoteConfigConst.SEARCH_BAR_TEXT_VALUE = keyValue;
+                break;
+            case BOOK_IN_CLASS_PROFILE_KEY:
+                RemoteConfigConst.BOOK_IN_CLASS_VALUE = keyValue;
+                break;
+            case BOOKED_BUTTON_COLOR_KEY:
+                RemoteConfigConst.BOOKED_COLOR_VALUE = keyValue;
+                break;
+            case BOOK_BUTTON_COLOR_KEY:
+                RemoteConfigConst.BOOK_COLOR_VALUE = keyValue;
+                break;
+            case FULL_BUTTON_COLOR_KEY:
+                RemoteConfigConst.FULL_COLOR_VALUE = keyValue;
+                break;
+            case CLASS_CARD_TEXT_KEY:
+                RemoteConfigConst.CLASS_CARD_TEXT_VALUE = keyValue;
+                break;
+
+            case RECOMMENDED_FOR_YOU_KEY:
+                RemoteConfigConst.RECOMMENDED_FOR_YOU_VALUE = keyValue;
+                break;
+
+            case RECOMMENDED_FOR_YOU_COLOR_KEY:
+                RemoteConfigConst.RECOMMENDED_FOR_YOU_COLOR_VALUE = keyValue;
+                break;
+
+            case BUY_CLASS_KEY:
+                RemoteConfigConst.BUY_CLASS_VALUE = keyValue;
+                break;
+
+            case BUY_CLASS_COLOR_KEY:
+                RemoteConfigConst.BUY_CLASS_COLOR_VALUE = keyValue;
+                break;
+            case ADD_TO_WISHLIST_KEY:
+                RemoteConfigConst.ADD_TO_WISHLIST_VALUE = keyValue;
+                break;
+            case INVITE_FRIENDS_KEY:
+                RemoteConfigConst.INVITE_FRIENDS_VALUE = keyValue;
+                break;
+            case PAYMENT_PACKAGE_KEY:
+                RemoteConfigConst.PAYMENT_PACKAGE_VALUE = keyValue;
+                break;
+            case PAYMENT_PENDING_KEY:
+                RemoteConfigConst.PAYMENT_PENDING_VALUE = keyValue;
+                break;
+            case PAYMENT_FAILURE_KEY:
+                RemoteConfigConst.PAYMENT_FAILURE_VALUE = keyValue;
+                break;
+            case PAYMENT_CLASS_KEY:
+                RemoteConfigConst.PAYMENT_CLASS_VALUE = keyValue;
+                break;
+            case GYM_VISIT_LIMIT_KEY:
+                RemoteConfigConst.GYM_VISIT_LIMIT_VALUE = keyValue;
+                break;
+            case SELECT_PLAN_TEXT_KEY:
+                RemoteConfigConst.SELECT_PLAN_TEXT_VALUE = keyValue;
+                break;
+            case SELECT_PLAN_COLOR_KEY:
+                RemoteConfigConst.SELECT_PLAN_COLOR_VALUE = keyValue;
+                break;
+            case GYM_VISIT_LIMIT_DETAIL_TEXT_KEY:
+                RemoteConfigConst.GYM_VISIT_LIMIT_DETAIL_TEXT_VALUE = keyValue;
+                break;
+            case MEMBERSHIP_OFFER_COLOR_KEY:
+                RemoteConfigConst.MEMBERSHIP_OFFER_COLOR_VALUE = keyValue;
+                break;
+            case SESSION_EXPIRED_COLOR_KEY:
+                RemoteConfigConst.SESSION_EXPIRED_COLOR_VALUE = keyValue;
+                break;
+            case BOOK_IN_CLASS_COLOR_KEY:
+                RemoteConfigConst.BOOK_IN_CLASS_COLOR_VALUE = keyValue;
+                break;
+
         }
     }
 
@@ -218,8 +195,6 @@ public class RemoteConfigSetUp {
             if (wrappedDrawable != null) {
                 DrawableCompat.setTint(wrappedDrawable.mutate(), color);
                 setBackgroundDrawable(view, wrappedDrawable);
-
-
             } else
                 ((TextView) view).setBackgroundColor(color);
 
@@ -230,6 +205,13 @@ public class RemoteConfigSetUp {
                 setBackgroundDrawable(view, wrappedDrawable);
             } else
                 ((Button) view).setBackgroundColor(color);
+        } else if (view instanceof LinearLayout) {
+            Drawable wrappedDrawable = DrawableCompat.wrap(view.getBackground());
+            if (wrappedDrawable != null) {
+                DrawableCompat.setTint(wrappedDrawable.mutate(), color);
+                setBackgroundDrawable(view, wrappedDrawable);
+            } else
+                ((LinearLayout) view).setBackgroundColor(color);
         }
     }
 
@@ -240,13 +222,6 @@ public class RemoteConfigSetUp {
         } else {
             view.setBackground(drawable);
         }
-    }
-
-    private static void setText(View view, String keyValue) {
-        if (view instanceof TextView)
-            ((TextView) view).setText(keyValue);
-        else if (view instanceof Button)
-            ((Button) view).setText(keyValue);
     }
 
     public static void setTextColor(View view, String keyValue, int defaultColor) {
@@ -260,11 +235,6 @@ public class RemoteConfigSetUp {
             ((TextView) view).setTextColor(color);
         else if (view instanceof Button)
             ((Button) view).setTextColor(color);
-    }
-
-    private static void setHint(View view, String keyValue) {
-        if (view instanceof TextView)
-            ((TextView) view).setHint(keyValue);
     }
 
     public static void getValues() {
@@ -295,13 +265,13 @@ public class RemoteConfigSetUp {
 
         /* Color Changes */
         setValue(RemoteConfigConst.FULL_BUTTON_COLOR_KEY,
-                RemoteConfigConst.FULL_BUTTON_COLOR, "#3d85ea");
+                RemoteConfigConst.FULL_BUTTON_COLOR, "#FF0000");
 
         setValue(RemoteConfigConst.BOOK_BUTTON_COLOR_KEY,
                 RemoteConfigConst.BOOK_BUTTON_COLOR, "#3d85ea");
 
         setValue(RemoteConfigConst.BOOKED_BUTTON_COLOR_KEY,
-                RemoteConfigConst.BOOKED_BUTTON_COLOR, "#3d85ea");
+                RemoteConfigConst.BOOKED_BUTTON_COLOR, "#FF8C00");
 
         setValue(RemoteConfigConst.CLASS_CARD_TEXT_KEY,
                 RemoteConfigConst.CLASS_CARD_TEXT, context.getString(R.string.reserve_class));
@@ -311,17 +281,19 @@ public class RemoteConfigSetUp {
 
         setValue(RemoteConfigConst.BUY_CLASS_KEY,
                 RemoteConfigConst.BUY_CLASS, context.getString(R.string.buy_classes));
+
         setValue(RemoteConfigConst.BUY_CLASS_COLOR_KEY,
                 RemoteConfigConst.BUY_CLASS_BUTTON_COLOR, "#3d85ea");
-        setValue(RemoteConfigConst.BOOK_BUTTON_COLOR_KEY,
+
+        setValue(BOOK_IN_CLASS_COLOR_KEY,
                 RemoteConfigConst.BOOK_IN_CLASS_COLOR, "#3d85ea");
 
         setValue(BOOK_WITH_FRIEND_COLOR_KEY,
                 RemoteConfigConst.BOOK_WITH_FRIEND_COLOR, "#3d85ea");
         setValue(RemoteConfigConst.RECOMMENDED_FOR_YOU_COLOR_KEY,
-                RemoteConfigConst.RECOMMENDED_FOR_YOU_COLOR, "#3d85ea");
-        setValue(RemoteConfigConst.SESSION_EXPIRED_COLOR_KEY,
-                RemoteConfigConst.SESSION_EXPIRED_COLOR, "#CCFF0000");
+                RemoteConfigConst.RECOMMENDED_FOR_YOU_COLOR, "#262626");
+        setValue(SESSION_EXPIRED_COLOR_KEY,
+                RemoteConfigConst.SESSION_EXPIRED_COLOR, "#FF0000");
 
         setValue(RemoteConfigConst.SESSION_EXPIRED_KEY,
                 RemoteConfigConst.SESSION_EXPIRED, context.getResources().getString(R.string.expired));
@@ -346,8 +318,10 @@ public class RemoteConfigSetUp {
 
         setValue(SELECT_PLAN_COLOR_KEY,
                 RemoteConfigConst.SELECT_PLAN_COLOR, "#3d85ea");
+
         setValue(GYM_VISIT_LIMIT_DETAIL_TEXT_KEY,
                 RemoteConfigConst.GYM_VISIT_LIMIT_DETAIL_TEXT, context.getResources().getString(R.string.package_limit_header));
+
         setValue(MEMBERSHIP_OFFER_COLOR_KEY,
                 RemoteConfigConst.MEMBERSHIP_OFFER_COLOR, "#1FB257");
 

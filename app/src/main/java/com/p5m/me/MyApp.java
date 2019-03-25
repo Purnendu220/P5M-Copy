@@ -55,6 +55,7 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
 
 
         context = getApplicationContext();
+        RefrenceWrapper.getRefrenceWrapper(this).setAppContext(this);
 
         MultiDex.install(this);
         Fresco.initialize(this);

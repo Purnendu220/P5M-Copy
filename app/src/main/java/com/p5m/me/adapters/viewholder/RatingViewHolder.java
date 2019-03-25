@@ -62,7 +62,7 @@ public class RatingViewHolder extends RecyclerView.ViewHolder {
             itemView.setVisibility(View.VISIBLE);
             textViewUsername.setText(model.getUserDetail().getFirstName());
             textViewReviewDate.setText(DateUtils.getRatingDate(model.getCreateDate()));
-            textViewClassRating.setText(LanguageUtils.numberConverter(model.getRating())+"");
+            textViewClassRating.setText(model.getRating()+"");
             if(model.getUserDetail().getProfileImageThumbnail()!=null&&!model.getUserDetail().getProfileImageThumbnail().isEmpty()){
                 ImageUtils.setImage(context,
                         model.getUserDetail().getProfileImageThumbnail(),
