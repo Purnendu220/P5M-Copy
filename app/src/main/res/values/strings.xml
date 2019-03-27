@@ -465,7 +465,7 @@
     <string name="please_select_sender">Please select the recipient</string>
     <string name="message_is_successfully_send">Your message was sent to %s. You will receive a response from them on your email. </string>
     <string name="added_to_wishlist"> %s successfully added to your wishlist.</string>
-    <string name="recomended_for_you">Recommended for you:</string>
+    <string name="recomended_for_you">Recommended for you</string>
     <string name="contact_gym">Contact gym</string>
     <string name="contact_trainer">Contact trainer</string>
     <string name="are_you_sure_leave_page">Are you sure you want to leave this page?</string>
@@ -473,7 +473,7 @@
     <string name="non_refundable_warning">*This class is non-refundable after purchase.</string>
     <string name="on_ya">Oh Ya!</string>
     <string name="maybe_next_time">Maybe next time</string>
-    <string name="your_class_schedule_at">Your Class is schedule at</string>
+    <string name="_5">/5</string>
 
 
     <string-array name="schedule_list">

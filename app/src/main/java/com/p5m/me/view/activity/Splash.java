@@ -17,17 +17,20 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.MyApp;
 import com.p5m.me.R;
 import com.p5m.me.eventbus.EventBroadcastHelper;
+import com.p5m.me.fxn.utility.Constants;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
-import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.PermissionUtility;
 import com.p5m.me.view.activity.Main.ForceUpdateActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
+
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,7 +46,7 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
 
     private Handler handler;
     private Runnable nextScreenRunnable;
-    private long DELAY_NAVIGATION = 1400; // 1.4 sec
+    private long DELAY_NAVIGATION = 2500; // 1.4 sec
 
     @BindView(R.id.imageViewImage)
     public ImageView imageViewImage;
@@ -54,8 +57,6 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_splash);
-
-
 
         boolean booleanExtra = getIntent().getBooleanExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, false);
         if (booleanExtra) {
@@ -74,7 +75,7 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
             EventBroadcastHelper.sendDeviceUpdate(context);
         }
         networkCommunicator.getActivities(this, false);
-
+            RemoteConfigSetUp.getValues();
         if (Build.VERSION.SDK_INT >= 23 ) {
             if(PermissionUtility.verifyLocationPermissions(Splash.this)){
                 startTimerForGoToNextScreen();
@@ -93,6 +94,7 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
 
                 if (MyPreferences.getInstance().isLogin()) {
                     /////////// HomeActivity Screen ////////////
+
                     HomeActivity.open(context);
 
                 } else {

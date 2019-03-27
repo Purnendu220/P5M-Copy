@@ -163,7 +163,7 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
             textViewGender.setText(Helper.getClassGenderText(model.getClassType()));
             if (model.getRating() != 0.0F && model.getRating() > 0) {
                 linearLayoutClassRating.setVisibility(View.VISIBLE);
-                textViewClassRating.setText(LanguageUtils.numberConverter(model.getRating()) + "");
+                textViewClassRating.setText(model.getRating() + "");
             } else {
                 linearLayoutClassRating.setVisibility(View.GONE);
             }
