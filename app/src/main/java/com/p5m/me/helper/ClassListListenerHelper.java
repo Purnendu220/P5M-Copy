@@ -23,6 +23,7 @@ import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.DefaultSettingServer;
 import com.p5m.me.data.main.User;
 import com.p5m.me.eventbus.EventBroadcastHelper;
+import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -51,7 +52,6 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
     public Activity activity;
     private final AdapterCallbacks adapterCallbacks;
     private int shownIn;
-    private static int calendar_id = -1;
 
 
     public ClassListListenerHelper(Context context, Activity activity, int shownIn, AdapterCallbacks adapterCallbacks) {
@@ -137,7 +137,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         });
 
         TextView textViewOption2 = viewRoot.findViewById(R.id.textViewOption2);
-        textViewOption2.setText(context.getString(R.string.share));
+//        textViewOption2.setText(context.getString(R.string.share));
+        textViewOption2.setText(RemoteConfigConst.INVITE_FRIENDS_VALUE);
 
         textViewOption2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,7 +198,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             }
         });
 
-        textViewInviteFriend.setText(context.getString(R.string.share));
+//        textViewInviteFriend.setText(context.getString(R.string.share));
+        textViewInviteFriend.setText(RemoteConfigConst.INVITE_FRIENDS_VALUE);
 
         textViewInviteFriend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,7 +221,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
         final View viewRoot = LayoutInflater.from(context).inflate(R.layout.popup_options, null);
         TextView textView = viewRoot.findViewById(R.id.textViewOption1);
-        textView.setText(context.getString(R.string.add_to_WishList));
+//        textView.setText(context.getString(R.string.add_to_WishList));
+        textView.setText(RemoteConfigConst.ADD_TO_WISHLIST_VALUE);
 
         final PopupWindow popupWindow = new PopupWindow(viewRoot, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
 
@@ -238,7 +241,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         }
 
         TextView textViewOption2 = viewRoot.findViewById(R.id.textViewOption2);
-        textViewOption2.setText(context.getString(R.string.invite_friends));
+//        textViewOption2.setText(context.getString(R.string.invite_friends));
+        textViewOption2.setText(RemoteConfigConst.INVITE_FRIENDS_VALUE);
 
         textViewOption2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -272,7 +276,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         });
 
         TextView textViewOption2 = viewRoot.findViewById(R.id.textViewOption2);
-        textViewOption2.setText(context.getString(R.string.share));
+//        textViewOption2.setText(context.getString(R.string.share));
+        textViewOption2.setText(RemoteConfigConst.INVITE_FRIENDS_VALUE);
 
         textViewOption2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -373,6 +378,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             }
         });
     }
+
 
 
 

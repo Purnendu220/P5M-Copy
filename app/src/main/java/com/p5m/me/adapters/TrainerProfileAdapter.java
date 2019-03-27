@@ -18,6 +18,7 @@ import com.p5m.me.data.HeaderSticky;
 import com.p5m.me.data.ListLoader;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.TrainerDetailModel;
+import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.utils.LogUtils;
 
 import java.util.ArrayList;

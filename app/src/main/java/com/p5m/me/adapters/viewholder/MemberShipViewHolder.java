@@ -17,6 +17,8 @@ import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LanguageUtils;
@@ -88,6 +90,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
         context = itemView.getContext();
 
         ButterKnife.bind(this, itemView);
+        RemoteConfigSetUp.setBackgroundColor(linearLayoutOffer, RemoteConfigConst.MEMBERSHIP_OFFER_COLOR_VALUE, context.getResources().getColor(R.color.green));
 
         this.shownInScreen = shownInScreen;
     }
@@ -95,6 +98,9 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
     public void bind(ClassModel classModel, final Object data, final AdapterCallbacks adapterCallbacks, final int position) {
 
         if (data != null && (data instanceof UserPackage || data instanceof Package)) {
+            textViewViewLimit.setText(Html.fromHtml(RemoteConfigConst.GYM_VISIT_LIMIT_VALUE));
+
+
             itemView.setVisibility(View.VISIBLE);
             imageViewInfo.setVisibility(View.GONE);
 
@@ -133,7 +139,6 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     textViewPackageValidity.setText(context.getString(R.string.valid_till) + " " + DateUtils.getPackageClassDate(model.getExpiryDate()));
 
                     textViewViewLimit.setVisibility(View.VISIBLE);
-
                     if (classModel != null) {
                         int numberOfDays = DateUtils.getDaysLeftFromPackageExpiryDate(model.getExpiryDate());
 
@@ -163,7 +168,9 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     textViewPackagePrice.setVisibility(View.VISIBLE);
                     textViewExtendPackage.setVisibility(View.GONE);
 
-                    button.setText(R.string.select_plan);
+//                    button.setText(R.string.select_plan);
+                    button.setText(RemoteConfigConst.SELECT_PLAN_TEXT_VALUE);
+                    RemoteConfigSetUp.setBackgroundColor(button, RemoteConfigConst.SELECT_PLAN_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
                     button.setBackgroundResource(R.drawable.join_rect);
                     Helper.setPackageImage(imageViewHeader, model.getId());
                     if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {

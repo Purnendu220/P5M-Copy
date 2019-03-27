@@ -199,6 +199,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             CalendarHelper.updateEvent(this,classModel);
 
 
+
         }
     }
     private void handleDataMessage(JSONObject json) {

@@ -42,6 +42,7 @@ import com.p5m.me.data.main.TrainerModel;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.utils.AppConstants;
@@ -141,6 +142,8 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
         tabLayout.setTabTextColors(ContextCompat.getColorStateList(context, R.color.date_tabs));
 
         viewPager.addOnPageChangeListener(this);
+
+        editTextSearch.setHint(RemoteConfigConst.SEARCH_BAR_TEXT_VALUE);
 
         try {
             ((SimpleItemAnimator) recyclerViewSearch.getItemAnimator()).setSupportsChangeAnimations(false);

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 
 import com.facebook.login.LoginManager;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.p5m.me.R;
 import com.p5m.me.data.City;
 import com.p5m.me.data.ClassRatingUserData;
