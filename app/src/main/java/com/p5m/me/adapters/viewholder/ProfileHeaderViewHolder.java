@@ -104,7 +104,7 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                     LanguageUtils.setText(textViewPackage,userPackageInfo.userPackageGeneral.getBalanceClass(),  message+" "+context.getString(R.string.remaining));
 
                     int daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageGeneral.getExpiryDate());
-if(daysLeftFromPackageExpiryDate>0){
+if(daysLeftFromPackageExpiryDate>=0){
     textViewValidity.setText(Html.fromHtml("<b>" + numberConverter(daysLeftFromPackageExpiryDate )+ " " +
             AppConstants.plural(context.getString(R.string.day), daysLeftFromPackageExpiryDate) + "</b> " +
             context.getString(R.string.profile_package_expiry)));
@@ -144,7 +144,7 @@ if(daysLeftFromPackageExpiryDate>0){
                                 "</b> " + message+" "+context.getString(R.string.remaining)));
 
                          daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageGeneral.getExpiryDate());
-                        if(daysLeftFromPackageExpiryDate>0){
+                        if(daysLeftFromPackageExpiryDate>=0){
                             textViewValidity.setText(Html.fromHtml("<b>" + numberConverter(daysLeftFromPackageExpiryDate) + " " +
                                     AppConstants.plural(context.getString(R.string.day), daysLeftFromPackageExpiryDate) + "</b> " +
                                     context.getString(R.string.profile_package_expiry)));
@@ -177,7 +177,7 @@ if(daysLeftFromPackageExpiryDate>0){
 
 
                     int daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageReady.get(0).getExpiryDate());
-                    if(daysLeftFromPackageExpiryDate>0){
+                    if(daysLeftFromPackageExpiryDate>=0){
                         textViewValidity.setText(Html.fromHtml("<b>" + numberConverter(daysLeftFromPackageExpiryDate) + "</b> " +
                                 " " + AppConstants.plural(context.getString(R.string.day), daysLeftFromPackageExpiryDate) + context.getString(R.string.profile_package_expiry)));
 
