@@ -228,8 +228,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
                         }
                         if (model.getNoOfClass() == 1) {
-//                            worldWideSetText(textViewPageTitle,context.getString(R.string.class_one_at), model.getGymName());
-//
+
                             textViewPageTitle.setText(context.getString(R.string.class_one_at) + " " + model.getGymName());
                         } else
                             textViewPageTitle.setText(LanguageUtils.numberConverter(model.getNoOfClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass()) + " " + context.getString(R.string.at) + " " + model.getGymName());

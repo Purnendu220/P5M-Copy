@@ -83,12 +83,12 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     /*
     if user is purchasing a class via package
      */
-    public static void openActivity(Context context, Package aPackage, ClassModel classModel) {
+    public static void openActivity(Context context, Package aPackage, ClassModel classModel,int mNumberOfPackagesToBuy) {
         CheckoutActivity.aPackage = aPackage;
         CheckoutActivity.classModel = classModel;
         CheckoutActivity.selectedPacakageFromList = null;
         CheckoutActivity.checkoutFor = CLASS_PURCHASE_WITH_PACKAGE;
-        CheckoutActivity.mNumberOfPackagesToBuy = 1;
+        CheckoutActivity.mNumberOfPackagesToBuy = mNumberOfPackagesToBuy;
         CheckoutActivity.friendsDetail = null;
 
 
@@ -293,9 +293,9 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     textViewCancellationPolicyGeneralToggle.setVisibility(View.VISIBLE);
                     textViewCancellationPolicyGenral.setText(R.string.membership_drop_in_info);
 
-                    if (mNumberOfPackagesToBuy == 1) {
+                   /* if (mNumberOfPackagesToBuy == 1) {
                         textViewPackageClasses.setText(context.getString(R.string.class_one_at)+" "+ classModel.getGymBranchDetail().getGymName() );
-                    } else
+                    } else*/
                         textViewPackageClasses.setText(LanguageUtils.numberConverter(mNumberOfPackagesToBuy) +" "+ AppConstants.pluralES(context.getString(R.string.classs), mNumberOfPackagesToBuy) + " "+context.getString(R.string.at)+" " + classModel.getGymBranchDetail().getGymName());
 
                 }

@@ -28,6 +28,7 @@ import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
+import com.p5m.me.data.main.PushDetailModel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.data.request.JoinClassRequest;
@@ -37,7 +38,6 @@ import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.helper.ClassListListenerHelper;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
-import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -62,6 +62,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.p5m.me.analytics.MixPanel.trackPushNotificationClick;
 import static com.p5m.me.utils.AppConstants.Limit.PAGE_LIMIT_MAIN_CLASS_LIST;
 
 public class ClassProfileActivity extends BaseActivity implements AdapterCallbacks, View.OnClickListener, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
@@ -84,7 +85,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public static Intent createIntent(Context context, int classId, int navigationFrom) {
         return new Intent(context, ClassProfileActivity.class)
                 .putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom)
-                .putExtra(AppConstants.DataKey.CLASS_SESSION_ID_INT, classId);
+                .putExtra(AppConstants.DataKey.CLASS_SESSION_ID_INT, classId)
+                .putExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, true);
+
     }
 
     @BindView(R.id.recyclerView)
@@ -222,20 +225,17 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 //        }
 
         MixPanel.trackClassDetails();
-
-//        textViewBookWithFriend.setText(RemoteConfigConst.BOOK_WITH_FRIEND_VALUE);
-      /* setConfig(this, textViewBookWithFriend,
-                RemoteConfigConst.BOOK_WITH_FRIEND,getString(R.string.reserve_class_with_friend),RemoteConfigConst.ConfigStatus.TEXT
-        );*/
-//        RemoteConfigSetUp.setBackgroundColor(textViewBook,RemoteConfigConst.BOOK_COLOR_VALUE,context.getResources().getColor(R.color.theme_book));
-
-//        setConfig(this, textViewBook,
-//                RemoteConfigConst.BOOK_IN_CLASS_COLOR,"#3d85ea",RemoteConfigConst.ConfigStatus.COLOR);
-//        setConfig(this, textViewBookWithFriend,
-//                RemoteConfigConst.BOOK_WITH_FRIEND_COLOR,"#3d85ea",RemoteConfigConst.ConfigStatus.COLOR);
-
+        onTrackingNotification();
     }
 
+
+    private void onTrackingNotification() {
+        boolean booleanExtra = getIntent().getBooleanExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, false);
+        if (booleanExtra) {
+            PushDetailModel pushDetailModel = (PushDetailModel) getIntent().getSerializableExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK);
+            MixPanel.trackPushNotificationClick(pushDetailModel);
+        }
+    }
     @Override
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
@@ -676,7 +676,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             }
                         }if (packages.size() == 1 || !user.isBuyMembership()) {
                             Package aPackage = packages.get(0);
-                            CheckoutActivity.openActivity(context, aPackage, classModel);
+                            CheckoutActivity.openActivity(context, aPackage, classModel,aPackage.getNoOfClass());
                             return;
                         } else {
                             MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
