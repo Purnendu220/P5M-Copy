@@ -150,8 +150,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                 } else if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
 
                     textViewPackageName.setText(model.getPackageName());
-//                    textViewPageTitle.setText(numberConverter(model.getBalanceClass()) + " "+context.getString(R.string.class_remaining_for)+" " + model.getGymName());
-                    LanguageUtils.setText(textViewPageTitle, model.getBalanceClass(), " " + context.getString(R.string.class_remaining_for) + " " + model.getGymName());
+                    LanguageUtils.setText(textViewPageTitle, model.getBalanceClass(), " " +AppConstants.pluralES(context.getString(R.string.classs), model.getBalanceClass())+" " + context.getString(R.string.class_remaining_for) + " " + model.getGymName());
 
                     textViewPackageValidity.setText(context.getString(R.string.valid_till) + " " + DateUtils.getPackageClassDate(model.getExpiryDate()));
                     if (model.getExpiryDate() == null || model.getExpiryDate().trim().length() == 0) {

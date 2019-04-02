@@ -102,7 +102,7 @@ android {
             buildConfigField "String", "BASE_URL", '\"http://136.243.22.168:8080\"'
             buildConfigField "String", "BASE_URL_HTTPS", '\"https://136.243.22.168:8080\"'
 
-            buildConfigField "String", "BASE_URL_MIDL", '\"/dev-midl/\"'
+            buildConfigField "String", "BASE_URL_MIDL", '\"/profive-midl/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://staging.p5m.me\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
             manifestPlaceholders = [hostName: "staging.p5m.me", hostName_www: "www.staging.p5m.me", appName: "P5M DEV", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
@@ -183,9 +183,9 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
     implementation 'com.robertlevonyan.components:Picker:1.1.1'
     implementation 'com.google.android:flexbox:0.3.2'
-    implementation 'com.google.firebase:firebase-core:16.0.7'
-    implementation 'com.google.firebase:firebase-messaging:17.4.0'
-    implementation 'com.google.firebase:firebase-config:16.4.0'
+    implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation 'com.google.firebase:firebase-messaging:17.5.0'
+    implementation 'com.google.firebase:firebase-config:16.4.1'
 
     implementation 'com.google.android.gms:play-services-location:15.0.1'
     implementation 'com.google.android.gms:play-services-maps:15.0.1'

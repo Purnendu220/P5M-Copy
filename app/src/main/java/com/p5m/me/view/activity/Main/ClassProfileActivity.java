@@ -792,8 +792,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
                 } else {
                     ToastUtils.showLong(context, errorMessage);
-                }
+                    textViewBook.setEnabled(true);
 
+                }
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
                 break;

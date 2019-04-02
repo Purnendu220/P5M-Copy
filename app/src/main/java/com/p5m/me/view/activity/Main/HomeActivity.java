@@ -182,6 +182,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     }
 
     private void onTrackingNotification() {
+
         boolean booleanExtra = getIntent().getBooleanExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, true);
         if (booleanExtra) {
             PushDetailModel pushDetailModel = (PushDetailModel) getIntent().getSerializableExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK);

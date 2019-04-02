@@ -9,11 +9,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.animation.BounceInterpolator;
 import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.inappmessaging.FirebaseInAppMessaging;
 import com.p5m.me.MyApp;
 import com.p5m.me.R;
 import com.p5m.me.eventbus.EventBroadcastHelper;
@@ -75,19 +78,20 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
             EventBroadcastHelper.sendDeviceUpdate(context);
         }
         networkCommunicator.getActivities(this, false);
-            RemoteConfigSetUp.getValues();
-        if (Build.VERSION.SDK_INT >= 23 ) {
-            if(PermissionUtility.verifyLocationPermissions(Splash.this)){
+        RemoteConfigSetUp.getValues();
+        Log.d("Instance ID", FirebaseInstanceId.getInstance().getId());
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (PermissionUtility.verifyLocationPermissions(Splash.this)) {
                 startTimerForGoToNextScreen();
 
             }
-        }
-        else{
+        } else {
             startTimerForGoToNextScreen();
         }
     }
 
     private void startTimerForGoToNextScreen() {
+
         nextScreenRunnable = new Runnable() {
             @Override
             public void run() {
@@ -132,6 +136,7 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
@@ -152,12 +157,10 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
     @Override
     protected void onResume() {
         super.onResume();
-
-
     }
 
-    private void showPermissionImportantAlert(String message){
-        DialogUtils.showBasicMessage(context,context.getResources().getString(R.string.permission_alert), message,
+    private void showPermissionImportantAlert(String message) {
+        DialogUtils.showBasicMessage(context, context.getResources().getString(R.string.permission_alert), message,
                 context.getResources().getString(R.string.go_to_settings), new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -174,7 +177,7 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
 
 
                     }
-                },context.getResources().getString(R.string.cancel), new MaterialDialog.SingleButtonCallback() {
+                }, context.getResources().getString(R.string.cancel), new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         dialog.dismiss();
