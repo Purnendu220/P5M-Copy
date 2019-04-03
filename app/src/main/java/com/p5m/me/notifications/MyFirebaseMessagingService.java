@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -16,12 +17,12 @@ import com.p5m.me.BuildConfig;
 import com.p5m.me.R;
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
 import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.data.main.PushDetailModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CalendarHelper;
-import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.Main.ClassProfileActivity;
 import com.p5m.me.view.activity.Main.EditProfileActivity;
@@ -33,10 +34,8 @@ import com.p5m.me.view.activity.Main.SettingActivity;
 import com.p5m.me.view.activity.Main.SettingNotification;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
 import com.p5m.me.view.activity.Main.TransactionHistoryActivity;
-import com.p5m.me.view.activity.base.BaseActivity;
 
 import org.json.JSONObject;
-
 
 import java.util.Hashtable;
 
@@ -49,6 +48,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private Context context;
     private Hashtable<String, String> calendarIdTable;
     private int calendar_id = -1;
+    private PushDetailModel pushDetailModel;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -66,7 +66,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String message = remoteMessage.getData().get("message");
 
             if (message != null) {
-
                 JSONObject json = new JSONObject(message);
                 handleDataMessage(json);
                 handleDataMessageForNotificationSchedule(json);
@@ -114,7 +113,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
                     updateEvent(jsonObject, dataID);
-                   break;
+                    break;
                 case "OnClassUpdateByTrainer":
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
@@ -132,7 +131,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     setNotification(jsonObject, dataID);
                     updateEvent(jsonObject, dataID);
 
-                   break;
+                    break;
                 case "OnSessionUpdateByTrainer":
                     TempStorage.removeSavedClass((int) dataID, context);
                     updateEvent(jsonObject, dataID);
@@ -173,7 +172,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
         ClassModel model = new ClassModel(title, classDate, fromTime, toTime, dataID);
         if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
-            CalendarHelper.scheduleCalenderEvent(this,model);
+            CalendarHelper.scheduleCalenderEvent(this, model);
         }
     }
 
@@ -184,11 +183,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
         ClassModel model = new ClassModel(title, classDate, fromTime, toTime, dataID);
         if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
-            CalendarHelper.deleteEvent(model.getClassSessionId(),context);
+            CalendarHelper.deleteEvent(model.getClassSessionId(), context);
 
         }
 
     }
+
     private void updateEvent(JSONObject jsonObject, long dataID) {
         String title = jsonObject.optString(AppConstants.Notification.CLASS_TITLE);
         String classDate = jsonObject.optString(AppConstants.Notification.CLASS_DATE);
@@ -196,19 +196,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
         ClassModel classModel = new ClassModel(title, classDate, fromTime, toTime, dataID);
         if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
-            CalendarHelper.updateEvent(this,classModel);
-
+            CalendarHelper.updateEvent(this, classModel);
 
 
         }
     }
+
     private void handleDataMessage(JSONObject json) {
 
         try {
             JSONObject jsonObject = json;
             String type = jsonObject.optString(AppConstants.Notification.TYPE);
             String message = jsonObject.optString(AppConstants.Notification.BODY);
-
+            String notifyUrl = jsonObject.optString(AppConstants.Notification.URL);
+            setPushDetail(type, message, notifyUrl);
             long dataID = jsonObject.optLong(AppConstants.Notification.OBJECT_DATA_ID);
 
             try {
@@ -491,6 +492,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         stackBuilder.addNextIntentWithParentStack(navigationIntent);
 
         stackBuilder.editIntentAt(0).putExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, true);
+        stackBuilder.editIntentAt(1).putExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK, pushDetailModel);
 
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -630,20 +632,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             } else if (url.contains(BuildConfig.BASE_URL + "/settings/notification") || url.contains(BuildConfig.BASE_URL_HTTPS + "/settings/notification")) {
                 navigationIntent = SettingNotification.createIntent(context);
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/settings/aboutus") || url.contains(BuildConfig.BASE_URL_HTTPS + "/settings/aboutus")||
+            } else if (url.contains(BuildConfig.BASE_URL + "/settings/aboutus") || url.contains(BuildConfig.BASE_URL_HTTPS + "/settings/aboutus") ||
                     url.contains(BuildConfig.BASE_URL + "/aboutus") || url.contains(BuildConfig.BASE_URL_HTTPS + "/aboutus")) {
                 navigationIntent = SettingActivity.createIntent(context, AppConstants.Tab.OPEN_ABOUT_US);
 
-            }
-            else if(url.contains(BuildConfig.BASE_URL+"/settings/notifications")||url.contains(BuildConfig.BASE_URL_HTTPS+"/settings/notifications")){
+            } else if (url.contains(BuildConfig.BASE_URL + "/settings/notifications") || url.contains(BuildConfig.BASE_URL_HTTPS + "/settings/notifications")) {
                 navigationIntent = NotificationActivity.createIntent(context);
 
-            }
-            else if(url.contains(BuildConfig.BASE_URL+"/searchresults/")||url.contains(BuildConfig.BASE_URL_HTTPS+"/searchresults/")){
+            } else if (url.contains(BuildConfig.BASE_URL + "/searchresults/") || url.contains(BuildConfig.BASE_URL_HTTPS + "/searchresults/")) {
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
 
-            }
-            else {
+            } else {
 
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
 
@@ -659,6 +658,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     }
 
+    /*
+     * Set Push Detail for MixPanel Analysis
+     * */
+    private void setPushDetail(String type, String message, String url) {
+        pushDetailModel = new PushDetailModel();
+        pushDetailModel.setMessage(message);
+        pushDetailModel.setType(type);
+        pushDetailModel.setUrl(url);
+        Log.v("PushDetail","type: "+type
+                +" msg: "+message
+                +" url: "+url);
+    }
 
     private void setNotification(JSONObject jsonObject, long dataID) {
         String title = jsonObject.optString(AppConstants.Notification.CLASS_TITLE);
