@@ -860,5 +860,9 @@
     <string name="on_ya">Oh Ya!</string>
     <string name="maybe_next_time">Maybe next time</string>
     <string name="_5">/٥</string>
+    <string name="wallet_credit_applied">Cerdit Applied</string>
+    <string name="wallet_alert">Use your wallet credit to buy any class or membership.</string>
+
+
 
 </resources>

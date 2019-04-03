@@ -16,6 +16,7 @@ import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -51,7 +52,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MemberShip extends BaseActivity implements AdapterCallbacks, NetworkCommunicator.RequestListener,
-        SwipeRefreshLayout.OnRefreshListener  {
+        SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
     public static void openActivity(Context context, int navigationFrom) {
         context.startActivity(new Intent(context, MemberShip.class)
@@ -87,6 +88,10 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     @BindView(R.id.swipeRefreshLayout)
     public SwipeRefreshLayout swipeRefreshLayout;
 
+
+
+    private TextView mTextViewWalletAmount;
+    private LinearLayout mLayoutUserWallet;
     private int navigatedFrom;
     private ClassModel classModel;
     private MemberShipAdapter memberShipAdapter;
@@ -103,6 +108,8 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     private boolean hasPurchased;
     private boolean hasClickedCheckout;
     private int mNumberOfPackagesToBuy;
+    private static Integer mWalletCredit = 2;
+    private static int mWalletCreditBalance = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +118,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
         ButterKnife.bind(activity);
         GlobalBus.getBus().register(this);
+        setToolBar();
 
         handler = new Handler();
 
@@ -136,7 +144,6 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
         onRefresh();
 
-        setToolBar();
 
         MixPanel.trackMembershipVisit(navigatedFrom);
     }
@@ -209,6 +216,9 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                 onBackPressed();
             }
         });
+        mTextViewWalletAmount=(TextView)v.findViewById(R.id.textViewWalletAmount);
+        mLayoutUserWallet=(LinearLayout)v.findViewById(R.id.layoutUserWallet);
+        mLayoutUserWallet.setOnClickListener(this);
 
         ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.membership));
 
@@ -460,6 +470,13 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
             case NetworkCommunicator.RequestCode.ME_USER:
                 user = TempStorage.getUser();
+                if(mWalletCredit!=null&&mWalletCreditBalance>0){
+                    mLayoutUserWallet.setVisibility(View.VISIBLE);
+                    mTextViewWalletAmount.setText(mWalletCreditBalance+" KD");
+                }else{
+                    mLayoutUserWallet.setVisibility(View.GONE);
+
+                }
                 checkPackages();
 
                 break;
@@ -501,6 +518,28 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
         if (!hasVisitedGymLimits && !hasClickedCheckout) {
             MixPanel.trackSequentialUpdate(AppConstants.Tracker.NO_ACTION);
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.layoutUserWallet:
+                showWalletAlert();
+                break;
+
+        }
+
+    }
+
+    private void showWalletAlert(){
+        DialogUtils.showBasicMessage(context,context.getResources().getString(R.string.wallet_alert),
+                context.getResources().getString(R.string.ok),
+                new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                });
     }
 
 }

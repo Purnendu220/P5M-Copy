@@ -28,6 +28,34 @@
             android:text="Title"
             android:textColor="@color/white" />
 
+        <LinearLayout
+            android:id="@+id/layoutUserWallet"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            >
+            <ImageView
+                android:id="@+id/imageViewWalletIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/wallet_icon"
+                android:tint="@color/white"
+                android:visibility="visible" />
+            <TextView
+                android:id="@+id/textViewWalletAmount"
+                style="@style/ToolBarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:gravity="left"
+                android:text="200 kd"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_medium"
+                />
+        </LinearLayout>
+
         <ImageView
             android:id="@+id/imageViewShare"
             style="@style/ToolBarIcon"
@@ -36,6 +64,9 @@
             android:src="@drawable/share"
             android:tint="@color/white"
             android:visibility="gone" />
+
+
+
 
     </LinearLayout>
 
