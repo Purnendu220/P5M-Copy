@@ -290,6 +290,8 @@
     <string name="class_remaining_for">Class remaining for</string>
     <string name="valid_for">Valid for</string>
     <string name="promo_code_applied">Promo Code Applied</string>
+    <string name="wallet_credit_applied">Cerdit Applied</string>
+
     <string name="total">Total </string>
     <string name="pay">Payment</string>
     <string name="no_more_notification">No more notifications</string>
@@ -471,6 +473,8 @@
     <string name="are_you_sure_leave_page">Are you sure you want to leave this page?</string>
     <string name="non_refundable_warning_msg">This class is non-refundable after purchase. Do you want to continue?</string>
     <string name="non_refundable_warning">*This class is non-refundable after purchase.</string>
+    <string name="wallet_alert">Use your wallet credit to buy any class or membership.</string>
+
     <string name="on_ya">Oh Ya!</string>
     <string name="maybe_next_time">Maybe next time</string>
     <string name="_5">/5</string>

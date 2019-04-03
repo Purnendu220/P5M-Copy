@@ -26,6 +26,7 @@ import com.p5m.me.data.ValidityPackageList;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.PaymentUrl;
+import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.data.request.PaymentUrlRequest;
 import com.p5m.me.data.request.PromoCodeRequest;
@@ -164,6 +165,9 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     private static UserPackage userPackage;
     private static int navigatinFrom;
     private static BookWithFriendData friendsDetail;
+    private static Integer mWalletCredit = 2;
+    private static int mWalletCreditBalance = 2;
+
 
 
     @BindView(R.id.textViewPackageName)
@@ -240,9 +244,24 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     @BindView(R.id.textViewCancellationPolicyBWF)
     TextView textViewCancellationPolicyBWF;
 
+    @BindView(R.id.layoutWalletCredit)
+    LinearLayout layoutWalletCredit;
+
+    @BindView(R.id.textViewWalletCreditPrice)
+    TextView textViewWalletCreditPrice;
+
+    @BindView(R.id.layoutUserWallet)
+    LinearLayout mLayoutUserWallet;
+
+    @BindView(R.id.textViewWalletAmount)
+    TextView mTextViewWalletAmount;
+
 
     private PromoCode promoCode;
     private MaterialDialog materialDialog;
+    private User user;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -251,7 +270,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
         ButterKnife.bind(activity);
         handler = new Handler();
-
+        checkUserCredits();
         setData();
 
         textViewPay.setOnClickListener(this);
@@ -261,6 +280,17 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         textViewCancellationPolicyGeneralToggle.setOnClickListener(this);
 
         MixPanel.trackCheckoutVisit(aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName());
+    }
+
+    private void checkUserCredits(){
+        user = TempStorage.getUser();
+        if(mWalletCredit!=null&&mWalletCreditBalance>0){
+            mLayoutUserWallet.setVisibility(View.VISIBLE);
+            mTextViewWalletAmount.setText(mWalletCreditBalance+" "+context.getString(R.string.currency));
+        }else{
+            mLayoutUserWallet.setVisibility(View.GONE);
+
+        }
     }
 
     private void setData() {
@@ -273,12 +303,6 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
                 if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
                     setTextValidityPeriod(aPackage);
-                   /* validityPeriod = Helper.capitalize(validityPeriod);
-                    if (validityPeriod.charAt(validityPeriod.length() - 1) == 's') {
-                        validityPeriod = validityPeriod.substring(0, validityPeriod.length() - 1);
-                    }*/
-
-//                    textViewPackageValidity.setText(context.getString(R.string.valid_for)+" " + numberConverter(aPackage.getDuration()) + " " + AppConstants.plural(validityPeriod, aPackage.getDuration()));
                     textViewLimit.setVisibility(View.GONE);
                     textViewLimit.setText(RemoteConfigConst.GYM_VISIT_LIMIT_VALUE);
                     textViewPackageClasses.setText(numberConverter(aPackage.getNoOfClass()) + " " + AppConstants.pluralES(getString(R.string.one_class), aPackage.getNoOfClass())+" "+context.getString(R.string.at_any_gym));
@@ -286,7 +310,6 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
 
                 } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
-//                    textViewPackageValidity.setText(getString(R.string.valid_for) + " " + aPackage.getGymName());
                     textViewPackageValidity.setText(context.getString(R.string.valid_for) + " " + DateUtils.getPackageClassDate(classModel.getClassDate()) + " -" + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()));
 
                     textViewLimit.setVisibility(View.GONE);
@@ -441,7 +464,6 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         switch (checkoutFor) {
             case PACKAGE:
             case CLASS_PURCHASE_WITH_PACKAGE:
-
                 if (promoCode != null) {
                     DecimalFormat numberFormat = new DecimalFormat("#.00");
                     textViewTotal.setText(LanguageUtils.numberConverter(promoCode.getPriceAfterDiscount()) + " " + context.getString(R.string.currency));
@@ -471,18 +493,91 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     textViewPay.setText(getString(R.string.pay) + " " +LanguageUtils.numberConverter( aPackage.getCost()) + " " + context.getString(R.string.currency));
                     buttonPromoCode.setText(context.getString(R.string.apply_promo_code));
                 }
+                applyCredit();
                 break;
 
             case SPECIAL_CLASS:
                 textViewTotal.setText(LanguageUtils.numberConverter(mNumberOfPackagesToBuy * classModel.getPrice()) + " " + context.getString(R.string.currency));
                 textViewPay.setText(getString(R.string.pay) + " " +LanguageUtils.numberConverter( mNumberOfPackagesToBuy * classModel.getPrice()) + " " + context.getString(R.string.currency));
+                applyCredit();
 
                 break;
             case EXTENSION:
                 textViewTotal.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost()) + " " + context.getString(R.string.currency));
                 textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(selectedPacakageFromList.getCost()) + " " + context.getString(R.string.currency));
+                applyCredit();
 
                 break;
+
+        }
+    }
+
+    private void applyCredit(){
+        double costAfterCreditApply=0;
+        double appliedCreditCost=0;
+        if(mWalletCredit!=null && mWalletCreditBalance>0) {
+            layoutWalletCredit.setVisibility(View.VISIBLE);
+            switch (checkoutFor) {
+            case PACKAGE:
+            case CLASS_PURCHASE_WITH_PACKAGE:
+                if (promoCode != null) {
+                        if(mWalletCreditBalance > promoCode.getPriceAfterDiscount()){
+                            costAfterCreditApply = promoCode.getPriceAfterDiscount() - promoCode.getPriceAfterDiscount();
+                            appliedCreditCost = promoCode.getPriceAfterDiscount();
+                            }
+                        else{
+                            costAfterCreditApply = promoCode.getPriceAfterDiscount() - mWalletCreditBalance;
+                            appliedCreditCost = mWalletCreditBalance;
+                            }
+                } else {
+                    if(mWalletCreditBalance > aPackage.getCost()){
+                        costAfterCreditApply = aPackage.getCost() - aPackage.getCost();
+                        appliedCreditCost = aPackage.getCost();
+                    }
+                    else{
+                        costAfterCreditApply = aPackage.getCost() - mWalletCreditBalance;
+                        appliedCreditCost = mWalletCreditBalance;
+                    }
+                }
+                break;
+
+            case SPECIAL_CLASS:
+                if(mWalletCreditBalance > mNumberOfPackagesToBuy * classModel.getPrice()){
+                    costAfterCreditApply = mNumberOfPackagesToBuy * classModel.getPrice() - mNumberOfPackagesToBuy * classModel.getPrice();
+                    appliedCreditCost = mNumberOfPackagesToBuy * classModel.getPrice();
+                }
+                else{
+                    costAfterCreditApply = mNumberOfPackagesToBuy * classModel.getPrice() - mWalletCreditBalance;
+                    appliedCreditCost = mWalletCreditBalance;
+                }
+                break;
+            case EXTENSION:
+                if(mWalletCreditBalance > selectedPacakageFromList.getCost()){
+                    costAfterCreditApply = selectedPacakageFromList.getCost() - selectedPacakageFromList.getCost();
+                    appliedCreditCost = selectedPacakageFromList.getCost();
+                }
+                else{
+                    costAfterCreditApply = selectedPacakageFromList.getCost() - mWalletCreditBalance;
+                    appliedCreditCost = mWalletCreditBalance;
+                }
+                break;
+
+        }
+            textViewTotal.setText(LanguageUtils.numberConverter(costAfterCreditApply) + " " + context.getString(R.string.currency));
+            textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(costAfterCreditApply) + " " + context.getString(R.string.currency));
+
+           if(appliedCreditCost>0){
+               textViewWalletCreditPrice.setText("- " + LanguageUtils.numberConverter(((appliedCreditCost))) + " " + context.getString(R.string.currency));
+               mTextViewWalletAmount.setText((LanguageUtils.numberConverter(((mWalletCreditBalance-appliedCreditCost))))+" "+context.getString(R.string.currency));
+
+
+           }else{
+               layoutWalletCredit.setVisibility(View.GONE);
+
+           }
+        }
+        else{
+            layoutWalletCredit.setVisibility(View.GONE);
 
         }
     }
