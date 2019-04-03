@@ -23,6 +23,7 @@ import com.p5m.me.adapters.GymProfileAdapter;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.GymDetailModel;
+import com.p5m.me.data.main.PushDetailModel;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.helper.ClassListListenerHelper;
@@ -171,6 +172,15 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
         setToolBar();
 
         MixPanel.trackGymVisit(navigatedFrom);
+        onTrackingNotification();
+    }
+
+    private void onTrackingNotification() {
+        boolean booleanExtra = getIntent().getBooleanExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, false);
+        if (booleanExtra) {
+            PushDetailModel pushDetailModel = (PushDetailModel) getIntent().getSerializableExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK);
+            MixPanel.trackPushNotificationClick(pushDetailModel);
+        }
     }
 
     private void setToolBar() {
