@@ -44,13 +44,7 @@ public class WalletDetailActivity extends BaseActivity {
         setToolBar();
         walletHistory =(RecyclerView)findViewById(R.id.walletHistory);
 
-
-
-
-
-
     }
-
     private void setToolBar() {
         BaseActivity activity = (BaseActivity) this.activity;
         activity.setSupportActionBar(toolbar);
