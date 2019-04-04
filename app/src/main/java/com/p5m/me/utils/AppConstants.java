@@ -172,6 +172,8 @@ public class AppConstants {
 
         public static final String PACKAGE_NAME_STRING = "package_name";
         public static final String IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN = "is_from_notification_stack_builder_boolean";
+        public static final String DATA_FROM_NOTIFICATION_STACK = "data_from_notification_stack";
+
         public static final String RATING_VALUE = "Rating_Value";
         public static final String CLASS_MODEL = "class_model";
         public static final String BOOK_WITH_FRIEND_DATA = "book_with_friend_data";

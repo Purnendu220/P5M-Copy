@@ -287,7 +287,7 @@
     <string name="continue_with">Continue</string>
 
     <string name="special_class">Special Class</string>
-    <string name="class_remaining_for">Class remaining for</string>
+    <string name="class_remaining_for"> remaining for</string>
     <string name="valid_for">Valid for</string>
     <string name="promo_code_applied">Promo Code Applied</string>
     <string name="wallet_credit_applied">Cerdit Applied</string>
@@ -359,7 +359,7 @@
     <string name="one_class">class</string>
     <string name="remaining">remaining</string>
     <string name="day">day</string>
-    <string name="class_for">class for</string>
+    <string name="class_for">for</string>
     <string name="package_name">package</string>
     <string name="all">ALL</string>
     <string name="successfully_joined">Successfully joined</string>
