@@ -171,6 +171,15 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
         setToolBar();
 
         MixPanel.trackGymVisit(navigatedFrom);
+        onTrackingNotification();
+    }
+
+    private void onTrackingNotification() {
+//        boolean booleanExtra = getIntent().getBooleanExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, false);
+//        if (booleanExtra) {
+//            PushDetailModel pushDetailModel = (PushDetailModel) getIntent().getSerializableExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK);
+//            MixPanel.trackPushNotificationClick(pushDetailModel);
+//        }
     }
 
     private void setToolBar() {

@@ -56,6 +56,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
+
 public class HomeActivity extends BaseActivity implements BottomTapLayout.TabListener, ViewPager.OnPageChangeListener, View.OnClickListener, NetworkCommunicator.RequestListener {
 
     public static void open(Context context) {
@@ -173,9 +174,18 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         networkCommunicator.getRatingParameters(this, true);
         checkFacebookSessionStatus();
 
-
+        onTrackingNotification();
 //        RemoteConfigSetUp.getValues();
 
+    }
+
+    private void onTrackingNotification() {
+//
+//        boolean booleanExtra = getIntent().getBooleanExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, true);
+//        if (booleanExtra) {
+//            PushDetailModel pushDetailModel = (PushDetailModel) getIntent().getSerializableExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK);
+//            trackPushNotificationClick(pushDetailModel);
+//        }
     }
 
     @Override

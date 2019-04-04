@@ -181,11 +181,12 @@ public class MixPanel {
             LogUtils.exception(e);
         }
     }
+
     public static void trackRatingImageView() {
         try {
-                JSONObject props = new JSONObject();
-                props.put("action", "looking_rating_images");
-                trackEvent(props, "Event_On_Rating");
+            JSONObject props = new JSONObject();
+            props.put("action", "looking_rating_images");
+            trackEvent(props, "Event_On_Rating");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -242,8 +243,7 @@ public class MixPanel {
             origin = AppConstants.Tracker.USER_PROFILE;
         } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE) {
             origin = AppConstants.Tracker.TRAINER_PROFILE;
-        }
-        else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FAV_TRAINERS){
+        } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FAV_TRAINERS) {
             origin = AppConstants.Tracker.USER_PROFILE;
         }
 
@@ -378,8 +378,7 @@ public class MixPanel {
                                 } else if (classesFilter.getObject() instanceof ClassActivity) {
                                     activities.add(String.valueOf(((ClassActivity) classesFilter.getObject()).getId()));
                                     activityNames.add(String.valueOf(((ClassActivity) classesFilter.getObject()).getName()));
-                                }
-                                else if (classesFilter.getObject() instanceof GymDataModel) {
+                                } else if (classesFilter.getObject() instanceof GymDataModel) {
                                     gymList.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getId()));
                                     gymNames.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getStudioName()));
                                 }
@@ -571,8 +570,7 @@ public class MixPanel {
             origin = AppConstants.Tracker.NOTIFICATION;
         } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN) {
             origin = AppConstants.Tracker.PUSH_NOTIFICATION;
-        }
-        else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS){
+        } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS) {
             origin = AppConstants.Tracker.FIND_CLASS;
         }
 
@@ -615,6 +613,7 @@ public class MixPanel {
             LogUtils.exception(e);
         }
     }
+
     public static void trackSequentialUpdate(String failureReason) {
         try {
             JSONObject props = new JSONObject();
@@ -744,20 +743,39 @@ public class MixPanel {
         }
     }
 
-    private static String getCategoryList(List<ClassActivity> list){
-        StringBuffer categoryList=new StringBuffer("");
-        try{
-            if(list!=null && list.size()>0){
+    private static String getCategoryList(List<ClassActivity> list) {
+        StringBuffer categoryList = new StringBuffer("");
+        try {
+            if (list != null && list.size() > 0) {
                 for (ClassActivity object : list) {
-                    categoryList.append(object.getClassCategoryName()+",");
+                    categoryList.append(object.getClassCategoryName() + ",");
                 }
-                return categoryList.toString().substring(0,categoryList.toString().length()-1);
+                return categoryList.toString().substring(0, categoryList.toString().length() - 1);
             }
 
-        }catch(Exception e){
+        } catch (Exception e) {
 
         }
         return categoryList.toString();
     }
 
+//    public static void trackPushNotificationClick(PushDetailModel pushDetailModel) {
+//        try {
+//            if(pushDetailModel!=null) {
+//                JSONObject props = new JSONObject();
+//                if (!pushDetailModel.getType().isEmpty())
+//                    props.put("Type", pushDetailModel.getType());
+//                if (!pushDetailModel.getMessage().isEmpty())
+//                    props.put("Message", pushDetailModel.getMessage());
+//                props.put("Source", pushDetailModel.getSource());
+//                if (!pushDetailModel.getUrl().isEmpty())
+//                    props.put("Url", pushDetailModel.getUrl());
+//
+//                trackEvent(props, "Push_Click");
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            LogUtils.exception(e);
+//        }
+//    }
 }

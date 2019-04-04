@@ -108,8 +108,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     private boolean hasPurchased;
     private boolean hasClickedCheckout;
     private int mNumberOfPackagesToBuy;
-    private static Integer mWalletCredit = 2;
-    private static int mWalletCreditBalance = 2;
+    private static User.WalletDto mWalletCredit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,6 +145,15 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
 
         MixPanel.trackMembershipVisit(navigatedFrom);
+        onTrackingNotification();
+    }
+
+    private void onTrackingNotification() {
+//        boolean booleanExtra = getIntent().getBooleanExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, false);
+//        if (booleanExtra) {
+//            PushDetailModel pushDetailModel = (PushDetailModel) getIntent().getSerializableExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK);
+//            MixPanel.trackPushNotificationClick(pushDetailModel);
+//        }
     }
 
     @Override
@@ -470,9 +478,10 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
             case NetworkCommunicator.RequestCode.ME_USER:
                 user = TempStorage.getUser();
-                if(mWalletCredit!=null&&mWalletCreditBalance>0){
+                mWalletCredit= user.getWalletDto();
+                if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
                     mLayoutUserWallet.setVisibility(View.VISIBLE);
-                    mTextViewWalletAmount.setText(mWalletCreditBalance+" KD");
+                    mTextViewWalletAmount.setText(mWalletCredit.getBalance()+" KD");
                 }else{
                     mLayoutUserWallet.setVisibility(View.GONE);
 

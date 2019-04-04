@@ -84,12 +84,12 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     /*
     if user is purchasing a class via package
      */
-    public static void openActivity(Context context, Package aPackage, ClassModel classModel) {
+    public static void openActivity(Context context, Package aPackage, ClassModel classModel,int mNumberOfPackagesToBuy) {
         CheckoutActivity.aPackage = aPackage;
         CheckoutActivity.classModel = classModel;
         CheckoutActivity.selectedPacakageFromList = null;
         CheckoutActivity.checkoutFor = CLASS_PURCHASE_WITH_PACKAGE;
-        CheckoutActivity.mNumberOfPackagesToBuy = 1;
+        CheckoutActivity.mNumberOfPackagesToBuy = mNumberOfPackagesToBuy;
         CheckoutActivity.friendsDetail = null;
 
 
@@ -165,8 +165,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     private static UserPackage userPackage;
     private static int navigatinFrom;
     private static BookWithFriendData friendsDetail;
-    private static Integer mWalletCredit = 2;
-    private static int mWalletCreditBalance = 2;
+    private static User.WalletDto mWalletCredit;
 
 
 
@@ -284,9 +283,10 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
     private void checkUserCredits(){
         user = TempStorage.getUser();
-        if(mWalletCredit!=null&&mWalletCreditBalance>0){
+        mWalletCredit= user.getWalletDto();
+        if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
             mLayoutUserWallet.setVisibility(View.VISIBLE);
-            mTextViewWalletAmount.setText(mWalletCreditBalance+" "+context.getString(R.string.currency));
+            mTextViewWalletAmount.setText(mWalletCredit.getBalance()+" "+context.getString(R.string.currency));
         }else{
             mLayoutUserWallet.setVisibility(View.GONE);
 
@@ -316,9 +316,9 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     textViewCancellationPolicyGeneralToggle.setVisibility(View.VISIBLE);
                     textViewCancellationPolicyGenral.setText(R.string.membership_drop_in_info);
 
-                    if (mNumberOfPackagesToBuy == 1) {
+                   /* if (mNumberOfPackagesToBuy == 1) {
                         textViewPackageClasses.setText(context.getString(R.string.class_one_at)+" "+ classModel.getGymBranchDetail().getGymName() );
-                    } else
+                    } else*/
                         textViewPackageClasses.setText(LanguageUtils.numberConverter(mNumberOfPackagesToBuy) +" "+ AppConstants.pluralES(context.getString(R.string.classs), mNumberOfPackagesToBuy) + " "+context.getString(R.string.at)+" " + classModel.getGymBranchDetail().getGymName());
 
                 }
@@ -515,50 +515,50 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     private void applyCredit(){
         double costAfterCreditApply=0;
         double appliedCreditCost=0;
-        if(mWalletCredit!=null && mWalletCreditBalance>0) {
+        if(mWalletCredit!=null && mWalletCredit.getBalance()>0) {
             layoutWalletCredit.setVisibility(View.VISIBLE);
             switch (checkoutFor) {
             case PACKAGE:
             case CLASS_PURCHASE_WITH_PACKAGE:
                 if (promoCode != null) {
-                        if(mWalletCreditBalance > promoCode.getPriceAfterDiscount()){
+                        if(mWalletCredit.getBalance() > promoCode.getPriceAfterDiscount()){
                             costAfterCreditApply = promoCode.getPriceAfterDiscount() - promoCode.getPriceAfterDiscount();
                             appliedCreditCost = promoCode.getPriceAfterDiscount();
                             }
                         else{
-                            costAfterCreditApply = promoCode.getPriceAfterDiscount() - mWalletCreditBalance;
-                            appliedCreditCost = mWalletCreditBalance;
+                            costAfterCreditApply = promoCode.getPriceAfterDiscount() - mWalletCredit.getBalance();
+                            appliedCreditCost = mWalletCredit.getBalance();
                             }
                 } else {
-                    if(mWalletCreditBalance > aPackage.getCost()){
+                    if(mWalletCredit.getBalance() > aPackage.getCost()){
                         costAfterCreditApply = aPackage.getCost() - aPackage.getCost();
                         appliedCreditCost = aPackage.getCost();
                     }
                     else{
-                        costAfterCreditApply = aPackage.getCost() - mWalletCreditBalance;
-                        appliedCreditCost = mWalletCreditBalance;
+                        costAfterCreditApply = aPackage.getCost() - mWalletCredit.getBalance();
+                        appliedCreditCost = mWalletCredit.getBalance();
                     }
                 }
                 break;
 
             case SPECIAL_CLASS:
-                if(mWalletCreditBalance > mNumberOfPackagesToBuy * classModel.getPrice()){
+                if(mWalletCredit.getBalance() > mNumberOfPackagesToBuy * classModel.getPrice()){
                     costAfterCreditApply = mNumberOfPackagesToBuy * classModel.getPrice() - mNumberOfPackagesToBuy * classModel.getPrice();
                     appliedCreditCost = mNumberOfPackagesToBuy * classModel.getPrice();
                 }
                 else{
-                    costAfterCreditApply = mNumberOfPackagesToBuy * classModel.getPrice() - mWalletCreditBalance;
-                    appliedCreditCost = mWalletCreditBalance;
+                    costAfterCreditApply = mNumberOfPackagesToBuy * classModel.getPrice() - mWalletCredit.getBalance();
+                    appliedCreditCost = mWalletCredit.getBalance();
                 }
                 break;
             case EXTENSION:
-                if(mWalletCreditBalance > selectedPacakageFromList.getCost()){
+                if(mWalletCredit.getBalance() > selectedPacakageFromList.getCost()){
                     costAfterCreditApply = selectedPacakageFromList.getCost() - selectedPacakageFromList.getCost();
                     appliedCreditCost = selectedPacakageFromList.getCost();
                 }
                 else{
-                    costAfterCreditApply = selectedPacakageFromList.getCost() - mWalletCreditBalance;
-                    appliedCreditCost = mWalletCreditBalance;
+                    costAfterCreditApply = selectedPacakageFromList.getCost() - mWalletCredit.getBalance();
+                    appliedCreditCost = mWalletCredit.getBalance();
                 }
                 break;
 
@@ -568,7 +568,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
            if(appliedCreditCost>0){
                textViewWalletCreditPrice.setText("- " + LanguageUtils.numberConverter(((appliedCreditCost))) + " " + context.getString(R.string.currency));
-               mTextViewWalletAmount.setText((LanguageUtils.numberConverter(((mWalletCreditBalance-appliedCreditCost))))+" "+context.getString(R.string.currency));
+               mTextViewWalletAmount.setText((LanguageUtils.numberConverter(((mWalletCredit.getBalance()-appliedCreditCost))))+" "+context.getString(R.string.currency));
 
 
            }else{
