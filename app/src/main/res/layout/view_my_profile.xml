@@ -41,23 +41,27 @@
                         android:id="@+id/linearLayoutUserWallet"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:layout_gravity="bottom|right"
+                        android:layout_marginBottom="@dimen/margin_10"
+                        android:layout_marginRight="@dimen/margin_10"
                         >
 
                         <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="@dimen/margin_40"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="top|left"
                             android:layout_margin="2dp"
                             android:background="@drawable/rounded_wallet_bg"
-                            android:gravity="center_vertical">
+                            android:gravity="center_vertical"
+                            android:padding="5dp"
+
+                            >
 
                             <ImageView
                                 android:id="@+id/imageViewWalletIcon"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
                                 android:src="@drawable/wallet_icon"
                                 android:tint="@color/white"
                                 android:visibility="visible"
@@ -71,7 +75,7 @@
                                 android:fontFamily="sans-serif"
                                 android:text="30.00"
                                 android:textColor="@color/white"
-                                android:textSize="@dimen/text_extra_large"
+                                android:textSize="@dimen/text_medium"
                                 android:layout_marginLeft="@dimen/margin_5"
                                 android:layout_marginRight="@dimen/margin_5" />
 

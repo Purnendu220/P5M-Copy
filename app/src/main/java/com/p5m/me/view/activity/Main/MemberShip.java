@@ -29,7 +29,6 @@ import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
-import com.p5m.me.data.main.PushDetailModel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.eventbus.Events;
@@ -150,11 +149,11 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     }
 
     private void onTrackingNotification() {
-        boolean booleanExtra = getIntent().getBooleanExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, false);
-        if (booleanExtra) {
-            PushDetailModel pushDetailModel = (PushDetailModel) getIntent().getSerializableExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK);
-            MixPanel.trackPushNotificationClick(pushDetailModel);
-        }
+//        boolean booleanExtra = getIntent().getBooleanExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, false);
+//        if (booleanExtra) {
+//            PushDetailModel pushDetailModel = (PushDetailModel) getIntent().getSerializableExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK);
+//            MixPanel.trackPushNotificationClick(pushDetailModel);
+//        }
     }
 
     @Override

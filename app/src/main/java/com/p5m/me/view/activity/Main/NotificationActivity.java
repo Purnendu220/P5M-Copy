@@ -21,7 +21,6 @@ import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.NotificationsAdapter;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.NotificationModel;
-import com.p5m.me.data.main.PushDetailModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
@@ -91,11 +90,11 @@ public class NotificationActivity extends BaseActivity implements SwipeRefreshLa
     }
 
     private void onTrackingNotification() {
-        boolean booleanExtra = getIntent().getBooleanExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, false);
-        if (booleanExtra) {
-            PushDetailModel pushDetailModel = (PushDetailModel) getIntent().getSerializableExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK);
-            MixPanel.trackPushNotificationClick(pushDetailModel);
-        }
+//        boolean booleanExtra = getIntent().getBooleanExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, false);
+//        if (booleanExtra) {
+//            PushDetailModel pushDetailModel = (PushDetailModel) getIntent().getSerializableExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK);
+//            MixPanel.trackPushNotificationClick(pushDetailModel);
+//        }
     }
 
     private void setToolBar() {
