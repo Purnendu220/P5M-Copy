@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.p5m.me.R;
@@ -44,9 +45,15 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.textViewExtendPackage)
     public TextView textViewExtendPackage;
+    @BindView(R.id.linearLayoutUserWallet)
+    public LinearLayout linearLayoutUserWallet;
+
+    @BindView(R.id.textViewWalletBalance)
+    public TextView textViewWalletBalance;
 
     private final Context context;
     public UserPackage userpackageToExtend;
+    private User.WalletDto mWalletCredit;
 
     public ProfileHeaderViewHolder(View itemView) {
         super(itemView);
@@ -60,6 +67,7 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
 
         if (data != null && data instanceof User) {
             final User user = (User) data;
+            mWalletCredit=user.getWalletDto();
             itemView.setVisibility(View.VISIBLE);
 
             textViewName.setText(user.getFirstName()+" "+user.getLastName());
@@ -68,6 +76,15 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
             ImageUtils.setImage(context,
                     user.getProfileImage(),
                     R.drawable.profile_holder_big, imageView);
+            if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
+                linearLayoutUserWallet.setVisibility(View.VISIBLE);
+
+                textViewWalletBalance.setText(mWalletCredit.getBalance()+" KD");
+            }
+            else{
+                linearLayoutUserWallet.setVisibility(View.GONE);
+
+            }
 
             if (userPackageInfo.havePackages) {
                 if(user.isBuyMembership()){
