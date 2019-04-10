@@ -279,6 +279,8 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         textViewCancellationPolicyGeneralToggle.setOnClickListener(this);
 
         MixPanel.trackCheckoutVisit(aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName());
+        onTrackingNotification();
+
     }
 
     private void checkUserCredits(){
@@ -568,7 +570,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
            if(appliedCreditCost>0){
                textViewWalletCreditPrice.setText("- " + LanguageUtils.numberConverter(((appliedCreditCost))) + " " + context.getString(R.string.currency));
-               mTextViewWalletAmount.setText((LanguageUtils.numberConverter(((mWalletCredit.getBalance()-appliedCreditCost))))+" "+context.getString(R.string.currency));
+               //mTextViewWalletAmount.setText((LanguageUtils.numberConverter(((mWalletCredit.getBalance()-appliedCreditCost))))+" "+context.getString(R.string.currency));
 
 
            }else{
@@ -760,6 +762,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 PaymentUrl paymentUrlResponse = ((ResponseModel<PaymentUrl>) response).data;
                 if (paymentUrlResponse.getCompleted()) {
                     redirectOnResult();
+                    networkCommunicator.getMyUser(CheckoutActivity.this,false);
                 } else {
 
                     setPrice();

@@ -148,13 +148,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
         onTrackingNotification();
     }
 
-    private void onTrackingNotification() {
-//        boolean booleanExtra = getIntent().getBooleanExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, false);
-//        if (booleanExtra) {
-//            PushDetailModel pushDetailModel = (PushDetailModel) getIntent().getSerializableExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK);
-//            MixPanel.trackPushNotificationClick(pushDetailModel);
-//        }
-    }
+
 
     @Override
     public void onDestroy() {

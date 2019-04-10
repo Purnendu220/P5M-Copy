@@ -34,7 +34,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="horizontal"
-            android:visibility="visible"
+            android:visibility="gone"
             >
             <ImageView
                 android:id="@+id/imageViewWalletIcon"

@@ -38,6 +38,7 @@ public class TrainerListActivity extends BaseActivity {
 
         getSupportFragmentManager().beginTransaction().add(R.id.container,
                 TrainerList.createFragment(gymId, AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE_TRAINERS)).commit();
+        onTrackingNotification();
 
     }
 

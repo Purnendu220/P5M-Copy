@@ -38,6 +38,7 @@ import com.p5m.me.data.PaymentConfirmationResponse;
 import com.p5m.me.data.ValidityPackageList;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
+import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.fxn.utility.Constants;
@@ -46,6 +47,7 @@ import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CalendarHelper;
 import com.p5m.me.utils.DateUtils;
@@ -79,6 +81,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
     private String referenceNo;
     private Hashtable<String, String> calendarIdTable;
     private int calendar_id = -1;
+    private User user;
 
     public static void openActivity(Context context, int navigationFrom, String refId,
                                     Package aPackage, ClassModel classModel,
@@ -164,6 +167,12 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 
     @BindView(R.id.progressBarDone)
     public ProgressBar progressBarDone;
+
+
+    TextView mTextViewWalletAmount;
+    LinearLayout  mLayoutUserWallet;
+    User.WalletDto mWalletCredit;
+
     public static String BOOKED_ON = "";
     public static String PAYMENT_REFERENCE = "";
     public static String CONGRATULATION = "";
@@ -188,9 +197,11 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         progressBarDone.setVisibility(View.VISIBLE);
         buttonInviteFriends.setText(RemoteConfigConst.INVITE_FRIENDS_VALUE);
         layoutConfirmation.setVisibility(View.GONE);
+        networkCommunicator.getMyUser(this, false);
         setToolBar();
         handleClickEvent();
         enterFrom();
+        onTrackingNotification();
     }
 
     /* Set Toolbar */
@@ -209,6 +220,9 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         View v = LayoutInflater.from(context).inflate(R.layout.view_tool_normal, null);
 
         v.findViewById(R.id.imageViewBack).setVisibility(View.GONE);
+         mTextViewWalletAmount=(TextView)v.findViewById(R.id.textViewWalletAmount);
+         mLayoutUserWallet=(LinearLayout)v.findViewById(R.id.layoutUserWallet);
+         mLayoutUserWallet.setVisibility(View.GONE);
 
         ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.payment_confirmation));
         ((TextView) v.findViewById(R.id.textViewTitle)).setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
@@ -433,6 +447,18 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 //                paymentResponse.setStatus(PaymentStatus.FAILURE.name());
 //                setData(PaymentStatus.FAILURE);
                 buttonHandler();
+                break;
+            case NetworkCommunicator.RequestCode.ME_USER:
+                user = TempStorage.getUser();
+                mWalletCredit= user.getWalletDto();
+                if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
+                    mLayoutUserWallet.setVisibility(View.VISIBLE);
+                    mTextViewWalletAmount.setText(mWalletCredit.getBalance()+" KD");
+                }else{
+                    mLayoutUserWallet.setVisibility(View.GONE);
+
+                }
+                break;
         }
     }
 

@@ -478,6 +478,10 @@
     <string name="on_ya">Oh Ya!</string>
     <string name="maybe_next_time">Maybe next time</string>
     <string name="_5">/5</string>
+    <string name="success">Success</string>
+    <string name="alert_message">Congratulation You have done this successfully.</string>
+    <string name="successfull_refund_message">You have successfully cancelled your class.Your refund is credited to your account will reflect on your profile.</string>
+    <string name="go_to_profile">Go to Profile</string>
 
 
     <string-array name="schedule_list">

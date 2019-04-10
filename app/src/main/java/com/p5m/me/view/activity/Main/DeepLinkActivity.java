@@ -111,6 +111,7 @@ public class DeepLinkActivity extends BaseActivity {
                     overridePendingTransition(0,0);
                     stackBuilder.startActivities();
                 }
+                onTrackingNotification();
 
             } else {
 

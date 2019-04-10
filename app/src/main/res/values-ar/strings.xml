@@ -862,7 +862,10 @@
     <string name="_5">/٥</string>
     <string name="wallet_credit_applied">Cerdit Applied</string>
     <string name="wallet_alert">Use your wallet credit to buy any class or membership.</string>
-
+    <string name="success">Success</string>
+    <string name="alert_message">Congratulation You have done this successfully.</string>
+    <string name="successfull_refund_message">You have successfully cancelled your class.Your refund is credited to your account will reflect on your profile.</string>
+    <string name="go_to_profile">Go to Profile</string>
 
 
 </resources>
