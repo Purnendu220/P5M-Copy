@@ -485,7 +485,7 @@
 Would you like to view your balance? </string>
     <string name="go_to_profile">Go to Profile</string>
     <string name="wallet_currency">KD</string>
-    <string name="wallet_alert_title">Wallet Alert</string>
+    <string name="wallet_alert_title">P5M Credit</string>
 
 
     <string-array name="schedule_list">
