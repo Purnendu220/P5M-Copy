@@ -539,7 +539,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
         }
         if (Helper.isSpecialClass(model)&&!Helper.isFreeClass(model)&&DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) > cancelTime) {
-            CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, "", context.getString(R.string.successfull_refund_message),1,"",context.getString(R.string.go_to_profile),CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_SUCCESSFULL_UNJOIN,null,false, ClassListListenerHelper.this);
+            CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, "", context.getString(R.string.successfull_refund_message),1,context.getString(R.string.not_now),context.getString(R.string.yes),CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_SUCCESSFULL_UNJOIN,null,false, ClassListListenerHelper.this);
             try {
                 mCustomAlertDialog.show();
             } catch (Exception e) {

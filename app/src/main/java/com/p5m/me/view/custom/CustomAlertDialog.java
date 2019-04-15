@@ -148,6 +148,8 @@ public class CustomAlertDialog extends Dialog implements View.OnClickListener {
     }
 public  interface AlertRequestCodes{
         public int ALERT_REQUEST_SUCCESSFULL_UNJOIN=1;
+    public int ALERT_REQUEST_WALLET_INFO=2;
+
 
 }
 

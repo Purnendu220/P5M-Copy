@@ -288,7 +288,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         mWalletCredit= user.getWalletDto();
         if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
             mLayoutUserWallet.setVisibility(View.VISIBLE);
-            mTextViewWalletAmount.setText(mWalletCredit.getBalance()+" "+context.getString(R.string.currency));
+            mTextViewWalletAmount.setText(mWalletCredit.getBalance()+" "+context.getString(R.string.wallet_currency));
         }else{
             mLayoutUserWallet.setVisibility(View.GONE);
 

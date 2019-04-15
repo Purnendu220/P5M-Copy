@@ -354,12 +354,12 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 break;
             case CLASS_PURCHASE_WITH_PACKAGE:
                 classModel.setUserJoinStatus(true);
-                EventBroadcastHelper.sendPackagePurchasedForClass(classModel);
+               // EventBroadcastHelper.sendPackagePurchasedForClass(classModel);
                 HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE);
                 break;
             case SPECIAL_CLASS:
                 classModel.setUserJoinStatus(true);
-                EventBroadcastHelper.sendClassPurchased(classModel);
+               // EventBroadcastHelper.sendClassPurchased(classModel);
                 HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE);
                 break;
             case EXTENSION:
@@ -453,7 +453,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 mWalletCredit= user.getWalletDto();
                 if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
                     mLayoutUserWallet.setVisibility(View.VISIBLE);
-                    mTextViewWalletAmount.setText(mWalletCredit.getBalance()+" KD");
+                    mTextViewWalletAmount.setText(mWalletCredit.getBalance()+" "+context.getResources().getString(R.string.wallet_currency));
                 }else{
                     mLayoutUserWallet.setVisibility(View.GONE);
 

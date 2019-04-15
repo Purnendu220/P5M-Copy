@@ -33,6 +33,7 @@ import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
+import com.p5m.me.helper.ClassListListenerHelper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -40,6 +41,7 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
+import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.custom.PackageExtensionAlertDialog;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -52,7 +54,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MemberShip extends BaseActivity implements AdapterCallbacks, NetworkCommunicator.RequestListener,
-        SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
+        SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, CustomAlertDialog.OnAlertButtonAction {
 
     public static void openActivity(Context context, int navigationFrom) {
         context.startActivity(new Intent(context, MemberShip.class)
@@ -475,7 +477,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                 mWalletCredit= user.getWalletDto();
                 if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
                     mLayoutUserWallet.setVisibility(View.VISIBLE);
-                    mTextViewWalletAmount.setText(mWalletCredit.getBalance()+" KD");
+                    mTextViewWalletAmount.setText(mWalletCredit.getBalance()+" "+context.getResources().getString(R.string.wallet_currency));
                 }else{
                     mLayoutUserWallet.setVisibility(View.GONE);
 
@@ -535,14 +537,24 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     }
 
     private void showWalletAlert(){
-        DialogUtils.showBasicMessage(context,context.getResources().getString(R.string.wallet_alert),
-                context.getResources().getString(R.string.ok),
-                new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.dismiss();
-                    }
-                });
+        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.wallet_alert_title), context.getString(R.string.wallet_alert),1,"",context.getResources().getString(R.string.ok),CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO,null,true, this);
+        try {
+            mCustomAlertDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
     }
 
+    @Override
+    public void onOkClick(int requestCode, Object data) {
+
+    }
+
+    @Override
+    public void onCancelClick(int requestCode, Object data) {
+
+    }
 }
