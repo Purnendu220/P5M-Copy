@@ -2,6 +2,7 @@ package com.p5m.me.view.activity.Main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -131,6 +132,8 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
     private Handler handler;
     public CustomRateAlertDialog mCustomMatchDialog;
+    private static User.WalletDto mWalletCredit;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,6 +185,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         checkFacebookSessionStatus();
 
         onTrackingNotification();
+        networkCommunicator.getMyUser(this,false);
 
     }
 
@@ -299,7 +303,8 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             User user = TempStorage.getUser();
             if (user.isBuyMembership()) {
                 buyClasses.setVisibility(View.VISIBLE);
-
+                UpdateBuyClassText update = new UpdateBuyClassText();
+                update.execute();
             } else {
                 buyClasses.setVisibility(View.GONE);
 
@@ -307,6 +312,33 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+
+    }
+
+    private class UpdateBuyClassText extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... url) {
+            User user = TempStorage.getUser();
+            mWalletCredit=user.getWalletDto();
+            if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
+               return RemoteConfigConst.BUY_CLASS_VALUE+"("+context.getResources().getString(R.string.wallet_text)+": "+mWalletCredit.getBalance()+""+mContext.getResources().getString(R.string.wallet_currency)+")";
+                }
+                else{
+                return RemoteConfigConst.BUY_CLASS_VALUE;
+
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            buyClasses.setText(result);
+
+
+
         }
 
 
