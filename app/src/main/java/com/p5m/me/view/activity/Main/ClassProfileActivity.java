@@ -14,6 +14,7 @@ import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -49,6 +50,7 @@ import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.BookForAFriendPopup;
+import com.p5m.me.view.custom.CustomAlertDialog;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -63,7 +65,7 @@ import butterknife.OnClick;
 
 import static com.p5m.me.utils.AppConstants.Limit.PAGE_LIMIT_MAIN_CLASS_LIST;
 
-public class ClassProfileActivity extends BaseActivity implements AdapterCallbacks, View.OnClickListener, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
+public class ClassProfileActivity extends BaseActivity implements AdapterCallbacks, View.OnClickListener, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener, CustomAlertDialog.OnAlertButtonAction {
 
     private String message;
     private int errorMsg;
@@ -117,6 +119,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     private BookWithFriendData mBookWithFriendData;
     private Hashtable<String, String> calendarIdTable;
     private int calendar_id = -1;
+    private TextView mTextViewWalletAmount;
+    private LinearLayout mLayoutUserWallet;
+    private static User.WalletDto mWalletCredit;
 
 
     @Override
@@ -224,6 +229,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
         MixPanel.trackClassDetails();
         onTrackingNotification();
+        networkCommunicator.getMyUser(this, false);
+
     }
 
 
@@ -473,6 +480,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
         v.findViewById(R.id.imageViewBack).setOnClickListener(this);
         imageViewOptions = v.findViewById(R.id.imageViewOptions);
+        mTextViewWalletAmount=(TextView)v.findViewById(R.id.textViewWalletAmount);
+        mLayoutUserWallet=(LinearLayout)v.findViewById(R.id.layoutUserWallet);
+        mLayoutUserWallet.setOnClickListener(this);
         imageViewOptions.setOnClickListener(this);
         ((TextView)(v.findViewById(R.id.textViewTitle))).setText(RemoteConfigConst.CLASS_CARD_TEXT_VALUE);
 
@@ -547,7 +557,22 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             case R.id.imageViewOptions:
                 ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, classModel, navigationFrom);
                 break;
+
+            case R.id.layoutUserWallet:
+                showWalletAlert();
+                break;
         }
+    }
+    private void showWalletAlert(){
+        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.wallet_alert_title), context.getString(R.string.wallet_alert),1,"",context.getResources().getString(R.string.ok),CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO,null,true, this);
+        try {
+            mCustomAlertDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
     }
 
     @Override
@@ -674,6 +699,20 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
 
                         }
+                    }
+                }
+                break;
+            case NetworkCommunicator.RequestCode.ME_USER:
+                if (Helper.isSpecialClass(classModel) &&
+                        !Helper.isFreeClass(classModel)) {
+                    user = TempStorage.getUser();
+                    mWalletCredit= user.getWalletDto();
+                    if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
+                        mLayoutUserWallet.setVisibility(View.VISIBLE);
+                        mTextViewWalletAmount.setText(mWalletCredit.getBalance()+" "+context.getResources().getString(R.string.wallet_currency));
+                    }else{
+                        mLayoutUserWallet.setVisibility(View.GONE);
+
                     }
                 }
                 break;
@@ -806,6 +845,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 break;
             case NetworkCommunicator.RequestCode.PACKAGES_FOR_USER:
                 break;
+
         }
     }
 
@@ -888,4 +928,13 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     }
 
 
+    @Override
+    public void onOkClick(int requestCode, Object data) {
+
+    }
+
+    @Override
+    public void onCancelClick(int requestCode, Object data) {
+
+    }
 }

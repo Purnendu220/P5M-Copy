@@ -192,7 +192,7 @@
     <string name="secure_checkout">secure checkout</string>
     <string name="promo_code">Promo Code</string>
     <string name="apply_promo_code">Enter Promo Code</string>
-    <string name="remove_promo_code">Remove Promo Code</string>
+    <string name="remove_promo_code">Apply another promo</string>
     <string name="cancellation_policy">"<u>Cancellation Policy</u>"</string>
     <string name="press_again_to_exit">Press back again to exit</string>
     <string name="cancel_class">Cancel booking</string>
@@ -474,7 +474,7 @@
     <string name="are_you_sure_leave_page">Are you sure you want to leave this page?</string>
     <string name="non_refundable_warning_msg">This class is non-refundable after purchase. Do you want to continue?</string>
     <string name="non_refundable_warning">*This class is non-refundable after purchase.</string>
-    <string name="wallet_alert">Use your wallet credit to buy any class or membership.</string>
+    <string name="wallet_alert">Use your wallet credits to purchase any package on the app.</string>
 
     <string name="on_ya">Oh Ya!</string>
     <string name="maybe_next_time">Maybe next time</string>
@@ -483,9 +483,9 @@
     <string name="alert_message">Congratulation You have done this successfully.</string>
     <string name="successfull_refund_message">The amount paid for this class was refunded to your account. Use your credit to book your next workout with us.
 Would you like to view your balance? </string>
-    <string name="go_to_profile">Go to Profile</string>
     <string name="wallet_currency">KD</string>
-    <string name="wallet_alert_title">P5M Credit</string>
+    <string name="wallet_alert_title">P5M Wallet</string>
+    <string name="wallet_text">P5M Wallet</string>
 
 
     <string-array name="schedule_list">

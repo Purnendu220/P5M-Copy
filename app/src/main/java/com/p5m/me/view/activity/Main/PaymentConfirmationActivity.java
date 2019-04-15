@@ -354,12 +354,12 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 break;
             case CLASS_PURCHASE_WITH_PACKAGE:
                 classModel.setUserJoinStatus(true);
-               // EventBroadcastHelper.sendPackagePurchasedForClass(classModel);
+                EventBroadcastHelper.sendPackagePurchasedForClass(classModel);
                 HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE);
                 break;
             case SPECIAL_CLASS:
                 classModel.setUserJoinStatus(true);
-               // EventBroadcastHelper.sendClassPurchased(classModel);
+                EventBroadcastHelper.sendClassPurchased(classModel);
                 HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE);
                 break;
             case EXTENSION:
