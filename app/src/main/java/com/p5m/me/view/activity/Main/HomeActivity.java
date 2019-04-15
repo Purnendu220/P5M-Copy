@@ -22,13 +22,18 @@ import com.facebook.GraphResponse;
 import com.p5m.me.R;
 import com.p5m.me.adapters.HomeAdapter;
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
+import com.p5m.me.analytics.MixPanel;
+import com.p5m.me.data.PushDetailModel;
 import com.p5m.me.data.UnratedClassData;
 import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.data.main.DefaultSettingServer;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.request.LogoutRequest;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
+import com.p5m.me.helper.ClassListListenerHelper;
+import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
@@ -36,12 +41,14 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.RefrenceWrapper;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.activity.custom.BottomTapLayout;
+import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.custom.CustomRateAlertDialog;
 import com.p5m.me.view.fragment.ViewPagerFragmentSelection;
 
@@ -175,18 +182,9 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         checkFacebookSessionStatus();
 
         onTrackingNotification();
-//        RemoteConfigSetUp.getValues();
 
     }
 
-    private void onTrackingNotification() {
-//
-//        boolean booleanExtra = getIntent().getBooleanExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, true);
-//        if (booleanExtra) {
-//            PushDetailModel pushDetailModel = (PushDetailModel) getIntent().getSerializableExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK);
-//            trackPushNotificationClick(pushDetailModel);
-//        }
-    }
 
     @Override
     public void onDestroy() {
@@ -218,6 +216,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
                 onPageSelected(INITIAL_POSITION);
             }
         });
+
     }
 
     private void setupBottomTabs() {

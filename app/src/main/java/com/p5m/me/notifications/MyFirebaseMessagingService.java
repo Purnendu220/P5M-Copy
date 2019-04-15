@@ -16,6 +16,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.p5m.me.BuildConfig;
 import com.p5m.me.R;
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
+import com.p5m.me.data.PushDetailModel;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.storage.TempStorage;
@@ -47,6 +48,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private Context context;
     private Hashtable<String, String> calendarIdTable;
     private int calendar_id = -1;
+    PushDetailModel pushDetailModel;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -207,7 +209,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String type = jsonObject.optString(AppConstants.Notification.TYPE);
             String message = jsonObject.optString(AppConstants.Notification.BODY);
             String notifyUrl = jsonObject.optString(AppConstants.Notification.URL);
-           // setPushDetail(type, message, notifyUrl);
+            setPushDetail(type, message, notifyUrl);
             long dataID = jsonObject.optLong(AppConstants.Notification.OBJECT_DATA_ID);
 
             try {
@@ -485,12 +487,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void handleNotification(Intent navigationIntent, String title, String message) {
-
+        navigationIntent.putExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, true);
+        navigationIntent.putExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK, pushDetailModel);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addNextIntentWithParentStack(navigationIntent);
 
-        stackBuilder.editIntentAt(0).putExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, true);
-      //  stackBuilder.editIntentAt(1).putExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK, pushDetailModel);
+        //stackBuilder.editIntentAt(0).putExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, true);
+      // stackBuilder.editIntentAt(0).putExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK, pushDetailModel);
 
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -656,18 +659,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     }
 
-    /*
-     * Set Push Detail for MixPanel Analysis
-     * */
-//    private void setPushDetail(String type, String message, String url) {
-//        pushDetailModel = new PushDetailModel();
-//        pushDetailModel.setMessage(message);
-//        pushDetailModel.setType(type);
-//        pushDetailModel.setUrl(url);
-//        Log.v("PushDetail","type: "+type
-//                +" msg: "+message
-//                +" url: "+url);
-//    }
+
+    private void setPushDetail(String type, String message, String url) {
+        pushDetailModel = new PushDetailModel();
+        pushDetailModel.setMessage(message);
+        pushDetailModel.setType(type);
+        pushDetailModel.setUrl(url);
+        Log.v("PushDetail","type: "+type
+                +" msg: "+message
+                +" url: "+url);
+    }
 
     private void setNotification(JSONObject jsonObject, long dataID) {
         String title = jsonObject.optString(AppConstants.Notification.CLASS_TITLE);

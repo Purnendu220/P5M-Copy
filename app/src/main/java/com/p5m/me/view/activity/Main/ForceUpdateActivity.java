@@ -61,6 +61,9 @@ public class ForceUpdateActivity extends BaseActivity {
                 }
             }
         });
+
+        onTrackingNotification();
+
     }
 
     @Override

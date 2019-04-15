@@ -214,6 +214,7 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
                 networkCommunicator.getRatingParameters(this,true);
             }
         }
+        onTrackingNotification();
 
     }
 

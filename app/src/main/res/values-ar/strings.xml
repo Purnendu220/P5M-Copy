@@ -862,6 +862,13 @@
     <string name="_5">/٥</string>
     <string name="wallet_credit_applied">Cerdit Applied</string>
     <string name="wallet_alert">Use your wallet credit to buy any class or membership.</string>
+    <string name="success">Success</string>
+    <string name="alert_message">Congratulation You have done this successfully.</string>
+    <string name="successfull_refund_message">تم استرداد المبلغ المدفوع لهذا الكلاس إلى حسابك. استخدم رصيدك لحجز تمرينك التالي معنا.
+هل ترغب رؤية رصيدك؟</string>
+    <string name="go_to_profile">Go to Profile</string>
+    <string name="wallet_currency">KD</string>
+    <string name="wallet_alert_title">P5M Credit</string>
 
 
 

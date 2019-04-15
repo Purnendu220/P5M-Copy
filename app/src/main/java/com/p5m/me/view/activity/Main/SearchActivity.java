@@ -212,7 +212,7 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
             editTextSearch.requestFocus();
             KeyboardUtils.open(editTextSearch, context);
         }
-
+        onTrackingNotification();
 
     }
 

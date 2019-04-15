@@ -43,6 +43,7 @@ public class WalletDetailActivity extends BaseActivity {
         ButterKnife.bind(activity);
         setToolBar();
         walletHistory =(RecyclerView)findViewById(R.id.walletHistory);
+        onTrackingNotification();
     }
     private void setToolBar() {
         BaseActivity activity = (BaseActivity) this.activity;

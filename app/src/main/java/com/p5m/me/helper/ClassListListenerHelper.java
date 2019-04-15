@@ -37,7 +37,9 @@ import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.ClassProfileActivity;
 import com.p5m.me.view.activity.Main.ContactActivity;
 import com.p5m.me.view.activity.Main.FullRatingActivity;
+import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
+import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.custom.CustomRateAlertDialog;
 
 import java.util.Hashtable;
@@ -46,7 +48,7 @@ import java.util.Hashtable;
  * Created by Varun John on 4/19/2018.
  */
 
-public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommunicator.RequestListener {
+public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommunicator.RequestListener, CustomAlertDialog.OnAlertButtonAction {
 
     public Context context;
     public Activity activity;
@@ -121,7 +123,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         }
     }
 
-    public static void popupOptionsCancelClass(final Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model) {
+    public  void popupOptionsCancelClass(final Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model) {
         final View viewRoot = LayoutInflater.from(context).inflate(R.layout.popup_options, null);
         TextView textView = viewRoot.findViewById(R.id.textViewOption1);
         textView.setText(context.getString(R.string.cancel_class));
@@ -156,7 +158,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
-    public static void popupOptionsCancelClassBookedWithFriend(final Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model) {
+    public void popupOptionsCancelClassBookedWithFriend(final Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model) {
         final View viewRoot = LayoutInflater.from(context).inflate(R.layout.popup_options, null);
         CardView cardView1 = viewRoot.findViewById(R.id.card_view);
         CardView cardViewBWF = viewRoot.findViewById(R.id.card_view_booked_with_friend);
@@ -295,7 +297,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
-    private static void dialogConfirmUnJoin(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, final int unJoinClassId) {
+    private  void dialogConfirmUnJoin(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, final int unJoinClassId) {
 
         String message = context.getString(R.string.sure_unjoin);
 
@@ -357,7 +359,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                             EventBroadcastHelper.sendUserUpdate(context, ((ResponseModel<User>) response).data);
                             MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
                             materialDialog.dismiss();
-
+                            openAlertForRefund(model);
                         } catch (Exception e) {
                             e.printStackTrace();
                             LogUtils.exception(e);
@@ -383,7 +385,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
 
 
-    private static void dialogConfirmUnJoinBookWithFriend(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, final int unJoinClassId, final int unJoinType) {
+    private void dialogConfirmUnJoinBookWithFriend(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, final int unJoinClassId, final int unJoinType) {
 
         String message = context.getString(R.string.sure_unjoin);
 
@@ -450,6 +452,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                             EventBroadcastHelper.sendUserUpdate(context, ((ResponseModel<User>) response).data);
                             MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
                             materialDialog.dismiss();
+                            openAlertForRefund(model);
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -526,6 +529,43 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             return;
         }
 
+
+    }
+    private void openAlertForRefund(ClassModel model){
+        DefaultSettingServer defaultSettingServer = MyPreferences.getInstance().getDefaultSettingServer();
+        float  cancelTime=2;
+        if (defaultSettingServer != null) {
+            cancelTime = defaultSettingServer.getRefundAllowedbefore();
+
+        }
+        if (Helper.isSpecialClass(model)&&!Helper.isFreeClass(model)&&DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) > cancelTime) {
+            CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, "", context.getString(R.string.successfull_refund_message),1,context.getString(R.string.not_now),context.getString(R.string.yes),CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_SUCCESSFULL_UNJOIN,null,false, ClassListListenerHelper.this);
+            try {
+                mCustomAlertDialog.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void onOkClick(int requestCode, Object data) {
+     switch (requestCode){
+         case CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_SUCCESSFULL_UNJOIN:
+             HomeActivity.show(context, AppConstants.Tab.TAB_MY_PROFILE);
+
+             break;
+
+     }
+    }
+
+    @Override
+    public void onCancelClick(int requestCode, Object data) {
+        switch (requestCode){
+            case CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_SUCCESSFULL_UNJOIN:
+                break;
+
+        }
 
     }
 }

@@ -79,7 +79,7 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
             if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
                 linearLayoutUserWallet.setVisibility(View.VISIBLE);
 
-                textViewWalletBalance.setText(mWalletCredit.getBalance()+" KD");
+                textViewWalletBalance.setText(mWalletCredit.getBalance()+" "+context.getResources().getString(R.string.wallet_currency));
             }
             else{
                 linearLayoutUserWallet.setVisibility(View.GONE);
