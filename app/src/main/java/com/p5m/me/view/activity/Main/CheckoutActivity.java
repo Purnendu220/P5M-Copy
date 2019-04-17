@@ -44,6 +44,7 @@ import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
+import com.p5m.me.view.custom.CustomAlertDialog;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -61,7 +62,7 @@ import static com.p5m.me.fxn.utility.Constants.CheckoutFor.SPECIAL_CLASS;
 import static com.p5m.me.utils.LanguageUtils.numberConverter;
 
 
-public class CheckoutActivity extends BaseActivity implements View.OnClickListener, NetworkCommunicator.RequestListener {
+public class CheckoutActivity extends BaseActivity implements View.OnClickListener, NetworkCommunicator.RequestListener, CustomAlertDialog.OnAlertButtonAction {
 
     private Handler handler;
     private Runnable nextScreenRunnable;
@@ -277,6 +278,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         textViewLimit.setOnClickListener(this);
         textViewCancellationPolicyToggle.setOnClickListener(this);
         textViewCancellationPolicyGeneralToggle.setOnClickListener(this);
+        mLayoutUserWallet.setOnClickListener(this);
 
         MixPanel.trackCheckoutVisit(aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName());
         onTrackingNotification();
@@ -288,7 +290,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         mWalletCredit= user.getWalletDto();
         if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
             mLayoutUserWallet.setVisibility(View.VISIBLE);
-            mTextViewWalletAmount.setText(mWalletCredit.getBalance()+" "+context.getString(R.string.wallet_currency));
+            mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance())+" "+context.getResources().getString(R.string.wallet_currency));
         }else{
             mLayoutUserWallet.setVisibility(View.GONE);
 
@@ -457,6 +459,9 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
                     setPrice();
                 }
+                break;
+            case R.id.layoutUserWallet:
+                showWalletAlert();
                 break;
         }
     }
@@ -911,5 +916,24 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         }
         promoCode = promo;
         setPrice();
+    }
+    private void showWalletAlert(){
+        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.wallet_alert_title), context.getString(R.string.wallet_alert),1,"",context.getResources().getString(R.string.ok),CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO,null,true, this);
+        try {
+            mCustomAlertDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void onOkClick(int requestCode, Object data) {
+
+    }
+
+    @Override
+    public void onCancelClick(int requestCode, Object data) {
+
     }
 }

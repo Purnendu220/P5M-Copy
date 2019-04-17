@@ -39,6 +39,7 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
@@ -477,7 +478,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                 mWalletCredit= user.getWalletDto();
                 if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
                     mLayoutUserWallet.setVisibility(View.VISIBLE);
-                    mTextViewWalletAmount.setText(mWalletCredit.getBalance()+" "+context.getResources().getString(R.string.wallet_currency));
+                    mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance())+" "+context.getResources().getString(R.string.wallet_currency));
                 }else{
                     mLayoutUserWallet.setVisibility(View.GONE);
 
@@ -487,6 +488,8 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                 break;
         }
     }
+
+
 
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
@@ -543,8 +546,6 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
 
     }
 

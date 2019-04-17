@@ -866,10 +866,9 @@
     <string name="alert_message">Congratulation You have done this successfully.</string>
     <string name="successfull_refund_message">تم استرداد المبلغ المدفوع لهذا الكلاس إلى حسابك. استخدم رصيدك لحجز تمرينك التالي معنا.
 هل ترغب رؤية رصيدك؟</string>
-    <string name="go_to_profile">Go to Profile</string>
-    <string name="wallet_currency">KD</string>
-    <string name="wallet_alert_title">P5M Wallet</string>
-    <string name="wallet_text">P5M Wallet</string>
+    <string name="wallet_currency">KWD</string>
+    <string name="wallet_alert_title">محفظة P5M </string>
+    <string name="wallet_text">الرصيد المتوفر</string>
 
 
 </resources>

@@ -55,6 +55,7 @@ import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
+import com.p5m.me.view.custom.CustomAlertDialog;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -68,7 +69,7 @@ import static com.p5m.me.fxn.utility.Constants.CheckoutFor.EXTENSION;
 import static com.p5m.me.fxn.utility.Constants.CheckoutFor.PENDING_TRANSACTION;
 import static com.p5m.me.view.activity.Main.PaymentConfirmationActivity.PaymentStatus.SUCCESS;
 
-public class PaymentConfirmationActivity extends BaseActivity implements NetworkCommunicator.RequestListener, View.OnClickListener {
+public class PaymentConfirmationActivity extends BaseActivity implements NetworkCommunicator.RequestListener, View.OnClickListener, CustomAlertDialog.OnAlertButtonAction {
 
 
     private static ClassModel classModel;
@@ -344,6 +345,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         buttonContactUs.setOnClickListener(this);
         buttonTryAgain.setOnClickListener(this);
         buttonInviteFriends.setOnClickListener(this);
+        mLayoutUserWallet.setOnClickListener(this);
     }
 
     private void redirectOnResult() {
@@ -416,8 +418,21 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
             case R.id.buttonContactUs:
                 dialogContactUs();
                 break;
+            case R.id.layoutUserWallet:
+                showWalletAlert();
+                break;
 
         }
+    }
+
+    @Override
+    public void onOkClick(int requestCode, Object data) {
+
+    }
+
+    @Override
+    public void onCancelClick(int requestCode, Object data) {
+
     }
 
     public enum PaymentStatus {
@@ -453,7 +468,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 mWalletCredit= user.getWalletDto();
                 if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
                     mLayoutUserWallet.setVisibility(View.VISIBLE);
-                    mTextViewWalletAmount.setText(mWalletCredit.getBalance()+" "+context.getResources().getString(R.string.wallet_currency));
+                    mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance())+" "+context.getResources().getString(R.string.wallet_currency));
                 }else{
                     mLayoutUserWallet.setVisibility(View.GONE);
 
@@ -733,6 +748,15 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                         }
                     }
                 });
+    }
+    private void showWalletAlert(){
+        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.wallet_alert_title), context.getString(R.string.wallet_alert),1,"",context.getResources().getString(R.string.ok),CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO,null,true, this);
+        try {
+            mCustomAlertDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 
