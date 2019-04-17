@@ -859,7 +859,16 @@
     <string name="non_refundable_warning">*This class is non-refundable after purchase.</string>
     <string name="on_ya">Oh Ya!</string>
     <string name="maybe_next_time">Maybe next time</string>
-    <string name="your_class_schedule_at">Your Class is schedule at</string>
     <string name="_5">/٥</string>
+    <string name="wallet_credit_applied">تم إضافة الرصيد</string>
+    <string name="wallet_alert">استخدم رصيدك لشراء أي حزمة في التطبيق</string>
+    <string name="success">Success</string>
+    <string name="alert_message">Congratulation You have done this successfully.</string>
+    <string name="successfull_refund_message">تم استرداد المبلغ المدفوع لهذا الكلاس إلى حسابك. استخدم رصيدك لحجز تمرينك التالي معنا.
+هل ترغب رؤية رصيدك؟</string>
+    <string name="wallet_currency">KWD</string>
+    <string name="wallet_alert_title">محفظة P5M </string>
+    <string name="wallet_text">الرصيد المتوفر</string>
+
 
 </resources>

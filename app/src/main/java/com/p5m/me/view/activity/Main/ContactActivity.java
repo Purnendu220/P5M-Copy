@@ -81,6 +81,8 @@ public class ContactActivity extends BaseActivity implements View.OnClickListene
         getterSetter();
         setRadioButtonVisibility();
         radioGroupSender.setOnCheckedChangeListener(this);
+        onTrackingNotification();
+
     }
 
     private void setRadioButtonVisibility() {

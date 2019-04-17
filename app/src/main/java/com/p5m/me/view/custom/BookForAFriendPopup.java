@@ -91,8 +91,6 @@ public class BookForAFriendPopup extends Dialog implements View.OnClickListener 
         lp.gravity = Gravity.CENTER;
         getWindow().setAttributes(lp);
         User user = MyPreferences.getInstance().getUser();
-        if (!user.isBuyMembership())
-            warningNonRefundableMsg();
         setListeners();
 
         RemoteConfigSetUp.setBackgroundColor(textViewBookWithFriend, RemoteConfigConst.BOOK_WITH_FRIEND_COLOR_VALUE, context.getResources().getColor(R.color.colorAccent));
@@ -102,21 +100,6 @@ public class BookForAFriendPopup extends Dialog implements View.OnClickListener 
 
 
     }
-
-    public void warningNonRefundableMsg() {
-        float cancelTime = 2;
-        if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model)) {
-            textViewWarningRefund.setVisibility(View.VISIBLE);
-        } else if (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) <= cancelTime) {
-            if(!user.isBuyMembership())
-            textViewWarningRefund.setVisibility(View.VISIBLE);
-        } else {
-            textViewWarningRefund.setVisibility(View.GONE);
-        }
-
-
-    }
-
     private void setListeners() {
         textViewBookWithFriend.setOnClickListener(this);
         buttonFemale.setOnClickListener(this);

@@ -3,6 +3,7 @@ package com.p5m.me.eventbus;
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Build;
 import android.provider.Settings;
 
 import com.facebook.login.LoginManager;
@@ -191,8 +192,10 @@ public static void sendBookWithFriendEvent(BookWithFriendData friendData){
             String androidId = Settings.Secure.getString(context.getContentResolver(),
                     Settings.Secure.ANDROID_ID);
 
+            String osVersion =android.os.Build.MODEL+"#"+ Build.VERSION.RELEASE ;
+
             NetworkCommunicator.getInstance(context).deviceUpdate(
-                    new DeviceUpdate(TempStorage.version, TempStorage.getUser().getId(), deviceToken, androidId),
+                    new DeviceUpdate(TempStorage.version, TempStorage.getUser().getId(), deviceToken, androidId,osVersion),
                     new NetworkCommunicator.RequestListener() {
                         @Override
                         public void onApiSuccess(Object response, int requestCode) {

@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.request.LogoutRequest;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.helper.Helper;
@@ -90,7 +91,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             Helper.openWebPage(context, AppConstants.Url.WEBSITE + "terms");
 
         }
+        onTrackingNotification();
     }
+
+
 
     @OnClick(R.id.imageViewBack)
     public void imageViewBack(View view) {

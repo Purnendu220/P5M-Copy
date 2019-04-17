@@ -14,6 +14,7 @@ import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -37,7 +38,6 @@ import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.helper.ClassListListenerHelper;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
-import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -46,10 +46,12 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CalendarHelper;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.BookForAFriendPopup;
+import com.p5m.me.view.custom.CustomAlertDialog;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -64,7 +66,7 @@ import butterknife.OnClick;
 
 import static com.p5m.me.utils.AppConstants.Limit.PAGE_LIMIT_MAIN_CLASS_LIST;
 
-public class ClassProfileActivity extends BaseActivity implements AdapterCallbacks, View.OnClickListener, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
+public class ClassProfileActivity extends BaseActivity implements AdapterCallbacks, View.OnClickListener, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener, CustomAlertDialog.OnAlertButtonAction {
 
     private String message;
     private int errorMsg;
@@ -84,7 +86,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public static Intent createIntent(Context context, int classId, int navigationFrom) {
         return new Intent(context, ClassProfileActivity.class)
                 .putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom)
-                .putExtra(AppConstants.DataKey.CLASS_SESSION_ID_INT, classId);
+                .putExtra(AppConstants.DataKey.CLASS_SESSION_ID_INT, classId)
+                .putExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, true);
+
     }
 
     @BindView(R.id.recyclerView)
@@ -116,7 +120,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     private BookWithFriendData mBookWithFriendData;
     private Hashtable<String, String> calendarIdTable;
     private int calendar_id = -1;
-    private int errorMsg;
+    private TextView mTextViewWalletAmount;
+    private LinearLayout mLayoutUserWallet;
+    private static User.WalletDto mWalletCredit;
 
 
     @Override
@@ -223,19 +229,12 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 //        }
 
         MixPanel.trackClassDetails();
-
-//        textViewBookWithFriend.setText(RemoteConfigConst.BOOK_WITH_FRIEND_VALUE);
-      /* setConfig(this, textViewBookWithFriend,
-                RemoteConfigConst.BOOK_WITH_FRIEND,getString(R.string.reserve_class_with_friend),RemoteConfigConst.ConfigStatus.TEXT
-        );*/
-//        RemoteConfigSetUp.setBackgroundColor(textViewBook,RemoteConfigConst.BOOK_COLOR_VALUE,context.getResources().getColor(R.color.theme_book));
-
-//        setConfig(this, textViewBook,
-//                RemoteConfigConst.BOOK_IN_CLASS_COLOR,"#3d85ea",RemoteConfigConst.ConfigStatus.COLOR);
-//        setConfig(this, textViewBookWithFriend,
-//                RemoteConfigConst.BOOK_WITH_FRIEND_COLOR,"#3d85ea",RemoteConfigConst.ConfigStatus.COLOR);
+        onTrackingNotification();
+        networkCommunicator.getMyUser(this, false);
 
     }
+
+
 
     @Override
     public void onRefresh() {
@@ -264,7 +263,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 joinClass();
             else {
                 if (!user.isBuyMembership())
-                    alertNonRefundMsg();
+                    CheckoutActivity.openActivity(context, classModel, 1);
+
                 else {
                     if (Helper.isSpecialClass(classModel) &&
                             !Helper.isFreeClass(classModel)
@@ -287,9 +287,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         networkCommunicator.getMyUser(new NetworkCommunicator.RequestListener() {
             @Override
             public void onApiSuccess(Object response, int requestCode) {
-//                performJoinProcess();
+                performJoinProcess();
 
-                warningNonRefundablePopUp();
+//                warningNonRefundablePopUp();
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
             }
 
@@ -299,38 +299,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
             }
         }, false);
-    }
-
-    public void warningNonRefundablePopUp() {
-        float cancelTime = 2;
-
-        if (Helper.isSpecialClass(classModel) && !Helper.isFreeClass(classModel)) {
-//            message = warningMsg;
-            alertNonRefundMsg();
-
-        } else if (DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime()) <= cancelTime) {
-//            message = warningMsg;
-            if (!user.isBuyMembership())
-                alertNonRefundMsg();
-            else{
-
-
-                if (Helper.isSpecialClass(classModel) &&
-                        !Helper.isFreeClass(classModel)
-                        ) {
-
-                    CheckoutActivity.openActivity(context, classModel, 1);
-
-                } else {
-                    joinClass();
-
-                }
-            }
-        } else {
-            performJoinProcess();
-        }
-
-
     }
 
     @OnClick(R.id.textViewBookWithFriend)
@@ -344,45 +312,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         }
     }
 
-    private void alertNonRefundMsg() {
-        final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
-                .cancelable(false)
-                .customView(R.layout.dialog_unjoin_class, false)
-                .build();
-        materialDialog.show();
 
-        final TextView textViewMessage = (TextView) materialDialog.findViewById(R.id.textViewMessage);
-        final TextView textViewUnJoin = (TextView) materialDialog.findViewById(R.id.textViewOk);
-        final TextView textViewClose = (TextView) materialDialog.findViewById(R.id.textViewCancel);
-
-        textViewMessage.setText(message);
-        textViewUnJoin.setText(activity.getString(R.string.on_ya));
-        textViewClose.setText(activity.getString(R.string.maybe_next_time));
-
-        textViewClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                materialDialog.dismiss();
-            }
-        });
-
-        textViewUnJoin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                materialDialog.dismiss();
-                if (Helper.isSpecialClass(classModel) &&
-                        !Helper.isFreeClass(classModel)
-                        ) {
-
-                    CheckoutActivity.openActivity(context, classModel, 1);
-
-                } else {
-                    joinClass();
-
-                }
-            }
-        });
-    }
 
     public void bookWithAFriend(final BookWithFriendData data) {
 
@@ -551,6 +481,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
         v.findViewById(R.id.imageViewBack).setOnClickListener(this);
         imageViewOptions = v.findViewById(R.id.imageViewOptions);
+        mTextViewWalletAmount=(TextView)v.findViewById(R.id.textViewWalletAmount);
+        mLayoutUserWallet=(LinearLayout)v.findViewById(R.id.layoutUserWallet);
+        mLayoutUserWallet.setOnClickListener(this);
         imageViewOptions.setOnClickListener(this);
         ((TextView)(v.findViewById(R.id.textViewTitle))).setText(RemoteConfigConst.CLASS_CARD_TEXT_VALUE);
 
@@ -625,7 +558,22 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             case R.id.imageViewOptions:
                 ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, classModel, navigationFrom);
                 break;
+
+            case R.id.layoutUserWallet:
+                showWalletAlert();
+                break;
         }
+    }
+    private void showWalletAlert(){
+        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.wallet_alert_title), context.getString(R.string.wallet_alert),1,"",context.getResources().getString(R.string.ok),CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO,null,true, this);
+        try {
+            mCustomAlertDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
     }
 
     @Override
@@ -746,12 +694,26 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             }
                         }if (packages.size() == 1 || !user.isBuyMembership()) {
                             Package aPackage = packages.get(0);
-                            CheckoutActivity.openActivity(context, aPackage, classModel);
+                            CheckoutActivity.openActivity(context, aPackage, classModel,aPackage.getNoOfClass());
                             return;
                         } else {
                             MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
 
                         }
+                    }
+                }
+                break;
+            case NetworkCommunicator.RequestCode.ME_USER:
+                if (Helper.isSpecialClass(classModel) &&
+                        !Helper.isFreeClass(classModel)) {
+                    user = TempStorage.getUser();
+                    mWalletCredit= user.getWalletDto();
+                    if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
+                        mLayoutUserWallet.setVisibility(View.VISIBLE);
+                        mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance())+" "+context.getResources().getString(R.string.wallet_currency));
+                    }else{
+                        mLayoutUserWallet.setVisibility(View.GONE);
+
                     }
                 }
                 break;
@@ -862,8 +824,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
                 } else {
                     ToastUtils.showLong(context, errorMessage);
-                }
+                    textViewBook.setEnabled(true);
 
+                }
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
                 break;
@@ -883,6 +846,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 break;
             case NetworkCommunicator.RequestCode.PACKAGES_FOR_USER:
                 break;
+
         }
     }
 
@@ -965,4 +929,13 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     }
 
 
+    @Override
+    public void onOkClick(int requestCode, Object data) {
+
+    }
+
+    @Override
+    public void onCancelClick(int requestCode, Object data) {
+
+    }
 }

@@ -204,7 +204,10 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                 handler.postDelayed(runnableEmailValidation, 300);
             }
         });
+     onTrackingNotification();
     }
+
+
 
     private void setUser() {
         Long dob = TempStorage.getUser().getDob();

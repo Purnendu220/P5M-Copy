@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.NotificationsAdapter;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.NotificationModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.restapi.NetworkCommunicator;
@@ -85,7 +86,9 @@ public class NotificationActivity extends BaseActivity implements SwipeRefreshLa
 
         MyPreferences.initialize(context).saveNotificationCount(0);
         EventBroadcastHelper.notificationCountUpdated(context);
+        onTrackingNotification();
     }
+
 
     private void setToolBar() {
 

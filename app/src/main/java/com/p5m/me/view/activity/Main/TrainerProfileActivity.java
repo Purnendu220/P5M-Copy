@@ -206,6 +206,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
         setToolBar();
 
         MixPanel.trackTrainerVisit(navigatedFrom);
+        onTrackingNotification();
     }
 
     private void callApiClasses() {
