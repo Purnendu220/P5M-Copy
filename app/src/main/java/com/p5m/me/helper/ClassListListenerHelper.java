@@ -307,7 +307,14 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
         DefaultSettingServer defaultSettingServer = MyPreferences.getInstance().getDefaultSettingServer();
         if (defaultSettingServer != null) {
-            cancelTime = defaultSettingServer.getRefundAllowedbefore();
+            if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model)) {
+                cancelTime = defaultSettingServer.getRefundAllowedbeforeForSpecial();
+
+
+            }else{
+                cancelTime = defaultSettingServer.getRefundAllowedbefore();
+
+            }
             serverMessageNormalClass = defaultSettingServer.getCancellationPolicy();
             serverMessageSpecialClass = defaultSettingServer.getSpecialClassCancellationPolicy();
 
@@ -315,7 +322,13 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
 
         if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model)) {
-            message = serverMessageSpecialClass;
+            if (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) <= cancelTime) {
+                message = serverMessageSpecialClass;
+
+            }else{
+                message = context.getString(R.string.sure_unjoin);
+
+            }
 
         } else if (Helper.isSpecialClass(model) && Helper.isFreeClass(model)) {
             message = context.getString(R.string.sure_unjoin);
@@ -395,7 +408,15 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
         DefaultSettingServer defaultSettingServer = MyPreferences.getInstance().getDefaultSettingServer();
         if (defaultSettingServer != null) {
-            cancelTime = defaultSettingServer.getRefundAllowedbefore();
+            if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model)) {
+                cancelTime = defaultSettingServer.getRefundAllowedbeforeForSpecial();
+
+
+            }else{
+                cancelTime = defaultSettingServer.getRefundAllowedbefore();
+
+            }
+
             serverMessageNormalClass = defaultSettingServer.getCancellationPolicy();
             serverMessageSpecialClass = defaultSettingServer.getSpecialClassCancellationPolicy();
 
@@ -403,7 +424,13 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
 
         if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model)) {
-            message = serverMessageSpecialClass;
+            if (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) <= cancelTime) {
+                message = serverMessageSpecialClass;
+
+            }else{
+                message = context.getString(R.string.sure_unjoin);
+
+            }
 
         } else if (Helper.isSpecialClass(model) && Helper.isFreeClass(model)) {
             message = context.getString(R.string.sure_unjoin);
@@ -535,7 +562,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         DefaultSettingServer defaultSettingServer = MyPreferences.getInstance().getDefaultSettingServer();
         float  cancelTime=2;
         if (defaultSettingServer != null) {
-            cancelTime = defaultSettingServer.getRefundAllowedbefore();
+            cancelTime = defaultSettingServer.getRefundAllowedbeforeForSpecial();
 
         }
         if (Helper.isSpecialClass(model)&&!Helper.isFreeClass(model)&&DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) > cancelTime) {

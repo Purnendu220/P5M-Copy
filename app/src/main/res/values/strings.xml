@@ -483,9 +483,9 @@
     <string name="alert_message">Congratulation You have done this successfully.</string>
     <string name="successfull_refund_message">The amount paid for this class was refunded to your account. Use your credit to book your next workout with us.
 Would you like to view your balance? </string>
-    <string name="wallet_currency">KD</string>
+    <string name="wallet_currency">KWD</string>
     <string name="wallet_alert_title">P5M Wallet</string>
-    <string name="wallet_text">P5M Wallet</string>
+    <string name="wallet_text">Available credit</string>
 
 
     <string-array name="schedule_list">

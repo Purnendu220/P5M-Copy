@@ -14,12 +14,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.p5m.me.R;
 import com.p5m.me.adapters.HomeAdapter;
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
@@ -44,6 +48,7 @@ import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.RefrenceWrapper;
 import com.p5m.me.utils.ToastUtils;
@@ -119,8 +124,14 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     @BindView(R.id.layoutBottomTabs)
     public LinearLayout layoutBottomTabs;
 
+    @BindView(R.id.buyClassesLayout)
+    public LinearLayout buyClassesLayout;
+
     @BindView(R.id.buyClasses)
-    public Button buyClasses;
+    public TextView buyClasses;
+
+    @BindView(R.id.availableCredit)
+    public TextView availableCredit;
 
     private BottomTapLayout bottomTapLayout;
     private HomeAdapter homeAdapter;
@@ -155,7 +166,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
                     ProfileHeaderTabViewHolder.TAB_1);
         }
         RefrenceWrapper.getRefrenceWrapper(this).setActivity(this);
-        buyClasses.setOnClickListener(this);
+        buyClassesLayout.setOnClickListener(this);
         GlobalBus.getBus().register(this);
 
         handler = new Handler(Looper.getMainLooper());
@@ -271,7 +282,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 //            handleApptimize();
             handleBuyClassesButton();
         } else {
-            buyClasses.setVisibility(View.GONE);
+            buyClassesLayout.setVisibility(View.GONE);
 
         }
     }
@@ -302,11 +313,11 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         try {
             User user = TempStorage.getUser();
             if (user.isBuyMembership()) {
-                buyClasses.setVisibility(View.VISIBLE);
+                buyClassesLayout.setVisibility(View.VISIBLE);
                 UpdateBuyClassText update = new UpdateBuyClassText();
                 update.execute();
             } else {
-                buyClasses.setVisibility(View.GONE);
+                buyClassesLayout.setVisibility(View.GONE);
 
             }
 
@@ -324,10 +335,10 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             User user = TempStorage.getUser();
             mWalletCredit=user.getWalletDto();
             if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
-               return RemoteConfigConst.BUY_CLASS_VALUE+"("+context.getResources().getString(R.string.wallet_text)+": "+mWalletCredit.getBalance()+""+mContext.getResources().getString(R.string.wallet_currency)+")";
+               return context.getResources().getString(R.string.wallet_text)+" : "+ LanguageUtils.numberConverter(mWalletCredit.getBalance())+" "+mContext.getResources().getString(R.string.wallet_currency);
                 }
                 else{
-                return RemoteConfigConst.BUY_CLASS_VALUE;
+                return "";
 
             }
         }
@@ -335,7 +346,15 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            buyClasses.setText(result);
+            if(result!=null&&result.length()>0){
+                availableCredit.setVisibility(View.VISIBLE);
+
+                availableCredit.setText(result);
+
+            }else{
+                availableCredit.setVisibility(View.GONE);
+
+            }
 
 
 
@@ -348,12 +367,12 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     protected void onResume() {
         super.onResume();
         buyClasses.setText(RemoteConfigConst.BUY_CLASS_VALUE);
-        RemoteConfigSetUp.setBackgroundColor(buyClasses, RemoteConfigConst.BUY_CLASS_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+        RemoteConfigSetUp.setBackgroundColor(buyClassesLayout, RemoteConfigConst.BUY_CLASS_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
 
         if (currentTab == AppConstants.Tab.TAB_FIND_CLASS) {
             handleBuyClassesButton();
         } else {
-            buyClasses.setVisibility(View.GONE);
+            buyClassesLayout.setVisibility(View.GONE);
 
         }
 
@@ -370,7 +389,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.buyClasses: {
+            case R.id.buyClassesLayout: {
                 MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
             }
             break;

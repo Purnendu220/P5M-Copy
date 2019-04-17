@@ -46,6 +46,7 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CalendarHelper;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
@@ -709,7 +710,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     mWalletCredit= user.getWalletDto();
                     if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
                         mLayoutUserWallet.setVisibility(View.VISIBLE);
-                        mTextViewWalletAmount.setText(mWalletCredit.getBalance()+" "+context.getResources().getString(R.string.wallet_currency));
+                        mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance())+" "+context.getResources().getString(R.string.wallet_currency));
                     }else{
                         mLayoutUserWallet.setVisibility(View.GONE);
 

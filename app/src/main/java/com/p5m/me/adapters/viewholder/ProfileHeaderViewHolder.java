@@ -78,8 +78,8 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                     R.drawable.profile_holder_big, imageView);
             if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
                 linearLayoutUserWallet.setVisibility(View.VISIBLE);
+                textViewWalletBalance.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance())+" "+context.getResources().getString(R.string.wallet_currency));
 
-                textViewWalletBalance.setText(mWalletCredit.getBalance()+" "+context.getResources().getString(R.string.wallet_currency));
             }
             else{
                 linearLayoutUserWallet.setVisibility(View.GONE);
@@ -247,6 +247,12 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                 @Override
                 public void onClick(View view) {
                     adapterCallbacks.onAdapterItemClick(ProfileHeaderViewHolder.this, textViewExtendPackage, userpackageToExtend, position);
+                }
+            });
+            linearLayoutUserWallet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ProfileHeaderViewHolder.this, linearLayoutUserWallet, userpackageToExtend, position);
                 }
             });
             imageView.setOnClickListener(new View.OnClickListener() {

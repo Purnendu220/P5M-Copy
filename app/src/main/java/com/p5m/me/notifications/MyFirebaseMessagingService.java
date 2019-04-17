@@ -492,8 +492,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addNextIntentWithParentStack(navigationIntent);
 
-        //stackBuilder.editIntentAt(0).putExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, true);
-      // stackBuilder.editIntentAt(0).putExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK, pushDetailModel);
+
 
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
