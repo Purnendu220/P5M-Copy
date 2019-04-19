@@ -771,6 +771,7 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
                 break;
 
             case NetworkCommunicator.RequestCode.PACKAGES_FOR_USER:
+
                 List<Package> packagesTemp = ((ResponseModel<List<Package>>) response).data;
                 if (packagesTemp != null && !packagesTemp.isEmpty()) {
                     List<Package> packages = new ArrayList<>(packagesTemp.size());
@@ -787,7 +788,7 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
                         }
                         if (packages.size() == 1 || !user.isBuyMembership()) {
                             Package aPackage = packages.get(0);
-                            CheckoutActivity.openActivity(context, aPackage, classModel, aPackage.getNoOfClass(), mBookWithFriendData);
+                            CheckoutActivity.openActivity(context, aPackage, classModel,2 , mBookWithFriendData,aPackage.getNoOfClass());
                             return;
 
                         } else {
@@ -804,7 +805,8 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
                             }
                         }if (packages.size() == 1 || !user.isBuyMembership()) {
                             Package aPackage = packages.get(0);
-                            CheckoutActivity.openActivity(context, aPackage, classModel,aPackage.getNoOfClass());
+                            //////////
+                            CheckoutActivity.openActivity(context, aPackage, classModel,1,aPackage.getNoOfClass());
                             return;
                         } else {
                             MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
