@@ -64,7 +64,7 @@ public class TransactionHistoryActivity extends BaseActivity implements SwipeRef
     }
 
 
-    }
+
 
     @OnClick(R.id.imageViewBack)
     public void imageViewBack(View view) {
