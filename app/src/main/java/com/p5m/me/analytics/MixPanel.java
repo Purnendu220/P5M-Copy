@@ -789,7 +789,6 @@ public class MixPanel {
                 props.put("Source", pushDetailModel.getSource());
                 if (!pushDetailModel.getUrl().isEmpty())
                     props.put("Url", pushDetailModel.getUrl());
-
                 trackEvent(props, "Push_Click");
             }
         } catch (Exception e) {

@@ -36,7 +36,8 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         tools:replace="android:supportsRtl">
-        <activity android:name=".view.activity.Main.WalletDetailActivity"></activity>
+        <activity android:name=".view.activity.Main.ClassProfileActivityNew"></activity>
+        <activity android:name=".view.activity.Main.WalletDetailActivity" />
 
         <meta-data
             android:name="com.mixpanel.android.MPConfig.EnableDebugLogging"
