@@ -270,7 +270,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
         ButterKnife.bind(activity);
         handler = new Handler();
-        //checkUserCredits();
+        checkUserCredits();
         setData();
 
         textViewPay.setOnClickListener(this);
@@ -288,13 +288,13 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     private void checkUserCredits(){
         user = TempStorage.getUser();
         mWalletCredit= user.getWalletDto();
-        if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
-            mLayoutUserWallet.setVisibility(View.VISIBLE);
-            mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance())+" "+context.getResources().getString(R.string.wallet_currency));
-        }else{
-            mLayoutUserWallet.setVisibility(View.GONE);
-
-        }
+//        if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
+//            mLayoutUserWallet.setVisibility(View.VISIBLE);
+//            mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance())+" "+context.getResources().getString(R.string.wallet_currency));
+//        }else{
+//            mLayoutUserWallet.setVisibility(View.GONE);
+//
+//        }
     }
 
     private void setData() {
