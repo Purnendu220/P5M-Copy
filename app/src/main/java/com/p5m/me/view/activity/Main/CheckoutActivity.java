@@ -270,7 +270,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
         ButterKnife.bind(activity);
         handler = new Handler();
-        checkUserCredits();
+        //checkUserCredits();
         setData();
 
         textViewPay.setOnClickListener(this);
