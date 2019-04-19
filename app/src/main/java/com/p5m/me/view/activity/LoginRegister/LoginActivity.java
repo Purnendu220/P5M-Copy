@@ -19,7 +19,9 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.p5m.me.R;
+import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.FaceBookUser;
 import com.p5m.me.data.main.User;
@@ -29,6 +31,7 @@ import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.target_user_notification.UserPropertyConst;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.KeyboardUtils;
 import com.p5m.me.utils.LogUtils;
@@ -112,6 +115,12 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
         });
 
         SetupFBLogin();
+
+    }
+
+    private void setUserProperty() {
+        FirebaseAnalytics.getInstance(context).setUserProperty(UserPropertyConst.GENDER,TempStorage.getUser().getGender() );
+        FirebaseAnalytics.getInstance(context).setUserProperty(UserPropertyConst.VERSION,"VER" );
     }
 
     private void setEditWatcher() {
@@ -249,6 +258,7 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                 if (user != null) {
                     EventBroadcastHelper.sendLogin(context, user);
                     HomeActivity.open(context);
+                    setUserProperty();
 
                     MixPanel.trackLogin(AppConstants.Tracker.EMAIL, TempStorage.getUser());
 
@@ -271,6 +281,7 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
 
                     if (user.getDateOfJoining() >= loginTime) {
                         MixPanel.trackRegister(AppConstants.Tracker.FB, TempStorage.getUser());
+                        FirebaseAnalysic.trackRegister(AppConstants.Tracker.FB, TempStorage.getUser());
                     } else
                         MixPanel.trackLogin(AppConstants.Tracker.FB, TempStorage.getUser());
 

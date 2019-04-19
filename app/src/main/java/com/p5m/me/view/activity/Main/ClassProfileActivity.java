@@ -22,13 +22,13 @@ import com.brandongogetap.stickyheaders.StickyLayoutManager;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.ClassProfileAdapter;
+import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
-import com.p5m.me.data.main.PushDetailModel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.data.request.JoinClassRequest;
@@ -62,7 +62,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.p5m.me.analytics.MixPanel.trackPushNotificationClick;
 import static com.p5m.me.utils.AppConstants.Limit.PAGE_LIMIT_MAIN_CLASS_LIST;
 
 public class ClassProfileActivity extends BaseActivity implements AdapterCallbacks, View.OnClickListener, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
@@ -225,17 +224,10 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 //        }
 
         MixPanel.trackClassDetails();
-        onTrackingNotification();
     }
 
 
-    private void onTrackingNotification() {
-        boolean booleanExtra = getIntent().getBooleanExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, false);
-        if (booleanExtra) {
-            PushDetailModel pushDetailModel = (PushDetailModel) getIntent().getSerializableExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK);
-            MixPanel.trackPushNotificationClick(pushDetailModel);
-        }
-    }
+
     @Override
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
@@ -575,6 +567,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
                 MixPanel.trackJoinClass(navigationFrom, classModel);
+                FirebaseAnalysic.trackJoinClass(navigationFrom, classModel);
                 if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
 //                    context.getResources().getString(R.string.invite_friends)
                     DialogUtils.showBasicMessage(context, "",
@@ -659,7 +652,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                         }
                         if (packages.size() == 1 || !user.isBuyMembership()) {
                             Package aPackage = packages.get(0);
-                            CheckoutActivity.openActivity(context, aPackage, classModel, aPackage.getNoOfClass(), mBookWithFriendData);
+                            CheckoutActivity.openActivity(context, aPackage, classModel,2 , mBookWithFriendData,aPackage.getNoOfClass());
                             return;
 
                         } else {
@@ -676,7 +669,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             }
                         }if (packages.size() == 1 || !user.isBuyMembership()) {
                             Package aPackage = packages.get(0);
-                            CheckoutActivity.openActivity(context, aPackage, classModel,aPackage.getNoOfClass());
+                            //////////
+                            CheckoutActivity.openActivity(context, aPackage, classModel,1,aPackage.getNoOfClass());
                             return;
                         } else {
                             MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
@@ -795,6 +789,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     textViewBook.setEnabled(true);
 
                 }
+
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
                 break;
@@ -827,7 +822,11 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        textViewBook.setEnabled(true);
+    }
     private boolean checkIfUserHaveExpiredPackage() {
         boolean userHaveDropinForClass = false;
         boolean userHaveExpiredDropinForClass = false;

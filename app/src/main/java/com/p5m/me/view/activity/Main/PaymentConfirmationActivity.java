@@ -1,16 +1,13 @@
 package com.p5m.me.view.activity.Main;
 
 import android.annotation.SuppressLint;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.CalendarContract;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -33,6 +30,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.p5m.me.R;
 import com.p5m.me.data.PaymentConfirmationResponse;
 import com.p5m.me.data.ValidityPackageList;
@@ -43,9 +41,9 @@ import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.fxn.utility.Constants;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
-import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
+import com.p5m.me.target_user_notification.UserPropertyConst;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CalendarHelper;
 import com.p5m.me.utils.DateUtils;
@@ -304,6 +302,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 
     public String getPurchasedPackageName() {
         if (userPackage != null) {
+            ////////
             return (userPackage.getPackageName());
         } else if (!TextUtils.isEmpty(paymentResponse.getPackageName()))
             return (paymentResponse.getPackageName());
@@ -444,10 +443,9 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 setStyle();
                 if (!CalendarHelper.haveCalendarReadWritePermissions(this)) {
                     CalendarHelper.requestCalendarReadWritePermission(this);
-                }
-                else{
-                    if (paymentResponse.getClassDetailDto() != null){
-                        CalendarHelper.scheduleCalenderEvent(this,classModel);
+                } else {
+                    if (paymentResponse.getClassDetailDto() != null) {
+                        CalendarHelper.scheduleCalenderEvent(this, classModel);
                     }
                 }
                 break;
@@ -471,8 +469,8 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 
         if (requestCode == CalendarHelper.CALENDARED_PERMISSION_REQUEST_CODE) {
             if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
-                if (paymentResponse.getClassDetailDto() != null){
-                    CalendarHelper.scheduleCalenderEvent(this,classModel);
+                if (paymentResponse.getClassDetailDto() != null) {
+                    CalendarHelper.scheduleCalenderEvent(this, classModel);
                 }
 
 

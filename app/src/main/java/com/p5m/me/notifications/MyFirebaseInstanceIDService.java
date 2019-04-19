@@ -1,7 +1,10 @@
 package com.p5m.me.notifications;
 
+import android.util.Log;
+
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
+import com.google.firebase.iid.InstanceIdResult;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.LogUtils;
@@ -18,8 +21,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService imple
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         LogUtils.debug("Notifications onTokenRefresh " + refreshedToken);
 
-        MyPreferences.getInstance().saveDeviceToken(refreshedToken);
-//        EventBroadcastHelper.sendDeviceUpdate(this);
+//        MyPreferences.getInstance().saveDeviceToken(refreshedToken);
     }
 
     @Override

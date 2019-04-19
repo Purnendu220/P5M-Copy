@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
+import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.PromoCode;
@@ -62,6 +63,7 @@ import static com.p5m.me.utils.LanguageUtils.numberConverter;
 
 public class CheckoutActivity extends BaseActivity implements View.OnClickListener, NetworkCommunicator.RequestListener {
 
+    private static int mNumberOfClasses=1;
     private Handler handler;
     private Runnable nextScreenRunnable;
     private String refId;
@@ -83,24 +85,28 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     /*
     if user is purchasing a class via package
      */
-    public static void openActivity(Context context, Package aPackage, ClassModel classModel,int mNumberOfPackagesToBuy) {
+    public static void openActivity(Context context, Package aPackage, ClassModel classModel,int mNumberOfPackagesToBuy,int mNumberOfClasses) {
         CheckoutActivity.aPackage = aPackage;
         CheckoutActivity.classModel = classModel;
         CheckoutActivity.selectedPacakageFromList = null;
         CheckoutActivity.checkoutFor = CLASS_PURCHASE_WITH_PACKAGE;
         CheckoutActivity.mNumberOfPackagesToBuy = mNumberOfPackagesToBuy;
+        CheckoutActivity.mNumberOfClasses = mNumberOfClasses;
         CheckoutActivity.friendsDetail = null;
 
 
         openActivity(context);
     }
 
-    public static void openActivity(Context context, Package aPackage, ClassModel classModel, int mNumberOfPackagesToBuy, BookWithFriendData friendsDetail) {
+
+    ///////////////////
+    public static void openActivity(Context context, Package aPackage, ClassModel classModel, int mNumberOfPackagesToBuy, BookWithFriendData friendsDetail , int mNumberOfClasses) {
         CheckoutActivity.aPackage = aPackage;
         CheckoutActivity.classModel = classModel;
         CheckoutActivity.selectedPacakageFromList = null;
         CheckoutActivity.checkoutFor = CLASS_PURCHASE_WITH_PACKAGE;
         CheckoutActivity.mNumberOfPackagesToBuy = mNumberOfPackagesToBuy;
+        CheckoutActivity.mNumberOfClasses = mNumberOfClasses;
         CheckoutActivity.friendsDetail = friendsDetail;
 
         openActivity(context);
@@ -261,6 +267,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         textViewCancellationPolicyGeneralToggle.setOnClickListener(this);
 
         MixPanel.trackCheckoutVisit(aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName());
+        FirebaseAnalysic.trackCheckoutVisit(aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName());
     }
 
     private void setData() {
@@ -283,6 +290,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     textViewLimit.setText(RemoteConfigConst.GYM_VISIT_LIMIT_VALUE);
                     textViewPackageClasses.setText(numberConverter(aPackage.getNoOfClass()) + " " + AppConstants.pluralES(getString(R.string.one_class), aPackage.getNoOfClass())+" "+context.getString(R.string.at_any_gym));
                     textViewCancellationPolicyGeneralToggle.setVisibility(View.GONE);
+                    textViewPackageName.setText(Html.fromHtml(numberConverter(mNumberOfPackagesToBuy) + "X <b>" + aPackage.getName() + "</b>"));
 
 
                 } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
@@ -292,15 +300,16 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     textViewLimit.setVisibility(View.GONE);
                     textViewCancellationPolicyGeneralToggle.setVisibility(View.VISIBLE);
                     textViewCancellationPolicyGenral.setText(R.string.membership_drop_in_info);
+                    textViewPackageName.setText(Html.fromHtml(numberConverter(mNumberOfClasses) + "X <b>" + aPackage.getName() + "</b>"));
 
                    /* if (mNumberOfPackagesToBuy == 1) {
                         textViewPackageClasses.setText(context.getString(R.string.class_one_at)+" "+ classModel.getGymBranchDetail().getGymName() );
                     } else*/
-                        textViewPackageClasses.setText(LanguageUtils.numberConverter(mNumberOfPackagesToBuy) +" "+ AppConstants.pluralES(context.getString(R.string.classs), mNumberOfPackagesToBuy) + " "+context.getString(R.string.at)+" " + classModel.getGymBranchDetail().getGymName());
+                        textViewPackageClasses.setText(LanguageUtils.numberConverter(mNumberOfClasses) +" "+ AppConstants.pluralES(context.getString(R.string.classs), mNumberOfClasses) + " "+context.getString(R.string.at)+" " + classModel.getGymBranchDetail().getGymName());
 
                 }
 
-                textViewPackageName.setText(Html.fromHtml(numberConverter(mNumberOfPackagesToBuy) + "X <b>" + aPackage.getName() + "</b>"));
+//                textViewPackageName.setText(Html.fromHtml(numberConverter(mNumberOfClasses) + "X <b>" + aPackage.getName() + "</b>"));
                 textViewPrice.setText(LanguageUtils.numberConverter(aPackage.getCost()) + " " + context.getString(R.string.currency));
 
                 textViewPackageInfo.setVisibility(aPackage.getDescription().isEmpty() ? View.GONE : View.VISIBLE);
