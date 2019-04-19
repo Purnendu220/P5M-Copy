@@ -140,6 +140,9 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
 
     private void paymentSuccessful() {
         MixPanel.trackMembershipPurchase(couponCode, packageName);
+//        if (classModel != null) {
+//            MixPanel.trackJoinClass(AppConstants.Tracker.PURCHASE_PLAN, classModel);
+//        }
         FirebaseAnalysic.trackMembershipPurchase(couponCode, packageName);
         if (classModel != null) {
             MixPanel.trackJoinClass(AppConstants.Tracker.PURCHASE_PLAN, classModel);

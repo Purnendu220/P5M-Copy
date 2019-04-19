@@ -60,6 +60,10 @@ public class TransactionHistoryActivity extends BaseActivity implements SwipeRef
         recyclerView.setAdapter(transactionsAdapter);
 
         onRefresh();
+        onTrackingNotification();
+    }
+
+
     }
 
     @OnClick(R.id.imageViewBack)

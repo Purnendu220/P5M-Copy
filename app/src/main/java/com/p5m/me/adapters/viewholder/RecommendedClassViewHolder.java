@@ -74,11 +74,11 @@ public class RecommendedClassViewHolder extends RecyclerView.ViewHolder {
                 ImageUtils.clearImage(context, imgClass);
             }
             if (model.getGymBranchDetail() != null) {
-                textViewLocation.setText(model.getGymBranchDetail().getGymName() + ", " + model.getGymBranchDetail().getBranchName());
+                textViewLocation.setText(model.getGymBranchDetail().getGymName());
             }
             if(model.getRating()!=0.0F&&model.getRating()>0){
                 textViewRatingCount.setVisibility(View.VISIBLE);
-                textViewRatingCount.setText(model.getRating() + "");
+                textViewRatingCount.setText(LanguageUtils.numberConverter(model.getRating()) + "");
             }else{
                 textViewRatingCount.setVisibility(View.INVISIBLE);
             }

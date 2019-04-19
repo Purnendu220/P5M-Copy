@@ -8,6 +8,8 @@ import android.widget.TextView;
 import com.p5m.me.R;
 import com.p5m.me.fxn.utility.Constants;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -34,14 +36,25 @@ public class LanguageUtils {
     }
     public static String numberConverter(float value)
     {
-        String localLanguage=NumberFormat.getNumberInstance(Locale.getDefault()).format(value);
-        return localLanguage;
+        NumberFormat format = DecimalFormat.getInstance();
+        format.setRoundingMode(RoundingMode.FLOOR);
+        format.setMinimumFractionDigits(0);
+        format.setMaximumFractionDigits(2);
+        return format.format(value);
+       // String localLanguage=NumberFormat.getNumberInstance(Locale.getDefault()).format(value);
+        //return localLanguage;
     }
     public static String numberConverter(double value)
     {
-        String localLanguage=NumberFormat.getNumberInstance(Locale.getDefault()).format(value);
+        NumberFormat format = DecimalFormat.getInstance();
+        format.setRoundingMode(RoundingMode.FLOOR);
+        format.setMinimumFractionDigits(0);
+        format.setMaximumFractionDigits(2);
+        return format.format(value);
 
-        return localLanguage;
+//        String localLanguage=NumberFormat.getNumberInstance(Locale.getDefault()).format(value);
+//
+//        return localLanguage;
     }
     public static String currencyConverter(long value)
     {

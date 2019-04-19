@@ -61,6 +61,8 @@ public class ChooseNationalityActivity extends BaseActivity implements AdapterCa
 
         nationalityAdapter.addAll(nationalities);
         nationalityAdapter.notifyDataSetChanged();
+        onTrackingNotification();
+
     }
 
     @OnClick(R.id.imageViewBack)
