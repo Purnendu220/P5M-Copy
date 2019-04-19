@@ -778,5 +778,23 @@ public class MixPanel {
         return categoryList.toString();
     }
 
+    public static void trackPushNotificationClick(PushDetailModel pushDetailModel) {
+        try {
+            if(pushDetailModel!=null) {
+                JSONObject props = new JSONObject();
+                if (!pushDetailModel.getType().isEmpty())
+                    props.put("Type", pushDetailModel.getType());
+                if (!pushDetailModel.getMessage().isEmpty())
+                    props.put("Message", pushDetailModel.getMessage());
+                props.put("Source", pushDetailModel.getSource());
+                if (!pushDetailModel.getUrl().isEmpty())
+                    props.put("Url", pushDetailModel.getUrl());
+                trackEvent(props, "Push_Click");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
 
 }

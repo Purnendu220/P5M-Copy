@@ -18,6 +18,7 @@ import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.WordUtils;
+import com.p5m.me.view.activity.Main.ClassProfileActivityNew;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -195,7 +196,7 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    adapterCallbacks.onAdapterItemClick(ClassViewHolder.this, itemView, model, position);
+                    adapterCallbacks.onAdapterItemClick(ClassViewHolder.this, imageViewClass, model, position);
                 }
             });
 
@@ -230,7 +231,7 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
             buttonJoin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    adapterCallbacks.onAdapterItemClick(ClassViewHolder.this, buttonJoin, model, position);
+                    adapterCallbacks.onAdapterItemClick(ClassViewHolder.this, imageViewClass, model, position);
                 }
             });
         } else {
