@@ -13,7 +13,7 @@ import com.p5m.me.utils.AppConstants;
 
 public class UserPackageInfo {
 
-    public boolean havePackages = true;
+    public boolean havePackages = false;
 
     public boolean haveGeneralPackage = false;
     public boolean haveDropInPackage = false;
@@ -33,10 +33,12 @@ public class UserPackageInfo {
                     haveGeneralPackage = true;
                     userPackageGeneral = userPackage;
                     generalPackageCount++;
+                    havePackages = true;
                 } else if (userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                     haveDropInPackage = true;
                     userPackageReady.add(userPackage);
                     dropInPackageCount++;
+                    havePackages = true;
                 }
             }
         } else {
