@@ -325,9 +325,9 @@
 
     <string name="promo_code">رمز ترويجي</string>
 
-    <string name="apply_promo_code">اضف الشفرة هنا</string>
+    <string name="apply_promo_code">استخدم الكوبون</string>
 
-    <string name="remove_promo_code">إزالة الرمز الترويجي</string>
+    <string name="remove_promo_code">استخدم كوبون اخر</string>
 
     <string name="cancellation_policy">""<u>سياسة الإلغاء</u>""</string>
 
@@ -860,5 +860,15 @@
     <string name="on_ya">Oh Ya!</string>
     <string name="maybe_next_time">Maybe next time</string>
     <string name="_5">/٥</string>
+    <string name="wallet_credit_applied">تم إضافة الرصيد</string>
+    <string name="wallet_alert">استخدم رصيدك لشراء أي حزمة في التطبيق</string>
+    <string name="success">Success</string>
+    <string name="alert_message">Congratulation You have done this successfully.</string>
+    <string name="successfull_refund_message">تم استرداد المبلغ المدفوع لهذا الكلاس إلى حسابك. استخدم رصيدك لحجز تمرينك التالي معنا.
+هل ترغب رؤية رصيدك؟</string>
+    <string name="wallet_currency">KWD</string>
+    <string name="wallet_alert_title">محفظة P5M </string>
+    <string name="wallet_text">رصيدك</string>
+
 
 </resources>

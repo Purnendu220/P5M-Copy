@@ -103,6 +103,8 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
         networkCommunicator.getGymsList(this,true);
 
         setToolBar();
+        onTrackingNotification();
+
     }
 
     public void checkTags() {

@@ -71,7 +71,7 @@ public class ViewClassRating extends BaseActivity implements SwipeRefreshLayout.
         recyclerViewProfile.setAdapter(ratingListAdapter);
 
         onRefresh();
-
+        onTrackingNotification();
     }
 
     private void setToolBar() {
