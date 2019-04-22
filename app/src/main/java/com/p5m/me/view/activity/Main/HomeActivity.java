@@ -26,6 +26,7 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.p5m.me.R;
 import com.p5m.me.adapters.HomeAdapter;
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
+import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.PushDetailModel;
 import com.p5m.me.data.UnratedClassData;
@@ -368,6 +369,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         super.onResume();
         buyClasses.setText(RemoteConfigConst.BUY_CLASS_VALUE);
         RemoteConfigSetUp.setBackgroundColor(buyClassesLayout, RemoteConfigConst.BUY_CLASS_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+        FirebaseAnalysic.viewHomePage();
 
         if (currentTab == AppConstants.Tab.TAB_FIND_CLASS) {
             handleBuyClassesButton();

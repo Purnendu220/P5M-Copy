@@ -64,20 +64,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             LogUtils.debug("Notifications Data: " + remoteMessage.getData());
 
             String message;
-            if (remoteMessage.getData().containsKey("message")) {
+            if (remoteMessage.getData()!=null) {
                 message = remoteMessage.getData().get("message");
                 if (message != null) {
                     if (!message.equalsIgnoreCase("fcm")) {
                         JSONObject json = new JSONObject(message);
                         handleDataMessage(json);
                         handleDataMessageForNotificationSchedule(json);
-                    } else {
-                        String url = remoteMessage.getData().get("url");
-                        Intent navgationIntent = handleNotificationDeeplinking(url);
-                        if (remoteMessage.getNotification() != null) {
-                            handleNotification(navgationIntent, remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
-                        }
                     }
+                } else {
+                    Intent navgationIntent =  HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
+                    if (remoteMessage.getNotification() != null) {
+                        handleNotification(navgationIntent, remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
+                    }
+
                 }
             }
 
@@ -678,9 +678,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         pushDetailModel.setMessage(message);
         pushDetailModel.setType(type);
         pushDetailModel.setUrl(url);
-        Log.v("PushDetail","type: "+type
-                +" msg: "+message
-                +" url: "+url);
+        Log.v("PushDetail", "type: " + type
+                + " msg: " + message
+                + " url: " + url);
     }
 
     private void setNotification(JSONObject jsonObject, long dataID) {

@@ -174,4 +174,8 @@ public class FirebaseAnalysic {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(activity);
 
     }
+
+    public static void viewHomePage() {
+        mFirebaseAnalytics.logEvent( "Home_View",null);
+    }
 }
