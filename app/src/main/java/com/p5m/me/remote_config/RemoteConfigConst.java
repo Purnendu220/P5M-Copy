@@ -88,7 +88,7 @@ public class RemoteConfigConst {
     public static String PAYMENT_FAILURE_VALUE = "View Payment History";
     public static String PAYMENT_CLASS_VALUE = "View Schedule";
     public static String GYM_VISIT_LIMIT_VALUE = "View gym visit limits";
-    public static String SELECT_PLAN_TEXT_VALUE = "Select Plan";
+    public static String SELECT_PLAN_TEXT_VALUE = "View Plan";
     public static String SELECT_PLAN_COLOR_VALUE = "#3d85ea";
     public static String BOOK_IN_CLASS_COLOR_VALUE = "#3d85ea";
     public static String GYM_VISIT_LIMIT_DETAIL_TEXT_VALUE = "Under each plan, there are limits to the number of times you can visit each gym. Check below for the number of time you can visit a gym per plan. Once the limit is reached, you may still visit your favorite gym by purchasing a single visit pass.";

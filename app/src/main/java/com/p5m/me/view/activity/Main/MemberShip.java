@@ -148,7 +148,6 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
 
         MixPanel.trackMembershipVisit(navigatedFrom);
-        onTrackingNotification();
     }
 
 
