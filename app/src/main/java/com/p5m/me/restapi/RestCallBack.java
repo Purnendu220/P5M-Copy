@@ -106,16 +106,7 @@ public abstract class RestCallBack<T> implements Callback<T> {
         }
     }
 
-//        else {
-//            try {
-//                onFailure(call, response.errorBody().string());
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                LogUtils.exception(e);
-//                onFailure(call, "Unknown");
-//            }
-//        }
-//}
+
 
     private boolean isSuccessFull(T t) {
         if (t instanceof ResponseModel) {

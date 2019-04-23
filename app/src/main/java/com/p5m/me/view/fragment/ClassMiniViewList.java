@@ -183,6 +183,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
 
         handleClassJoined(data.data);
         checkListData();
+
     }
 
     private void handleClassJoined(ClassModel data) {

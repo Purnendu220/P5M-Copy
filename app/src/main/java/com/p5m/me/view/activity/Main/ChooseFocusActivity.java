@@ -77,6 +77,8 @@ public class ChooseFocusActivity extends BaseActivity implements AdapterCallback
         }
 
         chooseFocusAdapter.notifyDataSetChanged();
+        onTrackingNotification();
+
     }
 
     @OnClick(R.id.imageViewBack)

@@ -86,8 +86,8 @@ public class NotificationActivity extends BaseActivity implements SwipeRefreshLa
 
         MyPreferences.initialize(context).saveNotificationCount(0);
         EventBroadcastHelper.notificationCountUpdated(context);
+        onTrackingNotification();
     }
-
 
 
     private void setToolBar() {

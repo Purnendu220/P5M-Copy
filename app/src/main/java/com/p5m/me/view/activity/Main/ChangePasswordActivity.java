@@ -59,6 +59,8 @@ public class ChangePasswordActivity extends BaseActivity implements NetworkCommu
         Helper.setupErrorWatcher(editTextCurrPass, textInputLayoutCurrPass);
         Helper.setupErrorWatcher(editTextNewPass, textInputLayoutNewPass);
         Helper.setupErrorWatcher(editTextConfirmPass, textInputConfirmPass);
+        onTrackingNotification();
+
     }
 
     @OnClick(R.id.imageViewDone)

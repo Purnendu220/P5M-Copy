@@ -1,20 +1,26 @@
 package com.p5m.me.view.activity.Main;
-
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.Pair;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -23,6 +29,7 @@ import com.brandongogetap.stickyheaders.StickyLayoutManager;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.ClassProfileAdapter;
+import com.p5m.me.adapters.viewholder.ClassProfileViewHolder;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.ClassRatingUserData;
@@ -46,6 +53,7 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CalendarHelper;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
+import com.p5m.me.utils.ImageUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
@@ -65,8 +73,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.p5m.me.utils.AppConstants.Limit.PAGE_LIMIT_MAIN_CLASS_LIST;
+import static com.p5m.me.utils.LanguageUtils.matchFitnessWord;
 
-public class ClassProfileActivity extends BaseActivity implements AdapterCallbacks, View.OnClickListener, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener, CustomAlertDialog.OnAlertButtonAction {
+public class ClassProfileActivityNew extends BaseActivity implements AdapterCallbacks, View.OnClickListener, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener, CustomAlertDialog.OnAlertButtonAction {
 
     private String message;
     private int errorMsg;
@@ -76,6 +85,18 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 .putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom)
                 .putExtra(AppConstants.DataKey.CLASS_OBJECT, classModel));
     }
+
+    public static void openSceneTransition(Context context, ClassModel classModel, int navigationFrom,View ivProfile) {
+        Intent intent = new Intent(context, ClassProfileActivityNew.class);
+// Pass data object in the bundle and populate details activity.
+        intent.putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom);
+        intent.putExtra(AppConstants.DataKey.CLASS_OBJECT, classModel);
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation((Activity) context, (View)ivProfile, "profile");
+        context.startActivity(intent, options.toBundle());
+
+    }
+
 
     public static void open(Context context, int classId, int navigationFrom) {
         context.startActivity(new Intent(context, ClassProfileActivity.class)
@@ -91,8 +112,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
     }
 
-    @BindView(R.id.recyclerView)
-    public RecyclerView recyclerView;
+
 
     @BindView(R.id.appBarLayout)
     public AppBarLayout appBarLayout;
@@ -107,9 +127,88 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public TextView textViewBookWithFriend;
     @BindView(R.id.swipeRefreshLayout)
     public SwipeRefreshLayout swipeRefreshLayout;
+
+
+    @BindView(R.id.imageViewClass)
+    public ImageView imageViewClass;
+    @BindView(R.id.imageViewTrainerProfile)
+    public ImageView imageViewTrainerProfile;
+    @BindView(R.id.imageViewMap)
+    public ImageView imageViewMap;
+
+    @BindView(R.id.textViewClassName)
+    public TextView textViewClassName;
+    @BindView(R.id.textViewClassCategory)
+    public TextView textViewClassCategory;
+    @BindView(R.id.textViewClassDate)
+    public TextView textViewClassDate;
+    @BindView(R.id.textViewAvailable)
+    public TextView textViewAvailable;
+    @BindView(R.id.textViewInfo)
+    public TextView textViewInfo;
+    @BindView(R.id.textViewTime)
+    public TextView textViewTime;
+    @BindView(R.id.textViewLocation)
+    public TextView textViewLocation;
+    @BindView(R.id.textViewGender)
+    public TextView textViewGender;
+    @BindView(R.id.textViewTrainerName)
+    public TextView textViewTrainerName;
+    @BindView(R.id.textViewSpecialClass)
+    public TextView textViewSpecialClass;
+
+    @BindView(R.id.textViewMap)
+    public TextView textViewMap;
+    @BindView(R.id.textViewMoreDetails)
+    public TextView textViewMoreDetails;
+
+    @BindView(R.id.layoutMap)
+    public LinearLayout layoutMap;
+    @BindView(R.id.layoutDesc)
+    public LinearLayout layoutDesc;
+    @BindView(R.id.layoutMoreDetails)
+    public LinearLayout layoutMoreDetails;
+    @BindView(R.id.layoutTrainer)
+    public LinearLayout layoutTrainer;
+
+    @BindView(R.id.layoutMapClick)
+    public View layoutMapClick;
+
+    @BindView(R.id.layoutLocation)
+    public View layoutLocation;
+
+    @BindView(R.id.studioRating)
+    RatingBar studioRating;
+
+    @BindView(R.id.textViewRatingCount)
+    TextView textViewRatingCount;
+
+    @BindView(R.id.textViewReviewCountText)
+    TextView textViewReviewCountText;
+
+    @BindView(R.id.linearLayoutStudioRating)
+    LinearLayout linearLayoutStudioRating;
+
+    @BindView(R.id.layoutSeeAllReview)
+    LinearLayout layoutSeeAllReview;
+
+    @BindView(R.id.linearLayoutClassRating)
+    public LinearLayout linearLayoutClassRating;
+
+    @BindView(R.id.textViewClassRating)
+    public TextView textViewClassRating;
+
+    @BindView(R.id.relativeLayoutFitnessLevel)
+    public RelativeLayout relativeLayoutFitnessLevel;
+
+    @BindView(R.id.imageViewClassFitnessLevel)
+    public ImageView imageViewClassFitnessLevel;
+
+    @BindView(R.id.textViewFitnessLevel)
+    public TextView textViewFitnessLevel;
+
     private User user;
     public View imageViewOptions;
-    private ClassProfileAdapter classProfileAdapter;
     private ClassModel classModel;
     private int classSessionId;
     private int page;
@@ -156,13 +255,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     private void handleClassJoined(ClassModel data) {
         try {
             classModel.setUserJoinStatus(data.isUserJoinStatus());
-            try {
-                classProfileAdapter.getClassModel().setAvailableSeat(data.getAvailableSeat());
-                classProfileAdapter.notifyItemChanged(0);
-            } catch (Exception e) {
-                e.printStackTrace();
-                LogUtils.exception(e);
-            }
+              setData(classModel);
             Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
         } catch (Exception e) {
@@ -174,8 +267,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_class_profile);
-
+        setContentView(R.layout.activity_class_profile_new);
         ButterKnife.bind(activity);
         GlobalBus.getBus().register(this);
 
@@ -184,27 +276,19 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         navigationFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
 
         if (classModel == null && classSessionId == -1) {
-            finish();
+            supportFinishAfterTransition();
             return;
         }
 
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setEnabled(false);
 
-        classProfileAdapter = new ClassProfileAdapter(context, AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE, this);
-        StickyLayoutManager layoutManager = new StickyLayoutManager(context, classProfileAdapter);
-        layoutManager.elevateHeaders(true);
-        layoutManager.elevateHeaders((int) context.getResources().getDimension(R.dimen.view_separator_elevation));
 
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(classProfileAdapter);
         message = activity.getString(R.string.non_refundable_warning_msg);
 
         if (classModel != null) {
             classSessionId = classModel.getClassSessionId();
-            classProfileAdapter.setClass(classModel);
-            classProfileAdapter.notifyDataSetChanged();
+            setData(classModel);
 
             Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
         } else {
@@ -213,12 +297,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         user = TempStorage.getUser();
         onRefresh();
 
-        try {
-            ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-            LogUtils.exception(e);
-        }
 
         setToolBar();
 
@@ -231,10 +309,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         MixPanel.trackClassDetails();
         onTrackingNotification();
         networkCommunicator.getMyUser(this, false);
-
     }
-
-
 
     @Override
     public void onRefresh() {
@@ -268,7 +343,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 else {
                     if (Helper.isSpecialClass(classModel) &&
                             !Helper.isFreeClass(classModel)
-                            ) {
+                    ) {
 
                         CheckoutActivity.openActivity(context, classModel, 1);
 
@@ -562,6 +637,43 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             case R.id.layoutUserWallet:
                 showWalletAlert();
                 break;
+            case R.id.imageViewClass:
+                if (classModel.getClassMedia() != null) {
+                    Helper.openImageViewer(context, activity, view, classModel.getClassMedia().getMediaUrl(), AppConstants.ImageViewHolderType.CLASS_IMAGE_HOLDER);
+                }
+                break;
+            case R.id.layoutTrainer:
+                    if (classModel.getTrainerDetail() != null) {
+                        TrainerProfileActivity.open(context, classModel.getTrainerDetail(), AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE);
+                    } else {
+                        GymProfileActivity.open(context, classModel.getGymBranchDetail().getGymId(), AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE);
+                    }
+
+                break;
+            case R.id.textViewLocation:
+            case R.id.layoutLocation:
+                    GymProfileActivity.open(context, classModel.getGymBranchDetail().getGymId(), AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE);
+
+                break;
+
+            case R.id.imageViewMap:
+            case R.id.layoutMapClick:
+
+
+                    String label = "";
+                    try {
+                        label = classModel.getGymBranchDetail().getBranchName();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    Helper.openMap(context, classModel.getGymBranchDetail().getLatitude(), classModel.getGymBranchDetail().getLongitude(), label);
+
+                break;
+            case R.id.layoutSeeAllReview:
+                    ViewClassRating.open(context, classModel, AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE);
+
+                break;
         }
     }
     private void showWalletAlert(){
@@ -603,16 +715,14 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                                     dialog.dismiss();
                                     Helper.shareClass(context, classModel.getClassSessionId(), classModel.getTitle());
 
-                                    finish();
-
+                                    supportFinishAfterTransition();
                                 }
                             }, context.getResources().getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();
 
-                                    finish();
-                                }
+                                    supportFinishAfterTransition();                                }
                             });
 
                 }
@@ -638,8 +748,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 }
                 if (classModel != null) {
                     getCountRating();
-                    classProfileAdapter.setClass(classModel);
-                    classProfileAdapter.notifyDataSetChanged();
+                    setData(classModel);
+
                 }
 //                layoutButton.setVisibility(View.VISIBLE);
                 if (Helper.isSpecialClass(classModel)) {
@@ -654,8 +764,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 ratingData = ((ResponseModel<ClassRatingUserData>) response).data;
                 if (classModel != null && ratingData.getCount() > 0) {
                     classModel.setNumberOfRating(ratingData.getCount());
-                    classProfileAdapter.setClass(classModel);
-                    classProfileAdapter.notifyDataSetChanged();
+                    setData(classModel);
+
                 }
 
                 break;
@@ -682,9 +792,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
                         } else {
 
-                        Package aPackage = packages.get(0);
-                        MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
-                    }
+                            Package aPackage = packages.get(0);
+                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
+                        }
 
                     } else {
                         for (Package aPackage : packagesTemp) {
@@ -814,8 +924,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
 
                     } else {
-                              callPackageListApi(1);
-                            //MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+                        callPackageListApi(1);
+                        //MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
 
 
 
@@ -838,8 +948,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     DialogUtils.showBasicMessage(context, errorMessage, getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            finish();
-                        }
+                            supportFinishAfterTransition();                        }
                     });
                 }
 
@@ -903,6 +1012,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        supportFinishAfterTransition();
     }
 
     private void getCountRating() {
@@ -938,4 +1048,176 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public void onCancelClick(int requestCode, Object data) {
 
     }
+
+    private void setData(ClassModel model){
+
+            if (Helper.isSpecialClass(model)) {
+                textViewSpecialClass.setVisibility(View.VISIBLE);
+                textViewSpecialClass.setText(Helper.getSpecialClassText(model));
+
+            } else {
+                textViewSpecialClass.setVisibility(View.GONE);
+            }
+
+            if (!model.getDescription().isEmpty()) {
+
+                layoutDesc.setVisibility(View.VISIBLE);
+                textViewInfo.setText(model.getDescription());
+            } else {
+                layoutDesc.setVisibility(View.GONE);
+            }
+
+            if (model.getGymBranchDetail() != null) {
+
+                layoutMap.setVisibility(View.VISIBLE);
+                ImageUtils.setImage(context, ImageUtils.generateMapImageUrlClassDetail(model.getGymBranchDetail().getLatitude(), model.getGymBranchDetail().getLongitude()),
+                        R.drawable.no_map, imageViewMap);
+                textViewMap.setText(Html.fromHtml(context.getString(R.string.address) + context.getString(R.string.gaping) + model.getGymBranchDetail().getAddress()));
+            } else {
+                layoutMap.setVisibility(View.GONE);
+            }
+
+            String studioInstruction = "";
+
+            if (model.getGymBranchDetail() != null) {
+                studioInstruction = model.getGymBranchDetail().getStudioInstruction();
+            }
+
+            if (model.getSpecialNote().isEmpty() && model.getReminder().isEmpty() && studioInstruction.isEmpty()) {
+                layoutMoreDetails.setVisibility(View.GONE);
+            } else {
+                layoutMoreDetails.setVisibility(View.VISIBLE);
+
+                StringBuffer stringBuffer = new StringBuffer("");
+
+                if (!model.getReminder().isEmpty()) {
+                    stringBuffer.append(context.getString(R.string.remenders) + context.getString(R.string.gaping) + model.getReminder());
+                }
+
+                if (model.getGymBranchDetail() != null) {
+                    if (!model.getGymBranchDetail().getStudioInstruction().isEmpty()) {
+                        if (!stringBuffer.toString().isEmpty()) {
+                            stringBuffer.append("<br/><br/>");
+                        }
+                        stringBuffer.append(context.getString(R.string.studio_instruction) + context.getString(R.string.gaping) + model.getGymBranchDetail().getStudioInstruction());
+                    }
+                }
+
+                if (!model.getSpecialNote().isEmpty()) {
+                    if (!stringBuffer.toString().isEmpty()) {
+                        stringBuffer.append("<br/><br/>");
+                    }
+                    stringBuffer.append(context.getString(R.string.special_note_by_trainer) + context.getString(R.string.gaping) + model.getSpecialNote());
+                }
+
+                textViewMoreDetails.setText(Html.fromHtml(stringBuffer.toString()));
+
+            }
+
+            if (model.getClassMedia() != null) {
+                ImageUtils.setImage(context,
+                        model.getClassMedia().getMediaUrl(),
+                        R.drawable.class_holder, imageViewClass);
+            } else {
+                ImageUtils.clearImage(context, imageViewClass);
+            }
+
+            if (model.getTrainerDetail() != null) {
+
+                textViewTrainerName.setText(model.getTrainerDetail().getFirstName());
+                ImageUtils.setImage(context,
+                        model.getTrainerDetail().getProfileImageThumbnail(),
+                        R.drawable.profile_holder, imageViewTrainerProfile);
+
+            } else if (model.getGymBranchDetail() != null) {
+
+                textViewTrainerName.setText(model.getGymBranchDetail().getGymName());
+                ImageUtils.setImage(context,
+                        model.getGymBranchDetail().getMediaThumbNailUrl(),
+                        R.drawable.profile_holder, imageViewTrainerProfile);
+
+            } else {
+                ImageUtils.clearImage(context, imageViewTrainerProfile);
+                textViewLocation.setText("");
+            }
+
+            if (model.getGymBranchDetail() != null) {
+                textViewLocation.setText(model.getGymBranchDetail().getGymName() + ", " + model.getGymBranchDetail().getBranchName());
+            } else {
+                textViewLocation.setText("");
+            }
+            if (model.getRating() > 0 && model.getNumberOfRating() > 0) {
+
+                CharSequence text = String.format(context.getString(R.string.review_based_on),LanguageUtils.numberConverter(model.getNumberOfRating()) + "");
+                linearLayoutStudioRating.setVisibility(View.VISIBLE);
+                studioRating.setRating(model.getRating());
+
+                textViewRatingCount.setText(LanguageUtils.numberConverter(model.getRating()) + "/"+LanguageUtils.numberConverter(5.0));
+                textViewReviewCountText.setText(text);
+                studioRating.setIsIndicator(true);
+                linearLayoutClassRating.setVisibility(View.GONE);
+                textViewClassRating.setText(model.getRating() + "");
+            } else {
+                linearLayoutClassRating.setVisibility(View.GONE);
+                linearLayoutStudioRating.setVisibility(View.GONE);
+            }
+
+            if (model.getFitnessLevel() != null && !model.getFitnessLevel().isEmpty()) {
+                relativeLayoutFitnessLevel.setVisibility(View.VISIBLE);
+                switch (model.getFitnessLevel()) {
+                    case AppConstants.FitnessLevel.CLASS_LEVEL_BASIC:
+                        imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_get);
+                        break;
+                    case AppConstants.FitnessLevel.CLASS_LEVEL_INTERMEDIATE:
+                        imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_set);
+
+                        break;
+                    case AppConstants.FitnessLevel.CLASS_LEVEL_ADVANCED:
+                        imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_pro);
+
+                        break;
+                    default:
+                        relativeLayoutFitnessLevel.setVisibility(View.GONE);
+                        break;
+                }
+                setTextFitnessLevel(model);
+            } else {
+                relativeLayoutFitnessLevel.setVisibility(View.GONE);
+            }
+            textViewClassName.setText(model.getTitle());
+            textViewClassCategory.setText(model.getClassCategory());
+            textViewClassDate.setText(DateUtils.getClassDate(model.getClassDate()));
+//            textViewAvailable.setText( NumberFormat.getNumberInstance(Constants.LANGUAGE).format(model.getAvailableSeat()) + " " + context.getString(R.string.available_seats) + " ");
+//                    +
+//                    AppConstants.plural(context.getString(R.string.seat), model.getAvailableSeat()));
+            LanguageUtils.setText(textViewAvailable,model.getAvailableSeat(),context.getString(R.string.available_seats) + " ");
+
+            textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
+            textViewGender.setText(Helper.getClassGenderText(model.getClassType()));
+
+
+
+            layoutSeeAllReview.setOnClickListener(this);
+            layoutLocation.setOnClickListener(this);
+
+
+            imageViewClass.setOnClickListener(this);
+
+            imageViewMap.setOnClickListener(this);
+
+            layoutMapClick.setOnClickListener(this);
+
+            textViewLocation.setOnClickListener(this);
+
+            layoutTrainer.setOnClickListener(this);
+
+    }
+
+    private void setTextFitnessLevel(ClassModel model) {
+        String fitnessLevel = matchFitnessWord(model.getFitnessLevel(),context);
+        textViewFitnessLevel.setText(fitnessLevel);
+    }
 }
+
+
+
