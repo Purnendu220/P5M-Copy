@@ -39,7 +39,7 @@ public class LanguageUtils {
         NumberFormat format = DecimalFormat.getInstance();
         format.setRoundingMode(RoundingMode.FLOOR);
         format.setMinimumFractionDigits(0);
-        format.setMaximumFractionDigits(2);
+        format.setMaximumFractionDigits(1);
         return format.format(value);
        // String localLanguage=NumberFormat.getNumberInstance(Locale.getDefault()).format(value);
         //return localLanguage;
@@ -49,7 +49,7 @@ public class LanguageUtils {
         NumberFormat format = DecimalFormat.getInstance();
         format.setRoundingMode(RoundingMode.FLOOR);
         format.setMinimumFractionDigits(0);
-        format.setMaximumFractionDigits(2);
+        format.setMaximumFractionDigits(1);
         return format.format(value);
 
 //        String localLanguage=NumberFormat.getNumberInstance(Locale.getDefault()).format(value);
