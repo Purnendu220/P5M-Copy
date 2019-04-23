@@ -10,12 +10,13 @@ import com.p5m.me.MyApp;
 import com.p5m.me.data.CityLocality;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.Filter;
+import com.p5m.me.data.PushDetailModel;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.GymDataModel;
-import com.p5m.me.data.main.PushDetailModel;
 import com.p5m.me.data.main.User;
+import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
@@ -60,7 +61,7 @@ public class MixPanel {
             return;
         }
 
-        mixPanel = MixpanelAPI.getInstance(context, MIX_PANEL_TOKEN, true);
+        mixPanel = MixpanelAPI.getInstance(context, MIX_PANEL_TOKEN, false);
 
         try {
             mixPanel.identify(String.valueOf(TempStorage.getUser().getId()));
@@ -87,6 +88,7 @@ public class MixPanel {
             LogUtils.exception(e);
         }
     }
+
 
     public static void login(Context context) {
     }
@@ -629,6 +631,7 @@ public class MixPanel {
 
     public static void trackJoinClass(String origin, ClassModel classModel) {
         try {
+            User user = TempStorage.getUser();
             JSONObject props = new JSONObject();
             props.put("className", classModel.getTitle());
             props.put("classTiming", DateUtils.getDayTiming(classModel.getClassDate() + " " + classModel.getFromTime()));
@@ -639,7 +642,22 @@ public class MixPanel {
 
             float hourDiff = DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime());
             props.put("diffHrs", DateUtils.getHourDiff(hourDiff));
-
+            props.put("userGender", user.getGender());
+            if(user.getUserPackageDetailDtoList()!=null){
+                String packageUsedForJoinClass="";
+                List<UserPackage> packageList=user.getUserPackageDetailDtoList();
+                for(int i=0;i<packageList.size();i++){
+                    UserPackage userPackage = packageList.get(0);
+                    if(userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)&&userPackage.getBalanceClass()>0){
+                        packageUsedForJoinClass = userPackage.getPackageName();
+                    }
+                    if(userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)&&classModel.getGymBranchDetail().getGymId()==userPackage.getGymId()){
+                        packageUsedForJoinClass = userPackage.getPackageName();
+                        break;
+                    }
+                }
+                props.put("packageUsedForJoinClass", packageUsedForJoinClass);
+            }
             props.put("ActivityPrefered", classModel.getClassCategory());
             props.put("locality_preferred", classModel.getGymBranchDetail() == null ? "" : classModel.getGymBranchDetail().getLocalityName());
 
@@ -675,7 +693,7 @@ public class MixPanel {
             origin = AppConstants.Tracker.SHARED_CLASS;
         }
 
-        trackJoinClass(origin, classModel);
+      //  trackJoinClass(origin, classModel);
     }
 
     public static void trackUnJoinClass(String origin, ClassModel classModel) {
@@ -771,7 +789,6 @@ public class MixPanel {
                 props.put("Source", pushDetailModel.getSource());
                 if (!pushDetailModel.getUrl().isEmpty())
                     props.put("Url", pushDetailModel.getUrl());
-
                 trackEvent(props, "Push_Click");
             }
         } catch (Exception e) {

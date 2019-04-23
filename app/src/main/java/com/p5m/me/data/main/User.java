@@ -33,6 +33,7 @@ public class User implements java.io.Serializable {
     private List<UserPackage> userPackageDetailDtoList;
     private List<ClassActivity> classCategoryList;
     private boolean buyMembership;
+    private WalletDto walletDto;
 
     Integer gymId;
     Integer numberOfWeek;
@@ -300,4 +301,35 @@ public class User implements java.io.Serializable {
     public void setUserList(List<BookWithFriendData> userList) {
         this.userList = userList;
     }
+
+    public WalletDto getWalletDto() {
+        return walletDto;
+    }
+
+    public void setWalletDto(WalletDto walletDto) {
+        this.walletDto = walletDto;
+    }
+
+    public class WalletDto implements java.io.Serializable {
+       int id;
+       double balance;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public double getBalance() {
+            return balance;
+        }
+
+        public void setBalance(double balance) {
+            this.balance = balance;
+        }
+    }
+
+
 }

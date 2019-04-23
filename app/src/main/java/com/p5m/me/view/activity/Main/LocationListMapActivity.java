@@ -80,6 +80,7 @@ public class LocationListMapActivity extends BaseActivity implements OnMapReadyC
 
         branchMapListAdapter.addAll(list);
         branchMapListAdapter.notifyDataSetChanged();
+        onTrackingNotification();
     }
 
     @Override

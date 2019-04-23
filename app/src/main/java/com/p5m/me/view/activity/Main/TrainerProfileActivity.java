@@ -28,7 +28,6 @@ import com.p5m.me.adapters.viewholder.TrainerProfileViewHolder;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.FollowResponse;
 import com.p5m.me.data.main.ClassModel;
-import com.p5m.me.data.main.PushDetailModel;
 import com.p5m.me.data.main.TrainerDetailModel;
 import com.p5m.me.data.main.TrainerModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
@@ -209,13 +208,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
         MixPanel.trackTrainerVisit(navigatedFrom);
         onTrackingNotification();
     }
-    private void onTrackingNotification() {
-        boolean booleanExtra = getIntent().getBooleanExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, false);
-        if (booleanExtra) {
-            PushDetailModel pushDetailModel = (PushDetailModel) getIntent().getSerializableExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK);
-            MixPanel.trackPushNotificationClick(pushDetailModel);
-        }
-    }
+
     private void callApiClasses() {
         networkCommunicator.getUpcomingClasses(TempStorage.getUser().getId(), 0, trainerId, page, pageSizeLimit, this, false);
     }

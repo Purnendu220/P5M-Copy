@@ -16,6 +16,9 @@
 
         <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
         <item name="android:windowActivityTransitions" tools:targetApi="lollipop">true</item>
+        <item name="android:windowContentTransitions">true</item>
+
+
     </style>
 
     <style name="AppTheme_Scale" parent="Theme.AppCompat.Light.DarkActionBar">

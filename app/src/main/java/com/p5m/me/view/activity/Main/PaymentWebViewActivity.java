@@ -139,9 +139,9 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
 
     private void paymentSuccessful() {
         MixPanel.trackMembershipPurchase(couponCode, packageName);
-        if (classModel != null) {
-            MixPanel.trackJoinClass(AppConstants.Tracker.PURCHASE_PLAN, classModel);
-        }
+//        if (classModel != null) {
+//            MixPanel.trackJoinClass(AppConstants.Tracker.PURCHASE_PLAN, classModel);
+//        }
         mTimmer.cancel();
         overridePendingTransition(0, 0);
         Intent returnIntent = getIntent();

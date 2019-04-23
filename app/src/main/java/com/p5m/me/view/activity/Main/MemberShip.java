@@ -16,6 +16,7 @@ import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -28,18 +29,20 @@ import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
-import com.p5m.me.data.main.PushDetailModel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
+import com.p5m.me.helper.ClassListListenerHelper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
+import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.custom.PackageExtensionAlertDialog;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -52,7 +55,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MemberShip extends BaseActivity implements AdapterCallbacks, NetworkCommunicator.RequestListener,
-        SwipeRefreshLayout.OnRefreshListener  {
+        SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, CustomAlertDialog.OnAlertButtonAction {
 
     public static void openActivity(Context context, int navigationFrom) {
         context.startActivity(new Intent(context, MemberShip.class)
@@ -88,6 +91,10 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     @BindView(R.id.swipeRefreshLayout)
     public SwipeRefreshLayout swipeRefreshLayout;
 
+
+
+    private TextView mTextViewWalletAmount;
+    private LinearLayout mLayoutUserWallet;
     private int navigatedFrom;
     private ClassModel classModel;
     private MemberShipAdapter memberShipAdapter;
@@ -104,6 +111,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     private boolean hasPurchased;
     private boolean hasClickedCheckout;
     private int mNumberOfPackagesToBuy;
+    private static User.WalletDto mWalletCredit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +120,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
         ButterKnife.bind(activity);
         GlobalBus.getBus().register(this);
+        setToolBar();
 
         handler = new Handler();
 
@@ -137,19 +146,12 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
         onRefresh();
 
-        setToolBar();
 
         MixPanel.trackMembershipVisit(navigatedFrom);
         onTrackingNotification();
     }
 
-    private void onTrackingNotification() {
-        boolean booleanExtra = getIntent().getBooleanExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, false);
-        if (booleanExtra) {
-            PushDetailModel pushDetailModel = (PushDetailModel) getIntent().getSerializableExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK);
-            MixPanel.trackPushNotificationClick(pushDetailModel);
-        }
-    }
+
 
     @Override
     public void onDestroy() {
@@ -219,6 +221,9 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                 onBackPressed();
             }
         });
+        mTextViewWalletAmount=(TextView)v.findViewById(R.id.textViewWalletAmount);
+        mLayoutUserWallet=(LinearLayout)v.findViewById(R.id.layoutUserWallet);
+        mLayoutUserWallet.setOnClickListener(this);
 
         ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.membership));
 
@@ -470,11 +475,21 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
             case NetworkCommunicator.RequestCode.ME_USER:
                 user = TempStorage.getUser();
+                mWalletCredit= user.getWalletDto();
+                if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
+                    mLayoutUserWallet.setVisibility(View.VISIBLE);
+                    mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance())+" "+context.getResources().getString(R.string.wallet_currency));
+                }else{
+                    mLayoutUserWallet.setVisibility(View.GONE);
+
+                }
                 checkPackages();
 
                 break;
         }
     }
+
+
 
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
@@ -513,4 +528,34 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
         }
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.layoutUserWallet:
+                showWalletAlert();
+                break;
+
+        }
+
+    }
+
+    private void showWalletAlert(){
+        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.wallet_alert_title), context.getString(R.string.wallet_alert),1,"",context.getResources().getString(R.string.ok),CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO,null,true, this);
+        try {
+            mCustomAlertDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void onOkClick(int requestCode, Object data) {
+
+    }
+
+    @Override
+    public void onCancelClick(int requestCode, Object data) {
+
+    }
 }

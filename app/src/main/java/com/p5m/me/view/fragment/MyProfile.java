@@ -44,6 +44,7 @@ import com.p5m.me.view.activity.Main.MemberShip;
 import com.p5m.me.view.activity.Main.SettingActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.activity.custom.MyRecyclerView;
+import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.custom.PackageExtensionAlertDialog;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -54,7 +55,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MyProfile extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks<Object>, MyRecyclerView.LoaderCallbacks, NetworkCommunicator.RequestListener, PopupMenu.OnMenuItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class MyProfile extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks<Object>, MyRecyclerView.LoaderCallbacks, NetworkCommunicator.RequestListener, PopupMenu.OnMenuItemClickListener, SwipeRefreshLayout.OnRefreshListener, CustomAlertDialog.OnAlertButtonAction {
     public static Fragment createMyProfileFragment(int position) {
         Fragment tabFragment = new MyProfile();
         Bundle bundle = new Bundle();
@@ -325,6 +326,10 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
                 }
                 break;
 
+            case R.id.linearLayoutUserWallet:
+                showWalletAlert();
+                break;
+
 
         }
     }
@@ -404,5 +409,25 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
         networkCommunicator.getFinishedClassList(TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_UNLIMITED, this, false);
 
     }
+    private void showWalletAlert(){
+        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.wallet_alert_title), context.getString(R.string.wallet_alert),1,"",context.getResources().getString(R.string.ok),CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO,null,true, this);
+        try {
+            mCustomAlertDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+
+
+    }
+
+    @Override
+    public void onOkClick(int requestCode, Object data) {
+
+    }
+
+    @Override
+    public void onCancelClick(int requestCode, Object data) {
+
+    }
 }

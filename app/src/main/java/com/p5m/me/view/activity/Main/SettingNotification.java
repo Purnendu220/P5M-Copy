@@ -9,7 +9,6 @@ import android.widget.CompoundButton;
 
 import com.p5m.me.R;
 import com.p5m.me.analytics.MixPanel;
-import com.p5m.me.data.main.PushDetailModel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.request.UserUpdateRequest;
 import com.p5m.me.eventbus.EventBroadcastHelper;
@@ -54,13 +53,6 @@ public class SettingNotification extends BaseActivity implements NetworkCommunic
         onTrackingNotification();
     }
 
-    private void onTrackingNotification() {
-        boolean booleanExtra = getIntent().getBooleanExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, false);
-        if (booleanExtra) {
-            PushDetailModel pushDetailModel = (PushDetailModel) getIntent().getSerializableExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK);
-            MixPanel.trackPushNotificationClick(pushDetailModel);
-        }
-    }
 
     @OnClick(R.id.imageViewBack)
     public void imageViewBack(View view) {

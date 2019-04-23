@@ -15,8 +15,10 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.p5m.me.analytics.MixPanel;
+import com.p5m.me.data.PushDetailModel;
 import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
+import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.RefrenceWrapper;
 
@@ -65,6 +67,13 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
+    public void onTrackingNotification() {
+        boolean booleanExtra = getIntent().getBooleanExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, false);
+        if (booleanExtra) {
+            PushDetailModel pushDetailModel = (PushDetailModel) getIntent().getSerializableExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK);
+            MixPanel.trackPushNotificationClick(pushDetailModel);
+        }
+    }
 
 
     @Override
