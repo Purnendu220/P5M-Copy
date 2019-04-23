@@ -12,7 +12,6 @@ import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.TransactionsAdapter;
 import com.p5m.me.analytics.MixPanel;
-import com.p5m.me.data.main.PushDetailModel;
 import com.p5m.me.data.main.Transaction;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
@@ -61,16 +60,9 @@ public class TransactionHistoryActivity extends BaseActivity implements SwipeRef
         recyclerView.setAdapter(transactionsAdapter);
 
         onRefresh();
-        onTrackingNotification();
     }
 
-    private void onTrackingNotification() {
-        boolean booleanExtra = getIntent().getBooleanExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, false);
-        if (booleanExtra) {
-            PushDetailModel pushDetailModel = (PushDetailModel) getIntent().getSerializableExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK);
-            MixPanel.trackPushNotificationClick(pushDetailModel);
-        }
-    }
+
 
     @OnClick(R.id.imageViewBack)
     public void imageViewBack(View view) {

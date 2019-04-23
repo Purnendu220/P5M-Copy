@@ -9,7 +9,6 @@ import android.view.View;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
 import com.p5m.me.analytics.MixPanel;
-import com.p5m.me.data.main.PushDetailModel;
 import com.p5m.me.data.request.LogoutRequest;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.helper.Helper;
@@ -92,16 +91,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             Helper.openWebPage(context, AppConstants.Url.WEBSITE + "terms");
 
         }
-        onTrackingNotification();
     }
 
-    private void onTrackingNotification() {
-        boolean booleanExtra = getIntent().getBooleanExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, false);
-        if (booleanExtra) {
-            PushDetailModel pushDetailModel = (PushDetailModel) getIntent().getSerializableExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK);
-            MixPanel.trackPushNotificationClick(pushDetailModel);
-        }
-    }
+
 
     @OnClick(R.id.imageViewBack)
     public void imageViewBack(View view) {
