@@ -290,7 +290,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         mWalletCredit= user.getWalletDto();
 //        if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
 //            mLayoutUserWallet.setVisibility(View.VISIBLE);
-//            mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance())+" "+context.getResources().getString(R.string.wallet_currency));
+//            mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(),2)+" "+context.getResources().getString(R.string.wallet_currency));
 //        }else{
 //            mLayoutUserWallet.setVisibility(View.GONE);
 //
@@ -570,11 +570,11 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 break;
 
         }
-            textViewTotal.setText(LanguageUtils.numberConverter(costAfterCreditApply) + " " + context.getString(R.string.currency));
-            textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(costAfterCreditApply) + " " + context.getString(R.string.currency));
+            textViewTotal.setText(LanguageUtils.numberConverter(costAfterCreditApply,2) + " " + context.getString(R.string.currency));
+            textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(costAfterCreditApply,2) + " " + context.getString(R.string.currency));
 
            if(appliedCreditCost>0){
-               textViewWalletCreditPrice.setText("- " + LanguageUtils.numberConverter(((appliedCreditCost))) + " " + context.getString(R.string.currency));
+               textViewWalletCreditPrice.setText("- " + LanguageUtils.numberConverter(appliedCreditCost,2) + " " + context.getString(R.string.currency));
                //mTextViewWalletAmount.setText((LanguageUtils.numberConverter(((mWalletCredit.getBalance()-appliedCreditCost))))+" "+context.getString(R.string.currency));
 
 

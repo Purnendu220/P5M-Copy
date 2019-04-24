@@ -52,9 +52,15 @@ public class LanguageUtils {
         format.setMaximumFractionDigits(1);
         return format.format(value);
 
-//        String localLanguage=NumberFormat.getNumberInstance(Locale.getDefault()).format(value);
-//
-//        return localLanguage;
+    }
+    public static String numberConverter(double value,int decimalDigits)
+    {
+        NumberFormat format = DecimalFormat.getInstance();
+        format.setRoundingMode(RoundingMode.FLOOR);
+        format.setMinimumFractionDigits(0);
+        format.setMaximumFractionDigits(decimalDigits);
+        return format.format(value);
+
     }
     public static String currencyConverter(long value)
     {

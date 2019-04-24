@@ -335,7 +335,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             User user = TempStorage.getUser();
             mWalletCredit=user.getWalletDto();
             if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
-               return context.getResources().getString(R.string.wallet_text)+" : "+ LanguageUtils.numberConverter(mWalletCredit.getBalance())+" "+mContext.getResources().getString(R.string.wallet_currency);
+               return context.getResources().getString(R.string.wallet_text)+" : "+ LanguageUtils.numberConverter(mWalletCredit.getBalance(),2)+" "+mContext.getResources().getString(R.string.wallet_currency);
                 }
                 else{
                 return "";
