@@ -115,8 +115,8 @@ android {
             buildConfigField "boolean", "IS_PRODUCTION", "true"
             buildConfigField "String", "MIXPANEL_KEY", '\"705daac4d807e105c1ddc350c9324ca2\"'
             buildConfigField "String", "SENDER_ID", '\"109210713388\"'
-            buildConfigField "String", "BASE_URL", '\"http://staging.p5m.me\"'
-            buildConfigField "String", "BASE_URL_HTTPS", '\"https://staging.p5m.me\"'
+            buildConfigField "String", "BASE_URL", '\"http://136.243.22.168:8080\"'
+            buildConfigField "String", "BASE_URL_HTTPS", '\"https://136.243.22.168:8080\"'
 
             buildConfigField "String", "BASE_URL_MIDL", '\"/profive-midl/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://staging.p5m.me\"'
@@ -162,7 +162,7 @@ dependencies {
     implementation "com.android.support:support-v4:${SUPPORT_PACKAGE_VERSION}"
     implementation "com.android.support:cardview-v7:${SUPPORT_PACKAGE_VERSION}"
     implementation "com.android.support:exifinterface:${SUPPORT_PACKAGE_VERSION}"
-    implementation 'com.google.firebase:firebase-dynamic-links:16.1.8'
+
     /////////////////////////////////HTTP API////////////////////////////////////////
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'

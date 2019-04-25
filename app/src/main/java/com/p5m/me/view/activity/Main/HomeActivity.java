@@ -339,10 +339,11 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         @Override
         protected String doInBackground(String... url) {
             User user = TempStorage.getUser();
-            mWalletCredit = user.getWalletDto();
-            if (mWalletCredit != null && mWalletCredit.getBalance() > 0) {
-                return context.getResources().getString(R.string.wallet_text) + " : " + LanguageUtils.numberConverter(mWalletCredit.getBalance()) + " " + mContext.getResources().getString(R.string.wallet_currency);
-            } else {
+            mWalletCredit=user.getWalletDto();
+            if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
+               return context.getResources().getString(R.string.wallet_text)+" : "+ LanguageUtils.numberConverter(mWalletCredit.getBalance(),2)+" "+mContext.getResources().getString(R.string.wallet_currency);
+                }
+                else{
                 return "";
 
             }
@@ -351,15 +352,17 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            if (result != null && result.length() > 0) {
+            if(result!=null&&result.length()>0){
                 availableCredit.setVisibility(View.VISIBLE);
 
                 availableCredit.setText(result);
 
-            } else {
+            }else{
                 availableCredit.setVisibility(View.GONE);
 
             }
+
+
 
         }
 

@@ -91,7 +91,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             Helper.openWebPage(context, AppConstants.Url.WEBSITE + "terms");
 
         }
-        onTrackingNotification();
     }
 
 

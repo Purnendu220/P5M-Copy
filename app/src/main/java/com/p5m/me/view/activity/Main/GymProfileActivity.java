@@ -172,7 +172,6 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
         setToolBar();
 
         MixPanel.trackGymVisit(navigatedFrom);
-        onTrackingNotification();
     }
 
 
