@@ -104,7 +104,9 @@ android {
             buildConfigField "String", "BASE_URL_MIDL", '\"/dev-midl/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://staging.p5m.me\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
-            manifestPlaceholders = [hostName: "staging.p5m.me", hostName_www: "www.staging.p5m.me", appName: "P5M DEV", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
+            manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "81e25498c1638dbcb2017cc88dba175c5d44a1a6"]
+
+//            manifestPlaceholders = [hostName: "staging.p5m.me", hostName_www: "www.staging.p5m.me", appName: "P5M DEV", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
         }
         qa {
             def id = 'com.p5m.me'
@@ -160,7 +162,7 @@ dependencies {
     implementation "com.android.support:support-v4:${SUPPORT_PACKAGE_VERSION}"
     implementation "com.android.support:cardview-v7:${SUPPORT_PACKAGE_VERSION}"
     implementation "com.android.support:exifinterface:${SUPPORT_PACKAGE_VERSION}"
-
+    implementation 'com.google.firebase:firebase-dynamic-links:16.1.8'
     /////////////////////////////////HTTP API////////////////////////////////////////
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
