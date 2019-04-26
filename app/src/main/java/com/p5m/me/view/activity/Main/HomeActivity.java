@@ -2,14 +2,17 @@ package com.p5m.me.view.activity.Main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -20,7 +23,10 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.p5m.me.R;
@@ -37,6 +43,7 @@ import com.p5m.me.data.request.LogoutRequest;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
+import com.p5m.me.firebase_dynamic_link.FirebaseDynamicLinnk;
 import com.p5m.me.helper.ClassListListenerHelper;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
@@ -67,7 +74,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 
 
 public class HomeActivity extends BaseActivity implements BottomTapLayout.TabListener, ViewPager.OnPageChangeListener, View.OnClickListener, NetworkCommunicator.RequestListener {
@@ -168,10 +174,9 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         RefrenceWrapper.getRefrenceWrapper(this).setActivity(this);
         buyClassesLayout.setOnClickListener(this);
         GlobalBus.getBus().register(this);
-
+        FirebaseDynamicLinnk.getDynamicLink(this,getIntent());
         handler = new Handler(Looper.getMainLooper());
         setupBottomTabs();
-
         homeAdapter = new HomeAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_TABS, PROFILE_TAB_POSITION);
         viewPager.setAdapter(homeAdapter);
         viewPager.addOnPageChangeListener(this);
@@ -197,7 +202,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
 //        RemoteConfigSetUp.getValues();
         onTrackingNotification();
-        networkCommunicator.getMyUser(this,false);
+        networkCommunicator.getMyUser(this, false);
 
     }
 
@@ -336,7 +341,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             User user = TempStorage.getUser();
             mWalletCredit=user.getWalletDto();
             if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
-               return context.getResources().getString(R.string.wallet_text)+" : "+ LanguageUtils.numberConverter(mWalletCredit.getBalance())+" "+mContext.getResources().getString(R.string.wallet_currency);
+               return context.getResources().getString(R.string.wallet_text)+" : "+ LanguageUtils.numberConverter(mWalletCredit.getBalance(),2)+" "+mContext.getResources().getString(R.string.wallet_currency);
                 }
                 else{
                 return "";
@@ -370,7 +375,6 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         buyClasses.setText(RemoteConfigConst.BUY_CLASS_VALUE);
         RemoteConfigSetUp.setBackgroundColor(buyClassesLayout, RemoteConfigConst.BUY_CLASS_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
         FirebaseAnalysic.viewHomePage();
-
         if (currentTab == AppConstants.Tab.TAB_FIND_CLASS) {
             handleBuyClassesButton();
         } else {
@@ -513,6 +517,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             }
         });
     }
+
 
 
 }
