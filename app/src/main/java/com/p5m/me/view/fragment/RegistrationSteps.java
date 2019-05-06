@@ -18,7 +18,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.AppMeasurementEventLogger;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.p5m.me.R;
+import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.eventbus.EventBroadcastHelper;
@@ -39,6 +42,8 @@ import butterknife.OnClick;
 
 
 public class RegistrationSteps extends BaseFragment implements View.OnClickListener, NetworkCommunicator.RequestListener {
+
+    private AppMeasurementEventLogger mFirebaseAnalytics;
 
     public static Fragment createFragment(int position) {
         Fragment tabFragment = new RegistrationSteps();
@@ -364,6 +369,7 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
                     EventBroadcastHelper.sendLogin(context, user);
 
                     MixPanel.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
+                    FirebaseAnalysic.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
 
                     RegistrationDoneActivity.open(context);
                 }
@@ -371,6 +377,8 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
                 break;
         }
     }
+
+
 
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {

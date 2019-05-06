@@ -33,6 +33,7 @@ import com.p5m.me.data.main.TrainerModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
+import com.p5m.me.firebase_dynamic_link.FirebaseDynamicLinnk;
 import com.p5m.me.helper.ClassListListenerHelper;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
@@ -149,7 +150,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
 
         ButterKnife.bind(activity);
         GlobalBus.getBus().register(this);
-
+        FirebaseDynamicLinnk.getDynamicLink(this,getIntent());
         trainerModel = (TrainerModel) getIntent().getSerializableExtra(AppConstants.DataKey.TRAINER_OBJECT);
         trainerId = getIntent().getIntExtra(AppConstants.DataKey.TRAINER_ID_INT, -1);
         navigatedFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
@@ -206,7 +207,6 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
         setToolBar();
 
         MixPanel.trackTrainerVisit(navigatedFrom);
-        onTrackingNotification();
     }
 
     private void callApiClasses() {

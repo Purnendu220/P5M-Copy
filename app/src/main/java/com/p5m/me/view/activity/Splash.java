@@ -15,12 +15,12 @@ import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.inappmessaging.FirebaseInAppMessaging;
+import com.google.firebase.iid.InstanceIdResult;
 import com.p5m.me.MyApp;
 import com.p5m.me.R;
 import com.p5m.me.eventbus.EventBroadcastHelper;
-import com.p5m.me.fxn.utility.Constants;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
@@ -32,8 +32,6 @@ import com.p5m.me.utils.PermissionUtility;
 import com.p5m.me.view.activity.Main.ForceUpdateActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
-
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -88,6 +86,17 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
         } else {
             startTimerForGoToNextScreen();
         }
+        getToken();
+    }
+
+    private void getToken() {
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( Splash.this,  new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                String newToken = instanceIdResult.getToken();
+                Log.e("newToken",newToken);
+            }
+        });
     }
 
     private void startTimerForGoToNextScreen() {

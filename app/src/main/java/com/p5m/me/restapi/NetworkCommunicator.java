@@ -33,6 +33,7 @@ import com.p5m.me.data.main.TrainerDetailModel;
 import com.p5m.me.data.main.TrainerModel;
 import com.p5m.me.data.main.Transaction;
 import com.p5m.me.data.main.User;
+import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.data.request.ChangePasswordRequest;
 import com.p5m.me.data.request.ChooseFocusRequest;
 import com.p5m.me.data.request.ClassListRequest;
@@ -53,6 +54,7 @@ import com.p5m.me.data.request.WishListRequest;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
+import com.p5m.me.target_user_notification.UserPropertyConst;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CommonUtillity;
 import com.p5m.me.utils.LogUtils;
@@ -71,6 +73,8 @@ import retrofit2.Response;
  */
 
 public class NetworkCommunicator {
+
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     public abstract interface RequestListener<T> {
 
@@ -135,11 +139,11 @@ public class NetworkCommunicator {
         public static final int CLASS_RATING = 132;
         public static final int CLASS_RATING_LIST = 134;
         public static final int IMAGE_UPLOAD_PROGRESS = 135;
-        public static final int IMAGE_UPLOAD_FAILED =136;
+        public static final int IMAGE_UPLOAD_FAILED = 136;
         public static final int CLASS_RATING_PUBLISH = 137;
         public static final int UNRATED_CLASS_COUNT = 138;
         public static final int CLASS_RATING_UPDATE = 139;
-        public static final int MEDIA_DELETE=140;
+        public static final int MEDIA_DELETE = 140;
 
 
         public static final int PAYMENT_CONFIRMATION_DETAIL = 150;
@@ -345,9 +349,10 @@ public class NetworkCommunicator {
         });
         return call;
     }
+
     public Call getGymsList(final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.ALL_GYM_LIST;
-        Call<ResponseModel<List<GymDataModel>>> call = apiService.getGymList(3 );
+        Call<ResponseModel<List<GymDataModel>>> call = apiService.getGymList(3);
         LogUtils.debug("NetworkCommunicator hitting getGymList");
 
         call.enqueue(new RestCallBack<ResponseModel<List<GymDataModel>>>(context) {
@@ -408,9 +413,10 @@ public class NetworkCommunicator {
         });
         return call;
     }
-    public Call getRcomendedClassList(String date,Double latitude,Double longitude, final RequestListener requestListener, boolean useCache) {
+
+    public Call getRcomendedClassList(String date, Double latitude, Double longitude, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.RCOMENDED_CLASS_LIST;
-        Call<ResponseModel<List<ClassModel>>> call = apiService.getRecomendedClassList(date,latitude,longitude,TempStorage.getUser().getId());
+        Call<ResponseModel<List<ClassModel>>> call = apiService.getRecomendedClassList(date, latitude, longitude, TempStorage.getUser().getId());
         LogUtils.debug("NetworkCommunicator hitting getClassList");
 
         call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>(context) {
@@ -579,7 +585,7 @@ public class NetworkCommunicator {
 
     public Call getFinishedClassList(int userId, int page, int size, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.CLASS_LIST;
-        Call<ResponseModel<List<ClassModel>>> call = apiService.getFinishedClassList(userId,page,size);
+        Call<ResponseModel<List<ClassModel>>> call = apiService.getFinishedClassList(userId, page, size);
         LogUtils.debug("NetworkCommunicator hitting getFinishedClassList");
 
         call.enqueue(new RestCallBack<ResponseModel<List<ClassModel>>>(context) {
@@ -682,9 +688,9 @@ public class NetworkCommunicator {
         return call;
     }
 
-    public Call getPackagesForClass(int userId, int gymId, int sessionId,int numberOfFriends, final RequestListener requestListener, boolean useCache) {
+    public Call getPackagesForClass(int userId, int gymId, int sessionId, int numberOfFriends, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.PACKAGES_FOR_USER;
-        Call<ResponseModel<List<Package>>> call = apiService.getClassPackageList(userId, gymId, sessionId,numberOfFriends);
+        Call<ResponseModel<List<Package>>> call = apiService.getClassPackageList(userId, gymId, sessionId, numberOfFriends);
         LogUtils.debug("NetworkCommunicator hitting getPackagesForClass");
 
         call.enqueue(new RestCallBack<ResponseModel<List<Package>>>(context) {
@@ -815,6 +821,8 @@ public class NetworkCommunicator {
         LogUtils.debug("NetworkCommunicator hitting User");
 
         call.enqueue(new RestCallBack<ResponseModel<User>>(context) {
+            private boolean haveReadyPackage = false;
+
             @Override
             public void onFailure(Call<ResponseModel<User>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator User onFailure " + message);
@@ -826,11 +834,36 @@ public class NetworkCommunicator {
                 LogUtils.networkSuccess("NetworkCommunicator User onResponse data " + response);
                 if (response.data != null) {
                     EventBroadcastHelper.sendUserUpdate(context, response.data);
+                    setUserProperty(context, UserPropertyConst.GENDER, response.data.getGender());
+                    setUserProperty(context, UserPropertyConst.NUMBER_OF_TRANSACTIONS, String.valueOf(response.data.getNumberOfTransactions()));
+                    String userMainPackage=UserPropertyConst.NO_PACKAGE;
+                    String userReadyPackage=UserPropertyConst.No_READY_PACKAGE;
+                    if (response.data.getUserPackageDetailDtoList() != null
+                            && !response.data.getUserPackageDetailDtoList().isEmpty()) {
+
+                        for (UserPackage userPackage : response.data.getUserPackageDetailDtoList()) {
+                            if (userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)
+                                    && userPackage.getBalanceClass() != 0) {
+                                userMainPackage=userPackage.getPackageName().toUpperCase();
+
+                            } else if (userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
+                                userReadyPackage = UserPropertyConst.HAVE_READY_PACKAGE;
+
+                            }
+                        }
+                        }
+                        setUserProperty(context, UserPropertyConst.ACTIVE_PACKAGE, userMainPackage);
+                        setUserProperty(context, UserPropertyConst.READY_PACKAGE, userReadyPackage);
+
                 }
                 requestListener.onApiSuccess(response, requestCode);
             }
         });
         return call;
+    }
+
+    private void setUserProperty(Context context, String key, String value) {
+        mFirebaseAnalytics.getInstance(context).setUserProperty(key, value);
     }
 
     public Call getGym(int gymId, final RequestListener requestListener, boolean useCache) {
@@ -1029,10 +1062,10 @@ public class NetworkCommunicator {
     public Call uploadUserImage(Context context, File file, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.PHOTO_UPLOAD;
         String uniqueChar;
-        try{
-            uniqueChar= CommonUtillity.getnerateUniqueToken(context);
-        }catch (Exception e){
-            uniqueChar= System.currentTimeMillis()+"";
+        try {
+            uniqueChar = CommonUtillity.getnerateUniqueToken(context);
+        } catch (Exception e) {
+            uniqueChar = System.currentTimeMillis() + "";
         }
 
         LogUtils.debug("NetworkCommunicator hitting uploadImage");
@@ -1113,6 +1146,7 @@ public class NetworkCommunicator {
         });
         return call;
     }
+
     public Call uploadRatingImages(Context context, final SelectedFileData selectedFileData, int mediaId, File file, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.PHOTO_UPLOAD;
         LogUtils.debug("NetworkCommunicator hitting uploadImage");
@@ -1133,10 +1167,10 @@ public class NetworkCommunicator {
         ProgressRequestBody fileBody = new ProgressRequestBody(file, new ProgressRequestBody.UploadCallbacks() {
             @Override
             public void onProgressUpdate(int percentage) {
-                SelectedFileData selectedFileDataLocal=selectedFileData;
+                SelectedFileData selectedFileDataLocal = selectedFileData;
                 selectedFileDataLocal.setFileUploadProgress(percentage);
                 requestListener.onApiSuccess(selectedFileDataLocal, RequestCode.IMAGE_UPLOAD_PROGRESS);
-                LogUtils.debug("UPLOAD PERCENTAGE FOR IMAGE "+selectedFileData.getFilepath()+" UPLOAD "+percentage);
+                LogUtils.debug("UPLOAD PERCENTAGE FOR IMAGE " + selectedFileData.getFilepath() + " UPLOAD " + percentage);
 
             }
 
@@ -1151,12 +1185,12 @@ public class NetworkCommunicator {
 
         MultipartBody.Part filePart = MultipartBody.Part.createFormData(AppConstants.ApiParamKey.MEDIA, file.getName(), fileBody);
         Call<ResponseModel<MediaResponse>> call = RestServiceFactory.createService().uploadMediaImage(
-                     filePart,
-                    "rating",
-                     mediaId,
-                    "rating",
-                    "Image",
-                     file.getName(),
+                filePart,
+                "rating",
+                mediaId,
+                "rating",
+                "Image",
+                file.getName(),
                 selectedFileData.getSpecialToken());
         final File finalFile = file;
         call.enqueue(new RestCallBack<ResponseModel<MediaResponse>>(context) {
@@ -1207,6 +1241,7 @@ public class NetworkCommunicator {
         });
         return call;
     }
+
     public Call submitClassRating(ClassRatingRequest classRatingRequest, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.CLASS_RATING;
         Call<ResponseModel<RatingResponseModel>> call = apiService.submitClassRating(classRatingRequest);
@@ -1227,9 +1262,10 @@ public class NetworkCommunicator {
         });
         return call;
     }
-    public Call updateClassRating(long ratingId,ClassRatingRequest classRatingRequest, final RequestListener requestListener, boolean useCache) {
+
+    public Call updateClassRating(long ratingId, ClassRatingRequest classRatingRequest, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.CLASS_RATING_UPDATE;
-        Call<ResponseModel<RatingResponseModel>> call = apiService.updateClassRating(ratingId,classRatingRequest);
+        Call<ResponseModel<RatingResponseModel>> call = apiService.updateClassRating(ratingId, classRatingRequest);
         LogUtils.debug("NetworkCommunicator hitting changePass");
 
         call.enqueue(new RestCallBack<ResponseModel<RatingResponseModel>>(context) {
@@ -1247,7 +1283,8 @@ public class NetworkCommunicator {
         });
         return call;
     }
-    public Call deleteMedia(long mediaId,final RequestListener requestListener, boolean useCache) {
+
+    public Call deleteMedia(long mediaId, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.MEDIA_DELETE;
         Call<ResponseModel<User>> call = apiService.deleteMedia(mediaId);
         LogUtils.debug("NetworkCommunicator hitting changePass");
@@ -1270,7 +1307,7 @@ public class NetworkCommunicator {
 
     public Call publishClassRating(long ratingId, PublishRequest classRatingRequest, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.CLASS_RATING_PUBLISH;
-        Call<ResponseModel<RatingResponseModel>> call = apiService.publishClassRating(ratingId,classRatingRequest);
+        Call<ResponseModel<RatingResponseModel>> call = apiService.publishClassRating(ratingId, classRatingRequest);
         LogUtils.debug("NetworkCommunicator hitting changePass");
 
         call.enqueue(new RestCallBack<ResponseModel<RatingResponseModel>>(context) {
@@ -1288,9 +1325,10 @@ public class NetworkCommunicator {
         });
         return call;
     }
-    public Call getUnratedClassList(int page,int size,final RequestListener requestListener, boolean useCache) {
+
+    public Call getUnratedClassList(int page, int size, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.UNRATED_CLASS_COUNT;
-        Call<ResponseModel<UnratedClassData>> call = apiService.unRatedClassList(TempStorage.getUser().getId(),page,size);
+        Call<ResponseModel<UnratedClassData>> call = apiService.unRatedClassList(TempStorage.getUser().getId(), page, size);
         LogUtils.debug("NetworkCommunicator hitting changePass");
 
         call.enqueue(new RestCallBack<ResponseModel<UnratedClassData>>(context) {
@@ -1310,9 +1348,9 @@ public class NetworkCommunicator {
     }
 
 
-    public Call getClassRatingList(int classId,int page,int pageSize, final RequestListener requestListener, boolean useCache) {
+    public Call getClassRatingList(int classId, int page, int pageSize, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.CLASS_RATING_LIST;
-        Call<ResponseModel<ClassRatingUserData>> call = apiService.getRatingList(classId,1, page, pageSize);
+        Call<ResponseModel<ClassRatingUserData>> call = apiService.getRatingList(classId, 1, page, pageSize);
         LogUtils.debug("NetworkCommunicator hitting getWishList");
 
         call.enqueue(new RestCallBack<ResponseModel<ClassRatingUserData>>(context) {
@@ -1330,6 +1368,7 @@ public class NetworkCommunicator {
         });
         return call;
     }
+
     public Call addToWishList(final ClassModel classModel, final int classSessionId) {
         final int requestCode = RequestCode.ADD_TO_WISH_LIST;
         Call<ResponseModel<WishListResponse>> call = apiService.addToWishList(new WishListRequest(TempStorage.getUser().getId(), classSessionId));
@@ -1349,7 +1388,7 @@ public class NetworkCommunicator {
 //                requestListener.onApiSuccess(response, requestCode);
 
                 try {
-                   String message = String.format(context.getString(R.string.added_to_wishlist),classModel.getTitle());
+                    String message = String.format(context.getString(R.string.added_to_wishlist), classModel.getTitle());
                     ToastUtils.show(context, message);
                     classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
                     EventBroadcastHelper.sendWishAdded(classModel);

@@ -19,6 +19,7 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.p5m.me.R;
+import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.FaceBookUser;
 import com.p5m.me.data.main.User;
@@ -195,6 +196,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
 
                     if (user.getDateOfJoining() >= loginTime) {
                         MixPanel.trackRegister(AppConstants.Tracker.FB, TempStorage.getUser());
+                        FirebaseAnalysic.trackRegister(AppConstants.Tracker.FB, TempStorage.getUser());
                     } else
                         MixPanel.trackLogin(AppConstants.Tracker.FB, TempStorage.getUser());
 

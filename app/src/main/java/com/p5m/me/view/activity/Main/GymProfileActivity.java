@@ -25,6 +25,7 @@ import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
+import com.p5m.me.firebase_dynamic_link.FirebaseDynamicLinnk;
 import com.p5m.me.helper.ClassListListenerHelper;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
@@ -120,7 +121,7 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
 
         ButterKnife.bind(activity);
         GlobalBus.getBus().register(this);
-
+        FirebaseDynamicLinnk.getDynamicLink(this,getIntent());
         gymId = getIntent().getIntExtra(AppConstants.DataKey.GYM_ID_INT, -1);
         navigatedFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
 

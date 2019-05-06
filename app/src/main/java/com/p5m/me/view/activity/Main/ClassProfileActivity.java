@@ -3,6 +3,7 @@ package com.p5m.me.view.activity.Main;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -12,6 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -20,9 +22,14 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.brandongogetap.stickyheaders.StickyLayoutManager;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.ClassProfileAdapter;
+import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.ClassRatingUserData;
@@ -35,6 +42,7 @@ import com.p5m.me.data.request.JoinClassRequest;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
+import com.p5m.me.firebase_dynamic_link.FirebaseDynamicLinnk;
 import com.p5m.me.helper.ClassListListenerHelper;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
@@ -48,7 +56,9 @@ import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.PermissionUtility;
 import com.p5m.me.utils.ToastUtils;
+import com.p5m.me.view.activity.Splash;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.BookForAFriendPopup;
 import com.p5m.me.view.custom.CustomAlertDialog;
@@ -178,7 +188,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
         ButterKnife.bind(activity);
         GlobalBus.getBus().register(this);
-
+        FirebaseDynamicLinnk.getDynamicLink(this,getIntent());
         classModel = (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_OBJECT);
         classSessionId = getIntent().getIntExtra(AppConstants.DataKey.CLASS_SESSION_ID_INT, -1);
         navigationFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
@@ -187,8 +197,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             finish();
             return;
         }
-
-        swipeRefreshLayout.setOnRefreshListener(this);
+       swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setEnabled(false);
 
         classProfileAdapter = new ClassProfileAdapter(context, AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE, this);
@@ -222,19 +231,42 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
         setToolBar();
 
-//        if (classModel != null) {
-//            if (classModel.isUserJoinStatus()) {
-//                imageViewOptions.setVisibility(View.GONE);
-//            }
-//        }
-
+        getDynamicLink();
         MixPanel.trackClassDetails();
         onTrackingNotification();
         networkCommunicator.getMyUser(this, false);
 
     }
 
+    private void getDynamicLink() {
+        FirebaseDynamicLinks.getInstance()
+                .getDynamicLink(getIntent())
+                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
+                    @Override
+                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                        // Get deep link from result (may be null if no link is found)
+                        Uri deepLink = null;
+                        if (pendingDynamicLinkData != null) {
+                            deepLink = pendingDynamicLinkData.getLink();
+                        }
 
+                        if (deepLink != null) {
+                          Log.d("Deep Link", "Found deep link ClassProfile!");
+
+                        } else {
+                            Log.d("Deep Link", "getDynamicLink: no link found");
+
+                        }
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Deep Link", "getDynamicLink:onFailure", e);
+
+                    }
+                });
+    }
 
     @Override
     public void onRefresh() {
@@ -311,7 +343,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             e.printStackTrace();
         }
     }
-
 
 
     public void bookWithAFriend(final BookWithFriendData data) {
@@ -481,11 +512,11 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
         v.findViewById(R.id.imageViewBack).setOnClickListener(this);
         imageViewOptions = v.findViewById(R.id.imageViewOptions);
-        mTextViewWalletAmount=(TextView)v.findViewById(R.id.textViewWalletAmount);
-        mLayoutUserWallet=(LinearLayout)v.findViewById(R.id.layoutUserWallet);
+        mTextViewWalletAmount = (TextView) v.findViewById(R.id.textViewWalletAmount);
+        mLayoutUserWallet = (LinearLayout) v.findViewById(R.id.layoutUserWallet);
         mLayoutUserWallet.setOnClickListener(this);
         imageViewOptions.setOnClickListener(this);
-        ((TextView)(v.findViewById(R.id.textViewTitle))).setText(RemoteConfigConst.CLASS_CARD_TEXT_VALUE);
+        ((TextView) (v.findViewById(R.id.textViewTitle))).setText(RemoteConfigConst.CLASS_CARD_TEXT_VALUE);
 
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT));
@@ -564,14 +595,14 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 break;
         }
     }
-    private void showWalletAlert(){
-        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.wallet_alert_title), context.getString(R.string.wallet_alert),1,"",context.getResources().getString(R.string.ok),CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO,null,true, this);
+
+    private void showWalletAlert() {
+        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.wallet_alert_title), context.getString(R.string.wallet_alert), 1, "", context.getResources().getString(R.string.ok), CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO, null, true, this);
         try {
             mCustomAlertDialog.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
 
     }
@@ -593,6 +624,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
                 MixPanel.trackJoinClass(navigationFrom, classModel);
+                FirebaseAnalysic.trackJoinClass(navigationFrom, classModel);
                 if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
 //                    context.getResources().getString(R.string.invite_friends)
                     DialogUtils.showBasicMessage(context, "",
@@ -618,10 +650,11 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 }
                 if (!CalendarHelper.haveCalendarReadWritePermissions(this)) {
                     CalendarHelper.requestCalendarReadWritePermission(this);
-                }
-                else{
-                    CalendarHelper.scheduleCalenderEvent(this,classModel);
+                } else {
+                    if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
 
+                        CalendarHelper.scheduleCalenderEvent(this, classModel);
+                    }
                 }
                 break;
 
@@ -668,8 +701,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     if (mBookWithFriendData != null) {
 
                         for (Package aPackage : packagesTemp) {
-                            int numberOfDays =DateUtils.getPackageNumberOfDays(aPackage.getDuration(),aPackage.getValidityPeriod());
-                            if (!(aPackage.getDuration()>0 && DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays)) {
+                            int numberOfDays = DateUtils.getPackageNumberOfDays(aPackage.getDuration(), aPackage.getValidityPeriod());
+                            if (!(aPackage.getDuration() > 0 && DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays)) {
                                 if (aPackage.getGymVisitLimit() != 1) {
                                     packages.add(aPackage);
                                 }
@@ -677,24 +710,26 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                         }
                         if (packages.size() == 1 || !user.isBuyMembership()) {
                             Package aPackage = packages.get(0);
-                            CheckoutActivity.openActivity(context, aPackage, classModel, aPackage.getNoOfClass(), mBookWithFriendData);
+                            CheckoutActivity.openActivity(context, aPackage, classModel, 2, mBookWithFriendData, aPackage.getNoOfClass());
                             return;
 
                         } else {
 
-                        Package aPackage = packages.get(0);
-                        MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
-                    }
+                            Package aPackage = packages.get(0);
+                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
+                        }
 
                     } else {
                         for (Package aPackage : packagesTemp) {
-                            int numberOfDays =DateUtils.getPackageNumberOfDays(aPackage.getDuration(),aPackage.getValidityPeriod());
-                            if (!(aPackage.getDuration()>0 && DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays)) {
+                            int numberOfDays = DateUtils.getPackageNumberOfDays(aPackage.getDuration(), aPackage.getValidityPeriod());
+                            if (!(aPackage.getDuration() > 0 && DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays)) {
                                 packages.add(aPackage);
                             }
-                        }if (packages.size() == 1 || !user.isBuyMembership()) {
+                        }
+                        if (packages.size() == 1 || !user.isBuyMembership()) {
                             Package aPackage = packages.get(0);
-                            CheckoutActivity.openActivity(context, aPackage, classModel,aPackage.getNoOfClass());
+                            //////////
+                            CheckoutActivity.openActivity(context, aPackage, classModel, 1, aPackage.getNoOfClass());
                             return;
                         } else {
                             MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
@@ -707,11 +742,11 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 if (Helper.isSpecialClass(classModel) &&
                         !Helper.isFreeClass(classModel)) {
                     user = TempStorage.getUser();
-                    mWalletCredit= user.getWalletDto();
-                    if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
+                    mWalletCredit = user.getWalletDto();
+                    if (mWalletCredit != null && mWalletCredit.getBalance() > 0) {
                         mLayoutUserWallet.setVisibility(View.VISIBLE);
-                        mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(),2)+" "+context.getResources().getString(R.string.wallet_currency));
-                    }else{
+                        mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance()) + " " + context.getResources().getString(R.string.wallet_currency));
+                    } else {
                         mLayoutUserWallet.setVisibility(View.GONE);
 
                     }
@@ -814,9 +849,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
 
                     } else {
-                              callPackageListApi(1);
-                            //MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
-
+                        callPackageListApi(1);
+                        //MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
 
 
                     }
@@ -827,6 +861,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     textViewBook.setEnabled(true);
 
                 }
+
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
                 break;
@@ -860,6 +895,11 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        textViewBook.setEnabled(true);
+    }
 
     private boolean checkIfUserHaveExpiredPackage() {
         boolean userHaveDropinForClass = false;
@@ -915,8 +955,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
         if (requestCode == CalendarHelper.CALENDARED_PERMISSION_REQUEST_CODE) {
             if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
-                if (classModel != null){
-                    CalendarHelper.scheduleCalenderEvent(this,classModel);
+                if (classModel != null) {
+                    if (CalendarHelper.haveCalendarReadWritePermissions(this))
+                        CalendarHelper.scheduleCalenderEvent(this, classModel);
                 }
 
 
