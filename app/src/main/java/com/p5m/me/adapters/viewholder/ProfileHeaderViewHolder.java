@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.p5m.me.R;
@@ -44,9 +45,15 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.textViewExtendPackage)
     public TextView textViewExtendPackage;
+    @BindView(R.id.linearLayoutUserWallet)
+    public LinearLayout linearLayoutUserWallet;
+
+    @BindView(R.id.textViewWalletBalance)
+    public TextView textViewWalletBalance;
 
     private final Context context;
     public UserPackage userpackageToExtend;
+    private User.WalletDto mWalletCredit;
 
     public ProfileHeaderViewHolder(View itemView) {
         super(itemView);
@@ -60,35 +67,45 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
 
         if (data != null && data instanceof User) {
             final User user = (User) data;
+            mWalletCredit=user.getWalletDto();
             itemView.setVisibility(View.VISIBLE);
 
-            textViewName.setText(user.getFirstName()+" "+user.getLastName());
+            textViewName.setText(user.getFirstName() + " " + user.getLastName());
             UserPackageInfo userPackageInfo = new UserPackageInfo(user);
 
             ImageUtils.setImage(context,
                     user.getProfileImage(),
                     R.drawable.profile_holder_big, imageView);
+            if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
+                linearLayoutUserWallet.setVisibility(View.VISIBLE);
+                textViewWalletBalance.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(),2)+" "+context.getResources().getString(R.string.wallet_currency));
+
+            }
+            else{
+                linearLayoutUserWallet.setVisibility(View.GONE);
+
+            }
 
             if (userPackageInfo.havePackages) {
-                if(user.isBuyMembership()){
+                if (user.isBuyMembership()) {
                     textViewRecharge.setVisibility(View.VISIBLE);
 
 
-                }else{
+                } else {
                     textViewRecharge.setVisibility(View.GONE);
 
                 }
 
-                if(user.isBuyMembership()){
-                    if(userPackageInfo.haveDropInPackage){
+                if (user.isBuyMembership()) {
+                    if (userPackageInfo.haveDropInPackage) {
                         textViewExtendPackage.setVisibility(View.VISIBLE);
 
-                    }else{
+                    } else {
                         textViewExtendPackage.setVisibility(View.GONE);
 
                     }
 
-                }else{
+                } else {
                     textViewExtendPackage.setVisibility(View.VISIBLE);
 
                 }
@@ -99,56 +116,63 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                 if (userPackageInfo.haveGeneralPackage && !userPackageInfo.haveDropInPackage) {
                     textViewValidity.setVisibility(View.VISIBLE);
 
-                    String message=userPackageInfo.userPackageGeneral.getBalanceClass()!=1?context.getString(R.string.classes):context.getString(R.string.one_class);
+                    String message = userPackageInfo.userPackageGeneral.getBalanceClass() != 1 ? context.getString(R.string.classes) : context.getString(R.string.one_class);
 
-                    LanguageUtils.setText(textViewPackage,userPackageInfo.userPackageGeneral.getBalanceClass(),  message+" "+context.getString(R.string.remaining));
+                    LanguageUtils.setText(textViewPackage, userPackageInfo.userPackageGeneral.getBalanceClass(), message + " " + context.getString(R.string.remaining));
 
                     int daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageGeneral.getExpiryDate());
-if(daysLeftFromPackageExpiryDate>=0){
-    textViewValidity.setText(Html.fromHtml("<b>" + numberConverter(daysLeftFromPackageExpiryDate )+ " " +
-            AppConstants.plural(context.getString(R.string.day), daysLeftFromPackageExpiryDate) + "</b> " +
-            context.getString(R.string.profile_package_expiry)));
-}else{
-    textViewValidity.setVisibility(View.GONE);
-    textViewExtendPackage.setVisibility(View.GONE);
+                    if (daysLeftFromPackageExpiryDate >= 0) {
+                        textViewValidity.setText(Html.fromHtml("<b>" + numberConverter(daysLeftFromPackageExpiryDate) + " " +
+                                AppConstants.plural(context.getString(R.string.day), daysLeftFromPackageExpiryDate) + "</b> " +
+                                context.getString(R.string.profile_package_expiry)));
+                    } else {
+                        textViewValidity.setVisibility(View.GONE);
+                        textViewExtendPackage.setVisibility(View.GONE);
 
-}
+                    }
 
                     userpackageToExtend = userPackageInfo.userPackageGeneral;
 
                 } else if (userPackageInfo.haveGeneralPackage && userPackageInfo.haveDropInPackage) {
                     textViewValidity.setVisibility(View.VISIBLE);
                     int daysLeftFromPackageExpiryDate;
-                    if(user.isBuyMembership()){
-                        String one = numberConverter(1);
-                        textViewPackage.setText(Html.fromHtml("<b>"+one+"</b>" + " "+context.getString(R.string.class_for)+" "
+                    if (user.isBuyMembership()) {
+
+                        //////////////////
+                        String one = numberConverter(userPackageInfo.userPackageReady.get(0).getBalanceClass());
+                        String message = userPackageInfo.userPackageReady.get(0).getBalanceClass() != 1 ? context.getString(R.string.classes) : context.getString(R.string.one_class);
+
+
+                        textViewPackage.setText(Html.fromHtml("<b>" + one + "</b>" + " " + message+" "+context.getString(R.string.class_for) + " "
                                 + userPackageInfo.userPackageReady.get(0).getGymName()));
 
-                         daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageReady.get(0).getExpiryDate());
+
+
+                        daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageReady.get(0).getExpiryDate());
 
                         textViewValidity.setText(Html.fromHtml("<b>" + LanguageUtils.numberConverter(daysLeftFromPackageExpiryDate) + "</b> " +
                                 " " + AppConstants.plural(context.getString(R.string.day), daysLeftFromPackageExpiryDate) + context.getString(R.string.profile_package_expiry)));
                         userpackageToExtend = userPackageInfo.userPackageReady.get(0);
 
-                        if (userPackageInfo.dropInPackageCount+userPackageInfo.generalPackageCount > 1) {
+                        if (userPackageInfo.dropInPackageCount + userPackageInfo.generalPackageCount > 1) {
                             textViewMore.setVisibility(View.VISIBLE);
-                            String more = "+" + numberConverter(userPackageInfo.dropInPackageCount+userPackageInfo.generalPackageCount-1 ) + " "+context.getString(R.string.more)+" " +
+                            String more = "+" + numberConverter(userPackageInfo.dropInPackageCount + userPackageInfo.generalPackageCount - 1) + " " + context.getString(R.string.more) + " " +
                                     AppConstants.plural(context.getString(R.string.package_name), (userPackageInfo.dropInPackageCount - 1));
                             textViewMore.setText(Html.fromHtml("<b><u>" + more + "</u></b> "));
                         }
-                    }else{
+                    } else {
 
-                        String message=userPackageInfo.userPackageGeneral.getBalanceClass()!=1?context.getString(R.string.classes):context.getString(R.string.one_class);
+                        String message = userPackageInfo.userPackageGeneral.getBalanceClass() != 1 ? context.getString(R.string.classes) : context.getString(R.string.one_class);
 
                         textViewPackage.setText(Html.fromHtml("<b>" + numberConverter(userPackageInfo.userPackageGeneral.getBalanceClass()) +
-                                "</b> " + message+" "+context.getString(R.string.remaining)));
+                                "</b> " + message + " " + context.getString(R.string.remaining)));
 
-                         daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageGeneral.getExpiryDate());
-                        if(daysLeftFromPackageExpiryDate>=0){
+                        daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageGeneral.getExpiryDate());
+                        if (daysLeftFromPackageExpiryDate >= 0) {
                             textViewValidity.setText(Html.fromHtml("<b>" + numberConverter(daysLeftFromPackageExpiryDate) + " " +
                                     AppConstants.plural(context.getString(R.string.day), daysLeftFromPackageExpiryDate) + "</b> " +
                                     context.getString(R.string.profile_package_expiry)));
-                        }  else{
+                        } else {
                             textViewValidity.setVisibility(View.GONE);
                             textViewExtendPackage.setVisibility(View.GONE);
 
@@ -160,7 +184,7 @@ if(daysLeftFromPackageExpiryDate>=0){
 
 
                         textViewMore.setVisibility(View.VISIBLE);
-                        String more = "+" + numberConverter(userPackageInfo.dropInPackageCount )+ " "+context.getString(R.string.more)+" " +
+                        String more = "+" + numberConverter(userPackageInfo.dropInPackageCount) + " " + context.getString(R.string.more) + " " +
                                 AppConstants.plural(context.getString(R.string.package_name), userPackageInfo.dropInPackageCount);
                         textViewMore.setText(Html.fromHtml("<b><u>" + more + "</u></b> "));
                     }
@@ -168,29 +192,29 @@ if(daysLeftFromPackageExpiryDate>=0){
 
                 } else if (!userPackageInfo.haveGeneralPackage && userPackageInfo.haveDropInPackage) {
                     textViewValidity.setVisibility(View.VISIBLE);
-                    int balanceClasses=userPackageInfo.userPackageReady.get(0).getBalanceClass()!=0?userPackageInfo.userPackageReady.get(0).getBalanceClass():1;
+                    int balanceClasses = userPackageInfo.userPackageReady.get(0).getBalanceClass() != 0 ? userPackageInfo.userPackageReady.get(0).getBalanceClass() : 1;
 //                    String message=userPackageInfo.userPackageReady.get(0).getBalanceClass()>1?"classes ":"class";
-                    String message=AppConstants.pluralES(context.getString(R.string.one_class),userPackageInfo.userPackageReady.get(0).getBalanceClass());
+                    String message = AppConstants.pluralES(context.getString(R.string.one_class), userPackageInfo.userPackageReady.get(0).getBalanceClass());
 
 
-                    textViewPackage.setText(Html.fromHtml("<b>"+numberConverter(balanceClasses)+"</b> " + message+" "+context.getString(R.string.for_key)+" " + userPackageInfo.userPackageReady.get(0).getGymName()));
+                    textViewPackage.setText(Html.fromHtml("<b>" + numberConverter(balanceClasses) + "</b> " + message + " " + context.getString(R.string.for_key) + " " + userPackageInfo.userPackageReady.get(0).getGymName()));
 
 
                     int daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageReady.get(0).getExpiryDate());
-                    if(daysLeftFromPackageExpiryDate>=0){
+                    if (daysLeftFromPackageExpiryDate >= 0) {
                         textViewValidity.setText(Html.fromHtml("<b>" + numberConverter(daysLeftFromPackageExpiryDate) + "</b> " +
                                 " " + AppConstants.plural(context.getString(R.string.day), daysLeftFromPackageExpiryDate) + context.getString(R.string.profile_package_expiry)));
 
-                    }  else{
+                    } else {
                         textViewValidity.setVisibility(View.GONE);
                         textViewExtendPackage.setVisibility(View.GONE);
 
                     }
-                     userpackageToExtend = userPackageInfo.userPackageReady.get(0);
+                    userpackageToExtend = userPackageInfo.userPackageReady.get(0);
 
                     if (userPackageInfo.dropInPackageCount > 1) {
                         textViewMore.setVisibility(View.VISIBLE);
-                        String more = "+" + numberConverter(userPackageInfo.dropInPackageCount - 1) + " "+context.getString(R.string.more)+" " +
+                        String more = "+" + numberConverter(userPackageInfo.dropInPackageCount - 1) + " " + context.getString(R.string.more) + " " +
                                 AppConstants.plural(context.getString(R.string.package_name), (userPackageInfo.dropInPackageCount - 1));
                         textViewMore.setText(Html.fromHtml("<b><u>" + more + "</u></b> "));
                     }
@@ -207,7 +231,7 @@ if(daysLeftFromPackageExpiryDate>=0){
                 textViewValidity.setText(R.string.profile_validiy_no_package);
                 /***************************************************************/
             }
-            if(userpackageToExtend!=null&&userpackageToExtend.getTotalRemainingWeeks()!=null&&userpackageToExtend.getTotalRemainingWeeks()<1){
+            if (userpackageToExtend != null && userpackageToExtend.getTotalRemainingWeeks() != null && userpackageToExtend.getTotalRemainingWeeks() < 1) {
                 textViewExtendPackage.setVisibility(View.GONE);
 
             }
@@ -223,6 +247,12 @@ if(daysLeftFromPackageExpiryDate>=0){
                 @Override
                 public void onClick(View view) {
                     adapterCallbacks.onAdapterItemClick(ProfileHeaderViewHolder.this, textViewExtendPackage, userpackageToExtend, position);
+                }
+            });
+            linearLayoutUserWallet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ProfileHeaderViewHolder.this, linearLayoutUserWallet, userpackageToExtend, position);
                 }
             });
             imageView.setOnClickListener(new View.OnClickListener() {

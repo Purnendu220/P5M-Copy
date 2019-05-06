@@ -9,19 +9,20 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.p5m.me.BuildConfig;
 import com.p5m.me.R;
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
+import com.p5m.me.data.PushDetailModel;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CalendarHelper;
-import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.Main.ClassProfileActivity;
 import com.p5m.me.view.activity.Main.EditProfileActivity;
@@ -33,10 +34,8 @@ import com.p5m.me.view.activity.Main.SettingActivity;
 import com.p5m.me.view.activity.Main.SettingNotification;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
 import com.p5m.me.view.activity.Main.TransactionHistoryActivity;
-import com.p5m.me.view.activity.base.BaseActivity;
 
 import org.json.JSONObject;
-
 
 import java.util.Hashtable;
 
@@ -49,28 +48,40 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private Context context;
     private Hashtable<String, String> calendarIdTable;
     private int calendar_id = -1;
+    PushDetailModel pushDetailModel;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-
+        super.onMessageReceived(remoteMessage);
         context = this;
 
         LogUtils.debug("Notifications Received");
-
         if (remoteMessage == null)
             return;
 
         try {
 
             LogUtils.debug("Notifications Data: " + remoteMessage.getData());
-            String message = remoteMessage.getData().get("message");
 
-            if (message != null) {
+            String message;
+            if (remoteMessage.getData()!=null) {
+                message = remoteMessage.getData().get("message");
+                if (message != null) {
+                    if (!message.equalsIgnoreCase("fcm")) {
+                        JSONObject json = new JSONObject(message);
+                        handleDataMessage(json);
+                        handleDataMessageForNotificationSchedule(json);
+                    }
+                } else {
+                    Intent navgationIntent =  HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
+                    if (remoteMessage.getNotification() != null) {
+                        handleNotification(navgationIntent, remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
+                    }
 
-                JSONObject json = new JSONObject(message);
-                handleDataMessage(json);
-                handleDataMessageForNotificationSchedule(json);
+                }
             }
+
+
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -114,7 +125,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
                     updateEvent(jsonObject, dataID);
-                   break;
+                    break;
                 case "OnClassUpdateByTrainer":
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
@@ -132,7 +143,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     setNotification(jsonObject, dataID);
                     updateEvent(jsonObject, dataID);
 
-                   break;
+                    break;
                 case "OnSessionUpdateByTrainer":
                     TempStorage.removeSavedClass((int) dataID, context);
                     updateEvent(jsonObject, dataID);
@@ -173,7 +184,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
         ClassModel model = new ClassModel(title, classDate, fromTime, toTime, dataID);
         if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
-            CalendarHelper.scheduleCalenderEvent(this,model);
+            CalendarHelper.scheduleCalenderEvent(this, model);
         }
     }
 
@@ -184,11 +195,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
         ClassModel model = new ClassModel(title, classDate, fromTime, toTime, dataID);
         if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
-            CalendarHelper.deleteEvent(model.getClassSessionId(),context);
+            CalendarHelper.deleteEvent(model.getClassSessionId(), context);
 
         }
 
     }
+
     private void updateEvent(JSONObject jsonObject, long dataID) {
         String title = jsonObject.optString(AppConstants.Notification.CLASS_TITLE);
         String classDate = jsonObject.optString(AppConstants.Notification.CLASS_DATE);
@@ -196,19 +208,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
         ClassModel classModel = new ClassModel(title, classDate, fromTime, toTime, dataID);
         if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
-            CalendarHelper.updateEvent(this,classModel);
-
+            CalendarHelper.updateEvent(this, classModel);
 
 
         }
     }
+
     private void handleDataMessage(JSONObject json) {
 
         try {
             JSONObject jsonObject = json;
             String type = jsonObject.optString(AppConstants.Notification.TYPE);
             String message = jsonObject.optString(AppConstants.Notification.BODY);
-
+            String notifyUrl = jsonObject.optString(AppConstants.Notification.URL);
             long dataID = jsonObject.optLong(AppConstants.Notification.OBJECT_DATA_ID);
 
             try {
@@ -409,6 +421,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 //********************MEMBERSHIP********************//
                 case "onPackageExpired":
+                    navigationIntent = MemberShip.createIntent(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
+                    break;
                 case "OnFinishedPackage":
                 case "OnLowBalance":
                 case "OnAssignPackageFromCMS":
@@ -455,7 +469,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 case "CMS":
                     String url = jsonObject.optString(AppConstants.Notification.URL);
                     if (url != null) {
-                        navigationIntent = handleNotificationDeeplinking(url);
+                        navigationIntent = HandleNotificationDeepLink.handleNotificationDeeplinking(context,url);
 
                     } else {
                         navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
@@ -486,9 +500,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void handleNotification(Intent navigationIntent, String title, String message) {
-
+        navigationIntent.putExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, true);
+        navigationIntent.putExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK, pushDetailModel);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addNextIntentWithParentStack(navigationIntent);
+
 
         stackBuilder.editIntentAt(0).putExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, true);
 
@@ -540,11 +556,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
-    private Intent handleNotificationDeeplinking(String url) {
+    /*private Intent handleNotificationDeeplinking(String url) {
         Intent navigationIntent;
 
         try {
-            if (url.contains(BuildConfig.BASE_URL + "/classes/") || url.contains(BuildConfig.BASE_URL + "/share/classes/") || url.contains(BuildConfig.BASE_URL_HTTPS + "/classes/") || url.contains(BuildConfig.BASE_URL_HTTPS + "/share/classes/")) {
+            if (url.contains( "/classes/") || url.contains( "/share/classes/")  ) {
                 String classId = null;
                 String[] stringlist = url.split("/classes/");
                 if (stringlist != null && stringlist.length > 1) {
@@ -560,7 +576,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 }
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/share/gym/") || url.contains(BuildConfig.BASE_URL + "/gym/") || url.contains(BuildConfig.BASE_URL_HTTPS + "/share/gym/") || url.contains(BuildConfig.BASE_URL_HTTPS + "/gym/")) {
+            } else if (url.contains( "/share/gym/") || url.contains( "/gym/") ) {
                 String gymId = null;
                 String[] stringlist = url.split("/gym/");
                 if (stringlist != null && stringlist.length > 1) {
@@ -576,7 +592,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 }
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/share/trainer/") || url.contains(BuildConfig.BASE_URL + "/trainer/") || url.contains(BuildConfig.BASE_URL_HTTPS + "/share/trainer/") || url.contains(BuildConfig.BASE_URL_HTTPS + "/trainer/")) {
+            } else if (url.contains( "/share/trainer/") || url.contains( "/trainer/") ) {
                 String trainerId = null;
                 String[] stringlist = url.split("/trainer/");
                 if (stringlist != null && stringlist.length > 1) {
@@ -591,59 +607,60 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
 
                 }
-            } else if (url.contains(BuildConfig.BASE_URL + "/classes") || url.contains(BuildConfig.BASE_URL_HTTPS + "/classes")) {
+            } else if (url.contains( "/classes") ) {
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
 
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/trainers") || url.contains(BuildConfig.BASE_URL_HTTPS + "/trainers")) {
+            } else if (url.contains( "/trainers") ) {
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_TRAINER, 0);
 
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/userschedule") || url.contains(BuildConfig.BASE_URL_HTTPS + "/userschedule")) {
+            } else if (url.contains( "/userschedule")) {
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, 0);
 
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/profile?type=favTrainer") || url.contains(BuildConfig.BASE_URL_HTTPS + "/profile?type=favTrainer")) {
+            } else if (url.contains( "/profile?type=favTrainer") ) {
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_MY_PROFILE, 0, ProfileHeaderTabViewHolder.TAB_1);
 
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/profile?type=finishedClasses") || url.contains(BuildConfig.BASE_URL_HTTPS + "/profile?type=finishedClasses")) {
+            } else if (url.contains( "/profile?type=finishedClasses")) {
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_MY_PROFILE, 0, ProfileHeaderTabViewHolder.TAB_2);
 
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/profile") || url.contains(BuildConfig.BASE_URL_HTTPS + "/profile")) {
+            } else if (url.contains( "/profile")) {
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_MY_PROFILE, 0);
 
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/editprofile") || url.contains(BuildConfig.BASE_URL_HTTPS + "/editprofile")) {
+            } else if (url.contains( "/editprofile")) {
                 navigationIntent = EditProfileActivity.createIntent(context);
 
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/settings/membership") || url.contains(BuildConfig.BASE_URL_HTTPS + "/settings/membership")) {
+            } else if (url.contains( "/settings/membership")) {
                 navigationIntent = MemberShip.createIntent(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
 
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/settings/transaction") || url.contains(BuildConfig.BASE_URL_HTTPS + "/settings/transaction")) {
+            } else if (url.contains( "/settings/transaction") ) {
                 navigationIntent = TransactionHistoryActivity.createIntent(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
 
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/settings/notification") || url.contains(BuildConfig.BASE_URL_HTTPS + "/settings/notification")) {
+            } else if (url.contains( "/settings/notification")) {
                 navigationIntent = SettingNotification.createIntent(context);
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/settings/aboutus") || url.contains(BuildConfig.BASE_URL_HTTPS + "/settings/aboutus")||
-                    url.contains(BuildConfig.BASE_URL + "/aboutus") || url.contains(BuildConfig.BASE_URL_HTTPS + "/aboutus")) {
+            } else if (url.contains( "/settings/aboutus")  ||
+                    url.contains( "/aboutus") ) {
                 navigationIntent = SettingActivity.createIntent(context, AppConstants.Tab.OPEN_ABOUT_US);
 
-            }
-            else if(url.contains(BuildConfig.BASE_URL+"/settings/notifications")||url.contains(BuildConfig.BASE_URL_HTTPS+"/settings/notifications")){
+            } else if (url.contains( "/settings/notifications") ) {
                 navigationIntent = NotificationActivity.createIntent(context);
 
             }
-            else if(url.contains(BuildConfig.BASE_URL+"/searchresults/")||url.contains(BuildConfig.BASE_URL_HTTPS+"/searchresults/")){
+            else if (url.contains( "/settings")) {
+                navigationIntent = MemberShip.createIntent(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
+            }
+            else if (url.contains( "/searchresults/") ) {
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
 
-            }
-            else {
+            } else {
 
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
 
@@ -658,7 +675,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         return navigationIntent;
 
     }
+*/
 
+    private void setPushDetail(String type, String message, String url) {
+        pushDetailModel = new PushDetailModel();
+        pushDetailModel.setMessage(message);
+        pushDetailModel.setType(type);
+        pushDetailModel.setUrl(url);
+        Log.v("PushDetail", "type: " + type
+                + " msg: " + message
+                + " url: " + url);
+    }
 
     private void setNotification(JSONObject jsonObject, long dataID) {
         String title = jsonObject.optString(AppConstants.Notification.CLASS_TITLE);
@@ -667,5 +694,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
         ClassModel model = new ClassModel(title, classDate, fromTime, toTime, dataID);
         TempStorage.setSavedClasses(model, context);
+    }
+
+    @Override
+    public void onNewToken(String refreshedToken) {
+        super.onNewToken(refreshedToken);
+        LogUtils.debug("Notifications onTokenRefresh " + refreshedToken);
+        MyPreferences.getInstance().saveDeviceToken(refreshedToken);
     }
 }

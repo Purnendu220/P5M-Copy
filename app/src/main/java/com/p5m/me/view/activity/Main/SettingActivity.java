@@ -8,8 +8,10 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.request.LogoutRequest;
 import com.p5m.me.eventbus.EventBroadcastHelper;
+import com.p5m.me.firebase_dynamic_link.FirebaseDynamicLinnk;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.storage.TempStorage;
@@ -70,7 +72,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
         ButterKnife.bind(activity);
         pageToOpen = getIntent().getIntExtra(AppConstants.DataKey.PAGES_TO_OPEN, -1);
-
+        FirebaseDynamicLinnk.getDynamicLink(this,getIntent());
         layoutNotification.setOnClickListener(this);
         layoutMembership.setOnClickListener(this);
         layoutTransHistory.setOnClickListener(this);
@@ -92,6 +94,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
+
+
     @OnClick(R.id.imageViewBack)
     public void imageViewBack(View view) {
         finish();
@@ -110,7 +114,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 TransactionHistoryActivity.openActivity(context);
                 break;
             case R.id.layoutContactUs:
-                dialogContactUs();
+//                dialogContactUs();
+                mailUs();
                 break;
             case R.id.layoutPrivacyPolicy:
                 Helper.openWebPage(context, AppConstants.Url.WEBSITE + "privacy");
@@ -143,12 +148,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {
                         dialog.dismiss();
                         if (position == 0) {
-                            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                                    "mailto", "info@p5m.me", null));
-                            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
-                            emailIntent.putExtra(Intent.EXTRA_TEXT, R.string.contactUs);
-                            startActivity(Intent.createChooser(emailIntent, getString(R.string.send_email)));
-
+                            mailUs();
                         } else if (position == 1) {
                             Intent intent = new Intent(Intent.ACTION_DIAL);
                             intent.setData(Uri.parse("tel:0096555028111"));
@@ -156,6 +156,15 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                         }
                     }
                 });
+    }
+
+    private void mailUs() {
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                "mailto", "info@p5m.me", null));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "Please identify the details of your issue below. A member of our staff will respond shortly.");
+        startActivity(Intent.createChooser(emailIntent, "Send Email"));
+
     }
 
     @Override

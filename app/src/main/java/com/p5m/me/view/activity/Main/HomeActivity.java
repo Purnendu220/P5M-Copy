@@ -2,33 +2,50 @@ package com.p5m.me.view.activity.Main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.p5m.me.R;
 import com.p5m.me.adapters.HomeAdapter;
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
+import com.p5m.me.analytics.FirebaseAnalysic;
+import com.p5m.me.analytics.MixPanel;
+import com.p5m.me.data.PushDetailModel;
 import com.p5m.me.data.UnratedClassData;
 import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.data.main.DefaultSettingServer;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.request.LogoutRequest;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
+import com.p5m.me.firebase_dynamic_link.FirebaseDynamicLinnk;
+import com.p5m.me.helper.ClassListListenerHelper;
+import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
@@ -36,12 +53,15 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.RefrenceWrapper;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.activity.custom.BottomTapLayout;
+import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.custom.CustomRateAlertDialog;
 import com.p5m.me.view.fragment.ViewPagerFragmentSelection;
 
@@ -110,8 +130,14 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     @BindView(R.id.layoutBottomTabs)
     public LinearLayout layoutBottomTabs;
 
+    @BindView(R.id.buyClassesLayout)
+    public LinearLayout buyClassesLayout;
+
     @BindView(R.id.buyClasses)
-    public Button buyClasses;
+    public TextView buyClasses;
+
+    @BindView(R.id.availableCredit)
+    public TextView availableCredit;
 
     private BottomTapLayout bottomTapLayout;
     private HomeAdapter homeAdapter;
@@ -123,6 +149,8 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
     private Handler handler;
     public CustomRateAlertDialog mCustomMatchDialog;
+    private static User.WalletDto mWalletCredit;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,12 +172,11 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
                     ProfileHeaderTabViewHolder.TAB_1);
         }
         RefrenceWrapper.getRefrenceWrapper(this).setActivity(this);
-        buyClasses.setOnClickListener(this);
+        buyClassesLayout.setOnClickListener(this);
         GlobalBus.getBus().register(this);
-
+        FirebaseDynamicLinnk.getDynamicLink(this,getIntent());
         handler = new Handler(Looper.getMainLooper());
         setupBottomTabs();
-
         homeAdapter = new HomeAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_TABS, PROFILE_TAB_POSITION);
         viewPager.setAdapter(homeAdapter);
         viewPager.addOnPageChangeListener(this);
@@ -173,10 +200,12 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         networkCommunicator.getRatingParameters(this, true);
         checkFacebookSessionStatus();
 
-
 //        RemoteConfigSetUp.getValues();
+        onTrackingNotification();
+        networkCommunicator.getMyUser(this, false);
 
     }
+
 
     @Override
     public void onDestroy() {
@@ -208,6 +237,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
                 onPageSelected(INITIAL_POSITION);
             }
         });
+
     }
 
     private void setupBottomTabs() {
@@ -258,7 +288,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 //            handleApptimize();
             handleBuyClassesButton();
         } else {
-            buyClasses.setVisibility(View.GONE);
+            buyClassesLayout.setVisibility(View.GONE);
 
         }
     }
@@ -289,10 +319,11 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         try {
             User user = TempStorage.getUser();
             if (user.isBuyMembership()) {
-                buyClasses.setVisibility(View.VISIBLE);
-
+                buyClassesLayout.setVisibility(View.VISIBLE);
+//                UpdateBuyClassText update = new UpdateBuyClassText();
+//                update.execute();
             } else {
-                buyClasses.setVisibility(View.GONE);
+                buyClassesLayout.setVisibility(View.GONE);
 
             }
 
@@ -303,16 +334,51 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
     }
 
+    private class UpdateBuyClassText extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... url) {
+            User user = TempStorage.getUser();
+            mWalletCredit=user.getWalletDto();
+            if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
+               return context.getResources().getString(R.string.wallet_text)+" : "+ LanguageUtils.numberConverter(mWalletCredit.getBalance(),2)+" "+mContext.getResources().getString(R.string.wallet_currency);
+                }
+                else{
+                return "";
+
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            if(result!=null&&result.length()>0){
+                availableCredit.setVisibility(View.VISIBLE);
+
+                availableCredit.setText(result);
+
+            }else{
+                availableCredit.setVisibility(View.GONE);
+
+            }
+
+
+
+        }
+
+
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         buyClasses.setText(RemoteConfigConst.BUY_CLASS_VALUE);
-        RemoteConfigSetUp.setBackgroundColor(buyClasses, RemoteConfigConst.BUY_CLASS_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
-
+        RemoteConfigSetUp.setBackgroundColor(buyClassesLayout, RemoteConfigConst.BUY_CLASS_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+        FirebaseAnalysic.viewHomePage();
         if (currentTab == AppConstants.Tab.TAB_FIND_CLASS) {
             handleBuyClassesButton();
         } else {
-            buyClasses.setVisibility(View.GONE);
+            buyClassesLayout.setVisibility(View.GONE);
 
         }
 
@@ -329,7 +395,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.buyClasses: {
+            case R.id.buyClassesLayout: {
                 MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
             }
             break;
@@ -451,6 +517,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             }
         });
     }
+
 
 
 }

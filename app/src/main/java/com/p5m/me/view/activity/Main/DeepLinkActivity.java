@@ -1,19 +1,30 @@
 package com.p5m.me.view.activity.Main;
 
 import android.app.TaskStackBuilder;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 
 import com.p5m.me.R;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.notifications.HandleNotificationDeepLink;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 public class DeepLinkActivity extends BaseActivity {
+
+    private Intent navigationIntent;
 
     public static void open(Context context, String url) {
         context.startActivity(new Intent(context, DeepLinkActivity.class).setData(Uri.parse(url)).setAction("android.intent.action.VIEW"));
@@ -45,72 +56,22 @@ public class DeepLinkActivity extends BaseActivity {
                 } else {
 
                     DeepLinkActivity.url = null;
+                    if (url.contains("/aboutus")) {
+                        forwardToBrowser(getIntent());
+                    } else {
+                        navigationIntent = HandleNotificationDeepLink.handleNotificationDeeplinking(context, url);
 
-                    Intent navigationIntent = null;
 
-                    if (getIntent().getData().toString().contains("/share/classes/")) {
-                        int classSessionId = Integer.valueOf(url.substring(url.indexOf("/share/classes/") + "/share/classes/".length(), url.lastIndexOf("/")));
-                        navigationIntent = ClassProfileActivity.createIntent(context, classSessionId, AppConstants.AppNavigation.NAVIGATION_FROM_SHARE);
+                        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+                        stackBuilder.addNextIntentWithParentStack(navigationIntent);
 
-                    } else if (getIntent().getData().toString().contains("/share/gym/")) {
-                        int gymId = Integer.valueOf(url.substring(url.indexOf("/share/gym/") + "/share/gym/".length(), url.lastIndexOf("/")));
-                        navigationIntent = GymProfileActivity.createIntent(context, gymId, AppConstants.AppNavigation.NAVIGATION_FROM_SHARE);
+                        stackBuilder.editIntentAt(0).putExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, true);
 
-                    } else if (getIntent().getData().toString().contains("/share/trainer/")) {
-                        int trainerId = Integer.valueOf(url.substring(url.indexOf("/share/trainer/") + "/share/trainer/".length(), url.lastIndexOf("/")));
-                        navigationIntent = TrainerProfileActivity.createIntent(context, trainerId, AppConstants.AppNavigation.NAVIGATION_FROM_SHARE);
-
+                        overridePendingTransition(0, 0);
+                        stackBuilder.startActivities();
                     }
-                   else if (getIntent().getData().toString().contains("/classes/")) {
-                        int classSessionId = Integer.valueOf(url.substring(url.indexOf("/classes/") + "/classes/".length(), url.lastIndexOf("/")));
-                        navigationIntent = ClassProfileActivity.createIntent(context, classSessionId, AppConstants.AppNavigation.NAVIGATION_FROM_SHARE);
-
-                    } else if (getIntent().getData().toString().contains("/gym/")) {
-                        int gymId = Integer.valueOf(url.substring(url.indexOf("/gym/") + "/gym/".length(), url.lastIndexOf("/")));
-                        navigationIntent = GymProfileActivity.createIntent(context, gymId, AppConstants.AppNavigation.NAVIGATION_FROM_SHARE);
-
-                    } else if (getIntent().getData().toString().contains("/trainer/")) {
-                        int trainerId = Integer.valueOf(url.substring(url.indexOf("/trainer/") + "/trainer/".length(), url.lastIndexOf("/")));
-                        navigationIntent = TrainerProfileActivity.createIntent(context, trainerId, AppConstants.AppNavigation.NAVIGATION_FROM_SHARE);
-
-                    }
-                    else if (getIntent().getData().toString().contains("/settings")) {
-                        navigationIntent = MemberShip.createIntent(context, AppConstants.AppNavigation.NAVIGATION_FROM_DEEPLINK_ACTIVITY);
-
-                    }
-                    else if(getIntent().getData().toString().contains("/trainers")){
-                        navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_TRAINER, 0);
-
-                    }
-                    else if(getIntent().getData().toString().contains("/userschedule")){
-                        navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, 0);
-
-                    }
-                    else if(getIntent().getData().toString().contains("/notifications")){
-                        navigationIntent = NotificationActivity.createIntent(context);
-
-                    }
-                    else if(getIntent().getData().toString().contains("/editprofile")){
-                        navigationIntent = EditProfileActivity.createIntent(context);
-
-                    }
-                    else if(getIntent().getData().toString().contains("/profile")){
-                        navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_MY_PROFILE, 0);
-                    }
-
-                    else {
-
-                        navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
-                    }
-
-                    TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-                    stackBuilder.addNextIntentWithParentStack(navigationIntent);
-
-                    stackBuilder.editIntentAt(0).putExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, true);
-
-                    overridePendingTransition(0,0);
-                    stackBuilder.startActivities();
                 }
+                onTrackingNotification();
 
             } else {
 
@@ -119,10 +80,34 @@ public class DeepLinkActivity extends BaseActivity {
             e.printStackTrace();
             LogUtils.exception(e);
 
-            overridePendingTransition(0,0);
+            overridePendingTransition(0, 0);
             HomeActivity.open(context);
         }
 
-        finish();
+    }
+
+    private void forwardToBrowser(Intent i) {
+        Intent intent = new Intent();
+        intent.setAction(android.content.Intent.ACTION_VIEW);
+        intent.setDataAndType(i.getData(), i.getType());
+        List<ResolveInfo> activities = getPackageManager().queryIntentActivities(intent, 0);
+        ArrayList<Intent> targetIntents = new ArrayList<Intent>();
+        String thisPackageName = getApplicationContext().getPackageName();
+        for (ResolveInfo currentInfo : activities) {
+            String packageName = currentInfo.activityInfo.packageName;
+            if (!thisPackageName.equals(packageName)) {
+                Intent targetIntent = new Intent(android.content.Intent.ACTION_VIEW);
+                targetIntent.setDataAndType(intent.getData(), intent.getType());
+                targetIntent.setPackage(intent.getPackage());
+                targetIntent.setComponent(new ComponentName(packageName, currentInfo.activityInfo.name));
+                targetIntents.add(targetIntent);
+            }
+        }
+        if (targetIntents.size() > 0) {
+            Intent chooserIntent = Intent.createChooser(targetIntents.remove(0), "Open with");
+            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetIntents.toArray(new Parcelable[]{}));
+            startActivity(chooserIntent);
+            finish();
+        }
     }
 }

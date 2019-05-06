@@ -192,7 +192,7 @@
     <string name="secure_checkout">secure checkout</string>
     <string name="promo_code">Promo Code</string>
     <string name="apply_promo_code">Enter Promo Code</string>
-    <string name="remove_promo_code">Remove Promo Code</string>
+    <string name="remove_promo_code">Apply another promo</string>
     <string name="cancellation_policy">"<u>Cancellation Policy</u>"</string>
     <string name="press_again_to_exit">Press back again to exit</string>
     <string name="cancel_class">Cancel booking</string>
@@ -287,10 +287,10 @@
     <string name="continue_with">Continue</string>
 
     <string name="special_class">Special Class</string>
-    <string name="class_remaining_for">Class remaining for</string>
+    <string name="class_remaining_for"> remaining for</string>
     <string name="valid_for">Valid for</string>
     <string name="promo_code_applied">Promo Code Applied</string>
-    <string name="wallet_credit_applied">Cerdit Applied</string>
+    <string name="wallet_credit_applied">Credit Applied</string>
 
     <string name="total">Total </string>
     <string name="pay">Payment</string>
@@ -322,6 +322,7 @@
     <string name="i_l_do_it_later">I’L DO IT LATER</string>
     <string name="reference_id">Reference ID</string>
     <string name="amount_kd">Amount (KD)</string>
+
     <string name="date">Date</string>
     <string name="status">Status</string>
     <string name="enter_your_current_password">Enter your current password</string>
@@ -359,7 +360,7 @@
     <string name="one_class">class</string>
     <string name="remaining">remaining</string>
     <string name="day">day</string>
-    <string name="class_for">class for</string>
+    <string name="class_for">for</string>
     <string name="package_name">package</string>
     <string name="all">ALL</string>
     <string name="successfully_joined">Successfully joined</string>
@@ -473,11 +474,18 @@
     <string name="are_you_sure_leave_page">Are you sure you want to leave this page?</string>
     <string name="non_refundable_warning_msg">This class is non-refundable after purchase. Do you want to continue?</string>
     <string name="non_refundable_warning">*This class is non-refundable after purchase.</string>
-    <string name="wallet_alert">Use your wallet credit to buy any class or membership.</string>
+    <string name="wallet_alert">Use your wallet credits to purchase any package on the app.</string>
 
     <string name="on_ya">Oh Ya!</string>
     <string name="maybe_next_time">Maybe next time</string>
     <string name="_5">/5</string>
+    <string name="success">Success</string>
+    <string name="alert_message">Congratulation You have done this successfully.</string>
+    <string name="successfull_refund_message">The amount paid for this class was refunded to your account. Use your credit to book your next workout with us.
+Would you like to view your balance? </string>
+    <string name="wallet_currency">KWD</string>
+    <string name="wallet_alert_title">P5M Wallet</string>
+    <string name="wallet_text">Available credit</string>
 
 
     <string-array name="schedule_list">

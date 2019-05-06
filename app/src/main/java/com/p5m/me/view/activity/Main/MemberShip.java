@@ -1,12 +1,15 @@
 package com.p5m.me.view.activity.Main;
 
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -14,6 +17,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -21,9 +25,14 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.MemberShipAdapter;
+import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.UserPackageInfo;
@@ -33,13 +42,17 @@ import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
+import com.p5m.me.firebase_dynamic_link.FirebaseDynamicLinnk;
+import com.p5m.me.helper.ClassListListenerHelper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
+import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.custom.PackageExtensionAlertDialog;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -52,7 +65,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MemberShip extends BaseActivity implements AdapterCallbacks, NetworkCommunicator.RequestListener,
-        SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
+        SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, CustomAlertDialog.OnAlertButtonAction {
 
     public static void openActivity(Context context, int navigationFrom) {
         context.startActivity(new Intent(context, MemberShip.class)
@@ -108,8 +121,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     private boolean hasPurchased;
     private boolean hasClickedCheckout;
     private int mNumberOfPackagesToBuy;
-    private static Integer mWalletCredit = 2;
-    private static int mWalletCreditBalance = 2;
+    private static User.WalletDto mWalletCredit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +136,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setEnabled(true);
-
+        FirebaseDynamicLinnk.getDynamicLink(this,getIntent());
         navigatedFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
         classModel = (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_OBJECT);
         mFriendsData = (BookWithFriendData) getIntent().getSerializableExtra(AppConstants.DataKey.BOOK_WITH_FRIEND_DATA);
@@ -146,7 +158,11 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
 
         MixPanel.trackMembershipVisit(navigatedFrom);
+        onTrackingNotification();
+        FirebaseAnalysic.trackMembershipVisit(navigatedFrom);
+
     }
+
 
     @Override
     public void onDestroy() {
@@ -336,7 +352,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                 final Package aPackage = (Package) model;
                 if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS) {
                     if(mFriendsData!=null && aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)){
-                        CheckoutActivity.openActivity(context, aPackage, classModel,aPackage.getNoOfClass(),mFriendsData);
+                        CheckoutActivity.openActivity(context, aPackage, classModel,2,mFriendsData,aPackage.getNoOfClass());
                         return;
                         }
                     if(mFriendsData!=null && aPackage.getGymVisitLimit()==1){
@@ -351,7 +367,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                                 });
 
                     }else{
-                        CheckoutActivity.openActivity(context, aPackage, classModel,1,mFriendsData);
+                        CheckoutActivity.openActivity(context, aPackage, classModel,1,mFriendsData,aPackage.getNoOfClass());
                         return;
                     }
 
@@ -470,9 +486,10 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
             case NetworkCommunicator.RequestCode.ME_USER:
                 user = TempStorage.getUser();
-                if(mWalletCredit!=null&&mWalletCreditBalance>0){
+                mWalletCredit= user.getWalletDto();
+                if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
                     mLayoutUserWallet.setVisibility(View.VISIBLE);
-                    mTextViewWalletAmount.setText(mWalletCreditBalance+" KD");
+                    mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(),2)+" "+context.getResources().getString(R.string.wallet_currency));
                 }else{
                     mLayoutUserWallet.setVisibility(View.GONE);
 
@@ -482,6 +499,8 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                 break;
         }
     }
+
+
 
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
@@ -532,14 +551,22 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     }
 
     private void showWalletAlert(){
-        DialogUtils.showBasicMessage(context,context.getResources().getString(R.string.wallet_alert),
-                context.getResources().getString(R.string.ok),
-                new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.dismiss();
-                    }
-                });
+        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.wallet_alert_title), context.getString(R.string.wallet_alert),1,"",context.getResources().getString(R.string.ok),CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO,null,true, this);
+        try {
+            mCustomAlertDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
+    @Override
+    public void onOkClick(int requestCode, Object data) {
+
+    }
+
+    @Override
+    public void onCancelClick(int requestCode, Object data) {
+
+    }
 }

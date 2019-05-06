@@ -1,16 +1,13 @@
 package com.p5m.me.view.activity.Main;
 
 import android.annotation.SuppressLint;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.CalendarContract;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -33,11 +30,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.p5m.me.R;
 import com.p5m.me.data.PaymentConfirmationResponse;
 import com.p5m.me.data.ValidityPackageList;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
+import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.fxn.utility.Constants;
@@ -46,6 +45,8 @@ import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
+import com.p5m.me.storage.TempStorage;
+import com.p5m.me.target_user_notification.UserPropertyConst;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CalendarHelper;
 import com.p5m.me.utils.DateUtils;
@@ -53,6 +54,7 @@ import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
+import com.p5m.me.view.custom.CustomAlertDialog;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -66,7 +68,7 @@ import static com.p5m.me.fxn.utility.Constants.CheckoutFor.EXTENSION;
 import static com.p5m.me.fxn.utility.Constants.CheckoutFor.PENDING_TRANSACTION;
 import static com.p5m.me.view.activity.Main.PaymentConfirmationActivity.PaymentStatus.SUCCESS;
 
-public class PaymentConfirmationActivity extends BaseActivity implements NetworkCommunicator.RequestListener, View.OnClickListener {
+public class PaymentConfirmationActivity extends BaseActivity implements NetworkCommunicator.RequestListener, View.OnClickListener, CustomAlertDialog.OnAlertButtonAction {
 
 
     private static ClassModel classModel;
@@ -79,6 +81,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
     private String referenceNo;
     private Hashtable<String, String> calendarIdTable;
     private int calendar_id = -1;
+    private User user;
 
     public static void openActivity(Context context, int navigationFrom, String refId,
                                     Package aPackage, ClassModel classModel,
@@ -164,6 +167,12 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 
     @BindView(R.id.progressBarDone)
     public ProgressBar progressBarDone;
+
+
+    TextView mTextViewWalletAmount;
+    LinearLayout  mLayoutUserWallet;
+    User.WalletDto mWalletCredit;
+
     public static String BOOKED_ON = "";
     public static String PAYMENT_REFERENCE = "";
     public static String CONGRATULATION = "";
@@ -188,9 +197,11 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         progressBarDone.setVisibility(View.VISIBLE);
         buttonInviteFriends.setText(RemoteConfigConst.INVITE_FRIENDS_VALUE);
         layoutConfirmation.setVisibility(View.GONE);
+        networkCommunicator.getMyUser(this, false);
         setToolBar();
         handleClickEvent();
         enterFrom();
+        onTrackingNotification();
     }
 
     /* Set Toolbar */
@@ -209,6 +220,9 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         View v = LayoutInflater.from(context).inflate(R.layout.view_tool_normal, null);
 
         v.findViewById(R.id.imageViewBack).setVisibility(View.GONE);
+         mTextViewWalletAmount=(TextView)v.findViewById(R.id.textViewWalletAmount);
+         mLayoutUserWallet=(LinearLayout)v.findViewById(R.id.layoutUserWallet);
+         mLayoutUserWallet.setVisibility(View.GONE);
 
         ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.payment_confirmation));
         ((TextView) v.findViewById(R.id.textViewTitle)).setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
@@ -304,6 +318,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 
     public String getPurchasedPackageName() {
         if (userPackage != null) {
+            ////////
             return (userPackage.getPackageName());
         } else if (!TextUtils.isEmpty(paymentResponse.getPackageName()))
             return (paymentResponse.getPackageName());
@@ -330,6 +345,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         buttonContactUs.setOnClickListener(this);
         buttonTryAgain.setOnClickListener(this);
         buttonInviteFriends.setOnClickListener(this);
+        mLayoutUserWallet.setOnClickListener(this);
     }
 
     private void redirectOnResult() {
@@ -402,8 +418,21 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
             case R.id.buttonContactUs:
                 dialogContactUs();
                 break;
+            case R.id.layoutUserWallet:
+                showWalletAlert();
+                break;
 
         }
+    }
+
+    @Override
+    public void onOkClick(int requestCode, Object data) {
+
+    }
+
+    @Override
+    public void onCancelClick(int requestCode, Object data) {
+
     }
 
     public enum PaymentStatus {
@@ -433,6 +462,18 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 //                paymentResponse.setStatus(PaymentStatus.FAILURE.name());
 //                setData(PaymentStatus.FAILURE);
                 buttonHandler();
+                break;
+            case NetworkCommunicator.RequestCode.ME_USER:
+                user = TempStorage.getUser();
+                mWalletCredit= user.getWalletDto();
+                if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
+                    mLayoutUserWallet.setVisibility(View.VISIBLE);
+                    mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(),2)+" "+context.getResources().getString(R.string.wallet_currency));
+                }else{
+                    mLayoutUserWallet.setVisibility(View.GONE);
+
+                }
+                break;
         }
     }
 
@@ -444,10 +485,10 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 setStyle();
                 if (!CalendarHelper.haveCalendarReadWritePermissions(this)) {
                     CalendarHelper.requestCalendarReadWritePermission(this);
-                }
-                else{
-                    if (paymentResponse.getClassDetailDto() != null){
-                        CalendarHelper.scheduleCalenderEvent(this,classModel);
+                } else {
+                    if (paymentResponse.getClassDetailDto() != null) {
+                        if (CalendarHelper.haveCalendarReadWritePermissions(this))
+                            CalendarHelper.scheduleCalenderEvent(this, classModel);
                     }
                 }
                 break;
@@ -471,8 +512,9 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 
         if (requestCode == CalendarHelper.CALENDARED_PERMISSION_REQUEST_CODE) {
             if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
-                if (paymentResponse.getClassDetailDto() != null){
-                    CalendarHelper.scheduleCalenderEvent(this,classModel);
+                if (paymentResponse.getClassDetailDto() != null) {
+                    if (CalendarHelper.haveCalendarReadWritePermissions(this))
+                        CalendarHelper.scheduleCalenderEvent(this, classModel);
                 }
 
 
@@ -601,7 +643,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         if (!TextUtils.isEmpty(paymentResponse.getExpiryDate())) {
             textViewValidity.setText(DateUtils.getClassDate(paymentResponse.getExpiryDate()));
         }
-        textViewAmount.setText(LanguageUtils.numberConverter(paymentResponse.getAmount()) + " " + context.getString(R.string.currency));
+        textViewAmount.setText(paymentResponse.getAmount() + " " + context.getString(R.string.currency));
 
         switch (checkoutFor) {
             case PACKAGE:
@@ -707,6 +749,15 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                         }
                     }
                 });
+    }
+    private void showWalletAlert(){
+        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.wallet_alert_title), context.getString(R.string.wallet_alert),1,"",context.getResources().getString(R.string.ok),CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO,null,true, this);
+        try {
+            mCustomAlertDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 

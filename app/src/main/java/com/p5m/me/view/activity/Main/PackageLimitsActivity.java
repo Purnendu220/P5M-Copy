@@ -74,6 +74,7 @@ public class PackageLimitsActivity extends BaseActivity implements NetworkCommun
 
         onRefresh();
         setToolBar();
+        onTrackingNotification();
     }
 
     @Override
