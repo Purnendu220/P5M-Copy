@@ -487,7 +487,8 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                     CalendarHelper.requestCalendarReadWritePermission(this);
                 } else {
                     if (paymentResponse.getClassDetailDto() != null) {
-                        CalendarHelper.scheduleCalenderEvent(this, classModel);
+                        if (CalendarHelper.haveCalendarReadWritePermissions(this))
+                            CalendarHelper.scheduleCalenderEvent(this, classModel);
                     }
                 }
                 break;
@@ -512,7 +513,8 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         if (requestCode == CalendarHelper.CALENDARED_PERMISSION_REQUEST_CODE) {
             if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
                 if (paymentResponse.getClassDetailDto() != null) {
-                    CalendarHelper.scheduleCalenderEvent(this, classModel);
+                    if (CalendarHelper.haveCalendarReadWritePermissions(this))
+                        CalendarHelper.scheduleCalenderEvent(this, classModel);
                 }
 
 
@@ -641,7 +643,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         if (!TextUtils.isEmpty(paymentResponse.getExpiryDate())) {
             textViewValidity.setText(DateUtils.getClassDate(paymentResponse.getExpiryDate()));
         }
-        textViewAmount.setText(LanguageUtils.numberConverter(paymentResponse.getAmount()) + " " + context.getString(R.string.currency));
+        textViewAmount.setText(paymentResponse.getAmount() + " " + context.getString(R.string.currency));
 
         switch (checkoutFor) {
             case PACKAGE:

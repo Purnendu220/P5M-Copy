@@ -482,10 +482,10 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
             case CLASS_PURCHASE_WITH_PACKAGE:
                 if (promoCode != null) {
                     DecimalFormat numberFormat = new DecimalFormat("#.00");
-                    textViewTotal.setText(LanguageUtils.numberConverter(promoCode.getPriceAfterDiscount()) + " " + context.getString(R.string.currency));
-                    textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(promoCode.getPriceAfterDiscount()) + " " + context.getString(R.string.currency));
+                    textViewTotal.setText(numberFormat.format(promoCode.getPriceAfterDiscount()) + " " + context.getString(R.string.currency));
+                    textViewPay.setText(getString(R.string.pay) + " " + numberFormat.format(promoCode.getPriceAfterDiscount()) + " " + context.getString(R.string.currency));
                     if(promoCode.getDiscount()!=0) {
-                        textViewPromoCodePrice.setText("- " + LanguageUtils.numberConverter(((promoCode.getPrice() - promoCode.getPriceAfterDiscount()))) + " " + context.getString(R.string.currency));
+                        textViewPromoCodePrice.setText("- " + (numberFormat.format(promoCode.getPrice() - promoCode.getPriceAfterDiscount())) + " " + context.getString(R.string.currency));
                         layoutPromoCode.setVisibility(View.VISIBLE);
                         buttonPromoCode.setText(context.getString(R.string.remove_promo_code));
                     }
@@ -506,7 +506,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 } else {
                     layoutPromoCode.setVisibility(View.GONE);
                     textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost()) + " " + context.getString(R.string.currency));
-                    textViewPay.setText(getString(R.string.pay) + " " +LanguageUtils.numberConverter( aPackage.getCost()) + " " + context.getString(R.string.currency));
+                    textViewPay.setText(getString(R.string.pay) + " " + aPackage.getCost() + " " + context.getString(R.string.currency));
                     buttonPromoCode.setText(context.getString(R.string.apply_promo_code));
                 }
                 applyCredit();
@@ -520,7 +520,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 break;
             case EXTENSION:
                 textViewTotal.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost()) + " " + context.getString(R.string.currency));
-                textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(selectedPacakageFromList.getCost()) + " " + context.getString(R.string.currency));
+                textViewPay.setText(getString(R.string.pay) + " " +selectedPacakageFromList.getCost() + " " + context.getString(R.string.currency));
                 applyCredit();
 
                 break;

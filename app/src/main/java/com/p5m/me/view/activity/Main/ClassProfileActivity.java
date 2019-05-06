@@ -56,7 +56,9 @@ import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.PermissionUtility;
 import com.p5m.me.utils.ToastUtils;
+import com.p5m.me.view.activity.Splash;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.BookForAFriendPopup;
 import com.p5m.me.view.custom.CustomAlertDialog;
@@ -186,7 +188,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
         ButterKnife.bind(activity);
         GlobalBus.getBus().register(this);
-
+        FirebaseDynamicLinnk.getDynamicLink(this,getIntent());
         classModel = (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_OBJECT);
         classSessionId = getIntent().getIntExtra(AppConstants.DataKey.CLASS_SESSION_ID_INT, -1);
         navigationFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
@@ -195,8 +197,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             finish();
             return;
         }
-        FirebaseDynamicLinnk.getDynamicLink(this,getIntent());
-        swipeRefreshLayout.setOnRefreshListener(this);
+       swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setEnabled(false);
 
         classProfileAdapter = new ClassProfileAdapter(context, AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE, this);
@@ -650,8 +651,10 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 if (!CalendarHelper.haveCalendarReadWritePermissions(this)) {
                     CalendarHelper.requestCalendarReadWritePermission(this);
                 } else {
-                    CalendarHelper.scheduleCalenderEvent(this, classModel);
+                    if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
 
+                        CalendarHelper.scheduleCalenderEvent(this, classModel);
+                    }
                 }
                 break;
 
@@ -953,7 +956,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         if (requestCode == CalendarHelper.CALENDARED_PERMISSION_REQUEST_CODE) {
             if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
                 if (classModel != null) {
-                    CalendarHelper.scheduleCalenderEvent(this, classModel);
+                    if (CalendarHelper.haveCalendarReadWritePermissions(this))
+                        CalendarHelper.scheduleCalenderEvent(this, classModel);
                 }
 
 

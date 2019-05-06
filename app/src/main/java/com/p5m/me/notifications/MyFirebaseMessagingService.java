@@ -469,7 +469,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 case "CMS":
                     String url = jsonObject.optString(AppConstants.Notification.URL);
                     if (url != null) {
-                        navigationIntent = handleNotificationDeeplinking(url);
+                        navigationIntent = HandleNotificationDeepLink.handleNotificationDeeplinking(context,url);
 
                     } else {
                         navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
@@ -556,11 +556,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
-    private Intent handleNotificationDeeplinking(String url) {
+    /*private Intent handleNotificationDeeplinking(String url) {
         Intent navigationIntent;
 
         try {
-            if (url.contains(BuildConfig.BASE_URL + "/classes/") || url.contains(BuildConfig.BASE_URL + "/share/classes/") || url.contains(BuildConfig.BASE_URL_HTTPS + "/classes/") || url.contains(BuildConfig.BASE_URL_HTTPS + "/share/classes/")) {
+            if (url.contains( "/classes/") || url.contains( "/share/classes/")  ) {
                 String classId = null;
                 String[] stringlist = url.split("/classes/");
                 if (stringlist != null && stringlist.length > 1) {
@@ -576,7 +576,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 }
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/share/gym/") || url.contains(BuildConfig.BASE_URL + "/gym/") || url.contains(BuildConfig.BASE_URL_HTTPS + "/share/gym/") || url.contains(BuildConfig.BASE_URL_HTTPS + "/gym/")) {
+            } else if (url.contains( "/share/gym/") || url.contains( "/gym/") ) {
                 String gymId = null;
                 String[] stringlist = url.split("/gym/");
                 if (stringlist != null && stringlist.length > 1) {
@@ -592,7 +592,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 }
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/share/trainer/") || url.contains(BuildConfig.BASE_URL + "/trainer/") || url.contains(BuildConfig.BASE_URL_HTTPS + "/share/trainer/") || url.contains(BuildConfig.BASE_URL_HTTPS + "/trainer/")) {
+            } else if (url.contains( "/share/trainer/") || url.contains( "/trainer/") ) {
                 String trainerId = null;
                 String[] stringlist = url.split("/trainer/");
                 if (stringlist != null && stringlist.length > 1) {
@@ -607,53 +607,57 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
 
                 }
-            } else if (url.contains(BuildConfig.BASE_URL + "/classes") || url.contains(BuildConfig.BASE_URL_HTTPS + "/classes")) {
+            } else if (url.contains( "/classes") ) {
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
 
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/trainers") || url.contains(BuildConfig.BASE_URL_HTTPS + "/trainers")) {
+            } else if (url.contains( "/trainers") ) {
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_TRAINER, 0);
 
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/userschedule") || url.contains(BuildConfig.BASE_URL_HTTPS + "/userschedule")) {
+            } else if (url.contains( "/userschedule")) {
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, 0);
 
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/profile?type=favTrainer") || url.contains(BuildConfig.BASE_URL_HTTPS + "/profile?type=favTrainer")) {
+            } else if (url.contains( "/profile?type=favTrainer") ) {
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_MY_PROFILE, 0, ProfileHeaderTabViewHolder.TAB_1);
 
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/profile?type=finishedClasses") || url.contains(BuildConfig.BASE_URL_HTTPS + "/profile?type=finishedClasses")) {
+            } else if (url.contains( "/profile?type=finishedClasses")) {
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_MY_PROFILE, 0, ProfileHeaderTabViewHolder.TAB_2);
 
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/profile") || url.contains(BuildConfig.BASE_URL_HTTPS + "/profile")) {
+            } else if (url.contains( "/profile")) {
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_MY_PROFILE, 0);
 
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/editprofile") || url.contains(BuildConfig.BASE_URL_HTTPS + "/editprofile")) {
+            } else if (url.contains( "/editprofile")) {
                 navigationIntent = EditProfileActivity.createIntent(context);
 
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/settings/membership") || url.contains(BuildConfig.BASE_URL_HTTPS + "/settings/membership")) {
+            } else if (url.contains( "/settings/membership")) {
                 navigationIntent = MemberShip.createIntent(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
 
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/settings/transaction") || url.contains(BuildConfig.BASE_URL_HTTPS + "/settings/transaction")) {
+            } else if (url.contains( "/settings/transaction") ) {
                 navigationIntent = TransactionHistoryActivity.createIntent(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
 
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/settings/notification") || url.contains(BuildConfig.BASE_URL_HTTPS + "/settings/notification")) {
+            } else if (url.contains( "/settings/notification")) {
                 navigationIntent = SettingNotification.createIntent(context);
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/settings/aboutus") || url.contains(BuildConfig.BASE_URL_HTTPS + "/settings/aboutus") ||
-                    url.contains(BuildConfig.BASE_URL + "/aboutus") || url.contains(BuildConfig.BASE_URL_HTTPS + "/aboutus")) {
+            } else if (url.contains( "/settings/aboutus")  ||
+                    url.contains( "/aboutus") ) {
                 navigationIntent = SettingActivity.createIntent(context, AppConstants.Tab.OPEN_ABOUT_US);
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/settings/notifications") || url.contains(BuildConfig.BASE_URL_HTTPS + "/settings/notifications")) {
+            } else if (url.contains( "/settings/notifications") ) {
                 navigationIntent = NotificationActivity.createIntent(context);
 
-            } else if (url.contains(BuildConfig.BASE_URL + "/searchresults/") || url.contains(BuildConfig.BASE_URL_HTTPS + "/searchresults/")) {
+            }
+            else if (url.contains( "/settings")) {
+                navigationIntent = MemberShip.createIntent(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
+            }
+            else if (url.contains( "/searchresults/") ) {
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
 
             } else {
@@ -671,7 +675,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         return navigationIntent;
 
     }
-
+*/
 
     private void setPushDetail(String type, String message, String url) {
         pushDetailModel = new PushDetailModel();
