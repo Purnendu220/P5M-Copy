@@ -50,7 +50,6 @@ public class SettingNotification extends BaseActivity implements NetworkCommunic
                 networkCommunicator.updateUser(TempStorage.getUser().getId(), new UserUpdateRequest(status), SettingNotification.this, false);
             }
         });
-        onTrackingNotification();
     }
 
 

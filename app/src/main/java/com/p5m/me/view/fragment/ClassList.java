@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.ClassListAdapter;
@@ -37,6 +38,7 @@ import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.target_user_notification.UserPropertyConst;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
@@ -393,7 +395,6 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
                 if (!classModels.isEmpty()) {
                     classListAdapter.addAllClass(classModels);
-
                     if (classModels.size() < pageSizeLimit) {
                         classListAdapter.loaderDone();
                     }
@@ -418,6 +419,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                 break;
         }
     }
+
 
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {

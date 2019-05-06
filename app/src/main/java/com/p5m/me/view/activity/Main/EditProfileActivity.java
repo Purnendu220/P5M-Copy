@@ -36,6 +36,7 @@ import com.p5m.me.data.Nationality;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.request.UserInfoUpdate;
 import com.p5m.me.eventbus.EventBroadcastHelper;
+import com.p5m.me.firebase_dynamic_link.FirebaseDynamicLinnk;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
@@ -172,7 +173,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         imageViewCamera.setOnClickListener(this);
 
         setUser();
-
+        FirebaseDynamicLinnk.getDynamicLink(this,getIntent());
         editTextMobile.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -204,7 +205,6 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                 handler.postDelayed(runnableEmailValidation, 300);
             }
         });
-     onTrackingNotification();
     }
 
 

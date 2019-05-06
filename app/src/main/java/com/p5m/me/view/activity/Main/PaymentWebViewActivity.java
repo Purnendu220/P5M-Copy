@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
+import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.PaymentUrl;
@@ -142,6 +143,11 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
 //        if (classModel != null) {
 //            MixPanel.trackJoinClass(AppConstants.Tracker.PURCHASE_PLAN, classModel);
 //        }
+        FirebaseAnalysic.trackMembershipPurchase(couponCode, packageName);
+        if (classModel != null) {
+            MixPanel.trackJoinClass(AppConstants.Tracker.PURCHASE_PLAN, classModel);
+            FirebaseAnalysic.trackJoinClass(AppConstants.Tracker.PURCHASE_PLAN, classModel);
+        }
         mTimmer.cancel();
         overridePendingTransition(0, 0);
         Intent returnIntent = getIntent();
