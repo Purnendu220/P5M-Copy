@@ -5,9 +5,12 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
 import android.provider.Settings;
+import android.util.Log;
 
 import com.facebook.login.LoginManager;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.ClassesFilter;
@@ -22,11 +25,14 @@ import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.LoginRegister.ContinueUser;
+import com.p5m.me.view.activity.Splash;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EventBroadcastHelper {
+
+    private static String deviceToken;
 
     public static void sendLogin(Context context, User user) {
 
@@ -176,13 +182,22 @@ public static void sendBookWithFriendEvent(BookWithFriendData friendData){
                 return;
             }
 
-            String deviceToken = MyPreferences.getInstance().getDeviceToken();
+            deviceToken = MyPreferences.getInstance().getDeviceToken();
 
             if (deviceToken == null) {
-                String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+                FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener((Activity) context,  new OnSuccessListener<InstanceIdResult>() {
+                    @Override
+                    public void onSuccess(InstanceIdResult instanceIdResult) {
+                        String refreshedToken = instanceIdResult.getToken();
+                        LogUtils.debug("Notifications onTokenRefresh " + refreshedToken);
+                        MyPreferences.getInstance().saveDeviceToken(refreshedToken);
+                        deviceToken = refreshedToken;
+                    }
+                });
+               /* String refreshedToken = FirebaseInstanceId.getInstance().getToken();
                 LogUtils.debug("Notifications onTokenRefresh " + refreshedToken);
                 MyPreferences.getInstance().saveDeviceToken(refreshedToken);
-                deviceToken = refreshedToken;
+                deviceToken = refreshedToken;*/
             }
 
             if (deviceToken == null) {

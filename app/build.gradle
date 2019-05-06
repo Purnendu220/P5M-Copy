@@ -104,7 +104,9 @@ android {
             buildConfigField "String", "BASE_URL_MIDL", '\"/dev-midl/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://staging.p5m.me\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
-            manifestPlaceholders = [hostName: "staging.p5m.me", hostName_www: "www.staging.p5m.me", appName: "P5M DEV", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
+            manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
+
+//            manifestPlaceholders = [hostName: "staging.p5m.me", hostName_www: "www.staging.p5m.me", appName: "P5M DEV", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
         }
         qa {
             def id = 'com.p5m.me'
@@ -119,7 +121,9 @@ android {
             buildConfigField "String", "BASE_URL_MIDL", '\"/profive-midl/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://staging.p5m.me\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
-            manifestPlaceholders = [hostName: "staging.p5m.me", hostName_www: "www.staging.p5m.me", appName: "P5M QA", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
+//            manifestPlaceholders = [hostName: "staging.p5m.me", hostName_www: "www.staging.p5m.me", appName: "P5M QA", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
+            manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
+
         }
 
         live {
@@ -206,7 +210,7 @@ dependencies {
     implementation 'me.zhanghai.android.materialratingbar:library:1.3.1'
     implementation 'com.github.DanielMartinus:Stepper-Touch:0.6'
 
-
+    implementation 'com.google.firebase:firebase-dynamic-links:16.1.8'
     implementation 'com.mixpanel.android:mixpanel-android:5.4.1'
 //    implementation 'com.google.android.gms:play-services-gcm:15.0.1'
 }

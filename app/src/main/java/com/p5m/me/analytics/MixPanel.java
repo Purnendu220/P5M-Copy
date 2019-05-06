@@ -696,7 +696,7 @@ public class MixPanel {
       //  trackJoinClass(origin, classModel);
     }
 
-    public static void trackUnJoinClass(String origin, ClassModel classModel) {
+    public static void trackUnJoinClass(String  origin, ClassModel classModel) {
         try {
 
             JSONObject props = new JSONObject();
@@ -796,4 +796,5 @@ public class MixPanel {
             LogUtils.exception(e);
         }
     }
+
 }

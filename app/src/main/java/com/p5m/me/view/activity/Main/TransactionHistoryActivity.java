@@ -13,6 +13,7 @@ import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.TransactionsAdapter;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.Transaction;
+import com.p5m.me.firebase_dynamic_link.FirebaseDynamicLinnk;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -50,7 +51,7 @@ public class TransactionHistoryActivity extends BaseActivity implements SwipeRef
         setContentView(R.layout.activity_transaction_history);
 
         ButterKnife.bind(activity);
-
+        FirebaseDynamicLinnk.getDynamicLink(this,getIntent());
         swipeRefreshLayout.setOnRefreshListener(this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
@@ -61,6 +62,7 @@ public class TransactionHistoryActivity extends BaseActivity implements SwipeRef
 
         onRefresh();
     }
+
 
 
 
