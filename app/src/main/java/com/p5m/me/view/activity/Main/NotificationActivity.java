@@ -22,6 +22,7 @@ import com.p5m.me.adapters.NotificationsAdapter;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.NotificationModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
+import com.p5m.me.firebase_dynamic_link.FirebaseDynamicLinnk;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.preferences.MyPreferences;
@@ -83,7 +84,7 @@ public class NotificationActivity extends BaseActivity implements SwipeRefreshLa
         onRefresh();
 
         setToolBar();
-
+        FirebaseDynamicLinnk.getDynamicLink(this,getIntent());
         MyPreferences.initialize(context).saveNotificationCount(0);
         EventBroadcastHelper.notificationCountUpdated(context);
     }

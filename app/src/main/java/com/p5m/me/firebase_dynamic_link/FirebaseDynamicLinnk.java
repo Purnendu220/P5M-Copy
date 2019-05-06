@@ -25,7 +25,7 @@ public class FirebaseDynamicLinnk {
                         }
 
                         if (deepLink != null) {
-                            Log.d("Deep Link", "Found deep link ClassProfile!");
+                            Log.d("Deep Link", "Found deep link !");
                         } else {
                             Log.d("Deep Link", "getDynamicLink: no link found");
 

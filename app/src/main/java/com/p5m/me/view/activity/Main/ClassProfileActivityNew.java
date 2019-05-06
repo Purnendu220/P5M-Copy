@@ -42,6 +42,7 @@ import com.p5m.me.data.request.JoinClassRequest;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
+import com.p5m.me.firebase_dynamic_link.FirebaseDynamicLinnk;
 import com.p5m.me.helper.ClassListListenerHelper;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
@@ -56,6 +57,7 @@ import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.ImageUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.PermissionUtility;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.BookForAFriendPopup;
@@ -274,6 +276,7 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
         classModel = (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_OBJECT);
         classSessionId = getIntent().getIntExtra(AppConstants.DataKey.CLASS_SESSION_ID_INT, -1);
         navigationFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
+        FirebaseDynamicLinnk.getDynamicLink(this,getIntent());
 
         if (classModel == null && classSessionId == -1) {
             supportFinishAfterTransition();
@@ -730,7 +733,8 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
                     CalendarHelper.requestCalendarReadWritePermission(this);
                 }
                 else{
-                    CalendarHelper.scheduleCalenderEvent(this,classModel);
+                    if (CalendarHelper.haveCalendarReadWritePermissions(this))
+                        CalendarHelper.scheduleCalenderEvent(this,classModel);
 
                 }
                 break;
@@ -1028,7 +1032,8 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
         if (requestCode == CalendarHelper.CALENDARED_PERMISSION_REQUEST_CODE) {
             if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
                 if (classModel != null){
-                    CalendarHelper.scheduleCalenderEvent(this,classModel);
+                    if (CalendarHelper.haveCalendarReadWritePermissions(this))
+                        CalendarHelper.scheduleCalenderEvent(this,classModel);
                 }
 
 

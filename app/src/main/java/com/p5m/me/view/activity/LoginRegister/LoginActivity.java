@@ -120,7 +120,6 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
 
     private void setUserProperty() {
         FirebaseAnalytics.getInstance(context).setUserProperty(UserPropertyConst.GENDER,TempStorage.getUser().getGender() );
-        FirebaseAnalytics.getInstance(context).setUserProperty(UserPropertyConst.VERSION,"VER" );
     }
 
     private void setEditWatcher() {
