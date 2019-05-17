@@ -337,7 +337,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 }
 
 //                textViewPackageName.setText(Html.fromHtml(numberConverter(mNumberOfClasses) + "X <b>" + aPackage.getName() + "</b>"));
-                textViewPrice.setText(LanguageUtils.numberConverter(aPackage.getCost()) + " " + context.getString(R.string.currency));
+                textViewPrice.setText(LanguageUtils.numberConverter(aPackage.getCost()) + " " + aPackage.getCurrency().toUpperCase());
 
                 textViewPackageInfo.setVisibility(aPackage.getDescription().isEmpty() ? View.GONE : View.VISIBLE);
                 textViewPackageInfo.setText(aPackage.getDescription());

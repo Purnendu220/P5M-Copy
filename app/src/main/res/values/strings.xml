@@ -233,7 +233,7 @@
     <string name="pick_image">Pick Image</string>
     <string name="profile_changes_saved">Changes to your profile have been saved!</string>
     <string name="package_offer_percentage">% off </string>
-    <string name="package_offer_kwd">KWD off </string>
+    <string name="package_offer">off </string>
     <string name="local_service_stopped">Service destroy</string>
     <string name="rate_class_message">Your class %1s is finished.Rate this class for better experience on next visit.</string>
     <string name="what_was_good_here">What was good here?</string>
@@ -486,6 +486,8 @@ Would you like to view your balance? </string>
     <string name="wallet_currency">KWD</string>
     <string name="wallet_alert_title">P5M Wallet</string>
     <string name="wallet_text">Available credit</string>
+    <string name="find_country">Find Country</string>
+    <string name="find_your_country">Find your country</string>
 
 
     <string-array name="schedule_list">

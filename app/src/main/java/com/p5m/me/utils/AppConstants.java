@@ -148,7 +148,7 @@ public class AppConstants {
         public static final String PAYMENT_ERROR_RESPONSE = "payment_error_response";
 
 
-
+        public static final String COUNTRY_CODE = "country_code";
     }
 
     public class DataKey {
@@ -261,6 +261,7 @@ public class AppConstants {
 
         public static final String GET_PAYMENT_DETAIL = "api/v1/payment/package-purchase/{id}";
         public static final String SUPPORT_CONTACT = "api/v1/support/save";
+        public static final String GET_COUNTRY = "api/v1/country/findCountry";
     }
 
     public class ApiParamValue {
@@ -325,8 +326,8 @@ public class AppConstants {
         public static final String LATITUDE = "latitude";
 
 
-
-
+        public static final String NAME = "name";
+        public static final String APP_COUNTRY = "countryid";
     }
 
     public static final class Notification {

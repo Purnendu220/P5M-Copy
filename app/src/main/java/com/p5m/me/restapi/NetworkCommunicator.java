@@ -22,6 +22,7 @@ import com.p5m.me.data.UnratedClassData;
 import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.data.main.Country;
 import com.p5m.me.data.main.DefaultSettingServer;
 import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.data.main.GymDetailModel;
@@ -148,6 +149,7 @@ public class NetworkCommunicator {
 
         public static final int PAYMENT_CONFIRMATION_DETAIL = 150;
         public static final int SUPPORT_RESPONSE_CONTACT = 160;
+        public static final int COUNTRY = 170;
     }
 
     private Context context;
@@ -1539,6 +1541,27 @@ public class NetworkCommunicator {
             @Override
             public void onResponse(Call<ResponseModel<Object>> call, Response<ResponseModel<Object>> restResponse, ResponseModel<Object> response) {
                 LogUtils.networkSuccess("NetworkCommunicator contact onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call getCountry(String name, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.COUNTRY;
+        Call<ResponseModel<List<Country>>> call = apiService.getCountryList(name);
+        LogUtils.debug("NetworkCommunicator hitting getPackages");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<Country>>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<List<Country>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getPackages onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<Country>>> call, Response<ResponseModel<List<Country>>> restResponse, ResponseModel<List<Country>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getPackages onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
             }
         });

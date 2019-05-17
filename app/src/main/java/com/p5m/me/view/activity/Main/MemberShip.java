@@ -283,7 +283,6 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
             }else{
                 networkCommunicator.getPackagesForClass(user.getId(), classModel.getGymBranchDetail().getGymId(), classModel.getClassSessionId(),1, this, false);
-
             }
 
         } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SETTING ||

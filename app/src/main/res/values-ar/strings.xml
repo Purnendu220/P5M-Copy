@@ -397,7 +397,7 @@
 
     <string name="package_offer_percentage">٪ خصم</string>
 
-    <string name="package_offer_kwd">دينار كويتي خصم</string>
+    <string name="package_offer">دينار كويتي خصم</string>
 
     <string name="local_service_stopped">تدمير الخدمة</string>
 
@@ -869,6 +869,8 @@
     <string name="wallet_currency">KWD</string>
     <string name="wallet_alert_title">محفظة P5M </string>
     <string name="wallet_text">رصيدك</string>
+    <string name="find_country">Find Country</string>
+    <string name="find_your_country">Find your country</string>
 
 
 </resources>

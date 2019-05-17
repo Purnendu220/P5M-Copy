@@ -643,15 +643,15 @@ public class MixPanel {
             float hourDiff = DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime());
             props.put("diffHrs", DateUtils.getHourDiff(hourDiff));
             props.put("userGender", user.getGender());
-            if(user.getUserPackageDetailDtoList()!=null){
-                String packageUsedForJoinClass="";
-                List<UserPackage> packageList=user.getUserPackageDetailDtoList();
-                for(int i=0;i<packageList.size();i++){
+            if (user.getUserPackageDetailDtoList() != null) {
+                String packageUsedForJoinClass = "";
+                List<UserPackage> packageList = user.getUserPackageDetailDtoList();
+                for (int i = 0; i < packageList.size(); i++) {
                     UserPackage userPackage = packageList.get(0);
-                    if(userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)&&userPackage.getBalanceClass()>0){
+                    if (userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL) && userPackage.getBalanceClass() > 0) {
                         packageUsedForJoinClass = userPackage.getPackageName();
                     }
-                    if(userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)&&classModel.getGymBranchDetail().getGymId()==userPackage.getGymId()){
+                    if (userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN) && classModel.getGymBranchDetail().getGymId() == userPackage.getGymId()) {
                         packageUsedForJoinClass = userPackage.getPackageName();
                         break;
                     }
@@ -693,12 +693,11 @@ public class MixPanel {
             origin = AppConstants.Tracker.SHARED_CLASS;
         }
 
-      //  trackJoinClass(origin, classModel);
+          trackJoinClass(origin, classModel);
     }
 
-    public static void trackUnJoinClass(String  origin, ClassModel classModel) {
+    public static void trackUnJoinClass(String origin, ClassModel classModel) {
         try {
-
             JSONObject props = new JSONObject();
             props.put("className", classModel.getTitle());
             props.put("classTiming", DateUtils.getDayTiming(classModel.getClassDate() + " " + classModel.getFromTime()));
@@ -754,7 +753,7 @@ public class MixPanel {
             props.put("Category List", MixPanel.getCategoryList(user.getClassCategoryList()));
             props.put("Number of Transactions", user.getNumberOfTransactions() + "");
             props.put("General Package", userPackageInfo.haveGeneralPackage ?
-                    userPackageInfo.userPackageGeneral.getPackageName() : "");
+                    userPackageInfo.userPackageGeneral.getPackageName() : "No Package");
 
             trackUser(String.valueOf(user.getId()), props);
         } catch (Exception e) {
@@ -780,16 +779,17 @@ public class MixPanel {
 
     public static void trackPushNotificationClick(PushDetailModel pushDetailModel) {
         try {
-            if(pushDetailModel!=null) {
+            if (pushDetailModel != null) {
                 JSONObject props = new JSONObject();
                 if (!pushDetailModel.getType().isEmpty())
                     props.put("Type", pushDetailModel.getType());
                 if (!pushDetailModel.getMessage().isEmpty())
                     props.put("Message", pushDetailModel.getMessage());
                 props.put("Source", pushDetailModel.getSource());
-                if (!pushDetailModel.getUrl().isEmpty())
+                if (pushDetailModel.getUrl() != null &&
+                        !pushDetailModel.getUrl().isEmpty())
                     props.put("Url", pushDetailModel.getUrl());
-                trackEvent(props, "Push_Click");
+                trackEvent(props, "Notification View");
             }
         } catch (Exception e) {
             e.printStackTrace();

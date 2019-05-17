@@ -468,7 +468,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 mWalletCredit= user.getWalletDto();
                 if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
                     mLayoutUserWallet.setVisibility(View.VISIBLE);
-                    mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(),2)+" "+context.getResources().getString(R.string.wallet_currency));
+                    mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(),2)+" "+ paymentResponse.getCurrency().toUpperCase());
                 }else{
                     mLayoutUserWallet.setVisibility(View.GONE);
 
@@ -643,7 +643,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         if (!TextUtils.isEmpty(paymentResponse.getExpiryDate())) {
             textViewValidity.setText(DateUtils.getClassDate(paymentResponse.getExpiryDate()));
         }
-        textViewAmount.setText(paymentResponse.getAmount() + " " + context.getString(R.string.currency));
+        textViewAmount.setText(paymentResponse.getAmount() + " " + paymentResponse.getCurrency().toUpperCase());
 
         switch (checkoutFor) {
             case PACKAGE:

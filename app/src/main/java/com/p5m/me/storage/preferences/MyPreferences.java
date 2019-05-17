@@ -33,6 +33,7 @@ public class MyPreferences {
     private static MyPreferences myPreferences;
     private Gson gson;
 
+
     private MyPreferences(Context context) {
         this.context = context;
         gson = new Gson();
@@ -311,4 +312,13 @@ e.printStackTrace();
             LogUtils.exception(e);
         }
     }
+
+    public int getCountryCode() {
+        return PreferencesManager.getInt(AppConstants.Pref.COUNTRY_CODE, 1);
+    }
+
+    public void setCountryCode(int countryCode) {
+        PreferencesManager.putInt(AppConstants.Pref.COUNTRY_CODE, countryCode);
+    }
+
 }

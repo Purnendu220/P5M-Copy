@@ -15,6 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import com.p5m.me.BuildConfig;
 import com.p5m.me.MyApp;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
 
@@ -54,6 +55,7 @@ public class RestServiceFactory {
                             .addHeader(AppConstants.ApiParamKey.USER_AGENT, AppConstants.ApiParamValue.USER_AGENT_ANDROID)
                             .addHeader(AppConstants.ApiParamKey.APP_VERSION, BuildConfig.VERSION_NAME_API)
                             .addHeader(AppConstants.ApiParamKey.APP_Language, language)
+                            .addHeader(AppConstants.ApiParamKey.APP_COUNTRY, String.valueOf(MyPreferences.getInstance().getCountryCode()))
                             .build();
                     return chain.proceed(request);
                 }

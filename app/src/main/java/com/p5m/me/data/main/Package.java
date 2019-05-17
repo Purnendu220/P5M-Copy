@@ -9,6 +9,7 @@ public class Package implements java.io.Serializable {
     private String validityPeriod;
     private float cost;
     private long modifiedAt;
+    private String currency;
     private int noOfClass;
     private String name;
     private String description;
@@ -134,5 +135,13 @@ public class Package implements java.io.Serializable {
 
     public void setBookingWithFriend(boolean bookingWithFriend) {
         isBookingWithFriend = bookingWithFriend;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }

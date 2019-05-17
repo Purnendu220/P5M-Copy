@@ -19,6 +19,7 @@ public class PaymentConfirmationResponse {
         private double amount;
         private long date;
         private String status;
+        private String currency;
         private String expiryDate;
         private int numberOfClasses;
         private ClassDetailDtoBean classDetailDto;
@@ -87,7 +88,15 @@ public class PaymentConfirmationResponse {
             this.classDetailDto = classDetailDto;
         }
 
-        public static class ClassDetailDtoBean {
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public static class ClassDetailDtoBean {
             /**
              * classSessionId : 45903
              * classDate : 2019-01-14

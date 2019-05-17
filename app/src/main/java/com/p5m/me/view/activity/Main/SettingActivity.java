@@ -34,7 +34,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     public static void openActivity(Context context) {
         context.startActivity(new Intent(context, SettingActivity.class));
     }
-    public static Intent createIntent(Context context,int pageToOpen) {
+
+    public static Intent createIntent(Context context, int pageToOpen) {
         return new Intent(context, SettingActivity.class)
                 .putExtra(AppConstants.DataKey.PAGES_TO_OPEN, pageToOpen);
     }
@@ -46,6 +47,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     public View layoutMembership;
     @BindView(R.id.layoutTransHistory)
     public View layoutTransHistory;
+    @BindView(R.id.layoutFindCountry)
+    public View layoutFindCountry;
 
     @BindView(R.id.layoutContactUs)
     public View layoutContactUs;
@@ -72,28 +75,29 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
         ButterKnife.bind(activity);
         pageToOpen = getIntent().getIntExtra(AppConstants.DataKey.PAGES_TO_OPEN, -1);
-        FirebaseDynamicLinnk.getDynamicLink(this,getIntent());
+        FirebaseDynamicLinnk.getDynamicLink(this, getIntent());
         layoutNotification.setOnClickListener(this);
         layoutMembership.setOnClickListener(this);
         layoutTransHistory.setOnClickListener(this);
+        layoutFindCountry.setOnClickListener(this);
         layoutContactUs.setOnClickListener(this);
         layoutPrivacyPolicy.setOnClickListener(this);
         layoutTermsCondition.setOnClickListener(this);
         layoutAboutUs.setOnClickListener(this);
         layoutLogout.setOnClickListener(this);
-        if(pageToOpen == AppConstants.Tab.OPEN_ABOUT_US){
+        if (pageToOpen == AppConstants.Tab.OPEN_ABOUT_US) {
             Helper.openWebPage(context, AppConstants.Url.WEBSITE + "aboutus");
 
         }
-        if(pageToOpen == AppConstants.Tab.OPEN_PRIVACY){
+        if (pageToOpen == AppConstants.Tab.OPEN_PRIVACY) {
             Helper.openWebPage(context, AppConstants.Url.WEBSITE + "privacy");
 
-        }if(pageToOpen == AppConstants.Tab.OPEN_TERMS){
+        }
+        if (pageToOpen == AppConstants.Tab.OPEN_TERMS) {
             Helper.openWebPage(context, AppConstants.Url.WEBSITE + "terms");
 
         }
     }
-
 
 
     @OnClick(R.id.imageViewBack)
@@ -112,6 +116,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.layoutTransHistory:
                 TransactionHistoryActivity.openActivity(context);
+                break;
+            case R.id.layoutFindCountry:
+                FindCountryActivity.openActivity(context);
                 break;
             case R.id.layoutContactUs:
 //                dialogContactUs();
