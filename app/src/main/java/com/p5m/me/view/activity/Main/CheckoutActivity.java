@@ -505,8 +505,8 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
                 } else {
                     layoutPromoCode.setVisibility(View.GONE);
-                    textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost()) + " " + context.getString(R.string.currency));
-                    textViewPay.setText(getString(R.string.pay) + " " + aPackage.getCost() + " " + context.getString(R.string.currency));
+                    textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost()) + " " +aPackage.getCurrency());
+                    textViewPay.setText(getString(R.string.pay) + " " + aPackage.getCost() + " " + aPackage.getCurrency());
                     buttonPromoCode.setText(context.getString(R.string.apply_promo_code));
                 }
                 applyCredit();
