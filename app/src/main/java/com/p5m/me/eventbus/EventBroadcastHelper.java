@@ -50,7 +50,6 @@ public class EventBroadcastHelper {
         TempStorage.setUser(context, user);
         MyPreferences.getInstance().setLogin(true);
         NetworkCommunicator.getInstance(context).getDefault();
-
         EventBroadcastHelper.sendDeviceUpdate(context);
         MixPanel.login(context);
     }
@@ -64,7 +63,6 @@ public class EventBroadcastHelper {
             MyPreferences.getInstance().clear();
             MyPreferences.getInstance().saveUser(user);
             MyPreferences.getInstance().saveActivities(activities);
-
             //Remove Filters
             MyPreferences.getInstance().saveFilters(new ArrayList<ClassesFilter>());
             TempStorage.setFilterList(new ArrayList<ClassesFilter>());

@@ -31,6 +31,7 @@ import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.target_user_notification.UserPropertyConst;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.KeyboardUtils;
@@ -275,7 +276,6 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                 if (response != null) {
                     User user = ((ResponseModel<User>) response).data;
                     EventBroadcastHelper.sendLogin(context, user);
-
                     HomeActivity.open(context);
 
                     if (user.getDateOfJoining() >= loginTime) {

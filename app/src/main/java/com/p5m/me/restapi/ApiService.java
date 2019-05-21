@@ -14,6 +14,7 @@ import com.p5m.me.data.UnratedClassData;
 import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.data.main.Country;
 import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.data.main.Package;
@@ -362,5 +363,10 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @POST(AppConstants.Url.SUPPORT_CONTACT )
     Call<ResponseModel<Object>> getContactResponse(@Body ContactRequestModel contactRequestModel);
+
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.GET_COUNTRY )
+    Call<ResponseModel<List<Country>>> getCountryList(@Query(AppConstants.ApiParamKey.NAME) String name);
 
 }

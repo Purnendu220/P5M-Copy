@@ -153,7 +153,7 @@ public class PackageExtensionAlertDialog extends Dialog implements View.OnClickL
                 }
             }
             if(selectedPacakageFromList!=null){
-                textViewCost.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost())+" KWD");
+                textViewCost.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost())+" "+selectedPacakageFromList.getCurrencyCode());
                 textViewWeekValue.setText(numberConverter(selectedPacakageFromList.getDuration())+" "+getContext().getString(R.string.weeks));
                 String validUntill=DateUtils.getExtendedExpiryDate(userPackage.getExpiryDate(),selectedPacakageFromList.getDuration());
                 String message=String.format(mContext.getString(R.string.valid_intil),validUntill);

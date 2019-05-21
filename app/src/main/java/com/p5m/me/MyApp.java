@@ -13,6 +13,8 @@ import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.receivers.NetworkChangeReceiver;
@@ -46,6 +48,9 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
 
     public boolean isAppForeground;
     public long appBackgroundTime;
+    private static boolean hasBeenInitialized;
+    private FirebaseApp finestayApp;
+    private FirebaseOptions options;
 
 
 
@@ -59,7 +64,7 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
 
         MultiDex.install(this);
         Fresco.initialize(this);
-
+        firebaseDataSet();
         if (USE_CRASH_ANALYTICS) {
             Fabric.with(this, new Crashlytics());
         }
@@ -90,6 +95,38 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
 
         if (MyPreferences.getInstance().isLogin()) {
             NetworkCommunicator.getInstance(context).getDefault();
+        }
+    }
+
+
+    private void firebaseDataSet() {
+        if(BuildConfig.FIREBASE_IS_PRODUCTION){
+            options = new FirebaseOptions.Builder()
+                    .setApplicationId("1:109210713388:android:e83033ee42a596eb") // Required for Analytics.
+                    .setApiKey("AIzaSyA6XFUdbw_d56dCnlGa6EcFcqdWEpE8ir4") // Required for Auth.
+                    .setDatabaseUrl("https://gymhop-p5m-1524059965243.firebaseio.com") // Required for RTDB.
+                    .build();
+//            FirebaseApp.initializeApp(getApplicationContext(), options);
+        }
+        else {
+            options = new FirebaseOptions.Builder()
+                    .setApplicationId("1:955940869604:android:e83033ee42a596eb") // Required for Analytics.
+                    .setApiKey("AIzaSyCxrLj88gOD1JjEIsc1qK38lOqagX7IdvY") // Required for Auth.
+                    .setDatabaseUrl("https://pro5ios-e0bb0.firebaseio.com") // Required for RTDB.
+                    .build();
+//            FirebaseApp.initializeApp(getApplicationContext(), options);
+        }
+
+        List<FirebaseApp> firebaseApps = FirebaseApp.getApps(context);
+        for(FirebaseApp app : firebaseApps){
+            if(app.getName().equals(FirebaseApp.DEFAULT_APP_NAME)){
+                hasBeenInitialized=true;
+                finestayApp = app;
+            }
+        }
+
+        if(!hasBeenInitialized) {
+            finestayApp = FirebaseApp.initializeApp(context, options);
         }
     }
 

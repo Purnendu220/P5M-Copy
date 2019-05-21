@@ -34,11 +34,14 @@ public class User implements java.io.Serializable {
     private List<ClassActivity> classCategoryList;
     private boolean buyMembership;
     private WalletDto walletDto;
+    private Integer countryId;
+    private String countryName;
 
     Integer gymId;
     Integer numberOfWeek;
     Integer readyPckSize;
     Boolean generalPck;
+
     List<BookWithFriendData> userList;
 
 
@@ -310,9 +313,26 @@ public class User implements java.io.Serializable {
         this.walletDto = walletDto;
     }
 
+    public String getCountryName() {
+        return countryName;
+    }
+
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
+    }
+
+    public Integer getCountryId() {
+        return countryId;
+    }
+
+    public void setCountryId(Integer countryId) {
+        this.countryId = countryId;
+    }
+
     public class WalletDto implements java.io.Serializable {
-       int id;
-       double balance;
+        int id;
+        double balance;
+        String currencyCode;
 
         public int getId() {
             return id;
@@ -329,6 +349,16 @@ public class User implements java.io.Serializable {
         public void setBalance(double balance) {
             this.balance = balance;
         }
+
+        public String getCurrencyCode() {
+            return currencyCode;
+        }
+
+        public void setCurrencyCode(String currencyCode) {
+            this.currencyCode = currencyCode;
+        }
+
+
     }
 
 

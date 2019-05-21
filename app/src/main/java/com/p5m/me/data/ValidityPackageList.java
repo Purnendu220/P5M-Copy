@@ -8,6 +8,7 @@ private Integer id;
 private String name;
 private String description;
 private Double cost;
+private String currencyCode;
 private Integer duration;
 private String validityPeriod;
 private String packageType;
@@ -105,4 +106,11 @@ public void setModifiedAt(long modifiedAt) {
 this.modifiedAt = modifiedAt;
 }
 
+    public String getCurrencyCode() {
+        return currencyCode;
+    }
+
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
+    }
 }

@@ -283,7 +283,6 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
             }else{
                 networkCommunicator.getPackagesForClass(user.getId(), classModel.getGymBranchDetail().getGymId(), classModel.getClassSessionId(),1, this, false);
-
             }
 
         } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SETTING ||
@@ -489,7 +488,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                 mWalletCredit= user.getWalletDto();
                 if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
                     mLayoutUserWallet.setVisibility(View.VISIBLE);
-                    mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(),2)+" "+context.getResources().getString(R.string.wallet_currency));
+                    mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(),2)+" "+ mWalletCredit.getCurrencyCode());
                 }else{
                     mLayoutUserWallet.setVisibility(View.GONE);
 

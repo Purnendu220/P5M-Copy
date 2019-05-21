@@ -25,10 +25,13 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.p5m.me.BuildConfig;
 import com.p5m.me.R;
 import com.p5m.me.adapters.HomeAdapter;
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
@@ -174,6 +177,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         RefrenceWrapper.getRefrenceWrapper(this).setActivity(this);
         buyClassesLayout.setOnClickListener(this);
         GlobalBus.getBus().register(this);
+
         FirebaseDynamicLinnk.getDynamicLink(this,getIntent());
         handler = new Handler(Looper.getMainLooper());
         setupBottomTabs();
@@ -200,11 +204,12 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         networkCommunicator.getRatingParameters(this, true);
         checkFacebookSessionStatus();
 
-//        RemoteConfigSetUp.getValues();
+        RemoteConfigSetUp.getValues();
         onTrackingNotification();
         networkCommunicator.getMyUser(this, false);
 
     }
+
 
 
     @Override
@@ -341,7 +346,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             User user = TempStorage.getUser();
             mWalletCredit=user.getWalletDto();
             if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
-               return context.getResources().getString(R.string.wallet_text)+" : "+ LanguageUtils.numberConverter(mWalletCredit.getBalance(),2)+" "+mContext.getResources().getString(R.string.wallet_currency);
+               return context.getResources().getString(R.string.wallet_text)+" : "+ LanguageUtils.numberConverter(mWalletCredit.getBalance(),2)+" "+ mWalletCredit.getCurrencyCode();
                 }
                 else{
                 return "";

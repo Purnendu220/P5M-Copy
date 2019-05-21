@@ -7,7 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging;
+import com.p5m.me.BuildConfig;
 import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.PushDetailModel;
@@ -34,6 +37,7 @@ public class BaseActivity extends AppCompatActivity {
     public RefrenceWrapper refrenceWrapper;
     private FirebaseInAppMessaging mInAppMessaging;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +49,7 @@ public class BaseActivity extends AppCompatActivity {
         refrenceWrapper= RefrenceWrapper.getRefrenceWrapper(this);
 
         MixPanel.setup(activity);
+
         FirebaseAnalysic.setup(activity);
         RemoteConfigSetUp.setup(activity);
 
@@ -111,4 +116,5 @@ public class BaseActivity extends AppCompatActivity {
 
         void onAppBackground();
     }
+
 }
