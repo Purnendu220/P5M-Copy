@@ -69,6 +69,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     private Handler handler;
     private Runnable nextScreenRunnable;
     private String refId;
+    private String currency="KWD";
 
     /*
             if user is purchasing a package
@@ -337,7 +338,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 }
 
 //                textViewPackageName.setText(Html.fromHtml(numberConverter(mNumberOfClasses) + "X <b>" + aPackage.getName() + "</b>"));
-                textViewPrice.setText(LanguageUtils.numberConverter(aPackage.getCost()) + " " + aPackage.getCurrency().toUpperCase());
+                textViewPrice.setText(LanguageUtils.numberConverter(aPackage.getCost()) + " " + aPackage.getCurrency());
 
                 textViewPackageInfo.setVisibility(aPackage.getDescription().isEmpty() ? View.GONE : View.VISIBLE);
                 textViewPackageInfo.setText(aPackage.getDescription());
@@ -357,10 +358,10 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
                 textViewPackageName.setText(Html.fromHtml("<b>" + classModel.getTitle() + "</b>"));
                 if (mNumberOfPackagesToBuy > 1) {
-                    textViewPrice.setText(numberConverter(mNumberOfPackagesToBuy) + "x " + NumberFormat.getNumberInstance(Constants.LANGUAGE).format(classModel.getPrice())+ " " + context.getString(R.string.currency));
+                    textViewPrice.setText(numberConverter(mNumberOfPackagesToBuy) + "x " + NumberFormat.getNumberInstance(Constants.LANGUAGE).format(classModel.getPrice())+ " " + classModel.getCurrencyCode());
 
                 } else {
-                    textViewPrice.setText(LanguageUtils.numberConverter(classModel.getPrice()) + " " + context.getString(R.string.currency));
+                    textViewPrice.setText(LanguageUtils.numberConverter(classModel.getPrice()) + " " + classModel.getCurrencyCode());
 
                 }
 
@@ -384,7 +385,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 textViewPackageName.setText(R.string.add_more_time);
                 textViewCancellationPolicyToggle.setText(R.string.extention_policy);
 
-                textViewPrice.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost()) + " " + context.getString(R.string.currency));
+                textViewPrice.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost()) + " " + selectedPacakageFromList.getCurrencyCode());
                 int remainigExtension;
                 if (userPackage.getTotalRemainingWeeks() != null) {
                     remainigExtension = userPackage.getTotalRemainingWeeks() - selectedPacakageFromList.getDuration();
@@ -482,10 +483,10 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
             case CLASS_PURCHASE_WITH_PACKAGE:
                 if (promoCode != null) {
                     DecimalFormat numberFormat = new DecimalFormat("#.00");
-                    textViewTotal.setText(numberFormat.format(promoCode.getPriceAfterDiscount()) + " " + context.getString(R.string.currency));
-                    textViewPay.setText(getString(R.string.pay) + " " + numberFormat.format(promoCode.getPriceAfterDiscount()) + " " + context.getString(R.string.currency));
+                    textViewTotal.setText(numberFormat.format(promoCode.getPriceAfterDiscount()) + " " + aPackage.getCurrency());
+                    textViewPay.setText(getString(R.string.pay) + " " + numberFormat.format(promoCode.getPriceAfterDiscount()) + " " + aPackage.getCurrency());
                     if(promoCode.getDiscount()!=0) {
-                        textViewPromoCodePrice.setText("- " + (numberFormat.format(promoCode.getPrice() - promoCode.getPriceAfterDiscount())) + " " + context.getString(R.string.currency));
+                        textViewPromoCodePrice.setText("- " + (numberFormat.format(promoCode.getPrice() - promoCode.getPriceAfterDiscount())) + " " +aPackage.getCurrency());
                         layoutPromoCode.setVisibility(View.VISIBLE);
                         buttonPromoCode.setText(context.getString(R.string.remove_promo_code));
                     }
@@ -513,14 +514,14 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 break;
 
             case SPECIAL_CLASS:
-                textViewTotal.setText(LanguageUtils.numberConverter(mNumberOfPackagesToBuy * classModel.getPrice()) + " " + context.getString(R.string.currency));
-                textViewPay.setText(getString(R.string.pay) + " " +LanguageUtils.numberConverter( mNumberOfPackagesToBuy * classModel.getPrice()) + " " + context.getString(R.string.currency));
+                textViewTotal.setText(LanguageUtils.numberConverter(mNumberOfPackagesToBuy * classModel.getPrice()) + " " + classModel.getCurrencyCode());
+                textViewPay.setText(getString(R.string.pay) + " " +LanguageUtils.numberConverter( mNumberOfPackagesToBuy * classModel.getPrice()) + " " + classModel.getCurrencyCode());
                 applyCredit();
 
                 break;
             case EXTENSION:
-                textViewTotal.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost()) + " " + context.getString(R.string.currency));
-                textViewPay.setText(getString(R.string.pay) + " " +selectedPacakageFromList.getCost() + " " + context.getString(R.string.currency));
+                textViewTotal.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost()) + " " + selectedPacakageFromList.getCurrencyCode());
+                textViewPay.setText(getString(R.string.pay) + " " +selectedPacakageFromList.getCost() + " " + selectedPacakageFromList.getCurrencyCode());
                 applyCredit();
 
                 break;
@@ -555,6 +556,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                         appliedCreditCost = mWalletCredit.getBalance();
                     }
                 }
+                currency=aPackage.getCurrency();
                 break;
 
             case SPECIAL_CLASS:
@@ -566,6 +568,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     costAfterCreditApply = mNumberOfPackagesToBuy * classModel.getPrice() - mWalletCredit.getBalance();
                     appliedCreditCost = mWalletCredit.getBalance();
                 }
+                currency=classModel.getCurrencyCode();
                 break;
             case EXTENSION:
                 if(mWalletCredit.getBalance() > selectedPacakageFromList.getCost()){
@@ -576,14 +579,15 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     costAfterCreditApply = selectedPacakageFromList.getCost() - mWalletCredit.getBalance();
                     appliedCreditCost = mWalletCredit.getBalance();
                 }
+                currency=selectedPacakageFromList.getCurrencyCode();
                 break;
 
         }
-            textViewTotal.setText(LanguageUtils.numberConverter(costAfterCreditApply,2) + " " + context.getString(R.string.currency));
-            textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(costAfterCreditApply,2) + " " + context.getString(R.string.currency));
+            textViewTotal.setText(LanguageUtils.numberConverter(costAfterCreditApply,2) + " "+currency );
+            textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(costAfterCreditApply,2) + " " + currency);
 
            if(appliedCreditCost>0){
-               textViewWalletCreditPrice.setText("- " + LanguageUtils.numberConverter(appliedCreditCost,2) + " " + context.getString(R.string.currency));
+               textViewWalletCreditPrice.setText("- " + LanguageUtils.numberConverter(appliedCreditCost,2) + " " + currency);
                //mTextViewWalletAmount.setText((LanguageUtils.numberConverter(((mWalletCredit.getBalance()-appliedCreditCost))))+" "+context.getString(R.string.currency));
 
 

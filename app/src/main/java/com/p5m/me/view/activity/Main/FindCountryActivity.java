@@ -9,6 +9,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -19,8 +21,12 @@ import android.widget.TextView;
 
 import com.p5m.me.R;
 import com.p5m.me.data.main.Country;
+import com.p5m.me.data.main.User;
+import com.p5m.me.data.request.UserInfoUpdate;
+import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
@@ -34,6 +40,7 @@ import butterknife.ButterKnife;
 public class FindCountryActivity extends BaseActivity implements NetworkCommunicator.RequestListener, View.OnClickListener {
 
 
+    private static final String TAG = "Country Updated:";
     private List<Country> countryList;
 
     public static void openActivity(Context context) {
@@ -51,6 +58,7 @@ public class FindCountryActivity extends BaseActivity implements NetworkCommunic
     public Button buttonOk;
     @BindView(R.id.progressBar)
     public ProgressBar progressBar;
+    private UserInfoUpdate userInfoUpdate;
 
 
     @Override
@@ -58,7 +66,7 @@ public class FindCountryActivity extends BaseActivity implements NetworkCommunic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_country);
         ButterKnife.bind(activity);
-
+        userInfoUpdate = new UserInfoUpdate(TempStorage.getUser().getId());
         setToolBar();
         callApiCountry();
         buttonOk.setOnClickListener(this);
@@ -66,16 +74,18 @@ public class FindCountryActivity extends BaseActivity implements NetworkCommunic
     }
 
     private void setSpinner() {
+
         List<String> country = new ArrayList<String>();
-        int selectedCountryIndex = 0, countryId = 0;
-        countryId = MyPreferences.getInstance().getCountryCode();
+        int selectedCountryIndex = 0, countryId = 1;
+
+        if(TempStorage.getUser().getCountryId()!=null)
+            countryId = TempStorage.getUser().getCountryId();
         for (int i = 0; i < countryList.size(); i++) {
             country.add(countryList.get(i).getName());
             if (countryId == countryList.get(i).getId()) {
                 selectedCountryIndex = i;
             }
         }
-
         ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(this, R.layout.row_country, country);
         spinnerCountry.setAdapter(countryAdapter);
         spinnerCountry.setSelection(selectedCountryIndex);
@@ -122,7 +132,12 @@ public class FindCountryActivity extends BaseActivity implements NetworkCommunic
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.COUNTRY:
                 countryList = ((ResponseModel<List<Country>>) response).data;
+
                 setSpinner();
+                break;
+            case NetworkCommunicator.RequestCode.UPDATE_USER:
+                User user = ((ResponseModel<User>) response).data;
+                EventBroadcastHelper.sendUserUpdate(context, user);
                 break;
         }
     }
@@ -134,6 +149,9 @@ public class FindCountryActivity extends BaseActivity implements NetworkCommunic
             case NetworkCommunicator.RequestCode.COUNTRY:
                 ToastUtils.showLong(context, errorMessage);
                 break;
+            case NetworkCommunicator.RequestCode.UPDATE_USER:
+                ToastUtils.showLong(context, errorMessage);
+                break;
         }
     }
 
@@ -143,9 +161,12 @@ public class FindCountryActivity extends BaseActivity implements NetworkCommunic
             case R.id.buttonOk:
                 Country selectedCountry = countryList.get(spinnerCountry.getSelectedItemPosition());
                 int countryId = selectedCountry.getId();
-                MyPreferences.getInstance().setCountryCode(countryId);
+                userInfoUpdate.setCountryId(countryId);
+                networkCommunicator.userInfoUpdate(TempStorage.getUser().getId(), userInfoUpdate, this, false);
+                NetworkCommunicator.getInstance(context).getDefault();
                 HomeActivity.open(this);
                 break;
         }
     }
+
 }

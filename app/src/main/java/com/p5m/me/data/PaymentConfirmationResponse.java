@@ -19,7 +19,7 @@ public class PaymentConfirmationResponse {
         private double amount;
         private long date;
         private String status;
-        private String currency;
+        private String currencyCode;
         private String expiryDate;
         private int numberOfClasses;
         private ClassDetailDtoBean classDetailDto;
@@ -88,12 +88,14 @@ public class PaymentConfirmationResponse {
             this.classDetailDto = classDetailDto;
         }
 
-    public String getCurrency() {
-        return currency;
+
+
+    public String getCurrencyCode() {
+        return currencyCode;
     }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
     }
 
     public static class ClassDetailDtoBean {

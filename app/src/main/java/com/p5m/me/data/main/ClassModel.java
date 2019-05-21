@@ -36,6 +36,7 @@ public class ClassModel implements java.io.Serializable {
     private String specialClassRemark;
     private boolean hideClass;
     private float price;
+    private String currencyCode;
 
     /********From Joined class**********/
     private int joinClassId;
@@ -343,5 +344,13 @@ public class ClassModel implements java.io.Serializable {
 
     public void setRefBookingId(Integer refBookingId) {
         this.refBookingId = refBookingId;
+    }
+
+    public String getCurrencyCode() {
+        return currencyCode;
+    }
+
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
     }
 }

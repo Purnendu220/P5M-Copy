@@ -826,7 +826,7 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
                     mWalletCredit= user.getWalletDto();
                     if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
                         mLayoutUserWallet.setVisibility(View.VISIBLE);
-                        mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance())+" "+context.getResources().getString(R.string.wallet_currency));
+                        mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance())+" "+ mWalletCredit.getCurrencyCode());
                     }else{
                         mLayoutUserWallet.setVisibility(View.GONE);
 

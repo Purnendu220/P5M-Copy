@@ -313,12 +313,12 @@ e.printStackTrace();
         }
     }
 
-    public int getCountryCode() {
+    /*public int getCountryCode() {
         return PreferencesManager.getInt(AppConstants.Pref.COUNTRY_CODE, 1);
     }
 
     public void setCountryCode(int countryCode) {
         PreferencesManager.putInt(AppConstants.Pref.COUNTRY_CODE, countryCode);
-    }
+    }*/
 
 }

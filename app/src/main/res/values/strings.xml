@@ -321,7 +321,7 @@
     <string name="rate_past_classes">RATE PREVIOUS CLASSES</string>
     <string name="i_l_do_it_later">I’L DO IT LATER</string>
     <string name="reference_id">Reference ID</string>
-    <string name="amount_kd">Amount (KD)</string>
+    <string name="amount_kd">Amount </string>
 
     <string name="date">Date</string>
     <string name="status">Status</string>

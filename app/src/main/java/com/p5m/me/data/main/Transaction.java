@@ -6,6 +6,7 @@ public class Transaction implements java.io.Serializable {
     private double amount;
     private String packageName;
     private String referenceId;
+    private String currencyCode;
     private String status;
 
     public long getDate() {
@@ -46,5 +47,13 @@ public class Transaction implements java.io.Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getCurrencyCode() {
+        return currencyCode;
+    }
+
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
     }
 }

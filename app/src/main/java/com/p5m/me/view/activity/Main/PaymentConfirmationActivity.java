@@ -468,7 +468,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 mWalletCredit= user.getWalletDto();
                 if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
                     mLayoutUserWallet.setVisibility(View.VISIBLE);
-                    mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(),2)+" "+ paymentResponse.getCurrency().toUpperCase());
+                    mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(),2)+" "+ paymentResponse.getCurrencyCode());
                 }else{
                     mLayoutUserWallet.setVisibility(View.GONE);
 
@@ -643,15 +643,16 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         if (!TextUtils.isEmpty(paymentResponse.getExpiryDate())) {
             textViewValidity.setText(DateUtils.getClassDate(paymentResponse.getExpiryDate()));
         }
-        textViewAmount.setText(paymentResponse.getAmount() + " " + paymentResponse.getCurrency().toUpperCase());
+        textViewAmount.setText(paymentResponse.getAmount() + " " + paymentResponse.getCurrencyCode());
 
         switch (checkoutFor) {
             case PACKAGE:
-
             case CLASS_PURCHASE_WITH_PACKAGE:
                 if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                     if (paymentResponse.getClassDetailDto() != null)
                         textViewValidity.setText(DateUtils.getPackageClassDate(paymentResponse.getClassDetailDto().getClassDate()) + "\n" + DateUtils.getClassTime(paymentResponse.getClassDetailDto().getFromTime(), paymentResponse.getClassDetailDto().getToTime()));
+                    else
+                        textViewValidity.setText(R.string.n_a);
                 } else {
                     if (!TextUtils.isEmpty(paymentResponse.getExpiryDate())) {
                         textViewValidity.setText(DateUtils.getClassDate(paymentResponse.getExpiryDate()));

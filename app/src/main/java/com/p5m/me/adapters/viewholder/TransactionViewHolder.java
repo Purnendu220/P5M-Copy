@@ -64,7 +64,7 @@ public class TransactionViewHolder extends RecyclerView.ViewHolder {
 
             textViewRefId.setText(refId);
             textViewPackageName.setText(model.getPackageName());
-            textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getAmount()) + "");
+            textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getAmount())+" " + model.getCurrencyCode());
             textViewPackageDate.setText(DateUtils.getTransactionDate(model.getDate()));
             textViewPackageStatus.setText(model.getStatus().toUpperCase());
 
