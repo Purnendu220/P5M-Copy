@@ -7,17 +7,23 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
 import android.provider.CalendarContract.Reminders;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.BuildConfig;
+import com.p5m.me.MyApp;
 import com.p5m.me.R;
 import com.p5m.me.data.CalenderData;
 import com.p5m.me.data.main.ClassModel;
@@ -163,12 +169,38 @@ public class CalendarHelper {
             if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
                 return true;
             }
+           /* else
+            {
+                showPermissionImportantAlert(MyApp.context,caller.getString(R.string.calender_permission));
+            }*/
         }
 
         return false;
     }
 
+    private static void showPermissionImportantAlert(final Context context, String message) {
+        DialogUtils.showBasicMessage(context, context.getResources().getString(R.string.permission_alert), message,
+                context.getResources().getString(R.string.go_to_settings), new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Intent i = new Intent();
+                        i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        i.addCategory(Intent.CATEGORY_DEFAULT);
+                        i.setData(Uri.parse("package:" + context.getPackageName()));
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                        context.startActivity(i);
+                        dialog.dismiss();
 
+                    }
+                }, context.getResources().getString(R.string.cancel), new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                });
+    }
     public static ArrayList<CalenderData> listCalendarId(Context c) {
 
         if (haveCalendarReadWritePermissions(c)) {

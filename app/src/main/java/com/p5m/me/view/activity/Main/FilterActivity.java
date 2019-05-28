@@ -75,6 +75,10 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
     private HashMap<ClassesFilter, View> classesFilterViewHashMap;
     private HashMap<View, ClassesFilter> viewClassesFilterHashMap;
 
+    public static void clearFilter() {
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -460,4 +464,6 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
                 break;
         }
     }
+
+
 }

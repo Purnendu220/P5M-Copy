@@ -61,7 +61,6 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
         Bundle bundle = new Bundle();
         bundle.putInt(AppConstants.DataKey.TAB_POSITION_INT, position);
         tabFragment.setArguments(bundle);
-
         return tabFragment;
     }
     @BindView(R.id.recyclerView)
@@ -79,6 +78,7 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
     private int tabPosition=ProfileHeaderTabViewHolder.TAB_1;
 
     public MyProfile() {
+
     }
 
     @Override
@@ -207,6 +207,7 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
         networkCommunicator.getFinishedClassList(TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_UNLIMITED, this, false);
 
         }
+
 
     boolean isLoadingFirstTime = true;
 

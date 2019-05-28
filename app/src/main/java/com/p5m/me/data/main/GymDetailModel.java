@@ -31,6 +31,7 @@ public class GymDetailModel implements java.io.Serializable {
     private boolean isfollow;
     private boolean status;
 
+
     private List<GymBranchDetail> gymBranchResponseList;
     private List<MediaModel> mediaResponseDtoList;
     private List<ClassActivity> classCategoryList;

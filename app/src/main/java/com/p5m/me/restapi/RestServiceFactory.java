@@ -1,7 +1,10 @@
 package com.p5m.me.restapi;
 
-
-import android.text.TextUtils;
+import com.p5m.me.BuildConfig;
+import com.p5m.me.MyApp;
+import com.p5m.me.storage.TempStorage;
+import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.LogUtils;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -13,13 +16,6 @@ import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import com.p5m.me.BuildConfig;
-import com.p5m.me.MyApp;
-import com.p5m.me.storage.TempStorage;
-import com.p5m.me.storage.preferences.MyPreferences;
-import com.p5m.me.utils.AppConstants;
-import com.p5m.me.utils.LogUtils;
 
 import static com.p5m.me.utils.LanguageUtils.getLocalLanguage;
 
@@ -50,14 +46,15 @@ public class RestServiceFactory {
                 public Response intercept(Chain chain) throws IOException {
                     String auth = (TempStorage.getAuthToken() != null && !TempStorage.getAuthToken().isEmpty()) ?
                             TempStorage.getAuthToken() : AppConstants.ApiParamValue.NO_TOKEN;
-                    String language= getLocalLanguage();
-                    String countryId="1";
+                    String language = getLocalLanguage();
+                    String countryId = "1";
                     LogUtils.debug("Token " + auth);
-                    if(TempStorage.getUser()!=null) {
+                    if (TempStorage.getUser() != null) {
                         if (TempStorage.getUser().getCountryId() != null) {
                             countryId = String.valueOf(TempStorage.getUser().getCountryId());
                         }
                     }
+                    LogUtils.debug("Country ID: " + countryId);
                     Request request = chain.request().newBuilder()
                             .addHeader(AppConstants.ApiParamKey.MYU_AUTH_TOKEN, auth)
                             .addHeader(AppConstants.ApiParamKey.USER_AGENT, AppConstants.ApiParamValue.USER_AGENT_ANDROID)
@@ -69,8 +66,7 @@ public class RestServiceFactory {
                 }
             });
 
-            String baseUrl = BuildConfig.BASE_URL+BuildConfig.BASE_URL_MIDL;
-
+            String baseUrl = BuildConfig.BASE_URL + BuildConfig.BASE_URL_MIDL;
 
 
             Retrofit.Builder builder =
@@ -80,6 +76,7 @@ public class RestServiceFactory {
             retrofit = builder.client(httpClient.build()).build();
             apiService = (ApiService) retrofit.create(serviceClass);
         }
+
         return (S) apiService;
     }
 

@@ -130,6 +130,7 @@ public class AppConstants {
     public static class Pref {
         public static final String NAME = "p5m_pref_main";
         public static final String LOGIN = "pref_login";
+        public static final String SET_COUNTRY_ID = "pref_country_id";
         public static final String FACEBOOK_LOGIN = "fb_pref_login";
         public static final String CITIES = "pref_cities";
         public static final String ACTIVITIES = "pref_activities";
@@ -148,7 +149,11 @@ public class AppConstants {
         public static final String PAYMENT_ERROR_RESPONSE = "payment_error_response";
 
 
-        public static final String COUNTRY_CODE = "country_code";
+        public static final String USER_COUNTRY = "user_country";
+
+        public static final String GET_COUNTRY_ID = "country_id";
+        public static final String SAVE_COUNTRY_ID = "save_country_id"
+                ;
     }
 
     public class DataKey {
@@ -380,6 +385,10 @@ public class AppConstants {
         public static final int NAVIGATION_FROM_SHARE = 61;
         public static final int NAVIGATION_FROM_DEEPLINK_ACTIVITY = 62;
         public static final int NAVIGATION_FROM_MEMBERSHIP = 63;
+        public static final int NAVIGATION_FROM_LOGIN = 64;
+        public static final int NAVIGATION_FROM_REGISTRATION = 65;
+        public static final int NAVIGATION_FROM_SPLASH = 66;
+        public static final int NAVIGATION_FROM_INFO_SCREEN = 67;
 
 
     }

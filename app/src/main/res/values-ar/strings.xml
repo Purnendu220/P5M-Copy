@@ -871,6 +871,18 @@
     <string name="wallet_text">رصيدك</string>
     <string name="find_country">Find Country</string>
     <string name="find_your_country">Find your country</string>
+    <string name="find_country_hint">We need your location to show you the best studios and classes around you.</string>
+    <string name="or">Or</string>
+    <string name="use_my_current_location">Use my current location</string>
+    <string name="warning_booking">Booking for this class is only available in</string>
+    <string name="select_country">Select Country</string>
+    <string name="country_saved">Your country is saved</string>
+    <string name="calender_permission">Permission is required to schedule the event</string>
+    <string name="email_address">Email Address</string>
+    <string name="keep_me_updated">Keep me updated</string>
+    <string name="info_not_in_city">If you\'d like us to email you when ClassPass is available near you, and to get offers, promos and similar communications, enter your email. Unsubscribe anytime</string>
+    <string name="we_are_not_in_your_city">We\'re not in your city!</string>
+    <string name="please_select_country">Please select your country</string>
 
 
 </resources>

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.p5m.me.R;
+import com.p5m.me.utils.AppConstants;
 import com.p5m.me.view.activity.Main.FindCountryActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
@@ -38,7 +39,7 @@ public class RegistrationDoneActivity extends BaseActivity {
 
     @OnClick(R.id.buttonDone)
     public void buttonDone(View view) {
-        FindCountryActivity.openActivity(context);
+        HomeActivity.open(this);
         finish();
     }
 }

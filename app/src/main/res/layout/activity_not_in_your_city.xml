@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.activity.NotInYourCityActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tool_bar_height"
+            android:background="?attr/colorPrimary"
+            android:contentInsetStart="0dp"
+            android:contentInsetLeft="0dp"
+            android:contentInsetEnd="0dp"
+            android:contentInsetRight="0dp"
+            android:elevation="4dp"
+            app:contentInsetEnd="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetRight="0dp"
+            app:contentInsetStart="0dp"
+            app:layout_scrollFlags="enterAlways"
+            app:tabIndicatorColor="@color/date_tabs" />
+    </android.support.design.widget.AppBarLayout>
+
+    <TextView
+        android:id="@+id/textViewInfo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="16dp"
+        android:textSize="@dimen/text_large"
+        android:textColor="@color/theme_dark_text"
+        android:text="@string/info_not_in_city"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+
+    <EditText
+        android:id="@+id/editTextEmailAddress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|left"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_weight="1"
+        android:background="@drawable/edit_text_grey_border"
+        android:fontFamily="sans-serif"
+        android:hint="@string/email_address"
+        android:inputType="textEmailAddress"
+        android:maxLines="1"
+        android:padding="@dimen/margin_10"
+        android:textColor="@color/theme_dark_text"
+        android:textColorHint="@color/theme_medium_light_text"
+        android:textSize="@dimen/text_large"
+        app:layout_constraintEnd_toEndOf="@+id/textViewInfo"
+        app:layout_constraintStart_toStartOf="@+id/textViewInfo"
+        app:layout_constraintTop_toBottomOf="@+id/textViewInfo" />
+
+    <Button
+        android:id="@+id/buttonKeepMeUpdated"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height_normal"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1"
+        android:background="@drawable/button_grey_solid"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:padding="@dimen/margin_8"
+        android:text="@string/keep_me_updated"
+        android:textColor="@color/grey"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/editTextEmailAddress"
+        app:layout_constraintStart_toStartOf="@+id/editTextEmailAddress"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmailAddress" />
+
+
+</android.support.constraint.ConstraintLayout>

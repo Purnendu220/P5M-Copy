@@ -118,7 +118,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 TransactionHistoryActivity.openActivity(context);
                 break;
             case R.id.layoutFindCountry:
-                FindCountryActivity.openActivity(context);
+                FindCountryActivity.openActivity(context,AppConstants.AppNavigation.NAVIGATION_FROM_SETTING);
                 break;
             case R.id.layoutContactUs:
 //                dialogContactUs();
