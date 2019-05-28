@@ -277,6 +277,11 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
     @OnClick(R.id.textViewBook)
     public void textViewBook() {
+        if(TempStorage.getUser().getCountryId()!=classModel.getGymBranchDetail().getCountryId()){
+            ToastUtils.show(this,getString(R.string.warning_booking)+" "+classModel.getGymBranchDetail().getCountryName());
+            return;
+        }
+
         isBookWithFriendInProgress = false;
         mBookWithFriendData = null;
         // Check if class is allowed for the gender..
@@ -335,6 +340,10 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
     @OnClick(R.id.textViewBookWithFriend)
     public void textViewBookWithFriend() {
+        if(TempStorage.getUser().getCountryId()!=classModel.getGymBranchDetail().getCountryId()){
+            ToastUtils.show(this,getString(R.string.warning_booking)+" "+classModel.getGymBranchDetail().getCountryName());
+            return;
+        }
 
         BookForAFriendPopup mBookForAFriendPopup = new BookForAFriendPopup(this, classModel, navigationFrom);
         try {

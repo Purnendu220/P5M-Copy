@@ -1077,7 +1077,7 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
             if (model.getGymBranchDetail() != null) {
 
                 layoutMap.setVisibility(View.VISIBLE);
-                ImageUtils.setImage(context, ImageUtils.generateMapImageUrlClassDetail(model.getGymBranchDetail().getLatitude(), model.getGymBranchDetail().getLongitude()),
+                ImageUtils.setImage(context, ImageUtils.generateMapImageUrGymDetail(model.getGymBranchDetail().getLatitude(), model.getGymBranchDetail().getLongitude()),
                         R.drawable.no_map, imageViewMap);
                 textViewMap.setText(Html.fromHtml(context.getString(R.string.address) + context.getString(R.string.gaping) + model.getGymBranchDetail().getAddress()));
             } else {

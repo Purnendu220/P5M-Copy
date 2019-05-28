@@ -36,6 +36,7 @@ import com.p5m.me.target_user_notification.UserPropertyConst;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.KeyboardUtils;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.view.activity.Main.FindCountryActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 
@@ -120,7 +121,7 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
     }
 
     private void setUserProperty() {
-        FirebaseAnalytics.getInstance(context).setUserProperty(UserPropertyConst.GENDER,TempStorage.getUser().getGender() );
+        FirebaseAnalytics.getInstance(context).setUserProperty(UserPropertyConst.GENDER, TempStorage.getUser().getGender());
     }
 
     private void setEditWatcher() {
@@ -212,9 +213,9 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                                             LogUtils.exception(e);
                                         }
 
-                                        faceBookUser = new FaceBookUser(id, first_name,last_name, gender, email);
+                                        faceBookUser = new FaceBookUser(id, first_name, last_name, gender, email);
 
-                                        networkCommunicator.loginFb(new LoginRequest(id, first_name,last_name, email, gender), LoginActivity.this, false);
+                                        networkCommunicator.loginFb(new LoginRequest(id, first_name, last_name, email, gender), LoginActivity.this, false);
                                     }
                                 });
                         Bundle parameters = new Bundle();
@@ -240,7 +241,7 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
             @Override
             public void onClick(View view) {
                 loginTime = System.currentTimeMillis() - 5 * 1000;
-                LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile", "email","user_gender"));
+                LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile", "email", "user_gender"));
                 layoutProgressRoot.setVisibility(View.VISIBLE);
             }
         });
@@ -257,7 +258,11 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
 
                 if (user != null) {
                     EventBroadcastHelper.sendLogin(context, user);
-                    HomeActivity.open(context);
+//                    if (MyPreferences.getInstance().isUserGivebItsCountry()) {
+                        HomeActivity.open(context);
+                  /*  } else {
+                        FindCountryActivity.openActivity(this,AppConstants.AppNavigation.NAVIGATION_FROM_LOGIN);
+                    }*/
                     setUserProperty();
 
                     MixPanel.trackLogin(AppConstants.Tracker.EMAIL, TempStorage.getUser());
@@ -276,8 +281,15 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                 if (response != null) {
                     User user = ((ResponseModel<User>) response).data;
                     EventBroadcastHelper.sendLogin(context, user);
-                    HomeActivity.open(context);
+                    if(user!=null&&user.getCountryId()!=null&&user.getCountryId()>0){
+                        MyPreferences.getInstance().setUserGivebItsCountry(true);
+                    }
 
+                    if (MyPreferences.getInstance().isUserGivebItsCountry()) {
+                        HomeActivity.open(context);
+                    } else {
+                        FindCountryActivity.openActivity(this,AppConstants.AppNavigation.NAVIGATION_FROM_LOGIN);
+                    }
                     if (user.getDateOfJoining() >= loginTime) {
                         MixPanel.trackRegister(AppConstants.Tracker.FB, TempStorage.getUser());
                         FirebaseAnalysic.trackRegister(AppConstants.Tracker.FB, TempStorage.getUser());

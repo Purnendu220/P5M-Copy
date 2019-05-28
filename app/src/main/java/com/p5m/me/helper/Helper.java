@@ -490,7 +490,9 @@ public class Helper {
             InfoScreen.open(context);
         } else {
             ContinueUser.open(context);
+//            InfoScreen.open(context);
         }
+
     }
 
     public static void shareGym(Context context, int id, String name) {

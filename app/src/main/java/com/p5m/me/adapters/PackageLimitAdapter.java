@@ -2,9 +2,13 @@ package com.p5m.me.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Point;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -20,6 +24,7 @@ import com.p5m.me.data.Empty;
 import com.p5m.me.data.PackageLimitListItem;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.view.activity.Main.PackageLimitsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,8 +102,10 @@ public class PackageLimitAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             textView.setGravity(Gravity.CENTER);
             textView.setPadding(dp * 16, dp * 16, dp * 16, dp * 16);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+
             textView.setBackgroundResource(R.drawable.click_highlight);
             textView.setClickable(true);
+
             textView.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
 
             linearLayout.addView(textView);
@@ -122,6 +129,7 @@ public class PackageLimitAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             textView.setLineSpacing(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 6.0f, context.getResources().getDisplayMetrics()), 1.0f);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
             textView.setGravity(Gravity.CENTER);
+
             textView.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
 
             linearLayout.addView(textView);
@@ -137,22 +145,29 @@ public class PackageLimitAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             linearLayout.setOrientation(LinearLayout.HORIZONTAL);
             linearLayout.setBackgroundColor(Color.WHITE);
             linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
+            Display display = ((PackageLimitsActivity)context).getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            int width = size.x;
+            int view = width / AppConstants.Limit.PACKAGE_LIMIT_SCREEN_TABS;
             for (int index = 0; index < AppConstants.Limit.PACKAGE_LIMIT_SCREEN_TABS; index++) {
 
                 LinearLayout linearLayoutTab = new LinearLayout(context);
                 linearLayoutTab.setOrientation(LinearLayout.VERTICAL);
                 linearLayoutTab.setGravity(Gravity.CENTER);
                 linearLayoutTab.setBackgroundColor(Color.WHITE);
-                linearLayoutTab.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+                linearLayoutTab.setLayoutParams(new LinearLayout.LayoutParams(view, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
 
                 TextView textView = new TextView(context);
                 textView.setGravity(Gravity.CENTER);
                 textView.setBackgroundResource(R.drawable.click_highlight);
-                textView.setPadding(dp * 12, dp * 12, dp * 16, dp * 12);
+                textView.setPadding(dp * 12, dp * 12, dp * 16, dp * 10);
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                 textView.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
-
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                textView.setBreakStrategy(Layout.BREAK_STRATEGY_BALANCED);
+                    textView.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_NONE);
+                }
                 LinearLayout linearLayoutSeparator = new LinearLayout(context);
                 linearLayoutSeparator.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 2 * dp));
                 linearLayoutSeparator.setBackgroundColor(ContextCompat.getColor(context, R.color.separator));

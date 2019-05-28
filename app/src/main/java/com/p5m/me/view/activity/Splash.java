@@ -29,6 +29,7 @@ import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.PermissionUtility;
+import com.p5m.me.view.activity.Main.FindCountryActivity;
 import com.p5m.me.view.activity.Main.ForceUpdateActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
@@ -47,7 +48,7 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
 
     private Handler handler;
     private Runnable nextScreenRunnable;
-    private long DELAY_NAVIGATION = 2500; // 1.4 sec
+    private long DELAY_NAVIGATION = 1400; // 1.4 sec
 
     @BindView(R.id.imageViewImage)
     public ImageView imageViewImage;
@@ -78,23 +79,20 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
         networkCommunicator.getActivities(this, false);
         RemoteConfigSetUp.getValues();
         Log.d("Instance ID", FirebaseInstanceId.getInstance().getId());
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (PermissionUtility.verifyLocationPermissions(Splash.this)) {
-                startTimerForGoToNextScreen();
+//        startTimerForGoToNextScreen();
 
-            }
-        } else {
+        if (Build.VERSION.SDK_INT >= 23) {
             startTimerForGoToNextScreen();
         }
         getToken();
     }
 
     private void getToken() {
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( Splash.this,  new OnSuccessListener<InstanceIdResult>() {
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(Splash.this, new OnSuccessListener<InstanceIdResult>() {
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult) {
                 String newToken = instanceIdResult.getToken();
-                Log.e("newToken",newToken);
+                Log.e("newToken", newToken);
             }
         });
     }
@@ -108,7 +106,7 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
                 if (MyPreferences.getInstance().isLogin()) {
                     /////////// HomeActivity Screen ////////////
 
-                    HomeActivity.open(context);
+                        HomeActivity.open(context);
 
                 } else {
 

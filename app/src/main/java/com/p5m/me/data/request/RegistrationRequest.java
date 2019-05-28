@@ -1,5 +1,7 @@
 package com.p5m.me.data.request;
 
+import com.p5m.me.storage.preferences.MyPreferences;
+
 public class RegistrationRequest implements java.io.Serializable {
     private static final long serialVersionUID = 4834428472264496728L;
 
@@ -9,7 +11,7 @@ public class RegistrationRequest implements java.io.Serializable {
     private String gender;
     private int userType = 1;
     private String email;
-
+    private Integer countryId;
     private String facebookId;
     private String loginThrough;
 
@@ -75,5 +77,13 @@ public class RegistrationRequest implements java.io.Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Integer getCountryId() {
+        return MyPreferences.getInstance().getCountryId();
+    }
+
+    public void setCountryId(Integer countryId) {
+        this.countryId = countryId;
     }
 }

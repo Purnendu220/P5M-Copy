@@ -17,6 +17,8 @@ public class GymBranchDetail implements java.io.Serializable {
     private String gender;
     private Double longitude;
     private Double latitude;
+    private int countryId;
+    private String countryName;
 
     @Override
     public boolean equals(Object obj) {
@@ -146,5 +148,21 @@ public class GymBranchDetail implements java.io.Serializable {
 
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
+    }
+
+    public int getCountryId() {
+        return countryId;
+    }
+
+    public void setCountryId(int countryId) {
+        this.countryId = countryId;
+    }
+
+    public String getCountryName() {
+        return countryName;
+    }
+
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
     }
 }

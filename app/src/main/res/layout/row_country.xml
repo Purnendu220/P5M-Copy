@@ -2,13 +2,12 @@
 
 <CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/text1"
-    android:layout_marginStart="@dimen/margin_16"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
     android:textAppearance="?android:attr/textAppearanceListItemSmall"
     android:textSize="@dimen/margin_16"
     style="?android:attr/spinnerDropDownItemStyle"
     android:singleLine="true"
+    android:paddingStart="@dimen/margin_10"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:ellipsize="marquee"
     />

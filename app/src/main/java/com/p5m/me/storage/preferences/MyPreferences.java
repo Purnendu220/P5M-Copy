@@ -78,6 +78,27 @@ public class MyPreferences {
         PreferencesManager.putBoolean(AppConstants.Pref.LOGIN, isLogin);
     }
 
+
+    public boolean isUserGivebItsCountry() {
+        return PreferencesManager.getBoolean(AppConstants.Pref.USER_COUNTRY, false);
+    }
+
+    public void setUserGivebItsCountry(boolean isUserGivebItsCountry) {
+        PreferencesManager.putBoolean(AppConstants.Pref.USER_COUNTRY, isUserGivebItsCountry);
+    }
+
+
+
+    public void setCountryId(boolean isCountryIdAvailable) {
+        PreferencesManager.putBoolean(AppConstants.Pref.SET_COUNTRY_ID, isCountryIdAvailable);
+    }
+ public void saveCountryId(int countryId) {
+        PreferencesManager.putInt(AppConstants.Pref.SAVE_COUNTRY_ID, countryId);
+    }
+ public Integer getCountryId() {
+        return PreferencesManager.getInt(AppConstants.Pref.GET_COUNTRY_ID);
+    }
+
     public void setLoginWithFacebook(boolean isLogin) {
         PreferencesManager.putBoolean(AppConstants.Pref.FACEBOOK_LOGIN, isLogin);
     }
