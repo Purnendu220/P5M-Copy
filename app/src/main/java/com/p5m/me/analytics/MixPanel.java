@@ -299,6 +299,7 @@ public class MixPanel {
             JSONObject props = new JSONObject();
             props.put("origin", origin);
             props.put("className", classModel.getTitle());
+            props.put("type",classModel.getAvailableSeat()==0?"WAITLIST":"WISHLIST");
 
             trackEvent(props, "Add_to_wishlist");
         } catch (Exception e) {

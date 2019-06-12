@@ -486,6 +486,8 @@ Would you like to view your balance? </string>
     <string name="wallet_currency">KWD</string>
     <string name="wallet_alert_title">P5M Wallet</string>
     <string name="wallet_text">Available credit</string>
+    <string name="add_to_waitlist">Add to waitlist</string>
+    <string name="added_to_waitlist">Class is successfully added to wishlist. You will be notified when a seat becomes available.</string>
 
 
     <string-array name="schedule_list">

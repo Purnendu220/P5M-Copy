@@ -1371,7 +1371,14 @@ public class NetworkCommunicator {
 
     public Call addToWishList(final ClassModel classModel, final int classSessionId) {
         final int requestCode = RequestCode.ADD_TO_WISH_LIST;
-        Call<ResponseModel<WishListResponse>> call = apiService.addToWishList(new WishListRequest(TempStorage.getUser().getId(), classSessionId));
+        String type;
+        if(classModel.getAvailableSeat()==0){
+            type="WAITLIST";
+        }
+        else{
+            type="WISHLIST";
+        }
+        Call<ResponseModel<WishListResponse>> call = apiService.addToWishList(new WishListRequest(TempStorage.getUser().getId(), classSessionId,type));
         LogUtils.debug("NetworkCommunicator hitting addToWishList");
 
         call.enqueue(new RestCallBack<ResponseModel<WishListResponse>>(context) {
@@ -1388,8 +1395,14 @@ public class NetworkCommunicator {
 //                requestListener.onApiSuccess(response, requestCode);
 
                 try {
-                    String message = String.format(context.getString(R.string.added_to_wishlist), classModel.getTitle());
-                    ToastUtils.show(context, message);
+                    if(classModel.getAvailableSeat()==0) {
+                        String message = String.format(context.getString(R.string.added_to_waitlist));
+                        ToastUtils.show(context, message);
+                    }
+                    else{
+                        String message = String.format(context.getString(R.string.added_to_wishlist), classModel.getTitle());
+                        ToastUtils.show(context, message);
+                    }
                     classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
                     EventBroadcastHelper.sendWishAdded(classModel);
                 } catch (Exception e) {

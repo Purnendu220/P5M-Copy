@@ -137,6 +137,7 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
         tabLayout.setupWithViewPager(viewPager);
 
         viewPager.addOnPageChangeListener(this);
+        viewPager.setCurrentItem(1);
 
         setNotificationIcon();
     }
@@ -144,13 +145,13 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
     boolean isLoadingFirstTime = true;
 
     @Override
-    public void onTabSelection(int position) {
+    public void onTabSelection(final int position) {
         if (isLoadingFirstTime) {
             isLoadingFirstTime = false;
             viewPager.post(new Runnable() {
                 @Override
                 public void run() {
-                    onPageSelected(0);
+                    onPageSelected(position);
                 }
             });
         }

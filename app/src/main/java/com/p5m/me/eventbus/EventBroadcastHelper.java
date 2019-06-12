@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
 import android.provider.Settings;
-import android.util.Log;
 
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,7 +24,6 @@ import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.LoginRegister.ContinueUser;
-import com.p5m.me.view.activity.Splash;
 
 import java.util.ArrayList;
 import java.util.List;
