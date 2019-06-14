@@ -227,6 +227,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 //        textView.setText(context.getString(R.string.add_to_WishList));
         textView.setText(RemoteConfigConst.ADD_TO_WISHLIST_VALUE);
 
+
         final PopupWindow popupWindow = new PopupWindow(viewRoot, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
 
         textView.setOnClickListener(new View.OnClickListener() {

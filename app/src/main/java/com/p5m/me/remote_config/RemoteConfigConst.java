@@ -32,6 +32,7 @@ public class RemoteConfigConst {
     public static final String GYM_VISIT_LIMIT_DETAIL_TEXT = "GYM_VISIT_LIMIT_DETAIL_TEXT";
     public static final String MEMBERSHIP_OFFER_COLOR = "MEMBERSHIP_OFFER_COLOR";
 
+
     /*------KEY VALUES------*/
     public static final int BOOKED_BUTTON_KEY = 927;
     public static final int FULL_BUTTON_KEY = 928;

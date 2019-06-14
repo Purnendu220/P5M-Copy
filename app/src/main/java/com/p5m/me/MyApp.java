@@ -13,9 +13,13 @@ import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.receivers.NetworkChangeReceiver;
+import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
@@ -46,7 +50,9 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
 
     public boolean isAppForeground;
     public long appBackgroundTime;
-
+    private FirebaseOptions options;
+    private boolean hasBeenInitialized;
+    private FirebaseApp finestayApp;
 
 
     @Override
@@ -87,10 +93,11 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         IntentFilter filter = new IntentFilter();
         filter.addAction(android.net.ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(new NetworkChangeReceiver(), filter);
-
+        firebaseDataSet();
         if (MyPreferences.getInstance().isLogin()) {
             NetworkCommunicator.getInstance(context).getDefault();
         }
+
     }
 
     @Override
@@ -180,5 +187,36 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
 
+    }
+
+    private void firebaseDataSet() {
+        if(BuildConfig.FIREBASE_IS_PRODUCTION){
+            options = new FirebaseOptions.Builder()
+                    .setApplicationId("1:109210713388:android:e83033ee42a596eb") // Required for Analytics.
+                    .setApiKey("AIzaSyA6XFUdbw_d56dCnlGa6EcFcqdWEpE8ir4") // Required for Auth.
+                    .setDatabaseUrl("https://gymhop-p5m-1524059965243.firebaseio.com") // Required for RTDB.
+                    .build();
+//            FirebaseApp.initializeApp(getApplicationContext(), options);
+        }
+        else {
+            options = new FirebaseOptions.Builder()
+                    .setApplicationId("1:955940869604:android:e83033ee42a596eb") // Required for Analytics.
+                    .setApiKey("AIzaSyCxrLj88gOD1JjEIsc1qK38lOqagX7IdvY") // Required for Auth.
+                    .setDatabaseUrl("https://pro5ios-e0bb0.firebaseio.com") // Required for RTDB.
+                    .build();
+//            FirebaseApp.initializeApp(getApplicationContext(), options);
+        }
+
+        List<FirebaseApp> firebaseApps = FirebaseApp.getApps(context);
+        for(FirebaseApp app : firebaseApps){
+            if(app.getName().equals(FirebaseApp.DEFAULT_APP_NAME)){
+                hasBeenInitialized=true;
+                finestayApp = app;
+            }
+        }
+
+        if(!hasBeenInitialized) {
+            finestayApp = FirebaseApp.initializeApp(context, options);
+        }
     }
 }

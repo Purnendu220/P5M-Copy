@@ -1,39 +1,44 @@
 {
   "project_info": {
-    "project_number": "109210713388",
-    "firebase_url": "https://gymhop-p5m-1524059965243.firebaseio.com",
-    "project_id": "gymhop-p5m-1524059965243",
-    "storage_bucket": "gymhop-p5m-1524059965243.appspot.com"
+    "project_number": "955940869604",
+    "firebase_url": "https://pro5ios-e0bb0.firebaseio.com",
+    "project_id": "pro5ios-e0bb0",
+    "storage_bucket": "pro5ios-e0bb0.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:109210713388:android:e83033ee42a596eb",
+        "mobilesdk_app_id": "1:955940869604:android:e83033ee42a596eb",
         "android_client_info": {
           "package_name": "com.p5m.me"
         }
       },
       "oauth_client": [
         {
-          "client_id": "109210713388-v5bdl6gh6i7uqflpuvukf1vbnmb820eg.apps.googleusercontent.com",
+          "client_id": "955940869604-dqpkk8vreas8kdin0eh47e94vjvulrbk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA6XFUdbw_d56dCnlGa6EcFcqdWEpE8ir4"
+          "current_key": "AIzaSyCxrLj88gOD1JjEIsc1qK38lOqagX7IdvY"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "955940869604-dqpkk8vreas8kdin0eh47e94vjvulrbk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "955940869604-afnbjsqnshh6deo13rbmmscpaijduu60.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.p5m.me"
+              }
+            }
+          ]
         }
       }
     }

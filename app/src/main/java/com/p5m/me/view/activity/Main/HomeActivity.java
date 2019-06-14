@@ -98,7 +98,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra(AppConstants.DataKey.HOME_TAB_POSITION, tabPosition);
-        intent.putExtra(AppConstants.DataKey.HOME_TABS_INNER_TAB_POSITION, innerTabPosition);
+        intent.putExtra(AppConstants.DataKey.HOME_TABS_SCHEDULE_INNER_TAB_POSITION, innerTabPosition);
         return intent;
     }
 
@@ -146,6 +146,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     private int INITIAL_POSITION = AppConstants.Tab.TAB_FIND_CLASS;
     private int currentTab = INITIAL_POSITION;
     private int PROFILE_TAB_POSITION;
+    private int SCHEDULE_TAB_POSITION;
 
     private Handler handler;
     public CustomRateAlertDialog mCustomMatchDialog;
@@ -170,14 +171,16 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
                     AppConstants.Tab.TAB_FIND_CLASS);
             PROFILE_TAB_POSITION = getIntent().getIntExtra(AppConstants.DataKey.HOME_TABS_PROFILE_INNER_TAB_POSITION,
                     ProfileHeaderTabViewHolder.TAB_1);
+            SCHEDULE_TAB_POSITION = getIntent().getIntExtra(AppConstants.DataKey.HOME_TABS_SCHEDULE_INNER_TAB_POSITION,
+                    AppConstants.Tab.TAB_MY_SCHEDULE_UPCOMING);
         }
         RefrenceWrapper.getRefrenceWrapper(this).setActivity(this);
         buyClassesLayout.setOnClickListener(this);
         GlobalBus.getBus().register(this);
-        FirebaseDynamicLinnk.getDynamicLink(this,getIntent());
+        FirebaseDynamicLinnk.getDynamicLink(this, getIntent());
         handler = new Handler(Looper.getMainLooper());
         setupBottomTabs();
-        homeAdapter = new HomeAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_TABS, PROFILE_TAB_POSITION);
+        homeAdapter = new HomeAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_TABS, PROFILE_TAB_POSITION, SCHEDULE_TAB_POSITION);
         viewPager.setAdapter(homeAdapter);
         viewPager.addOnPageChangeListener(this);
         viewPager.setOffscreenPageLimit(TOTAL_TABS);
@@ -339,11 +342,10 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         @Override
         protected String doInBackground(String... url) {
             User user = TempStorage.getUser();
-            mWalletCredit=user.getWalletDto();
-            if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
-               return context.getResources().getString(R.string.wallet_text)+" : "+ LanguageUtils.numberConverter(mWalletCredit.getBalance(),2)+" "+mContext.getResources().getString(R.string.wallet_currency);
-                }
-                else{
+            mWalletCredit = user.getWalletDto();
+            if (mWalletCredit != null && mWalletCredit.getBalance() > 0) {
+                return context.getResources().getString(R.string.wallet_text) + " : " + LanguageUtils.numberConverter(mWalletCredit.getBalance(), 2) + " " + mContext.getResources().getString(R.string.wallet_currency);
+            } else {
                 return "";
 
             }
@@ -352,16 +354,15 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            if(result!=null&&result.length()>0){
+            if (result != null && result.length() > 0) {
                 availableCredit.setVisibility(View.VISIBLE);
 
                 availableCredit.setText(result);
 
-            }else{
+            } else {
                 availableCredit.setVisibility(View.GONE);
 
             }
-
 
 
         }
@@ -517,7 +518,6 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             }
         });
     }
-
 
 
 }

@@ -64,7 +64,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             LogUtils.debug("Notifications Data: " + remoteMessage.getData());
 
             String message;
-            if (remoteMessage.getData()!=null) {
+            if (remoteMessage.getData() != null) {
                 message = remoteMessage.getData().get("message");
                 if (message != null) {
                     if (!message.equalsIgnoreCase("fcm")) {
@@ -73,7 +73,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         handleDataMessageForNotificationSchedule(json);
                     }
                 } else {
-                    Intent navgationIntent =  HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
+                    Intent navgationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
                     if (remoteMessage.getNotification() != null) {
                         handleNotification(navgationIntent, remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
                     }
@@ -168,6 +168,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                     break;
                 case "OnJoinClass":
+                    setNotification(jsonObject, dataID);
+                    addEvent(jsonObject, dataID);
+                    break;
+                case "OnSeatAvailableForWishlistFromClassUpdate":
+                case "OnSeatAvailableForWishlist":
                     setNotification(jsonObject, dataID);
                     addEvent(jsonObject, dataID);
                     break;
@@ -343,10 +348,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 case "OnGroupClassUpdateByCms":
                 case "OnAssignPackageFromCMS":
                 case "OnClassUpdateByCMS":
+                case "OnSeatAvailableForWishlist":
+                case "OnSeatAvailableForWishlistFromClassUpdate":
 
                     MyPreferences.initialize(context).saveNotificationCount(MyPreferences.initialize(context).getNotificationCount() + 1);
                     EventBroadcastHelper.notificationCountUpdated(context);
-
+                    EventBroadcastHelper.updateUpcomingList();
                     break;
             }
 
@@ -368,6 +375,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 case "OnUserWishListComing":
                     navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
                     break;
+
+              /*  case "OnSeatAvailableForWishlist":
+                    EventBroadcastHelper.updateUpcomingList();
+                    navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
+                    break;*/
+
                 //////////////////////////////////////////////////////////
 
                 //********************FIND A CLASS********************//
@@ -406,6 +419,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 case "OnClassUpdateByCMS":
                 case "OnGroupClassUpdateByCms":
                 case "OnNewTrainerAssign":
+                case "OnSeatAvailableForWishlist":
+                case "OnSeatAvailableForWishlistFromClassUpdate":
+
                     // Class Details..
                     title = "Class Updated";
                     navigationIntent = ClassProfileActivity.createIntent(context, (int) dataID, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
@@ -444,6 +460,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                     navigationIntent = MemberShip.createIntent(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
                     break;
+
                 ////////////////////////////////////////////////////
 
                 //********************SILENT PUSH********************//
@@ -469,7 +486,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 case "CMS":
                     String url = jsonObject.optString(AppConstants.Notification.URL);
                     if (url != null) {
-                        navigationIntent = HandleNotificationDeepLink.handleNotificationDeeplinking(context,url);
+                        navigationIntent = HandleNotificationDeepLink.handleNotificationDeeplinking(context, url);
 
                     } else {
                         navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
