@@ -1396,7 +1396,7 @@ public class NetworkCommunicator {
 
                 try {
                     if(classModel.getAvailableSeat()==0) {
-                        String message = String.format(context.getString(R.string.added_to_waitlist));
+                        String message = String.format(context.getString(R.string.added_to_waitlist), classModel.getTitle());
                         ToastUtils.show(context, message);
                     }
                     else{

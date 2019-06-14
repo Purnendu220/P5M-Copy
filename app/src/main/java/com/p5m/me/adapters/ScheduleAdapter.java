@@ -4,11 +4,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.view.fragment.ClassMiniViewList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ScheduleAdapter extends FragmentStatePagerAdapter {
 

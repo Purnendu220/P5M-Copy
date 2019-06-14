@@ -869,7 +869,7 @@
     <string name="wallet_currency">KWD</string>
     <string name="wallet_alert_title">محفظة P5M </string>
     <string name="wallet_text">رصيدك</string>
-    <string name="added_to_waitlist">تم اضافة هذا الكلاس بنجاح الى قائمة الانتظار. سيتم اعلامك عندما يخلو أي مقعد.</string>
+    <string name="added_to_waitlist">تم إضافته كلاس  %s إلى قائمة الأمنيات. سيتم اعلامك عندما يخلو أي مقعد. </string>
 
 
 </resources>

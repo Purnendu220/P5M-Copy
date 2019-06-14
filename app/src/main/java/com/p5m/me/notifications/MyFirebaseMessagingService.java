@@ -171,6 +171,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     setNotification(jsonObject, dataID);
                     addEvent(jsonObject, dataID);
                     break;
+                case "OnSeatAvailableForWishlistFromClassUpdate":
                 case "OnSeatAvailableForWishlist":
                     setNotification(jsonObject, dataID);
                     addEvent(jsonObject, dataID);
@@ -348,10 +349,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 case "OnAssignPackageFromCMS":
                 case "OnClassUpdateByCMS":
                 case "OnSeatAvailableForWishlist":
+                case "OnSeatAvailableForWishlistFromClassUpdate":
 
                     MyPreferences.initialize(context).saveNotificationCount(MyPreferences.initialize(context).getNotificationCount() + 1);
                     EventBroadcastHelper.notificationCountUpdated(context);
-
+                    EventBroadcastHelper.updateUpcomingList();
                     break;
             }
 
@@ -374,10 +376,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
                     break;
 
-                case "OnSeatAvailableForWishlist":
+              /*  case "OnSeatAvailableForWishlist":
                     EventBroadcastHelper.updateUpcomingList();
                     navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
-                    break;
+                    break;*/
 
                 //////////////////////////////////////////////////////////
 
@@ -417,6 +419,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 case "OnClassUpdateByCMS":
                 case "OnGroupClassUpdateByCms":
                 case "OnNewTrainerAssign":
+                case "OnSeatAvailableForWishlist":
+                case "OnSeatAvailableForWishlistFromClassUpdate":
+
                     // Class Details..
                     title = "Class Updated";
                     navigationIntent = ClassProfileActivity.createIntent(context, (int) dataID, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);

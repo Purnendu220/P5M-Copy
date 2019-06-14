@@ -137,6 +137,10 @@ public class NotificationActivity extends BaseActivity implements SwipeRefreshLa
                         case "OnClassUpdateByCms":
                         case "OnClassUpdateByCMS":
                         case "OnGroupClassUpdateByCms":
+                        case "OnSeatAvailableForWishlist":
+                        case "OnSeatAvailableForWishlistFromClassUpdate":
+
+
                             // Class Details..
                             ClassProfileActivity.open(context,  notificationModel.getObjectDataId(), AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN);
                             break;

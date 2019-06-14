@@ -16,14 +16,16 @@ import java.util.List;
 
 public class HomeAdapter extends FragmentStatePagerAdapter {
 
+    private int myScheduleTabPosition=AppConstants.Tab.TAB_MY_SCHEDULE_UPCOMING;
     private List<Fragment> fragments;
     private int tabsCount;
     private int myProfileTabPosition=ProfileHeaderTabViewHolder.TAB_1;
 
-    public HomeAdapter(FragmentManager fm, int tabsCount,int myProfileTabPosition) {
+    public HomeAdapter(FragmentManager fm, int tabsCount,int myProfileTabPosition,int myScheduleTabPosition) {
         super(fm);
         this.tabsCount = tabsCount;
         this.myProfileTabPosition =myProfileTabPosition;
+        this.myScheduleTabPosition = myScheduleTabPosition;
         fragments = new ArrayList<>(tabsCount);
 
         for (int index = 0; index < tabsCount; index++) {
@@ -53,7 +55,7 @@ public class HomeAdapter extends FragmentStatePagerAdapter {
         } else if (position == AppConstants.Tab.TAB_TRAINER) {
             frag = new Trainers();
         } else if (position == AppConstants.Tab.TAB_SCHEDULE) {
-            frag = new MySchedule();
+            frag = MySchedule.createScheduleFragment(myScheduleTabPosition);
         } else if (position == AppConstants.Tab.TAB_MY_PROFILE) {
             frag = MyProfile.createMyProfileFragment(myProfileTabPosition);
         }
