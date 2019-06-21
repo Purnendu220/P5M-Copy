@@ -1,21 +1,17 @@
 package com.p5m.me.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.p5m.me.R;
-import com.p5m.me.adapters.viewholder.EmptyViewHolder;
-import com.p5m.me.adapters.viewholder.LoaderViewHolder;
-import com.p5m.me.adapters.viewholder.RatingViewHolder;
+
 import com.p5m.me.adapters.viewholder.RecommendedClassViewHolder;
 import com.p5m.me.data.ClassRatingListData;
-import com.p5m.me.data.ListLoader;
 import com.p5m.me.data.main.ClassModel;
-import com.p5m.me.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;

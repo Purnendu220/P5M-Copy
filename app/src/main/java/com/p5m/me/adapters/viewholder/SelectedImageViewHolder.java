@@ -2,18 +2,16 @@ package com.p5m.me.adapters.viewholder;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
-import com.p5m.me.adapters.ImageListAdapter;
-import com.p5m.me.analytics.MixPanel;
-import com.p5m.me.data.main.MediaModel;
+
 import com.p5m.me.data.request.SelectedFileData;
-import com.p5m.me.helper.Helper;
-import com.p5m.me.utils.AppConstants;
+
 import com.p5m.me.utils.ImageUtils;
 
 import butterknife.BindView;

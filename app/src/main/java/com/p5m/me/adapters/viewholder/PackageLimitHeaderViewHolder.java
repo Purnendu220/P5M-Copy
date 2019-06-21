@@ -1,9 +1,10 @@
 package com.p5m.me.adapters.viewholder;
 
-import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.p5m.me.adapters.PackageLimitAdapter;
 import com.p5m.me.data.PackageLimitListItem;

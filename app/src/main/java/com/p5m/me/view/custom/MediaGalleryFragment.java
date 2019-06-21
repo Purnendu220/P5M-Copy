@@ -4,8 +4,7 @@ package com.p5m.me.view.custom;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,18 +12,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.bogdwellers.pinchtozoom.ImageMatrixTouchHandler;
-import com.bumptech.glide.RequestBuilder;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
+
 import com.p5m.me.R;
-import com.p5m.me.helper.GlideApp;
-import com.p5m.me.utils.ImageUtility;
+
 import com.p5m.me.utils.ImageUtils;
-import com.p5m.me.utils.ImageUtils;
-import com.p5m.me.utils.ToastUtils;
+
 import com.p5m.me.view.fragment.BaseFragment;
 import com.p5m.me.view.fragment.ViewPagerFragmentSelection;
 

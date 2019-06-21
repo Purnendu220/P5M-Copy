@@ -4,7 +4,7 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="www.gymhop.p5m.www.gymhop.me.view.custom.GalleryActivity">
+    tools:context=".view.custom.GalleryActivity">
 
     <com.bogdwellers.pinchtozoom.view.ImageViewPager
         android:id="@+id/pager"

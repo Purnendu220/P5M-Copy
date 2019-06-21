@@ -3,11 +3,13 @@ package com.p5m.me.view.activity.custom;
 import android.content.Context;
 import android.util.AttributeSet;
 
+import androidx.appcompat.widget.AppCompatImageView;
+
 /**
  * Created by MyU10 on 3/9/2018.
  */
 
-public class WideAngleImageView extends android.support.v7.widget.AppCompatImageView {
+public class WideAngleImageView extends AppCompatImageView {
 
     public WideAngleImageView(Context context) {
         super(context);

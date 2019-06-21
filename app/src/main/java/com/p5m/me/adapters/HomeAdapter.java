@@ -1,8 +1,8 @@
 package com.p5m.me.adapters;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
 import com.p5m.me.utils.AppConstants;
@@ -21,7 +21,7 @@ public class HomeAdapter extends FragmentStatePagerAdapter {
     private int tabsCount;
     private int myProfileTabPosition=ProfileHeaderTabViewHolder.TAB_1;
 
-    public HomeAdapter(FragmentManager fm, int tabsCount,int myProfileTabPosition,int myScheduleTabPosition) {
+    public HomeAdapter(FragmentManager fm, int tabsCount, int myProfileTabPosition, int myScheduleTabPosition) {
         super(fm);
         this.tabsCount = tabsCount;
         this.myProfileTabPosition =myProfileTabPosition;

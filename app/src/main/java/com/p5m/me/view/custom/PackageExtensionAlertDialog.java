@@ -4,12 +4,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.p5m.me.R;
 import com.p5m.me.data.ValidityPackageList;
@@ -64,7 +65,7 @@ public class PackageExtensionAlertDialog extends Dialog implements View.OnClickL
 
 
 
-    public PackageExtensionAlertDialog(@NonNull Context context,int navigatinFrom,UserPackage user) {
+    public PackageExtensionAlertDialog(@NonNull Context context, int navigatinFrom, UserPackage user) {
         super(context, R.style.AdvanceDialogTheme);
         this.mContext=context;
         this.navigatinFrom=navigatinFrom;

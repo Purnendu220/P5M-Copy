@@ -3,8 +3,9 @@ package com.p5m.me.view.activity.LoginRegister;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
+
 import android.widget.Button;
 import android.widget.LinearLayout;
 

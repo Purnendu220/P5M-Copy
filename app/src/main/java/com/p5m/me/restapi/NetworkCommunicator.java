@@ -2,7 +2,6 @@ package com.p5m.me.restapi;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.v7.app.AppCompatActivity;
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.analytics.FirebaseAnalytics;

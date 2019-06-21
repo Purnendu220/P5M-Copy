@@ -487,6 +487,8 @@ Would you like to view your balance? </string>
     <string name="wallet_alert_title">P5M Wallet</string>
     <string name="wallet_text">Available credit</string>
     <string name="added_to_waitlist">%s is successfully added to wishlist. You will be notified when a seat becomes available.</string>
+    <string name="failed_package_extension_ar" translatable="false">للأسف, فشل تمديد إشتراك %s. الرجاء المحاولة فى وقت لاحق. إذا تم خصم المبلغ من حسابك المصرفي، تواصل معنا على الفور.</string>
+    <string name="congratulation_package_extended_ar" translatable="false">مبروك! تم تمديد إشتراك %s لمدة  %s اسابيع.</string>
 
 
     <string-array name="schedule_list">

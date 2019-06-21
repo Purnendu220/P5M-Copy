@@ -3,9 +3,10 @@ package com.p5m.me.view.activity.base;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging;
 import com.p5m.me.analytics.FirebaseAnalysic;
