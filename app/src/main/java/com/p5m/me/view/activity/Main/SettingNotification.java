@@ -3,9 +3,10 @@ package com.p5m.me.view.activity.Main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.CompoundButton;
+
+import androidx.appcompat.widget.SwitchCompat;
 
 import com.p5m.me.R;
 import com.p5m.me.analytics.MixPanel;

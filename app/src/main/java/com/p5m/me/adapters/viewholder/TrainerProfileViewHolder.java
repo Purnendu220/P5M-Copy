@@ -1,9 +1,10 @@
 package com.p5m.me.adapters.viewholder;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Html;
 import android.util.TypedValue;
 import android.view.View;
@@ -19,14 +20,11 @@ import com.p5m.me.adapters.ImageListAdapter;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.GymBranchDetail;
 import com.p5m.me.data.main.TrainerDetailModel;
-import com.p5m.me.fxn.utility.Constants;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.ImageUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.view.activity.Main.GymProfileActivity;
-
-import java.text.NumberFormat;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

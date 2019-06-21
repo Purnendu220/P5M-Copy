@@ -13,19 +13,17 @@ import android.net.Uri;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
 import android.provider.CalendarContract.Reminders;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import android.util.Log;
 
 import com.p5m.me.BuildConfig;
-import com.p5m.me.R;
 import com.p5m.me.data.CalenderData;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.helper.Helper;
 
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.TimeZone;
 

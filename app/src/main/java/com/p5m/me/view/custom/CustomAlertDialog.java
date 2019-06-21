@@ -4,13 +4,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.p5m.me.R;
 import com.p5m.me.utils.AppConstants;
@@ -65,7 +66,7 @@ public class CustomAlertDialog extends Dialog implements View.OnClickListener {
     @BindView(R.id.img_alert_type)
     ImageView imgAlertType;
 
-    public CustomAlertDialog(@NonNull Context context, String title,String message,int alertType,String buttonCancelText,String buttonOkText,int callFor,Object data,boolean isCancelable,OnAlertButtonAction alertButtonListener) {
+    public CustomAlertDialog(@NonNull Context context, String title, String message, int alertType, String buttonCancelText, String buttonOkText, int callFor, Object data, boolean isCancelable, OnAlertButtonAction alertButtonListener) {
         super(context, R.style.AdvanceDialogTheme);
         this.mContext=context;
         this.title=title;

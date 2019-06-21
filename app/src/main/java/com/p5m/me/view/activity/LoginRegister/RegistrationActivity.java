@@ -3,8 +3,7 @@ package com.p5m.me.view.activity.LoginRegister;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.view.MotionEvent;
+
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;

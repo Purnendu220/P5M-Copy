@@ -2,8 +2,9 @@ package com.p5m.me.adapters.viewholder;
 
 import android.content.Context;
 import android.graphics.Paint;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
@@ -22,16 +23,12 @@ import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LanguageUtils;
-import com.p5m.me.view.activity.Main.PaymentConfirmationActivity;
-
-import org.intellij.lang.annotations.Language;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.p5m.me.utils.LanguageUtils.currencyConverter;
 import static com.p5m.me.utils.LanguageUtils.numberConverter;
-import static com.p5m.me.utils.LanguageUtils.worldWideSetText;
 
 /**
  * Created by MyU10 on 3/10/2018.

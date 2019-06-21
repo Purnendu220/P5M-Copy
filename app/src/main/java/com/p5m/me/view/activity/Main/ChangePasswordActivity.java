@@ -3,12 +3,12 @@ package com.p5m.me.view.activity.Main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.p5m.me.R;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.request.ChangePasswordRequest;

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white">
@@ -7,7 +8,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -54,10 +58,10 @@
                         android:fontFamily="sans-serif"
                         android:gravity="right"
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
-                        android:paddingBottom="12dp"
                         android:paddingLeft="20dp"
-                        android:paddingRight="8dp"
                         android:paddingTop="12dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="12dp"
                         android:text="@string/please_wait_no_dots"
                         android:textAllCaps="true"
                         android:textColor="@color/colorAccent"
@@ -82,10 +86,10 @@
                     android:fontFamily="sans-serif"
                     android:gravity="center"
                     android:letterSpacing="@dimen/text_medium_letter_spacing"
-                    android:paddingBottom="12dp"
                     android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
                     android:paddingTop="12dp"
+                    android:paddingRight="20dp"
+                    android:paddingBottom="12dp"
                     android:text="@string/create_password"
                     android:textAllCaps="true"
                     android:textColor="@color/colorAccent"
@@ -104,10 +108,10 @@
                 android:fontFamily="sans-serif"
                 android:gravity="center"
                 android:letterSpacing="@dimen/text_medium_letter_spacing"
-                android:paddingBottom="12dp"
                 android:paddingLeft="20dp"
-                android:paddingRight="20dp"
                 android:paddingTop="12dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="12dp"
                 android:text="@string/change_password"
                 android:textAllCaps="true"
                 android:textColor="@color/colorAccent"
@@ -116,4 +120,4 @@
         </LinearLayout>
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

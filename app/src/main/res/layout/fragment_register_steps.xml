@@ -38,7 +38,7 @@
                     android:textColor="@color/theme_dark_text"
                     android:textSize="@dimen/registration_title" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInputLayoutName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -59,9 +59,9 @@
                         android:maxLines="1"
                         android:textSize="@dimen/text_large" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInputLayoutLastName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -80,9 +80,9 @@
                         android:maxLines="1"
                         android:textSize="@dimen/text_large" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="left"
@@ -99,7 +99,7 @@
                         android:maxLines="1"
                         android:textSize="@dimen/text_large" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -125,7 +125,7 @@
                         android:textColor="@color/theme_dark_text"
                         android:textSize="@dimen/registration_title" />
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/textInputLayoutEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -145,9 +145,9 @@
 
                             />
 
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="left"
@@ -164,7 +164,7 @@
                             android:maxLines="1"
                             android:textSize="@dimen/text_large" />
 
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
             </LinearLayout>
 
@@ -185,7 +185,7 @@
                     android:textColor="@color/theme_dark_text"
                     android:textSize="@dimen/registration_title" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInputLayoutPass"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -204,9 +204,9 @@
                         android:maxLines="1"
                         android:textSize="@dimen/text_large" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInputLayoutConfirmPass"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -225,7 +225,7 @@
                         android:maxLines="1"
                         android:textSize="@dimen/text_large" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -286,7 +286,7 @@
                     android:textColor="@color/theme_error_text"
                     android:visibility="invisible" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="invisible"
@@ -302,7 +302,7 @@
                         android:maxLines="1"
                         android:textSize="@dimen/text_large" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <FrameLayout

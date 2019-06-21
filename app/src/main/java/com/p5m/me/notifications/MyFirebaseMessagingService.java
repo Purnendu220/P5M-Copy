@@ -7,15 +7,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.TaskStackBuilder;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.p5m.me.BuildConfig;
 import com.p5m.me.R;
-import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
 import com.p5m.me.data.PushDetailModel;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
@@ -25,15 +23,9 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CalendarHelper;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.Main.ClassProfileActivity;
-import com.p5m.me.view.activity.Main.EditProfileActivity;
-import com.p5m.me.view.activity.Main.GymProfileActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.Main.MemberShip;
-import com.p5m.me.view.activity.Main.NotificationActivity;
-import com.p5m.me.view.activity.Main.SettingActivity;
-import com.p5m.me.view.activity.Main.SettingNotification;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
-import com.p5m.me.view.activity.Main.TransactionHistoryActivity;
 
 import org.json.JSONObject;
 
@@ -49,6 +41,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private Hashtable<String, String> calendarIdTable;
     private int calendar_id = -1;
     PushDetailModel pushDetailModel;
+
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {

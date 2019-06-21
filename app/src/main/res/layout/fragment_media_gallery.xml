@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="www.gymhop.p5m.www.gymhop.me.view.custom.MediaGalleryFragment">
+    tools:context=".view.custom.MediaGalleryFragment">
 
     <FrameLayout
         android:id="@+id/layoutImage"

@@ -1,20 +1,16 @@
 package com.p5m.me.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.os.Build;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
+
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.p5m.me.R;
-import com.p5m.me.adapters.viewholder.ImageViewHolder;
 import com.p5m.me.adapters.viewholder.SelectedImageViewHolder;
 import com.p5m.me.data.request.SelectedFileData;
 import com.p5m.me.utils.LogUtils;
