@@ -1,0 +1,338 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorControlHighlight">@color/highlight</item>
+
+        <item name="md_positive_color">@color/colorAccent</item>
+        <item name="md_neutral_color">@color/colorAccent</item>
+        <item name="md_negative_color">@color/colorAccent</item>
+
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
+        <item name="android:windowActivityTransitions" tools:targetApi="lollipop">true</item>
+        <item name="android:windowContentTransitions">true</item>
+
+
+    </style>
+
+    <style name="AppTheme_Scale" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorControlHighlight">@color/highlight</item>
+
+        <item name="md_positive_color">@color/colorAccent</item>
+        <item name="md_neutral_color">@color/colorAccent</item>
+        <item name="md_negative_color">@color/colorAccent</item>
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimationGallery</item>
+
+        <item name="android:windowActivityTransitions" tools:targetApi="lollipop">true</item>
+    </style>
+
+    <style name="AppThemeGallery" parent="AppTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimationGallery</item>
+        <item name="android:windowActivityTransitions" tools:targetApi="lollipop">false</item>
+    </style>
+
+    <style name="AppThemePayment" parent="AppTheme">
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimationGallery</item>
+        <item name="android:windowActivityTransitions" tools:targetApi="lollipop">false</item>
+    </style>
+
+    <style name="AppThemeDialog" parent="AppTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowActivityTransitions" tools:targetApi="lollipop">false</item>
+    </style>
+
+    <style name="AppThemeTranslucent" parent="AppTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="MyTabLayoutTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">16sp</item>
+        <item name="android:lineSpacingExtra">6sp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="AppThemeSplash" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorControlHighlight">@color/colorAccent</item>
+
+        <item name="md_positive_color">@color/colorAccent</item>
+        <item name="md_neutral_color">@color/colorAccent</item>
+        <item name="md_negative_color">@color/colorAccent</item>
+
+        <item name="android:windowBackground">@color/colorPrimaryDark</item>
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
+    </style>
+
+    <style name="CustomActivityAnimationGallery" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_up_animation</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_down_animation</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_up_animation</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_down_animation</item>
+    </style>
+    <style name="CustomActivityAnimationRating" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_up_dialog_slow</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_down_slow</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_up_dialog_slow</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_down_slow</item>
+    </style>
+
+    <style name="CustomActivityAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
+    </style>
+
+    <style name="CardViewMembershipTheme" parent="CardView">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="cardCornerRadius">4dp</item>
+        <item name="cardElevation">2dp</item>
+        <item name="cardBackgroundColor">@android:color/white</item>
+        <item name="cardPreventCornerOverlap">false</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="contentPadding">0dp</item>
+    </style>
+
+    <style name="CardViewMembershipDialog" parent="CardView">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="cardCornerRadius">8dp</item>
+        <item name="cardElevation">2dp</item>
+        <item name="cardBackgroundColor">@android:color/white</item>
+        <item name="cardPreventCornerOverlap">false</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="contentPadding">0dp</item>
+    </style>
+
+    <style name="CardViewFilterTags" parent="CardView">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">1dp</item>
+        <item name="cardBackgroundColor">@android:color/white</item>
+        <item name="cardPreventCornerOverlap">false</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="contentPadding">0dp</item>
+    </style>
+
+    <style name="ClassIconSmall">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+
+    <style name="SettingIcon">
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+
+    <style name="ClassIconSmaller">
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+
+    <style name="ClassIconMedium">
+        <item name="android:layout_width">32dp</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+
+    <style name="CardViewTheme" parent="CardView">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="cardCornerRadius">4dp</item>
+        <item name="cardElevation">2dp</item>
+        <item name="cardBackgroundColor">@android:color/white</item>
+        <item name="cardPreventCornerOverlap">false</item>
+        <item name="cardUseCompatPadding">false</item>
+        <item name="contentPadding">0dp</item>
+    </style>
+
+    <style name="CardViewCircularProfileSmallest" parent="CardViewTheme">
+        <item name="android:layout_height">20dp</item>
+        <item name="android:layout_width">20dp</item>
+        <item name="cardCornerRadius">10dp</item>
+        <item name="cardElevation">1dp</item>
+
+    </style>
+
+    <style name="CardViewCircularProfileSmall" parent="CardViewTheme">
+        <item name="android:layout_height">32dp</item>
+        <item name="android:layout_width">32dp</item>
+        <item name="cardCornerRadius">16dp</item>
+    </style>
+    <style name="CardViewCircularProfileSmallClass" parent="CardViewTheme">
+        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_width">24dp</item>
+        <item name="cardCornerRadius">12dp</item>
+    </style>
+
+    <style name="CardViewCircularProfileLarge" parent="CardViewTheme">
+        <item name="android:layout_height">96dp</item>
+        <item name="android:layout_width">96dp</item>
+        <item name="cardCornerRadius">48dp</item>
+        <item name="cardElevation">4dp</item>
+    </style>
+
+    <style name="CardViewCircularMembership" parent="CardViewTheme">
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_width">40dp</item>
+        <item name="cardCornerRadius">20dp</item>
+    </style>
+
+    <style name="CardViewCircularProfile" parent="CardViewTheme">
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_width">48dp</item>
+        <item name="cardCornerRadius">24dp</item>
+    </style>
+
+    <style name="CardViewProfileSmall" parent="CardViewTheme">
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_width">48dp</item>
+        <item name="cardCornerRadius">4dp</item>
+    </style>
+
+    <style name="ToolBarTitle" parent="@android:style/Widget.TextView">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_marginRight">12dp</item>
+        <item name="android:layout_marginLeft">12dp</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="ToolBarButton" parent="@android:style/Widget.TextView">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextListHeaderTap" parent="@android:style/Widget.TextView">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/theme_medium_text</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="ToolBarIcon">
+        <item name="android:padding">16dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:layout_width">48dp</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="android:layout_height">@dimen/tool_bar_height</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+    </style>
+    <style name="ChatIcon">
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:layout_width">50dp</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="android:layout_height">28dp</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AdvanceDialogTheme" parent="Theme.AppCompat.DayNight.Dialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
+        <item name="android:windowNoTitle">true</item>
+
+        <item name="md_positive_color">@color/colorAccent</item>
+        <item name="md_neutral_color">@color/colorAccent</item>
+        <item name="md_negative_color">@color/colorAccent</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+        <item name="colorControlHighlight">@color/colorAccent</item>
+    </style>
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_up_dialog</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_down</item>
+    </style>
+    <style name="myRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/my_ratingbar_full</item>
+        <item name="android:indeterminateDrawable">@drawable/my_ratingbar_full</item>
+    </style>
+    <style name="customRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:minHeight">21dip</item>
+        <item name="android:maxHeight">21dip</item>
+    </style>
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/rating_blank</item>
+        <item name="colorControlActivated">@color/rating_filled</item>
+    </style>
+    <style name="full_screen_dialog" parent="@android:style/Theme.Translucent.NoTitleBar">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+    </style>
+    <style name="AppTheme.BottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppTheme.BottomSheetStyle</item>
+    </style>
+
+    <style name="AppTheme.BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="behavior_hideable">true</item>
+        <item name="behavior_skipCollapsed">true</item>
+    </style>
+    <style name="RedAccent" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorAccent">@color/white</item>
+    </style>
+
+
+</resources>

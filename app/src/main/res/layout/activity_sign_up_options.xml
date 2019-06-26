@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="www.gymhop.p5m.www.gymhop.me.view.activity.LoginRegister.RegistrationActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:background="@color/white"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="72dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="32dp"
+                    android:adjustViewBounds="true"
+                    android:gravity="center_horizontal"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/logo" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/buttonLoginFacebook"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/button_height_normal"
+                        android:layout_marginLeft="@dimen/button_margin"
+                        android:layout_marginRight="@dimen/button_margin"
+                        android:background="@drawable/facebook_button"
+                        android:clickable="true"
+                        android:drawableLeft="@drawable/facebook_icon"
+                        android:fontFamily="sans-serif"
+                        android:gravity="center"
+                        android:paddingLeft="16dp"
+                        android:text="@string/login_facebook"
+                        android:textColor="@color/white" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="16dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="16dp">
+
+                        <View
+                            android:layout_width="100dp"
+                            android:layout_height="1dp"
+                            android:background="@color/theme_dark_text" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:gravity="top"
+                            android:text="  OR  "
+                            android:textColor="@color/theme_dark_text"
+                            android:textSize="18sp" />
+
+                        <View
+                            android:layout_width="100dp"
+                            android:layout_height="1dp"
+                            android:background="@color/theme_dark_text" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/buttonLogin"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/button_height_normal"
+                            android:layout_marginLeft="@dimen/button_margin"
+                            android:layout_marginRight="@dimen/button_margin"
+                            android:background="@drawable/button_white"
+                            android:fontFamily="sans-serif"
+                            android:gravity="center"
+                            android:text="@string/sign_up_email"
+                            android:textColor="@color/black" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif"
+                                android:gravity="left"
+                                android:text="@string/already_account"
+                                android:textColor="@color/black" />
+
+                            <TextView
+                                android:id="@+id/textViewLogin"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:clickable="true"
+                                android:fontFamily="sans-serif"
+                                android:gravity="left"
+                                android:padding="4dp"
+                                android:text="@string/login"
+                                android:textColor="@color/black"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/separator" />
+
+                <TextView
+                    android:id="@+id/textViewBottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:text="@string/terms_of_service"
+                    android:textColor="@color/theme_dark_text"
+                    android:textColorHighlight="@color/float_transparent"
+                    android:textColorLink="@color/float_transparent" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/layoutProgress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/highlight"
+            android:clickable="true"
+            android:visibility="gone">
+
+            <ProgressBar
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </FrameLayout>
+
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/theme_bg"
+    android:layoutDirection="ltr"
+    tools:context="www.gymhop.p5m.www.gymhop.me.view.activity.Main.SettingActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tool_bar_height"
+            android:background="@color/colorPrimaryDark"
+            android:elevation="@dimen/action_bar_elevation"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/imageViewBack"
+                style="@style/ToolBarIcon"
+                android:layout_height="match_parent"
+                android:padding="15dp"
+                android:src="@drawable/back" />
+
+            <TextView
+                android:id="@+id/textViewTitle"
+                style="@style/ToolBarTitle"
+                android:gravity="left"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/settings"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/view_padding_setting"
+                    android:background="@color/theme_bg"
+                    android:elevation="@dimen/view_separator_elevation_edit_setting"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/layoutNotification"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/click_highlight"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/view_padding_setting">
+
+                            <ImageView
+                                style="@style/SettingIcon"
+                                android:padding="1dp"
+                                android:src="@drawable/notification"
+                                android:tint="@color/theme_medium_text" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:gravity="left"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/text_icon_gap_setting"
+                                android:layout_marginRight="12dp"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif"
+                                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                                android:text="@string/notification"
+                                android:textColor="@color/theme_dark_light_text"
+                                android:textSize="@dimen/text_large"
+                                android:textStyle="normal" />
+
+                            <ImageView
+                                style="@style/SettingIcon"
+                                android:paddingBottom="4dp"
+                                android:paddingTop="4dp"
+                                android:src="@drawable/arrow_right" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginLeft="@dimen/view_padding_setting"
+                            android:layout_marginRight="@dimen/view_padding_setting"
+                            android:background="@color/separator" />
+
+                        <LinearLayout
+                            android:id="@+id/layoutMembership"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/click_highlight"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/view_padding_setting">
+
+                            <ImageView
+                                style="@style/SettingIcon"
+                                android:padding="2dp"
+                                android:src="@drawable/membership"
+                                android:tint="@color/theme_medium_text" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:gravity="left"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/text_icon_gap_setting"
+                                android:layout_marginRight="12dp"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif"
+                                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                                android:text="@string/membership"
+                                android:textColor="@color/theme_dark_light_text"
+                                android:textSize="@dimen/text_large"
+                                android:textStyle="normal" />
+
+                            <ImageView
+                                style="@style/SettingIcon"
+                                android:paddingBottom="4dp"
+                                android:paddingTop="4dp"
+                                android:src="@drawable/arrow_right" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginLeft="@dimen/view_padding_setting"
+                            android:layout_marginRight="@dimen/view_padding_setting"
+                            android:background="@color/separator" />
+
+                        <LinearLayout
+                            android:id="@+id/layoutTransHistory"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/click_highlight"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/view_padding_setting">
+
+                            <ImageView
+                                style="@style/SettingIcon"
+                                android:padding="2dp"
+                                android:src="@drawable/transaction"
+                                android:tint="@color/theme_medium_text" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/text_icon_gap_setting"
+                                android:layout_marginRight="12dp"
+                                android:layout_weight="1"
+                                android:gravity="left"
+                                android:fontFamily="sans-serif"
+                                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                                android:text="@string/transaction_history"
+                                android:textColor="@color/theme_dark_light_text"
+                                android:textSize="@dimen/text_large"
+                                android:textStyle="normal" />
+
+                            <ImageView
+                                style="@style/SettingIcon"
+                                android:paddingBottom="4dp"
+                                android:paddingTop="4dp"
+                                android:src="@drawable/arrow_right" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/view_padding_setting"
+                    android:background="@color/theme_bg"
+                    android:elevation="@dimen/view_separator_elevation_edit_setting"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/layoutContactUs"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/click_highlight"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/view_padding_setting">
+
+                            <ImageView
+                                style="@style/SettingIcon"
+                                android:src="@drawable/contact_us"
+                                android:tint="@color/theme_medium_text" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/text_icon_gap_setting"
+                                android:layout_marginRight="12dp"
+                                android:layout_weight="1"
+                                android:gravity="left"
+                                android:fontFamily="sans-serif"
+                                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                                android:text="@string/contact_us"
+                                android:textColor="@color/theme_dark_light_text"
+                                android:textSize="@dimen/text_large"
+                                android:textStyle="normal" />
+
+                            <ImageView
+                                style="@style/SettingIcon"
+                                android:paddingBottom="4dp"
+                                android:paddingTop="4dp"
+                                android:src="@drawable/arrow_right" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginLeft="@dimen/view_padding_setting"
+                            android:layout_marginRight="@dimen/view_padding_setting"
+                            android:background="@color/separator" />
+
+                        <LinearLayout
+                            android:id="@+id/layoutPrivacyPolicy"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/click_highlight"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/view_padding_setting">
+
+                            <ImageView
+                                style="@style/SettingIcon"
+                                android:src="@drawable/privacy"
+                                android:tint="@color/theme_medium_text" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/text_icon_gap_setting"
+                                android:layout_marginRight="12dp"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif"
+                                android:gravity="left"
+                                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                                android:text="@string/privacy_policy"
+                                android:textColor="@color/theme_dark_light_text"
+                                android:textSize="@dimen/text_large"
+                                android:textStyle="normal" />
+
+                            <ImageView
+                                style="@style/SettingIcon"
+                                android:paddingBottom="4dp"
+                                android:paddingTop="4dp"
+                                android:src="@drawable/arrow_right" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginLeft="@dimen/view_padding_setting"
+                            android:layout_marginRight="@dimen/view_padding_setting"
+                            android:background="@color/separator" />
+
+                        <LinearLayout
+                            android:id="@+id/layoutTermsCondition"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/click_highlight"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/view_padding_setting">
+
+                            <ImageView
+                                style="@style/SettingIcon"
+                                android:src="@drawable/terms"
+                                android:tint="@color/theme_medium_text" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/text_icon_gap_setting"
+                                android:layout_marginRight="12dp"
+                                android:layout_weight="1"
+                                android:gravity="left"
+                                android:fontFamily="sans-serif"
+                                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                                android:text="@string/terms_n_condition"
+                                android:textColor="@color/theme_dark_light_text"
+                                android:textSize="@dimen/text_large"
+                                android:textStyle="normal" />
+
+                            <ImageView
+                                style="@style/SettingIcon"
+                                android:paddingBottom="4dp"
+                                android:paddingTop="4dp"
+                                android:src="@drawable/arrow_right" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginLeft="@dimen/view_padding_setting"
+                            android:layout_marginRight="@dimen/view_padding_setting"
+                            android:background="@color/separator" />
+
+                        <LinearLayout
+                            android:id="@+id/layoutAboutUs"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/click_highlight"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/view_padding_setting">
+
+                            <ImageView
+                                style="@style/SettingIcon"
+                                android:padding="2dp"
+                                android:src="@drawable/about_us"
+                                android:tint="@color/theme_medium_text" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/text_icon_gap_setting"
+                                android:layout_marginRight="12dp"
+                                android:layout_weight="1"
+                                android:gravity="left"
+                                android:fontFamily="sans-serif"
+                                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                                android:text="@string/about_us"
+                                android:textColor="@color/theme_dark_light_text"
+                                android:textSize="@dimen/text_large"
+                                android:textStyle="normal" />
+
+                            <ImageView
+                                style="@style/SettingIcon"
+                                android:paddingBottom="4dp"
+                                android:paddingTop="4dp"
+                                android:src="@drawable/arrow_right" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/view_padding_setting"
+                    android:background="@color/theme_bg"
+                    android:elevation="@dimen/view_separator_elevation_edit_setting"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/layoutLogout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/click_highlight"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/view_padding_setting">
+
+                            <ImageView
+                                style="@style/SettingIcon"
+                                android:padding="1dp"
+                                android:src="@drawable/logout"
+                                android:tint="@color/theme_medium_text" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/text_icon_gap_setting"
+                                android:layout_marginRight="12dp"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif"
+                                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                                android:gravity="left"
+                                android:text="@string/log_out"
+                                android:textColor="@color/theme_dark_light_text"
+                                android:textSize="@dimen/text_large"
+                                android:textStyle="normal" />
+
+                            <ProgressBar
+                                android:id="@+id/progressBarLogout"
+                                style="?android:attr/progressBarStyleSmall"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:visibility="gone" />
+
+                            <ImageView
+                                android:id="@+id/imageViewLogout"
+                                style="@style/SettingIcon"
+                                android:paddingBottom="4dp"
+                                android:paddingTop="4dp"
+                                android:src="@drawable/arrow_right"
+                                android:visibility="visible" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

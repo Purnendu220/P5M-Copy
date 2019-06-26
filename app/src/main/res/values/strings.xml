@@ -1,0 +1,505 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">P5M</string>
+    <string name="no_internet">No internet connection</string>
+
+    <string name="facebook_app_id" translatable="false">496906260680338</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb496906260680338</string>
+
+    <string name="please_try_later">Please try later</string>
+
+    <string name="info_screen_desc_1">Explore and join fitness classes around you with one plan.</string>
+    <string name="info_screen_desc_2">Discover new trainers and studios that cater to your fitness needs.</string>
+    <string name="info_screen_desc_3">Filter classes based on location, time and activity to find your perfect workout.</string>
+    <string name="info_screen_desc_4">"I don't know where to start" Is no longer an excuse.</string>
+
+    <string name="start_being_active">START BEING ACTIVE</string>
+
+    <string name="setting_notification_fac_details">Get notified when the trainer adds new classes</string>
+
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+    <string name="not_now">NOT NOW</string>
+
+    <string name="please_wait">Please wait...</string>
+    <string name="terms_of_service">"By login you are agree to our <u>terms of service</u>\nand <u>privacy policy</u>"</string>
+
+    <string name="whats_your_name">What\'s Your Name</string>
+    <string name="your_order_details">Your order details</string>
+    <string name="and_your_email">And, Your Email ?</string>
+    <string name="next">NEXT</string>
+    <string name="enter_name">Enter your name</string>
+    <string name="create_a_password">Create a password</string>
+    <string name="create_your_password">Create your password</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+
+    <string name="confirm_your_password">Confirm your password</string>
+    <string name="gender_string">Gender</string>
+    <string name="male">MALE</string>
+    <string name="female">FEMALE</string>
+    <string name="google_android_map_api_key" translatable="false">AIzaSyDrh02wGKpo9v4531l5fwUs0jUcXP2bwLk</string>
+    <string name="just_now">just now</string>
+    <string name="minute_ago">1 min ago</string>
+    <string name="minutes_ago">%d mins ago</string>
+    <string name="unjoin">Unjoin</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+    <string name="remove_wishlist_consent">Do you really want to remove <b>%s</b> from wishlist?</string>
+    <string name="full_name">Full Name</string>
+
+    <string name="welcome_back">Welcome back!</string>
+    <string name="continue_as">CONTINUE AS</string>
+    <!--<string name="switch_an_account">Switch an account</string>-->
+    <string name="register">REGISTER</string>
+    <string name="login_back">LOGIN</string>
+    <string name="start_journey">Start your fitness journey</string>
+    <string name="donot_signup">Don\'t have an account?</string>
+    <string name="done">Done</string>
+    <string name="already_account">Already have an account? </string>
+
+    <!--<string name="agree">By login you are agree to our <b>terms of service</b>\n and <b>privacy policy</b>.</string>-->
+    <!--<string name="facebook_permission">Email permission is required to continue. Kindly login with facebook and grant the permission.</string>-->
+    <string name="ok">OK</string>
+    <string name="find_class">Find a class</string>
+    <string name="trainer">Trainer</string>
+    <string name="trainer_profile">Trainer Profile</string>
+    <string name="schedule">My Schedule</string>
+    <string name="notification">Notification</string>
+    <string name="setting_notification_fav_title">Followed trainers activity</string>
+    <string name="profile">Profile</string>
+    <string name="search_title">Search..</string>
+    <string name="location">Location</string>
+    <string name="time">Time</string>
+    <string name="activity">Activity</string>
+    <string name="find_classes">FIND CLASSES</string>
+    <string name="morning">Morning</string>
+    <string name="after_Noon">After Noon</string>
+    <string name="evening">Evening</string>
+    <string name="login_facebook">ENTER WITH FACEBOOK</string>
+    <string name="login">"<b><u>Log in</u></b>"</string>
+    <string name="login_no_lines">"Log in"</string>
+    <string name="sign_up_email">SIGN UP WITH EMAIL</string>
+
+    <string name="booked">Booked</string>
+    <string name="full">Full</string>
+    <string name="book">Book</string>
+    <string name="expired">Session Expired</string>
+
+
+    <string name="email"><font size="10">E-mail</font></string>
+    <string name="password"><font size="5">Password</font></string>
+
+    <string name="reserve_class">BOOK CLASS</string>
+    <string name="favourite">Favourite</string>
+    <string name="favorited">Favorited</string>
+    <string name="favorite_trainer">Favourite Trainer</string>
+    <string name="finished">Finished</string>
+    <string name="addInWishList">Added in your wish List</string>
+    <string name="add_to_WishList">Add to wishlist</string>
+    <string name="remove_WishList">Remove from wishlist</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="settings">Settings</string>
+    <string name="dob">Date of  birth</string>
+    <string name="nationality">Nationality</string>
+    <string name="gender_profile">Gender</string>
+    <string name="change_password">Change password</string>
+    <string name="notifications">Notifications</string>
+    <string name="membership">Membership</string>
+    <string name="language">Language</string>
+    <string name="about_us">About Us</string>
+    <string name="log_out">Log out</string>
+
+    <string name="classes">Classes</string>
+    <string name="trainers">Trainers</string>
+    <string name="myProfile">My Profile</string>
+    <string name="gyms">Gyms</string>
+    <string name="gym">Gym</string>
+    <string name="gym_profile">Gym Profile</string>
+    <string name="currency">KWD</string>
+    <string name="valid">Valid for </string>
+    <string name="clean_filter">Clear All</string>
+    <string name="filter">Filter</string>
+    <string name="your_current_plan">YOUR CURRENT PLAN</string>
+    <string name="select">SELECT</string>
+    <string name="of"><b>of</b></string>
+    <string name="classes_remaining">classes remaining</string>
+    <string name="valid_till">Valid till</string>
+    <string name="coach_at">Coach at </string>
+    <string name="recharge">"<u>Buy Classes</u>"</string>
+    <string name="buy_classes">Buy Classes</string>
+
+    <string name="email_error_text">Please provide a valid email.</string>
+
+    <string name="password_required_error">We need Password for login.</string>
+    <string name="email_required_error">We need email for login.</string>
+    <string name="name_required_error">Your first name is required.</string>
+    <string name="last_name_required_error">Your last name is required.</string>
+
+    <string name="gender_required">Your gender is required.</string>
+    <string name="promo_code_required">Promo code is required.</string>
+
+    <string name="email_required_validate">The email you entered is incorrect.</string>
+    <string name="phone_email_required_validate">The phone and email you entered are incorrect.</string>
+    <string name="phone_required_validate">The mobile number you entered is incorrect.</string>
+    <string name="something_went_wrong">Some thing went wrong please try again.</string>
+    <!--<string name="no_classes">No classes are available.\n Try different days to find your match.</string>-->
+    <string name="password_required">Please enter your password</string>
+    <string name="password_weak">Your password must be 6 characters or more</string>
+    <string name="confirm_password_required">Please enter your confirm password</string>
+    <string name="confirm_password_not_matched">Password does not match</string>
+
+    <string-array name="gender_type">
+        <item>Male</item>
+        <item>Female</item>
+
+    </string-array>
+
+    <string name="upcoming_classes">Upcoming Classes</string>
+    <string name="today">Today</string>
+    <string name="sign_up">"<b><u>Sign Up</u></b>"</string>
+    <string name="profile_package_expiry">" remaining until your classes expire."</string>
+    <string name="view_gym_visit_limits"><u>View gym visit limits</u></string>
+    <string name="gym_visit_limits_no_lines">gym visit limits</string>
+    <string name="select_plan">Select Plan</string>
+    <string name="membership_no_package_heading_1">Pick a plan that suits your fitness needs. The ‘Get Set’ and ‘Pro’ options will allow you to visit all the gyms available on P5M. Be sure to check each gym visit limits to find the plan that works best for you.</string>
+    <string name="membership_only_drop_in_package_heading_1">Purchase a one-time visit without changing your current plan. Studio visits will not reset with this purchase. In the case of cancellation you will have 1 week to use this class.</string>
+    <string name="membership_only_drop_in_package_heading_2">This class will not roll over to your next plan, so make sure to use your class before the class expires.</string>
+    <string name="membership_drop_in_package_heading_1">Pick a plan that suits your fitness needs. The ‘Get Set’ and ‘Pro’ options will allow you to visit all the gyms available on P5M. Be sure to check each gym visit limits to find the plan that works best for you.</string>
+    <string name="membership_drop_in_package_heading_2">This class will not roll over to your next plan, so make sure to use your class before the class expires.</string>
+    <string name="membership_general_package_heading_2">Unused classes do not roll over to your next plan, so make sure to use up all your classes before the plan expires.</string>
+    <string name="title_activity_class_profile">ClassProfile</string>
+    <string name="title_activity_gym_profile">GymProfile</string>
+
+    <string name="membership_drop_in_info">"You can only access the following gym with this purchase. In case of cancellation, you have 7 days from the date of cancellation to attend a class at the same facility."</string>
+    <string name="membership_package_limit_info">"You can't purchase this package. It's validity is less than your selected class."</string>
+
+    <string name="package_limit_header">Under each plan, there are limits to the number of times you can visit each gym. Check below for the number of time you can visit a gym per plan. Once the limit is reached, you may still visit your favorite gym by purchasing a single visit pass. </string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="profile_validiy_no_package">Fuel your workout</string>
+    <string name="title_activity_sign_up_options" translatable="false">SignUpOptions</string>
+    <string name="your_fitness_freedom">Your Fitness Freedom</string>
+    <string name="registration_done">Registration completed successfully!</string>
+    <string name="join_fail_date_expire">Your current plan will expire before the date of the following class. Would you like to continue and purchase a one-time visit to this class?</string>
+    <string name="join_fail_limit_exhaust">You have exceeded the number of visits to this studio. Would you like to continue and purchase a one-time visit to this class, without changing your current plan?</string>
+
+    <string name="join_share_limit_exhaust">You have exceeded package share limit.Would you like to continue and purchase a one-time visit to this class, without changing your current plan?</string>
+
+    <string name="title_activity_continue_user">ContinueUser</string>
+    <string name="switch_account">"<u>Switch an account</u>"</string>
+    <string name="cancel">Cancel</string>
+    <string name="transaction_history">Transaction History</string>
+    <string name="choose_nationality">Choose your Nationality</string>
+    <string name="secure_checkout">secure checkout</string>
+    <string name="promo_code">Promo Code</string>
+    <string name="apply_promo_code">Enter Promo Code</string>
+    <string name="remove_promo_code">Apply another promo</string>
+    <string name="cancellation_policy">"<u>Cancellation Policy</u>"</string>
+    <string name="press_again_to_exit">Press back again to exit</string>
+    <string name="cancel_class">Cancel booking</string>
+
+
+    <string name="forgot_password">"<b><u>Forgot password</u>?</b>"</string>
+    <string name="forgot_password_no_bold">"Forgot password?"</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="current_pass_new_pass_same">Your new password and current password is same</string>
+    <string name="unjoin_class">Cancel My Registration</string>
+    <string name="no_thanks">No, Thanks</string>
+    <string name="please_wait_no_dots">Please Wait</string>
+    <string name="no_data_class_list_main">No classes are available. Try a different date to join your class.</string>
+    <string name="no_data_trainer_list_main">No trainers are available that match your search.</string>
+    <string name="no_data_search_trainer_list">No trainers are available that match your search.</string>
+    <string name="no_data_search_gym_list">No gym are available that match your search.</string>
+    <string name="no_data_search_class_list">No classes are available. Make a different search to find more results.</string>
+    <string name="no_data_schedule_upcoming_list">"You haven't joined any classes yet. Let's book a class!"</string>
+    <string name="no_data_schedule_wishist_list">"You haven't added any classes to your wishlist yet. Tap of the save icon on classes you want to join later."</string>
+    <string name="no_data_notifications">No notifications yet.</string>
+    <string name="search_hint">Search…</string>
+    <string name="title_activity_demo">Demo</string>
+    <string name="reset_pass">Reset Password</string>
+    <string name="apply_filter">Apply Filter</string>
+    <string name="please_enter_your_email">Please enter your email</string>
+    <string name="p5m_app">P5M App</string>
+    <string name="share">Invite Friends</string>
+    <string name="sure_unjoin">Are you sure you want to cancel this booking ?</string>
+
+    <string name="mention_email">Please mention your email first</string>
+    <string name="total_locations">Locations (%1$d)</string>
+    <string name="go_to_settings">Go to Settings</string>
+    <string name="permission_alert">Permission Alert</string>
+    <string name="permission_message_media">Please allow P5M to access photos,media and files on your device to take photo.</string>
+    <string name="permission_message_location" translatable="false">Please allow P5M to access your location.</string>
+
+    <string name="permission_message_camera">\"Please allow P5M to take pictures and record video.\"</string>
+    <string name="pick_image">Pick Image</string>
+    <string name="profile_changes_saved">Changes to your profile have been saved!</string>
+    <string name="package_offer_percentage">% off </string>
+    <string name="package_offer_kwd">KWD off </string>
+    <string name="local_service_stopped">Service destroy</string>
+    <string name="rate_class_message">Your class %1s is finished.Rate this class for better experience on next visit.</string>
+    <string name="what_was_good_here">What was good here?</string>
+    <string name="take_photo">Take photo</string>
+    <string name="open_gallery">Open gallery</string>
+    <string name="rate_class_tilte">Rate Class</string>
+    <string name="add_photos">Add a photo from the class. Up to 4 photos.</string>
+    <string name="submit_review">Submit Review</string>
+    <string name="retry_review">Retry</string>
+
+    <string name="how_was_your_class">How was your <b>%s</b> class?</string>
+    <string name="how_was_your_class_v_two">How was your experiance with <b>%s</b>  class?</string>
+    <string name="submiting_review">Submitting Review...</string>
+    <string name="got_it">GOT IT</string>
+    <string name="rate">Rate</string>
+    <string name="rating_view">Rating View</string>
+    <string name="studio_rating">CLASS RATING:</string>
+    <string name="review_based_on">based on %1s rating(s)</string>
+    <string name="edit_rating">Edit Rating</string>
+    <string name="powered_by">Powered By</string>
+
+    <string name="selection_limiter_pix">Can\'t select more than %d images.</string>
+    <string name="valid_for_weeks">Valid for %d week(s)</string>
+    <string name="valid_for_months">Valid for %d month(s)</string>
+    <string name="message_to_drag_up">Drag images up for gallery</string>
+    <string name="pix_ok">OK</string>
+    <string name="pix_tap_to_select">Tap photo to select</string>
+    <string name="pix_selected">Selected</string>
+    <string name="pix_recent">Recent</string>
+    <string name="pix_last_month">Last Month</string>
+    <string name="pix_last_week">Last Week</string>
+    <string name="invite_friends">Invite Friends</string>
+    <string name="add_more_time">Extend Membership</string>
+    <string name="proceed">Proceed</string>
+    <string name="share_message">Hey. Want to workout with me? Let’s join %1s together.\n</string>
+    <string name="class_event_description">For more details on the %1s class use this link. \n</string>
+
+    <string name="extend_package">Extend Package</string>
+    <string name="share_message_gym">Hey. Want to workout with me? Let’s join %1s\'s classes together.\n</string>
+    <string name="share_message_trainer">Hey. Want to workout with me? Let’s join %1s‘s classes together.\n</string>
+    <string name="valid_intil">(until %1s)</string>
+    <string name="extend_message">Add more time to your current plan. Any gym visit limits still apply, and will not be reset with this extension.</string>
+    <string name="extend_term">The gym visit limits will not re-set with this one-time purchase. You have just extended your membership (%1d week(s)). You have (%1d) week(s) remaining. Make sure if you need more time to extend your membership before your classes expire.</string>
+    <string name="extend">"<u>Extend</u>"</string>
+    <string name="extention_policy">Membership extension policy</string>
+    <string name="yourfriendsname">Friend\'s Name</string>
+    <string name="friendsemail">Friend\'s Email</string>
+    <string name="bookWithFriend">Book With Friend</string>
+    <string name="whojoiningyou">Who\'s joining you?</string>
+    <string name="reserve_class_with_friend">Book with a Friend</string>
+    <string name="continue_with">Continue</string>
+
+    <string name="special_class">Special Class</string>
+    <string name="class_remaining_for"> remaining for</string>
+    <string name="valid_for">Valid for</string>
+    <string name="promo_code_applied">Promo Code Applied</string>
+    <string name="wallet_credit_applied">Credit Applied</string>
+
+    <string name="total">Total </string>
+    <string name="pay">Payment</string>
+    <string name="no_more_notification">No more notifications</string>
+    <string name="both">Both</string>
+    <string name="enter_promo_code">Enter promo code</string>
+    <string name="invalid_code">Invalid Code</string>
+    <string name="apply">Apply</string>
+    <string name="more">more</string>
+    <string name="no_more_upcoming_classes">No more upcoming classes</string>
+    <string name="successfully_added_to_your_wishlist">successfully added to your wishlist</string>
+    <string name="gallery">Gallery</string>
+    <string name="followers">followers</string>
+    <string name="no_followers">No followers</string>
+    <string name="no_upcoming_classes">No Upcoming Classes</string>
+    <string name="new_version_available">New Version Available</string>
+    <string name="please_update_p5m_to_the_newer_version_to_continue_using">Please update P5M to the newer version to continue using.</string>
+    <string name="update">Update</string>
+    <string name="date_of_birth">Date of birth</string>
+    <string name="mobile_no">Mobile No</string>
+    <string name="choose_your_focus">Choose your interest</string>
+    <string name="you_have_registered_using_facebook">You have registered using facebook</string>
+    <string name="create_password">Create Password</string>
+    <string name="are_you_sure">Are you sure ?</string>
+    <string name="see_all_reviews">See all reviews</string>
+    <string name="thank_you">THANK YOU!</string>
+    <string name="your_review_has_been_submitted">Your review has been submitted</string>
+    <string name="rate_past_classes">RATE PREVIOUS CLASSES</string>
+    <string name="i_l_do_it_later">I’L DO IT LATER</string>
+    <string name="reference_id">Reference ID</string>
+    <string name="amount_kd">Amount (KD)</string>
+
+    <string name="date">Date</string>
+    <string name="status">Status</string>
+    <string name="enter_your_current_password">Enter your current password</string>
+    <string name="enter_your_new_password">Enter your new password</string>
+    <string name="confirm_your_new_password">Confirm your new password</string>
+    <string name="please_enter_current_password">Please enter your current password</string>
+    <string name="please_enter_a_new_password">Please enter a new password</string>
+    <string name="weeks">Week(s)</string>
+    <string name="please_allow_location">Please allow P5M to use your Location</string>
+    <string name="need_location">Need Location</string>
+    <string name="this_package_has">This package has</string>
+    <string name="to_complete_the_payment_you_should_stay_on_this_page">To complete the payment you should stay on this page</string>
+    <string name="stay_on_this_page">Stay on this page</string>
+    <string name="leave_this_page">Leave this page</string>
+    <string name="no_more_gyms">No more gyms</string>
+    <string name="no_more_ratings">No more ratings</string>
+    <string name="image_upload_failed">Image upload failed</string>
+    <string name="gaping" translatable="false">" "</string>
+    <string name="membership_general_package_heading_1" translatable="false" />
+    <string name="membership_no_package_heading_2" translatable="false" />
+    <string name="no_more_trainers">No more trainers</string>
+
+
+    <string name="booked_with_friend">2 Bookings</string>
+    <string name="own_email_error_text">You can\'t use your email.</string>
+    <string name="gender_females_only_error">This is a Females only class</string>
+    <string name="gender_males_only_error">This is a Males only class</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="privacy_policy">privacy policy</string>
+    <string name="terms_n_condition"><![CDATA[Terms & Condition]]></string>
+    <string name="mail_us">Mail Us</string>
+    <string name="make_a_call">Make a Call</string>
+    <string name="enter_first_name">Please enter your first name</string>
+    <string name="enter_last_name">Please enter your last name</string>
+    <string name="one_class">class</string>
+    <string name="remaining">remaining</string>
+    <string name="day">day</string>
+    <string name="class_for">for</string>
+    <string name="package_name">package</string>
+    <string name="all">ALL</string>
+    <string name="successfully_joined">Successfully joined</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="wish_list">Wish List</string>
+    <string name="please_try_again">Please try again</string>
+    <string name="needs_your_email_and_gender">P5M needs your Email and Gender</string>
+    <string name="needs_your_email">P5M needs your Email</string>
+    <string name="needs_your_gender">P5M needs your Gender</string>
+    <string name="sure_unjoin_both">Are you sure you want to cancel both bookings ?</string>
+    <string name="sure_unjoin_friend">Are you sure you want to cancel your friends booking ?</string>
+    <string name="join_fail_limit_exhaust_booking_with_friend">You have exceeded the number of visits to the following studio. Would you like to continue and purchase a one-time visit to this class, for your guest?</string>
+    <string name="join_fail_limit_exhaust_booking_with_friend_two_ready">You have exceeded the number of visits to the following studio. Would you like to continue and purchase %1d one-time visits to this class, for yourself and your guest?</string>
+    <string name="cancel_class_self">Unjoin My Class</string>
+    <string name="cancel_class_friend">Cancel Friends\'s booking</string>
+    <string name="cancel_class_both">Cancel Both bookings</string>
+    <string name="limit_for_this_gym" translatable="false">visit limit for this gym.So you need to buy different package to book with friend.</string>
+    <string name="by_making_this_booking_2_classes_will_be_deducted_from_your_balance_book_with_a_friend">By making this booking, 2 classes will be deducted from your balance.</string>
+    <string name="package_details">Package details</string>
+    <string name="packages">Package</string>
+    <string name="validity">Validity</string>
+    <string name="payment_confirmation">Payment Confirmation</string>
+    <string name="view_schedule">View Schedule</string>
+    <string name="terms_service">terms of service</string>
+    <string name="amount">Amount</string>
+    <string name="purchase_date">Purchase Date:</string>
+    <string name="payment_reference">Payment Reference:</string>
+    <string name="congratulation_class">Congratulations! Class</string>
+    <string name="congratulation_package">Congratulations! Package</string>
+    <string name="classs">Class</string>
+    <string name="payment_pending">Payment pending</string>
+    <string name="payment_sucessful">Payment successful</string>
+    <string name="payment_unsucessful">Payment unsuccessful</string>
+
+    <string name="is_successfully_booked">is successfully booked.</string>
+    <string name="view_membership">View Membership</string>
+    <string name="no_more_classes">No more classes</string>
+    <string name="remenders"><![CDATA[<b>REMINDERS:</b>]]></string>
+    <string name="address"><![CDATA[<b>ADDRESS:</b>]]></string>
+    <string name="studio_instruction"><![CDATA[<b>STUDIO INSTRUCTION:</b>]]></string>
+    <string name="special_note_by_trainer"><![CDATA[<b>SPECIAL NOTE BY THE TRAINER:</b>]]></string>
+    <string name="available_seats">available seat(s)</string>
+    <string name="view_all_results">View All Results</string>
+    <string name="class_booking_is_failed">Class booking is failed</string>
+    <string name="package_booking_is_failed">Package booking is failed</string>
+    <string name="class_booked_successfully">Class booked successfully</string>
+    <string name="package_booked_successfully">Package booked successfully</string>
+    <string name="class_booking_is_pending">Class booking is pending</string>
+    <string name="package_booking_is_pending">Package booking is pending</string>
+    <string name="n_a">N/A</string>
+    <string name="unfortunately_class">Unfortunately, </string>
+
+    <string name="is_failed">is unsuccessful. Please try again. Please contact support in case the amount is debited from your account.</string>
+    <string name="pending_detail">. You will receive a confirmation within 4 hours.</string>
+    <string name="for_key">for</string>
+    <string name="purchase">Purchase</string>
+    <string name="are_you_sure_you_want_to_remove">Are you sure you want to remove</string>
+    <string name="week">Week</string>
+    <string name="month">Month</string>
+    <string name="at_any_gym" translatable="false">at any gym</string>
+    <string name="book_classes">Book Classes</string>
+    <string name="payment_history">View Payment History</string>
+    <string name="class_one">1 Class</string>
+    <string name="extend_package_limit">You can extend your package upto</string>
+    <string name="extend_on">Extended On :</string>
+    <string name="booking_details">Booking details</string>
+    <string name="package_extended_successfully">Package extended successfully</string>
+    <string name="class_name">Class Name</string>
+    <string name="intermediate">Intermediate</string>
+    <string name="advanced">Advanced</string>
+    <string name="basic">Basic</string>
+    <string name="class_one_at">1 Class at </string>
+    <string name="at">at</string>
+    <string name="permission_location">Please allow P5M to access location on your device.</string>
+    <string name="has_been_extended_for">has been extended for</string>
+    <string name="contactUs">Please identify the details of your issue below. A member of our staff will respond shortly.</string>
+    <string name="send_email">Send Email</string>
+    <string name="payment_session_expired" translatable="false">Session timed out.</string>
+    <string name="pending_start_class"><b>%s</b> Class booking is pending.If you have completed the transaction, your payment will be updated within 4 hours.
+</string>
+    <string name="pending_start_package"><b>%s</b> Package purchase is pending.If you have completed the transaction, your payment will be updated within 4 hours.
+    </string>
+    <string name="pending_extension"><b>%s</b> Package extension is pending.If you have completed the transaction, your payment will be updated within 4 hours.</string>
+
+
+    <string name="failed_start_class">your class booking for</string>
+    <string name="failed_start_package">your package purchase for </string>
+    <string name="congratulation">Congratulation</string>
+    <string name="package_is_successfully_booked">Package is successfully booked.</string>
+
+
+    <string name="congratulation_package_booked"> Congratulations! <b>%s</b> Package is successfully booked.</string>
+    <string name="congratulation_class_booked">Congratulations! <b>%s</b> Class is successfully booked.</string>
+    <string name="congratulation_package_extended_en" translatable="false">Congratulations! <b>%s</b> has been extended for %s Week(s)</string>
+    <string name="valid_until">Valid until</string>
+    <string name="class_booking_failed">Unfortunately, %s Class booking is failed. Please try again. Please contact support in case the amount is debited from your account.</string>
+    <string name="package_booking_failed">Unfortunately, %s Package purchase is failed. Please try again. Please contact support in case the amount is debited from your account.</string>
+    <string name="failed_package_extension_en" translatable="false">Unfortunately, <b>%s</b> Package extension is failed. Please try again. Please contact support in case the amount is debited from your account.</string>
+    <string name="no_of_class">Number of class(es)</string>
+    <string name="contact_gym_trainer"> Have a question?</string>
+    <string name="send_message">Send Message</string>
+    <string name="you_will_receive_the_response_via_email">*You will receive the response on your email</string>
+    <string name="type_your_questions_and_comments_here">Please enter your query</string>
+    <string name="please_provide_your_query">Please enter your query</string>
+    <string name="please_select_sender">Please select the recipient</string>
+    <string name="message_is_successfully_send">Your message was sent to %s. You will receive a response from them on your email. </string>
+    <string name="added_to_wishlist"> %s successfully added to your wishlist.</string>
+    <string name="recomended_for_you">Recommended for you</string>
+    <string name="contact_gym">Contact gym</string>
+    <string name="contact_trainer">Contact trainer</string>
+    <string name="are_you_sure_leave_page">Are you sure you want to leave this page?</string>
+    <string name="non_refundable_warning_msg">This class is non-refundable after purchase. Do you want to continue?</string>
+    <string name="non_refundable_warning">*This class is non-refundable after purchase.</string>
+    <string name="wallet_alert">Use your wallet credits to purchase any package on the app.</string>
+
+    <string name="on_ya">Oh Ya!</string>
+    <string name="maybe_next_time">Maybe next time</string>
+    <string name="_5">/5</string>
+    <string name="success">Success</string>
+    <string name="alert_message">Congratulation You have done this successfully.</string>
+    <string name="successfull_refund_message">The amount paid for this class was refunded to your account. Use your credit to book your next workout with us.
+Would you like to view your balance? </string>
+    <string name="wallet_currency">KWD</string>
+    <string name="wallet_alert_title">P5M Wallet</string>
+    <string name="wallet_text">Available credit</string>
+    <string name="added_to_waitlist">%s is successfully added to wishlist. You will be notified when a seat becomes available.</string>
+    <string name="failed_package_extension_ar" translatable="false">للأسف, فشل تمديد إشتراك %s. الرجاء المحاولة فى وقت لاحق. إذا تم خصم المبلغ من حسابك المصرفي، تواصل معنا على الفور.</string>
+    <string name="congratulation_package_extended_ar" translatable="false">مبروك! تم تمديد إشتراك %s لمدة  %s اسابيع.</string>
+
+
+    <string-array name="schedule_list">
+        <item>@string/upcoming</item>
+        <item>@string/wish_list</item>
+    </string-array>
+
+    <string-array name="setting_header">
+        <item>@string/classes</item>
+        <item>@string/trainers</item>
+        <item>@string/gym</item>
+    </string-array>
+
+</resources>
