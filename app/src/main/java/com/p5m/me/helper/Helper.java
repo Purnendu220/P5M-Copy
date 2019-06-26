@@ -175,9 +175,18 @@ public class Helper {
 
 //            buttonJoin.setText(context.getString(R.string.full));
 //            buttonJoin.setBackgroundResource(R.drawable.full_rect);
-            buttonJoin.setText(RemoteConfigConst.FULL_VALUE);
-            RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.FULL_COLOR_VALUE, context.getResources().getColor(R.color.theme_full));
+            if(model.getWishType()!=null) {
+                if(model.getWishType().equalsIgnoreCase("WAITLIST")) {
+                    buttonJoin.setText(RemoteConfigConst.WAITLISTED_VALUE);
+                    RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.FULL_COLOR_VALUE, context.getResources().getColor(R.color.theme_full));
 
+                }
+            }
+            else{
+                buttonJoin.setText(RemoteConfigConst.WAITLIST_VALUE);
+//                buttonJoin.setText(RemoteConfigConst.FULL_VALUE);
+                RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.FULL_COLOR_VALUE, context.getResources().getColor(R.color.theme_full));
+            }
 
         } else {
 
@@ -209,7 +218,16 @@ public class Helper {
 
         } else if (model.getAvailableSeat() == 0) {
 //            view.setText(context.getString(R.string.full));
-            view.setText(RemoteConfigConst.FULL_VALUE);
+
+            if(model.getWishType()!=null) {
+                if(model.getWishType().equalsIgnoreCase("WAITLIST")) {
+                    view.setText(RemoteConfigConst.WAITLISTED_VALUE);
+
+                }
+            }
+            else{
+                view.setText(RemoteConfigConst.WAITLIST_VALUE);
+            }
 //            view.setBackgroundResource(R.drawable.theme_bottom_text_button_full);
             RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.FULL_COLOR_VALUE, context.getResources().getColor(R.color.theme_full));
             view.setEnabled(false);

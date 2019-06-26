@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+
 import androidx.core.graphics.drawable.DrawableCompat;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -39,6 +41,7 @@ import static com.p5m.me.remote_config.RemoteConfigConst.FULL_BUTTON_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.GYM_VISIT_LIMIT_DETAIL_TEXT_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.GYM_VISIT_LIMIT_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.INVITE_FRIENDS_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.JOIN_WAITLIST_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.MEMBERSHIP_OFFER_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_CLASS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_FAILURE_KEY;
@@ -50,6 +53,8 @@ import static com.p5m.me.remote_config.RemoteConfigConst.SEARCH_BAR_TEXT_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.SELECT_PLAN_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.SELECT_PLAN_TEXT_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.SESSION_EXPIRED_COLOR_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.WAITLISTED_BUTTON_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.WAITLIST_BUTTON_KEY;
 
 public class RemoteConfigSetUp {
     public static final FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
@@ -99,6 +104,12 @@ public class RemoteConfigSetUp {
                 case FULL_BUTTON_KEY:
                     RemoteConfigConst.FULL_VALUE = keyValue;
                     break;
+                case WAITLISTED_BUTTON_KEY:
+                    RemoteConfigConst.WAITLISTED_VALUE = keyValue;
+                    break;
+                case WAITLIST_BUTTON_KEY:
+                    RemoteConfigConst.WAITLIST_VALUE = keyValue;
+                    break;
                 case BOOK_WITH_FRIEND_BUTTON_KEY:
                     RemoteConfigConst.BOOK_WITH_FRIEND_VALUE = keyValue;
                     break;
@@ -141,6 +152,9 @@ public class RemoteConfigSetUp {
                     break;
                 case ADD_TO_WISHLIST_KEY:
                     RemoteConfigConst.ADD_TO_WISHLIST_VALUE = keyValue;
+                    break;
+                case JOIN_WAITLIST_KEY:
+                    RemoteConfigConst.JOIN_WAITLIST_VALUE = keyValue;
                     break;
 
                 case INVITE_FRIENDS_KEY:
@@ -250,9 +264,16 @@ public class RemoteConfigSetUp {
                 RemoteConfigConst.BOOKED_BUTTON,
                 context.getString(R.string.booked));
 
-        setValue(RemoteConfigConst.FULL_BUTTON_KEY,
-                RemoteConfigConst.FULL_BUTTON,
-                context.getString(R.string.full));
+//        setValue(RemoteConfigConst.FULL_BUTTON_KEY,
+//                RemoteConfigConst.FULL_BUTTON,
+//                context.getString(R.string.full));
+
+        setValue(RemoteConfigConst.WAITLISTED_BUTTON_KEY,
+                RemoteConfigConst.WAITLISTED_BUTTON,
+                context.getString(R.string.waitlisted));
+        setValue(WAITLIST_BUTTON_KEY,
+                RemoteConfigConst.WAITLIST_BUTTON,
+                context.getString(R.string.waitlist));
 
         setValue(RemoteConfigConst.BOOK_BUTTON_KEY,
                 RemoteConfigConst.BOOK_BUTTON,
@@ -310,6 +331,9 @@ public class RemoteConfigSetUp {
 
         setValue(ADD_TO_WISHLIST_KEY,
                 RemoteConfigConst.ADD_TO_WISHLIST, context.getResources().getString(R.string.add_to_WishList));
+
+        setValue(JOIN_WAITLIST_KEY,
+                RemoteConfigConst.JOIN_WAITLIST, context.getResources().getString(R.string.join_waitlist));
         setValue(PAYMENT_PACKAGE_KEY,
                 RemoteConfigConst.PAYMENT_PACKAGE, context.getResources().getString(R.string.book_classes));
         setValue(PAYMENT_CLASS_KEY,

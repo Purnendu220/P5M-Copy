@@ -116,6 +116,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
         }
     }
 
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void wishRemoved(Events.WishRemoved wishRemoved) {
         if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {

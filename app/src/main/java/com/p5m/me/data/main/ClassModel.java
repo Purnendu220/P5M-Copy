@@ -15,6 +15,8 @@ public class ClassModel implements java.io.Serializable {
     private String reminder;
     private String description;
     private int availableSeat;
+
+    private String wishType;
     private String classCategory;
     private String title;
     private boolean userJoinStatus;
@@ -343,5 +345,13 @@ public class ClassModel implements java.io.Serializable {
 
     public void setRefBookingId(Integer refBookingId) {
         this.refBookingId = refBookingId;
+    }
+
+    public String getWishType() {
+        return wishType;
+    }
+
+    public void setWishType(String wishType) {
+        this.wishType = wishType;
     }
 }

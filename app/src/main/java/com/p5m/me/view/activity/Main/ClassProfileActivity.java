@@ -36,6 +36,7 @@ import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.UserPackageInfo;
+import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.User;
@@ -279,6 +280,46 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public void textViewBook() {
         isBookWithFriendInProgress = false;
         mBookWithFriendData = null;
+        if(classModel.getAvailableSeat()==0){
+            networkCommunicator.addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
+                @Override
+                public void onApiSuccess(Object response, int requestCode) {
+                    try {
+                        if(classModel.getAvailableSeat()==0) {
+                            String message = String.format(context.getString(R.string.added_to_waitlist), classModel.getTitle());
+//                                ToastUtils.show(context, message);
+                            DialogUtils.showBasicMessage(context, message, context.getString(R.string.wish_list), new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    Intent navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
+                                    context.startActivity(navigationIntent);
+//                                        Helper.setJoinButton(context, buttonJoinoin, model);
+                                }
+                            });
+                        }
+                        else{
+                            String message = String.format(context.getString(R.string.added_to_wishlist), classModel.getTitle());
+                            ToastUtils.show(context, message);
+                        }
+                        classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
+                        EventBroadcastHelper.sendWishAdded(classModel);
+                        EventBroadcastHelper.sendWaitlistAdded(classModel);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        LogUtils.exception(e);
+                    }
+
+
+                }
+
+                @Override
+                public void onApiFailure(String errorMessage, int requestCode) {
+
+                }
+            });
+            return;
+        }
         // Check if class is allowed for the gender..
         if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
                 && !Helper.isMalesAllowed(classModel)) {
