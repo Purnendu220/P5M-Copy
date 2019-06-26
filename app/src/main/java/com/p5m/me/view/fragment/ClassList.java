@@ -415,6 +415,8 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                 callApiClassList();
 //                checkListData();
                 break;
+
+
         }
     }
 

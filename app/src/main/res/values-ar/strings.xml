@@ -870,6 +870,9 @@
     <string name="wallet_alert_title">محفظة P5M </string>
     <string name="wallet_text">رصيدك</string>
     <string name="added_to_waitlist">تم إضافته كلاس  %s إلى قائمة الأمنيات. سيتم اعلامك عندما يخلو أي مقعد. </string>
+    <string name="waitlist">Waitlist</string>
+    <string name="waitlisted">Waitlisted</string>
+    <string name="join_waitlist">Join Waitlist</string>
 
 
 </resources>

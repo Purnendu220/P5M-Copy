@@ -151,6 +151,10 @@ public class EventBroadcastHelper {
         GlobalBus.getBus().post(new Events.WishAdded(classModel));
     }
 
+    public static void sendWaitlistAdded(ClassModel classModel){
+        GlobalBus.getBus().post(new Events.WaitlistAdded(classModel));
+    }
+
     public static void sendWishRemoved(ClassModel classModel) {
         GlobalBus.getBus().post(new Events.WishRemoved(classModel));
     }

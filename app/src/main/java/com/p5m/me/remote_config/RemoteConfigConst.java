@@ -11,6 +11,8 @@ public class RemoteConfigConst {
     public static final String BOOK_WITH_FRIEND_COLOR = "BookWithFriendColor";
     public static final String BOOKED_BUTTON = "BookedButton";
     public static final String FULL_BUTTON = "FullButton";
+    public static final String WAITLIST_BUTTON = "WAITLIST_BUTTON";
+    public static final String WAITLISTED_BUTTON = "WAITLISTED_BUTTON";
     public static final String FULL_BUTTON_COLOR = "FullButtonColor";
     public static final String BOOKED_BUTTON_COLOR = "BookedButtonColor";
     public static final String BUY_CLASS_BUTTON_COLOR = "buyClassButtonColor";
@@ -22,6 +24,7 @@ public class RemoteConfigConst {
     public static final String SESSION_EXPIRED_COLOR = "SESSION_EXPIRED_COLOR";
     public static final String INVITE_FRIENDS = "INVITE_FRIENDS";
     public static final String ADD_TO_WISHLIST = "ADD_TO_WISHLIST";
+    public static final String JOIN_WAITLIST = "JOIN_WAITLIST";
     public static final String PAYMENT_PACKAGE = "PAYMENT_PACKAGE";
     public static final String PAYMENT_PENDING = "PAYMENT_PENDING";
     public static final String PAYMENT_FAILURE = "PAYMENT_FAILURE";
@@ -63,11 +66,17 @@ public class RemoteConfigConst {
     public static final int GYM_VISIT_LIMIT_DETAIL_TEXT_KEY = 953;
     public static final int MEMBERSHIP_OFFER_COLOR_KEY = 954;
     public static final int BOOK_IN_CLASS_COLOR_KEY = 955;
+    public static final int WAITLIST_BUTTON_KEY = 956;
+    public static final int WAITLISTED_BUTTON_KEY = 957;
+    public static final int JOIN_WAITLIST_KEY = 958;
 
     /* ------VALUES---------*/
     public static String BOOKED_VALUE ="Booked";
     public static String BOOK_VALUE = "Book";
     public static String FULL_VALUE = "Full";
+    public static String WAITLISTED_VALUE = "Waitlisted";
+    public static String WAITLIST_VALUE = "Waitlist";
+    public static String JOIN_WAITLIST_VALUE = "Join Waitlist";
     public static String BOOK_WITH_FRIEND_VALUE = "Book with a friend";
     public static String SEARCH_BAR_TEXT_VALUE = "Search";
     public static String CLASS_CARD_TEXT_VALUE = "BOOK CLASS";

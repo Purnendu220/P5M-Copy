@@ -1,8 +1,13 @@
 package com.p5m.me.restapi;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 
+import androidx.annotation.NonNull;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.login.LoginManager;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.p5m.me.R;
@@ -56,8 +61,10 @@ import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.target_user_notification.UserPropertyConst;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CommonUtillity;
+import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
+import com.p5m.me.view.activity.Main.HomeActivity;
 
 import java.io.File;
 import java.util.List;
@@ -1368,7 +1375,7 @@ public class NetworkCommunicator {
         return call;
     }
 
-    public Call addToWishList(final ClassModel classModel, final int classSessionId) {
+    public Call addToWishList(final ClassModel classModel, final int classSessionId, final RequestListener requestListener) {
         final int requestCode = RequestCode.ADD_TO_WISH_LIST;
         String type;
         if(classModel.getAvailableSeat()==0){
@@ -1391,23 +1398,9 @@ public class NetworkCommunicator {
             @Override
             public void onResponse(Call<ResponseModel<WishListResponse>> call, Response<ResponseModel<WishListResponse>> restResponse, ResponseModel<WishListResponse> response) {
                 LogUtils.networkSuccess("NetworkCommunicator addToWishList onResponse data " + response);
-//                requestListener.onApiSuccess(response, requestCode);
+                requestListener.onApiSuccess(response, requestCode);
 
-                try {
-                    if(classModel.getAvailableSeat()==0) {
-                        String message = String.format(context.getString(R.string.added_to_waitlist), classModel.getTitle());
-                        ToastUtils.show(context, message);
-                    }
-                    else{
-                        String message = String.format(context.getString(R.string.added_to_wishlist), classModel.getTitle());
-                        ToastUtils.show(context, message);
-                    }
-                    classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
-                    EventBroadcastHelper.sendWishAdded(classModel);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    LogUtils.exception(e);
-                }
+
             }
         });
         return call;

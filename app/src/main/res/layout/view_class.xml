@@ -173,7 +173,7 @@
 
                     <Button
                         android:id="@+id/buttonJoin"
-                        android:layout_width="@dimen/button_width_main_list"
+                        android:layout_width="wrap_content"
                         android:layout_height="@dimen/button_height_main_list"
                         android:layout_below="@+id/layoutImage"
                         android:layout_alignParentEnd="true"
@@ -182,9 +182,11 @@
                         android:background="@drawable/join_rect"
                         android:fontFamily="sans-serif-medium"
                         android:letterSpacing="@dimen/button_letter_spacing"
+                        android:paddingLeft="@dimen/margin_5"
+                        android:paddingRight="@dimen/margin_5"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/button_join" />
+                        android:textSize="13sp" />
 
                     <RelativeLayout
                         android:layout_below="@+id/layoutImage"

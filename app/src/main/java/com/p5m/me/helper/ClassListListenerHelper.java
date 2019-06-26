@@ -2,9 +2,11 @@ package com.p5m.me.helper;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,11 +18,13 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.MixPanel;
+import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.DefaultSettingServer;
 import com.p5m.me.data.main.User;
@@ -31,6 +35,7 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
+import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.RefrenceWrapper;
 import com.p5m.me.utils.ToastUtils;
@@ -89,9 +94,54 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                 FullRatingActivity.open(context, shownIn, classData, 0);
                 break;
             case R.id.buttonJoin:
+
                 if (model instanceof ClassModel) {
                     ClassModel classModel = (ClassModel) model;
-                    ClassProfileActivity.open(context, classModel, shownIn);
+                    if(classModel.getAvailableSeat()==0){
+                        NetworkCommunicator.getInstance(context).addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
+                            @Override
+                            public void onApiSuccess(Object response, int requestCode) {
+                                try {
+                                    if(classModel.getAvailableSeat()==0) {
+                                        String message = String.format(context.getString(R.string.added_to_waitlist), classModel.getTitle());
+//                                ToastUtils.show(context, message);
+                                        DialogUtils.showBasicMessage(context, message, context.getString(R.string.wish_list), new MaterialDialog.SingleButtonCallback() {
+                                            @Override
+                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                Intent navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
+                                                context.startActivity(navigationIntent);
+//                                        Helper.setJoinButton(context, buttonJoinoin, model);
+                                            }
+                                        });
+                                    }
+                                    else{
+                                        String message = String.format(context.getString(R.string.added_to_wishlist), classModel.getTitle());
+                                        ToastUtils.show(context, message);
+                                    }
+                                    classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
+                                    classModel.setWishType("WAITLIST");
+                                    EventBroadcastHelper.sendWishAdded(classModel);
+                                    EventBroadcastHelper.sendWaitlistAdded(classModel);
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    LogUtils.exception(e);
+                                }
+
+
+                            }
+
+                            @Override
+                            public void onApiFailure(String errorMessage, int requestCode) {
+
+                            }
+                        });
+                        return;
+                    }
+                    else{
+
+                        ClassProfileActivity.open(context, classModel, shownIn);
+                    }
                 }
 
 
@@ -121,7 +171,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         }
     }
 
-    public  void popupOptionsCancelClass(final Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model) {
+    public void popupOptionsCancelClass(final Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model) {
         final View viewRoot = LayoutInflater.from(context).inflate(R.layout.popup_options, null);
         TextView textView = viewRoot.findViewById(R.id.textViewOption1);
         textView.setText(context.getString(R.string.cancel_class));
@@ -222,7 +272,12 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         final View viewRoot = LayoutInflater.from(context).inflate(R.layout.popup_options, null);
         TextView textView = viewRoot.findViewById(R.id.textViewOption1);
 //        textView.setText(context.getString(R.string.add_to_WishList));
-        textView.setText(RemoteConfigConst.ADD_TO_WISHLIST_VALUE);
+        if ( model.getAvailableSeat()==0) {
+                textView.setText(RemoteConfigConst.JOIN_WAITLIST_VALUE);
+        }
+        else
+            textView.setText(RemoteConfigConst.ADD_TO_WISHLIST_VALUE);
+
 
 
         final PopupWindow popupWindow = new PopupWindow(viewRoot, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
@@ -231,7 +286,44 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             @Override
             public void onClick(View view) {
                 popupWindow.dismiss();
-                networkCommunicator.addToWishList(model, model.getClassSessionId());
+                networkCommunicator.addToWishList(model, model.getClassSessionId(), new NetworkCommunicator.RequestListener() {
+                    @Override
+                    public void onApiSuccess(Object response, int requestCode) {
+
+                        try {
+                            if(model.getAvailableSeat()==0) {
+                                String message = String.format(context.getString(R.string.added_to_waitlist), model.getTitle());
+//                                ToastUtils.show(context, message);
+                                DialogUtils.showBasicMessage(context, message, context.getString(R.string.wish_list), new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        Intent navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
+                                        context.startActivity(navigationIntent);
+//                                        Helper.setJoinButton(context, buttonJoin, model);
+                                    }
+                                });
+
+                            }
+                            else{
+                                String message = String.format(context.getString(R.string.added_to_wishlist), model.getTitle());
+                                ToastUtils.show(context, message);
+                            }
+                            model.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
+                            model.setWishType("WAITLIST");
+                            EventBroadcastHelper.sendWishAdded(model);
+                            EventBroadcastHelper.sendWaitlistAdded(model);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            LogUtils.exception(e);
+                        }
+                    }
+
+                    @Override
+                    public void onApiFailure(String errorMessage, int requestCode) {
+
+                        ToastUtils.showLong(context, errorMessage);
+                    }
+                });
 
                 MixPanel.trackAddWishList(shownIn, model);
             }
@@ -296,7 +388,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
-    private  void dialogConfirmUnJoin(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, final int unJoinClassId) {
+    private void dialogConfirmUnJoin(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, final int unJoinClassId) {
 
         String message = context.getString(R.string.sure_unjoin);
 
@@ -310,7 +402,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                 cancelTime = defaultSettingServer.getRefundAllowedbeforeForSpecial();
 
 
-            }else{
+            } else {
                 cancelTime = defaultSettingServer.getRefundAllowedbefore();
 
             }
@@ -324,7 +416,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             if (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) <= cancelTime) {
                 message = serverMessageSpecialClass;
 
-            }else{
+            } else {
                 message = context.getString(R.string.sure_unjoin);
 
             }
@@ -337,7 +429,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             message = serverMessageNormalClass;
         }
 
-        final MaterialDialog materialDialog = new MaterialDialog.Builder(context )
+        final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
                 .cancelable(false)
                 .customView(R.layout.dialog_unjoin_class, false)
                 .build();
@@ -395,9 +487,6 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
     }
 
 
-
-
-
     private void dialogConfirmUnJoinBookWithFriend(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, final int unJoinClassId, final int unJoinType) {
 
         String message = context.getString(R.string.sure_unjoin);
@@ -412,7 +501,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                 cancelTime = defaultSettingServer.getRefundAllowedbeforeForSpecial();
 
 
-            }else{
+            } else {
                 cancelTime = defaultSettingServer.getRefundAllowedbefore();
 
             }
@@ -427,7 +516,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             if (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) <= cancelTime) {
                 message = serverMessageSpecialClass;
 
-            }else{
+            } else {
                 message = context.getString(R.string.sure_unjoin);
 
             }
@@ -559,15 +648,16 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
 
     }
-    private void openAlertForRefund(ClassModel model){
+
+    private void openAlertForRefund(ClassModel model) {
         DefaultSettingServer defaultSettingServer = MyPreferences.getInstance().getDefaultSettingServer();
-        float  cancelTime=2;
+        float cancelTime = 2;
         if (defaultSettingServer != null) {
             cancelTime = defaultSettingServer.getRefundAllowedbeforeForSpecial();
 
         }
-        if (Helper.isSpecialClass(model)&&!Helper.isFreeClass(model)&&DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) > cancelTime) {
-            CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, "", context.getString(R.string.successfull_refund_message),1,context.getString(R.string.not_now),context.getString(R.string.yes),CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_SUCCESSFULL_UNJOIN,null,false, ClassListListenerHelper.this);
+        if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model) && DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) > cancelTime) {
+            CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, "", context.getString(R.string.successfull_refund_message), 1, context.getString(R.string.not_now), context.getString(R.string.yes), CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_SUCCESSFULL_UNJOIN, null, false, ClassListListenerHelper.this);
             try {
                 mCustomAlertDialog.show();
             } catch (Exception e) {
@@ -578,18 +668,18 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
     @Override
     public void onOkClick(int requestCode, Object data) {
-     switch (requestCode){
-         case CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_SUCCESSFULL_UNJOIN:
-             HomeActivity.show(context, AppConstants.Tab.TAB_MY_PROFILE);
+        switch (requestCode) {
+            case CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_SUCCESSFULL_UNJOIN:
+                HomeActivity.show(context, AppConstants.Tab.TAB_MY_PROFILE);
 
-             break;
+                break;
 
-     }
+        }
     }
 
     @Override
     public void onCancelClick(int requestCode, Object data) {
-        switch (requestCode){
+        switch (requestCode) {
             case CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_SUCCESSFULL_UNJOIN:
                 break;
 

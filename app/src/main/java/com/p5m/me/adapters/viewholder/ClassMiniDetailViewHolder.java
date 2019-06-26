@@ -12,15 +12,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.eventbus.Events;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
+import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.WordUtils;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.Main.SearchActivity;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -332,6 +337,8 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
             itemView.setVisibility(View.GONE);
         }
     }
+
+
 
     private void setTextFitnessLevel(ClassModel model) {
         String fitnessLevel = matchFitnessWord(model.getFitnessLevel(), context);

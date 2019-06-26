@@ -97,6 +97,14 @@ public class Events {
         }
     }
 
+    public static class WaitlistAdded {
+        public ClassModel data;
+
+        public WaitlistAdded(ClassModel data) {
+            this.data = data;
+        }
+    }
+
     public static class WishRemoved {
         public ClassModel data;
 
