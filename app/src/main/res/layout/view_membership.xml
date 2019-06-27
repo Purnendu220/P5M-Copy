@@ -11,10 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:paddingTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:paddingTop="4dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.cardview.widget.CardView
             style="@style/CardViewMembershipTheme"
@@ -177,21 +177,22 @@
                             android:textColor="@color/theme_accent_text"
                             android:textSize="@dimen/text_large"
                             android:visibility="visible" />
+
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:visibility="gone"
                             android:layout_marginTop="@dimen/margin_10"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:visibility="visible">
 
                             <ImageView
                                 android:id="@+id/imageViewSpecialOffer"
-                                android:layout_height="35dp"
                                 android:layout_width="35dp"
-                                android:padding="@dimen/margin_3"
+                                android:layout_height="35dp"
                                 android:layout_marginRight="@dimen/margin_3"
-                                android:src="@drawable/discount"
-                                />
+                                android:padding="@dimen/margin_3"
+                                android:src="@drawable/discount" />
+
 
                             <TextView
                                 android:id="@+id/textViewSpecialOffer"
