@@ -480,38 +480,76 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
+    private void setNumberOfDaysPromo(TextView textViewExtendNoOfDays) {
+
+        textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost()) + " " + context.getString(R.string.currency));
+        textViewPay.setText(getString(R.string.pay) + " " + aPackage.getCost() + " " + context.getString(R.string.currency));
+        if (promoCode.getExtraNumberOfDays() != 0) {
+            setViewNoOfDaysPromo(textViewExtendNoOfDays);
+        } else {
+            layoutPromoCode.setVisibility(View.GONE);
+        }
+        try {
+            if (materialDialog != null) {
+                materialDialog.dismiss();
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+
+
+    }
+
+    private void setViewNoOfDaysPromo(TextView textViewExtendNoOfDays) {
+        textViewExtendNoOfDays.setVisibility(View.VISIBLE);
+        textViewExtendNoOfDays.setText(" + " + promoCode.getExtraNumberOfDays() + " days");
+        layoutPromoCode.setVisibility(View.VISIBLE);
+        textViewPromoCodePrice.setVisibility(View.GONE);
+        textViewPromoCodeText.setText(getResources().getString(R.string.time_offer_promo));
+        buttonPromoCode.setText(context.getString(R.string.remove_promo_code));
+    }
+
     private void setPrice() {
 
         switch (checkoutFor) {
             case PACKAGE:
             case CLASS_PURCHASE_WITH_PACKAGE:
                 if (promoCode != null) {
-                    DecimalFormat numberFormat = new DecimalFormat("#.00");
-                    textViewTotal.setText(numberFormat.format(promoCode.getPriceAfterDiscount()) + " " + context.getString(R.string.currency));
-                    textViewPay.setText(getString(R.string.pay) + " " + numberFormat.format(promoCode.getPriceAfterDiscount()) + " " + context.getString(R.string.currency));
-                    if (promoCode.getDiscount() != 0) {
-                        textViewPromoCodePrice.setText("- " + (numberFormat.format(promoCode.getPrice() - promoCode.getPriceAfterDiscount())) + " " + context.getString(R.string.currency));
-                        layoutPromoCode.setVisibility(View.VISIBLE);
-                        buttonPromoCode.setText(context.getString(R.string.remove_promo_code));
+                    if (promoCode.getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFDAYS)) {
+                        setNumberOfDaysPromo(textViewPackageExtendNoOfDays);
                     } else {
-                        layoutPromoCode.setVisibility(View.GONE);
-                    }
-                    try {
-                        if (materialDialog != null) {
-                            materialDialog.dismiss();
+                        DecimalFormat numberFormat = new DecimalFormat("#.00");
 
+                        textViewPackageExtendNoOfDays.setVisibility(View.GONE);
+                        textViewTotal.setText(numberFormat.format(promoCode.getPriceAfterDiscount()) + " " + context.getString(R.string.currency));
+                        textViewPay.setText(getString(R.string.pay) + " " + numberFormat.format(promoCode.getPriceAfterDiscount()) + " " + context.getString(R.string.currency));
+                        if (promoCode.getDiscount() != 0) {
+                            textViewPromoCodePrice.setText("- " + (numberFormat.format(promoCode.getPrice() - promoCode.getPriceAfterDiscount())) + " " + context.getString(R.string.currency));
+                            layoutPromoCode.setVisibility(View.VISIBLE);
+                            buttonPromoCode.setText(context.getString(R.string.remove_promo_code));
+                        } else {
+                            layoutPromoCode.setVisibility(View.GONE);
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        LogUtils.exception(e);
-                    }
+                        try {
+                            if (materialDialog != null) {
+                                materialDialog.dismiss();
 
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            LogUtils.exception(e);
+                        }
+
+                    }
                 } else {
                     layoutPromoCode.setVisibility(View.GONE);
                     textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost()) + " " + context.getString(R.string.currency));
                     textViewPay.setText(getString(R.string.pay) + " " + aPackage.getCost() + " " + context.getString(R.string.currency));
                     buttonPromoCode.setText(context.getString(R.string.apply_promo_code));
                 }
+
                 applyCredit();
                 break;
 
@@ -522,13 +560,17 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
                 break;
             case EXTENSION:
-                textViewTotal.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost()) + " " + context.getString(R.string.currency));
-                textViewPay.setText(getString(R.string.pay) + " " + selectedPacakageFromList.getCost() + " " + context.getString(R.string.currency));
-                applyCredit();
+                if (promoCode.getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFDAYS)) {
+                    setNumberOfDaysPromo(textViewPackageExtendNoOfDays);
+                } else {
+                    textViewTotal.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost()) + " " + context.getString(R.string.currency));
+                    textViewPay.setText(getString(R.string.pay) + " " + selectedPacakageFromList.getCost() + " " + context.getString(R.string.currency));
+                }applyCredit();
 
                 break;
 
         }
+
     }
 
     private void applyCredit() {
@@ -921,11 +963,9 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
             LogUtils.exception(e);
         }
         promoCode = promo;
-        if (promoCode.getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFDAYS)) {
-            textViewPackageExtendNoOfDays.setText(" " + promoCode.getDiscount() + "days");
-        } else {
-            setPrice();
-        }
+
+        setPrice();
+
     }
 
     private void showWalletAlert() {
