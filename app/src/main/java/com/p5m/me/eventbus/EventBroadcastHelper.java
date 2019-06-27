@@ -122,6 +122,24 @@ public class EventBroadcastHelper {
 
         GlobalBus.getBus().post(new Events.ClassJoin(classModel));
     }
+    public static void waitlistClassRemove(Context context, ClassModel classModel) {
+        if (classModel.getWishType()!=null) {
+            classModel.setWishType(null);
+        } else {
+            classModel.setWishType("WAITLIST");
+//            classModel.setAvailableSeat(classModel.getAvailableSeat() + 1);
+        }
+
+        GlobalBus.getBus().post(new Events.WaitlistItemRemoved(classModel));
+    }
+    public static void waitlistClassJoin(Context context, ClassModel classModel) {
+
+            classModel.setWishType("WAITLIST");
+//            classModel.setAvailableSeat(classModel.getAvailableSeat() + 1);
+
+
+        GlobalBus.getBus().post(new Events.WaitlistJoin(classModel));
+    }
     public static void sendclassRating(Context context,String className){
         GlobalBus.getBus().post(new Events.ClassRating(className))  ;
     }
@@ -151,9 +169,6 @@ public class EventBroadcastHelper {
         GlobalBus.getBus().post(new Events.WishAdded(classModel));
     }
 
-    public static void sendWaitlistAdded(ClassModel classModel){
-        GlobalBus.getBus().post(new Events.WaitlistAdded(classModel));
-    }
 
     public static void sendWishRemoved(ClassModel classModel) {
         GlobalBus.getBus().post(new Events.WishRemoved(classModel));

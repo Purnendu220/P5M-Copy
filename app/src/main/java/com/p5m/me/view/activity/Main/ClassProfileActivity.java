@@ -17,6 +17,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -49,6 +50,7 @@ import com.p5m.me.firebase_dynamic_link.FirebaseDynamicLinnk;
 import com.p5m.me.helper.ClassListListenerHelper;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -147,6 +149,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         handleClassJoined(data.data);
     }
 
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void packagePurchasedForClass(Events.PackagePurchasedForClass data) {
         handleClassJoined(data.data);
@@ -186,19 +189,19 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class_profile);
-
         ButterKnife.bind(activity);
         GlobalBus.getBus().register(this);
-        FirebaseDynamicLinnk.getDynamicLink(this,getIntent());
+        FirebaseDynamicLinnk.getDynamicLink(this, getIntent());
         classModel = (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_OBJECT);
         classSessionId = getIntent().getIntExtra(AppConstants.DataKey.CLASS_SESSION_ID_INT, -1);
         navigationFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
 
+        textViewBook.setEnabled(true);
         if (classModel == null && classSessionId == -1) {
             finish();
             return;
         }
-       swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setEnabled(false);
 
         classProfileAdapter = new ClassProfileAdapter(context, AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE, this);
@@ -252,7 +255,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                         }
 
                         if (deepLink != null) {
-                          Log.d("Deep Link", "Found deep link ClassProfile!");
+                            Log.d("Deep Link", "Found deep link ClassProfile!");
 
                         } else {
                             Log.d("Deep Link", "getDynamicLink: no link found");
@@ -280,42 +283,48 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public void textViewBook() {
         isBookWithFriendInProgress = false;
         mBookWithFriendData = null;
-        if(classModel.getAvailableSeat()==0){
+        textViewBook.setText(context.getResources().getString(R.string.please_wait));
+        textViewBook.setEnabled(false);
+
+        if (classModel.getAvailableSeat() == 0) {
+
             networkCommunicator.addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
                 @Override
                 public void onApiSuccess(Object response, int requestCode) {
+                    textViewBook.setEnabled(true);
                     try {
-                        if(classModel.getAvailableSeat()==0) {
-                            String message = String.format(context.getString(R.string.added_to_waitlist), classModel.getTitle());
-//                                ToastUtils.show(context, message);
+                        if (classModel.getAvailableSeat() == 0) {
+                            String message = String.format(context.getString(R.string.added_to_waitlist));
                             DialogUtils.showBasicMessage(context, message, context.getString(R.string.wish_list), new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     Intent navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
                                     context.startActivity(navigationIntent);
-//                                        Helper.setJoinButton(context, buttonJoinoin, model);
+
                                 }
                             });
-                        }
-                        else{
+                        } else {
                             String message = String.format(context.getString(R.string.added_to_wishlist), classModel.getTitle());
                             ToastUtils.show(context, message);
                         }
                         classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
+                        classModel.setWishType("WAITLIST");
                         EventBroadcastHelper.sendWishAdded(classModel);
-                        EventBroadcastHelper.sendWaitlistAdded(classModel);
+                        EventBroadcastHelper.waitlistClassJoin(context, classModel);
+                        textViewBook.setText(RemoteConfigConst.WAITLISTED_VALUE);
+                        RemoteConfigSetUp.setBackgroundColor(textViewBook, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
+
 
                     } catch (Exception e) {
                         e.printStackTrace();
                         LogUtils.exception(e);
                     }
 
-
                 }
 
                 @Override
                 public void onApiFailure(String errorMessage, int requestCode) {
-
+                    textViewBook.setEnabled(true);
                 }
             });
             return;
@@ -341,7 +350,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 else {
                     if (Helper.isSpecialClass(classModel) &&
                             !Helper.isFreeClass(classModel)
-                            ) {
+                    ) {
 
                         CheckoutActivity.openActivity(context, classModel, 1);
 
@@ -354,8 +363,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             return;
         }
 
-        textViewBook.setText(context.getResources().getString(R.string.please_wait));
-        textViewBook.setEnabled(false);
 
         networkCommunicator.getMyUser(new NetworkCommunicator.RequestListener() {
             @Override
@@ -372,6 +379,12 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
             }
         }, false);
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void waitlistJoin(Events.WaitlistJoin data) {
+        textViewBook.setText(RemoteConfigConst.WAITLISTED_VALUE);
+        RemoteConfigSetUp.setBackgroundColor(textViewBook, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
+
     }
 
     @OnClick(R.id.textViewBookWithFriend)
@@ -628,7 +641,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 onBackPressed();
                 break;
             case R.id.imageViewOptions:
-                ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, classModel, navigationFrom);
+                ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, classModel, navigationFrom, null);
                 break;
 
             case R.id.layoutUserWallet:

@@ -2,6 +2,7 @@ package com.p5m.me.view.fragment;
 
 
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -158,6 +159,86 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
             checkListData();
         }
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void waitlistJoin(Events.WaitlistJoin data) {
+        handleWaitlistJoined(data.data);
+
+    }
+
+    private void handleWaitlistJoined(ClassModel data) {
+        try {
+            int index = classListAdapter.getList().indexOf(data);
+            if (index != -1) {
+                Object obj = classListAdapter.getList().get(index);
+                if (obj instanceof ClassModel) {
+                    ClassModel classModel = (ClassModel) obj;
+                    Helper.setWaitlistAddData(classModel, data);
+
+                    classListAdapter.notifyItemChanged(index);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void waitlistItemRemoved(Events.WaitlistItemRemoved data) {
+        if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
+            shouldRefresh = true;
+            onTabSelection(fragmentPositionInViewPager);
+            classListAdapter.getList().clear();
+            classListAdapter.notifyDataSetChanged();
+        }
+        else {
+            handleWaitlistItemRemoved(data.data);
+        }
+    }
+    private void handleWaitlistItemRemoved(ClassModel data) {
+        try {
+            int index = classListAdapter.getList().indexOf(data);
+
+            if (index == -1) {
+                Object obj = classListAdapter.getList().get(1);
+
+                if (obj instanceof ClassModel) {
+                    ClassModel classModel = (ClassModel) obj;
+                    Helper.setWaitlistRemoveData(classModel, data);
+
+                    classListAdapter.notifyItemChanged(index);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+
+        if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
+            try {
+                int index = classListAdapter.getList().indexOf(data);
+
+                if (index != -1) {
+                    classListAdapter.remove(index);
+                    classListAdapter.notifyItemRemoved(index);
+                    Object obj = classListAdapter.getList().get(index);
+
+                    if (obj instanceof ClassModel) {
+                        ClassModel classModel = (ClassModel) obj;
+                        Helper.wishlistItemRemoved(classModel, data);
+
+                        classListAdapter.notifyItemChanged(index);
+                    }
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                LogUtils.exception(e);
+            }
+        }
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getPackagePurchased(Events.PackagePurchased packagePurchased) {
@@ -214,6 +295,15 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
                 if (index != -1) {
                     classListAdapter.remove(index);
                     classListAdapter.notifyItemRemoved(index);
+                    Object obj = classListAdapter.getList().get(index);
+
+                    if (obj instanceof ClassModel) {
+                        ClassModel classModel = (ClassModel) obj;
+                        Helper.wishlistItemRemoved(classModel, data);
+
+                        classListAdapter.notifyItemChanged(index);
+                    }
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -330,7 +420,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
                     if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
                         for (ClassModel classModel : classModels) {
                             classModel.setUserJoinStatus(true);
-                            }
+                        }
 
 
                     }
@@ -348,7 +438,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
                 checkListData();
 
                 classListAdapter.notifyDataSetChanged();
-               // filterList(classModels);
+                // filterList(classModels);
 
 
                 break;
@@ -391,7 +481,6 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
             layoutNoData.setVisibility(View.GONE);
         }
     }
-
 
 
 }

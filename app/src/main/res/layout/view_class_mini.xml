@@ -144,55 +144,56 @@
                                 android:visibility="visible" />
 
 
-
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:clipToPadding="false"
-                                android:paddingBottom="16dp"
                                 android:paddingLeft="12dp"
+                                android:paddingTop="16dp"
                                 android:paddingRight="16dp"
-                                android:paddingTop="16dp">
+                                android:paddingBottom="16dp">
 
                                 <Button
                                     android:id="@+id/buttonJoin"
-                                    android:layout_width="@dimen/button_width_inner_list"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="@dimen/button_height_inner_list"
                                     android:background="@drawable/join_rect"
                                     android:fontFamily="sans-serif-medium"
                                     android:letterSpacing="@dimen/button_letter_spacing_little"
+                                    android:paddingLeft="@dimen/margin_5"
+                                    android:paddingRight="@dimen/margin_5"
                                     android:textAllCaps="true"
                                     android:textColor="@color/white"
-                                    android:textSize="@dimen/button_join"
+                                    android:textSize="13sp"
                                     android:visibility="gone" />
+
                                 <Button
                                     android:id="@+id/buttonClassRating"
                                     android:layout_width="@dimen/button_width_inner_list"
                                     android:layout_height="@dimen/button_height_inner_list"
                                     android:background="@drawable/join_rect"
                                     android:fontFamily="sans-serif-medium"
-                                    android:letterSpacing="@dimen/button_letter_spacing_little"
                                     android:gravity="center"
+                                    android:letterSpacing="@dimen/button_letter_spacing_little"
                                     android:text="@string/rate_class_tilte"
                                     android:textAllCaps="true"
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/text_extra_small"
-                                    android:visibility="gone"
-                                    />
+                                    android:visibility="gone" />
+
                                 <Button
                                     android:id="@+id/buttonEditRating"
                                     android:layout_width="@dimen/button_width_inner_list"
                                     android:layout_height="@dimen/button_height_inner_list"
                                     android:background="@drawable/button_grey"
                                     android:fontFamily="sans-serif-medium"
-                                    android:letterSpacing="@dimen/button_letter_spacing_little"
                                     android:gravity="center"
+                                    android:letterSpacing="@dimen/button_letter_spacing_little"
                                     android:text="@string/edit_rating"
                                     android:textAllCaps="true"
                                     android:textColor="@color/dark_grey"
                                     android:textSize="@dimen/text_extra_small"
-                                    android:visibility="gone"
-                                    />
+                                    android:visibility="gone" />
                             </LinearLayout>
                         </FrameLayout>
 

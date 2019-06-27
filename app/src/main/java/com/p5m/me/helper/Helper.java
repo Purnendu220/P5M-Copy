@@ -178,14 +178,14 @@ public class Helper {
             if(model.getWishType()!=null) {
                 if(model.getWishType().equalsIgnoreCase("WAITLIST")) {
                     buttonJoin.setText(RemoteConfigConst.WAITLISTED_VALUE);
-                    RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.FULL_COLOR_VALUE, context.getResources().getColor(R.color.theme_full));
+                    RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
 
                 }
             }
             else{
                 buttonJoin.setText(RemoteConfigConst.WAITLIST_VALUE);
 //                buttonJoin.setText(RemoteConfigConst.FULL_VALUE);
-                RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.FULL_COLOR_VALUE, context.getResources().getColor(R.color.theme_full));
+                RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
             }
 
         } else {
@@ -222,15 +222,15 @@ public class Helper {
             if(model.getWishType()!=null) {
                 if(model.getWishType().equalsIgnoreCase("WAITLIST")) {
                     view.setText(RemoteConfigConst.WAITLISTED_VALUE);
-
+                    RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
                 }
             }
             else{
                 view.setText(RemoteConfigConst.WAITLIST_VALUE);
+                RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+
             }
-//            view.setBackgroundResource(R.drawable.theme_bottom_text_button_full);
-            RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.FULL_COLOR_VALUE, context.getResources().getColor(R.color.theme_full));
-            view.setEnabled(false);
+
             view1.setVisibility(View.GONE);
         } else if (model.getAvailableSeat() < 2) {
             view1.setVisibility(View.GONE);
@@ -471,6 +471,12 @@ public class Helper {
         classModel.setUserJoinStatus(joinedData.isUserJoinStatus());
         classModel.setAvailableSeat(joinedData.getAvailableSeat());
     }
+    public static void setWaitlistRemoveData(ClassModel classModel, ClassModel joinedData) {
+        classModel.setWishType(joinedData.getWishType());
+    }
+    public static void setWaitlistAddData(ClassModel classModel, ClassModel joinedData) {
+        classModel.setWishType(joinedData.getWishType());
+    }
 
     public static void setPackageImage(ImageView imageView, int packageId) {
         switch (packageId) {
@@ -550,4 +556,7 @@ public class Helper {
         context.startActivity(Intent.createChooser(sendIntent, "Share with"));
     }
 
+    public static void wishlistItemRemoved(ClassModel classModel, ClassModel data) {
+
+    }
 }

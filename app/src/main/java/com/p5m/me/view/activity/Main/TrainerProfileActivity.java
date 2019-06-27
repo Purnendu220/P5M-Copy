@@ -110,6 +110,30 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
             LogUtils.exception(e);
         }
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void waitlistJoin(Events.WaitlistJoin data) {
+        handleWaitlistJoined(data.data);
+
+    }
+
+    private void handleWaitlistJoined(ClassModel data) {
+        try {
+            int index = trainerProfileAdapter.getList().indexOf(data);
+            if (index != -1) {
+                Object obj = trainerProfileAdapter.getList().get(index);
+                if (obj instanceof ClassModel) {
+                    ClassModel classModel = (ClassModel) obj;
+                    Helper.setWaitlistAddData(classModel, data);
+
+                    trainerProfileAdapter.notifyItemChanged(index);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void classJoin(Events.ClassJoin data) {
