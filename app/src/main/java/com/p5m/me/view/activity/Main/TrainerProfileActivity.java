@@ -124,7 +124,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
                 if (obj instanceof ClassModel) {
                     ClassModel classModel = (ClassModel) obj;
                     Helper.setWaitlistAddData(classModel, data);
-
+//code to commit
                     trainerProfileAdapter.notifyItemChanged(index);
                 }
             }
