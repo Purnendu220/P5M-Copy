@@ -630,7 +630,7 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
                 onBackPressed();
                 break;
             case R.id.imageViewOptions:
-                ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, classModel, navigationFrom);
+                ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, classModel, navigationFrom, null);
                 break;
 
             case R.id.layoutUserWallet:

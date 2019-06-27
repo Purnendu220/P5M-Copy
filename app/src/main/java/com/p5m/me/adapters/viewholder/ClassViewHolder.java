@@ -232,7 +232,7 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
             buttonJoin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    adapterCallbacks.onAdapterItemClick(ClassViewHolder.this, imageViewClass, model, position);
+                    adapterCallbacks.onAdapterItemClick(ClassViewHolder.this, buttonJoin, model, position);
                 }
             });
         } else {

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -22,6 +23,9 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
+import com.p5m.me.adapters.TrainerProfileAdapter;
+import com.p5m.me.adapters.viewholder.ClassMiniDetailViewHolder;
+import com.p5m.me.adapters.viewholder.ClassViewHolder;
 import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.WishListResponse;
@@ -29,7 +33,9 @@ import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.DefaultSettingServer;
 import com.p5m.me.data.main.User;
 import com.p5m.me.eventbus.EventBroadcastHelper;
+import com.p5m.me.eventbus.Events;
 import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.preferences.MyPreferences;
@@ -46,6 +52,9 @@ import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.custom.CustomRateAlertDialog;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by Varun John on 4/19/2018.
@@ -85,7 +94,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
                         }
                     } else {
-                        popupOptionsAdd(context, ((BaseActivity) activity).networkCommunicator, view, classModel, shownIn);
+                        popupOptionsAdd(context, ((BaseActivity) activity).networkCommunicator, view, classModel, shownIn, viewHolder);
                     }
                 }
                 break;
@@ -94,34 +103,44 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                 FullRatingActivity.open(context, shownIn, classData, 0);
                 break;
             case R.id.buttonJoin:
-
                 if (model instanceof ClassModel) {
                     ClassModel classModel = (ClassModel) model;
-                    if(classModel.getAvailableSeat()==0){
+                    if (classModel.getAvailableSeat() == 0) {
                         NetworkCommunicator.getInstance(context).addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
                             @Override
                             public void onApiSuccess(Object response, int requestCode) {
                                 try {
-                                    if(classModel.getAvailableSeat()==0) {
+                                    if (classModel.getAvailableSeat() == 0) {
                                         String message = String.format(context.getString(R.string.added_to_waitlist), classModel.getTitle());
-//                                ToastUtils.show(context, message);
-                                        DialogUtils.showBasicMessage(context, message, context.getString(R.string.wish_list), new MaterialDialog.SingleButtonCallback() {
+                                        classModel.setWishType("WAITLIST");
+                                        classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
+                                        EventBroadcastHelper.waitlistClassJoin(context,classModel);
+                                        EventBroadcastHelper.sendWishAdded(classModel);
+
+
+                                        if (viewHolder != null) {
+                                            if (viewHolder instanceof ClassViewHolder) {
+                                                ((ClassViewHolder) viewHolder).buttonJoin.setText(RemoteConfigConst.WAITLISTED_VALUE);
+                                                RemoteConfigSetUp.setBackgroundColor(((ClassViewHolder) viewHolder).buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
+
+                                            } else if (viewHolder instanceof ClassMiniDetailViewHolder) {
+                                                ((ClassMiniDetailViewHolder) viewHolder).buttonJoin.setText(RemoteConfigConst.WAITLISTED_VALUE);
+                                                RemoteConfigSetUp.setBackgroundColor(((ClassMiniDetailViewHolder) viewHolder).buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
+                                            }
+
+                                        }
+                                     DialogUtils.showBasicMessage(context, message, context.getString(R.string.view_wishlist), new MaterialDialog.SingleButtonCallback() {
                                             @Override
                                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                                 Intent navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
                                                 context.startActivity(navigationIntent);
-//                                        Helper.setJoinButton(context, buttonJoinoin, model);
+
                                             }
                                         });
-                                    }
-                                    else{
+                                    } else {
                                         String message = String.format(context.getString(R.string.added_to_wishlist), classModel.getTitle());
                                         ToastUtils.show(context, message);
                                     }
-                                    classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
-                                    classModel.setWishType("WAITLIST");
-                                    EventBroadcastHelper.sendWishAdded(classModel);
-                                    EventBroadcastHelper.sendWaitlistAdded(classModel);
 
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -136,10 +155,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
                             }
                         });
-                        return;
-                    }
-                    else{
-
+                    } else {
                         ClassProfileActivity.open(context, classModel, shownIn);
                     }
                 }
@@ -169,6 +185,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                 }
                 break;
         }
+
     }
 
     public void popupOptionsCancelClass(final Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model) {
@@ -267,17 +284,15 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
-    public static void popupOptionsAdd(final Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model, final int shownIn) {
+    public static void popupOptionsAdd(final Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model, final int shownIn, RecyclerView.ViewHolder viewHolder) {
 
         final View viewRoot = LayoutInflater.from(context).inflate(R.layout.popup_options, null);
         TextView textView = viewRoot.findViewById(R.id.textViewOption1);
 //        textView.setText(context.getString(R.string.add_to_WishList));
-        if ( model.getAvailableSeat()==0) {
-                textView.setText(RemoteConfigConst.JOIN_WAITLIST_VALUE);
-        }
-        else
+        if (model.getAvailableSeat() == 0) {
+            textView.setText(RemoteConfigConst.JOIN_WAITLIST_VALUE);
+        } else
             textView.setText(RemoteConfigConst.ADD_TO_WISHLIST_VALUE);
-
 
 
         final PopupWindow popupWindow = new PopupWindow(viewRoot, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
@@ -291,10 +306,27 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                     public void onApiSuccess(Object response, int requestCode) {
 
                         try {
-                            if(model.getAvailableSeat()==0) {
-                                String message = String.format(context.getString(R.string.added_to_waitlist), model.getTitle());
+                            if (model.getAvailableSeat() == 0) {
+                                String message = String.format(context.getString(R.string.added_to_waitlist));
 //                                ToastUtils.show(context, message);
-                                DialogUtils.showBasicMessage(context, message, context.getString(R.string.wish_list), new MaterialDialog.SingleButtonCallback() {
+                                model.setWishType("WAITLIST");
+                                if (viewHolder != null) {
+                                    if (viewHolder instanceof ClassViewHolder) {
+                                        ((ClassViewHolder) viewHolder).buttonJoin.setText(RemoteConfigConst.WAITLISTED_VALUE);
+                                        RemoteConfigSetUp.setBackgroundColor(((ClassViewHolder) viewHolder).buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
+
+                                    } else if (viewHolder instanceof ClassMiniDetailViewHolder) {
+                                        ((ClassMiniDetailViewHolder) viewHolder).buttonJoin.setText(RemoteConfigConst.WAITLISTED_VALUE);
+                                        RemoteConfigSetUp.setBackgroundColor(((ClassMiniDetailViewHolder) viewHolder).buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
+                                    }
+
+                                }
+                                model.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
+                                EventBroadcastHelper.sendWishAdded(model);
+                                    EventBroadcastHelper.waitlistClassJoin(context,model);
+
+
+                                DialogUtils.showBasicMessage(context, message, context.getString(R.string.view_wishlist), new MaterialDialog.SingleButtonCallback() {
                                     @Override
                                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                         Intent navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
@@ -303,15 +335,12 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                                     }
                                 });
 
-                            }
-                            else{
+                            } else {
                                 String message = String.format(context.getString(R.string.added_to_wishlist), model.getTitle());
                                 ToastUtils.show(context, message);
                             }
-                            model.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
-                            model.setWishType("WAITLIST");
-                            EventBroadcastHelper.sendWishAdded(model);
-                            EventBroadcastHelper.sendWaitlistAdded(model);
+
+
                         } catch (Exception e) {
                             e.printStackTrace();
                             LogUtils.exception(e);
@@ -596,6 +625,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         networkCommunicator.removeFromWishList(model);
 
         if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
+            EventBroadcastHelper.waitlistClassRemove(context, model);
+
             MixPanel.trackRemoveWishList(AppConstants.Tracker.WISH_LIST, model);
         }
 
@@ -686,4 +717,6 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         }
 
     }
+
+
 }

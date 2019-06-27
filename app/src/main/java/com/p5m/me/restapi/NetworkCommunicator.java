@@ -1450,7 +1450,10 @@ public class NetworkCommunicator {
 //                requestListener.onApiSuccess(response, requestCode);
                 try {
 //                    ToastUtils.show(context, ((ResponseModel<String>) response).data);
+
                     EventBroadcastHelper.sendWishRemoved(classModel);
+
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     LogUtils.exception(e);
