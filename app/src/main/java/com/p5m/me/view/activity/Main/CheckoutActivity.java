@@ -480,12 +480,17 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-    private void setNumberOfDaysPromo(TextView textViewExtendNoOfDays) {
+    private void setNumberOfDaysPromo() {
 
         textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost()) + " " + context.getString(R.string.currency));
         textViewPay.setText(getString(R.string.pay) + " " + aPackage.getCost() + " " + context.getString(R.string.currency));
         if (promoCode.getExtraNumberOfDays() != 0) {
-            setViewNoOfDaysPromo(textViewExtendNoOfDays);
+            textViewPackageExtendNoOfDays.setVisibility(View.VISIBLE);
+            textViewPackageExtendNoOfDays.setText(" + " + promoCode.getExtraNumberOfDays() + " days");
+            layoutPromoCode.setVisibility(View.VISIBLE);
+            textViewPromoCodePrice.setVisibility(View.GONE);
+            textViewPromoCodeText.setText(getResources().getString(R.string.time_offer_promo));
+            buttonPromoCode.setText(context.getString(R.string.remove_promo_code));
         } else {
             layoutPromoCode.setVisibility(View.GONE);
         }
@@ -502,14 +507,6 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
     }
 
-    private void setViewNoOfDaysPromo(TextView textViewExtendNoOfDays) {
-        textViewExtendNoOfDays.setVisibility(View.VISIBLE);
-        textViewExtendNoOfDays.setText(" + " + promoCode.getExtraNumberOfDays() + " days");
-        layoutPromoCode.setVisibility(View.VISIBLE);
-        textViewPromoCodePrice.setVisibility(View.GONE);
-        textViewPromoCodeText.setText(getResources().getString(R.string.time_offer_promo));
-        buttonPromoCode.setText(context.getString(R.string.remove_promo_code));
-    }
 
     private void setPrice() {
 
@@ -518,7 +515,9 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
             case CLASS_PURCHASE_WITH_PACKAGE:
                 if (promoCode != null) {
                     if (promoCode.getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFDAYS)) {
-                        setNumberOfDaysPromo(textViewPackageExtendNoOfDays);
+                        setNumberOfDaysPromo();
+                    } else if (promoCode.getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFCLASS)) {
+                        setNumberOfClassPromo();
                     } else {
                         DecimalFormat numberFormat = new DecimalFormat("#.00");
 
@@ -545,6 +544,13 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     }
                 } else {
                     layoutPromoCode.setVisibility(View.GONE);
+                    textViewPackageExtendNoOfDays.setVisibility(View.GONE);
+                    if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL))
+                        textViewPackageClasses.setText(numberConverter(aPackage.getNoOfClass()) + " " + AppConstants.pluralES(getString(R.string.one_class), aPackage.getNoOfClass()) + " " + context.getString(R.string.at_any_gym));
+                    else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
+
+                        textViewPackageClasses.setText(LanguageUtils.numberConverter(mNumberOfClasses) + " " + AppConstants.pluralES(context.getString(R.string.classs), mNumberOfClasses) + " " + context.getString(R.string.at) + " " + classModel.getGymBranchDetail().getGymName());
+                    }
                     textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost()) + " " + context.getString(R.string.currency));
                     textViewPay.setText(getString(R.string.pay) + " " + aPackage.getCost() + " " + context.getString(R.string.currency));
                     buttonPromoCode.setText(context.getString(R.string.apply_promo_code));
@@ -560,16 +566,42 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
                 break;
             case EXTENSION:
-                if (promoCode.getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFDAYS)) {
-                    setNumberOfDaysPromo(textViewPackageExtendNoOfDays);
-                } else {
-                    textViewTotal.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost()) + " " + context.getString(R.string.currency));
-                    textViewPay.setText(getString(R.string.pay) + " " + selectedPacakageFromList.getCost() + " " + context.getString(R.string.currency));
-                }applyCredit();
+                textViewTotal.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost()) + " " + context.getString(R.string.currency));
+                textViewPay.setText(getString(R.string.pay) + " " + selectedPacakageFromList.getCost() + " " + context.getString(R.string.currency));
+
+                applyCredit();
 
                 break;
 
         }
+
+    }
+
+    private void setNumberOfClassPromo() {
+        textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost()) + " " + context.getString(R.string.currency));
+        textViewPay.setText(getString(R.string.pay) + " " + aPackage.getCost() + " " + context.getString(R.string.currency));
+        if (promoCode.getExtraNumberOfClass() != 0) {
+            textViewPackageClasses.setVisibility(View.VISIBLE);
+            layoutPromoCode.setVisibility(View.VISIBLE);
+            int totalClasses = aPackage.getNoOfClass() + promoCode.getExtraNumberOfClass();
+//            textViewPackageClasses.setText(numberConverter(totalClasses) + " " + AppConstants.pluralES(getString(R.string.one_class), aPackage.getNoOfClass()) + " " + context.getString(R.string.at_any_gym));
+            textViewPackageClasses.setText(Html.fromHtml("<font color='#42A1ED'>" + numberConverter(totalClasses) + " " + AppConstants.pluralES(getString(R.string.one_class), aPackage.getNoOfClass()) + "</font>" + " " + context.getString(R.string.at_any_gym)));
+            textViewPromoCodePrice.setVisibility(View.GONE);
+            textViewPromoCodeText.setText(getResources().getString(R.string.class_offer_promo));
+            buttonPromoCode.setText(context.getString(R.string.remove_promo_code));
+        } else {
+            layoutPromoCode.setVisibility(View.GONE);
+        }
+        try {
+            if (materialDialog != null) {
+                materialDialog.dismiss();
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+
 
     }
 

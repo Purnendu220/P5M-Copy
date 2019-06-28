@@ -875,6 +875,8 @@
     <string name="join_waitlist">Join Waitlist</string>
     <string name="view_wishlist">View my Wishlist</string>
     <string name="time_offer_promo">Extra time offer applied</string>
+    <string name="class_offer_promo">Free class offer applied</string>
+    <string name="special_offer">Special Offer:</string>
 
 
 </resources>

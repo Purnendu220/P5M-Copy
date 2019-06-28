@@ -61,10 +61,14 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.linearLayoutOffer)
     public LinearLayout linearLayoutOffer;
+    @BindView(R.id.layoutTimeClassPromo)
+    public LinearLayout layoutTimeClassPromo;
     @BindView(R.id.textViewOffer)
     public TextView textViewOffer;
     @BindView(R.id.textViewOr)
     public TextView textViewOr;
+    @BindView(R.id.textViewSpecialOffer)
+    public TextView textViewSpecialOffer;
     @BindView(R.id.viewOr)
     public View viewOr;
 
@@ -236,8 +240,14 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
                         imageViewInfo.setVisibility(View.VISIBLE);
                     }
-                    if (model.getPromoResponseDto() != null && model.getPromoResponseDto().getDiscountType() != null) {
-                        setPackagePriceAfterDiscount(model, textViewPackagePrice, textViewPackagePriceStrike);
+                    if (model.getPromoResponseDto() != null ) {
+                        if( model.getPromoResponseDto().getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFCLASS))
+                            setClassPromo(model);
+                        else if( model.getPromoResponseDto().getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFDAYS))
+                            setClassPromo(model);
+                        else {
+                            setPackagePriceAfterDiscount(model, textViewPackagePrice, textViewPackagePriceStrike);
+                        }
                     } else {
                         linearLayoutOffer.setVisibility(View.GONE);
                         textViewPackagePriceStrike.setVisibility(View.GONE);
@@ -278,6 +288,12 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
         } else {
             itemView.setVisibility(View.GONE);
         }
+    }
+
+    private void setClassPromo(Package model) {
+        layoutTimeClassPromo.setVisibility(View.VISIBLE);
+        textViewSpecialOffer.setText(Html.fromHtml("<font color='#FF0000'>" + context.getResources().getString(R.string.special_offer)
+                +  "</font>" +" " +model.getPromoResponseDto().getPromoDesc()));
     }
 
     private void setTextValidityPeriod(Package model) {

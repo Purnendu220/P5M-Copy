@@ -179,11 +179,13 @@
                             android:visibility="visible" />
 
                         <LinearLayout
+                            android:id="@+id/layoutTimeClassPromo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/margin_10"
                             android:orientation="horizontal"
-                            android:visibility="visible">
+
+                            android:visibility="gone">
 
                             <ImageView
                                 android:id="@+id/imageViewSpecialOffer"
@@ -199,12 +201,12 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:ellipsize="end"
-                                android:fontFamily="sans-serif-medium"
+                                android:fontFamily="sans-serif"
                                 android:gravity="left"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
                                 android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                                 android:text="Special Offer: Get 1class extra if you buy now. Valid till 28-June"
-
+android:layout_gravity="center_vertical"
                                 android:textColor="@color/theme_dark_text"
                                 android:textSize="@dimen/text_medium"
                                 android:visibility="visible" />

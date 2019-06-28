@@ -15,6 +15,7 @@ public class Package implements java.io.Serializable {
     private String gymName;
     private int id;
     private String packageType;
+
     private boolean status;
     private PromoCode promoResponseDto;
     private int gymVisitLimit;

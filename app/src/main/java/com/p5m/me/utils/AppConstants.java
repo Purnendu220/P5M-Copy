@@ -327,8 +327,7 @@ public class AppConstants {
         public static final String NUMBEROFDAYS = "NUMBEROFDAYS";
 
 
-
-
+        public static final String NUMBEROFCLASS = "NUMBEROFCLASS";
     }
 
     public static final class Notification {

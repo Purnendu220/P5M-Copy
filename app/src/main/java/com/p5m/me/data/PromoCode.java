@@ -9,7 +9,9 @@ public class PromoCode implements java.io.Serializable {
     private int id;
     private float priceAfterDiscount;
     private String promoCode;
+    private String promoDesc;;
     private int extraNumberOfDays;
+    private int extraNumberOfClass;
 
     public float getPrice() {
         return this.price;
@@ -65,5 +67,21 @@ public class PromoCode implements java.io.Serializable {
 
     public void setExtraNumberOfDays(int extraNumberOfDays) {
         this.extraNumberOfDays = extraNumberOfDays;
+    }
+
+    public int getExtraNumberOfClass() {
+        return extraNumberOfClass;
+    }
+
+    public void setExtraNumberOfClass(int extraNumberOfClass) {
+        this.extraNumberOfClass = extraNumberOfClass;
+    }
+
+    public String getPromoDesc() {
+        return promoDesc;
+    }
+
+    public void setPromoDesc(String promoDesc) {
+        this.promoDesc = promoDesc;
     }
 }

@@ -401,7 +401,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                             public void onApiSuccess(Object response, int requestCode) {
                                 try {
                                     if (classModel.getAvailableSeat() == 0) {
-                                        String message = String.format(context.getString(R.string.added_to_waitlist), classModel.getTitle());
+                                        String message = context.getString(R.string.added_to_waitlist);
                                         DialogUtils.showBasicMessage(context, message, context.getString(R.string.wish_list), new MaterialDialog.SingleButtonCallback() {
                                             @Override
                                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
