@@ -282,4 +282,6 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
             tabLayout.getTabAt(index).setCustomView(customView);
         }
     }
+
+
 }

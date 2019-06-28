@@ -483,4 +483,5 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
     }
 
 
+
 }

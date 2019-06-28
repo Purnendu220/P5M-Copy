@@ -326,8 +326,7 @@ public class AppConstants {
         public static final String LATITUDE = "latitude";
 
 
-
-
+        public static final String WAITLIST = "WAITLIST";
     }
 
     public static final class Notification {

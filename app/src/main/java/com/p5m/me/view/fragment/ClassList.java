@@ -415,7 +415,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                                         ToastUtils.show(context, message);
                                     }
                                     classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
-                                    classModel.setWishType("WAITLIST");
+                                    classModel.setWishType(AppConstants.ApiParamKey.WAITLIST);
                                     EventBroadcastHelper.sendWishAdded(classModel);
                                     ((ClassViewHolder) viewHolder).buttonJoin.setText(RemoteConfigConst.WAITLISTED_VALUE);
                                     RemoteConfigSetUp.setBackgroundColor(((ClassViewHolder) viewHolder).buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));

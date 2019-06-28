@@ -308,7 +308,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             ToastUtils.show(context, message);
                         }
                         classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
-                        classModel.setWishType("WAITLIST");
+                        classModel.setWishType(AppConstants.ApiParamKey.WAITLIST);
                         EventBroadcastHelper.sendWishAdded(classModel);
                         EventBroadcastHelper.waitlistClassJoin(context, classModel);
                         textViewBook.setText(RemoteConfigConst.WAITLISTED_VALUE);

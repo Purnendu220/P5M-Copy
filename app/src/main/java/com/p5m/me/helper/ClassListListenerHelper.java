@@ -111,24 +111,12 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                             public void onApiSuccess(Object response, int requestCode) {
                                 try {
                                     if (classModel.getAvailableSeat() == 0) {
-                                        String message = String.format(context.getString(R.string.added_to_waitlist), classModel.getTitle());
-                                        classModel.setWishType("WAITLIST");
+                                        String message = context.getString(R.string.added_to_waitlist);
+                                        classModel.setWishType(AppConstants.ApiParamKey.WAITLIST);
                                         classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
                                         EventBroadcastHelper.waitlistClassJoin(context,classModel);
                                         EventBroadcastHelper.sendWishAdded(classModel);
 
-
-                                        if (viewHolder != null) {
-                                            if (viewHolder instanceof ClassViewHolder) {
-                                                ((ClassViewHolder) viewHolder).buttonJoin.setText(RemoteConfigConst.WAITLISTED_VALUE);
-                                                RemoteConfigSetUp.setBackgroundColor(((ClassViewHolder) viewHolder).buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
-
-                                            } else if (viewHolder instanceof ClassMiniDetailViewHolder) {
-                                                ((ClassMiniDetailViewHolder) viewHolder).buttonJoin.setText(RemoteConfigConst.WAITLISTED_VALUE);
-                                                RemoteConfigSetUp.setBackgroundColor(((ClassMiniDetailViewHolder) viewHolder).buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
-                                            }
-
-                                        }
                                      DialogUtils.showBasicMessage(context, message, context.getString(R.string.view_wishlist), new MaterialDialog.SingleButtonCallback() {
                                             @Override
                                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -309,18 +297,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                             if (model.getAvailableSeat() == 0) {
                                 String message = String.format(context.getString(R.string.added_to_waitlist));
 //                                ToastUtils.show(context, message);
-                                model.setWishType("WAITLIST");
-                                if (viewHolder != null) {
-                                    if (viewHolder instanceof ClassViewHolder) {
-                                        ((ClassViewHolder) viewHolder).buttonJoin.setText(RemoteConfigConst.WAITLISTED_VALUE);
-                                        RemoteConfigSetUp.setBackgroundColor(((ClassViewHolder) viewHolder).buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
+                                model.setWishType(AppConstants.ApiParamKey.WAITLIST);
 
-                                    } else if (viewHolder instanceof ClassMiniDetailViewHolder) {
-                                        ((ClassMiniDetailViewHolder) viewHolder).buttonJoin.setText(RemoteConfigConst.WAITLISTED_VALUE);
-                                        RemoteConfigSetUp.setBackgroundColor(((ClassMiniDetailViewHolder) viewHolder).buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
-                                    }
-
-                                }
                                 model.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
                                 EventBroadcastHelper.sendWishAdded(model);
                                     EventBroadcastHelper.waitlistClassJoin(context,model);

@@ -607,14 +607,14 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
 
     private void handleWaitlistJoined(ClassModel data) {
         try {
-            int index = trainerProfileAdapter.getList().indexOf(data);
+            int index = searchAdapter.getList().indexOf(data);
             if (index != -1) {
-                Object obj = trainerProfileAdapter.getList().get(index);
+                Object obj = searchAdapter.getList().get(index);
                 if (obj instanceof ClassModel) {
                     ClassModel classModel = (ClassModel) obj;
                     Helper.setWaitlistAddData(classModel, data);
 
-                    trainerProfileAdapter.notifyItemChanged(index);
+                    searchAdapter.notifyItemChanged(index);
                 }
             }
         } catch (Exception e) {
