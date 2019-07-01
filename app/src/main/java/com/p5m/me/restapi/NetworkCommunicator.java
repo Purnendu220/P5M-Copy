@@ -1391,8 +1391,8 @@ public class NetworkCommunicator {
             @Override
             public void onFailure(Call<ResponseModel<WishListResponse>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator addToWishList onFailure " + message);
-//                requestListener.onApiFailure(message, requestCode);
-                ToastUtils.showLong(context, message);
+                requestListener.onApiFailure(message, requestCode);
+//                ToastUtils.showLong(context, message);
             }
 
             @Override

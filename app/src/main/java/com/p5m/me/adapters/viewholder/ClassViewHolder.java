@@ -147,9 +147,7 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
             }
 
             if (model.getGymBranchDetail() != null) {
-
-                textViewLocation.setText(model.getGymBranchDetail().getGymName()+", "+model.getGymBranchDetail().getBranchName()
-                +", "+model.getGymBranchDetail().getLocalityName());
+                textViewLocation.setText(model.getGymBranchDetail().getGymName()+", "+model.getGymBranchDetail().getBranchName());
             }
 
             textViewClassName.setText(model.getTitle());

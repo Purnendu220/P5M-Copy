@@ -220,7 +220,7 @@ public class Helper {
 //            view.setText(context.getString(R.string.full));
 
             if(model.getWishType()!=null) {
-                if(model.getWishType().equalsIgnoreCase("WAITLIST")) {
+                if(model.getWishType().equalsIgnoreCase(AppConstants.ApiParamKey.WAITLIST)) {
                     view.setText(RemoteConfigConst.WAITLISTED_VALUE);
                     RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
                 }
