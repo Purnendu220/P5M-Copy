@@ -401,13 +401,13 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                             public void onApiSuccess(Object response, int requestCode) {
                                 try {
                                     if (classModel.getAvailableSeat() == 0) {
-                                        String message = String.format(context.getString(R.string.added_to_waitlist), classModel.getTitle());
-                                        DialogUtils.showBasicMessage(context, message, context.getString(R.string.wish_list), new MaterialDialog.SingleButtonCallback() {
+                                        String message = String.format(context.getString(R.string.added_to_waitlist));
+                                        DialogUtils.showBasicMessage(context, message, context.getString(R.string.view_wishlist), new MaterialDialog.SingleButtonCallback() {
                                             @Override
                                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                                Intent navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
-                                                context.startActivity(navigationIntent);
-
+//                                                 HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
+//                                                context.startActivity(navigationIntent);
+                                                ((HomeActivity)context).onTabChange(AppConstants.Tab.TAB_SCHEDULE,AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
                                             }
                                         });
                                     } else {
@@ -431,6 +431,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
                             @Override
                             public void onApiFailure(String errorMessage, int requestCode) {
+                                ToastUtils.show(context, errorMessage);
 
                             }
                         });

@@ -432,11 +432,11 @@ public class Helper {
     }
 
     public static boolean isSpecialClass(ClassModel model) {
-        return model.getPriceModel().equals("SPECIAL") || model.getPriceModel().equals("FOC");
+        return model!=null&&model.getPriceModel()!=null&&model.getPriceModel().equals("SPECIAL") || model.getPriceModel().equals("FOC");
     }
 
     public static boolean isFreeClass(ClassModel model) {
-        return model.getPriceModel().equals("FOC");
+        return model!=null&&model.getPriceModel()!=null&&model.getPriceModel().equals("FOC");
     }
 
     public static boolean isFemalesAllowed(ClassModel classModel) {

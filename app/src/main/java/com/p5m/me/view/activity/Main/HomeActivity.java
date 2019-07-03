@@ -47,6 +47,7 @@ import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.activity.custom.BottomTapLayout;
 import com.p5m.me.view.custom.CustomRateAlertDialog;
+import com.p5m.me.view.fragment.MySchedule;
 import com.p5m.me.view.fragment.ViewPagerFragmentSelection;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -60,7 +61,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class HomeActivity extends BaseActivity implements BottomTapLayout.TabListener, ViewPager.OnPageChangeListener, View.OnClickListener, NetworkCommunicator.RequestListener {
+public class HomeActivity extends BaseActivity implements BottomTapLayout.TabListener, ViewPager.OnPageChangeListener, View.OnClickListener, NetworkCommunicator.RequestListener, TabChange {
+
+    private static HomeAdapter homeAdapter;
 
     public static void open(Context context) {
         Intent intent = new Intent(context, HomeActivity.class);
@@ -76,6 +79,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         intent.putExtra(AppConstants.DataKey.HOME_TAB_POSITION, tabPosition);
         context.startActivity(intent);
     }
+
 
     public static Intent createIntent(Context context, int tabPosition, int innerTabPosition) {
         Intent intent = new Intent(context, HomeActivity.class);
@@ -124,7 +128,6 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     public TextView availableCredit;
 
     private BottomTapLayout bottomTapLayout;
-    private HomeAdapter homeAdapter;
 
     private final int TOTAL_TABS = 4;
     private int INITIAL_POSITION = AppConstants.Tab.TAB_FIND_CLASS;
@@ -192,6 +195,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         networkCommunicator.getMyUser(this, false);
 
     }
+
 
 
     @Override
@@ -276,8 +280,8 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             handleBuyClassesButton();
         } else {
             buyClassesLayout.setVisibility(View.GONE);
-
         }
+
     }
 
     @Override
@@ -321,6 +325,23 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
     }
 
+    @Override
+    public void onTabChange(int initial_position, int schedule_tab_position) {
+        homeAdapter = new HomeAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_TABS, 2, schedule_tab_position);
+        viewPager.setAdapter(homeAdapter);
+        viewPager.addOnPageChangeListener(this);
+        viewPager.setOffscreenPageLimit(TOTAL_TABS);
+
+        viewPager.post(new Runnable() {
+            @Override
+            public void run() {
+                onPageSelected(initial_position);
+            }
+        });
+
+    }
+
+
     private class UpdateBuyClassText extends AsyncTask<String, String, String> {
 
         @Override
@@ -354,6 +375,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -366,6 +388,8 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             buyClassesLayout.setVisibility(View.GONE);
 
         }
+
+
 
     }
 
@@ -505,3 +529,9 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
 
 }
+
+interface TabChange {
+    public void onTabChange(int initial_position,int schedule_tab_position);
+}
+
+

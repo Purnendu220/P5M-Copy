@@ -869,11 +869,11 @@
     <string name="wallet_currency">KWD</string>
     <string name="wallet_alert_title">محفظة P5M </string>
     <string name="wallet_text">رصيدك</string>
-    <string name="added_to_waitlist">You have been added to the waitlist. We will notify you when a seat becomes available.</string>
-    <string name="waitlist">Waitlist</string>
-    <string name="waitlisted">Waitlisted</string>
-    <string name="join_waitlist">Join Waitlist</string>
-    <string name="view_wishlist">View my Wishlist</string>
+    <string name="added_to_waitlist">لقد تم إضافتك إلى قائمة الانتظار. سنقوم بإخبارك عندما يتوفر أي مقعد.</string>
+    <string name="waitlist">قائمة الانتظار</string>
+    <string name="waitlisted">في قائمة الانتظار</string>
+    <string name="join_waitlist">انضم إلى قائمة الانتظار</string>
+    <string name="view_wishlist">عرض قائمة الانتظار الخاصة بي</string>
 
 
 </resources>

@@ -295,7 +295,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     try {
                         if (classModel.getAvailableSeat() == 0) {
                             String message = String.format(context.getString(R.string.added_to_waitlist));
-                            DialogUtils.showBasicMessage(context, message, context.getString(R.string.wish_list), new MaterialDialog.SingleButtonCallback() {
+                            DialogUtils.showBasicMessage(context, message, context.getString(R.string.view_wishlist), new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     Intent navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);

@@ -52,6 +52,7 @@ import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.custom.CustomRateAlertDialog;
+import com.p5m.me.view.fragment.MySchedule;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -140,7 +141,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
                             @Override
                             public void onApiFailure(String errorMessage, int requestCode) {
-
+                                ToastUtils.show(context,errorMessage);
                             }
                         });
                     } else {
@@ -307,9 +308,12 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                                 DialogUtils.showBasicMessage(context, message, context.getString(R.string.view_wishlist), new MaterialDialog.SingleButtonCallback() {
                                     @Override
                                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                        Intent navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
-                                        context.startActivity(navigationIntent);
+//                                         HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
+//                                        context.startActivity(navigationIntent);
 //                                        Helper.setJoinButton(context, buttonJoin, model);
+//                                        HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
+                                        ((HomeActivity)context).onTabChange(AppConstants.Tab.TAB_SCHEDULE,AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
+
                                     }
                                 });
 

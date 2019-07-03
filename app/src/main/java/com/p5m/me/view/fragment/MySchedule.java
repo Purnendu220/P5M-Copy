@@ -62,7 +62,8 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
     private String[] titleTabs;
     //        private String[] titleTabs = new String[]{"UPCOMING","WISH LIST"};
     private boolean isVisibleToUser = false;
-    private int tabPosition = AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST;
+//    private int tabPosition = AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST;
+    private int tabPosition = -1;
 
     public MySchedule() {
     }
@@ -124,6 +125,7 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
 
 
     }
+
 
     private void setNotificationIcon() {
         int count = MyPreferences.initialize(context).getNotificationCount();
