@@ -160,6 +160,9 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
                     ProfileHeaderTabViewHolder.TAB_1);
             SCHEDULE_TAB_POSITION = getIntent().getIntExtra(AppConstants.DataKey.HOME_TABS_SCHEDULE_INNER_TAB_POSITION,
                     AppConstants.Tab.TAB_MY_SCHEDULE_UPCOMING);
+
+            LogUtils.debug("VarunSCHEDULE getIntent " + SCHEDULE_TAB_POSITION);
+
         }
         RefrenceWrapper.getRefrenceWrapper(this).setActivity(this);
         buyClassesLayout.setOnClickListener(this);
@@ -197,7 +200,6 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     }
 
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -219,6 +221,14 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
         INITIAL_POSITION = intent.getIntExtra(AppConstants.DataKey.HOME_TAB_POSITION,
                 AppConstants.Tab.TAB_FIND_CLASS);
+
+        PROFILE_TAB_POSITION = intent.getIntExtra(AppConstants.DataKey.HOME_TABS_PROFILE_INNER_TAB_POSITION,
+                ProfileHeaderTabViewHolder.TAB_1);
+
+        SCHEDULE_TAB_POSITION = intent.getIntExtra(AppConstants.DataKey.HOME_TABS_SCHEDULE_INNER_TAB_POSITION,
+                AppConstants.Tab.TAB_MY_SCHEDULE_UPCOMING);
+
+        LogUtils.debug("VarunSCHEDULE getNewIntent " + SCHEDULE_TAB_POSITION);
 
         LogUtils.debug("Home screen onNewIntent " + INITIAL_POSITION);
 
@@ -275,6 +285,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             LogUtils.exception(e);
         }
         bottomTapLayout.setTab(position);
+
         if (position == AppConstants.Tab.TAB_FIND_CLASS) {
 //            handleApptimize();
             handleBuyClassesButton();
@@ -282,6 +293,15 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             buyClassesLayout.setVisibility(View.GONE);
         }
 
+        if (position == AppConstants.Tab.TAB_SCHEDULE) {
+            try {
+                LogUtils.debug("VarunSCHEDULE intent " + SCHEDULE_TAB_POSITION);
+                ((MySchedule) homeAdapter.getFragments().get(position)).selectTab(SCHEDULE_TAB_POSITION);
+            } catch (Exception e) {
+                e.printStackTrace();
+                LogUtils.debug("VarunSCHEDULE Error intent " + SCHEDULE_TAB_POSITION + e.getMessage());
+            }
+        }
     }
 
     @Override
@@ -388,7 +408,6 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             buyClassesLayout.setVisibility(View.GONE);
 
         }
-
 
 
     }
@@ -531,7 +550,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 }
 
 interface TabChange {
-    public void onTabChange(int initial_position,int schedule_tab_position);
+    public void onTabChange(int initial_position, int schedule_tab_position);
 }
 
 
