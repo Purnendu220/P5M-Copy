@@ -874,6 +874,7 @@
     <string name="waitlisted">في قائمة الانتظار</string>
     <string name="join_waitlist">انضم إلى قائمة الانتظار</string>
     <string name="view_wishlist">عرض قائمة الانتظار الخاصة بي</string>
+    <string name="or">OR</string>
 
 
 </resources>
