@@ -287,13 +287,12 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         textViewBook.setText(context.getResources().getString(R.string.please_wait));
 
         if (classModel.getAvailableSeat() == 0) {
-
             networkCommunicator.addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
                 @Override
                 public void onApiSuccess(Object response, int requestCode) {
                     textViewBook.setEnabled(false);
                     try {
-                        if (classModel.getAvailableSeat() == 0) {
+                        if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus()==false) {
                             String message = String.format(context.getString(R.string.added_to_waitlist));
                             DialogUtils.showBasicMessage(context, message, context.getString(R.string.view_wishlist), new MaterialDialog.SingleButtonCallback() {
                                 @Override
@@ -555,6 +554,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         textViewBook.setEnabled(false);
         networkCommunicator.joinClass(new JoinClassRequest(TempStorage.getUser().getId(), classModel.getClassSessionId()), this, false);
     }
+
 
 
     private void setToolBar() {
@@ -960,6 +960,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     @Override
     protected void onResume() {
         super.onResume();
+        if(classModel!=null)
+            Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
+
     }
 
     private boolean checkIfUserHaveExpiredPackage() {

@@ -38,6 +38,7 @@ import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
@@ -106,12 +107,22 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             case R.id.buttonJoin:
                 if (model instanceof ClassModel) {
                     ClassModel classModel = (ClassModel) model;
-                    if (classModel.getAvailableSeat() == 0) {
+                   /* if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
+                            && !Helper.isMalesAllowed(classModel)) {
+                        ToastUtils.show(context, context.getString(R.string.gender_females_only_error));
+                        return;
+                    } else if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
+                            && !Helper.isFemalesAllowed(classModel)) {
+                        ToastUtils.show(context, context.getString(R.string.gender_males_only_error));
+                        return;
+                    }
+                    else */
+                        if (classModel.getAvailableSeat() == 0) {
                         NetworkCommunicator.getInstance(context).addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
                             @Override
                             public void onApiSuccess(Object response, int requestCode) {
                                 try {
-                                    if (classModel.getAvailableSeat() == 0) {
+                                    if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus()==false) {
                                         String message = context.getString(R.string.added_to_waitlist);
                                         classModel.setWishType(AppConstants.ApiParamKey.WAITLIST);
                                         classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
@@ -142,6 +153,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                             @Override
                             public void onApiFailure(String errorMessage, int requestCode) {
                                 ToastUtils.show(context,errorMessage);
+//
                             }
                         });
                     } else {
@@ -295,7 +307,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                     public void onApiSuccess(Object response, int requestCode) {
 
                         try {
-                            if (model.getAvailableSeat() == 0) {
+                            if (model.getAvailableSeat() == 0 && model.isUserJoinStatus()==false) {
                                 String message = String.format(context.getString(R.string.added_to_waitlist));
 //                                ToastUtils.show(context, message);
                                 model.setWishType(AppConstants.ApiParamKey.WAITLIST);
@@ -312,13 +324,16 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 //                                        context.startActivity(navigationIntent);
 //                                        Helper.setJoinButton(context, buttonJoin, model);
 //                                        HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
-                                        ((HomeActivity)context).onTabChange(AppConstants.Tab.TAB_SCHEDULE,AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
+//                                        ((HomeActivity)context).onTabChange(AppConstants.Tab.TAB_SCHEDULE,AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
+                                        Intent navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
+                                        context.startActivity(navigationIntent);
 
                                     }
                                 });
 
                             } else {
                                 String message = String.format(context.getString(R.string.added_to_wishlist), model.getTitle());
+                                EventBroadcastHelper.sendWishAdded(model);
                                 ToastUtils.show(context, message);
                             }
 
