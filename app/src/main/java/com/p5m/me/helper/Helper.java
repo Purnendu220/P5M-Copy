@@ -164,34 +164,30 @@ public class Helper {
 
         if (model.isUserJoinStatus()) {
 
-//            buttonJoin.setText(context.getString(R.string.booked));
             buttonJoin.setText(RemoteConfigConst.BOOKED_VALUE);
             RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
-
-//            buttonJoin.setBackgroundResource(R.drawable.joined_rect);
 
 
         } else if (model.getAvailableSeat() == 0) {
 
-//            buttonJoin.setText(context.getString(R.string.full));
-//            buttonJoin.setBackgroundResource(R.drawable.full_rect);
             if(model.getWishType()!=null) {
-                if(model.getWishType().equalsIgnoreCase("WAITLIST")) {
+                if(model.getWishType().equalsIgnoreCase(AppConstants.ApiParamKey.WAITLIST)) {
                     buttonJoin.setText(RemoteConfigConst.WAITLISTED_VALUE);
                     RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
 
                 }
+                else{
+                    buttonJoin.setText(RemoteConfigConst.WAITLIST_VALUE);
+                    RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+                }
             }
             else{
                 buttonJoin.setText(RemoteConfigConst.WAITLIST_VALUE);
-//                buttonJoin.setText(RemoteConfigConst.FULL_VALUE);
                 RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
             }
 
         } else {
 
-//            buttonJoin.setText(context.getString(R.string.book));
-//            buttonJoin.setBackgroundResource(R.drawable.join_rect);
             buttonJoin.setText(RemoteConfigConst.BOOK_VALUE);
             RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
 
@@ -220,9 +216,14 @@ public class Helper {
 //            view.setText(context.getString(R.string.full));
 
             if(model.getWishType()!=null) {
-                if(model.getWishType().equalsIgnoreCase("WAITLIST")) {
+                if(model.getWishType().equalsIgnoreCase(AppConstants.ApiParamKey.WAITLIST)) {
                     view.setText(RemoteConfigConst.WAITLISTED_VALUE);
                     RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
+                }
+                else{
+                    view.setText(RemoteConfigConst.WAITLIST_VALUE);
+                    RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+
                 }
             }
             else{
@@ -232,12 +233,14 @@ public class Helper {
             }
 
             view1.setVisibility(View.GONE);
-        } else if (model.getAvailableSeat() < 2) {
+        }
+        else if (model.getAvailableSeat() < 2) {
             view1.setVisibility(View.GONE);
             view.setText(RemoteConfigConst.BOOK_IN_CLASS_VALUE);
             RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOK_IN_CLASS_COLOR_VALUE, context.getResources().getColor(R.color.colorAccent));
 
-        } else {
+        }
+        else {
 //            view.setText(context.getString(R.string.reserve_class));
             view.setText(RemoteConfigConst.BOOK_IN_CLASS_VALUE);
 
@@ -432,11 +435,11 @@ public class Helper {
     }
 
     public static boolean isSpecialClass(ClassModel model) {
-        return model.getPriceModel().equals("SPECIAL") || model.getPriceModel().equals("FOC");
+        return model!=null&&model.getPriceModel()!=null&&model.getPriceModel().equals("SPECIAL") || model.getPriceModel().equals("FOC");
     }
 
     public static boolean isFreeClass(ClassModel model) {
-        return model.getPriceModel().equals("FOC");
+        return model!=null&&model.getPriceModel()!=null&&model.getPriceModel().equals("FOC");
     }
 
     public static boolean isFemalesAllowed(ClassModel classModel) {

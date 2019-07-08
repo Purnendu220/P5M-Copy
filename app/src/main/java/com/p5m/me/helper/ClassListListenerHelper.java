@@ -38,6 +38,7 @@ import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
@@ -52,6 +53,7 @@ import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.custom.CustomRateAlertDialog;
+import com.p5m.me.view.fragment.MySchedule;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -105,30 +107,28 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             case R.id.buttonJoin:
                 if (model instanceof ClassModel) {
                     ClassModel classModel = (ClassModel) model;
-                    if (classModel.getAvailableSeat() == 0) {
+                   /* if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
+                            && !Helper.isMalesAllowed(classModel)) {
+                        ToastUtils.show(context, context.getString(R.string.gender_females_only_error));
+                        return;
+                    } else if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
+                            && !Helper.isFemalesAllowed(classModel)) {
+                        ToastUtils.show(context, context.getString(R.string.gender_males_only_error));
+                        return;
+                    }
+                    else */
+                        if (classModel.getAvailableSeat() == 0) {
                         NetworkCommunicator.getInstance(context).addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
                             @Override
                             public void onApiSuccess(Object response, int requestCode) {
                                 try {
-                                    if (classModel.getAvailableSeat() == 0) {
-                                        String message = String.format(context.getString(R.string.added_to_waitlist), classModel.getTitle());
-                                        classModel.setWishType("WAITLIST");
+                                    if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus()==false) {
+                                        String message = context.getString(R.string.added_to_waitlist);
+                                        classModel.setWishType(AppConstants.ApiParamKey.WAITLIST);
                                         classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
                                         EventBroadcastHelper.waitlistClassJoin(context,classModel);
                                         EventBroadcastHelper.sendWishAdded(classModel);
 
-
-                                        if (viewHolder != null) {
-                                            if (viewHolder instanceof ClassViewHolder) {
-                                                ((ClassViewHolder) viewHolder).buttonJoin.setText(RemoteConfigConst.WAITLISTED_VALUE);
-                                                RemoteConfigSetUp.setBackgroundColor(((ClassViewHolder) viewHolder).buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
-
-                                            } else if (viewHolder instanceof ClassMiniDetailViewHolder) {
-                                                ((ClassMiniDetailViewHolder) viewHolder).buttonJoin.setText(RemoteConfigConst.WAITLISTED_VALUE);
-                                                RemoteConfigSetUp.setBackgroundColor(((ClassMiniDetailViewHolder) viewHolder).buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
-                                            }
-
-                                        }
                                      DialogUtils.showBasicMessage(context, message, context.getString(R.string.view_wishlist), new MaterialDialog.SingleButtonCallback() {
                                             @Override
                                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -152,7 +152,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
                             @Override
                             public void onApiFailure(String errorMessage, int requestCode) {
-
+                                ToastUtils.show(context,errorMessage);
+//
                             }
                         });
                     } else {
@@ -306,21 +307,11 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                     public void onApiSuccess(Object response, int requestCode) {
 
                         try {
-                            if (model.getAvailableSeat() == 0) {
+                            if (model.getAvailableSeat() == 0 && model.isUserJoinStatus()==false) {
                                 String message = String.format(context.getString(R.string.added_to_waitlist));
 //                                ToastUtils.show(context, message);
-                                model.setWishType("WAITLIST");
-                                if (viewHolder != null) {
-                                    if (viewHolder instanceof ClassViewHolder) {
-                                        ((ClassViewHolder) viewHolder).buttonJoin.setText(RemoteConfigConst.WAITLISTED_VALUE);
-                                        RemoteConfigSetUp.setBackgroundColor(((ClassViewHolder) viewHolder).buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
+                                model.setWishType(AppConstants.ApiParamKey.WAITLIST);
 
-                                    } else if (viewHolder instanceof ClassMiniDetailViewHolder) {
-                                        ((ClassMiniDetailViewHolder) viewHolder).buttonJoin.setText(RemoteConfigConst.WAITLISTED_VALUE);
-                                        RemoteConfigSetUp.setBackgroundColor(((ClassMiniDetailViewHolder) viewHolder).buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
-                                    }
-
-                                }
                                 model.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
                                 EventBroadcastHelper.sendWishAdded(model);
                                     EventBroadcastHelper.waitlistClassJoin(context,model);
@@ -329,14 +320,20 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                                 DialogUtils.showBasicMessage(context, message, context.getString(R.string.view_wishlist), new MaterialDialog.SingleButtonCallback() {
                                     @Override
                                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                                         HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
+//                                        context.startActivity(navigationIntent);
+//                                        Helper.setJoinButton(context, buttonJoin, model);
+//                                        HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
+//                                        ((HomeActivity)context).onTabChange(AppConstants.Tab.TAB_SCHEDULE,AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
                                         Intent navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
                                         context.startActivity(navigationIntent);
-//                                        Helper.setJoinButton(context, buttonJoin, model);
+
                                     }
                                 });
 
                             } else {
                                 String message = String.format(context.getString(R.string.added_to_wishlist), model.getTitle());
+                                EventBroadcastHelper.sendWishAdded(model);
                                 ToastUtils.show(context, message);
                             }
 

@@ -70,7 +70,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
                         android:gravity="top"
-                        android:text="  OR  "
+                        android:text="@string/or"
                         android:textColor="@color/theme_dark_text"
                         android:textSize="18sp" />
 

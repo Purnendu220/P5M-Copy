@@ -148,6 +148,7 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 textViewTrainerName.setVisibility(View.VISIBLE);
 
                 buttonJoin.setVisibility(View.VISIBLE);
+                Helper.setJoinButton(context, buttonJoin, model);
 
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE) {
                 trainerImage.setVisibility(View.GONE);
