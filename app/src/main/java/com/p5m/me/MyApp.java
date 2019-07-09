@@ -195,17 +195,17 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
     private void firebaseDataSet() {
         if(BuildConfig.FIREBASE_IS_PRODUCTION){
             options = new FirebaseOptions.Builder()
-                    .setApplicationId("1:109210713388:android:e83033ee42a596eb") // Required for Analytics.
-                    .setApiKey("AIzaSyA6XFUdbw_d56dCnlGa6EcFcqdWEpE8ir4") // Required for Auth.
-                    .setDatabaseUrl("https://gymhop-p5m-1524059965243.firebaseio.com") // Required for RTDB.
+                    .setApplicationId(BuildConfig.APP_ID) // Required for Analytics.
+                    .setApiKey(BuildConfig.API_KEY) // Required for Auth.
+                    .setDatabaseUrl(BuildConfig.DATABASE_URL) // Required for RTDB.
                     .build();
 //            FirebaseApp.initializeApp(getApplicationContext(), options);
         }
         else {
             options = new FirebaseOptions.Builder()
-                    .setApplicationId("1:955940869604:android:e83033ee42a596eb") // Required for Analytics.
-                    .setApiKey("AIzaSyCxrLj88gOD1JjEIsc1qK38lOqagX7IdvY") // Required for Auth.
-                    .setDatabaseUrl("https://pro5ios-e0bb0.firebaseio.com") // Required for RTDB.
+                    .setApplicationId(BuildConfig.APP_ID) // Required for Analytics.
+                    .setApiKey(BuildConfig.API_KEY) // Required for Auth.
+                    .setDatabaseUrl(BuildConfig.DATABASE_URL) // Required for RTDB.
                     .build();
 //            FirebaseApp.initializeApp(getApplicationContext(), options);
         }
