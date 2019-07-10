@@ -187,7 +187,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                         }*/
 
                         setTextValidityPeriod(model);
-                        textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getCost()) + " " + context.getString(R.string.currency).toUpperCase());
+                        textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getCost(),2) + " " + context.getString(R.string.currency).toUpperCase());
 
                         textViewViewLimit.setVisibility(View.VISIBLE);
 
@@ -234,7 +234,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                             textViewPageTitle.setText(LanguageUtils.numberConverter(model.getNoOfClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass()) + " " + context.getString(R.string.at) + " " + model.getGymName());
 
                         textViewPackageValidity.setText(context.getString(R.string.valid_for) + " " + DateUtils.getPackageClassDate(classModel.getClassDate()) + " -" + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()));
-                        textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getCost()) + " " + context.getString(R.string.currency).toUpperCase());
+                        textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getCost(),2) + " " + context.getString(R.string.currency).toUpperCase());
 
                         textViewViewLimit.setVisibility(View.GONE);
 
@@ -324,12 +324,12 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                 textViewOffer.setText(currencyConverter(Math.round(model.getPromoResponseDto().getDiscount())) + offerText);
             }
         } catch (Exception e) {
-            textViewOffer.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getDiscount()) + offerText);
+            textViewOffer.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getDiscount(),2) + offerText);
 
         }
 
-        textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getPriceAfterDiscount()) + " " + context.getString(R.string.currency).toUpperCase());
-        textViewPackagePriceStrike.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getPrice()) + " " + context.getString(R.string.currency).toUpperCase());
+        textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getPriceAfterDiscount(),2) + " " + context.getString(R.string.currency).toUpperCase());
+        textViewPackagePriceStrike.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getPrice(),2) + " " + context.getString(R.string.currency).toUpperCase());
         textViewPackagePriceStrike.setPaintFlags(textViewPackagePriceStrike.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
 

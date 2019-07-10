@@ -285,7 +285,15 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         mBookWithFriendData = null;
         textViewBook.setText(context.getResources().getString(R.string.please_wait));
         textViewBook.setEnabled(false);
-
+        if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
+                && !Helper.isMalesAllowed(classModel)) {
+            ToastUtils.show(context, context.getString(R.string.gender_females_only_error));
+            return;
+        } else if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
+                && !Helper.isFemalesAllowed(classModel)) {
+            ToastUtils.show(context, context.getString(R.string.gender_males_only_error));
+            return;
+        }
         if (classModel.getAvailableSeat() == 0) {
 
             networkCommunicator.addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
@@ -330,15 +338,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             return;
         }
         // Check if class is allowed for the gender..
-        if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
-                && !Helper.isMalesAllowed(classModel)) {
-            ToastUtils.show(context, context.getString(R.string.gender_females_only_error));
-            return;
-        } else if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
-                && !Helper.isFemalesAllowed(classModel)) {
-            ToastUtils.show(context, context.getString(R.string.gender_males_only_error));
-            return;
-        }
+
 
         if (Helper.isSpecialClass(classModel)) {
             if (Helper.isFreeClass(classModel))

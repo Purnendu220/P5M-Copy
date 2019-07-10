@@ -641,7 +641,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         if (!TextUtils.isEmpty(paymentResponse.getExpiryDate())) {
             textViewValidity.setText(DateUtils.getClassDate(paymentResponse.getExpiryDate()));
         }
-        textViewAmount.setText(paymentResponse.getAmount() + " " + context.getString(R.string.currency));
+        textViewAmount.setText(LanguageUtils.numberConverter(paymentResponse.getAmount(),2) + " " + context.getString(R.string.currency));
 
         switch (checkoutFor) {
             case PACKAGE:

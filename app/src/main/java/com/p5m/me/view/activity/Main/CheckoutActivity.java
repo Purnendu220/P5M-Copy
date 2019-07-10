@@ -341,7 +341,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 }
 
 //                textViewPackageName.setText(Html.fromHtml(numberConverter(mNumberOfClasses) + "X <b>" + aPackage.getName() + "</b>"));
-                textViewPrice.setText(LanguageUtils.numberConverter(aPackage.getCost()) + " " + context.getString(R.string.currency));
+                textViewPrice.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + context.getString(R.string.currency));
 
                 textViewPackageInfo.setVisibility(aPackage.getDescription().isEmpty() ? View.GONE : View.VISIBLE);
                 textViewPackageInfo.setText(aPackage.getDescription());
@@ -361,10 +361,10 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
                 textViewPackageName.setText(Html.fromHtml("<b>" + classModel.getTitle() + "</b>"));
                 if (mNumberOfPackagesToBuy > 1) {
-                    textViewPrice.setText(numberConverter(mNumberOfPackagesToBuy) + "x " + NumberFormat.getNumberInstance(Constants.LANGUAGE).format(classModel.getPrice()) + " " + context.getString(R.string.currency));
+                    textViewPrice.setText(numberConverter(mNumberOfPackagesToBuy) + "x " + LanguageUtils.numberConverter(classModel.getPrice(), 2) + " " + context.getString(R.string.currency));
 
                 } else {
-                    textViewPrice.setText(LanguageUtils.numberConverter(classModel.getPrice()) + " " + context.getString(R.string.currency));
+                    textViewPrice.setText(LanguageUtils.numberConverter(classModel.getPrice(), 2) + " " + context.getString(R.string.currency));
 
                 }
 
@@ -388,7 +388,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 textViewPackageName.setText(R.string.add_more_time);
                 textViewCancellationPolicyToggle.setText(R.string.extention_policy);
 
-                textViewPrice.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost()) + " " + context.getString(R.string.currency));
+                textViewPrice.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost(), 2) + " " + context.getString(R.string.currency));
                 int remainigExtension;
                 if (userPackage.getTotalRemainingWeeks() != null) {
                     remainigExtension = userPackage.getTotalRemainingWeeks() - selectedPacakageFromList.getDuration();
@@ -481,12 +481,12 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void setNumberOfDaysPromo() {
-
-        textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost()) + " " + context.getString(R.string.currency));
-        textViewPay.setText(getString(R.string.pay) + " " + aPackage.getCost() + " " + context.getString(R.string.currency));
+        roundFigureOfDays(promoCode.getExtraNumberOfDays());
+        textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + context.getString(R.string.currency));
+        textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + context.getString(R.string.currency));
         if (promoCode.getExtraNumberOfDays() != 0) {
             textViewPackageExtendNoOfDays.setVisibility(View.VISIBLE);
-            textViewPackageExtendNoOfDays.setText(" + " + promoCode.getExtraNumberOfDays() + " days");
+//            textViewPackageExtendNoOfDays.setText(" + " + promoCode.getExtraNumberOfDays() + " days");
             layoutPromoCode.setVisibility(View.VISIBLE);
             textViewPromoCodePrice.setVisibility(View.GONE);
             textViewPromoCodeText.setText(getResources().getString(R.string.time_offer_promo));
@@ -507,6 +507,17 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
     }
 
+    private void roundFigureOfDays(int extraNumberOfDays) {
+        if (extraNumberOfDays >= 7 && extraNumberOfDays % 7 == 0) {
+            textViewPackageExtendNoOfDays.setText(" + " + promoCode.getExtraNumberOfDays() / 7 + " week(s)");
+        } else if (extraNumberOfDays >= 30 && extraNumberOfDays % 30 == 0) {
+            textViewPackageExtendNoOfDays.setText(" + " + promoCode.getExtraNumberOfDays() / 30 + " month(s)");
+        } else
+            textViewPackageExtendNoOfDays.setText(" + " + promoCode.getExtraNumberOfDays() + " days");
+
+
+    }
+
 
     private void setPrice() {
 
@@ -519,14 +530,15 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     } else if (promoCode.getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFCLASS)) {
                         setNumberOfClassPromo();
                     } else {
-                        DecimalFormat numberFormat = new DecimalFormat("#.00");
-
+                        textViewPromoCodeText.setText(getResources().getString(R.string.discount_promo_applied));
                         textViewPackageExtendNoOfDays.setVisibility(View.GONE);
-                        textViewTotal.setText(numberFormat.format(promoCode.getPriceAfterDiscount()) + " " + context.getString(R.string.currency));
-                        textViewPay.setText(getString(R.string.pay) + " " + numberFormat.format(promoCode.getPriceAfterDiscount()) + " " + context.getString(R.string.currency));
+                        textViewTotal.setText(LanguageUtils.numberConverter(promoCode.getPriceAfterDiscount(), 2) + " " + context.getString(R.string.currency));
+                        textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(promoCode.getPriceAfterDiscount(), 2) + " " + context.getString(R.string.currency));
                         if (promoCode.getDiscount() != 0) {
-                            textViewPromoCodePrice.setText("- " + (numberFormat.format(promoCode.getPrice() - promoCode.getPriceAfterDiscount())) + " " + context.getString(R.string.currency));
                             layoutPromoCode.setVisibility(View.VISIBLE);
+                            double discountedPrice = promoCode.getPrice() - promoCode.getPriceAfterDiscount();
+                            textViewPromoCodePrice.setVisibility(View.VISIBLE);
+                            textViewPromoCodePrice.setText("- " + (LanguageUtils.numberConverter(discountedPrice, 2)) + " " + context.getString(R.string.currency));
                             buttonPromoCode.setText(context.getString(R.string.remove_promo_code));
                         } else {
                             layoutPromoCode.setVisibility(View.GONE);
@@ -551,8 +563,8 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
                         textViewPackageClasses.setText(LanguageUtils.numberConverter(mNumberOfClasses) + " " + AppConstants.pluralES(context.getString(R.string.classs), mNumberOfClasses) + " " + context.getString(R.string.at) + " " + classModel.getGymBranchDetail().getGymName());
                     }
-                    textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost()) + " " + context.getString(R.string.currency));
-                    textViewPay.setText(getString(R.string.pay) + " " + aPackage.getCost() + " " + context.getString(R.string.currency));
+                    textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + context.getString(R.string.currency));
+                    textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + context.getString(R.string.currency));
                     buttonPromoCode.setText(context.getString(R.string.apply_promo_code));
                 }
 
@@ -560,14 +572,14 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 break;
 
             case SPECIAL_CLASS:
-                textViewTotal.setText(LanguageUtils.numberConverter(mNumberOfPackagesToBuy * classModel.getPrice()) + " " + context.getString(R.string.currency));
-                textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(mNumberOfPackagesToBuy * classModel.getPrice()) + " " + context.getString(R.string.currency));
+                textViewTotal.setText(LanguageUtils.numberConverter(mNumberOfPackagesToBuy * classModel.getPrice(), 2) + " " + context.getString(R.string.currency));
+                textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(mNumberOfPackagesToBuy * classModel.getPrice(), 2) + " " + context.getString(R.string.currency));
                 applyCredit();
 
                 break;
             case EXTENSION:
-                textViewTotal.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost()) + " " + context.getString(R.string.currency));
-                textViewPay.setText(getString(R.string.pay) + " " + selectedPacakageFromList.getCost() + " " + context.getString(R.string.currency));
+                textViewTotal.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost(), 2) + " " + context.getString(R.string.currency));
+                textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(selectedPacakageFromList.getCost(), 2) + " " + context.getString(R.string.currency));
 
                 applyCredit();
 
@@ -578,8 +590,8 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void setNumberOfClassPromo() {
-        textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost()) + " " + context.getString(R.string.currency));
-        textViewPay.setText(getString(R.string.pay) + " " + aPackage.getCost() + " " + context.getString(R.string.currency));
+        textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + context.getString(R.string.currency));
+        textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + context.getString(R.string.currency));
         if (promoCode.getExtraNumberOfClass() != 0) {
             textViewPackageClasses.setVisibility(View.VISIBLE);
             layoutPromoCode.setVisibility(View.VISIBLE);
@@ -613,7 +625,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
             switch (checkoutFor) {
                 case PACKAGE:
                 case CLASS_PURCHASE_WITH_PACKAGE:
-                    if (promoCode != null) {
+                    if (promoCode != null && promoCode.getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.PERCENTAGE)) {
                         if (mWalletCredit.getBalance() > promoCode.getPriceAfterDiscount()) {
                             costAfterCreditApply = promoCode.getPriceAfterDiscount() - promoCode.getPriceAfterDiscount();
                             appliedCreditCost = promoCode.getPriceAfterDiscount();
@@ -621,7 +633,17 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                             costAfterCreditApply = promoCode.getPriceAfterDiscount() - mWalletCredit.getBalance();
                             appliedCreditCost = mWalletCredit.getBalance();
                         }
-                    } else {
+                    }
+                    else if (promoCode != null && promoCode.getDiscountType().equalsIgnoreCase("AMOUNT")){
+                        if (mWalletCredit.getBalance() > promoCode.getPriceAfterDiscount()) {
+                            costAfterCreditApply = promoCode.getPriceAfterDiscount() - promoCode.getPriceAfterDiscount();
+                            appliedCreditCost = promoCode.getPriceAfterDiscount();
+                        } else {
+                            costAfterCreditApply = promoCode.getPriceAfterDiscount() - mWalletCredit.getBalance();
+                            appliedCreditCost = mWalletCredit.getBalance();
+                        }
+                    }
+                        else {
                         if (mWalletCredit.getBalance() > aPackage.getCost()) {
                             costAfterCreditApply = aPackage.getCost() - aPackage.getCost();
                             appliedCreditCost = aPackage.getCost();

@@ -328,6 +328,7 @@ public class AppConstants {
 
 
         public static final String NUMBEROFCLASS = "NUMBEROFCLASS";
+        public static final String PERCENTAGE = "PERCENTAGE";
     }
 
     public static final class Notification {
