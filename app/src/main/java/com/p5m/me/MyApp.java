@@ -8,11 +8,15 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
+
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.receivers.NetworkChangeReceiver;
@@ -21,6 +25,9 @@ import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.RefrenceWrapper;
+
+
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +53,9 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
 
     public boolean isAppForeground;
     public long appBackgroundTime;
-
+    private FirebaseOptions options;
+    private boolean hasBeenInitialized;
+    private FirebaseApp finestayApp;
 
 
     @Override
@@ -87,10 +96,11 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         IntentFilter filter = new IntentFilter();
         filter.addAction(android.net.ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(new NetworkChangeReceiver(), filter);
-
+        firebaseDataSet();
         if (MyPreferences.getInstance().isLogin()) {
             NetworkCommunicator.getInstance(context).getDefault();
         }
+
     }
 
     @Override
@@ -180,5 +190,36 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
 
+    }
+
+    private void firebaseDataSet() {
+        if(BuildConfig.FIREBASE_IS_PRODUCTION){
+            options = new FirebaseOptions.Builder()
+                    .setApplicationId(BuildConfig.APP_ID) // Required for Analytics.
+                    .setApiKey(BuildConfig.API_KEY) // Required for Auth.
+                    .setDatabaseUrl(BuildConfig.DATABASE_URL) // Required for RTDB.
+                    .build();
+//            FirebaseApp.initializeApp(getApplicationContext(), options);
+        }
+        else {
+            options = new FirebaseOptions.Builder()
+                    .setApplicationId(BuildConfig.APP_ID) // Required for Analytics.
+                    .setApiKey(BuildConfig.API_KEY) // Required for Auth.
+                    .setDatabaseUrl(BuildConfig.DATABASE_URL) // Required for RTDB.
+                    .build();
+//            FirebaseApp.initializeApp(getApplicationContext(), options);
+        }
+
+        List<FirebaseApp> firebaseApps = FirebaseApp.getApps(context);
+        for(FirebaseApp app : firebaseApps){
+            if(app.getName().equals(FirebaseApp.DEFAULT_APP_NAME)){
+                hasBeenInitialized=true;
+                finestayApp = app;
+            }
+        }
+
+        if(!hasBeenInitialized) {
+            finestayApp = FirebaseApp.initializeApp(context, options);
+        }
     }
 }

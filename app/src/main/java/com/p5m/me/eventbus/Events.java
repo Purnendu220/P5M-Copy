@@ -23,25 +23,29 @@ public class Events {
         }
     }
 
-    public static class ClassRating{
-       public String classRating;
-       public ClassRating(String classRating){
-          this.classRating=classRating;
-       }
+    public static class ClassRating {
+        public String classRating;
 
-    }
-
-    public static class BookWithFriend{
-        public BookWithFriendData friendData;
-        public BookWithFriend(BookWithFriendData friendData){
-            this.friendData=friendData;
+        public ClassRating(String classRating) {
+            this.classRating = classRating;
         }
 
     }
-    public static class ClassAutoJoin{
+
+    public static class BookWithFriend {
+        public BookWithFriendData friendData;
+
+        public BookWithFriend(BookWithFriendData friendData) {
+            this.friendData = friendData;
+        }
+
+    }
+
+    public static class ClassAutoJoin {
         public ClassModel classModel;
-        public ClassAutoJoin(ClassModel classModel){
-            this.classModel=classModel;
+
+        public ClassAutoJoin(ClassModel classModel) {
+            this.classModel = classModel;
         }
     }
 
@@ -93,6 +97,22 @@ public class Events {
         public ClassModel data;
 
         public WishAdded(ClassModel data) {
+            this.data = data;
+        }
+    }
+
+    public static class WaitlistItemRemoved {
+        public ClassModel data;
+
+        public WaitlistItemRemoved(ClassModel data) {
+            this.data = data;
+        }
+    }
+
+    public static class WaitlistJoin {
+        public ClassModel data;
+
+        public WaitlistJoin(ClassModel data) {
             this.data = data;
         }
     }

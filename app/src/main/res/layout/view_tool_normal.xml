@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,7 +9,10 @@
         android:layout_height="@dimen/tool_bar_height"
         android:background="@color/colorPrimaryDark"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/imageViewBack"
@@ -27,15 +31,15 @@
             android:gravity="left"
             android:text="Title"
             android:textColor="@color/white" />
+
         <LinearLayout
             android:id="@+id/layoutUserWallet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:layout_gravity="bottom|right"
-            android:layout_marginBottom="@dimen/margin_10"
             android:layout_marginRight="@dimen/margin_10"
-            >
+            android:layout_marginBottom="@dimen/margin_10"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -52,22 +56,21 @@
                     android:id="@+id/imageViewWalletIcon"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
+                    android:layout_marginLeft="@dimen/margin_5"
                     android:src="@drawable/wallet_icon"
                     android:tint="@color/white"
-                    android:visibility="gone"
-                    android:layout_marginLeft="@dimen/margin_5"
-                    />
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/textViewWalletAmount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_5"
+                    android:layout_marginRight="@dimen/margin_5"
                     android:fontFamily="sans-serif"
                     android:text="30.00"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_small"
-                    android:layout_marginLeft="@dimen/margin_5"
-                    android:layout_marginRight="@dimen/margin_5" />
+                    android:textSize="@dimen/text_small" />
 
 
             </LinearLayout>
@@ -83,8 +86,6 @@
             android:visibility="gone" />
 
 
-
-
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

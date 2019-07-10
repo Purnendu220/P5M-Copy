@@ -5,17 +5,19 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.AppBarLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
-import android.support.v7.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,6 +26,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.brandongogetap.stickyheaders.StickyLayoutManager;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.p5m.me.R;
@@ -34,6 +37,7 @@ import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.UserPackageInfo;
+import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.User;
@@ -46,6 +50,7 @@ import com.p5m.me.firebase_dynamic_link.FirebaseDynamicLinnk;
 import com.p5m.me.helper.ClassListListenerHelper;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -56,9 +61,7 @@ import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
-import com.p5m.me.utils.PermissionUtility;
 import com.p5m.me.utils.ToastUtils;
-import com.p5m.me.view.activity.Splash;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.BookForAFriendPopup;
 import com.p5m.me.view.custom.CustomAlertDialog;
@@ -108,6 +111,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public AppBarLayout appBarLayout;
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
+    @BindView(R.id.layoutBottomTabs)
+    public LinearLayout layoutBottomTabs;
 
     @BindView(R.id.layoutButton)
     public View layoutButton;
@@ -145,6 +150,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public void classJoin(Events.ClassJoin data) {
         handleClassJoined(data.data);
     }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void packagePurchasedForClass(Events.PackagePurchasedForClass data) {
@@ -185,19 +191,18 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class_profile);
-
         ButterKnife.bind(activity);
         GlobalBus.getBus().register(this);
-        FirebaseDynamicLinnk.getDynamicLink(this,getIntent());
+        FirebaseDynamicLinnk.getDynamicLink(this, getIntent());
         classModel = (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_OBJECT);
         classSessionId = getIntent().getIntExtra(AppConstants.DataKey.CLASS_SESSION_ID_INT, -1);
         navigationFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
-
+        textViewBook.setEnabled(true);
         if (classModel == null && classSessionId == -1) {
             finish();
             return;
         }
-       swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setEnabled(false);
 
         classProfileAdapter = new ClassProfileAdapter(context, AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE, this);
@@ -234,7 +239,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         getDynamicLink();
         MixPanel.trackClassDetails();
         onTrackingNotification();
-        networkCommunicator.getMyUser(this, false);
+//        networkCommunicator.getMyUser(this, false);
 
     }
 
@@ -251,7 +256,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                         }
 
                         if (deepLink != null) {
-                          Log.d("Deep Link", "Found deep link ClassProfile!");
+                            Log.d("Deep Link", "Found deep link ClassProfile!");
 
                         } else {
                             Log.d("Deep Link", "getDynamicLink: no link found");
@@ -279,6 +284,56 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public void textViewBook() {
         isBookWithFriendInProgress = false;
         mBookWithFriendData = null;
+        textViewBook.setText(context.getResources().getString(R.string.please_wait));
+
+        if (classModel.getAvailableSeat() == 0) {
+            networkCommunicator.addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
+                @Override
+                public void onApiSuccess(Object response, int requestCode) {
+                    textViewBook.setEnabled(false);
+                    try {
+                        if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus()==false) {
+                            String message = String.format(context.getString(R.string.added_to_waitlist));
+                            DialogUtils.showBasicMessage(context, message, context.getString(R.string.view_wishlist), new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    Intent navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
+                                    context.startActivity(navigationIntent);
+
+                                }
+                            });
+                        } else {
+                            String message = String.format(context.getString(R.string.added_to_wishlist), classModel.getTitle());
+                            ToastUtils.show(context, message);
+                        }
+                        classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
+                        classModel.setWishType(AppConstants.ApiParamKey.WAITLIST);
+                        EventBroadcastHelper.sendWishAdded(classModel);
+                        EventBroadcastHelper.waitlistClassJoin(context, classModel);
+                       /* textViewBook.setText(RemoteConfigConst.WAITLISTED_VALUE);
+                        RemoteConfigSetUp.setBackgroundColor(textViewBook, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
+                        */
+                        Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        LogUtils.exception(e);
+                    }
+
+                }
+
+                @Override
+                public void onApiFailure(String errorMessage, int requestCode) {
+                    textViewBook.setEnabled(true);
+
+                    ToastUtils.show(context, errorMessage);
+                    Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
+
+                }
+            });
+            return;
+        }
         // Check if class is allowed for the gender..
         if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
                 && !Helper.isMalesAllowed(classModel)) {
@@ -300,7 +355,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 else {
                     if (Helper.isSpecialClass(classModel) &&
                             !Helper.isFreeClass(classModel)
-                            ) {
+                    ) {
 
                         CheckoutActivity.openActivity(context, classModel, 1);
 
@@ -313,8 +368,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             return;
         }
 
-        textViewBook.setText(context.getResources().getString(R.string.please_wait));
-        textViewBook.setEnabled(false);
 
         networkCommunicator.getMyUser(new NetworkCommunicator.RequestListener() {
             @Override
@@ -331,6 +384,13 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
             }
         }, false);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void waitlistJoin(Events.WaitlistJoin data) {
+        textViewBook.setText(RemoteConfigConst.WAITLISTED_VALUE);
+        RemoteConfigSetUp.setBackgroundColor(textViewBook, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
+
     }
 
     @OnClick(R.id.textViewBookWithFriend)
@@ -496,6 +556,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     }
 
 
+
     private void setToolBar() {
 
         BaseActivity activity = (BaseActivity) this.activity;
@@ -587,7 +648,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 onBackPressed();
                 break;
             case R.id.imageViewOptions:
-                ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, classModel, navigationFrom);
+                ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, classModel, navigationFrom, null);
                 break;
 
             case R.id.layoutUserWallet:
@@ -870,12 +931,13 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 swipeRefreshLayout.setEnabled(true);
 
                 if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
+                    layoutBottomTabs.setVisibility(View.GONE);
                     DialogUtils.showBasicMessage(context, errorMessage, getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            finish();
+                              finish();
                         }
-                    });
+                    }, false);
                 }
 
                 break;
@@ -898,7 +960,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     @Override
     protected void onResume() {
         super.onResume();
-        textViewBook.setEnabled(true);
+        if(classModel!=null)
+            Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
+
     }
 
     private boolean checkIfUserHaveExpiredPackage() {

@@ -4,10 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.transition.Slide;
-import android.transition.TransitionInflater;
+
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.p5m.me.R;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.request.ClassRatingRequest;
@@ -24,7 +23,6 @@ import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.view.activity.Main.FullRatingActivity;
-import com.p5m.me.view.activity.Main.HomeActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,7 +61,7 @@ public class CustomRateAlertDialog extends Dialog implements OnClickListener, Ne
     private NetworkCommunicator networkCommunicator;
 
 
-    public CustomRateAlertDialog(@NonNull Context context,@NonNull ClassModel model,int navigatedFrom) {
+    public CustomRateAlertDialog(@NonNull Context context, @NonNull ClassModel model, int navigatedFrom) {
         super(context, R.style.AdvanceDialogTheme);
         this.mContext=context;
         this.model=model;

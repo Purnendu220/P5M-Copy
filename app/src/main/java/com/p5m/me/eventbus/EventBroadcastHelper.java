@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
 import android.provider.Settings;
-import android.util.Log;
 
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,9 +22,9 @@ import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
+import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.LoginRegister.ContinueUser;
-import com.p5m.me.view.activity.Splash;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,8 +58,8 @@ public class EventBroadcastHelper {
         try {
             User user = MyPreferences.getInstance().getUser();
             List<ClassActivity> activities = MyPreferences.getInstance().getActivities();
-            List<ClassModel> list=TempStorage.getSavedClasses();
-            TempStorage.removeAllSavedClasses(list,context);
+            List<ClassModel> list = TempStorage.getSavedClasses();
+            TempStorage.removeAllSavedClasses(list, context);
             MyPreferences.getInstance().clear();
             MyPreferences.getInstance().saveUser(user);
             MyPreferences.getInstance().saveActivities(activities);
@@ -124,12 +123,31 @@ public class EventBroadcastHelper {
 
         GlobalBus.getBus().post(new Events.ClassJoin(classModel));
     }
-    public static void sendclassRating(Context context,String className){
-        GlobalBus.getBus().post(new Events.ClassRating(className))  ;
+
+    public static void waitlistClassRemove(Context context, ClassModel classModel) {
+        if (classModel.getWishType() != null) {
+            classModel.setWishType(null);
+        } else {
+            classModel.setWishType(AppConstants.ApiParamKey.WAITLIST);
+        }
+
+        GlobalBus.getBus().post(new Events.WaitlistItemRemoved(classModel));
     }
-    public static void classAutoJoin(Context context,ClassModel classModel){
-        GlobalBus.getBus().post(new Events.ClassAutoJoin(classModel))  ;
+
+    public static void waitlistClassJoin(Context context, ClassModel classModel) {
+
+        classModel.setWishType(AppConstants.ApiParamKey.WAITLIST);
+        GlobalBus.getBus().post(new Events.WaitlistJoin(classModel));
     }
+
+    public static void sendclassRating(Context context, String className) {
+        GlobalBus.getBus().post(new Events.ClassRating(className));
+    }
+
+    public static void classAutoJoin(Context context, ClassModel classModel) {
+        GlobalBus.getBus().post(new Events.ClassAutoJoin(classModel));
+    }
+
     public static void sendPackagePurchasedForClass(ClassModel classModel) {
         if (classModel.isUserJoinStatus()) {
             classModel.setAvailableSeat(classModel.getAvailableSeat() - 1);
@@ -153,12 +171,15 @@ public class EventBroadcastHelper {
         GlobalBus.getBus().post(new Events.WishAdded(classModel));
     }
 
+
     public static void sendWishRemoved(ClassModel classModel) {
         GlobalBus.getBus().post(new Events.WishRemoved(classModel));
     }
-public static void sendBookWithFriendEvent(BookWithFriendData friendData){
+
+    public static void sendBookWithFriendEvent(BookWithFriendData friendData) {
         GlobalBus.getBus().post(new Events.BookWithFriend(friendData));
-}
+    }
+
     public static void trainerFollowUnFollow(TrainerModel trainerModel, boolean isFollowed) {
         GlobalBus.getBus().post(new Events.TrainerFollowed(trainerModel, isFollowed));
     }
@@ -185,7 +206,7 @@ public static void sendBookWithFriendEvent(BookWithFriendData friendData){
             deviceToken = MyPreferences.getInstance().getDeviceToken();
 
             if (deviceToken == null) {
-                FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener((Activity) context,  new OnSuccessListener<InstanceIdResult>() {
+                FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener((Activity) context, new OnSuccessListener<InstanceIdResult>() {
                     @Override
                     public void onSuccess(InstanceIdResult instanceIdResult) {
                         String refreshedToken = instanceIdResult.getToken();
@@ -207,10 +228,10 @@ public static void sendBookWithFriendEvent(BookWithFriendData friendData){
             String androidId = Settings.Secure.getString(context.getContentResolver(),
                     Settings.Secure.ANDROID_ID);
 
-            String osVersion =android.os.Build.MODEL+"#"+ Build.VERSION.RELEASE ;
+            String osVersion = android.os.Build.MODEL + "#" + Build.VERSION.RELEASE;
 
             NetworkCommunicator.getInstance(context).deviceUpdate(
-                    new DeviceUpdate(TempStorage.version, TempStorage.getUser().getId(), deviceToken, androidId,osVersion),
+                    new DeviceUpdate(TempStorage.version, TempStorage.getUser().getId(), deviceToken, androidId, osVersion),
                     new NetworkCommunicator.RequestListener() {
                         @Override
                         public void onApiSuccess(Object response, int requestCode) {
@@ -232,7 +253,6 @@ public static void sendBookWithFriendEvent(BookWithFriendData friendData){
             LogUtils.exception(e);
         }
     }
-
 
 
 }

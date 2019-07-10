@@ -1,11 +1,12 @@
 package com.p5m.me.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.brandongogetap.stickyheaders.exposed.StickyHeaderHandler;
 import com.p5m.me.R;
@@ -18,7 +19,6 @@ import com.p5m.me.data.HeaderSticky;
 import com.p5m.me.data.ListLoader;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.TrainerDetailModel;
-import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.utils.LogUtils;
 
 import java.util.ArrayList;

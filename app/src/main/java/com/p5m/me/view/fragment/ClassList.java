@@ -2,48 +2,60 @@ package com.p5m.me.view.fragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.ClassListAdapter;
+import com.p5m.me.adapters.viewholder.ClassViewHolder;
 import com.p5m.me.data.CityLocality;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.Filter;
 import com.p5m.me.data.RecomendedClassData;
+import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.data.request.ClassListRequest;
+import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.helper.ClassListListenerHelper;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
-import com.p5m.me.target_user_notification.UserPropertyConst;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.ClassProfileActivity;
 import com.p5m.me.view.activity.Main.GymProfileActivity;
+import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -54,8 +66,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.p5m.me.remote_config.RemoteConfigSetUp.setValue;
 
 public class ClassList extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks<ClassModel>, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener, LocationListener {
 
@@ -117,6 +127,56 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void classJoin(Events.ClassJoin data) {
         handleClassJoined(data.data);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void WaitlistItemRemoved(Events.WaitlistItemRemoved data) {
+        handleWaitlistRemove(data.data);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void waitlistJoin(Events.WaitlistJoin data) {
+
+        handleWaitlistJoined(data.data);
+
+    }
+
+    private void handleWaitlistJoined(ClassModel data) {
+        try {
+            int index = classListAdapter.getList().indexOf(data);
+            if (index != -1) {
+                Object obj = classListAdapter.getList().get(index);
+                if (obj instanceof ClassModel) {
+                    ClassModel classModel = (ClassModel) obj;
+                    Helper.setWaitlistAddData(classModel, data);
+
+                    classListAdapter.notifyItemChanged(index);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+
+
+    }
+
+    private void handleWaitlistRemove(ClassModel data) {
+        try {
+            int index = classListAdapter.getList().indexOf(data);
+            if (index != -1) {
+                Object obj = classListAdapter.getList().get(index);
+                if (obj instanceof ClassModel) {
+                    ClassModel classModel = (ClassModel) obj;
+                    Helper.setWaitlistRemoveData(classModel, data);
+
+                    classListAdapter.notifyItemChanged(index);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -319,7 +379,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, ClassModel model, int position) {
         switch (view.getId()) {
             case R.id.imageViewOptions:
-                ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, model, shownInScreen);
+                ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, model, shownInScreen, viewHolder);
                 break;
             case R.id.textViewLocation:
             case R.id.layoutLocation:
@@ -333,8 +393,60 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                 }
                 break;
             case R.id.buttonJoin:
+                if (model instanceof ClassModel) {
+                    ClassModel classModel = (ClassModel) model;
+                    if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus()==false) {
+                        NetworkCommunicator.getInstance(context).addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
+                            @Override
+                            public void onApiSuccess(Object response, int requestCode) {
+                                try {
+                                    if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus()==false) {
+                                        String message = String.format(context.getString(R.string.added_to_waitlist));
+                                        DialogUtils.showBasicMessage(context, message, context.getString(R.string.view_wishlist), new MaterialDialog.SingleButtonCallback() {
+                                            @Override
+                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                Intent navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
+                                                context.startActivity(navigationIntent);
+                                            }
+                                        });
+                                    } else {
+                                        String message = String.format(context.getString(R.string.added_to_wishlist), classModel.getTitle());
+                                        ToastUtils.show(context, message);
+                                    }
+                                    classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
+                                    classModel.setWishType(AppConstants.ApiParamKey.WAITLIST);
+                                    EventBroadcastHelper.sendWishAdded(classModel);
+                                    ((ClassViewHolder) viewHolder).buttonJoin.setText(RemoteConfigConst.WAITLISTED_VALUE);
+                                    RemoteConfigSetUp.setBackgroundColor(((ClassViewHolder) viewHolder).buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
+
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    LogUtils.exception(e);
+                                }
+
+
+                            }
+
+                            @Override
+                            public void onApiFailure(String errorMessage, int requestCode) {
+                                ToastUtils.show(context, errorMessage);
+
+                            }
+                        });
+                    } else {
+                        ClassProfileActivity.open(context, classModel, shownInScreen);
+                    }
+                }
+                break;
+
             default:
-                ClassProfileActivity.open(context, model, shownInScreen);
+                if (model instanceof ClassModel) {
+                    ClassModel classModel = (ClassModel) model;
+                    ClassProfileActivity.open(context, model, shownInScreen);
+                }
+                break;
+
         }
     }
 
@@ -417,6 +529,8 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                 callApiClassList();
 //                checkListData();
                 break;
+
+
         }
     }
 
@@ -491,4 +605,6 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
 
     }
+
+
 }

@@ -4,8 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuInflater;
@@ -17,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.p5m.me.BuildConfig;
 import com.p5m.me.MyApp;
 import com.p5m.me.R;
@@ -164,25 +164,30 @@ public class Helper {
 
         if (model.isUserJoinStatus()) {
 
-//            buttonJoin.setText(context.getString(R.string.booked));
             buttonJoin.setText(RemoteConfigConst.BOOKED_VALUE);
             RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
-
-//            buttonJoin.setBackgroundResource(R.drawable.joined_rect);
 
 
         } else if (model.getAvailableSeat() == 0) {
 
-//            buttonJoin.setText(context.getString(R.string.full));
-//            buttonJoin.setBackgroundResource(R.drawable.full_rect);
-            buttonJoin.setText(RemoteConfigConst.FULL_VALUE);
-            RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.FULL_COLOR_VALUE, context.getResources().getColor(R.color.theme_full));
+            if(model.getWishType()!=null) {
+                if(model.getWishType().equalsIgnoreCase(AppConstants.ApiParamKey.WAITLIST)) {
+                    buttonJoin.setText(RemoteConfigConst.WAITLISTED_VALUE);
+                    RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
 
+                }
+                else{
+                    buttonJoin.setText(RemoteConfigConst.WAITLIST_VALUE);
+                    RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+                }
+            }
+            else{
+                buttonJoin.setText(RemoteConfigConst.WAITLIST_VALUE);
+                RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+            }
 
         } else {
 
-//            buttonJoin.setText(context.getString(R.string.book));
-//            buttonJoin.setBackgroundResource(R.drawable.join_rect);
             buttonJoin.setText(RemoteConfigConst.BOOK_VALUE);
             RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
 
@@ -209,17 +214,33 @@ public class Helper {
 
         } else if (model.getAvailableSeat() == 0) {
 //            view.setText(context.getString(R.string.full));
-            view.setText(RemoteConfigConst.FULL_VALUE);
-//            view.setBackgroundResource(R.drawable.theme_bottom_text_button_full);
-            RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.FULL_COLOR_VALUE, context.getResources().getColor(R.color.theme_full));
-            view.setEnabled(false);
+
+            if(model.getWishType()!=null) {
+                if(model.getWishType().equalsIgnoreCase(AppConstants.ApiParamKey.WAITLIST)) {
+                    view.setText(RemoteConfigConst.WAITLISTED_VALUE);
+                    RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
+                }
+                else{
+                    view.setText(RemoteConfigConst.WAITLIST_VALUE);
+                    RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+
+                }
+            }
+            else{
+                view.setText(RemoteConfigConst.WAITLIST_VALUE);
+                RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+
+            }
+
             view1.setVisibility(View.GONE);
-        } else if (model.getAvailableSeat() < 2) {
+        }
+        else if (model.getAvailableSeat() < 2) {
             view1.setVisibility(View.GONE);
             view.setText(RemoteConfigConst.BOOK_IN_CLASS_VALUE);
             RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOK_IN_CLASS_COLOR_VALUE, context.getResources().getColor(R.color.colorAccent));
 
-        } else {
+        }
+        else {
 //            view.setText(context.getString(R.string.reserve_class));
             view.setText(RemoteConfigConst.BOOK_IN_CLASS_VALUE);
 
@@ -414,11 +435,11 @@ public class Helper {
     }
 
     public static boolean isSpecialClass(ClassModel model) {
-        return model.getPriceModel().equals("SPECIAL") || model.getPriceModel().equals("FOC");
+        return model!=null&&model.getPriceModel()!=null&&model.getPriceModel().equals("SPECIAL") || model.getPriceModel().equals("FOC");
     }
 
     public static boolean isFreeClass(ClassModel model) {
-        return model.getPriceModel().equals("FOC");
+        return model!=null&&model.getPriceModel()!=null&&model.getPriceModel().equals("FOC");
     }
 
     public static boolean isFemalesAllowed(ClassModel classModel) {
@@ -452,6 +473,12 @@ public class Helper {
     public static void setClassJoinEventData(ClassModel classModel, ClassModel joinedData) {
         classModel.setUserJoinStatus(joinedData.isUserJoinStatus());
         classModel.setAvailableSeat(joinedData.getAvailableSeat());
+    }
+    public static void setWaitlistRemoveData(ClassModel classModel, ClassModel joinedData) {
+        classModel.setWishType(joinedData.getWishType());
+    }
+    public static void setWaitlistAddData(ClassModel classModel, ClassModel joinedData) {
+        classModel.setWishType(joinedData.getWishType());
     }
 
     public static void setPackageImage(ImageView imageView, int packageId) {
@@ -532,4 +559,7 @@ public class Helper {
         context.startActivity(Intent.createChooser(sendIntent, "Share with"));
     }
 
+    public static void wishlistItemRemoved(ClassModel classModel, ClassModel data) {
+
+    }
 }

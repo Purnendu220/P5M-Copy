@@ -1,25 +1,19 @@
 package com.p5m.me.adapters.viewholder;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
-import com.p5m.me.data.ClassRatingListData;
 import com.p5m.me.data.main.ClassModel;
-import com.p5m.me.helper.Helper;
-import com.p5m.me.remote_config.RemoteConfigConst;
-import com.p5m.me.remote_config.RemoteConfigSetUp;
-import com.p5m.me.utils.AppConstants;
+
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
 import com.p5m.me.utils.LanguageUtils;
-import com.p5m.me.utils.WordUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

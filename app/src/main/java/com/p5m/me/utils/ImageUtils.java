@@ -5,8 +5,9 @@ import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
@@ -22,8 +23,11 @@ import com.p5m.me.helper.GlideApp;
 public class ImageUtils {
 
     public static String generateMapImageUrlClassDetail(double latitude, double longitude) {
-        return "https://maps.googleapis.com/maps/api/staticmap?zoom=13&size=200x240" +
+        String url ="https://maps.googleapis.com/maps/api/staticmap?zoom=13&size=200x240" +
                 "&maptype=roadmap&scale=2&markers=color:red%7C" + latitude + "," + longitude + "&key=AIzaSyCrAO08EU2sNMocuMZv03sSkOj6NQrOzSs";
+        LogUtils.debug(url);
+        return url;
+
     }
 
     public static String generateMapImageUrGymDetail(double latitude, double longitude) {

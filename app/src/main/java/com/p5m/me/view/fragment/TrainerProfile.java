@@ -2,9 +2,9 @@ package com.p5m.me.view.fragment;
 
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +15,16 @@ import com.brandongogetap.stickyheaders.exposed.StickyHeaderListener;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.TrainerProfileAdapter;
+import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.TrainerModel;
+import com.p5m.me.eventbus.Events;
 import com.p5m.me.helper.ClassListListenerHelper;
+import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.LogUtils;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -93,4 +100,7 @@ public class TrainerProfile extends BaseFragment implements AdapterCallbacks {
     public void onShowLastItem() {
 
     }
+
+
+
 }

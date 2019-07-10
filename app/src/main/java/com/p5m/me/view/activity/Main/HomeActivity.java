@@ -2,19 +2,16 @@ package com.p5m.me.view.activity.Main;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
+
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,29 +20,18 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
-import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.p5m.me.R;
 import com.p5m.me.adapters.HomeAdapter;
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
 import com.p5m.me.analytics.FirebaseAnalysic;
-import com.p5m.me.analytics.MixPanel;
-import com.p5m.me.data.PushDetailModel;
 import com.p5m.me.data.UnratedClassData;
 import com.p5m.me.data.main.ClassModel;
-import com.p5m.me.data.main.DefaultSettingServer;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.request.LogoutRequest;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.firebase_dynamic_link.FirebaseDynamicLinnk;
-import com.p5m.me.helper.ClassListListenerHelper;
-import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
@@ -53,7 +39,6 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
-import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
@@ -61,8 +46,8 @@ import com.p5m.me.utils.RefrenceWrapper;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.activity.custom.BottomTapLayout;
-import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.custom.CustomRateAlertDialog;
+import com.p5m.me.view.fragment.MySchedule;
 import com.p5m.me.view.fragment.ViewPagerFragmentSelection;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -76,7 +61,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class HomeActivity extends BaseActivity implements BottomTapLayout.TabListener, ViewPager.OnPageChangeListener, View.OnClickListener, NetworkCommunicator.RequestListener {
+public class HomeActivity extends BaseActivity implements BottomTapLayout.TabListener, ViewPager.OnPageChangeListener, View.OnClickListener, NetworkCommunicator.RequestListener, TabChange {
+
+    private static HomeAdapter homeAdapter;
 
     public static void open(Context context) {
         Intent intent = new Intent(context, HomeActivity.class);
@@ -93,12 +80,13 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         context.startActivity(intent);
     }
 
+
     public static Intent createIntent(Context context, int tabPosition, int innerTabPosition) {
         Intent intent = new Intent(context, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra(AppConstants.DataKey.HOME_TAB_POSITION, tabPosition);
-        intent.putExtra(AppConstants.DataKey.HOME_TABS_INNER_TAB_POSITION, innerTabPosition);
+        intent.putExtra(AppConstants.DataKey.HOME_TABS_SCHEDULE_INNER_TAB_POSITION, innerTabPosition);
         return intent;
     }
 
@@ -140,12 +128,12 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     public TextView availableCredit;
 
     private BottomTapLayout bottomTapLayout;
-    private HomeAdapter homeAdapter;
 
     private final int TOTAL_TABS = 4;
     private int INITIAL_POSITION = AppConstants.Tab.TAB_FIND_CLASS;
     private int currentTab = INITIAL_POSITION;
     private int PROFILE_TAB_POSITION;
+    private int SCHEDULE_TAB_POSITION;
 
     private Handler handler;
     public CustomRateAlertDialog mCustomMatchDialog;
@@ -170,14 +158,19 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
                     AppConstants.Tab.TAB_FIND_CLASS);
             PROFILE_TAB_POSITION = getIntent().getIntExtra(AppConstants.DataKey.HOME_TABS_PROFILE_INNER_TAB_POSITION,
                     ProfileHeaderTabViewHolder.TAB_1);
+            SCHEDULE_TAB_POSITION = getIntent().getIntExtra(AppConstants.DataKey.HOME_TABS_SCHEDULE_INNER_TAB_POSITION,
+                    AppConstants.Tab.TAB_MY_SCHEDULE_UPCOMING);
+
+            LogUtils.debug("VarunSCHEDULE getIntent " + SCHEDULE_TAB_POSITION);
+
         }
         RefrenceWrapper.getRefrenceWrapper(this).setActivity(this);
         buyClassesLayout.setOnClickListener(this);
         GlobalBus.getBus().register(this);
-        FirebaseDynamicLinnk.getDynamicLink(this,getIntent());
+        FirebaseDynamicLinnk.getDynamicLink(this, getIntent());
         handler = new Handler(Looper.getMainLooper());
         setupBottomTabs();
-        homeAdapter = new HomeAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_TABS, PROFILE_TAB_POSITION);
+        homeAdapter = new HomeAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_TABS, PROFILE_TAB_POSITION, SCHEDULE_TAB_POSITION);
         viewPager.setAdapter(homeAdapter);
         viewPager.addOnPageChangeListener(this);
         viewPager.setOffscreenPageLimit(TOTAL_TABS);
@@ -228,6 +221,14 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
         INITIAL_POSITION = intent.getIntExtra(AppConstants.DataKey.HOME_TAB_POSITION,
                 AppConstants.Tab.TAB_FIND_CLASS);
+
+        PROFILE_TAB_POSITION = intent.getIntExtra(AppConstants.DataKey.HOME_TABS_PROFILE_INNER_TAB_POSITION,
+                ProfileHeaderTabViewHolder.TAB_1);
+
+        SCHEDULE_TAB_POSITION = intent.getIntExtra(AppConstants.DataKey.HOME_TABS_SCHEDULE_INNER_TAB_POSITION,
+                AppConstants.Tab.TAB_MY_SCHEDULE_UPCOMING);
+
+        LogUtils.debug("VarunSCHEDULE getNewIntent " + SCHEDULE_TAB_POSITION);
 
         LogUtils.debug("Home screen onNewIntent " + INITIAL_POSITION);
 
@@ -284,12 +285,22 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             LogUtils.exception(e);
         }
         bottomTapLayout.setTab(position);
+
         if (position == AppConstants.Tab.TAB_FIND_CLASS) {
 //            handleApptimize();
             handleBuyClassesButton();
         } else {
             buyClassesLayout.setVisibility(View.GONE);
+        }
 
+        if (position == AppConstants.Tab.TAB_SCHEDULE) {
+            try {
+                LogUtils.debug("VarunSCHEDULE intent " + SCHEDULE_TAB_POSITION);
+                ((MySchedule) homeAdapter.getFragments().get(position)).selectTab(SCHEDULE_TAB_POSITION);
+            } catch (Exception e) {
+                e.printStackTrace();
+                LogUtils.debug("VarunSCHEDULE Error intent " + SCHEDULE_TAB_POSITION + e.getMessage());
+            }
         }
     }
 
@@ -334,16 +345,32 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
     }
 
+    @Override
+    public void onTabChange(int initial_position, int schedule_tab_position) {
+        homeAdapter = new HomeAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_TABS, 2, schedule_tab_position);
+        viewPager.setAdapter(homeAdapter);
+        viewPager.addOnPageChangeListener(this);
+        viewPager.setOffscreenPageLimit(TOTAL_TABS);
+
+        viewPager.post(new Runnable() {
+            @Override
+            public void run() {
+                onPageSelected(initial_position);
+            }
+        });
+
+    }
+
+
     private class UpdateBuyClassText extends AsyncTask<String, String, String> {
 
         @Override
         protected String doInBackground(String... url) {
             User user = TempStorage.getUser();
-            mWalletCredit=user.getWalletDto();
-            if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
-               return context.getResources().getString(R.string.wallet_text)+" : "+ LanguageUtils.numberConverter(mWalletCredit.getBalance(),2)+" "+mContext.getResources().getString(R.string.wallet_currency);
-                }
-                else{
+            mWalletCredit = user.getWalletDto();
+            if (mWalletCredit != null && mWalletCredit.getBalance() > 0) {
+                return context.getResources().getString(R.string.wallet_text) + " : " + LanguageUtils.numberConverter(mWalletCredit.getBalance(), 2) + " " + mContext.getResources().getString(R.string.wallet_currency);
+            } else {
                 return "";
 
             }
@@ -352,22 +379,22 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            if(result!=null&&result.length()>0){
+            if (result != null && result.length() > 0) {
                 availableCredit.setVisibility(View.VISIBLE);
 
                 availableCredit.setText(result);
 
-            }else{
+            } else {
                 availableCredit.setVisibility(View.GONE);
 
             }
-
 
 
         }
 
 
     }
+
 
     @Override
     protected void onResume() {
@@ -381,6 +408,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             buyClassesLayout.setVisibility(View.GONE);
 
         }
+
 
     }
 
@@ -519,5 +547,10 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     }
 
 
-
 }
+
+interface TabChange {
+    public void onTabChange(int initial_position, int schedule_tab_position);
+}
+
+

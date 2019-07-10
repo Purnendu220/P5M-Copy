@@ -5,24 +5,20 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.transition.Slide;
-import android.transition.TransitionInflater;
+
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.p5m.me.R;
-import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.RefrenceWrapper;
-import com.p5m.me.view.activity.Main.FullRatingActivity;
-import com.p5m.me.view.activity.Main.HomeActivity;
+
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,7 +42,7 @@ public class CustomDialogThankYou extends Dialog implements OnClickListener {
     @BindView(R.id.linearLayoutRatePast)
     LinearLayout linearLayoutRatePast;
 
-    public CustomDialogThankYou(@NonNull Context context, boolean isThereOtherClassToRate,int navigatinFrom) {
+    public CustomDialogThankYou(@NonNull Context context, boolean isThereOtherClassToRate, int navigatinFrom) {
         super(context, R.style.AdvanceDialogTheme);
         this.mContext=context;
         this.isThereOtherClassToRate=isThereOtherClassToRate;

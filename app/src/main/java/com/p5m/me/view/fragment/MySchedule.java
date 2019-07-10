@@ -2,14 +2,16 @@ package com.p5m.me.view.fragment;
 
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,8 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.tabs.TabLayout;
 import com.p5m.me.R;
 import com.p5m.me.adapters.ScheduleAdapter;
 import com.p5m.me.analytics.MixPanel;
@@ -55,16 +59,28 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
     public TextView textViewNotificationMessageCounter;
 
     private ScheduleAdapter scheduleAdapter;
-    private String[] titleTabs ;
-//        private String[] titleTabs = new String[]{"UPCOMING","WISH LIST"};
-    private boolean isVisibleToUser=false;
+    private String[] titleTabs;
+    //        private String[] titleTabs = new String[]{"UPCOMING","WISH LIST"};
+    private boolean isVisibleToUser = false;
+    //    private int tabPosition = AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST;
+    private int tabPosition = -1;
 
     public MySchedule() {
+    }
+
+    public static Fragment createScheduleFragment(int position) {
+        Fragment tabFragment = new MySchedule();
+        Bundle bundle = new Bundle();
+        bundle.putInt(AppConstants.DataKey.TAB_POSITION_INT, position);
+        tabFragment.setArguments(bundle);
+
+        return tabFragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        tabPosition = getArguments().getInt(AppConstants.DataKey.TAB_POSITION_INT, AppConstants.Tab.TAB_MY_SCHEDULE_UPCOMING);
         GlobalBus.getBus().register(this);
     }
 
@@ -78,36 +94,39 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
     public void notificationReceived(Events.NotificationCountUpdated notificationCountUpdated) {
         setNotificationIcon();
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void ClassAutoJoin(Events.ClassAutoJoin data) {
-        final ClassModel classModel=data.classModel;
-            if(classModel!=null){
-                try{
+        final ClassModel classModel = data.classModel;
+        if (classModel != null) {
+            try {
 //                    context.getResources().getString(R.string.invite_friends)
-                    DialogUtils.showBasicMessage(context,"",
-                            getString(R.string.successfully_joined)+" " + classModel.getTitle()
-                            ,RemoteConfigConst.INVITE_FRIENDS_VALUE, new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    dialog.dismiss();
-                                    Helper.shareClass(context, classModel.getClassSessionId(), classModel.getTitle());
+                DialogUtils.showBasicMessage(context, "",
+                        getString(R.string.successfully_joined) + " " + classModel.getTitle()
+                        , RemoteConfigConst.INVITE_FRIENDS_VALUE, new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                dialog.dismiss();
+                                Helper.shareClass(context, classModel.getClassSessionId(), classModel.getTitle());
 
-                                }
-                            },  context.getResources().getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-
-
+                            }
+                        }, context.getResources().getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                dialog.dismiss();
+                            }
+                        });
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
 
+        }
+
+
     }
+
+
     private void setNotificationIcon() {
         int count = MyPreferences.initialize(context).getNotificationCount();
 
@@ -128,7 +147,7 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
         ButterKnife.bind(this, getView());
 
         setToolBar();
-        titleTabs= context.getResources().getStringArray(R.array.schedule_list);
+        titleTabs = context.getResources().getStringArray(R.array.schedule_list);
         scheduleAdapter = new ScheduleAdapter(getChildFragmentManager(), titleTabs);
         viewPager.setAdapter(scheduleAdapter);
         viewPager.setOffscreenPageLimit(1);
@@ -138,21 +157,32 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
 
         viewPager.addOnPageChangeListener(this);
 
+        viewPager.setCurrentItem(tabPosition);
+//        onTabSelection(tabPosition);
         setNotificationIcon();
     }
 
     boolean isLoadingFirstTime = true;
 
     @Override
-    public void onTabSelection(int position) {
+    public void onTabSelection(final int position) {
         if (isLoadingFirstTime) {
             isLoadingFirstTime = false;
+
             viewPager.post(new Runnable() {
                 @Override
                 public void run() {
-                    onPageSelected(0);
+                    onPageSelected(tabPosition);
                 }
             });
+        }
+    }
+
+    public void selectTab(int position) {
+        try {
+            viewPager.setCurrentItem(position);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -188,10 +218,12 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
     @Override
     public void onPageSelected(int position) {
         try {
+            LogUtils.debug("VarunSCHEDULE onPageSelected " + position);
             ((ViewPagerFragmentSelection) scheduleAdapter.getFragments().get(position)).onTabSelection(position);
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
+            LogUtils.debug("VarunSCHEDULE error onPageSelected " + position + e.getMessage());
         }
     }
 
@@ -215,7 +247,7 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        this.isVisibleToUser=isVisibleToUser;
+        this.isVisibleToUser = isVisibleToUser;
         super.setUserVisibleHint(isVisibleToUser);
     }
 }

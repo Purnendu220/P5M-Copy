@@ -1,11 +1,12 @@
 package com.p5m.me.adapters.viewholder;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
@@ -77,7 +78,7 @@ public class RatingViewHolder extends RecyclerView.ViewHolder {
 
                 textViewReviewComment.setText(model.getRemark());
                 }else{
-               // textViewReviewComment.setVisibility(View.GONE);
+                textViewReviewComment.setVisibility(View.GONE);
 
             }
             if (model.getMediaList() != null && !model.getMediaList().isEmpty()) {

@@ -1,14 +1,14 @@
 package com.p5m.me.adapters;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.view.fragment.ClassMiniViewList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ScheduleAdapter extends FragmentStatePagerAdapter {
 

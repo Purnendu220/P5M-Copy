@@ -1,13 +1,14 @@
 package com.p5m.me.adapters.viewholder;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
@@ -146,7 +147,7 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
             }
 
             if (model.getGymBranchDetail() != null) {
-                textViewLocation.setText(model.getGymBranchDetail().getGymName());
+                textViewLocation.setText(model.getGymBranchDetail().getGymName()+", "+model.getGymBranchDetail().getBranchName());
             }
 
             textViewClassName.setText(model.getTitle());
@@ -231,7 +232,7 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
             buttonJoin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    adapterCallbacks.onAdapterItemClick(ClassViewHolder.this, imageViewClass, model, position);
+                    adapterCallbacks.onAdapterItemClick(ClassViewHolder.this, buttonJoin, model, position);
                 }
             });
         } else {
