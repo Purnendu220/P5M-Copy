@@ -2,6 +2,7 @@ package com.p5m.me.view.activity.Main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,10 +16,11 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -39,6 +41,7 @@ import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.data.main.DefaultSettingServer;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
@@ -47,6 +50,7 @@ import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.firebase_dynamic_link.FirebaseDynamicLinnk;
+import com.p5m.me.helper.CancelBookingHelper;
 import com.p5m.me.helper.ClassListListenerHelper;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
@@ -111,6 +115,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public AppBarLayout appBarLayout;
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
+    @BindView(R.id.layoutBottomTabs)
+    public LinearLayout layoutBottomTabs;
 
     @BindView(R.id.layoutButton)
     public View layoutButton;
@@ -195,7 +201,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         classModel = (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_OBJECT);
         classSessionId = getIntent().getIntExtra(AppConstants.DataKey.CLASS_SESSION_ID_INT, -1);
         navigationFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
-
         textViewBook.setEnabled(true);
         if (classModel == null && classSessionId == -1) {
             finish();
@@ -283,8 +288,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public void textViewBook() {
         isBookWithFriendInProgress = false;
         mBookWithFriendData = null;
-        textViewBook.setText(context.getResources().getString(R.string.please_wait));
-        textViewBook.setEnabled(false);
+        // Check if class is allowed for the gender..
         if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
                 && !Helper.isMalesAllowed(classModel)) {
             ToastUtils.show(context, context.getString(R.string.gender_females_only_error));
@@ -294,16 +298,16 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             ToastUtils.show(context, context.getString(R.string.gender_males_only_error));
             return;
         }
-        if (classModel.getAvailableSeat() == 0) {
-
+        textViewBook.setText(context.getResources().getString(R.string.please_wait));
+        if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus()==false) {
             networkCommunicator.addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
                 @Override
                 public void onApiSuccess(Object response, int requestCode) {
-                    textViewBook.setEnabled(true);
+                    textViewBook.setEnabled(false);
                     try {
-                        if (classModel.getAvailableSeat() == 0) {
+                        if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus()==false) {
                             String message = String.format(context.getString(R.string.added_to_waitlist));
-                            DialogUtils.showBasicMessage(context, message, context.getString(R.string.wish_list), new MaterialDialog.SingleButtonCallback() {
+                            DialogUtils.showBasicMessage(context, message, context.getString(R.string.view_wishlist), new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     Intent navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
@@ -316,11 +320,13 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             ToastUtils.show(context, message);
                         }
                         classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
-                        classModel.setWishType("WAITLIST");
+                        classModel.setWishType(AppConstants.ApiParamKey.WAITLIST);
                         EventBroadcastHelper.sendWishAdded(classModel);
                         EventBroadcastHelper.waitlistClassJoin(context, classModel);
-                        textViewBook.setText(RemoteConfigConst.WAITLISTED_VALUE);
+                       /* textViewBook.setText(RemoteConfigConst.WAITLISTED_VALUE);
                         RemoteConfigSetUp.setBackgroundColor(textViewBook, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
+                        */
+                        Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
 
                     } catch (Exception e) {
@@ -333,11 +339,14 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 @Override
                 public void onApiFailure(String errorMessage, int requestCode) {
                     textViewBook.setEnabled(true);
+
+                    ToastUtils.show(context, errorMessage);
+                    Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
+
                 }
             });
             return;
         }
-        // Check if class is allowed for the gender..
 
 
         if (Helper.isSpecialClass(classModel)) {
@@ -380,6 +389,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             }
         }, false);
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void waitlistJoin(Events.WaitlistJoin data) {
         textViewBook.setText(RemoteConfigConst.WAITLISTED_VALUE);
@@ -548,6 +558,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         textViewBook.setEnabled(false);
         networkCommunicator.joinClass(new JoinClassRequest(TempStorage.getUser().getId(), classModel.getClassSessionId()), this, false);
     }
+
 
 
     private void setToolBar() {
@@ -927,9 +938,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     DialogUtils.showBasicMessage(context, errorMessage, getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            finish();
+                              finish();
                         }
-                    });
+                    }, false);
                 }
 
                 break;
@@ -952,7 +963,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     @Override
     protected void onResume() {
         super.onResume();
-        textViewBook.setEnabled(true);
+        if(classModel!=null)
+            Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
+
     }
 
     private boolean checkIfUserHaveExpiredPackage() {

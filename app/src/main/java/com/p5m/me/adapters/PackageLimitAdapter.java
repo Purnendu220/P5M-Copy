@@ -105,7 +105,7 @@ public class PackageLimitAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             linearLayout.addView(textView);
             linearLayout.addView(linearLayoutSeparator);
 
-            return new PackageLimitHeaderViewHolder(linearLayout, textView);
+            return new PackageLimitHeaderViewHolder(linearLayout, textView, context);
 
         } else if (viewType == VIEW_TYPE_PACKAGE_LIMIT_MAIN_HEADER) {
 

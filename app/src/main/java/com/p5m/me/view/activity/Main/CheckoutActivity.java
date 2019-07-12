@@ -224,6 +224,8 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
     @BindView(R.id.textViewPackageExtendNoOfDays)
     TextView textViewPackageExtendNoOfDays;
+    @BindView(R.id.textViewPlus)
+    TextView textViewPlus;
 
     @BindView(R.id.textViewPackageValidityExtend)
     TextView textViewPackageValidityExtend;
@@ -486,6 +488,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + context.getString(R.string.currency));
         if (promoCode.getExtraNumberOfDays() != 0) {
             textViewPackageExtendNoOfDays.setVisibility(View.VISIBLE);
+            textViewPlus.setVisibility(View.VISIBLE);
 //            textViewPackageExtendNoOfDays.setText(" + " + promoCode.getExtraNumberOfDays() + " days");
             layoutPromoCode.setVisibility(View.VISIBLE);
             textViewPromoCodePrice.setVisibility(View.GONE);
@@ -509,13 +512,14 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
     private void roundFigureOfDays(int extraNumberOfDays) {
         if (extraNumberOfDays >= 7 && extraNumberOfDays % 7 == 0) {
-            textViewPackageExtendNoOfDays.setText(" + " + promoCode.getExtraNumberOfDays() / 7 + " week(s)");
+            textViewPackageExtendNoOfDays.setText(LanguageUtils.numberConverter(promoCode.getExtraNumberOfDays() / 7) + " " + getString(R.string.weeks));
         } else if (extraNumberOfDays >= 30 && extraNumberOfDays % 30 == 0) {
-            textViewPackageExtendNoOfDays.setText(" + " + promoCode.getExtraNumberOfDays() / 30 + " month(s)");
-        } else
-            textViewPackageExtendNoOfDays.setText(" + " + promoCode.getExtraNumberOfDays() + " days");
+            textViewPackageExtendNoOfDays.setText(LanguageUtils.numberConverter(promoCode.getExtraNumberOfDays() / 30) + " " + getString(R.string.month));
+        } else {
+            String days = LanguageUtils.numberConverter(promoCode.getExtraNumberOfDays()) + " " + getString(R.string.days);
+            textViewPackageExtendNoOfDays.setText(days);
 
-
+        }
     }
 
 
@@ -532,6 +536,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     } else {
                         textViewPromoCodeText.setText(getResources().getString(R.string.discount_promo_applied));
                         textViewPackageExtendNoOfDays.setVisibility(View.GONE);
+                        textViewPlus.setVisibility(View.GONE);
                         textViewTotal.setText(LanguageUtils.numberConverter(promoCode.getPriceAfterDiscount(), 2) + " " + context.getString(R.string.currency));
                         textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(promoCode.getPriceAfterDiscount(), 2) + " " + context.getString(R.string.currency));
                         if (promoCode.getDiscount() != 0) {
@@ -557,6 +562,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 } else {
                     layoutPromoCode.setVisibility(View.GONE);
                     textViewPackageExtendNoOfDays.setVisibility(View.GONE);
+                    textViewPlus.setVisibility(View.GONE);
                     if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL))
                         textViewPackageClasses.setText(numberConverter(aPackage.getNoOfClass()) + " " + AppConstants.pluralES(getString(R.string.one_class), aPackage.getNoOfClass()) + " " + context.getString(R.string.at_any_gym));
                     else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
@@ -633,8 +639,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                             costAfterCreditApply = promoCode.getPriceAfterDiscount() - mWalletCredit.getBalance();
                             appliedCreditCost = mWalletCredit.getBalance();
                         }
-                    }
-                    else if (promoCode != null && promoCode.getDiscountType().equalsIgnoreCase("AMOUNT")){
+                    } else if (promoCode != null && promoCode.getDiscountType().equalsIgnoreCase("AMOUNT")) {
                         if (mWalletCredit.getBalance() > promoCode.getPriceAfterDiscount()) {
                             costAfterCreditApply = promoCode.getPriceAfterDiscount() - promoCode.getPriceAfterDiscount();
                             appliedCreditCost = promoCode.getPriceAfterDiscount();
@@ -642,8 +647,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                             costAfterCreditApply = promoCode.getPriceAfterDiscount() - mWalletCredit.getBalance();
                             appliedCreditCost = mWalletCredit.getBalance();
                         }
-                    }
-                        else {
+                    } else {
                         if (mWalletCredit.getBalance() > aPackage.getCost()) {
                             costAfterCreditApply = aPackage.getCost() - aPackage.getCost();
                             appliedCreditCost = aPackage.getCost();

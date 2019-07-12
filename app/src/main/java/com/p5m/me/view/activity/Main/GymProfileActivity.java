@@ -334,4 +334,29 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
                 break;
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void waitlistJoin(Events.WaitlistJoin data) {
+        handleWaitlistJoined(data.data);
+
+    }
+
+    private void handleWaitlistJoined(ClassModel data) {
+        try {
+            int index = gymProfileAdapter.getList().indexOf(data);
+            if (index != -1) {
+                Object obj = gymProfileAdapter.getList().get(index);
+                if (obj instanceof ClassModel) {
+                    ClassModel classModel = (ClassModel) obj;
+                    Helper.setWaitlistAddData(classModel, data);
+
+                    gymProfileAdapter.notifyItemChanged(index);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+
+    }
 }

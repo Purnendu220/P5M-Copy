@@ -421,8 +421,6 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
                         for (ClassModel classModel : classModels) {
                             classModel.setUserJoinStatus(true);
                         }
-
-
                     }
 
                     classListAdapter.addAllClass(classModels);
@@ -481,6 +479,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
             layoutNoData.setVisibility(View.GONE);
         }
     }
+
 
 
 }

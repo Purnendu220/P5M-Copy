@@ -57,6 +57,7 @@ import com.p5m.me.view.activity.Main.ClassProfileActivity;
 import com.p5m.me.view.activity.Main.GymProfileActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
+import com.p5m.me.view.activity.base.BaseActivity;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -379,8 +380,26 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, ClassModel model, int position) {
         switch (view.getId()) {
             case R.id.imageViewOptions:
-                ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, model, shownInScreen, viewHolder);
+                    ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, model, shownInScreen, viewHolder);
                 break;
+
+               /* if (model instanceof ClassModel) {
+                    ClassModel classModel = (ClassModel) model;
+                    if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
+                        popupOptionsRemove(context, ((BaseActivity) activity).networkCommunicator, view, classModel, shownIn);
+                    } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
+                        if (classModel.getRefBookingId() != null && classModel.getRefBookingId() > 0) {
+                            ClassListListenerHelper.popupOptionsCancelClassBookedWithFriend(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
+
+                        } else {
+                            ClassListListenerHelper.popupOptionsCancelClass(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
+
+                        }
+                    } else {
+                        ClassListListenerHelper.popupOptionsAdd(context, ((BaseActivity) activity).networkCommunicator, view, classModel, shownIn, viewHolder);
+                    }
+                }
+                break;*/
             case R.id.textViewLocation:
             case R.id.layoutLocation:
                 GymProfileActivity.open(context, model.getGymBranchDetail().getGymId(), shownInScreen);
@@ -395,19 +414,28 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
             case R.id.buttonJoin:
                 if (model instanceof ClassModel) {
                     ClassModel classModel = (ClassModel) model;
-                    if (classModel.getAvailableSeat() == 0) {
+                    // Check if class is allowed for the gender..
+                    if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
+                            && !Helper.isMalesAllowed(classModel)) {
+                        ToastUtils.show(context, context.getString(R.string.gender_females_only_error));
+                        return;
+                    } else if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
+                            && !Helper.isFemalesAllowed(classModel)) {
+                        ToastUtils.show(context, context.getString(R.string.gender_males_only_error));
+                        return;
+                    }
+                    if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus() == false) {
                         NetworkCommunicator.getInstance(context).addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
                             @Override
                             public void onApiSuccess(Object response, int requestCode) {
                                 try {
-                                    if (classModel.getAvailableSeat() == 0) {
-                                        String message = context.getString(R.string.added_to_waitlist);
-                                        DialogUtils.showBasicMessage(context, message, context.getString(R.string.wish_list), new MaterialDialog.SingleButtonCallback() {
+                                    if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus() == false) {
+                                        String message = String.format(context.getString(R.string.added_to_waitlist));
+                                        DialogUtils.showBasicMessage(context, message, context.getString(R.string.view_wishlist), new MaterialDialog.SingleButtonCallback() {
                                             @Override
                                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                                 Intent navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
                                                 context.startActivity(navigationIntent);
-
                                             }
                                         });
                                     } else {
@@ -415,7 +443,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                                         ToastUtils.show(context, message);
                                     }
                                     classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
-                                    classModel.setWishType("WAITLIST");
+                                    classModel.setWishType(AppConstants.ApiParamKey.WAITLIST);
                                     EventBroadcastHelper.sendWishAdded(classModel);
                                     ((ClassViewHolder) viewHolder).buttonJoin.setText(RemoteConfigConst.WAITLISTED_VALUE);
                                     RemoteConfigSetUp.setBackgroundColor(((ClassViewHolder) viewHolder).buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
@@ -431,6 +459,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
                             @Override
                             public void onApiFailure(String errorMessage, int requestCode) {
+                                ToastUtils.show(context, errorMessage);
 
                             }
                         });
@@ -439,51 +468,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                     }
                 }
                 break;
-                /*if (model instanceof ClassModel) {
-                    ClassModel classModel = (ClassModel) model;
-*/
-                 /*   if (model.getAvailableSeat() == 0) {
-                        NetworkCommunicator.getInstance(context).addToWishList(model, model.getClassSessionId(), new NetworkCommunicator.RequestListener() {
-                            @Override
-                            public void onApiSuccess(Object response, int requestCode) {
-                                try {
-                                    if (model.getAvailableSeat() == 0) {
-                                        String message = String.format(context.getString(R.string.added_to_waitlist), model.getTitle());
 
-                                        DialogUtils.showBasicMessage(context, message, context.getString(R.string.wish_list), (dialog, which) -> {
-                                            Intent navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
-                                            context.startActivity(navigationIntent);
-
-                                        });
-                                    } else {
-                                        String message = String.format(context.getString(R.string.added_to_wishlist), model.getTitle());
-                                        ToastUtils.show(context, message);
-                                    }
-                                    model.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
-                                    model.setWishType("WAITLIST");
-                                    EventBroadcastHelper.sendWishAdded(model);
-                                    ((ClassViewHolder) viewHolder).buttonJoin.setText(RemoteConfigConst.WAITLISTED_VALUE);
-                                    RemoteConfigSetUp.setBackgroundColor(((ClassViewHolder) viewHolder).buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
-
-
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    LogUtils.exception(e);
-                                }
-
-
-                            }
-
-                            @Override
-                            public void onApiFailure(String errorMessage, int requestCode) {
-
-                            }
-                        });
-                    } else
-                        ClassProfileActivity.open(context, model, shownInScreen);
-                }
-
-                break;*/
             default:
                 if (model instanceof ClassModel) {
                     ClassModel classModel = (ClassModel) model;

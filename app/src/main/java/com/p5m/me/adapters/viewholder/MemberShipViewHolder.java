@@ -292,7 +292,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
     private void setClassPromo(Package model) {
         layoutTimeClassPromo.setVisibility(View.VISIBLE);
-        textViewSpecialOffer.setText(Html.fromHtml("<font color='#FF0000'>" + context.getResources().getString(R.string.special_offer)
+        textViewSpecialOffer.setText(Html.fromHtml("<font color='#f34336'>" + context.getResources().getString(R.string.special_offer)
                 +  "</font>" +" " +model.getPromoResponseDto().getPromoDesc()));
     }
 
