@@ -380,26 +380,22 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, ClassModel model, int position) {
         switch (view.getId()) {
             case R.id.imageViewOptions:
-                    ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, model, shownInScreen, viewHolder);
-                break;
+                if(model.isUserJoinStatus()){
+                    ClassListListenerHelper ccc= new ClassListListenerHelper(context, activity, 12, this);
 
-               /* if (model instanceof ClassModel) {
-                    ClassModel classModel = (ClassModel) model;
-                    if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
-                        popupOptionsRemove(context, ((BaseActivity) activity).networkCommunicator, view, classModel, shownIn);
-                    } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
-                        if (classModel.getRefBookingId() != null && classModel.getRefBookingId() > 0) {
-                            ClassListListenerHelper.popupOptionsCancelClassBookedWithFriend(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
+                    if (model.getRefBookingId() != null && model.getRefBookingId() > 0) {
+                        ccc.popupOptionsCancelClassBookedWithFriend(context, ((BaseActivity) activity).networkCommunicator, view, model);
 
-                        } else {
-                            ClassListListenerHelper.popupOptionsCancelClass(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
-
-                        }
                     } else {
-                        ClassListListenerHelper.popupOptionsAdd(context, ((BaseActivity) activity).networkCommunicator, view, classModel, shownIn, viewHolder);
+                        ccc.popupOptionsCancelClass(context, ((BaseActivity) activity).networkCommunicator, view, model, true);
+
                     }
                 }
-                break;*/
+                else
+                    ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, model, shownInScreen, viewHolder);
+
+                    break;
+
             case R.id.textViewLocation:
             case R.id.layoutLocation:
                 GymProfileActivity.open(context, model.getGymBranchDetail().getGymId(), shownInScreen);

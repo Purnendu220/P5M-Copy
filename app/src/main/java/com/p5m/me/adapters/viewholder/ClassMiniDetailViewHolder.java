@@ -128,28 +128,30 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
 
             if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
                 imageViewChat.setVisibility(View.VISIBLE);
-                imageViewOptions1.setVisibility(View.VISIBLE);
+//                imageViewOptions1.setVisibility(View.VISIBLE);
                 imageViewOptions2.setVisibility(View.GONE);
                 trainerImage.setVisibility(View.VISIBLE);
                 textViewTrainerName.setVisibility(View.VISIBLE);
-                if (model.getRefBookingId() != null && model.getRefBookingId() > 0) {
+                /*if (model.getRefBookingId() != null && model.getRefBookingId() > 0) {
                     classBookedWithFriend.setVisibility(View.VISIBLE);
                 } else {
                     classBookedWithFriend.setVisibility(View.GONE);
 
-                }
-
-                buttonJoin.setVisibility(View.GONE);
-//                imageViewOptions1.setVisibility(View.GONE);
+                }*/
+// Handle Cancel Booking
+                buttonJoin.setVisibility(View.VISIBLE);
+               imageViewOptions1.setVisibility(View.GONE);
 //                imageViewOptions2.setVisibility(View.VISIBLE);
 
-            } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
+            }
+            else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
                 trainerImage.setVisibility(View.VISIBLE);
                 textViewTrainerName.setVisibility(View.VISIBLE);
 
                 buttonJoin.setVisibility(View.VISIBLE);
 
-            } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE) {
+            }
+            else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE) {
                 trainerImage.setVisibility(View.GONE);
                 textViewTrainerName.setVisibility(View.GONE);
 
@@ -165,7 +167,8 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
 //                    imageViewOptions2.setVisibility(View.GONE);
 //                }
 
-            } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE) {
+            }
+            else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE) {
                 trainerImage.setVisibility(View.VISIBLE);
                 textViewTrainerName.setVisibility(View.VISIBLE);
 
@@ -176,12 +179,9 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 layoutGender.setVisibility(View.VISIBLE);
                 textViewClassGender.setText(Helper.getClassGenderText(model.getClassType()));
 
-//                if (model.isUserJoinStatus()) {
-//                    imageViewOptions1.setVisibility(View.GONE);
-//                    imageViewOptions2.setVisibility(View.GONE);
-//                }
 
-            } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED) {
+            }
+            else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED) {
                 trainerImage.setVisibility(View.VISIBLE);
                 textViewTrainerName.setVisibility(View.VISIBLE);
 
@@ -201,7 +201,8 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
 
                 }
 
-            } else {
+            }
+            else {
                 trainerImage.setVisibility(View.VISIBLE);
                 textViewTrainerName.setVisibility(View.VISIBLE);
 
@@ -250,8 +251,15 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
             textViewClassName.setText(model.getTitle());
             textViewClassCategory.setText(model.getClassCategory());
             textViewClassDate.setText(DateUtils.getClassDate(model.getClassDate()));
+            if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
+                // In Schedule showing the Cancel Button
+                buttonJoin.setText(context.getString(R.string.cancel_class));
+                buttonJoin.setBackground(context.getDrawable(R.drawable.join_rect));
 
-            Helper.setJoinButton(context, buttonJoin, model);
+            }
+            else {
+                Helper.setJoinButton(context, buttonJoin, model);
+            }
             if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED) {
                 if (model.getRatingResDto() == null || model.getRatingResDto().getRating() == 0) {
                     buttonClassRating.setVisibility(View.VISIBLE);

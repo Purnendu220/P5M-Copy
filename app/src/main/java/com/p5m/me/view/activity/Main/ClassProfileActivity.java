@@ -648,13 +648,13 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 break;
             case R.id.imageViewOptions:
                 if(classModel.isUserJoinStatus()){
-                    ClassListListenerHelper ccc= new ClassListListenerHelper(context, activity, 12, this);
+                    ClassListListenerHelper classListListenerHelper= new ClassListListenerHelper(context, activity, 12, this);
 
                     if (classModel.getRefBookingId() != null && classModel.getRefBookingId() > 0) {
-                        ccc.popupOptionsCancelClassBookedWithFriend(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
+                        classListListenerHelper.popupOptionsCancelClassBookedWithFriend(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
 
                     } else {
-                        ccc.popupOptionsCancelClass(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
+                        classListListenerHelper.popupOptionsCancelClass(context, ((BaseActivity) activity).networkCommunicator, view, classModel, true);
 
                     }
                 }
