@@ -2,7 +2,6 @@ package com.p5m.me.view.activity.Main;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,11 +15,9 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -41,7 +38,6 @@ import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.ClassModel;
-import com.p5m.me.data.main.DefaultSettingServer;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
@@ -50,7 +46,6 @@ import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.firebase_dynamic_link.FirebaseDynamicLinnk;
-import com.p5m.me.helper.CancelBookingHelper;
 import com.p5m.me.helper.ClassListListenerHelper;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
@@ -652,6 +647,18 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 onBackPressed();
                 break;
             case R.id.imageViewOptions:
+                if(classModel.isUserJoinStatus()){
+                    ClassListListenerHelper ccc= new ClassListListenerHelper(context, activity, 12, this);
+
+                    if (classModel.getRefBookingId() != null && classModel.getRefBookingId() > 0) {
+                        ccc.popupOptionsCancelClassBookedWithFriend(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
+
+                    } else {
+                        ccc.popupOptionsCancelClass(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
+
+                    }
+                }
+                else
                 ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, classModel, navigationFrom, null);
                 break;
 

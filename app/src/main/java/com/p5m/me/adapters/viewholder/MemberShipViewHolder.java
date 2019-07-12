@@ -291,9 +291,12 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void setClassPromo(Package model) {
-        layoutTimeClassPromo.setVisibility(View.VISIBLE);
-        textViewSpecialOffer.setText(Html.fromHtml("<font color='#f34336'>" + context.getResources().getString(R.string.special_offer)
-                +  "</font>" +" " +model.getPromoResponseDto().getPromoDesc()));
+        if(model.getPromoResponseDto().getPromoDesc()!=null) {
+            layoutTimeClassPromo.setVisibility(View.VISIBLE);
+            textViewSpecialOffer.setText(Html.fromHtml("<font color='#f34336'>" + context.getResources().getString(R.string.special_offer)
+                    + "</font>" + " " + model.getPromoResponseDto().getPromoDesc()));
+
+        }
     }
 
     private void setTextValidityPeriod(Package model) {

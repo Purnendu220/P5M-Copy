@@ -186,7 +186,7 @@
                             android:layout_marginEnd="@dimen/margin_10"
                             android:orientation="horizontal"
 
-                            android:visibility="visible">
+                            android:visibility="gone">
 
                             <ImageView
                                 android:id="@+id/imageViewSpecialOffer"
