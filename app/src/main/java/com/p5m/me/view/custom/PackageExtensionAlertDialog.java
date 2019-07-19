@@ -123,7 +123,7 @@ public class PackageExtensionAlertDialog extends Dialog implements View.OnClickL
                     weekValue = weekValue + 1;
                     handlePlusMinus(weekValue);
                 } else {
-                    ToastUtils.show(mContext, mContext.getString(R.string.extend_package_limit) + weeksExtensionAllowed + " " + mContext.getString(R.string.weeks));
+                    ToastUtils.show(mContext, mContext.getString(R.string.extend_package_limit)+" " + numberConverter(weeksExtensionAllowed) + " " + mContext.getString(R.string.weeks));
                 }
 
             }
@@ -158,8 +158,7 @@ public class PackageExtensionAlertDialog extends Dialog implements View.OnClickL
                 if (selectedPacakageFromList.getDuration() == 1)
                     textViewWeekValue.setText(getContext().getString(R.string.a_week));
                 else{
-                    int weeks = Integer.parseInt(numberConverter(selectedPacakageFromList.getDuration()));
-                    textViewWeekValue.setText(String.format(getContext().getString(R.string.weeks), weeks));
+                    textViewWeekValue.setText(numberConverter(selectedPacakageFromList.getDuration())+" "+getContext().getString(R.string.weeks));
                 }
                 String validUntill = DateUtils.getExtendedExpiryDate(userPackage.getExpiryDate(), selectedPacakageFromList.getDuration());
                 String message = String.format(mContext.getString(R.string.valid_intil), validUntill);

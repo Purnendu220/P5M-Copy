@@ -333,7 +333,7 @@
     <string name="confirm_your_new_password">Confirm your new password</string>
     <string name="please_enter_current_password">Please enter your current password</string>
     <string name="please_enter_a_new_password">Please enter a new password</string>
-    <string name="weeks">%d weeks</string>
+    <string name="weeks"> weeks</string>
     <string name="please_allow_location">Please allow P5M to use your Location</string>
     <string name="need_location">Need Location</string>
     <string name="this_package_has">This package has</string>
