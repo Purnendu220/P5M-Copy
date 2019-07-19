@@ -5,6 +5,11 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -13,13 +18,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -284,9 +282,18 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public void textViewBook() {
         isBookWithFriendInProgress = false;
         mBookWithFriendData = null;
+        // Check if class is allowed for the gender..
+        if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
+                && !Helper.isMalesAllowed(classModel)) {
+            ToastUtils.show(context, context.getString(R.string.gender_females_only_error));
+            return;
+        } else if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
+                && !Helper.isFemalesAllowed(classModel)) {
+            ToastUtils.show(context, context.getString(R.string.gender_males_only_error));
+            return;
+        }
         textViewBook.setText(context.getResources().getString(R.string.please_wait));
-
-        if (classModel.getAvailableSeat() == 0) {
+        if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus()==false) {
             networkCommunicator.addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
                 @Override
                 public void onApiSuccess(Object response, int requestCode) {
@@ -334,16 +341,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             });
             return;
         }
-        // Check if class is allowed for the gender..
-        if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
-                && !Helper.isMalesAllowed(classModel)) {
-            ToastUtils.show(context, context.getString(R.string.gender_females_only_error));
-            return;
-        } else if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
-                && !Helper.isFemalesAllowed(classModel)) {
-            ToastUtils.show(context, context.getString(R.string.gender_males_only_error));
-            return;
-        }
+
 
         if (Helper.isSpecialClass(classModel)) {
             if (Helper.isFreeClass(classModel))
@@ -931,7 +929,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 swipeRefreshLayout.setEnabled(true);
 
                 if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
-                    layoutBottomTabs.setVisibility(View.GONE);
                     DialogUtils.showBasicMessage(context, errorMessage, getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {

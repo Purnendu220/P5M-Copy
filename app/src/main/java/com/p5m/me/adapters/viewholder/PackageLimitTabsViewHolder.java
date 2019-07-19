@@ -13,6 +13,7 @@ import com.p5m.me.R;
 import com.p5m.me.adapters.PackageLimitAdapter;
 import com.p5m.me.data.PackageLimitListItem;
 import com.p5m.me.data.PackageLimitModel;
+import com.p5m.me.utils.LanguageUtils;
 
 import java.util.List;
 
@@ -49,11 +50,11 @@ public class PackageLimitTabsViewHolder extends RecyclerView.ViewHolder {
 
                     String text = "";
                     if (packageLimitModel.getNumberOfVisit() == 1) {
-                        text = packageLimitModel.getNumberOfVisit() + " TIME";
+                        text = LanguageUtils.numberConverter(packageLimitModel.getNumberOfVisit()) + " " + context.getString(R.string.time);
                     } else if (packageLimitModel.getNumberOfVisit() == 0) {
-                        text = "UNLIMITED";
+                        text = context.getResources().getString(R.string.unlimited);
                     } else {
-                        text = packageLimitModel.getNumberOfVisit() + " TIMES";
+                        text = LanguageUtils.numberConverter(packageLimitModel.getNumberOfVisit()) + " " + context.getString(R.string.times);
                     }
 
                     if (model.getSelectedTab() == index) {

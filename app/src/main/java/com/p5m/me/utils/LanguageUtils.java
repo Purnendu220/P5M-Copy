@@ -57,7 +57,7 @@ public class LanguageUtils {
     {
         NumberFormat format = DecimalFormat.getInstance();
         format.setRoundingMode(RoundingMode.FLOOR);
-        format.setMinimumFractionDigits(0);
+        format.setMinimumFractionDigits(decimalDigits);
         format.setMaximumFractionDigits(decimalDigits);
         return format.format(value);
 

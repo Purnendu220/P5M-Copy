@@ -53,7 +53,6 @@ import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.custom.CustomRateAlertDialog;
-import com.p5m.me.view.fragment.MySchedule;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -107,7 +106,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             case R.id.buttonJoin:
                 if (model instanceof ClassModel) {
                     ClassModel classModel = (ClassModel) model;
-                   /* if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
+                    if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
                             && !Helper.isMalesAllowed(classModel)) {
                         ToastUtils.show(context, context.getString(R.string.gender_females_only_error));
                         return;
@@ -116,20 +115,19 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                         ToastUtils.show(context, context.getString(R.string.gender_males_only_error));
                         return;
                     }
-                    else */
-                        if (classModel.getAvailableSeat() == 0) {
+                    if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus() == false) {
                         NetworkCommunicator.getInstance(context).addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
                             @Override
                             public void onApiSuccess(Object response, int requestCode) {
                                 try {
-                                    if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus()==false) {
+                                    if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus() == false) {
                                         String message = context.getString(R.string.added_to_waitlist);
                                         classModel.setWishType(AppConstants.ApiParamKey.WAITLIST);
                                         classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
-                                        EventBroadcastHelper.waitlistClassJoin(context,classModel);
+                                        EventBroadcastHelper.waitlistClassJoin(context, classModel);
                                         EventBroadcastHelper.sendWishAdded(classModel);
 
-                                     DialogUtils.showBasicMessage(context, message, context.getString(R.string.view_wishlist), new MaterialDialog.SingleButtonCallback() {
+                                        DialogUtils.showBasicMessage(context, message, context.getString(R.string.view_wishlist), new MaterialDialog.SingleButtonCallback() {
                                             @Override
                                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                                 Intent navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
@@ -152,7 +150,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
                             @Override
                             public void onApiFailure(String errorMessage, int requestCode) {
-                                ToastUtils.show(context,errorMessage);
+                                ToastUtils.show(context, errorMessage);
 //
                             }
                         });
@@ -302,32 +300,37 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             @Override
             public void onClick(View view) {
                 popupWindow.dismiss();
+                // Check if class is allowed for the gender..
+                if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
+                        && !Helper.isMalesAllowed(model)) {
+                    ToastUtils.show(context, context.getString(R.string.gender_females_only_error));
+                    return;
+                } else if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
+                        && !Helper.isFemalesAllowed(model)) {
+                    ToastUtils.show(context, context.getString(R.string.gender_males_only_error));
+                    return;
+                }
                 networkCommunicator.addToWishList(model, model.getClassSessionId(), new NetworkCommunicator.RequestListener() {
                     @Override
                     public void onApiSuccess(Object response, int requestCode) {
 
                         try {
-                            if (model.getAvailableSeat() == 0 && model.isUserJoinStatus()==false) {
+                            if (model.getAvailableSeat() == 0 && model.isUserJoinStatus() == false) {
                                 String message = String.format(context.getString(R.string.added_to_waitlist));
 //                                ToastUtils.show(context, message);
                                 model.setWishType(AppConstants.ApiParamKey.WAITLIST);
 
                                 model.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
                                 EventBroadcastHelper.sendWishAdded(model);
-                                    EventBroadcastHelper.waitlistClassJoin(context,model);
+                                EventBroadcastHelper.waitlistClassJoin(context, model);
 
 
                                 DialogUtils.showBasicMessage(context, message, context.getString(R.string.view_wishlist), new MaterialDialog.SingleButtonCallback() {
                                     @Override
                                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-//                                         HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
-//                                        context.startActivity(navigationIntent);
-//                                        Helper.setJoinButton(context, buttonJoin, model);
-//                                        HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
-//                                        ((HomeActivity)context).onTabChange(AppConstants.Tab.TAB_SCHEDULE,AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
                                         Intent navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
                                         context.startActivity(navigationIntent);
-
+//                                        Helper.setJoinButton(context, buttonJoin, model);
                                     }
                                 });
 

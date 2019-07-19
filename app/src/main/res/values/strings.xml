@@ -493,7 +493,14 @@ Would you like to view your balance? </string>
     <string name="waitlisted">Waitlisted</string>
     <string name="join_waitlist">Join Waitlist</string>
     <string name="view_wishlist">View my Wishlist</string>
+    <string name="time_offer_promo">Extra time offer applied</string>
+    <string name="class_offer_promo">Free class offer applied</string>
+    <string name="discount_promo_applied">Discount applied</string>
+    <string name="special_offer">Special Offer:</string>
     <string name="or">OR</string>
+    <string name="times">Times</string>
+    <string name="unlimited">UNLIMITED</string>
+    <string name="days">days</string>
 
 
     <string-array name="schedule_list">
