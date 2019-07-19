@@ -150,8 +150,8 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
         handleClassJoined(data.data);
     }
 
-    private void handleClassJoined(ClassModel data) {
-        try {
+    private void handleClassJoined(ClassModel model) {
+       /* try {
             int index = trainerProfileAdapter.getList().indexOf(data);
             if (index != -1) {
                 Object obj = trainerProfileAdapter.getList().get(index);
@@ -162,6 +162,35 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
                     trainerProfileAdapter.notifyItemChanged(index);
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }*/
+
+
+        try {
+            networkCommunicator.getClassDetail(model.getClassSessionId(), new NetworkCommunicator.RequestListener() {
+                @Override
+                public void onApiSuccess(Object response, int requestCode) {
+                    ClassModel  data = ((ResponseModel<ClassModel>) response).data;
+                    int index = trainerProfileAdapter.getList().indexOf(model);
+                    if (index != -1) {
+                        Object obj = trainerProfileAdapter.getList().get(index);
+                        if (obj instanceof ClassModel) {
+                            ClassModel classModel = (ClassModel) obj;
+                            Helper.setClassJoinEventData(classModel, data);
+                            trainerProfileAdapter.notifyItemChanged(index);
+
+                        }
+                    }
+                }
+
+                @Override
+                public void onApiFailure(String errorMessage, int requestCode) {
+                    ToastUtils.show(TrainerProfileActivity.this,errorMessage);
+                }
+            },false);
+
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);

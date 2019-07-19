@@ -256,8 +256,11 @@
     <string name="powered_by">Powered By</string>
 
     <string name="selection_limiter_pix">Can\'t select more than %d images.</string>
-    <string name="valid_for_weeks">Valid for %d week(s)</string>
-    <string name="valid_for_months">Valid for %d month(s)</string>
+    <string name="valid_for_a_week">Valid for 1 week</string>
+    <string name="valid_for_weeks">Valid for %d weeks</string>
+    <string name="valid_for_a_months">Valid for 1 month</string>
+
+    <string name="valid_for_months">Valid for %d months</string>
     <string name="message_to_drag_up">Drag images up for gallery</string>
     <string name="pix_ok">OK</string>
     <string name="pix_tap_to_select">Tap photo to select</string>
@@ -330,7 +333,7 @@
     <string name="confirm_your_new_password">Confirm your new password</string>
     <string name="please_enter_current_password">Please enter your current password</string>
     <string name="please_enter_a_new_password">Please enter a new password</string>
-    <string name="weeks">Week(s)</string>
+    <string name="weeks">%d weeks</string>
     <string name="please_allow_location">Please allow P5M to use your Location</string>
     <string name="need_location">Need Location</string>
     <string name="this_package_has">This package has</string>
@@ -345,7 +348,8 @@
     <string name="membership_no_package_heading_2" translatable="false" />
     <string name="no_more_trainers">No more trainers</string>
 
-
+    <string name="a_month"> 1 Month</string>
+    <string name="months">%d Months</string>
     <string name="booked_with_friend">2 Bookings</string>
     <string name="own_email_error_text">You can\'t use your email.</string>
     <string name="gender_females_only_error">This is a Females only class</string>
@@ -371,11 +375,11 @@
     <string name="needs_your_email">P5M needs your Email</string>
     <string name="needs_your_gender">P5M needs your Gender</string>
     <string name="sure_unjoin_both">Are you sure you want to cancel both bookings ?</string>
-    <string name="sure_unjoin_friend">Are you sure you want to cancel your friends booking ?</string>
+    <string name="sure_unjoin_friend">Are you sure you want to cancel your friend\'s booking ?</string>
     <string name="join_fail_limit_exhaust_booking_with_friend">You have exceeded the number of visits to the following studio. Would you like to continue and purchase a one-time visit to this class, for your guest?</string>
     <string name="join_fail_limit_exhaust_booking_with_friend_two_ready">You have exceeded the number of visits to the following studio. Would you like to continue and purchase %1d one-time visits to this class, for yourself and your guest?</string>
     <string name="cancel_class_self">Unjoin My Class</string>
-    <string name="cancel_class_friend">Cancel Friends\'s booking</string>
+    <string name="cancel_class_friend">Cancel Friend\'s booking</string>
     <string name="cancel_class_both">Cancel Both bookings</string>
     <string name="limit_for_this_gym" translatable="false">visit limit for this gym.So you need to buy different package to book with friend.</string>
     <string name="by_making_this_booking_2_classes_will_be_deducted_from_your_balance_book_with_a_friend">By making this booking, 2 classes will be deducted from your balance.</string>
@@ -501,6 +505,7 @@ Would you like to view your balance? </string>
     <string name="times">Times</string>
     <string name="unlimited">UNLIMITED</string>
     <string name="days">days</string>
+    <string name="a_week">1 week</string>
 
 
     <string-array name="schedule_list">

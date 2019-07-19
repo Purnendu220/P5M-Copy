@@ -67,6 +67,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         this.adapterCallbacks = adapterCallbacks;
     }
 
+
     @Override
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
         switch (view.getId()) {
@@ -77,12 +78,13 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                     ClassModel classModel = (ClassModel) model;
                     if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
                         popupOptionsRemove(context, ((BaseActivity) activity).networkCommunicator, view, classModel, shownIn);
-                    } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
+//                    } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
+                    } else if (((ClassModel) model).isUserJoinStatus()) {
                         if (classModel.getRefBookingId() != null && classModel.getRefBookingId() > 0) {
                             popupOptionsCancelClassBookedWithFriend(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
 
                         } else {
-                            popupOptionsCancelClass(context, ((BaseActivity) activity).networkCommunicator, view, classModel, false);
+                            popupOptionsCancelClass(context, ((BaseActivity) activity).networkCommunicator, view, classModel, true);
 
                         }
                     } else {
@@ -100,7 +102,11 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                     if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
 
                         if (classModel.getRefBookingId() != null && classModel.getRefBookingId() > 0) {
-                            popupOptionsCancelClassBookedWithFriend(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
+//                            popupOptionsCancelClassBookedWithFriend(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
+                            CancelBookingBottomDialogFragment cancelBookingBottomDialogFragment =
+                                    CancelBookingBottomDialogFragment.newInstance(classModel, true,this);
+                            cancelBookingBottomDialogFragment.show(((HomeActivity) context).getSupportFragmentManager(),
+                                    "cancel_friend_booking");
 
                         } else {
                             dialogConfirmUnJoin(context, ((BaseActivity) activity).networkCommunicator, classModel, classModel.getJoinClassId());
@@ -175,6 +181,16 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                     }
                 }
                 break;
+            case R.id.imageViewInviteFriend:
+                if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
+                    if (model instanceof ClassModel) {
+                        ClassModel classModel = (ClassModel) model;
+
+                        Helper.shareClass(context, classModel.getClassSessionId(), classModel.getTitle());
+
+                    }
+                }
+                break;
 
             default:
                 if (shownIn != AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED) {
@@ -203,17 +219,17 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             }
         });
 
-            TextView textViewOption2 = viewRoot.findViewById(R.id.textViewOption2);
+        TextView textViewOption2 = viewRoot.findViewById(R.id.textViewOption2);
 //        textViewOption2.setText(context.getString(R.string.share));
-            textViewOption2.setText(RemoteConfigConst.INVITE_FRIENDS_VALUE);
+        textViewOption2.setText(RemoteConfigConst.INVITE_FRIENDS_VALUE);
 
-            textViewOption2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    popupWindow.dismiss();
-                    Helper.shareClass(context, model.getClassSessionId(), model.getTitle());
-                }
-            });
+        textViewOption2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindow.dismiss();
+                Helper.shareClass(context, model.getClassSessionId(), model.getTitle());
+            }
+        });
         if (isShowInviteFriends)
             textViewOption2.setVisibility(View.VISIBLE);
         else
@@ -421,7 +437,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
-    private void dialogConfirmUnJoin(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, final int unJoinClassId) {
+    public void dialogConfirmUnJoin(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, final int unJoinClassId) {
 
         String message = context.getString(R.string.sure_unjoin);
 
@@ -492,8 +508,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
                         try {
                             model.setUserJoinStatus(false);
-                            EventBroadcastHelper.sendClassJoin(context, model);
                             EventBroadcastHelper.sendUserUpdate(context, ((ResponseModel<User>) response).data);
+                            EventBroadcastHelper.sendClassJoin(context, model, false);
                             MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
                             FirebaseAnalysic.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
                             materialDialog.dismiss();
@@ -520,7 +536,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
     }
 
 
-    private void dialogConfirmUnJoinBookWithFriend(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, final int unJoinClassId, final int unJoinType) {
+    public void dialogConfirmUnJoinBookWithFriend(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, final int unJoinClassId, final int unJoinType) {
 
         String message = context.getString(R.string.sure_unjoin);
 
@@ -596,9 +612,10 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                     public void onApiSuccess(Object response, int requestCode) {
 
                         try {
-                            model.setUserJoinStatus(false);
-                            EventBroadcastHelper.sendClassJoin(context, model);
+//                            model.setUserJoinStatus(false);
                             EventBroadcastHelper.sendUserUpdate(context, ((ResponseModel<User>) response).data);
+                            EventBroadcastHelper.sendClassJoin(context, model, true);
+
                             MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
                             FirebaseAnalysic.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
                             materialDialog.dismiss();

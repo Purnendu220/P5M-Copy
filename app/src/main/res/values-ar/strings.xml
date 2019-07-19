@@ -438,10 +438,14 @@
     <string name="powered_by">مشغل بواسطة</string>
 
     <string name="selection_limiter_pix">لا يمكن تحديد أكثر من صور %d.</string>
+    <string name="valid_for_a_week">صالح لمدة أسبوع ١</string>
 
-    <string name="valid_for_weeks">أسبوع %d صالحة لمدة</string>
+    <!--<string name="valid_for_weeks">أسبوع %d صالحة لمدة</string>-->
+    <string name="valid_for_weeks">أسابيع %d صالحة لمدة</string>
 
     <string name="valid_for_months">شهر %d صالح لمدة</string>
+    <!--<string name="valid_for_months">شهر %d صالح لمدة</string>-->
+    <string name="valid_for_a_months">صالح لمدة شهر ١</string>
 
     <string name="message_to_drag_up">اسحب الصور لأعلى للمعرض</string>
 
@@ -500,7 +504,7 @@
 
     <string name="class_remaining_for">كلاسات متبقية حتى</string>
 
-    <string name="valid_for">صالح حتى</string>
+    <string name="valid_for"> صالح لمدة</string>
 
     <string name="promo_code_applied">رمز الكوبون المستخدم</string>
 
@@ -578,7 +582,7 @@
 
     <string name="please_enter_a_new_password">يرجى إدخال كلمة مرور جديدة</string>
 
-    <string name="weeks">أسابيع</string>
+    <string name="weeks">أسابيع %d</string>
 
     <string name="please_allow_location">يرجى السماح لP5M بإستخدام موقعك</string>
 
@@ -761,6 +765,8 @@
 
     <string name="week">أسبوع</string>
 
+    <string name="a_month"> شهر ١</string>
+    <string name="months">شهر %d</string>
     <string name="month">شهر</string>
 
     <string name="at_any_gym"></string>
@@ -882,6 +888,7 @@
     <string name="times">الوقت</string>
     <string name="unlimited">غير محدود</string>
     <string name="days">يوم</string>
+    <string name="a_week"> أسبوع ١</string>
 
 
 </resources>

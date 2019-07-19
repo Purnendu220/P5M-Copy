@@ -48,6 +48,8 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
     public ImageView imageViewOptions2;
     @BindView(R.id.imageViewClassGender)
     public ImageView imageViewClassGender;
+    @BindView(R.id.imageViewInviteFriend)
+    public ImageView imageViewInviteFriend;
 
     @BindView(R.id.trainerImage)
     public View trainerImage;
@@ -128,30 +130,28 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
 
             if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
                 imageViewChat.setVisibility(View.VISIBLE);
-//                imageViewOptions1.setVisibility(View.VISIBLE);
+                imageViewInviteFriend.setVisibility(View.VISIBLE);
                 imageViewOptions2.setVisibility(View.GONE);
                 trainerImage.setVisibility(View.VISIBLE);
                 textViewTrainerName.setVisibility(View.VISIBLE);
-                /*if (model.getRefBookingId() != null && model.getRefBookingId() > 0) {
+                if (model.getRefBookingId() != null && model.getRefBookingId() > 0) {
                     classBookedWithFriend.setVisibility(View.VISIBLE);
                 } else {
                     classBookedWithFriend.setVisibility(View.GONE);
 
-                }*/
-// Handle Cancel Booking
+                }
+                // Handle Cancel Booking
                 buttonJoin.setVisibility(View.VISIBLE);
-               imageViewOptions1.setVisibility(View.GONE);
+                imageViewOptions1.setVisibility(View.GONE);
 //                imageViewOptions2.setVisibility(View.VISIBLE);
 
-            }
-            else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
+            } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
                 trainerImage.setVisibility(View.VISIBLE);
                 textViewTrainerName.setVisibility(View.VISIBLE);
 
                 buttonJoin.setVisibility(View.VISIBLE);
 
-            }
-            else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE) {
+            } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE) {
                 trainerImage.setVisibility(View.GONE);
                 textViewTrainerName.setVisibility(View.GONE);
 
@@ -167,8 +167,7 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
 //                    imageViewOptions2.setVisibility(View.GONE);
 //                }
 
-            }
-            else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE) {
+            } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE) {
                 trainerImage.setVisibility(View.VISIBLE);
                 textViewTrainerName.setVisibility(View.VISIBLE);
 
@@ -180,8 +179,7 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 textViewClassGender.setText(Helper.getClassGenderText(model.getClassType()));
 
 
-            }
-            else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED) {
+            } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED) {
                 trainerImage.setVisibility(View.VISIBLE);
                 textViewTrainerName.setVisibility(View.VISIBLE);
 
@@ -201,8 +199,7 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
 
                 }
 
-            }
-            else {
+            } else {
                 trainerImage.setVisibility(View.VISIBLE);
                 textViewTrainerName.setVisibility(View.VISIBLE);
 
@@ -253,11 +250,10 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
             textViewClassDate.setText(DateUtils.getClassDate(model.getClassDate()));
             if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
                 // In Schedule showing the Cancel Button
-                buttonJoin.setText(context.getString(R.string.cancel_class));
-                buttonJoin.setBackground(context.getDrawable(R.drawable.join_rect));
+                buttonJoin.setText(context.getString(R.string.cancel));
+                buttonJoin.setBackground(context.getDrawable(R.drawable.full_rect));
 
-            }
-            else {
+            } else {
                 Helper.setJoinButton(context, buttonJoin, model);
             }
             if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED) {
@@ -308,6 +304,12 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                     adapterCallbacks.onAdapterItemClick(ClassMiniDetailViewHolder.this, imageViewChat, model, position);
                 }
             });
+            imageViewInviteFriend.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ClassMiniDetailViewHolder.this, imageViewInviteFriend, model, position);
+                }
+            });
             buttonClassRating.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -345,7 +347,6 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
             itemView.setVisibility(View.GONE);
         }
     }
-
 
 
     private void setTextFitnessLevel(ClassModel model) {

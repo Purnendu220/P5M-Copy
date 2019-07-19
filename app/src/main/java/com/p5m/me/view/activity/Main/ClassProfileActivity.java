@@ -648,7 +648,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 break;
             case R.id.imageViewOptions:
                 if(classModel.isUserJoinStatus()){
-                    ClassListListenerHelper classListListenerHelper= new ClassListListenerHelper(context, activity, 12, this);
+                    ClassListListenerHelper classListListenerHelper= new ClassListListenerHelper(context, activity, AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING, this);
 
                     if (classModel.getRefBookingId() != null && classModel.getRefBookingId() > 0) {
                         classListListenerHelper.popupOptionsCancelClassBookedWithFriend(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
@@ -685,13 +685,12 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             case NetworkCommunicator.RequestCode.JOIN_CLASS:
 
                 User user = ((ResponseModel<User>) response).data;
-
+                classModel.setUserJoinStatus(true);
                 EventBroadcastHelper.sendUserUpdate(context, user);
 
-                classModel.setUserJoinStatus(true);
-                EventBroadcastHelper.sendClassJoin(context, classModel);
 
-                classModel.setUserJoinStatus(true);
+                EventBroadcastHelper.sendClassJoin(context, classModel, false);
+
 
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 

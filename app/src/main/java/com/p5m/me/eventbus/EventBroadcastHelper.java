@@ -114,14 +114,15 @@ public class EventBroadcastHelper {
         GlobalBus.getBus().post(new Events.PackagePurchased());
     }
 
-    public static void sendClassJoin(Context context, ClassModel classModel) {
-        if (classModel.isUserJoinStatus()) {
-            classModel.setAvailableSeat(classModel.getAvailableSeat() - 1);
-        } else {
-            classModel.setAvailableSeat(classModel.getAvailableSeat() + 1);
+    public static void sendClassJoin(Context context, ClassModel classModel, boolean isFriendUnjoin) {
+        if(!isFriendUnjoin) {
+            if (classModel.isUserJoinStatus()) {
+                classModel.setAvailableSeat(classModel.getAvailableSeat() - 1);
+            } else {
+                classModel.setAvailableSeat(classModel.getAvailableSeat() + 1);
+            }
         }
-
-        GlobalBus.getBus().post(new Events.ClassJoin(classModel));
+        GlobalBus.getBus().post(new Events.ClassJoin(classModel,isFriendUnjoin));
     }
 
     public static void waitlistClassRemove(Context context, ClassModel classModel) {

@@ -697,7 +697,7 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
                 EventBroadcastHelper.sendUserUpdate(context, user);
 
                 classModel.setUserJoinStatus(true);
-                EventBroadcastHelper.sendClassJoin(context, classModel);
+                EventBroadcastHelper.sendClassJoin(context, classModel, false);
 
                 classModel.setUserJoinStatus(true);
 

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/dp_8"
+    android:layout_marginTop="@dimen/dp_8"
+    android:orientation="vertical">
+
+
+
+    <TextView
+        android:id="@+id/textViewCancelBooking"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_48"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:layout_marginStart="@dimen/dp_16"
+        android:backgroundTint="@android:color/white"
+        android:drawablePadding="@dimen/dp_32"
+        android:gravity="center|center_vertical"
+        android:text="@string/cancel_class"
+        android:textColor="@color/theme_book"
+        android:visibility="gone"
+        android:textSize="16sp" />
+    <TextView
+        android:id="@+id/textViewCancelFriendBooking"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_48"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:layout_marginStart="@dimen/dp_16"
+        android:backgroundTint="@android:color/white"
+        android:drawablePadding="@dimen/dp_32"
+        android:gravity="center|center_vertical"
+        android:text="@string/cancel_class_friend"
+        android:textColor="@color/theme_book"
+        android:textSize="16sp" />
+<TextView
+        android:id="@+id/textViewCancelBothBooking"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_48"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:layout_marginStart="@dimen/dp_16"
+        android:backgroundTint="@android:color/white"
+        android:drawablePadding="@dimen/dp_32"
+        android:gravity="center|center_vertical"
+        android:text="@string/cancel_class_both"
+        android:textColor="@color/theme_book"
+        android:textSize="16sp" />
+
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey" />
+
+    <TextView
+        android:id="@+id/textViewDialogDismiss"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_48"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:layout_marginStart="@dimen/dp_16"
+        android:backgroundTint="@android:color/white"
+        android:drawablePadding="@dimen/dp_32"
+        android:gravity="center|center_vertical"
+        android:text="@string/cancel"
+        android:textColor="@color/theme_book"
+        android:textSize="16sp" />
+
+</LinearLayout>

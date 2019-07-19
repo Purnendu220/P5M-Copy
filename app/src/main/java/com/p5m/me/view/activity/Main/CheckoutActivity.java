@@ -399,7 +399,10 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 }
                 String extentTerm = String.format(mContext.getString(R.string.extend_term), selectedPacakageFromList.getDuration(), remainigExtension);
                 textViewCancellationPolicy.setText(extentTerm);
-                validityUnit.setText(numberConverter(selectedPacakageFromList.getDuration()) + " " + getString(R.string.weeks) + message);
+                if (selectedPacakageFromList.getDuration() == 1)
+                    validityUnit.setText(getString(R.string.a_week) + message);
+                else
+                    validityUnit.setText(numberConverter(selectedPacakageFromList.getDuration()) + " " + getString(R.string.weeks) + message);
                 textViewPackageValidityExtend.setText(getString(R.string.valid_for) + " " + userPackage.getPackageName() + " " + context.getString(R.string.package_name));
 
                 Helper.setPackageImage(imageViewPackageImage, AppConstants.Values.SPECIAL_CLASS_ID);
@@ -418,11 +421,22 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void setTextValidityPeriod(Package model) {
-        if (model.getValidityPeriod().contains("MONTH"))
+        if (model.getValidityPeriod().contains("MONTH")) {
+            if (model.getDuration() == 1) {
+                textViewPackageValidity.setText(context.getResources().getString(R.string.valid_for_a_months));
+            } else
+                textViewPackageValidity.setText(String.format(context.getResources().getString(R.string.valid_for_months), model.getDuration()));
+
 //         textViewPackageValidity.setText(context.getString(R.string.valid_for) + " " + numberConverter(model.getDuration()) + " " + AppConstants.plural(validityPeriod, model.getDuration()));
-            textViewPackageValidity.setText(String.format(context.getResources().getString(R.string.valid_for_months), model.getDuration()));
-        else if (model.getValidityPeriod().contains("WEEK"))
-            textViewPackageValidity.setText(String.format(context.getResources().getString(R.string.valid_for_weeks), model.getDuration()));
+//            textViewPackageValidity.setText(String.format(context.getResources().getString(R.string.valid_for_months), model.getDuration()));
+        } else if (model.getValidityPeriod().contains("WEEK")) {
+            if (model.getDuration() == 1) {
+                textViewPackageValidity.setText(context.getResources().getString(R.string.valid_for_a_week));
+            } else
+                textViewPackageValidity.setText(String.format(context.getResources().getString(R.string.valid_for_weeks), model.getDuration()));
+
+        }
+//            textViewPackageValidity.setText(String.format(context.getResources().getString(R.string.valid_for_weeks), model.getDuration()));
 
     }
 
@@ -512,9 +526,16 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
     private void roundFigureOfDays(int extraNumberOfDays) {
         if (extraNumberOfDays >= 7 && extraNumberOfDays % 7 == 0) {
-            textViewPackageExtendNoOfDays.setText(LanguageUtils.numberConverter(promoCode.getExtraNumberOfDays() / 7) + " " + getString(R.string.weeks));
+            if (extraNumberOfDays / 7 == 1)
+                textViewPackageExtendNoOfDays.setText( getString(R.string.a_week));
+            else
+                textViewPackageExtendNoOfDays.setText(LanguageUtils.numberConverter(promoCode.getExtraNumberOfDays() / 7) + " " + getString(R.string.weeks));
         } else if (extraNumberOfDays >= 30 && extraNumberOfDays % 30 == 0) {
-            textViewPackageExtendNoOfDays.setText(LanguageUtils.numberConverter(promoCode.getExtraNumberOfDays() / 30) + " " + getString(R.string.month));
+            if(extraNumberOfDays /30 ==1)
+                textViewPackageExtendNoOfDays.setText(LanguageUtils.numberConverter(promoCode.getExtraNumberOfDays() / 30) + " " + getString(R.string.a_month));
+            else
+                textViewPackageExtendNoOfDays.setText(LanguageUtils.numberConverter(promoCode.getExtraNumberOfDays() / 30) + " " + getString(R.string.months));
+
         } else {
             String days = LanguageUtils.numberConverter(promoCode.getExtraNumberOfDays()) + " " + getString(R.string.days);
             textViewPackageExtendNoOfDays.setText(days);

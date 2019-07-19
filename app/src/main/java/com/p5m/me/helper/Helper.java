@@ -473,6 +473,12 @@ public class Helper {
     public static void setClassJoinEventData(ClassModel classModel, ClassModel joinedData) {
         classModel.setUserJoinStatus(joinedData.isUserJoinStatus());
         classModel.setAvailableSeat(joinedData.getAvailableSeat());
+        classModel.setJoinClassId(joinedData.getJoinClassId());
+        if(joinedData.getRefBookingId()!=null)
+        classModel.setRefBookingId(joinedData.getRefBookingId());
+        else
+            classModel.setRefBookingId(null);
+
     }
     public static void setWaitlistRemoveData(ClassModel classModel, ClassModel joinedData) {
         classModel.setWishType(joinedData.getWishType());

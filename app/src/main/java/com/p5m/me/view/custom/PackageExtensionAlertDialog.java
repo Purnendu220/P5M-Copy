@@ -57,21 +57,20 @@ public class PackageExtensionAlertDialog extends Dialog implements View.OnClickL
     @BindView(R.id.textViewProceed)
     TextView textViewProceed;
 
-    private int weekValue=1;
+    private int weekValue = 1;
     public List<ValidityPackageList> defaultServerPacakageList;
     public ValidityPackageList selectedPacakageFromList;
-    private int weeksExtensionAllowed=4;
-
-
+    private int weeksExtensionAllowed = 4;
 
 
     public PackageExtensionAlertDialog(@NonNull Context context, int navigatinFrom, UserPackage user) {
         super(context, R.style.AdvanceDialogTheme);
-        this.mContext=context;
-        this.navigatinFrom=navigatinFrom;
-        this.userPackage=user;
+        this.mContext = context;
+        this.navigatinFrom = navigatinFrom;
+        this.userPackage = user;
         init(context);
     }
+
     private void init(Context context) {
         setContentView(R.layout.view_package_extension_dialog);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -82,61 +81,62 @@ public class PackageExtensionAlertDialog extends Dialog implements View.OnClickL
         lp.width = (int) (mContext.getResources().getDisplayMetrics().widthPixels * 0.90);
         lp.gravity = Gravity.CENTER;
         getWindow().setAttributes(lp);
-        defaultServerPacakageList=TempStorage.getDefault().getValidityPackageList();
+        defaultServerPacakageList = TempStorage.getDefault().getValidityPackageList();
         setweeksAllowedToExtend();
         setListeners();
         handlePlusMinus(weekValue);
     }
-    private void setweeksAllowedToExtend(){
-        if(userPackage.getTotalRemainingWeeks()!=null&&userPackage.getTotalRemainingWeeks()>0){
-            weeksExtensionAllowed=userPackage.getTotalRemainingWeeks();
+
+    private void setweeksAllowedToExtend() {
+        if (userPackage.getTotalRemainingWeeks() != null && userPackage.getTotalRemainingWeeks() > 0) {
+            weeksExtensionAllowed = userPackage.getTotalRemainingWeeks();
             return;
         }
-        if(defaultServerPacakageList!=null&&defaultServerPacakageList.size()>0){
-            weeksExtensionAllowed=defaultServerPacakageList.size();
+        if (defaultServerPacakageList != null && defaultServerPacakageList.size() > 0) {
+            weeksExtensionAllowed = defaultServerPacakageList.size();
             return;
         }
 
     }
 
-    private void setListeners(){
-     minusButton.setOnClickListener(this);
-     plusButton.setOnClickListener(this);
-     textViewCancel.setOnClickListener(this);
-     textViewProceed.setOnClickListener(this);
+    private void setListeners() {
+        minusButton.setOnClickListener(this);
+        plusButton.setOnClickListener(this);
+        textViewCancel.setOnClickListener(this);
+        textViewProceed.setOnClickListener(this);
 
 
-        }
+    }
+
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.minusButton:{
-                if(weekValue!=1){
-                    weekValue=weekValue-1;
-                    handlePlusMinus(weekValue);
-                    }
-            }
-            break;
-            case R.id.plusButton:{
-                if(weekValue < weeksExtensionAllowed){
-                    weekValue=weekValue+1;
+        switch (view.getId()) {
+            case R.id.minusButton: {
+                if (weekValue != 1) {
+                    weekValue = weekValue - 1;
                     handlePlusMinus(weekValue);
                 }
-                else{
-                    ToastUtils.show(mContext,mContext.getString(R.string.extend_package_limit)+weeksExtensionAllowed+" "+mContext.getString(R.string.weeks));
+            }
+            break;
+            case R.id.plusButton: {
+                if (weekValue < weeksExtensionAllowed) {
+                    weekValue = weekValue + 1;
+                    handlePlusMinus(weekValue);
+                } else {
+                    ToastUtils.show(mContext, mContext.getString(R.string.extend_package_limit) + weeksExtensionAllowed + " " + mContext.getString(R.string.weeks));
                 }
 
             }
             break;
-            case R.id.textViewCancel:{
+            case R.id.textViewCancel: {
                 dismiss();
 
 
             }
             break;
-            case R.id.textViewProceed:{
+            case R.id.textViewProceed: {
                 dismiss();
-                CheckoutActivity.openActivity(mContext, selectedPacakageFromList,userPackage,navigatinFrom);
+                CheckoutActivity.openActivity(mContext, selectedPacakageFromList, userPackage, navigatinFrom);
 
 
             }
@@ -146,29 +146,32 @@ public class PackageExtensionAlertDialog extends Dialog implements View.OnClickL
 
     }
 
-    private void handlePlusMinus(int weekVakueSelected){
-        if(defaultServerPacakageList!=null && defaultServerPacakageList.size()>0){
-            for (ValidityPackageList selectedPacakageData:defaultServerPacakageList) {
-                if(selectedPacakageData.getDuration()==weekVakueSelected){
-                    selectedPacakageFromList=selectedPacakageData;
+    private void handlePlusMinus(int weekVakueSelected) {
+        if (defaultServerPacakageList != null && defaultServerPacakageList.size() > 0) {
+            for (ValidityPackageList selectedPacakageData : defaultServerPacakageList) {
+                if (selectedPacakageData.getDuration() == weekVakueSelected) {
+                    selectedPacakageFromList = selectedPacakageData;
                 }
             }
-            if(selectedPacakageFromList!=null){
-                textViewCost.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost())+" KWD");
-                textViewWeekValue.setText(numberConverter(selectedPacakageFromList.getDuration())+" "+getContext().getString(R.string.weeks));
-                String validUntill=DateUtils.getExtendedExpiryDate(userPackage.getExpiryDate(),selectedPacakageFromList.getDuration());
-                String message=String.format(mContext.getString(R.string.valid_intil),validUntill);
+            if (selectedPacakageFromList != null) {
+                textViewCost.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost()) + " KWD");
+                if (selectedPacakageFromList.getDuration() == 1)
+                    textViewWeekValue.setText(getContext().getString(R.string.a_week));
+                else{
+                    int weeks = Integer.parseInt(numberConverter(selectedPacakageFromList.getDuration()));
+                    textViewWeekValue.setText(String.format(getContext().getString(R.string.weeks), weeks));
+                }
+                String validUntill = DateUtils.getExtendedExpiryDate(userPackage.getExpiryDate(), selectedPacakageFromList.getDuration());
+                String message = String.format(mContext.getString(R.string.valid_intil), validUntill);
                 textViewValidUntil.setText(message);
             }
 
-        }else{
-          dismiss();
+        } else {
+            dismiss();
         }
 
 
-
     }
-
 
 
 }
