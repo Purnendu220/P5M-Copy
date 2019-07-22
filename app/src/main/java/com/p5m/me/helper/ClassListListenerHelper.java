@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -23,9 +22,6 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
-import com.p5m.me.adapters.TrainerProfileAdapter;
-import com.p5m.me.adapters.viewholder.ClassMiniDetailViewHolder;
-import com.p5m.me.adapters.viewholder.ClassViewHolder;
 import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.WishListResponse;
@@ -33,9 +29,7 @@ import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.DefaultSettingServer;
 import com.p5m.me.data.main.User;
 import com.p5m.me.eventbus.EventBroadcastHelper;
-import com.p5m.me.eventbus.Events;
 import com.p5m.me.remote_config.RemoteConfigConst;
-import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -53,9 +47,6 @@ import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.custom.CustomRateAlertDialog;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by Varun John on 4/19/2018.
@@ -76,6 +67,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         this.adapterCallbacks = adapterCallbacks;
     }
 
+
     @Override
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
         switch (view.getId()) {
@@ -86,12 +78,13 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                     ClassModel classModel = (ClassModel) model;
                     if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
                         popupOptionsRemove(context, ((BaseActivity) activity).networkCommunicator, view, classModel, shownIn);
-                    } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
+//                    } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
+                    } else if (((ClassModel) model).isUserJoinStatus()) {
                         if (classModel.getRefBookingId() != null && classModel.getRefBookingId() > 0) {
                             popupOptionsCancelClassBookedWithFriend(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
 
                         } else {
-                            popupOptionsCancelClass(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
+                            popupOptionsCancelClass(context, ((BaseActivity) activity).networkCommunicator, view, classModel, true);
 
                         }
                     } else {
@@ -106,59 +99,73 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             case R.id.buttonJoin:
                 if (model instanceof ClassModel) {
                     ClassModel classModel = (ClassModel) model;
-                    if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
-                            && !Helper.isMalesAllowed(classModel)) {
-                        ToastUtils.show(context, context.getString(R.string.gender_females_only_error));
-                        return;
-                    } else if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
-                            && !Helper.isFemalesAllowed(classModel)) {
-                        ToastUtils.show(context, context.getString(R.string.gender_males_only_error));
-                        return;
-                    }
-                    if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus() == false) {
-                        NetworkCommunicator.getInstance(context).addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
-                            @Override
-                            public void onApiSuccess(Object response, int requestCode) {
-                                try {
-                                    if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus() == false) {
-                                        String message = context.getString(R.string.added_to_waitlist);
-                                        classModel.setWishType(AppConstants.ApiParamKey.WAITLIST);
-                                        classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
-                                        EventBroadcastHelper.waitlistClassJoin(context, classModel);
-                                        EventBroadcastHelper.sendWishAdded(classModel);
+                    if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
 
-                                        DialogUtils.showBasicMessage(context, message, context.getString(R.string.view_wishlist), new MaterialDialog.SingleButtonCallback() {
-                                            @Override
-                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                                Intent navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
-                                                context.startActivity(navigationIntent);
+                        if (classModel.getRefBookingId() != null && classModel.getRefBookingId() > 0) {
+//                            popupOptionsCancelClassBookedWithFriend(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
+                            CancelBookingBottomDialogFragment cancelBookingBottomDialogFragment =
+                                    CancelBookingBottomDialogFragment.newInstance(classModel, true, this);
+                            cancelBookingBottomDialogFragment.show(((HomeActivity) context).getSupportFragmentManager(),
+                                    "cancel_friend_booking");
 
-                                            }
-                                        });
-                                    } else {
-                                        String message = String.format(context.getString(R.string.added_to_wishlist), classModel.getTitle());
-                                        ToastUtils.show(context, message);
+                        } else {
+                            dialogConfirmUnJoin(context, ((BaseActivity) activity).networkCommunicator, classModel, classModel.getJoinClassId());
+
+                        }
+                    } else {
+                        if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
+                                && !Helper.isMalesAllowed(classModel)) {
+                            ToastUtils.show(context, context.getString(R.string.gender_females_only_error));
+                            return;
+                        } else if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
+                                && !Helper.isFemalesAllowed(classModel)) {
+                            ToastUtils.show(context, context.getString(R.string.gender_males_only_error));
+                            return;
+                        }
+                        if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus() == false) {
+                            NetworkCommunicator.getInstance(context).addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
+                                @Override
+                                public void onApiSuccess(Object response, int requestCode) {
+                                    try {
+                                        if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus() == false) {
+                                            String message = context.getString(R.string.added_to_waitlist);
+                                            classModel.setWishType(AppConstants.ApiParamKey.WAITLIST);
+                                            classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
+                                            EventBroadcastHelper.waitlistClassJoin(context, classModel);
+                                            EventBroadcastHelper.sendWishAdded(classModel);
+
+                                            DialogUtils.showBasicMessage(context, message, context.getString(R.string.view_wishlist), new MaterialDialog.SingleButtonCallback() {
+                                                @Override
+                                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                    Intent navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
+                                                    context.startActivity(navigationIntent);
+
+                                                }
+                                            });
+                                        } else {
+                                            String message = String.format(context.getString(R.string.added_to_wishlist), classModel.getTitle());
+                                            ToastUtils.show(context, message);
+                                        }
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        LogUtils.exception(e);
                                     }
 
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    LogUtils.exception(e);
+
                                 }
 
-
-                            }
-
-                            @Override
-                            public void onApiFailure(String errorMessage, int requestCode) {
-                                ToastUtils.show(context, errorMessage);
+                                @Override
+                                public void onApiFailure(String errorMessage, int requestCode) {
+                                    ToastUtils.show(context, errorMessage);
 //
-                            }
-                        });
-                    } else {
-                        ClassProfileActivity.open(context, classModel, shownIn);
+                                }
+                            });
+                        } else {
+                            ClassProfileActivity.open(context, classModel, shownIn);
+                        }
                     }
                 }
-
 
                 break;
             case R.id.buttonClassRating:
@@ -171,6 +178,16 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                     if (model instanceof ClassModel) {
                         ClassModel classModel = (ClassModel) model;
                         ContactActivity.openActivity(context, classModel);
+                    }
+                }
+                break;
+            case R.id.imageViewInviteFriend:
+                if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
+                    if (model instanceof ClassModel) {
+                        ClassModel classModel = (ClassModel) model;
+
+                        Helper.shareClass(context, classModel.getClassSessionId(), classModel.getTitle());
+
                     }
                 }
                 break;
@@ -187,7 +204,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
     }
 
-    public void popupOptionsCancelClass(final Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model) {
+    public void popupOptionsCancelClass(final Context context, final NetworkCommunicator networkCommunicator, View view, final ClassModel model, boolean isShowInviteFriends) {
         final View viewRoot = LayoutInflater.from(context).inflate(R.layout.popup_options, null);
         TextView textView = viewRoot.findViewById(R.id.textViewOption1);
         textView.setText(context.getString(R.string.cancel_class));
@@ -213,7 +230,10 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                 Helper.shareClass(context, model.getClassSessionId(), model.getTitle());
             }
         });
-
+        if (isShowInviteFriends)
+            textViewOption2.setVisibility(View.VISIBLE);
+        else
+            textViewOption2.setVisibility(View.GONE);
         int[] location = new int[2];
         view.getLocationOnScreen(location);
         popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.transparent));
@@ -417,7 +437,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
-    private void dialogConfirmUnJoin(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, final int unJoinClassId) {
+    public void dialogConfirmUnJoin(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, final int unJoinClassId) {
 
         String message = context.getString(R.string.sure_unjoin);
 
@@ -488,8 +508,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
                         try {
                             model.setUserJoinStatus(false);
-                            EventBroadcastHelper.sendClassJoin(context, model);
                             EventBroadcastHelper.sendUserUpdate(context, ((ResponseModel<User>) response).data);
+                            EventBroadcastHelper.sendClassJoin(context, model, AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS);
                             MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
                             FirebaseAnalysic.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
                             materialDialog.dismiss();
@@ -516,7 +536,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
     }
 
 
-    private void dialogConfirmUnJoinBookWithFriend(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, final int unJoinClassId, final int unJoinType) {
+    public void dialogConfirmUnJoinBookWithFriend(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, final int unJoinClassId, final int unJoinType) {
 
         String message = context.getString(R.string.sure_unjoin);
 
@@ -592,9 +612,22 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                     public void onApiSuccess(Object response, int requestCode) {
 
                         try {
-                            model.setUserJoinStatus(false);
-                            EventBroadcastHelper.sendClassJoin(context, model);
+
+                            if (unJoinType == AppConstants.Values.UNJOIN_BOTH_CLASS)
+                                model.setUserJoinStatus(false);
+                            else if(unJoinType == AppConstants.Values.UNJOIN_FRIEND_CLASS) {
+                                model.setUserJoinStatus(true);
+                                model.setRefBookingId(null);
+                            }
                             EventBroadcastHelper.sendUserUpdate(context, ((ResponseModel<User>) response).data);
+
+                            if (unJoinType == AppConstants.Values.UNJOIN_BOTH_CLASS)
+                                EventBroadcastHelper.sendClassJoin(context, model, AppConstants.Values.UNJOIN_BOTH_CLASS);
+                            else if (unJoinType == AppConstants.Values.UNJOIN_FRIEND_CLASS)
+                                EventBroadcastHelper.sendClassJoin(context, model, AppConstants.Values.UNJOIN_FRIEND_CLASS);
+                            else
+                                EventBroadcastHelper.sendClassJoin(context, model, AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS);
+
                             MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
                             FirebaseAnalysic.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
                             materialDialog.dismiss();

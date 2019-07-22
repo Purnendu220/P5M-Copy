@@ -5,11 +5,6 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -18,6 +13,12 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -37,6 +38,7 @@ import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.data.main.DefaultSettingServer;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
@@ -160,6 +162,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         isBookWithFriendInProgress = true;
         mBookWithFriendData = data.friendData;
         bookWithAFriend(data.friendData);
+        textViewBookWithFriend.setText(getText(R.string.please_wait));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -280,7 +283,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
     @OnClick(R.id.textViewBook)
     public void textViewBook() {
-        isBookWithFriendInProgress = false;
+       isBookWithFriendInProgress = false;
         mBookWithFriendData = null;
         // Check if class is allowed for the gender..
         if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
@@ -292,6 +295,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             ToastUtils.show(context, context.getString(R.string.gender_males_only_error));
             return;
         }
+        textViewBook.setEnabled(false);
+
         textViewBook.setText(context.getResources().getString(R.string.please_wait));
         if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus()==false) {
             networkCommunicator.addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
@@ -317,9 +322,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                         classModel.setWishType(AppConstants.ApiParamKey.WAITLIST);
                         EventBroadcastHelper.sendWishAdded(classModel);
                         EventBroadcastHelper.waitlistClassJoin(context, classModel);
-                       /* textViewBook.setText(RemoteConfigConst.WAITLISTED_VALUE);
-                        RemoteConfigSetUp.setBackgroundColor(textViewBook, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
-                        */
+
                         Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
 
@@ -646,6 +649,18 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 onBackPressed();
                 break;
             case R.id.imageViewOptions:
+                if(classModel.isUserJoinStatus()){
+                    ClassListListenerHelper classListListenerHelper= new ClassListListenerHelper(context, activity, AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING, this);
+
+                    if (classModel.getRefBookingId() != null && classModel.getRefBookingId() > 0) {
+                        classListListenerHelper.popupOptionsCancelClassBookedWithFriend(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
+
+                    } else {
+                        classListListenerHelper.popupOptionsCancelClass(context, ((BaseActivity) activity).networkCommunicator, view, classModel, true);
+
+                    }
+                }
+                else
                 ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, classModel, navigationFrom, null);
                 break;
 
@@ -672,14 +687,16 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             case NetworkCommunicator.RequestCode.JOIN_CLASS:
 
                 User user = ((ResponseModel<User>) response).data;
-
+                classModel.setUserJoinStatus(true);
                 EventBroadcastHelper.sendUserUpdate(context, user);
-
-                classModel.setUserJoinStatus(true);
-                EventBroadcastHelper.sendClassJoin(context, classModel);
-
-                classModel.setUserJoinStatus(true);
-
+                int joinWith;
+                if(isBookWithFriendInProgress){
+                    joinWith = AppConstants.Values.UNJOIN_BOTH_CLASS; // Book With Friend
+                }
+                else{
+                    joinWith = AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS;
+                }
+                EventBroadcastHelper.sendClassJoin(context, classModel, joinWith);
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
                 MixPanel.trackJoinClass(navigationFrom, classModel);
@@ -723,11 +740,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 classModel = ((ResponseModel<ClassModel>) response).data;
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
-                if (classModel.getAvailableSeat() < 2) {
 
-                } else {
-
-                }
                 if (classModel != null) {
                     getCountRating();
                     classProfileAdapter.setClass(classModel);

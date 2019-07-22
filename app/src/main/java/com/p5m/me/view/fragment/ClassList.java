@@ -137,7 +137,6 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void waitlistJoin(Events.WaitlistJoin data) {
-
         handleWaitlistJoined(data.data);
 
     }
@@ -216,18 +215,30 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
         }
     }
 
-    private void handleClassJoined(ClassModel data) {
+    private void handleClassJoined(ClassModel model) {
         try {
-            int index = classListAdapter.getList().indexOf(data);
-            if (index != -1) {
-                Object obj = classListAdapter.getList().get(index);
-                if (obj instanceof ClassModel) {
-                    ClassModel classModel = (ClassModel) obj;
-                    Helper.setClassJoinEventData(classModel, data);
+            networkCommunicator.getClassDetail(model.getClassSessionId(), new NetworkCommunicator.RequestListener() {
+                @Override
+                public void onApiSuccess(Object response, int requestCode) {
+                    ClassModel  data = ((ResponseModel<ClassModel>) response).data;
+                    int index = classListAdapter.getList().indexOf(model);
+                    if (index != -1) {
+                        Object obj = classListAdapter.getList().get(index);
+                        if (obj instanceof ClassModel) {
+                            ClassModel classModel = (ClassModel) obj;
+                            Helper.setClassJoinEventData(classModel, data);
+                            classListAdapter.notifyItemChanged(index);
 
-                    classListAdapter.notifyItemChanged(index);
+                        }
+                    }
                 }
-            }
+
+                @Override
+                public void onApiFailure(String errorMessage, int requestCode) {
+//                    ToastUtils.show(this);
+                }
+            },false);
+
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -380,26 +391,22 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, ClassModel model, int position) {
         switch (view.getId()) {
             case R.id.imageViewOptions:
+                if (model.isUserJoinStatus()) {
+                    ClassListListenerHelper classListListenerHelper = new ClassListListenerHelper(context, activity, AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING, this);
+
+                    if (model.getRefBookingId() != null && model.getRefBookingId() > 0) {
+                        classListListenerHelper.popupOptionsCancelClassBookedWithFriend(context, ((BaseActivity) activity).networkCommunicator, view, model);
+
+                    } else {
+
+                        classListListenerHelper.popupOptionsCancelClass(context, ((BaseActivity) activity).networkCommunicator, view, model, true);
+
+                    }
+                } else
                     ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, model, shownInScreen, viewHolder);
+
                 break;
 
-               /* if (model instanceof ClassModel) {
-                    ClassModel classModel = (ClassModel) model;
-                    if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
-                        popupOptionsRemove(context, ((BaseActivity) activity).networkCommunicator, view, classModel, shownIn);
-                    } else if (shownIn == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
-                        if (classModel.getRefBookingId() != null && classModel.getRefBookingId() > 0) {
-                            ClassListListenerHelper.popupOptionsCancelClassBookedWithFriend(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
-
-                        } else {
-                            ClassListListenerHelper.popupOptionsCancelClass(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
-
-                        }
-                    } else {
-                        ClassListListenerHelper.popupOptionsAdd(context, ((BaseActivity) activity).networkCommunicator, view, classModel, shownIn, viewHolder);
-                    }
-                }
-                break;*/
             case R.id.textViewLocation:
             case R.id.layoutLocation:
                 GymProfileActivity.open(context, model.getGymBranchDetail().getGymId(), shownInScreen);

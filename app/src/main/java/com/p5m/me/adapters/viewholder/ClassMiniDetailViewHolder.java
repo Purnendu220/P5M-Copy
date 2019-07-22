@@ -48,6 +48,8 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
     public ImageView imageViewOptions2;
     @BindView(R.id.imageViewClassGender)
     public ImageView imageViewClassGender;
+    @BindView(R.id.imageViewInviteFriend)
+    public ImageView imageViewInviteFriend;
 
     @BindView(R.id.trainerImage)
     public View trainerImage;
@@ -128,7 +130,7 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
 
             if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
                 imageViewChat.setVisibility(View.VISIBLE);
-                imageViewOptions1.setVisibility(View.VISIBLE);
+                imageViewInviteFriend.setVisibility(View.VISIBLE);
                 imageViewOptions2.setVisibility(View.GONE);
                 trainerImage.setVisibility(View.VISIBLE);
                 textViewTrainerName.setVisibility(View.VISIBLE);
@@ -138,9 +140,9 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                     classBookedWithFriend.setVisibility(View.GONE);
 
                 }
-
-                buttonJoin.setVisibility(View.GONE);
-//                imageViewOptions1.setVisibility(View.GONE);
+                // Handle Cancel Booking
+                buttonJoin.setVisibility(View.VISIBLE);
+                imageViewOptions1.setVisibility(View.GONE);
 //                imageViewOptions2.setVisibility(View.VISIBLE);
 
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
@@ -176,10 +178,6 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 layoutGender.setVisibility(View.VISIBLE);
                 textViewClassGender.setText(Helper.getClassGenderText(model.getClassType()));
 
-//                if (model.isUserJoinStatus()) {
-//                    imageViewOptions1.setVisibility(View.GONE);
-//                    imageViewOptions2.setVisibility(View.GONE);
-//                }
 
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED) {
                 trainerImage.setVisibility(View.VISIBLE);
@@ -250,8 +248,14 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
             textViewClassName.setText(model.getTitle());
             textViewClassCategory.setText(model.getClassCategory());
             textViewClassDate.setText(DateUtils.getClassDate(model.getClassDate()));
+            if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
+                // In Schedule showing the Cancel Button
+                buttonJoin.setText(context.getString(R.string.cancel));
+                buttonJoin.setBackground(context.getDrawable(R.drawable.full_rect));
 
-            Helper.setJoinButton(context, buttonJoin, model);
+            } else {
+                Helper.setJoinButton(context, buttonJoin, model);
+            }
             if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED) {
                 if (model.getRatingResDto() == null || model.getRatingResDto().getRating() == 0) {
                     buttonClassRating.setVisibility(View.VISIBLE);
@@ -300,6 +304,12 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                     adapterCallbacks.onAdapterItemClick(ClassMiniDetailViewHolder.this, imageViewChat, model, position);
                 }
             });
+            imageViewInviteFriend.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapterCallbacks.onAdapterItemClick(ClassMiniDetailViewHolder.this, imageViewInviteFriend, model, position);
+                }
+            });
             buttonClassRating.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -337,7 +347,6 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
             itemView.setVisibility(View.GONE);
         }
     }
-
 
 
     private void setTextFitnessLevel(ClassModel model) {

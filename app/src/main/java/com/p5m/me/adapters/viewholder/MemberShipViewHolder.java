@@ -295,16 +295,30 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
             layoutTimeClassPromo.setVisibility(View.VISIBLE);
             textViewSpecialOffer.setText(Html.fromHtml("<font color='#f34336'>" + context.getResources().getString(R.string.special_offer)
                     + "</font>" + " " + model.getPromoResponseDto().getPromoDesc()));
+
         }
     }
 
     private void setTextValidityPeriod(Package model) {
         if (model.getValidityPeriod().contains("MONTH"))
 //         textViewPackageValidity.setText(context.getString(R.string.valid_for) + " " + numberConverter(model.getDuration()) + " " + AppConstants.plural(validityPeriod, model.getDuration()));
-            textViewPackageValidity.setText(String.format(context.getResources().getString(R.string.valid_for_months), model.getDuration()));
-        else if (model.getValidityPeriod().contains("WEEK"))
-            textViewPackageValidity.setText(String.format(context.getResources().getString(R.string.valid_for_weeks), model.getDuration()));
+//            textViewPackageValidity.setText(String.format(context.getResources().getString(R.string.valid_for_months), model.getDuration()));
+        {
+            if(model.getDuration()==1) {
+                textViewPackageValidity.setText(context.getResources().getString(R.string.valid_for_a_months));
+            }
+            else
+                textViewPackageValidity.setText(String.format(context.getResources().getString(R.string.valid_for_months), model.getDuration()));
 
+        }
+        else if (model.getValidityPeriod().contains("WEEK")) {
+            if(model.getDuration()==1) {
+                textViewPackageValidity.setText(context.getResources().getString(R.string.valid_for_a_week));
+            }
+            else
+                textViewPackageValidity.setText(String.format(context.getResources().getString(R.string.valid_for_weeks), model.getDuration()));
+
+        }
     }
 
     private void setPackagePriceAfterDiscount(Package model, TextView textViewPackagePrice, TextView textViewPackagePriceStrike) {

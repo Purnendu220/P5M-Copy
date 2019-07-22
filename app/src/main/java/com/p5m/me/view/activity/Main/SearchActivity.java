@@ -49,6 +49,7 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.KeyboardUtils;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.fragment.ViewPagerFragmentSelection;
 
@@ -243,9 +244,37 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
         handleClassJoined(data.data);
     }
 
-    private void handleClassJoined(ClassModel data) {
+    private void handleClassJoined(ClassModel model) {
 
         try {
+            networkCommunicator.getClassDetail(model.getClassSessionId(), new NetworkCommunicator.RequestListener() {
+                @Override
+                public void onApiSuccess(Object response, int requestCode) {
+                    ClassModel  data = ((ResponseModel<ClassModel>) response).data;
+                    int index = searchAdapter.getList().indexOf(model);
+                    if (index != -1) {
+                        Object obj = searchAdapter.getList().get(index);
+                        if (obj instanceof ClassModel) {
+                            ClassModel classModel = (ClassModel) obj;
+                            Helper.setClassJoinEventData(classModel, data);
+                            searchAdapter.notifyItemChanged(index);
+
+                        }
+                    }
+                }
+
+                @Override
+                public void onApiFailure(String errorMessage, int requestCode) {
+                    ToastUtils.show(SearchActivity.this,errorMessage);
+                }
+            },false);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+
+       /* try {
             int index = searchAdapter.getList().indexOf(data);
 
             if (index != -1) {
@@ -261,7 +290,7 @@ public class SearchActivity extends BaseActivity implements NetworkCommunicator.
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
-        }
+        }*/
     }
 
     private void setupSearch() {
