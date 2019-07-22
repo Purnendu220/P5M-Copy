@@ -162,6 +162,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         isBookWithFriendInProgress = true;
         mBookWithFriendData = data.friendData;
         bookWithAFriend(data.friendData);
+        textViewBookWithFriend.setText(getText(R.string.please_wait));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -282,7 +283,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
     @OnClick(R.id.textViewBook)
     public void textViewBook() {
-        isBookWithFriendInProgress = false;
+       isBookWithFriendInProgress = false;
         mBookWithFriendData = null;
         // Check if class is allowed for the gender..
         if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
@@ -294,6 +295,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             ToastUtils.show(context, context.getString(R.string.gender_males_only_error));
             return;
         }
+        textViewBook.setEnabled(false);
+
         textViewBook.setText(context.getResources().getString(R.string.please_wait));
         if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus()==false) {
             networkCommunicator.addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
@@ -319,9 +322,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                         classModel.setWishType(AppConstants.ApiParamKey.WAITLIST);
                         EventBroadcastHelper.sendWishAdded(classModel);
                         EventBroadcastHelper.waitlistClassJoin(context, classModel);
-                       /* textViewBook.setText(RemoteConfigConst.WAITLISTED_VALUE);
-                        RemoteConfigSetUp.setBackgroundColor(textViewBook, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
-                        */
+
                         Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
 
@@ -688,11 +689,14 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 User user = ((ResponseModel<User>) response).data;
                 classModel.setUserJoinStatus(true);
                 EventBroadcastHelper.sendUserUpdate(context, user);
-
-
-                EventBroadcastHelper.sendClassJoin(context, classModel, false);
-
-
+                int joinWith;
+                if(isBookWithFriendInProgress){
+                    joinWith = AppConstants.Values.UNJOIN_BOTH_CLASS; // Book With Friend
+                }
+                else{
+                    joinWith = AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS;
+                }
+                EventBroadcastHelper.sendClassJoin(context, classModel, joinWith);
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
                 MixPanel.trackJoinClass(navigationFrom, classModel);
@@ -736,11 +740,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 classModel = ((ResponseModel<ClassModel>) response).data;
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
-                if (classModel.getAvailableSeat() < 2) {
 
-                } else {
-
-                }
                 if (classModel != null) {
                     getCountRating();
                     classProfileAdapter.setClass(classModel);

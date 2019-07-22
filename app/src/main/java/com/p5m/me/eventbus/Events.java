@@ -17,11 +17,9 @@ public class Events {
 
     public static class ClassJoin {
         public ClassModel data;
-        public boolean isFriendUnjoin ;
 
-        public ClassJoin(ClassModel data, boolean isFriendUnjoin) {
+        public ClassJoin(ClassModel data) {
             this.data = data;
-            this.isFriendUnjoin=isFriendUnjoin;
         }
     }
 

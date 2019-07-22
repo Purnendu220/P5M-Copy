@@ -226,9 +226,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                         Object obj = classListAdapter.getList().get(index);
                         if (obj instanceof ClassModel) {
                             ClassModel classModel = (ClassModel) obj;
-//                    if (!isFriendUnjoin) {
                             Helper.setClassJoinEventData(classModel, data);
-//                    }
                             classListAdapter.notifyItemChanged(index);
 
                         }

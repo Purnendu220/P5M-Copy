@@ -104,7 +104,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                         if (classModel.getRefBookingId() != null && classModel.getRefBookingId() > 0) {
 //                            popupOptionsCancelClassBookedWithFriend(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
                             CancelBookingBottomDialogFragment cancelBookingBottomDialogFragment =
-                                    CancelBookingBottomDialogFragment.newInstance(classModel, true,this);
+                                    CancelBookingBottomDialogFragment.newInstance(classModel, true, this);
                             cancelBookingBottomDialogFragment.show(((HomeActivity) context).getSupportFragmentManager(),
                                     "cancel_friend_booking");
 
@@ -509,7 +509,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                         try {
                             model.setUserJoinStatus(false);
                             EventBroadcastHelper.sendUserUpdate(context, ((ResponseModel<User>) response).data);
-                            EventBroadcastHelper.sendClassJoin(context, model, false);
+                            EventBroadcastHelper.sendClassJoin(context, model, AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS);
                             MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
                             FirebaseAnalysic.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
                             materialDialog.dismiss();
@@ -612,9 +612,21 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                     public void onApiSuccess(Object response, int requestCode) {
 
                         try {
-//                            model.setUserJoinStatus(false);
+
+                            if (unJoinType == AppConstants.Values.UNJOIN_BOTH_CLASS)
+                                model.setUserJoinStatus(false);
+                            else if(unJoinType == AppConstants.Values.UNJOIN_FRIEND_CLASS) {
+                                model.setUserJoinStatus(true);
+                                model.setRefBookingId(null);
+                            }
                             EventBroadcastHelper.sendUserUpdate(context, ((ResponseModel<User>) response).data);
-                            EventBroadcastHelper.sendClassJoin(context, model, true);
+
+                            if (unJoinType == AppConstants.Values.UNJOIN_BOTH_CLASS)
+                                EventBroadcastHelper.sendClassJoin(context, model, AppConstants.Values.UNJOIN_BOTH_CLASS);
+                            else if (unJoinType == AppConstants.Values.UNJOIN_FRIEND_CLASS)
+                                EventBroadcastHelper.sendClassJoin(context, model, AppConstants.Values.UNJOIN_FRIEND_CLASS);
+                            else
+                                EventBroadcastHelper.sendClassJoin(context, model, AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS);
 
                             MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
                             FirebaseAnalysic.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);

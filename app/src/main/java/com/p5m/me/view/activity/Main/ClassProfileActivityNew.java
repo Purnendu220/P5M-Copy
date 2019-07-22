@@ -1,4 +1,5 @@
 package com.p5m.me.view.activity.Main;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -84,13 +85,13 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
                 .putExtra(AppConstants.DataKey.CLASS_OBJECT, classModel));
     }
 
-    public static void openSceneTransition(Context context, ClassModel classModel, int navigationFrom,View ivProfile) {
+    public static void openSceneTransition(Context context, ClassModel classModel, int navigationFrom, View ivProfile) {
         Intent intent = new Intent(context, ClassProfileActivityNew.class);
 // Pass data object in the bundle and populate details activity.
         intent.putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom);
         intent.putExtra(AppConstants.DataKey.CLASS_OBJECT, classModel);
         ActivityOptionsCompat options = ActivityOptionsCompat.
-                makeSceneTransitionAnimation((Activity) context, (View)ivProfile, "profile");
+                makeSceneTransitionAnimation((Activity) context, (View) ivProfile, "profile");
         context.startActivity(intent, options.toBundle());
 
     }
@@ -109,7 +110,6 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
                 .putExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, true);
 
     }
-
 
 
     @BindView(R.id.appBarLayout)
@@ -253,7 +253,7 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
     private void handleClassJoined(ClassModel data) {
         try {
             classModel.setUserJoinStatus(data.isUserJoinStatus());
-              setData(classModel);
+            setData(classModel);
             Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
         } catch (Exception e) {
@@ -272,7 +272,7 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
         classModel = (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_OBJECT);
         classSessionId = getIntent().getIntExtra(AppConstants.DataKey.CLASS_SESSION_ID_INT, -1);
         navigationFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
-        FirebaseDynamicLinnk.getDynamicLink(this,getIntent());
+        FirebaseDynamicLinnk.getDynamicLink(this, getIntent());
 
         if (classModel == null && classSessionId == -1) {
             supportFinishAfterTransition();
@@ -385,7 +385,6 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
             e.printStackTrace();
         }
     }
-
 
 
     public void bookWithAFriend(final BookWithFriendData data) {
@@ -555,11 +554,11 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
 
         v.findViewById(R.id.imageViewBack).setOnClickListener(this);
         imageViewOptions = v.findViewById(R.id.imageViewOptions);
-        mTextViewWalletAmount=(TextView)v.findViewById(R.id.textViewWalletAmount);
-        mLayoutUserWallet=(LinearLayout)v.findViewById(R.id.layoutUserWallet);
+        mTextViewWalletAmount = (TextView) v.findViewById(R.id.textViewWalletAmount);
+        mLayoutUserWallet = (LinearLayout) v.findViewById(R.id.layoutUserWallet);
         mLayoutUserWallet.setOnClickListener(this);
         imageViewOptions.setOnClickListener(this);
-        ((TextView)(v.findViewById(R.id.textViewTitle))).setText(RemoteConfigConst.CLASS_CARD_TEXT_VALUE);
+        ((TextView) (v.findViewById(R.id.textViewTitle))).setText(RemoteConfigConst.CLASS_CARD_TEXT_VALUE);
 
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT));
@@ -642,16 +641,16 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
                 }
                 break;
             case R.id.layoutTrainer:
-                    if (classModel.getTrainerDetail() != null) {
-                        TrainerProfileActivity.open(context, classModel.getTrainerDetail(), AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE);
-                    } else {
-                        GymProfileActivity.open(context, classModel.getGymBranchDetail().getGymId(), AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE);
-                    }
+                if (classModel.getTrainerDetail() != null) {
+                    TrainerProfileActivity.open(context, classModel.getTrainerDetail(), AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE);
+                } else {
+                    GymProfileActivity.open(context, classModel.getGymBranchDetail().getGymId(), AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE);
+                }
 
                 break;
             case R.id.textViewLocation:
             case R.id.layoutLocation:
-                    GymProfileActivity.open(context, classModel.getGymBranchDetail().getGymId(), AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE);
+                GymProfileActivity.open(context, classModel.getGymBranchDetail().getGymId(), AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE);
 
                 break;
 
@@ -659,30 +658,30 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
             case R.id.layoutMapClick:
 
 
-                    String label = "";
-                    try {
-                        label = classModel.getGymBranchDetail().getBranchName();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                String label = "";
+                try {
+                    label = classModel.getGymBranchDetail().getBranchName();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-                    Helper.openMap(context, classModel.getGymBranchDetail().getLatitude(), classModel.getGymBranchDetail().getLongitude(), label);
+                Helper.openMap(context, classModel.getGymBranchDetail().getLatitude(), classModel.getGymBranchDetail().getLongitude(), label);
 
                 break;
             case R.id.layoutSeeAllReview:
-                    ViewClassRating.open(context, classModel, AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE);
+                ViewClassRating.open(context, classModel, AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE);
 
                 break;
         }
     }
-    private void showWalletAlert(){
-        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.wallet_alert_title), context.getString(R.string.wallet_alert),1,"",context.getResources().getString(R.string.ok),CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO,null,true, this);
+
+    private void showWalletAlert() {
+        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.wallet_alert_title), context.getString(R.string.wallet_alert), 1, "", context.getResources().getString(R.string.ok), CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO, null, true, this);
         try {
             mCustomAlertDialog.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
 
     }
@@ -697,10 +696,10 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
                 EventBroadcastHelper.sendUserUpdate(context, user);
 
                 classModel.setUserJoinStatus(true);
-                EventBroadcastHelper.sendClassJoin(context, classModel, false);
-
-                classModel.setUserJoinStatus(true);
-
+                if (isBookWithFriendInProgress)
+                    EventBroadcastHelper.sendClassJoin(context, classModel, AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS);
+                else
+                    EventBroadcastHelper.sendClassJoin(context, classModel, AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS);
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
                 MixPanel.trackJoinClass(navigationFrom, classModel);
@@ -721,16 +720,16 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();
 
-                                    supportFinishAfterTransition();                                }
+                                    supportFinishAfterTransition();
+                                }
                             });
 
                 }
                 if (!CalendarHelper.haveCalendarReadWritePermissions(this)) {
                     CalendarHelper.requestCalendarReadWritePermission(this);
-                }
-                else{
+                } else {
                     if (CalendarHelper.haveCalendarReadWritePermissions(this))
-                        CalendarHelper.scheduleCalenderEvent(this,classModel);
+                        CalendarHelper.scheduleCalenderEvent(this, classModel);
 
                 }
                 break;
@@ -779,8 +778,8 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
                     if (mBookWithFriendData != null) {
 
                         for (Package aPackage : packagesTemp) {
-                            int numberOfDays =DateUtils.getPackageNumberOfDays(aPackage.getDuration(),aPackage.getValidityPeriod());
-                            if (!(aPackage.getDuration()>0 && DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays)) {
+                            int numberOfDays = DateUtils.getPackageNumberOfDays(aPackage.getDuration(), aPackage.getValidityPeriod());
+                            if (!(aPackage.getDuration() > 0 && DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays)) {
                                 if (aPackage.getGymVisitLimit() != 1) {
                                     packages.add(aPackage);
                                 }
@@ -788,7 +787,7 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
                         }
                         if (packages.size() == 1 || !user.isBuyMembership()) {
                             Package aPackage = packages.get(0);
-                            CheckoutActivity.openActivity(context, aPackage, classModel,2 , mBookWithFriendData,aPackage.getNoOfClass());
+                            CheckoutActivity.openActivity(context, aPackage, classModel, 2, mBookWithFriendData, aPackage.getNoOfClass());
                             return;
 
                         } else {
@@ -799,14 +798,15 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
 
                     } else {
                         for (Package aPackage : packagesTemp) {
-                            int numberOfDays =DateUtils.getPackageNumberOfDays(aPackage.getDuration(),aPackage.getValidityPeriod());
-                            if (!(aPackage.getDuration()>0 && DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays)) {
+                            int numberOfDays = DateUtils.getPackageNumberOfDays(aPackage.getDuration(), aPackage.getValidityPeriod());
+                            if (!(aPackage.getDuration() > 0 && DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays)) {
                                 packages.add(aPackage);
                             }
-                        }if (packages.size() == 1 || !user.isBuyMembership()) {
+                        }
+                        if (packages.size() == 1 || !user.isBuyMembership()) {
                             Package aPackage = packages.get(0);
                             //////////
-                            CheckoutActivity.openActivity(context, aPackage, classModel,1,aPackage.getNoOfClass());
+                            CheckoutActivity.openActivity(context, aPackage, classModel, 1, aPackage.getNoOfClass());
                             return;
                         } else {
                             MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
@@ -819,11 +819,11 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
                 if (Helper.isSpecialClass(classModel) &&
                         !Helper.isFreeClass(classModel)) {
                     user = TempStorage.getUser();
-                    mWalletCredit= user.getWalletDto();
-                    if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
+                    mWalletCredit = user.getWalletDto();
+                    if (mWalletCredit != null && mWalletCredit.getBalance() > 0) {
                         mLayoutUserWallet.setVisibility(View.VISIBLE);
-                        mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance())+" "+context.getResources().getString(R.string.wallet_currency));
-                    }else{
+                        mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance()) + " " + context.getResources().getString(R.string.wallet_currency));
+                    } else {
                         mLayoutUserWallet.setVisibility(View.GONE);
 
                     }
@@ -930,7 +930,6 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
                         //MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
 
 
-
                     }
 
 
@@ -950,7 +949,8 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
                     DialogUtils.showBasicMessage(context, errorMessage, getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            supportFinishAfterTransition();                        }
+                            supportFinishAfterTransition();
+                        }
                     });
                 }
 
@@ -1027,9 +1027,9 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
 
         if (requestCode == CalendarHelper.CALENDARED_PERMISSION_REQUEST_CODE) {
             if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
-                if (classModel != null){
+                if (classModel != null) {
                     if (CalendarHelper.haveCalendarReadWritePermissions(this))
-                        CalendarHelper.scheduleCalenderEvent(this,classModel);
+                        CalendarHelper.scheduleCalenderEvent(this, classModel);
                 }
 
 
@@ -1052,172 +1052,171 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
 
     }
 
-    private void setData(ClassModel model){
+    private void setData(ClassModel model) {
 
-            if (Helper.isSpecialClass(model)) {
-                textViewSpecialClass.setVisibility(View.VISIBLE);
-                textViewSpecialClass.setText(Helper.getSpecialClassText(model));
+        if (Helper.isSpecialClass(model)) {
+            textViewSpecialClass.setVisibility(View.VISIBLE);
+            textViewSpecialClass.setText(Helper.getSpecialClassText(model));
 
-            } else {
-                textViewSpecialClass.setVisibility(View.GONE);
-            }
+        } else {
+            textViewSpecialClass.setVisibility(View.GONE);
+        }
 
-            if (!model.getDescription().isEmpty()) {
+        if (!model.getDescription().isEmpty()) {
 
-                layoutDesc.setVisibility(View.VISIBLE);
-                textViewInfo.setText(model.getDescription());
-            } else {
-                layoutDesc.setVisibility(View.GONE);
+            layoutDesc.setVisibility(View.VISIBLE);
+            textViewInfo.setText(model.getDescription());
+        } else {
+            layoutDesc.setVisibility(View.GONE);
+        }
+
+        if (model.getGymBranchDetail() != null) {
+
+            layoutMap.setVisibility(View.VISIBLE);
+            ImageUtils.setImage(context, ImageUtils.generateMapImageUrlClassDetail(model.getGymBranchDetail().getLatitude(), model.getGymBranchDetail().getLongitude()),
+                    R.drawable.no_map, imageViewMap);
+            textViewMap.setText(Html.fromHtml(context.getString(R.string.address) + context.getString(R.string.gaping) + model.getGymBranchDetail().getAddress()));
+        } else {
+            layoutMap.setVisibility(View.GONE);
+        }
+
+        String studioInstruction = "";
+
+        if (model.getGymBranchDetail() != null) {
+            studioInstruction = model.getGymBranchDetail().getStudioInstruction();
+        }
+
+        if (model.getSpecialNote().isEmpty() && model.getReminder().isEmpty() && studioInstruction.isEmpty()) {
+            layoutMoreDetails.setVisibility(View.GONE);
+        } else {
+            layoutMoreDetails.setVisibility(View.VISIBLE);
+
+            StringBuffer stringBuffer = new StringBuffer("");
+
+            if (!model.getReminder().isEmpty()) {
+                stringBuffer.append(context.getString(R.string.remenders) + context.getString(R.string.gaping) + model.getReminder());
             }
 
             if (model.getGymBranchDetail() != null) {
-
-                layoutMap.setVisibility(View.VISIBLE);
-                ImageUtils.setImage(context, ImageUtils.generateMapImageUrlClassDetail(model.getGymBranchDetail().getLatitude(), model.getGymBranchDetail().getLongitude()),
-                        R.drawable.no_map, imageViewMap);
-                textViewMap.setText(Html.fromHtml(context.getString(R.string.address) + context.getString(R.string.gaping) + model.getGymBranchDetail().getAddress()));
-            } else {
-                layoutMap.setVisibility(View.GONE);
-            }
-
-            String studioInstruction = "";
-
-            if (model.getGymBranchDetail() != null) {
-                studioInstruction = model.getGymBranchDetail().getStudioInstruction();
-            }
-
-            if (model.getSpecialNote().isEmpty() && model.getReminder().isEmpty() && studioInstruction.isEmpty()) {
-                layoutMoreDetails.setVisibility(View.GONE);
-            } else {
-                layoutMoreDetails.setVisibility(View.VISIBLE);
-
-                StringBuffer stringBuffer = new StringBuffer("");
-
-                if (!model.getReminder().isEmpty()) {
-                    stringBuffer.append(context.getString(R.string.remenders) + context.getString(R.string.gaping) + model.getReminder());
-                }
-
-                if (model.getGymBranchDetail() != null) {
-                    if (!model.getGymBranchDetail().getStudioInstruction().isEmpty()) {
-                        if (!stringBuffer.toString().isEmpty()) {
-                            stringBuffer.append("<br/><br/>");
-                        }
-                        stringBuffer.append(context.getString(R.string.studio_instruction) + context.getString(R.string.gaping) + model.getGymBranchDetail().getStudioInstruction());
-                    }
-                }
-
-                if (!model.getSpecialNote().isEmpty()) {
+                if (!model.getGymBranchDetail().getStudioInstruction().isEmpty()) {
                     if (!stringBuffer.toString().isEmpty()) {
                         stringBuffer.append("<br/><br/>");
                     }
-                    stringBuffer.append(context.getString(R.string.special_note_by_trainer) + context.getString(R.string.gaping) + model.getSpecialNote());
+                    stringBuffer.append(context.getString(R.string.studio_instruction) + context.getString(R.string.gaping) + model.getGymBranchDetail().getStudioInstruction());
                 }
-
-                textViewMoreDetails.setText(Html.fromHtml(stringBuffer.toString()));
-
             }
 
-            if (model.getClassMedia() != null) {
-                ImageUtils.setImage(context,
-                        model.getClassMedia().getMediaUrl(),
-                        R.drawable.class_holder, imageViewClass);
-            } else {
-                ImageUtils.clearImage(context, imageViewClass);
-            }
-
-            if (model.getTrainerDetail() != null) {
-
-                textViewTrainerName.setText(model.getTrainerDetail().getFirstName());
-                ImageUtils.setImage(context,
-                        model.getTrainerDetail().getProfileImageThumbnail(),
-                        R.drawable.profile_holder, imageViewTrainerProfile);
-
-            } else if (model.getGymBranchDetail() != null) {
-
-                textViewTrainerName.setText(model.getGymBranchDetail().getGymName());
-                ImageUtils.setImage(context,
-                        model.getGymBranchDetail().getMediaThumbNailUrl(),
-                        R.drawable.profile_holder, imageViewTrainerProfile);
-
-            } else {
-                ImageUtils.clearImage(context, imageViewTrainerProfile);
-                textViewLocation.setText("");
-            }
-
-            if (model.getGymBranchDetail() != null) {
-                textViewLocation.setText(model.getGymBranchDetail().getGymName() + ", " + model.getGymBranchDetail().getBranchName());
-            } else {
-                textViewLocation.setText("");
-            }
-            if (model.getRating() > 0 && model.getNumberOfRating() > 0) {
-
-                CharSequence text = String.format(context.getString(R.string.review_based_on),LanguageUtils.numberConverter(model.getNumberOfRating()) + "");
-                linearLayoutStudioRating.setVisibility(View.VISIBLE);
-                studioRating.setRating(model.getRating());
-
-                textViewRatingCount.setText(LanguageUtils.numberConverter(model.getRating()) + "/"+LanguageUtils.numberConverter(5.0));
-                textViewReviewCountText.setText(text);
-                studioRating.setIsIndicator(true);
-                linearLayoutClassRating.setVisibility(View.GONE);
-                textViewClassRating.setText(model.getRating() + "");
-            } else {
-                linearLayoutClassRating.setVisibility(View.GONE);
-                linearLayoutStudioRating.setVisibility(View.GONE);
-            }
-
-            if (model.getFitnessLevel() != null && !model.getFitnessLevel().isEmpty()) {
-                relativeLayoutFitnessLevel.setVisibility(View.VISIBLE);
-                switch (model.getFitnessLevel()) {
-                    case AppConstants.FitnessLevel.CLASS_LEVEL_BASIC:
-                        imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_get);
-                        break;
-                    case AppConstants.FitnessLevel.CLASS_LEVEL_INTERMEDIATE:
-                        imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_set);
-
-                        break;
-                    case AppConstants.FitnessLevel.CLASS_LEVEL_ADVANCED:
-                        imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_pro);
-
-                        break;
-                    default:
-                        relativeLayoutFitnessLevel.setVisibility(View.GONE);
-                        break;
+            if (!model.getSpecialNote().isEmpty()) {
+                if (!stringBuffer.toString().isEmpty()) {
+                    stringBuffer.append("<br/><br/>");
                 }
-                setTextFitnessLevel(model);
-            } else {
-                relativeLayoutFitnessLevel.setVisibility(View.GONE);
+                stringBuffer.append(context.getString(R.string.special_note_by_trainer) + context.getString(R.string.gaping) + model.getSpecialNote());
             }
-            textViewClassName.setText(model.getTitle());
-            textViewClassCategory.setText(model.getClassCategory());
-            textViewClassDate.setText(DateUtils.getClassDate(model.getClassDate()));
+
+            textViewMoreDetails.setText(Html.fromHtml(stringBuffer.toString()));
+
+        }
+
+        if (model.getClassMedia() != null) {
+            ImageUtils.setImage(context,
+                    model.getClassMedia().getMediaUrl(),
+                    R.drawable.class_holder, imageViewClass);
+        } else {
+            ImageUtils.clearImage(context, imageViewClass);
+        }
+
+        if (model.getTrainerDetail() != null) {
+
+            textViewTrainerName.setText(model.getTrainerDetail().getFirstName());
+            ImageUtils.setImage(context,
+                    model.getTrainerDetail().getProfileImageThumbnail(),
+                    R.drawable.profile_holder, imageViewTrainerProfile);
+
+        } else if (model.getGymBranchDetail() != null) {
+
+            textViewTrainerName.setText(model.getGymBranchDetail().getGymName());
+            ImageUtils.setImage(context,
+                    model.getGymBranchDetail().getMediaThumbNailUrl(),
+                    R.drawable.profile_holder, imageViewTrainerProfile);
+
+        } else {
+            ImageUtils.clearImage(context, imageViewTrainerProfile);
+            textViewLocation.setText("");
+        }
+
+        if (model.getGymBranchDetail() != null) {
+            textViewLocation.setText(model.getGymBranchDetail().getGymName() + ", " + model.getGymBranchDetail().getBranchName());
+        } else {
+            textViewLocation.setText("");
+        }
+        if (model.getRating() > 0 && model.getNumberOfRating() > 0) {
+
+            CharSequence text = String.format(context.getString(R.string.review_based_on), LanguageUtils.numberConverter(model.getNumberOfRating()) + "");
+            linearLayoutStudioRating.setVisibility(View.VISIBLE);
+            studioRating.setRating(model.getRating());
+
+            textViewRatingCount.setText(LanguageUtils.numberConverter(model.getRating()) + "/" + LanguageUtils.numberConverter(5.0));
+            textViewReviewCountText.setText(text);
+            studioRating.setIsIndicator(true);
+            linearLayoutClassRating.setVisibility(View.GONE);
+            textViewClassRating.setText(model.getRating() + "");
+        } else {
+            linearLayoutClassRating.setVisibility(View.GONE);
+            linearLayoutStudioRating.setVisibility(View.GONE);
+        }
+
+        if (model.getFitnessLevel() != null && !model.getFitnessLevel().isEmpty()) {
+            relativeLayoutFitnessLevel.setVisibility(View.VISIBLE);
+            switch (model.getFitnessLevel()) {
+                case AppConstants.FitnessLevel.CLASS_LEVEL_BASIC:
+                    imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_get);
+                    break;
+                case AppConstants.FitnessLevel.CLASS_LEVEL_INTERMEDIATE:
+                    imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_set);
+
+                    break;
+                case AppConstants.FitnessLevel.CLASS_LEVEL_ADVANCED:
+                    imageViewClassFitnessLevel.setImageResource(R.drawable.class_level_pro);
+
+                    break;
+                default:
+                    relativeLayoutFitnessLevel.setVisibility(View.GONE);
+                    break;
+            }
+            setTextFitnessLevel(model);
+        } else {
+            relativeLayoutFitnessLevel.setVisibility(View.GONE);
+        }
+        textViewClassName.setText(model.getTitle());
+        textViewClassCategory.setText(model.getClassCategory());
+        textViewClassDate.setText(DateUtils.getClassDate(model.getClassDate()));
 //            textViewAvailable.setText( NumberFormat.getNumberInstance(Constants.LANGUAGE).format(model.getAvailableSeat()) + " " + context.getString(R.string.available_seats) + " ");
 //                    +
 //                    AppConstants.plural(context.getString(R.string.seat), model.getAvailableSeat()));
-            LanguageUtils.setText(textViewAvailable,model.getAvailableSeat(),context.getString(R.string.available_seats) + " ");
+        LanguageUtils.setText(textViewAvailable, model.getAvailableSeat(), context.getString(R.string.available_seats) + " ");
 
-            textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
-            textViewGender.setText(Helper.getClassGenderText(model.getClassType()));
-
-
-
-            layoutSeeAllReview.setOnClickListener(this);
-            layoutLocation.setOnClickListener(this);
+        textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
+        textViewGender.setText(Helper.getClassGenderText(model.getClassType()));
 
 
-            imageViewClass.setOnClickListener(this);
+        layoutSeeAllReview.setOnClickListener(this);
+        layoutLocation.setOnClickListener(this);
 
-            imageViewMap.setOnClickListener(this);
 
-            layoutMapClick.setOnClickListener(this);
+        imageViewClass.setOnClickListener(this);
 
-            textViewLocation.setOnClickListener(this);
+        imageViewMap.setOnClickListener(this);
 
-            layoutTrainer.setOnClickListener(this);
+        layoutMapClick.setOnClickListener(this);
+
+        textViewLocation.setOnClickListener(this);
+
+        layoutTrainer.setOnClickListener(this);
 
     }
 
     private void setTextFitnessLevel(ClassModel model) {
-        String fitnessLevel = matchFitnessWord(model.getFitnessLevel(),context);
+        String fitnessLevel = matchFitnessWord(model.getFitnessLevel(), context);
         textViewFitnessLevel.setText(fitnessLevel);
     }
 }
