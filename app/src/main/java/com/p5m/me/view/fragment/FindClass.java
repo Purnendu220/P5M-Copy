@@ -3,10 +3,13 @@ package com.p5m.me.view.fragment;
 
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.TypedValue;
@@ -196,12 +199,12 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
             View tabView = (View) LayoutInflater.from(context).inflate(R.layout.item_tabs, null);
             TextView textViewTitle = (TextView) tabView.findViewById(R.id.textViewTitle);
             TextView textViewSubtitle = (TextView) tabView.findViewById(R.id.textViewSubtitle);
-            ImageView selectedTabImage = (ImageView)tabView.findViewById(R.id.selectedTabImage);
+            ImageView selectedTabImage = (ImageView) tabView.findViewById(R.id.selectedTabImage);
 
 
             tabLayout.getTabAt(index).setCustomView(tabView);
 
-            textViewSubtitle.setText(monthName + " " +numberConverter(day));
+            textViewSubtitle.setText(monthName + " " + numberConverter(day));
 
             if (index == 0) {
                 textViewTitle.setText(getString(R.string.today));
@@ -227,6 +230,7 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
 
         v.findViewById(R.id.imageViewFilterer).setOnClickListener(this);
         v.findViewById(R.id.imageViewSearch).setOnClickListener(this);
+        v.findViewById(R.id.imageViewMap).setOnClickListener(this);
         textViewNotificationMessageCounter = v.findViewById(R.id.textViewNotificationMessageCounter);
 
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
@@ -240,6 +244,12 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
         switch (view.getId()) {
             case R.id.imageViewSearch:
                 SearchActivity.openActivity(context, activity, view, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
+                break;
+            case R.id.imageViewMap:
+                viewPager.setVisibility(View.GONE);
+                Fragment mapView = new MapViewFragment();
+                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                transaction.add(R.id.frameMapView, mapView).commit();
                 break;
 
             case R.id.imageViewFilterer:
@@ -269,14 +279,14 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
 
     }
 
-    private void markSelectedTab(int position){
+    private void markSelectedTab(int position) {
         for (int index = 0; index < TOTAL_DATE_TABS; index++) {
             View customView = tabLayout.getTabAt(index).getCustomView();
-            ImageView selectedTabImage = (ImageView)customView.findViewById(R.id.selectedTabImage);
-            if(position==index){
+            ImageView selectedTabImage = (ImageView) customView.findViewById(R.id.selectedTabImage);
+            if (position == index) {
                 selectedTabImage.setVisibility(View.VISIBLE);
 
-            }else{
+            } else {
                 selectedTabImage.setVisibility(View.INVISIBLE);
             }
             tabLayout.getTabAt(index).setCustomView(customView);

@@ -39,6 +39,13 @@
             app:tabIndicatorColor="@color/white"
             app:tabMode="scrollable" />
     </com.google.android.material.appbar.AppBarLayout>
+    <FrameLayout
+        android:id="@+id/frameMapView"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
