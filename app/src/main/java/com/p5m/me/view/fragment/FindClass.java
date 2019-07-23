@@ -69,6 +69,7 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
 
     private List<String> calendarList;
     private Calendar todayDate;
+    private boolean isFindClass=true;
 
     public FindClass() {
     }
@@ -246,10 +247,17 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
                 SearchActivity.openActivity(context, activity, view, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
                 break;
             case R.id.imageViewMap:
-                viewPager.setVisibility(View.GONE);
-                Fragment mapView = new MapViewFragment();
-                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                transaction.add(R.id.frameMapView, mapView).commit();
+                if(!isFindClass) {
+                    viewPager.setVisibility(View.GONE);
+                    Fragment mapView = new MapViewFragment();
+                    FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                    transaction.add(R.id.frameMapView, mapView).commit();
+                    isFindClass=true;
+                }
+                else{
+                    viewPager.setVisibility(View.VISIBLE);
+                    isFindClass = false;
+                }
                 break;
 
             case R.id.imageViewFilterer:
