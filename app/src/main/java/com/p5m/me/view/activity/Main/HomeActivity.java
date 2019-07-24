@@ -330,8 +330,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         try {
             User user = TempStorage.getUser();
             if (user.isBuyMembership()) {
-                buyClassesLayout.setVisibility(View.GONE);
-//                buyClassesLayout.setVisibility(View.VISIBLE);
+                buyClassesLayout.setVisibility(View.VISIBLE);
 //                UpdateBuyClassText update = new UpdateBuyClassText();
 //                update.execute();
             } else {
