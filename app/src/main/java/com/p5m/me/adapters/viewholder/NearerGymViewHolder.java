@@ -22,7 +22,7 @@ public class NearerGymViewHolder extends RecyclerView.ViewHolder {
         this.shownInScreen = shownInScreen;
     }
 
-    public void bind(Object item, final AdapterCallbacks adapterCallbacks, final int position) {
+    public void bind(Object item, final int position) {
 
     }
 }

@@ -23,11 +23,13 @@ import butterknife.ButterKnife;
 public class MapViewFragment extends BaseFragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private static AdapterCallbacks adapterCallbacks;
+
     @BindView(R.id.recyclerViewNearerClass)
     public RecyclerView recyclerViewNearerClass;
 
     public MapViewFragment() {
-        // Required empty public constructor
+//        MapViewFragment.adapterCallbacks = adapterCallbacks;
     }
 
 
@@ -59,10 +61,10 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback 
         mMap = googleMap;
     }
 
-    private void setNearerGymView(AdapterCallbacks adapterCallbacks) {
+    private void setNearerGymView() {
         recyclerViewNearerClass.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewNearerClass.setHasFixedSize(true);
-        NearerGymAdapter nearerGymAdapter = new NearerGymAdapter(context, 2, true,);
+        NearerGymAdapter nearerGymAdapter = new NearerGymAdapter(context, 2, true);
         recyclerViewNearerClass.setAdapter(nearerGymAdapter);
     }
 }

@@ -20,7 +20,7 @@ import java.util.List;
 public class NearerGymAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
-    private final AdapterCallbacks<ClassRatingListData> adapterCallbacks;
+//    private final AdapterCallbacks<ClassRatingListData> adapterCallbacks;
 
     private List<Object> list;
     private Context context;
@@ -28,8 +28,8 @@ public class NearerGymAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private int shownInScreen;
 
 
-    public NearerGymAdapter(Context context, int shownInScreen, boolean showLoader, AdapterCallbacks<ClassRatingListData> adapterCallbacks) {
-        this.adapterCallbacks = adapterCallbacks;
+    public NearerGymAdapter(Context context, int shownInScreen, boolean showLoader) {
+//        this.adapterCallbacks = adapterCallbacks;
         this.context = context;
         list = new ArrayList<>();
         this.shownInScreen = shownInScreen;
@@ -65,13 +65,13 @@ public class NearerGymAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof RecommendedClassViewHolder) {
-            ((NearerGymViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
+            ((NearerGymViewHolder) holder).bind(getItem(position),  position);
         }
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return 5;
     }
 
     public Object getItem(int position) {
