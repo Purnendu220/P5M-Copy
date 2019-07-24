@@ -20,6 +20,16 @@
             android:gravity="left"
             android:text="@string/classes"
             android:textColor="@color/white" />
+        <Spinner
+            android:id="@+id/spinnerCountry"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:visibility="gone"
+            android:textColor="@color/white"/>
+
 
         <ImageView
             android:id="@+id/imageViewSearch"

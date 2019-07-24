@@ -16,7 +16,9 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.material.appbar.AppBarLayout;
@@ -70,6 +72,9 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
     private List<String> calendarList;
     private Calendar todayDate;
     private boolean isFindClass=true;
+    private Spinner spinnerCountry;
+    private static final String[] paths = {"Select Cities","item 1", "item 2", "item 3"};
+    private TextView textViewTitle;
 
     public FindClass() {
     }
@@ -232,6 +237,14 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
         v.findViewById(R.id.imageViewFilterer).setOnClickListener(this);
         v.findViewById(R.id.imageViewSearch).setOnClickListener(this);
         v.findViewById(R.id.imageViewMap).setOnClickListener(this);
+        textViewTitle = (TextView) v.findViewById(R.id.textViewTitle);
+        spinnerCountry = (Spinner)v.findViewById(R.id.spinnerCountry);
+        ArrayAdapter<String>adapter = new ArrayAdapter<String>(getActivity(),
+                R.layout.spinner_text_view
+                ,paths);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCountry.setAdapter(adapter);
+
         textViewNotificationMessageCounter = v.findViewById(R.id.textViewNotificationMessageCounter);
 
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
@@ -248,6 +261,8 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
                 break;
             case R.id.imageViewMap:
                 if(!isFindClass) {
+                    spinnerCountry.setVisibility(View.VISIBLE);
+                    textViewTitle.setVisibility(View.GONE);
                     viewPager.setVisibility(View.GONE);
                     Fragment mapView = new MapViewFragment();
                     FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
@@ -256,6 +271,8 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
                 }
                 else{
                     viewPager.setVisibility(View.VISIBLE);
+                    textViewTitle.setVisibility(View.VISIBLE);
+                    spinnerCountry.setVisibility(View.GONE);
                     isFindClass = false;
                 }
                 break;
