@@ -10,8 +10,20 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.main.ClassModel;
@@ -20,6 +32,7 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
 import com.p5m.me.utils.LanguageUtils;
+import com.p5m.me.view.activity.Main.ClassProfileActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,14 +43,15 @@ import static com.p5m.me.utils.LanguageUtils.matchFitnessWord;
  * Created by MyU10 on 3/10/2018.
  */
 
-public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
+public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
+        OnMapReadyCallback {
 
     @BindView(R.id.imageViewClass)
     public ImageView imageViewClass;
     @BindView(R.id.imageViewTrainerProfile)
     public ImageView imageViewTrainerProfile;
-    @BindView(R.id.imageViewMap)
-    public ImageView imageViewMap;
+ /*   @BindView(R.id.imageViewMap)
+    public ImageView imageViewMap;*/
 
     @BindView(R.id.textViewClassName)
     public TextView textViewClassName;
@@ -79,6 +93,8 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.layoutLocation)
     public View layoutLocation;
+    @BindView(R.id.mapImageView)
+    public MapView mapView;
 
     @BindView(R.id.studioRating)
     RatingBar studioRating;
@@ -112,6 +128,8 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
 
     private final Context context;
     private int shownInScreen;
+    private LatLng latlng;
+    private GoogleMap mMap;
 
     public ClassProfileViewHolder(View view) {
         super(view);
@@ -127,7 +145,8 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
             itemView.setVisibility(View.VISIBLE);
 
             final ClassModel model = (ClassModel) data;
-
+            initializeMapView();
+            latlng = new LatLng(model.getGymBranchDetail().getLatitude(), model.getGymBranchDetail().getLongitude());
             if (Helper.isSpecialClass(model)) {
                 textViewSpecialClass.setVisibility(View.VISIBLE);
                 textViewSpecialClass.setText(Helper.getSpecialClassText(model));
@@ -147,8 +166,8 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
             if (model.getGymBranchDetail() != null) {
 
                 layoutMap.setVisibility(View.VISIBLE);
-                ImageUtils.setImage(context, ImageUtils.generateMapImageUrlClassDetail(model.getGymBranchDetail().getLatitude(), model.getGymBranchDetail().getLongitude()),
-                        R.drawable.no_map, imageViewMap);
+               /* ImageUtils.setImage(context, ImageUtils.generateMapImageUrlClassDetail(model.getGymBranchDetail().getLatitude(), model.getGymBranchDetail().getLongitude()),
+                        R.drawable.no_map, imageViewMap);*/
                 textViewMap.setText(Html.fromHtml(context.getString(R.string.address) + context.getString(R.string.gaping) + model.getGymBranchDetail().getAddress()));
             } else {
                 layoutMap.setVisibility(View.GONE);
@@ -219,17 +238,17 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
             }
 
             if (model.getGymBranchDetail() != null) {
-                textViewLocation.setText(model.getGymBranchDetail().getGymName() + ", " + model.getGymBranchDetail().getBranchName()+ ", " + model.getGymBranchDetail().getLocalityName());
+                textViewLocation.setText(model.getGymBranchDetail().getGymName() + ", " + model.getGymBranchDetail().getBranchName() + ", " + model.getGymBranchDetail().getLocalityName());
             } else {
                 textViewLocation.setText("");
             }
             if (model.getRating() > 0 && model.getNumberOfRating() > 0) {
 
-                CharSequence text = String.format(context.getString(R.string.review_based_on),LanguageUtils.numberConverter(model.getNumberOfRating()) + "");
+                CharSequence text = String.format(context.getString(R.string.review_based_on), LanguageUtils.numberConverter(model.getNumberOfRating()) + "");
                 linearLayoutStudioRating.setVisibility(View.VISIBLE);
                 studioRating.setRating(model.getRating());
 
-                textViewRatingCount.setText(LanguageUtils.numberConverter(model.getRating()) + "/"+LanguageUtils.numberConverter(5.0));
+                textViewRatingCount.setText(LanguageUtils.numberConverter(model.getRating()) + "/" + LanguageUtils.numberConverter(5.0));
                 textViewReviewCountText.setText(text);
                 studioRating.setIsIndicator(true);
                 linearLayoutClassRating.setVisibility(View.GONE);
@@ -258,7 +277,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
                         break;
                 }
                 setTextFitnessLevel(model);
-                } else {
+            } else {
                 relativeLayoutFitnessLevel.setVisibility(View.GONE);
             }
             textViewClassName.setText(model.getTitle());
@@ -267,7 +286,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
 //            textViewAvailable.setText( NumberFormat.getNumberInstance(Constants.LANGUAGE).format(model.getAvailableSeat()) + " " + context.getString(R.string.available_seats) + " ");
 //                    +
 //                    AppConstants.plural(context.getString(R.string.seat), model.getAvailableSeat()));
-            LanguageUtils.setText(textViewAvailable,model.getAvailableSeat(),context.getString(R.string.available_seats) + " ");
+            LanguageUtils.setText(textViewAvailable, model.getAvailableSeat(), context.getString(R.string.available_seats) + " ");
 
             textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
             textViewGender.setText(Helper.getClassGenderText(model.getClassType()));
@@ -298,12 +317,12 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
                 }
             });
 
-            imageViewMap.setOnClickListener(new View.OnClickListener() {
+          /*  imageViewMap.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     adapterCallbacks.onAdapterItemClick(ClassProfileViewHolder.this, imageViewMap, model, position);
                 }
-            });
+            });*/
 
             layoutMapClick.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -331,7 +350,33 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void setTextFitnessLevel(ClassModel model) {
-       String fitnessLevel = matchFitnessWord(model.getFitnessLevel(),context);
+        String fitnessLevel = matchFitnessWord(model.getFitnessLevel(), context);
         textViewFitnessLevel.setText(fitnessLevel);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        MapsInitializer.initialize(context.getApplicationContext());
+        mMap = googleMap;
+        mMap.getUiSettings().setAllGesturesEnabled(false);
+        mMap.getUiSettings().setMapToolbarEnabled(false);
+        GoogleMapOptions options = new GoogleMapOptions().liteMode(true);
+        addMarker();
+    }
+
+    private void addMarker() {
+        mMap.addMarker(new MarkerOptions()
+                .position(latlng));
+        CameraUpdate location = CameraUpdateFactory.newLatLngZoom(
+                latlng, 18);
+        mMap.animateCamera(location);
+    }
+
+    public void initializeMapView() {
+        if (mapView != null) {
+            mapView.onCreate(null);
+            mapView.onResume();
+            mapView.getMapAsync(this);
+        }
     }
 }
