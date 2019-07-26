@@ -619,7 +619,6 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                                 model.setUserJoinStatus(true);
                                 model.setRefBookingId(null);
                             }
-                            EventBroadcastHelper.sendUserUpdate(context, ((ResponseModel<User>) response).data);
 
                             if (unJoinType == AppConstants.Values.UNJOIN_BOTH_CLASS)
                                 EventBroadcastHelper.sendClassJoin(context, model, AppConstants.Values.UNJOIN_BOTH_CLASS);
@@ -627,6 +626,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                                 EventBroadcastHelper.sendClassJoin(context, model, AppConstants.Values.UNJOIN_FRIEND_CLASS);
                             else
                                 EventBroadcastHelper.sendClassJoin(context, model, AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS);
+                            EventBroadcastHelper.sendUserUpdate(context, ((ResponseModel<User>) response).data);
 
                             MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
                             FirebaseAnalysic.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
