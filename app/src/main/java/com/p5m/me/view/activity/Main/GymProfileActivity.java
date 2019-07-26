@@ -97,8 +97,8 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
         handleClassJoined(data.data);
     }
 
-    private void handleClassJoined(ClassModel data) {
-        try {
+    private void handleClassJoined(ClassModel model) {
+      /*  try {
             int index = gymProfileAdapter.getList().indexOf(data);
             if (index != -1) {
                 Object obj = gymProfileAdapter.getList().get(index);
@@ -109,6 +109,34 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
                     gymProfileAdapter.notifyItemChanged(index);
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }*/
+
+        try {
+            networkCommunicator.getClassDetail(model.getClassSessionId(), new NetworkCommunicator.RequestListener() {
+                @Override
+                public void onApiSuccess(Object response, int requestCode) {
+                    ClassModel  data = ((ResponseModel<ClassModel>) response).data;
+                    int index = gymProfileAdapter.getList().indexOf(model);
+                    if (index != -1) {
+                        Object obj = gymProfileAdapter.getList().get(index);
+                        if (obj instanceof ClassModel) {
+                            ClassModel classModel = (ClassModel) obj;
+                            Helper.setClassJoinEventData(classModel, data);
+                            gymProfileAdapter.notifyItemChanged(index);
+
+                        }
+                    }
+                }
+
+                @Override
+                public void onApiFailure(String errorMessage, int requestCode) {
+                    ToastUtils.show(GymProfileActivity.this,errorMessage);
+                }
+            },false);
+
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);

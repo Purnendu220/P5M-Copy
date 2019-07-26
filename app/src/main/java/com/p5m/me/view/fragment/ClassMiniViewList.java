@@ -269,8 +269,35 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
 
     }
 
-    private void handleClassJoined(ClassModel data) {
+    private void handleClassJoined(ClassModel model) {
         try {
+            networkCommunicator.getClassDetail(model.getClassSessionId(), new NetworkCommunicator.RequestListener() {
+                @Override
+                public void onApiSuccess(Object response, int requestCode) {
+                    ClassModel  data = ((ResponseModel<ClassModel>) response).data;
+                    int index = classListAdapter.getList().indexOf(model);
+                    if (index != -1) {
+                        Object obj = classListAdapter.getList().get(index);
+                        if (obj instanceof ClassModel) {
+                            ClassModel classModel = (ClassModel) obj;
+                            Helper.setClassJoinEventData(classModel, data);
+                            classListAdapter.notifyItemChanged(index);
+
+                        }
+                    }
+                }
+
+                @Override
+                public void onApiFailure(String errorMessage, int requestCode) {
+//                    ToastUtils.show(this);
+                }
+            },false);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+        /*try {
             int index = classListAdapter.getList().indexOf(data);
 
             if (index != -1) {
@@ -287,10 +314,10 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
             e.printStackTrace();
             LogUtils.exception(e);
         }
-
+*/
         if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
             try {
-                int index = classListAdapter.getList().indexOf(data);
+                int index = classListAdapter.getList().indexOf(model);
 
                 if (index != -1) {
                     classListAdapter.remove(index);
@@ -299,7 +326,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
 
                     if (obj instanceof ClassModel) {
                         ClassModel classModel = (ClassModel) obj;
-                        Helper.wishlistItemRemoved(classModel, data);
+                        Helper.wishlistItemRemoved(classModel, model);
 
                         classListAdapter.notifyItemChanged(index);
                     }

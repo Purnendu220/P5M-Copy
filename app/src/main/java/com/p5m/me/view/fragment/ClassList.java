@@ -57,6 +57,7 @@ import com.p5m.me.view.activity.Main.ClassProfileActivity;
 import com.p5m.me.view.activity.Main.GymProfileActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
+import com.p5m.me.view.activity.base.BaseActivity;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -136,7 +137,6 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void waitlistJoin(Events.WaitlistJoin data) {
-
         handleWaitlistJoined(data.data);
 
     }
@@ -215,18 +215,30 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
         }
     }
 
-    private void handleClassJoined(ClassModel data) {
+    private void handleClassJoined(ClassModel model) {
         try {
-            int index = classListAdapter.getList().indexOf(data);
-            if (index != -1) {
-                Object obj = classListAdapter.getList().get(index);
-                if (obj instanceof ClassModel) {
-                    ClassModel classModel = (ClassModel) obj;
-                    Helper.setClassJoinEventData(classModel, data);
+            networkCommunicator.getClassDetail(model.getClassSessionId(), new NetworkCommunicator.RequestListener() {
+                @Override
+                public void onApiSuccess(Object response, int requestCode) {
+                    ClassModel  data = ((ResponseModel<ClassModel>) response).data;
+                    int index = classListAdapter.getList().indexOf(model);
+                    if (index != -1) {
+                        Object obj = classListAdapter.getList().get(index);
+                        if (obj instanceof ClassModel) {
+                            ClassModel classModel = (ClassModel) obj;
+                            Helper.setClassJoinEventData(classModel, data);
+                            classListAdapter.notifyItemChanged(index);
 
-                    classListAdapter.notifyItemChanged(index);
+                        }
+                    }
                 }
-            }
+
+                @Override
+                public void onApiFailure(String errorMessage, int requestCode) {
+//                    ToastUtils.show(this);
+                }
+            },false);
+
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -379,8 +391,22 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, ClassModel model, int position) {
         switch (view.getId()) {
             case R.id.imageViewOptions:
-                ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, model, shownInScreen, viewHolder);
+                if (model.isUserJoinStatus()) {
+                    ClassListListenerHelper classListListenerHelper = new ClassListListenerHelper(context, activity, AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING, this);
+
+                    if (model.getRefBookingId() != null && model.getRefBookingId() > 0) {
+                        classListListenerHelper.popupOptionsCancelClassBookedWithFriend(context, ((BaseActivity) activity).networkCommunicator, view, model);
+
+                    } else {
+
+                        classListListenerHelper.popupOptionsCancelClass(context, ((BaseActivity) activity).networkCommunicator, view, model, true);
+
+                    }
+                } else
+                    ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, model, shownInScreen, viewHolder);
+
                 break;
+
             case R.id.textViewLocation:
             case R.id.layoutLocation:
                 GymProfileActivity.open(context, model.getGymBranchDetail().getGymId(), shownInScreen);
@@ -395,12 +421,22 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
             case R.id.buttonJoin:
                 if (model instanceof ClassModel) {
                     ClassModel classModel = (ClassModel) model;
-                    if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus()==false) {
+                    // Check if class is allowed for the gender..
+                    if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
+                            && !Helper.isMalesAllowed(classModel)) {
+                        ToastUtils.show(context, context.getString(R.string.gender_females_only_error));
+                        return;
+                    } else if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
+                            && !Helper.isFemalesAllowed(classModel)) {
+                        ToastUtils.show(context, context.getString(R.string.gender_males_only_error));
+                        return;
+                    }
+                    if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus() == false) {
                         NetworkCommunicator.getInstance(context).addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
                             @Override
                             public void onApiSuccess(Object response, int requestCode) {
                                 try {
-                                    if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus()==false) {
+                                    if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus() == false) {
                                         String message = String.format(context.getString(R.string.added_to_waitlist));
                                         DialogUtils.showBasicMessage(context, message, context.getString(R.string.view_wishlist), new MaterialDialog.SingleButtonCallback() {
                                             @Override

@@ -17,7 +17,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -39,6 +38,7 @@ import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.data.main.DefaultSettingServer;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
@@ -162,6 +162,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         isBookWithFriendInProgress = true;
         mBookWithFriendData = data.friendData;
         bookWithAFriend(data.friendData);
+        textViewBookWithFriend.setText(getText(R.string.please_wait));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -282,11 +283,22 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
     @OnClick(R.id.textViewBook)
     public void textViewBook() {
-        isBookWithFriendInProgress = false;
+       isBookWithFriendInProgress = false;
         mBookWithFriendData = null;
-        textViewBook.setText(context.getResources().getString(R.string.please_wait));
+        // Check if class is allowed for the gender..
+        if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
+                && !Helper.isMalesAllowed(classModel)) {
+            ToastUtils.show(context, context.getString(R.string.gender_females_only_error));
+            return;
+        } else if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
+                && !Helper.isFemalesAllowed(classModel)) {
+            ToastUtils.show(context, context.getString(R.string.gender_males_only_error));
+            return;
+        }
+        textViewBook.setEnabled(false);
 
-        if (classModel.getAvailableSeat() == 0) {
+        textViewBook.setText(context.getResources().getString(R.string.please_wait));
+        if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus()==false) {
             networkCommunicator.addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
                 @Override
                 public void onApiSuccess(Object response, int requestCode) {
@@ -310,9 +322,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                         classModel.setWishType(AppConstants.ApiParamKey.WAITLIST);
                         EventBroadcastHelper.sendWishAdded(classModel);
                         EventBroadcastHelper.waitlistClassJoin(context, classModel);
-                       /* textViewBook.setText(RemoteConfigConst.WAITLISTED_VALUE);
-                        RemoteConfigSetUp.setBackgroundColor(textViewBook, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
-                        */
+
                         Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
 
@@ -334,16 +344,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             });
             return;
         }
-        // Check if class is allowed for the gender..
-        if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
-                && !Helper.isMalesAllowed(classModel)) {
-            ToastUtils.show(context, context.getString(R.string.gender_females_only_error));
-            return;
-        } else if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
-                && !Helper.isFemalesAllowed(classModel)) {
-            ToastUtils.show(context, context.getString(R.string.gender_males_only_error));
-            return;
-        }
+
 
         if (Helper.isSpecialClass(classModel)) {
             if (Helper.isFreeClass(classModel))
@@ -648,6 +649,18 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 onBackPressed();
                 break;
             case R.id.imageViewOptions:
+                if(classModel.isUserJoinStatus()){
+                    ClassListListenerHelper classListListenerHelper= new ClassListListenerHelper(context, activity, AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING, this);
+
+                    if (classModel.getRefBookingId() != null && classModel.getRefBookingId() > 0) {
+                        classListListenerHelper.popupOptionsCancelClassBookedWithFriend(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
+
+                    } else {
+                        classListListenerHelper.popupOptionsCancelClass(context, ((BaseActivity) activity).networkCommunicator, view, classModel, true);
+
+                    }
+                }
+                else
                 ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, classModel, navigationFrom, null);
                 break;
 
@@ -674,14 +687,16 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             case NetworkCommunicator.RequestCode.JOIN_CLASS:
 
                 User user = ((ResponseModel<User>) response).data;
-
+                classModel.setUserJoinStatus(true);
                 EventBroadcastHelper.sendUserUpdate(context, user);
-
-                classModel.setUserJoinStatus(true);
-                EventBroadcastHelper.sendClassJoin(context, classModel);
-
-                classModel.setUserJoinStatus(true);
-
+                int joinWith;
+                if(isBookWithFriendInProgress){
+                    joinWith = AppConstants.Values.UNJOIN_BOTH_CLASS; // Book With Friend
+                }
+                else{
+                    joinWith = AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS;
+                }
+                EventBroadcastHelper.sendClassJoin(context, classModel, joinWith);
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
                 MixPanel.trackJoinClass(navigationFrom, classModel);
@@ -725,11 +740,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 classModel = ((ResponseModel<ClassModel>) response).data;
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
-                if (classModel.getAvailableSeat() < 2) {
 
-                } else {
-
-                }
                 if (classModel != null) {
                     getCountRating();
                     classProfileAdapter.setClass(classModel);
@@ -931,7 +942,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 swipeRefreshLayout.setEnabled(true);
 
                 if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
-                    layoutBottomTabs.setVisibility(View.GONE);
                     DialogUtils.showBasicMessage(context, errorMessage, getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {

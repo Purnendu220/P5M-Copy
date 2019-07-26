@@ -114,11 +114,23 @@ public class EventBroadcastHelper {
         GlobalBus.getBus().post(new Events.PackagePurchased());
     }
 
-    public static void sendClassJoin(Context context, ClassModel classModel) {
-        if (classModel.isUserJoinStatus()) {
-            classModel.setAvailableSeat(classModel.getAvailableSeat() - 1);
-        } else {
-            classModel.setAvailableSeat(classModel.getAvailableSeat() + 1);
+    public static void sendClassJoin(Context context, ClassModel classModel, int changeAvailableSeatsFor) {
+        if(changeAvailableSeatsFor == AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS ) {
+            if (classModel.isUserJoinStatus()) {
+                classModel.setAvailableSeat(classModel.getAvailableSeat() - 1);
+            } else if (!classModel.isUserJoinStatus()) {
+                classModel.setAvailableSeat(classModel.getAvailableSeat() + 1);
+            }
+        }
+        else if(changeAvailableSeatsFor == AppConstants.Values.UNJOIN_BOTH_CLASS) {
+            if (classModel.isUserJoinStatus()) {
+                classModel.setAvailableSeat(classModel.getAvailableSeat() - 2);
+            } else {
+                classModel.setAvailableSeat(classModel.getAvailableSeat() + 2);
+            }
+        }
+        else if(changeAvailableSeatsFor == AppConstants.Values.UNJOIN_FRIEND_CLASS){
+                classModel.setAvailableSeat(classModel.getAvailableSeat() + 1);
         }
 
         GlobalBus.getBus().post(new Events.ClassJoin(classModel));

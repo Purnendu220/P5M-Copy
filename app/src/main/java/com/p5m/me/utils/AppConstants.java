@@ -60,6 +60,7 @@ public class AppConstants {
         public static final int SPECIAL_CLASS_ID = 1010;
         public static final int UNJOIN_BOTH_CLASS = 1000;
         public static final int UNJOIN_FRIEND_CLASS = 1001;
+        public static final int CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS = 1002;
 
 
 
@@ -324,8 +325,11 @@ public class AppConstants {
         public static final String DATE = "date";
         public static final String LONGITUDE = "longitude";
         public static final String LATITUDE = "latitude";
+        public static final String NUMBEROFDAYS = "NUMBEROFDAYS";
 
 
+        public static final String NUMBEROFCLASS = "NUMBEROFCLASS";
+        public static final String PERCENTAGE = "PERCENTAGE";
         public static final String WAITLIST = "WAITLIST";
     }
 

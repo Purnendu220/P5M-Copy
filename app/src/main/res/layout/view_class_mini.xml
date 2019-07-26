@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/theme_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        android:orientation="vertical">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,10 +36,10 @@
                         style="@style/CardViewProfileSmall"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:layout_marginBottom="12dp"
                         android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
                         android:layout_marginRight="8dp"
-                        android:layout_marginTop="16dp">
+                        android:layout_marginBottom="12dp">
 
                         <ImageView
                             android:id="@+id/imageViewClass"
@@ -58,8 +58,8 @@
                         android:layout_toRightOf="@+id/cardViewProfile"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:paddingBottom="8dp"
-                        android:paddingTop="16dp">
+                        android:paddingTop="16dp"
+                        android:paddingBottom="8dp">
 
                         <TextView
                             android:id="@+id/textViewClassName"
@@ -88,10 +88,10 @@
                             <androidx.cardview.widget.CardView
                                 android:id="@+id/trainerImage"
                                 style="@style/CardViewCircularProfileSmallest"
-                                android:layout_marginBottom="4dp"
                                 android:layout_marginLeft="4dp"
-                                android:layout_marginRight="4dp"
                                 android:layout_marginTop="6dp"
+                                android:layout_marginRight="4dp"
+                                android:layout_marginBottom="4dp"
                                 android:visibility="visible">
 
                                 <ImageView
@@ -126,8 +126,8 @@
                         android:id="@+id/layoutOptions"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentTop="true">
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true">
 
                         <FrameLayout
                             android:layout_width="wrap_content"
@@ -269,17 +269,17 @@
                     android:layout_height="wrap_content">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
                             android:layout_marginLeft="16dp"
-                            android:layout_marginRight="16dp"
                             android:layout_marginTop="8dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginBottom="8dp"
                             android:orientation="horizontal">
 
                             <ImageView
@@ -345,8 +345,8 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
                             android:layout_marginLeft="16dp"
+                            android:layout_marginBottom="5dp"
                             android:orientation="horizontal">
 
                             <ImageView
@@ -379,9 +379,9 @@
                             android:id="@+id/layoutGender"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="12dp"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="48dp"
+                            android:layout_marginBottom="12dp"
                             android:orientation="horizontal"
                             android:visibility="visible">
 
@@ -409,14 +409,13 @@
                         </RelativeLayout>
 
 
-
                         <RelativeLayout
                             android:id="@+id/relativeLayoutFitnessLevel"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="12dp"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="48dp"
+                            android:layout_marginBottom="12dp"
                             android:orientation="horizontal"
                             android:visibility="visible">
 
@@ -439,20 +438,19 @@
                                 android:lineSpacingExtra="@dimen/line_spacing_extra"
                                 android:text="INTERMEDIATE"
                                 android:textColor="@color/theme_dark_text"
-                                android:textSize="@dimen/text_medium"
-                                />
+                                android:textSize="@dimen/text_medium" />
 
                         </RelativeLayout>
+
                         <RelativeLayout
                             android:id="@+id/classBookedWithFriend"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="12dp"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
+                            android:layout_marginBottom="12dp"
                             android:orientation="horizontal"
-                            android:visibility="gone"
-                            >
+                            android:visibility="gone">
 
                             <ImageView
                                 android:id="@+id/imageViewClassAvailable"
@@ -485,34 +483,52 @@
                         android:layout_gravity="bottom|right"
                         android:padding="16dp"
                         android:src="@drawable/more_options" />
-                    <ImageView
-                        android:id="@+id/imageViewChat"
-                        style="@style/ChatIcon"
-                        android:visibility="gone"
-                        android:layout_gravity="bottom|right"
-                        android:layout_marginBottom="@dimen/margin_10"
-                        android:src="@drawable/chat_icon" />
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|right">
+
+                        <ImageView
+                            android:id="@+id/imageViewChat"
+                            style="@style/ChatIcon"
+                            android:layout_gravity="right"
+                            android:layout_marginBottom="@dimen/margin_10"
+                            android:src="@drawable/chat_icon"
+                            android:visibility="gone" />
+
+                        <ImageView
+                            android:id="@+id/imageViewInviteFriend"
+                            style="@style/ChatIcon"
+                            android:layout_marginBottom="@dimen/margin_10"
+                            android:layout_toRightOf="@id/imageViewChat"
+                            android:src="@drawable/invite_friend"
+                            android:visibility="gone" />
+
+
+                    </RelativeLayout>
+
                 </FrameLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
                     android:layout_marginTop="4dp"
+                    android:layout_marginRight="16dp"
                     android:background="@color/separator" />
             </LinearLayout>
-           <!-- <ImageView
-                android:id="@+id/imageViewChat"
-                android:visibility="gone"
-                android:layout_width="@dimen/margin_30"
-                android:layout_height="@dimen/margin_30"
-                android:padding="4dp"
-                android:paddingTop="1dp"
-                android:layout_marginEnd="@dimen/margin_10"
-                android:layout_marginTop="@dimen/margin_40"
-                android:layout_gravity="right"
-                android:src="@drawable/special" />-->
+            <!-- <ImageView
+                 android:id="@+id/imageViewChat"
+                 android:visibility="gone"
+                 android:layout_width="@dimen/margin_30"
+                 android:layout_height="@dimen/margin_30"
+                 android:padding="4dp"
+                 android:paddingTop="1dp"
+                 android:layout_marginEnd="@dimen/margin_10"
+                 android:layout_marginTop="@dimen/margin_40"
+                 android:layout_gravity="right"
+                 android:src="@drawable/special" />-->
         </LinearLayout>
     </LinearLayout>
 
