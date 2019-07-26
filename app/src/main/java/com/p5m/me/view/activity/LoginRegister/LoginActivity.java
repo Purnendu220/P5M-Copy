@@ -46,6 +46,8 @@ import java.util.Arrays;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.intercom.android.sdk.Intercom;
+import io.intercom.android.sdk.identity.Registration;
 
 public class LoginActivity extends BaseActivity implements NetworkCommunicator.RequestListener {
 
@@ -255,6 +257,7 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                 User user = ((ResponseModel<User>) response).data;
 
                 if (user != null) {
+                    successfulLoginIntercom(user.getFirstName()+" " +user.getLastName());
                     EventBroadcastHelper.sendLogin(context, user);
                     HomeActivity.open(context);
                     setUserProperty();
@@ -274,8 +277,8 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
 
                 if (response != null) {
                     User user = ((ResponseModel<User>) response).data;
+                    successfulLoginIntercom(user.getFirstName()+" " +user.getLastName());
                     EventBroadcastHelper.sendLogin(context, user);
-
                     HomeActivity.open(context);
 
                     if (user.getDateOfJoining() >= loginTime) {
@@ -312,5 +315,11 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
 
                 break;
         }
+    }
+
+    private void successfulLoginIntercom(String name) {
+        Registration registration = Registration.create().withUserId(name);
+        Intercom.client().registerIdentifiedUser(registration);
+        LogUtils.debug("Intercom Working");
     }
 }
