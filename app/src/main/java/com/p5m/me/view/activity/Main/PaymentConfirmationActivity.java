@@ -50,6 +50,7 @@ import com.p5m.me.utils.CalendarHelper;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LanguageUtils;
+import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
@@ -647,10 +648,11 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
             case PACKAGE:
 
             case CLASS_PURCHASE_WITH_PACKAGE:
+
                 if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                     if (paymentResponse.getClassDetailDto() != null)
                         textViewValidity.setText(DateUtils.getPackageClassDate(paymentResponse.getClassDetailDto().getClassDate()) + "\n" + DateUtils.getClassTime(paymentResponse.getClassDetailDto().getFromTime(), paymentResponse.getClassDetailDto().getToTime()));
-                } else {
+                    } else {
                     if (!TextUtils.isEmpty(paymentResponse.getExpiryDate())) {
                         textViewValidity.setText(DateUtils.getClassDate(paymentResponse.getExpiryDate()));
                     } else

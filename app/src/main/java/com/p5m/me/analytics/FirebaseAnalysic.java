@@ -97,10 +97,12 @@ public class FirebaseAnalysic {
             Bundle props = new Bundle();
             props.putString("className", classModel.getTitle());
             props.putString("classTiming", DateUtils.getDayTiming(classModel.getClassDate() + " " + classModel.getFromTime()));
+//            props.putString("classTiming", DateUtils.getDayTiming(classModel.getClassDate() + " " + classModel.getFromTime()));
             props.putString("origin", origin);
             props.putString("trainerName", classModel.getTrainerDetail() == null ? "No Trainer" : classModel.getTrainerDetail().getFirstName());
             props.putString("gymName", classModel.getGymBranchDetail() == null ? "No Trainer" : classModel.getGymBranchDetail().getGymName());
             props.putString("Classgender", Helper.getClassGenderTextForTracker(classModel.getClassType()));
+            props.putString("start_time", DateUtils.getHours(classModel.getFromTime()));
 
             float hourDiff = DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime());
             props.putString("diffHrs", DateUtils.getHourDiff(hourDiff));

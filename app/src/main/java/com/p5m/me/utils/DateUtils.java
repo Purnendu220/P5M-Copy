@@ -66,6 +66,17 @@ public class DateUtils {
         return "";
     }
 
+    public static String getHours(String time) {
+        try {
+            String o[]=(time.split(":"));
+            return o[0];
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+        return "";
+    }
+
     public static String getFormattedDobFromDisplay(Date date) {
         try {
             return classDateFormat.format(date);
@@ -75,7 +86,8 @@ public class DateUtils {
         }
         return "";
     }
-    public static int getPackageNumberOfDays(int duration,String pakageValidity){
+
+    public static int getPackageNumberOfDays(int duration, String pakageValidity) {
         int numberOfDays = duration;
         switch (pakageValidity) {
             case "DAYS":
@@ -242,7 +254,7 @@ public class DateUtils {
             long expiryTime = classDateExpiry.parse(date).getTime();
 
 
-            long diff = (expiryTime );
+            long diff = (expiryTime);
             long minute = TimeUnit.MILLISECONDS.convert(diff, TimeUnit.MILLISECONDS);
             return minute;
         } catch (Exception e) {
@@ -251,11 +263,12 @@ public class DateUtils {
 
         return today;
     }
+
     public static long eventTime(String date) {
         long today = Calendar.getInstance().getTimeInMillis();
         try {
             long expiryTime = parseTime(date);
-            long diff = (expiryTime );
+            long diff = (expiryTime);
             long minute = TimeUnit.MILLISECONDS.convert(diff, TimeUnit.MILLISECONDS);
             return minute;
         } catch (Exception e) {
@@ -264,7 +277,8 @@ public class DateUtils {
 
         return today;
     }
-    private static long parseTime(String date){
+
+    private static long parseTime(String date) {
         long today = Calendar.getInstance().getTimeInMillis();
 
         SimpleDateFormat eventDateTimeLocal = new SimpleDateFormat("dd-MM-yyyy hh:mm aa", Locale.getDefault());

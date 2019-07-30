@@ -368,7 +368,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
         mMap.addMarker(new MarkerOptions()
                 .position(latlng));
         CameraUpdate location = CameraUpdateFactory.newLatLngZoom(
-                latlng, 18);
+                latlng, 12);
         mMap.animateCamera(location);
     }
 

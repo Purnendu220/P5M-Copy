@@ -337,6 +337,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                     UserPackage aPackage = (UserPackage) model;
                     name = aPackage.getPackageName();
                 }
+                MixPanel.trackGymVisitLimitView(name);
                 PackageLimitsActivity.openActivity(context, name);
                 hasVisitedGymLimits = true;
             }
