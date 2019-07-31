@@ -46,6 +46,9 @@ import java.util.Arrays;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.intercom.android.sdk.Intercom;
+import io.intercom.android.sdk.UserAttributes;
+import io.intercom.android.sdk.identity.Registration;
 
 public class LoginActivity extends BaseActivity implements NetworkCommunicator.RequestListener {
 
@@ -119,7 +122,7 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
     }
 
     private void setUserProperty() {
-        FirebaseAnalytics.getInstance(context).setUserProperty(UserPropertyConst.GENDER,TempStorage.getUser().getGender() );
+        FirebaseAnalytics.getInstance(context).setUserProperty(UserPropertyConst.GENDER, TempStorage.getUser().getGender());
     }
 
     private void setEditWatcher() {
@@ -211,9 +214,9 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                                             LogUtils.exception(e);
                                         }
 
-                                        faceBookUser = new FaceBookUser(id, first_name,last_name, gender, email);
+                                        faceBookUser = new FaceBookUser(id, first_name, last_name, gender, email);
 
-                                        networkCommunicator.loginFb(new LoginRequest(id, first_name,last_name, email, gender), LoginActivity.this, false);
+                                        networkCommunicator.loginFb(new LoginRequest(id, first_name, last_name, email, gender), LoginActivity.this, false);
                                     }
                                 });
                         Bundle parameters = new Bundle();
@@ -239,7 +242,7 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
             @Override
             public void onClick(View view) {
                 loginTime = System.currentTimeMillis() - 5 * 1000;
-                LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile", "email","user_gender"));
+                LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile", "email", "user_gender"));
                 layoutProgressRoot.setVisibility(View.VISIBLE);
             }
         });
@@ -255,6 +258,7 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                 User user = ((ResponseModel<User>) response).data;
 
                 if (user != null) {
+                    successfulLoginIntercom();
                     EventBroadcastHelper.sendLogin(context, user);
                     HomeActivity.open(context);
                     setUserProperty();
@@ -274,8 +278,8 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
 
                 if (response != null) {
                     User user = ((ResponseModel<User>) response).data;
+                    successfulLoginIntercom();
                     EventBroadcastHelper.sendLogin(context, user);
-
                     HomeActivity.open(context);
 
                     if (user.getDateOfJoining() >= loginTime) {
@@ -311,6 +315,15 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                 layoutProgressRoot.setVisibility(View.GONE);
 
                 break;
+        }
+    }
+
+    private void successfulLoginIntercom() {
+        if (TempStorage.getUser() != null) {
+            User user = TempStorage.getUser();
+            Registration registration = Registration.create().withUserId(user.getFirstName() + " " + user.getLastName());
+            Intercom.client().registerIdentifiedUser(registration);
+            LogUtils.debug("Intercom Working");
         }
     }
 }

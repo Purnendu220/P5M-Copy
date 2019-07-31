@@ -59,6 +59,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.intercom.android.sdk.Intercom;
+import io.intercom.android.sdk.UserAttributes;
+import io.intercom.android.sdk.identity.Registration;
 
 
 public class HomeActivity extends BaseActivity implements BottomTapLayout.TabListener, ViewPager.OnPageChangeListener, View.OnClickListener, NetworkCommunicator.RequestListener, TabChange {
@@ -174,7 +177,6 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         viewPager.setAdapter(homeAdapter);
         viewPager.addOnPageChangeListener(this);
         viewPager.setOffscreenPageLimit(TOTAL_TABS);
-
         viewPager.post(new Runnable() {
             @Override
             public void run() {
@@ -183,6 +185,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         });
 
         setNotificationIcon();
+        updateIntercom();
         try {
             List<ClassModel> classList = TempStorage.getSavedClasses();
         } catch (Exception e) {
@@ -546,8 +549,30 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         });
     }
 
+    private void updateIntercom() {
+        if (TempStorage.getUser() != null) {
+            User user = TempStorage.getUser();
+          /*  JSONObject props = new JSONObject();
+            try {
+               props.put("type", "avatar");
+               props.put("image_url", user.getProfileImageThumbnail());
 
+           } catch (Exception e) {
+                e.printStackTrace();
+                LogUtils.exception(e);
+            }*/
+
+            UserAttributes userAttributes = new UserAttributes.Builder()
+                    .withName(user.getFirstName() + " " + user.getLastName())
+                    .withEmail(user.getEmail())
+//                    .withCustomAttribute("avatar", props)
+                    .build();
+            Intercom.client().updateUser(userAttributes);
+        }
+
+    }
 }
+
 
 interface TabChange {
     public void onTabChange(int initial_position, int schedule_tab_position);

@@ -299,7 +299,7 @@ public class MixPanel {
             JSONObject props = new JSONObject();
             props.put("origin", origin);
             props.put("className", classModel.getTitle());
-            props.put("  type",classModel.getAvailableSeat()==0?"Waitlist":"Wishlist");
+            props.put("  type", classModel.getAvailableSeat() == 0 ? "Waitlist" : "Wishlist");
 
             trackEvent(props, "Add_to_wishlist");
         } catch (Exception e) {
@@ -644,15 +644,15 @@ public class MixPanel {
             float hourDiff = DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime());
             props.put("diffHrs", DateUtils.getHourDiff(hourDiff));
             props.put("userGender", user.getGender());
-            if(user.getUserPackageDetailDtoList()!=null){
-                String packageUsedForJoinClass="";
-                List<UserPackage> packageList=user.getUserPackageDetailDtoList();
-                for(int i=0;i<packageList.size();i++){
+            if (user.getUserPackageDetailDtoList() != null) {
+                String packageUsedForJoinClass = "";
+                List<UserPackage> packageList = user.getUserPackageDetailDtoList();
+                for (int i = 0; i < packageList.size(); i++) {
                     UserPackage userPackage = packageList.get(0);
-                    if(userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)&&userPackage.getBalanceClass()>0){
+                    if (userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL) && userPackage.getBalanceClass() > 0) {
                         packageUsedForJoinClass = userPackage.getPackageName();
                     }
-                    if(userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)&&classModel.getGymBranchDetail().getGymId()==userPackage.getGymId()){
+                    if (userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN) && classModel.getGymBranchDetail().getGymId() == userPackage.getGymId()) {
                         packageUsedForJoinClass = userPackage.getPackageName();
                         break;
                     }
@@ -694,10 +694,10 @@ public class MixPanel {
             origin = AppConstants.Tracker.SHARED_CLASS;
         }
 
-      //  trackJoinClass(origin, classModel);
+        //  trackJoinClass(origin, classModel);
     }
 
-    public static void trackUnJoinClass(String  origin, ClassModel classModel) {
+    public static void trackUnJoinClass(String origin, ClassModel classModel) {
         try {
 
             JSONObject props = new JSONObject();
@@ -781,7 +781,7 @@ public class MixPanel {
 
     public static void trackPushNotificationClick(PushDetailModel pushDetailModel) {
         try {
-            if(pushDetailModel!=null) {
+            if (pushDetailModel != null) {
                 JSONObject props = new JSONObject();
                 if (!pushDetailModel.getType().isEmpty())
                     props.put("Type", pushDetailModel.getType());

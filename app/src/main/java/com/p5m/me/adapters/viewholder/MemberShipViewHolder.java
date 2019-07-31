@@ -149,6 +149,8 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     }
 
                 } else if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
+                    textViewOr.setVisibility(View.GONE);
+                    viewOr.setVisibility(View.GONE);
 
                     textViewPackageName.setText(model.getPackageName());
                     LanguageUtils.setText(textViewPageTitle, model.getBalanceClass(), " " +AppConstants.pluralES(context.getString(R.string.classs), model.getBalanceClass())+" " + context.getString(R.string.class_remaining_for) + " " + model.getGymName());
@@ -222,6 +224,9 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                         viewOr.setVisibility(View.VISIBLE);
                         textViewPackageName.setText(model.getName());
                         if (model.isBookingWithFriend() && model.getNoOfClass() == 1) {
+                            textViewOr.setVisibility(View.GONE);
+                            viewOr.setVisibility(View.GONE);
+
                             textViewPageTitle.setText(model.getNoOfClass() + " " + AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass()) + " for friend");
                         } else {
                             textViewPageTitle.setText(LanguageUtils.numberConverter(model.getNoOfClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass()) + " " + context.getString(R.string.at_any_gym));

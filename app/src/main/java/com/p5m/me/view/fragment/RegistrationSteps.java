@@ -35,6 +35,8 @@ import com.p5m.me.view.activity.LoginRegister.RegistrationDoneActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.intercom.android.sdk.Intercom;
+import io.intercom.android.sdk.identity.Registration;
 
 
 public class RegistrationSteps extends BaseFragment implements View.OnClickListener, NetworkCommunicator.RequestListener {
@@ -366,6 +368,7 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
 
                     MixPanel.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
                     FirebaseAnalysic.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
+                    successfulLoginIntercom(user.getFirstName()+" " +user.getLastName());
 
                     RegistrationDoneActivity.open(context);
                 }
@@ -374,7 +377,10 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
         }
     }
 
-
+    private void successfulLoginIntercom(String name) {
+        Registration registration = Registration.create().withUserId(name);
+        Intercom.client().registerIdentifiedUser(registration);
+    }
 
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {

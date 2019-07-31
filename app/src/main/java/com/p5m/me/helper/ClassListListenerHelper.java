@@ -508,6 +508,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
                         try {
                             model.setUserJoinStatus(false);
+                            TempStorage.setUser(context,((ResponseModel<User>) response).data);
                             EventBroadcastHelper.sendUserUpdate(context, ((ResponseModel<User>) response).data);
                             EventBroadcastHelper.sendClassJoin(context, model, AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS);
                             MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
