@@ -46,7 +46,7 @@ public class CancelBookingBottomDialogFragment extends BottomSheetDialogFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.bottom_sheet_fragment, container,
+        View view = inflater.inflate(R.layout.bottom_sheet_cancel_booking, container,
                 false);
         ButterKnife.bind(this, view);
         handleView();

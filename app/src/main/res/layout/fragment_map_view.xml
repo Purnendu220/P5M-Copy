@@ -6,16 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".view.fragment.MapViewFragment">
 
-    <!--<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/mapMarker"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
--->
+
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="0dp"
@@ -39,5 +30,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/processingProgressBar"
+        android:layout_width="@dimen/margin_20"
+        android:layout_height="@dimen/margin_20"
+
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewNearerClass"
+        app:layout_constraintEnd_toEndOf="@+id/mapView"
+        app:layout_constraintStart_toStartOf="@+id/mapView"
+        app:layout_constraintTop_toTopOf="@+id/mapView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

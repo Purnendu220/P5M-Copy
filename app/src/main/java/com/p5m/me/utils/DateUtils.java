@@ -1,7 +1,8 @@
 package com.p5m.me.utils;
 
-import com.p5m.me.fxn.utility.Constants;
+import android.util.Log;
 
+import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -369,5 +370,17 @@ public class DateUtils {
             return null;
         }
 
+    }
+
+    public static String getCurrentDateandTime() {
+        try {
+
+            Log.d("DATEEEEEEEE",DateFormat.getDateTimeInstance().format(new Date()));
+            return DateFormat.getDateTimeInstance().format(new Date());
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+        return "";
     }
 }

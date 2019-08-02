@@ -641,6 +641,8 @@ public class MixPanel {
             props.put("gymName", classModel.getGymBranchDetail() == null ? "No Trainer" : classModel.getGymBranchDetail().getGymName());
             props.put("Classgender", Helper.getClassGenderTextForTracker(classModel.getClassType()));
             props.put("start_time", DateUtils.getHours(classModel.getFromTime()));
+            props.put("start_time", DateUtils.getHours(classModel.getFromTime()));
+            props.put("booking_time", DateUtils.getCurrentDateandTime());
 
             float hourDiff = DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime());
             props.put("diffHrs", DateUtils.getHourDiff(hourDiff));
@@ -708,6 +710,7 @@ public class MixPanel {
             props.put("trainerName", classModel.getTrainerDetail() == null ? "No Trainer" : classModel.getTrainerDetail().getFirstName());
             props.put("gymName", classModel.getGymBranchDetail() == null ? "No Trainer" : classModel.getGymBranchDetail().getGymName());
             props.put("Classgender", Helper.getClassGenderTextForTracker(classModel.getClassType()));
+            props.put("cancellation_time", DateUtils.getCurrentDateandTime());
 
             float hourDiff = DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime());
             props.put("diffHrs", DateUtils.getHourDiff(hourDiff));
