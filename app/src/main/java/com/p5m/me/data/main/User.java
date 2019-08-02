@@ -29,6 +29,7 @@ public class User implements java.io.Serializable {
     private String email;
     private String mobile;
     private boolean isfollow;
+    private boolean isRegisterIntercom;
     private boolean status;
     private List<UserPackage> userPackageDetailDtoList;
     private List<ClassActivity> classCategoryList;
@@ -308,6 +309,14 @@ public class User implements java.io.Serializable {
 
     public void setWalletDto(WalletDto walletDto) {
         this.walletDto = walletDto;
+    }
+
+    public boolean isRegisterIntercom() {
+        return isRegisterIntercom;
+    }
+
+    public void setRegisterIntercom(boolean registerIntercom) {
+        isRegisterIntercom = registerIntercom;
     }
 
     public class WalletDto implements java.io.Serializable {

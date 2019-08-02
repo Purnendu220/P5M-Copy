@@ -552,22 +552,20 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     private void updateIntercom() {
         if (TempStorage.getUser() != null) {
             User user = TempStorage.getUser();
-          /*  JSONObject props = new JSONObject();
-            try {
-               props.put("type", "avatar");
-               props.put("image_url", user.getProfileImageThumbnail());
-
-           } catch (Exception e) {
-                e.printStackTrace();
-                LogUtils.exception(e);
-            }*/
-
-            UserAttributes userAttributes = new UserAttributes.Builder()
-                    .withName(user.getFirstName() + " " + user.getLastName())
-                    .withEmail(user.getEmail())
+            if(user.isRegisterIntercom()) {
+                UserAttributes userAttributes = new UserAttributes.Builder()
+                        .withName(user.getFirstName() + " " + user.getLastName())
+                        .withEmail(user.getEmail())
 //                    .withCustomAttribute("avatar", props)
-                    .build();
-            Intercom.client().updateUser(userAttributes);
+                        .build();
+                Intercom.client().updateUser(userAttributes);
+            }
+            else {
+                user.setRegisterIntercom(true);
+                Registration registration = Registration.create().withUserId(user.getFirstName() + " " + user.getLastName());
+                Intercom.client().registerIdentifiedUser(registration);
+                LogUtils.debug("Intercom Working");
+            }
         }
 
     }
