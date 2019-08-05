@@ -218,6 +218,7 @@ public class AppConstants {
         public static final String CLASS_DETAILS = "api/v1/class";
 
         public static final String CLASS_LIST = "api/v1/class/getClassList";
+        public static final String BRANCH_LIST = "api/v1/gym/getBranches";
         public static final String RECOMENDED_CLASS_LIST = "api/v1/class/recommendClasses";
 
 
@@ -263,6 +264,7 @@ public class AppConstants {
 
         public static final String GET_PAYMENT_DETAIL = "api/v1/payment/package-purchase/{id}";
         public static final String SUPPORT_CONTACT = "api/v1/support/save";
+
     }
 
     public class ApiParamValue {

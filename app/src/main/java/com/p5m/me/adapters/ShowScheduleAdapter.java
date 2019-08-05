@@ -23,12 +23,13 @@ public class ShowScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private List<Object> list;
     private Context context;
+    private final AdapterCallbacks<Object> adapterCallbacks;
 
     private int shownInScreen;
 
 
-    public ShowScheduleAdapter(Context context, int shownInScreen, boolean showLoader) {
-//        this.adapterCallbacks = adapterCallbacks;
+    public ShowScheduleAdapter(Context context, int shownInScreen, AdapterCallbacks<Object> adapterCallbacks) {
+        this.adapterCallbacks = adapterCallbacks;
         this.context = context;
         list = new ArrayList<>();
         this.shownInScreen = shownInScreen;
@@ -64,15 +65,14 @@ public class ShowScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ShowScheduleViewHolder) {
-//            ((ShowScheduleViewHolder) holder).bind(getItem(position),  adapterCallbacks,position);
+            ((ShowScheduleViewHolder) holder).bind(getItem(position),  adapterCallbacks,position);
         }
     }
 
     @Override
     public int getItemCount() {
 
-        return 5;
-//        return list.size();
+        return list.size();
     }
 
     public Object getItem(int position) {

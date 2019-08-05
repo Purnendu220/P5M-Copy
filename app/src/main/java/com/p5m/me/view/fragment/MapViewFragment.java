@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,17 +27,23 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.MapGymAdapter;
-import com.p5m.me.data.RecomendedClassData;
-import com.p5m.me.data.main.ClassModel;
-import com.p5m.me.helper.CancelBookingBottomDialogFragment;
+import com.p5m.me.data.CityLocality;
+import com.p5m.me.data.ClassesFilter;
+import com.p5m.me.data.Filter;
+import com.p5m.me.data.main.BranchModel;
+import com.p5m.me.data.main.ClassActivity;
+import com.p5m.me.data.main.GymDataModel;
+import com.p5m.me.data.request.BranchListRequest;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.custom.ShowSchedulesBootomDialogFragment;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -58,13 +63,12 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback 
     @BindView(R.id.recyclerViewNearerClass)
     public RecyclerView recyclerViewNearerClass;
 
-    double pointY[] = {105.45526, 105.57364, 105.53505, 105.45523, 105.51962, 105.77320};
-    double pointX[] = {9.99222, 9.88347, 9.84184, 9.77197, 9.55501, 9.67768};
     List<LatLng> points;
     private LocationManager locationManager;
     private MapGymAdapter mapGymAdapter;
     private String date;
-    private List<ClassModel> classModels;
+    private List<BranchModel> branchModel;
+    private BranchListRequest branchListRequest;
 
     public static Fragment createFragment(String date, int position, int shownIn) {
         Fragment tabFragment = new MapViewFragment();
@@ -124,16 +128,67 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback 
             e.printStackTrace();
 
         }
-            callNearerGymApi(lat, lang);
+            callNearerGymApi();
 
 
 
     }
 
 
-    private void callNearerGymApi(Double latitude, Double longitude) {
+    private void callNearerGymApi() {
         processingProgressBar.setVisibility(View.VISIBLE);
-        networkCommunicator.getRcomendedClassList(date, latitude, longitude, this, false);
+        networkCommunicator.getBranchList(generateRequest(), this, false);
+    }
+
+    private BranchListRequest generateRequest() {
+
+        if (branchListRequest == null) {
+            branchListRequest = new BranchListRequest();
+        }
+        branchListRequest.setClassDate(date);
+        branchListRequest.setUserId(TempStorage.getUser().getId());
+
+        branchListRequest.setActivityList(null);
+        branchListRequest.setGenderList(null);
+        branchListRequest.setTimingList(null);
+        branchListRequest.setLocationList(null);
+
+        List<String> times = new ArrayList<>();
+        List<String> activities = new ArrayList<>();
+        List<String> gymList = new ArrayList<>();
+        List<String> genders = new ArrayList<>();
+        List<String> branches = new ArrayList<>();
+
+        List<CityLocality> cityLocalities = new ArrayList<>();
+
+        for (ClassesFilter classesFilter : TempStorage.getFilters()) {
+            if (classesFilter.getObject() instanceof CityLocality) {
+                cityLocalities.add((CityLocality) classesFilter.getObject());
+            } else if (classesFilter.getObject() instanceof Filter.Time) {
+                times.add(((Filter.Time) classesFilter.getObject()).getId());
+            } else if (classesFilter.getObject() instanceof Filter.Gender) {
+                genders.add(((Filter.Gender) classesFilter.getObject()).getId());
+            } else if (classesFilter.getObject() instanceof ClassActivity) {
+                activities.add(String.valueOf(((ClassActivity) classesFilter.getObject()).getId()));
+            } else if (classesFilter.getObject() instanceof GymDataModel) {
+                gymList.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getId()));
+            }
+        }
+
+        /******************************** To remove gender filter **********************************/
+        genders.clear();
+        genders.add(AppConstants.ApiParamValue.GENDER_BOTH);
+        genders.add(TempStorage.getUser().getGender());
+        /********************************************************************************/
+
+        branchListRequest.setActivityList(activities);
+        branchListRequest.setGenderList(genders);
+        branchListRequest.setTimingList(times);
+        branchListRequest.setLocationList(cityLocalities);
+        branchListRequest.setGymList(gymList);
+        branchListRequest.setBranchList(branches);
+
+        return branchListRequest;
     }
 
 
@@ -145,7 +200,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback 
         recyclerViewNearerClass.setAdapter(mapGymAdapter);
     }
 
-    private void addMarker(LatLng latLng, String title, String snippet) {
+    private void addMarker(LatLng latLng, String title) {
         if(mMap!=null)
         mMap.addMarker(new MarkerOptions()
                 .position(latLng)
@@ -164,11 +219,11 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback 
     private void createLatLngList() {
         points = new ArrayList<LatLng>();
 
-        for (int i = 0; i < pointX.length; i++) {
-            points.add(new LatLng(pointX[i], pointY[i]));
+        for (int i = 0; i < branchModel.size(); i++) {
+            points.add(new LatLng(branchModel.get(i).getLatitude(), branchModel.get(i).getLongitude()));
         }
         for (int i = 0; i < points.size(); i++) {
-            addMarker(points.get(i), "n", "njk");
+            addMarker(points.get(i), branchModel.get(i).getBranchName());
         }
         moveCamera(points.get(0));
     }
@@ -178,11 +233,11 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback 
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(context.getApplicationContext());
         mMap = googleMap;
-        mMap.getUiSettings().setAllGesturesEnabled(false);
+        mMap.getUiSettings().setAllGesturesEnabled(true);
         mMap.getUiSettings().setMapToolbarEnabled(false);
 
         GoogleMapOptions options = new GoogleMapOptions().liteMode(true);
-        createLatLngList();
+
     }
 
     public void initializeMapView() {
@@ -197,10 +252,12 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback 
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
         switch (view.getId()) {
             case R.id.textViewShowSchedule:
+                BranchModel branchModel =(BranchModel) model;
                 ShowSchedulesBootomDialogFragment showSchedulesBootomDialogFragment =
-                        ShowSchedulesBootomDialogFragment.newInstance(context,classModels.get(0), this );
+                        ShowSchedulesBootomDialogFragment.newInstance(context,branchModel,date, Collections.singletonList(branchModel.getBranchId()),this );
                 showSchedulesBootomDialogFragment.show(((HomeActivity) context).getSupportFragmentManager(),
                         "show_schedule");
+
 
                 ToastUtils.show(getActivity(),"Click Show Schedule");
                 break;
@@ -228,12 +285,13 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback 
         processingProgressBar.setVisibility(View.GONE);
 
         switch (requestCode) {
-            case NetworkCommunicator.RequestCode.RCOMENDED_CLASS_LIST:
+            case NetworkCommunicator.RequestCode.BRANCH_LIST:
 
                 mapGymAdapter.clearAll();
-                 classModels = ((ResponseModel<List<ClassModel>>) response).data;
-                if (!classModels.isEmpty()) {
-                    mapGymAdapter.addAllClass(classModels);
+                 branchModel = ((ResponseModel<List<BranchModel>>) response).data;
+                if (!branchModel.isEmpty()) {
+                    createLatLngList();
+                    mapGymAdapter.addAllClass(branchModel);
                 }
                 break;
         }

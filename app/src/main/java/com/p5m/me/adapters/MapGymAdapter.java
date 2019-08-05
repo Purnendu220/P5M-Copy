@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.p5m.me.R;
 import com.p5m.me.adapters.viewholder.MapGymViewHolder;
 import com.p5m.me.data.RecomendedClassData;
-import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.data.main.BranchModel;
 import com.p5m.me.view.fragment.MapViewFragment;
 
 import java.util.ArrayList;
@@ -40,11 +40,11 @@ public class MapGymAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return list;
     }
 
-    public void addClass(ClassModel model) {
+    public void addClass(BranchModel model) {
         list.add(model);
     }
 
-    public void addAllClass(List<ClassModel> models) {
+    public void addAllClass(List<BranchModel> models) {
         list.addAll(models);
         notifyDataSetChanged();
     }

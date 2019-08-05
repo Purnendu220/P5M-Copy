@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
-import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.data.main.BranchModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,12 +39,11 @@ public class MapGymViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(Object data, AdapterCallbacks adapterCallbacks,final int position) {
-        if(data!=null && data instanceof ClassModel) {
-            final ClassModel model = (ClassModel) data;
+        if(data!=null && data instanceof BranchModel) {
+            final BranchModel model = (BranchModel) data;
 
-            textViewGymName.setText(model.getGymBranchDetail().getGymName());
-            textViewClassCategory.setText(model.getClassCategory());
-
+            textViewGymName.setText(model.getGymName());
+            textViewClassCategory.setText(model.getBranchName());
             textViewShowSchedule.setOnClickListener(v -> {
                 adapterCallbacks.onAdapterItemClick(MapGymViewHolder.this, textViewShowSchedule, "", position);
             });
