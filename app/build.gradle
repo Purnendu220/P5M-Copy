@@ -142,8 +142,8 @@ android {
             buildConfigField "String", "API_KEY", QA_API_KEY
             buildConfigField "String", "APP_ID", QA_APPLICATION_ID
 
-            manifestPlaceholders = [hostName: "staging.p5m.me", hostName_www: "www.staging.p5m.me", appName: "P5M QA", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
-//            manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
+//            manifestPlaceholders = [hostName: "staging.p5m.me", hostName_www: "www.staging.p5m.me", appName: "P5M QA", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
+            manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
 
         }
 
@@ -239,6 +239,9 @@ dependencies {
 //    implementation 'com.google.android.gms:play-services-gcm:15.0.1'
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:design:28.0.0'
+
+    // Intercom Integration
+    implementation 'io.intercom.android:intercom-sdk:5.+'
 }
 
 apply plugin: 'com.google.gms.google-services'

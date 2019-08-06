@@ -310,6 +310,7 @@ public class User implements java.io.Serializable {
         this.walletDto = walletDto;
     }
 
+
     public class WalletDto implements java.io.Serializable {
        int id;
        double balance;
