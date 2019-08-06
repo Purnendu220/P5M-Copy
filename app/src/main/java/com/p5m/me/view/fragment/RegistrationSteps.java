@@ -368,8 +368,8 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
 
                     MixPanel.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
                     FirebaseAnalysic.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
-                    successfulLoginIntercom(user.getFirstName()+" " +user.getLastName());
-
+                    successfulLoginIntercom(user.getFirstName()+" " +user.getLastName(),user.getEmail());
+//                    user.setRegisterIntercom(true);
                     RegistrationDoneActivity.open(context);
                 }
 
@@ -377,8 +377,9 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
         }
     }
 
-    private void successfulLoginIntercom(String name) {
-        Registration registration = Registration.create().withUserId(name);
+    private void successfulLoginIntercom(String name,String email) {
+
+        Registration registration = Registration.create().withUserId(name).withEmail(email);
         Intercom.client().registerIdentifiedUser(registration);
     }
 
