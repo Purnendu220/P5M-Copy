@@ -19,7 +19,7 @@
         <ImageView
             android:id="@+id/imageViewOfGym"
             android:layout_width="100dp"
-            android:layout_height="75dp"
+            android:layout_height="70dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:scaleType="fitXY"
@@ -29,7 +29,7 @@
             tools:srcCompat="@drawable/info_screen_2" />
 
         <TextView
-            android:id="@+id/textViewClassCategory"
+            android:id="@+id/textViewGymName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
@@ -37,23 +37,23 @@
             android:layout_marginEnd="8dp"
             android:text="Cycling"
             android:textAllCaps="true"
-            android:textColor="@color/grey"
+            android:textColor="@color/black"
             android:textSize="@dimen/text_medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageViewOfGym"
             app:layout_constraintTop_toTopOf="@+id/imageViewOfGym" />
 
         <TextView
-            android:id="@+id/textViewGymName"
+            android:id="@+id/textViewBranchName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="Red Bike Studio"
             android:textColor="@color/black"
             android:textSize="@dimen/text_medium"
-            app:layout_constraintEnd_toEndOf="@+id/textViewClassCategory"
-            app:layout_constraintStart_toStartOf="@+id/textViewClassCategory"
-            app:layout_constraintTop_toBottomOf="@+id/textViewClassCategory" />
+            app:layout_constraintEnd_toEndOf="@+id/textViewGymName"
+            app:layout_constraintStart_toStartOf="@+id/textViewGymName"
+            app:layout_constraintTop_toBottomOf="@+id/textViewGymName" />
 
         <TextView
             android:id="@+id/textViewCategoryRating"
@@ -63,8 +63,9 @@
             android:drawableEnd="@drawable/star_filled"
             android:gravity="center_vertical"
             android:text="4.9"
-            app:layout_constraintStart_toStartOf="@+id/textViewGymName"
-            app:layout_constraintTop_toBottomOf="@+id/textViewGymName" />
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/textViewBranchName"
+            app:layout_constraintTop_toBottomOf="@+id/textViewBranchName" />
 
         <TextView
             android:id="@+id/textViewRatingByUsers"
@@ -72,6 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="(5000+)"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/textViewCategoryRating"
             app:layout_constraintEnd_toEndOf="@+id/textViewGymName"
             app:layout_constraintHorizontal_bias="0.225"
@@ -88,6 +90,7 @@
             android:drawableEnd="@drawable/arrow_right"
             android:text="Show Schedule"
             android:textSize="@dimen/text_medium"
+            android:textColor="@color/theme_book"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/textViewGymName"
             app:layout_constraintStart_toStartOf="@+id/imageViewOfGym"

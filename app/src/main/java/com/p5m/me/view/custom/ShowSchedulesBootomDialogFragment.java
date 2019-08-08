@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,14 +21,15 @@ import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.Filter;
 import com.p5m.me.data.main.BranchModel;
 import com.p5m.me.data.main.ClassActivity;
-import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.GymDataModel;
+import com.p5m.me.data.main.ScheduleClassModel;
 import com.p5m.me.data.request.ScheduleRequest;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.ToastUtils;
+import com.p5m.me.view.activity.Main.ClassProfileActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,18 +41,20 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
 
     public static AdapterCallbacks<BranchModel> adapterCallbacks;
     private static List<Integer> branchList;
+    private static int branchModelId;
     private ShowScheduleAdapter showScheduleAdapter;
     public static Context context;
     public static String date;
     private NetworkCommunicator networkCommunicator;
     private ScheduleRequest scheduleRequest;
 
-    public static ShowSchedulesBootomDialogFragment newInstance(Context context, BranchModel branchModel, String date,List<Integer> branchList,AdapterCallbacks<BranchModel> adapterCallbacks) {
+    public static ShowSchedulesBootomDialogFragment newInstance(Context context,  String date,List<Integer> branchList,AdapterCallbacks<BranchModel> adapterCallbacks) {
 
         ShowSchedulesBootomDialogFragment bottomSheetFragment = new ShowSchedulesBootomDialogFragment();
         ShowSchedulesBootomDialogFragment.context = context;
         ShowSchedulesBootomDialogFragment.date = date;
         ShowSchedulesBootomDialogFragment.branchList = branchList;
+
         ShowSchedulesBootomDialogFragment.adapterCallbacks = adapterCallbacks;
         return bottomSheetFragment;
     }
@@ -57,6 +62,10 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
 
    @BindView(R.id.recycleViewShowSchedule)
    public RecyclerView recycleViewShowSchedule;
+    @BindView(R.id.layoutBottomSheet)
+    public ConstraintLayout layoutBottomSheet;
+    @BindView(R.id.progressBar)
+    public ProgressBar progressBar;
 
     @Nullable
     @Override
@@ -75,6 +84,7 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
     }
 
     private void callApiScheduleList() {
+        progressBar.setVisibility(View.VISIBLE);
         networkCommunicator.getScheduleClassList(generateRequest(), this, false);
     }
 
@@ -95,8 +105,8 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
         List<String> activities = new ArrayList<>();
         List<String> gymList = new ArrayList<>();
         List<String> genders = new ArrayList<>();
-        List<Integer> branchList = new ArrayList<>();
-        branchList = this.branchList;
+//        List<Integer> branchList = new ArrayList<>();
+//        branchList = this.branchList;
 
         List<CityLocality> cityLocalities = new ArrayList<>();
 
@@ -125,6 +135,8 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
         scheduleRequest.setTimingList(times);
         scheduleRequest.setLocationList(cityLocalities);
         scheduleRequest.setGymList(gymList);
+        scheduleRequest.setBranchList(branchList);
+
 
 
         return scheduleRequest;
@@ -145,14 +157,20 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
 
     @Override
     public void onApiSuccess(Object response, int requestCode) {
+        progressBar.setVisibility(View.GONE);
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.SCHEDULE_LIST:
-                List<ClassModel> classModels = ((ResponseModel<List<ClassModel>>) response).data;
 
-                if (!classModels.isEmpty()) {
+                List<ScheduleClassModel> scheduleClassModels = ((ResponseModel<List<ScheduleClassModel>>) response).data;
+
+                if (!scheduleClassModels.isEmpty()) {
                     showScheduleAdapter.clearAll();
-                    showScheduleAdapter.addAllClass(classModels);
+                    showScheduleAdapter.addAllClass(scheduleClassModels);
                     showScheduleAdapter.notifyDataSetChanged();
+                }
+                else {
+                    this.dismiss();
+                    ToastUtils.show(context, "Currently no class available");
                 }
                 break;
 
@@ -162,6 +180,7 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
 
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
+        progressBar.setVisibility(View.GONE);
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.SCHEDULE_LIST:
                 ToastUtils.showLong(context, errorMessage);
@@ -172,7 +191,15 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
 
     @Override
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
-
+        switch (view.getId()) {
+            case R.id.layoutScheduler:
+                if(model instanceof ScheduleClassModel) {
+                    ScheduleClassModel model1 = (ScheduleClassModel) model;
+                    ClassProfileActivity.open(context, model1.getClassSessionId(), AppConstants.AppNavigation.NAVIGATION_FROM_SHOW_SCHEDULER);
+                    this.dismiss();
+                }
+                break;
+        }
     }
 
     @Override

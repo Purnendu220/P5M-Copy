@@ -29,7 +29,6 @@ import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LogUtils;
-import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.FilterActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.Main.SearchActivity;
@@ -70,15 +69,16 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
 
     private List<String> calendarList;
     private Calendar todayDate;
-    private boolean isFindClass=true;
+    private boolean isFindClass=false;
     private TextView textViewTitle;
     private Fragment mapView;
+    private TextView textViewMapOrList;
 
     public FindClass() {
     }
     public abstract interface TabClickListener {
 
-        void onTabClick(String selectedDate);
+        void onTabClick(int position, String selectedDate);
 
     }
 
@@ -240,7 +240,8 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
 
         v.findViewById(R.id.imageViewFilterer).setOnClickListener(this);
         v.findViewById(R.id.imageViewSearch).setOnClickListener(this);
-        v.findViewById(R.id.imageViewMap).setOnClickListener(this);
+        textViewMapOrList = (TextView) v.findViewById(R.id.textViewMapOrList);
+        textViewMapOrList.setOnClickListener(this);
         textViewTitle = (TextView) v.findViewById(R.id.textViewTitle);
 
         textViewNotificationMessageCounter = v.findViewById(R.id.textViewNotificationMessageCounter);
@@ -257,13 +258,14 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
             case R.id.imageViewSearch:
                 SearchActivity.openActivity(context, activity, view, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
                 break;
-            case R.id.imageViewMap:
+            case R.id. textViewMapOrList:
                 if(!isFindClass) {
                     textViewTitle.setVisibility(View.VISIBLE);
                     textViewTitle.setText(getString(R.string.map));
+                    textViewMapOrList.setText(R.string.list);
                     viewPager.setVisibility(View.GONE);
                     mapView =  MapViewFragment.createFragment(calendarList.get(SELECTED_POSITION), SELECTED_POSITION,
-                            AppConstants.AppNavigation.SHOWN_IN_HOME_FIND_CLASSES);
+                            AppConstants.AppNavigation.SHOWN_IN_HOME_MAP_CLASSES);
                     FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                     transaction.add(R.id.frameMapView, mapView).commit();
                     isFindClass=true;
@@ -272,6 +274,7 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
                     viewPager.setVisibility(View.VISIBLE);
                     textViewTitle.setVisibility(View.VISIBLE);
                     textViewTitle.setText(getString(R.string.classes));
+                    textViewMapOrList.setText(R.string.map);
                     isFindClass = false;
                 }
                 break;
@@ -291,7 +294,7 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
         markSelectedTab(position);
         SELECTED_POSITION = position;
         if(mapView!=null)
-            ((MapViewFragment)mapView).onTabClick(calendarList.get(SELECTED_POSITION));
+            ((MapViewFragment)mapView).onTabClick(position,calendarList.get(SELECTED_POSITION));
         try {
             ((ViewPagerFragmentSelection) findClassAdapter.getFragments().get(position)).onTabSelection(position);
         } catch (Exception e) {

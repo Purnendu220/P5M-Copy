@@ -1,16 +1,21 @@
 package com.p5m.me.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Animatable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.p5m.me.R;
 import com.p5m.me.adapters.viewholder.MapGymViewHolder;
 import com.p5m.me.adapters.viewholder.ShowScheduleViewHolder;
-import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.data.main.ScheduleClassModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,11 +45,11 @@ public class ShowScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return list;
     }
 
-    public void addClass(ClassModel model) {
+    public void addClass(ScheduleClassModel model) {
         list.add(model);
     }
 
-    public void addAllClass(List<ClassModel> models) {
+    public void addAllClass(List<ScheduleClassModel> models) {
         list.addAll(models);
         notifyDataSetChanged();
     }
@@ -54,24 +59,33 @@ public class ShowScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_map_schedule, parent, false);
-            return new ShowScheduleViewHolder(view, shownInScreen);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_map_schedule, parent, false);
+        return new ShowScheduleViewHolder(view, shownInScreen);
 
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ShowScheduleViewHolder) {
-            ((ShowScheduleViewHolder) holder).bind(getItem(position),  adapterCallbacks,position);
+            setFadeAnimation(holder.itemView);
+            ((ShowScheduleViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
         }
+    }
+
+    private void setFadeAnimation(View view) {
+        Animation anim = new ScaleAnimation(0f, 1f,
+                0f, 1f,
+                Animation.ABSOLUTE, 1,
+                Animation.ABSOLUTE, 0);
+        anim.setDuration(750);
+
+        view.startAnimation(anim);
     }
 
     @Override
     public int getItemCount() {
-
         return list.size();
     }
 

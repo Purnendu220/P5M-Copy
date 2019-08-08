@@ -22,8 +22,8 @@ public class MapGymViewHolder extends RecyclerView.ViewHolder {
     public TextView textViewShowSchedule;
     @BindView(R.id.imageViewOfGym)
     public ImageView imageViewOfGym;
-    @BindView(R.id.textViewClassCategory)
-    public TextView textViewClassCategory;
+    @BindView(R.id.textViewBranchName)
+    public TextView textViewBranchName;
     @BindView(R.id.textViewGymName)
     public TextView textViewGymName;
     @BindView(R.id.textViewCategoryRating)
@@ -38,14 +38,23 @@ public class MapGymViewHolder extends RecyclerView.ViewHolder {
         this.shownInScreen = shownInScreen;
     }
 
-    public void bind(Object data, AdapterCallbacks adapterCallbacks,final int position) {
-        if(data!=null && data instanceof BranchModel) {
+    public void bind(Object data, AdapterCallbacks adapterCallbacks, final int position) {
+        if (data != null && data instanceof BranchModel) {
             final BranchModel model = (BranchModel) data;
 
+            textViewBranchName.setText(model.getBranchName());
             textViewGymName.setText(model.getGymName());
-            textViewClassCategory.setText(model.getBranchName());
             textViewShowSchedule.setOnClickListener(v -> {
-                adapterCallbacks.onAdapterItemClick(MapGymViewHolder.this, textViewShowSchedule, "", position);
+                adapterCallbacks.onAdapterItemClick(MapGymViewHolder.this, textViewShowSchedule, model, position);
+            });
+            textViewGymName.setOnClickListener(v -> {
+                adapterCallbacks.onAdapterItemClick(MapGymViewHolder.this, textViewGymName, model, position);
+            });
+            textViewBranchName.setOnClickListener(v -> {
+                adapterCallbacks.onAdapterItemClick(MapGymViewHolder.this, textViewBranchName, model, position);
+            });
+            imageViewOfGym.setOnClickListener(v -> {
+                adapterCallbacks.onAdapterItemClick(MapGymViewHolder.this, imageViewOfGym, model, position);
             });
         }
     }

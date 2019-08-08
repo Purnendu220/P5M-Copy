@@ -1,7 +1,5 @@
 package com.p5m.me.view.fragment;
 
-import android.content.Context;
-import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,8 +9,8 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -23,6 +21,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
@@ -34,13 +33,20 @@ import com.p5m.me.data.main.BranchModel;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.data.request.BranchListRequest;
+import com.p5m.me.eventbus.Events;
+import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
+import com.p5m.me.view.activity.Main.GymProfileActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.custom.ShowSchedulesBootomDialogFragment;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,8 +55,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MapViewFragment extends BaseFragment implements OnMapReadyCallback ,AdapterCallbacks, NetworkCommunicator.RequestListener,
-        FindClass.TabClickListener {
+public class MapViewFragment extends BaseFragment implements OnMapReadyCallback, AdapterCallbacks, NetworkCommunicator.RequestListener,
+        FindClass.TabClickListener, GoogleMap.OnMarkerClickListener,ViewPagerFragmentSelection {
 
     private GoogleMap mMap;
     @BindView(R.id.mapView)
@@ -69,6 +75,11 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback 
     private String date;
     private List<BranchModel> branchModel;
     private BranchListRequest branchListRequest;
+    private StaggeredGridLayoutManager staggeredGridLayoutManager;
+    private int showInScreen;
+    private int fragmentPositionInViewPager;
+    private boolean isShownFirstTime = true;
+    private int currentPosition;
 
     public static Fragment createFragment(String date, int position, int shownIn) {
         Fragment tabFragment = new MapViewFragment();
@@ -86,7 +97,6 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         return inflater.inflate(R.layout.fragment_map_view, container, false);
     }
 
@@ -97,13 +107,25 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback 
         ButterKnife.bind(this, getView());
 //        setProgressBarAnimation();
         initializeMapView();
-
         date = getArguments().getString(AppConstants.DataKey.CLASS_DATE_STRING, null);
+        showInScreen = getArguments().getInt(AppConstants.DataKey.TAB_SHOWN_IN_INT, 0);
+        fragmentPositionInViewPager = getArguments().getInt(AppConstants.DataKey.TAB_POSITION_INT);
         setNearerGymView();
-        getLocation();
+        callNearerGymApi();
+    }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        GlobalBus.getBus().register(this);
     }
 
-    private void setProgressBarAnimation() {
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        GlobalBus.getBus().unregister(this);
+    }
+
+    /*private void setProgressBarAnimation() {
         processingProgressBar = new android.widget.ProgressBar(
                 context,
                 null,
@@ -111,30 +133,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback 
 
         processingProgressBar.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
     }
-
-
-    private void getLocation() {
-        Double lat = null;
-        Double lang = null;
-        try {
-            locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-            Location loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if (loc != null) {
-                lat = loc.getLatitude();
-                lang = loc.getLongitude();
-            }
-
-        } catch (SecurityException e) {
-            e.printStackTrace();
-
-        }
-            callNearerGymApi();
-
-
-
-    }
-
-
+*/
     private void callNearerGymApi() {
         processingProgressBar.setVisibility(View.VISIBLE);
         networkCommunicator.getBranchList(generateRequest(), this, false);
@@ -192,27 +191,28 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback 
     }
 
 
-
     private void setNearerGymView() {
-        recyclerViewNearerClass.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-        recyclerViewNearerClass.setHasFixedSize(true);
-        mapGymAdapter = new MapGymAdapter(context, 2, true,this);
+        staggeredGridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
+
+        recyclerViewNearerClass.setLayoutManager(staggeredGridLayoutManager);
+        mapGymAdapter = new MapGymAdapter(context, 2, true, this);
         recyclerViewNearerClass.setAdapter(mapGymAdapter);
-    }
+
+        }
 
     private void addMarker(LatLng latLng, String title) {
-        if(mMap!=null)
-        mMap.addMarker(new MarkerOptions()
-                .position(latLng)
-                .title(title)
-                .icon(BitmapDescriptorFactory.defaultMarker())
-                );
+        if (mMap != null)
+            mMap.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .title(title)
+                    .icon(BitmapDescriptorFactory.defaultMarker())
+            );
 
     }
 
     private void moveCamera(LatLng latLng) {
         CameraUpdate location = CameraUpdateFactory.newLatLngZoom(
-                latLng, 8);
+                latLng, 10);
         mMap.animateCamera(location);
     }
 
@@ -235,7 +235,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback 
         mMap = googleMap;
         mMap.getUiSettings().setAllGesturesEnabled(true);
         mMap.getUiSettings().setMapToolbarEnabled(false);
-
+        mMap.setOnMarkerClickListener(this);
         GoogleMapOptions options = new GoogleMapOptions().liteMode(true);
 
     }
@@ -248,19 +248,26 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback 
         }
     }
 
+
+
     @Override
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
         switch (view.getId()) {
             case R.id.textViewShowSchedule:
-                BranchModel branchModel =(BranchModel) model;
                 ShowSchedulesBootomDialogFragment showSchedulesBootomDialogFragment =
-                        ShowSchedulesBootomDialogFragment.newInstance(context,branchModel,date, Collections.singletonList(branchModel.getBranchId()),this );
+                        ShowSchedulesBootomDialogFragment.newInstance(context, date, Collections.singletonList(branchModel.get(position).getBranchId()), this);
                 showSchedulesBootomDialogFragment.show(((HomeActivity) context).getSupportFragmentManager(),
                         "show_schedule");
-
-
-                ToastUtils.show(getActivity(),"Click Show Schedule");
                 break;
+
+            case R.id.imageViewOfGym:
+            case R.id.textViewBranchName:
+            case R.id.textViewGymName:
+                if (model instanceof BranchModel) {
+                    BranchModel branchModel = (BranchModel) model;
+                    GymProfileActivity.open(context, branchModel.getGymId(), AppConstants.AppNavigation.SHOWN_IN_MAP_VIEW);
+                }
+                    break;
         }
     }
 
@@ -275,9 +282,18 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback 
     }
 
     @Override
-    public void onTabClick(String selectedDate) {
+    public void onTabClick(int position, String selectedDate) {
         date = selectedDate;
-        getLocation();
+//        callNearerGymApi();
+        currentPosition = position;
+        if (((fragmentPositionInViewPager == position))
+                || ((fragmentPositionInViewPager == position) && isShownFirstTime)) {
+            isShownFirstTime = false;
+
+            callNearerGymApi();
+        } else {
+                callNearerGymApi();
+        }
     }
 
     @Override
@@ -288,8 +304,9 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback 
             case NetworkCommunicator.RequestCode.BRANCH_LIST:
 
                 mapGymAdapter.clearAll();
-                 branchModel = ((ResponseModel<List<BranchModel>>) response).data;
+                branchModel = ((ResponseModel<List<BranchModel>>) response).data;
                 if (!branchModel.isEmpty()) {
+                    mMap.clear();
                     createLatLngList();
                     mapGymAdapter.addAllClass(branchModel);
                 }
@@ -309,4 +326,57 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback 
         }
     }
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        String title=marker.getTitle();
+        int position=-1;
+        for(int i=0;i<branchModel.size();i++){
+            if((branchModel.get(i).getBranchName()).equalsIgnoreCase(title)){
+                position = i;
+                break;
+            }
+        }
+        staggeredGridLayoutManager.smoothScrollToPosition(recyclerViewNearerClass,new RecyclerView.State(),position);
+    return false;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void newFilter(Events.NewFilter newFilter) {
+        if (showInScreen == AppConstants.AppNavigation.SHOWN_IN_HOME_MAP_CLASSES) {
+            mapGymAdapter.clearAll();
+            mapGymAdapter.notifyDataSetChanged();
+
+            if ((fragmentPositionInViewPager == FindClass.SELECTED_POSITION)) {
+                onTabSelection(FindClass.SELECTED_POSITION);
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void newFilter(Events.RefreshClassList refreshClassList) {
+        if (showInScreen == AppConstants.AppNavigation.SHOWN_IN_HOME_MAP_CLASSES) {
+            mapGymAdapter.clearAll();
+            mapGymAdapter.notifyDataSetChanged();
+
+            if ((fragmentPositionInViewPager == FindClass.SELECTED_POSITION)) {
+                onTabSelection(FindClass.SELECTED_POSITION);
+            }
+        }
+    }
+    @Override
+    public void onTabSelection(int position) {
+        LogUtils.debug("varun f " + fragmentPositionInViewPager + " onTabSelection " + position + " vp position " + FindClass.SELECTED_POSITION);
+
+        currentPosition = position;
+        if (((fragmentPositionInViewPager == position))
+                || ((fragmentPositionInViewPager == position) && isShownFirstTime)) {
+            isShownFirstTime = false;
+
+            callNearerGymApi();
+        } else {
+            if (mapGymAdapter.getList().isEmpty()) {
+                callNearerGymApi();
+            }
+        }
+    }
 }

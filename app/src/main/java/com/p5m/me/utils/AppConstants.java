@@ -369,7 +369,8 @@ public class AppConstants {
         public static final int SHOWN_IN_GYM_PROFILE_TRAINERS = 12;
         public static final int SHOWN_IN_SEARCH_RESULTS = 13;
         public static final int SHOWN_IN_RATING_LIST = 15;
-
+        public static final int SHOWN_IN_MAP_VIEW = 16;
+        public static final int SHOWN_IN_HOME_MAP_CLASSES = 17;
 
         public static final int NAVIGATION_FROM_RESERVE_CLASS = 51;
         public static final int NAVIGATION_FROM_MY_PROFILE = 52;
@@ -385,7 +386,7 @@ public class AppConstants {
         public static final int NAVIGATION_FROM_SHARE = 61;
         public static final int NAVIGATION_FROM_DEEPLINK_ACTIVITY = 62;
         public static final int NAVIGATION_FROM_MEMBERSHIP = 63;
-
+        public static final int NAVIGATION_FROM_SHOW_SCHEDULER = 64;
 
     }
 
