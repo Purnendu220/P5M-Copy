@@ -2,9 +2,7 @@
 package com.p5m.me.data.request;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import com.google.gson.annotations.SerializedName;
 
 public class ClassRatingRequest implements Serializable {
 

@@ -76,7 +76,7 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
 
     public FindClass() {
     }
-    public abstract interface TabClickListener {
+    public interface TabClickListener {
 
         void onTabClick(int position, String selectedDate);
 
@@ -206,10 +206,10 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
             String monthName = DateUtils.getMonthName(gregorianCalendar.get(GregorianCalendar.MONTH));
             String weekdayName = DateUtils.getWeekDaysName(gregorianCalendar.get(GregorianCalendar.DAY_OF_WEEK));
             int day = gregorianCalendar.get(GregorianCalendar.DAY_OF_MONTH);
-            View tabView = (View) LayoutInflater.from(context).inflate(R.layout.item_tabs, null);
-            TextView textViewTitle = (TextView) tabView.findViewById(R.id.textViewTitle);
-            TextView textViewSubtitle = (TextView) tabView.findViewById(R.id.textViewSubtitle);
-            ImageView selectedTabImage = (ImageView) tabView.findViewById(R.id.selectedTabImage);
+            View tabView = LayoutInflater.from(context).inflate(R.layout.item_tabs, null);
+            TextView textViewTitle = tabView.findViewById(R.id.textViewTitle);
+            TextView textViewSubtitle = tabView.findViewById(R.id.textViewSubtitle);
+            ImageView selectedTabImage = tabView.findViewById(R.id.selectedTabImage);
 
 
             tabLayout.getTabAt(index).setCustomView(tabView);
@@ -240,9 +240,9 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
 
         v.findViewById(R.id.imageViewFilterer).setOnClickListener(this);
         v.findViewById(R.id.imageViewSearch).setOnClickListener(this);
-        textViewMapOrList = (TextView) v.findViewById(R.id.textViewMapOrList);
+        textViewMapOrList = v.findViewById(R.id.textViewMapOrList);
         textViewMapOrList.setOnClickListener(this);
-        textViewTitle = (TextView) v.findViewById(R.id.textViewTitle);
+        textViewTitle = v.findViewById(R.id.textViewTitle);
 
         textViewNotificationMessageCounter = v.findViewById(R.id.textViewNotificationMessageCounter);
 
@@ -311,7 +311,7 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
     private void markSelectedTab(int position) {
         for (int index = 0; index < TOTAL_DATE_TABS; index++) {
             View customView = tabLayout.getTabAt(index).getCustomView();
-            ImageView selectedTabImage = (ImageView) customView.findViewById(R.id.selectedTabImage);
+            ImageView selectedTabImage = customView.findViewById(R.id.selectedTabImage);
             if (position == index) {
                 selectedTabImage.setVisibility(View.VISIBLE);
 

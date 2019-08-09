@@ -2,18 +2,13 @@ package com.p5m.me.adapters.viewholder;
 
 import android.content.Context;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
-import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.ScheduleClassModel;
 import com.p5m.me.utils.DateUtils;
 

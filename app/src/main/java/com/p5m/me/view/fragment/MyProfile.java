@@ -124,7 +124,7 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
                 if (myProfileAdapter.getTrainers().contains(trainerFollowed.data)) {
                     int index = myProfileAdapter.getTrainers().indexOf(trainerFollowed.data);
                     if (index != -1) {
-                        TrainerModel trainerModel = (TrainerModel) myProfileAdapter.getTrainers().get(index);
+                        TrainerModel trainerModel = myProfileAdapter.getTrainers().get(index);
                         trainerModel.setIsfollow(trainerFollowed.isFollowed);
 
                         myProfileAdapter.removeTrainer(index);

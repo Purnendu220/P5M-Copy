@@ -9,9 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.p5m.me.R;
 import com.p5m.me.adapters.viewholder.MapGymViewHolder;
-import com.p5m.me.data.RecomendedClassData;
 import com.p5m.me.data.main.BranchModel;
-import com.p5m.me.view.fragment.MapViewFragment;
 
 import java.util.ArrayList;
 import java.util.List;

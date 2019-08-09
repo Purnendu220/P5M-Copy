@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.p5m.me.R;
-import com.p5m.me.adapters.viewholder.MapGymViewHolder;
 import com.p5m.me.adapters.viewholder.MapScheduleViewHolder;
 import com.p5m.me.data.main.ClassModel;
 

@@ -226,8 +226,8 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                 onBackPressed();
             }
         });
-        mTextViewWalletAmount=(TextView)v.findViewById(R.id.textViewWalletAmount);
-        mLayoutUserWallet=(LinearLayout)v.findViewById(R.id.layoutUserWallet);
+        mTextViewWalletAmount= v.findViewById(R.id.textViewWalletAmount);
+        mLayoutUserWallet= v.findViewById(R.id.layoutUserWallet);
         mLayoutUserWallet.setOnClickListener(this);
 
         ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.membership));

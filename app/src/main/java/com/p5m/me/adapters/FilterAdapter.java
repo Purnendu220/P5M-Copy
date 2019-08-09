@@ -120,7 +120,7 @@ public class FilterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         setList(classesFilter.getList());
                     }
                 } else if (classesFilter.getType() == ClassesFilter.TYPE_ITEM) {
-                    classesFilter.setSelected(isFilterSelected(classesFilter) ? true : false);
+                    classesFilter.setSelected(isFilterSelected(classesFilter));
                     list.add(classesFilter);
                 }
             }

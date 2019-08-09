@@ -3,7 +3,6 @@ package com.p5m.me.analytics;
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.crashlytics.android.answers.AppMeasurementEventLogger;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.User;
@@ -11,8 +10,6 @@ import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LogUtils;
-
-import org.json.JSONObject;
 
 
 public class FirebaseAnalysic {

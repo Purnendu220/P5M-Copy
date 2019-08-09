@@ -10,8 +10,6 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -21,7 +19,6 @@ import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.p5m.me.R;
@@ -32,7 +29,6 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
 import com.p5m.me.utils.LanguageUtils;
-import com.p5m.me.view.activity.Main.ClassProfileActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -184,7 +180,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
             } else {
                 layoutMoreDetails.setVisibility(View.VISIBLE);
 
-                StringBuffer stringBuffer = new StringBuffer("");
+                StringBuffer stringBuffer = new StringBuffer();
 
                 if (!model.getReminder().isEmpty()) {
                     stringBuffer.append(context.getString(R.string.remenders) + context.getString(R.string.gaping) + model.getReminder());

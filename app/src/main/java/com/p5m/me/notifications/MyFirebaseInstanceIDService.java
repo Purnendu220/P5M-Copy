@@ -1,13 +1,7 @@
 package com.p5m.me.notifications;
 
-import android.util.Log;
-
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.p5m.me.restapi.NetworkCommunicator;
-import com.p5m.me.storage.preferences.MyPreferences;
-import com.p5m.me.utils.LogUtils;
 
 /**
  * Created by Varun John on 4/12/2018.

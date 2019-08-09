@@ -738,7 +738,7 @@ public class MixPanel {
             props.put("$first_name", user.getFirstName());
             props.put("$email", user.getEmail());
             props.put("User Category", user.getUserCategory());
-            props.put("Has Active Package", userPackageInfo.havePackages ? true : false);
+            props.put("Has Active Package", userPackageInfo.havePackages);
 
             props.put("Gender", user.getGender());
 
@@ -768,7 +768,7 @@ public class MixPanel {
     }
 
     private static String getCategoryList(List<ClassActivity> list) {
-        StringBuffer categoryList = new StringBuffer("");
+        StringBuffer categoryList = new StringBuffer();
         try {
             if (list != null && list.size() > 0) {
                 for (ClassActivity object : list) {

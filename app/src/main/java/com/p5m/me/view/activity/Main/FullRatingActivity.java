@@ -173,7 +173,7 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
         });
         if(model.getRatingResDto()!=null&&model.getRatingResDto().getRating()>0){
             ratingId=model.getRatingResDto().getId();
-            ratingValue=(int)model.getRatingResDto().getRating().intValue();
+            ratingValue= model.getRatingResDto().getRating().intValue();
             setStarRating(ratingValue);
             if(TempStorage.getRatingParams()!=null&&TempStorage.getRatingParams().size()>0){
                 createRatingParamList();

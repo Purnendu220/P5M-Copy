@@ -50,7 +50,6 @@ import com.p5m.me.utils.CalendarHelper;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LanguageUtils;
-import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
@@ -219,8 +218,8 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         View v = LayoutInflater.from(context).inflate(R.layout.view_tool_normal, null);
 
         v.findViewById(R.id.imageViewBack).setVisibility(View.GONE);
-         mTextViewWalletAmount=(TextView)v.findViewById(R.id.textViewWalletAmount);
-         mLayoutUserWallet=(LinearLayout)v.findViewById(R.id.layoutUserWallet);
+         mTextViewWalletAmount= v.findViewById(R.id.textViewWalletAmount);
+         mLayoutUserWallet= v.findViewById(R.id.layoutUserWallet);
          mLayoutUserWallet.setVisibility(View.GONE);
 
         ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.payment_confirmation));

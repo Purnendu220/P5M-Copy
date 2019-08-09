@@ -9,7 +9,7 @@ public class PromoCode implements java.io.Serializable {
     private int id;
     private float priceAfterDiscount;
     private String promoCode;
-    private String promoDesc;;
+    private String promoDesc;
     private int extraNumberOfDays;
     private int extraNumberOfClass;
 

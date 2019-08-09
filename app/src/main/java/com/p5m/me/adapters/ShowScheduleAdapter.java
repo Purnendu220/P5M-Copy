@@ -1,19 +1,15 @@
 package com.p5m.me.adapters;
 
 import android.content.Context;
-import android.graphics.drawable.Animatable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.p5m.me.R;
-import com.p5m.me.adapters.viewholder.MapGymViewHolder;
 import com.p5m.me.adapters.viewholder.ShowScheduleViewHolder;
 import com.p5m.me.data.main.ScheduleClassModel;
 

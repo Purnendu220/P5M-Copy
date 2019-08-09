@@ -69,7 +69,7 @@ public class DateUtils {
 
     public static String getHours(String time) {
         try {
-            String o[]=(time.split(":"));
+            String[] o = (time.split(":"));
             return o[0];
         } catch (Exception e) {
             e.printStackTrace();

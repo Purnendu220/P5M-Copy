@@ -77,14 +77,14 @@ public class NetworkCommunicator {
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
-    public abstract interface RequestListener<T> {
+    public interface RequestListener<T> {
 
         void onApiSuccess(T response, int requestCode);
 
         void onApiFailure(String errorMessage, int requestCode);
     }
 
-    public abstract interface RequestListenerRequestDataModel<T> {
+    public interface RequestListenerRequestDataModel<T> {
 
         void onApiSuccess(Object response, int requestCode, T requestDataModel);
 
@@ -886,7 +886,7 @@ public class NetworkCommunicator {
     }
 
     private void setUserProperty(Context context, String key, String value) {
-        mFirebaseAnalytics.getInstance(context).setUserProperty(key, value);
+        FirebaseAnalytics.getInstance(context).setUserProperty(key, value);
     }
 
     public Call getGym(int gymId, final RequestListener requestListener, boolean useCache) {

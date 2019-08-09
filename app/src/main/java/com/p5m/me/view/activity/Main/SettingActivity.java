@@ -8,7 +8,6 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
-import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.request.LogoutRequest;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.firebase_dynamic_link.FirebaseDynamicLinnk;
