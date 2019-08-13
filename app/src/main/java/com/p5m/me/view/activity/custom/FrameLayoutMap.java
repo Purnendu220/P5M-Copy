@@ -27,7 +27,7 @@ public class FrameLayoutMap extends FrameLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         int width = getMeasuredWidth();
-        setMeasuredDimension(width, (int) (width * 1)); //aspect ratio
+        setMeasuredDimension(width, (width * 1)); //aspect ratio
     }
 
 }

@@ -420,7 +420,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                 break;
             case R.id.buttonJoin:
                 if (model instanceof ClassModel) {
-                    ClassModel classModel = (ClassModel) model;
+                    ClassModel classModel = model;
                     // Check if class is allowed for the gender..
                     if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
                             && !Helper.isMalesAllowed(classModel)) {
@@ -478,7 +478,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
             default:
                 if (model instanceof ClassModel) {
-                    ClassModel classModel = (ClassModel) model;
+                    ClassModel classModel = model;
                     ClassProfileActivity.open(context, model, shownInScreen);
                 }
                 break;

@@ -3,10 +3,13 @@ package com.p5m.me.view.fragment;
 
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.TypedValue;
@@ -66,9 +69,19 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
 
     private List<String> calendarList;
     private Calendar todayDate;
+    private boolean isFindClass=false;
+    private TextView textViewTitle;
+    private Fragment mapView;
+    private TextView textViewMapOrList;
 
     public FindClass() {
     }
+    public interface TabClickListener {
+
+        void onTabClick(int position, String selectedDate);
+
+    }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -193,15 +206,15 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
             String monthName = DateUtils.getMonthName(gregorianCalendar.get(GregorianCalendar.MONTH));
             String weekdayName = DateUtils.getWeekDaysName(gregorianCalendar.get(GregorianCalendar.DAY_OF_WEEK));
             int day = gregorianCalendar.get(GregorianCalendar.DAY_OF_MONTH);
-            View tabView = (View) LayoutInflater.from(context).inflate(R.layout.item_tabs, null);
-            TextView textViewTitle = (TextView) tabView.findViewById(R.id.textViewTitle);
-            TextView textViewSubtitle = (TextView) tabView.findViewById(R.id.textViewSubtitle);
-            ImageView selectedTabImage = (ImageView)tabView.findViewById(R.id.selectedTabImage);
+            View tabView = LayoutInflater.from(context).inflate(R.layout.item_tabs, null);
+            TextView textViewTitle = tabView.findViewById(R.id.textViewTitle);
+            TextView textViewSubtitle = tabView.findViewById(R.id.textViewSubtitle);
+            ImageView selectedTabImage = tabView.findViewById(R.id.selectedTabImage);
 
 
             tabLayout.getTabAt(index).setCustomView(tabView);
 
-            textViewSubtitle.setText(monthName + " " +numberConverter(day));
+            textViewSubtitle.setText(monthName + " " + numberConverter(day));
 
             if (index == 0) {
                 textViewTitle.setText(getString(R.string.today));
@@ -227,6 +240,10 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
 
         v.findViewById(R.id.imageViewFilterer).setOnClickListener(this);
         v.findViewById(R.id.imageViewSearch).setOnClickListener(this);
+        textViewMapOrList = v.findViewById(R.id.textViewMapOrList);
+        textViewMapOrList.setOnClickListener(this);
+        textViewTitle = v.findViewById(R.id.textViewTitle);
+
         textViewNotificationMessageCounter = v.findViewById(R.id.textViewNotificationMessageCounter);
 
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
@@ -240,6 +257,26 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
         switch (view.getId()) {
             case R.id.imageViewSearch:
                 SearchActivity.openActivity(context, activity, view, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
+                break;
+            case R.id. textViewMapOrList:
+                if(!isFindClass) {
+                    textViewTitle.setVisibility(View.VISIBLE);
+                    textViewTitle.setText(getString(R.string.map));
+                    textViewMapOrList.setText(R.string.list);
+                    viewPager.setVisibility(View.GONE);
+                    mapView =  MapViewFragment.createFragment(calendarList.get(SELECTED_POSITION), SELECTED_POSITION,
+                            AppConstants.AppNavigation.SHOWN_IN_HOME_MAP_CLASSES);
+                    FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                    transaction.add(R.id.frameMapView, mapView).commit();
+                    isFindClass=true;
+                }
+                else{
+                    viewPager.setVisibility(View.VISIBLE);
+                    textViewTitle.setVisibility(View.VISIBLE);
+                    textViewTitle.setText(getString(R.string.classes));
+                    textViewMapOrList.setText(R.string.map);
+                    isFindClass = false;
+                }
                 break;
 
             case R.id.imageViewFilterer:
@@ -256,6 +293,8 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
     public void onPageSelected(int position) {
         markSelectedTab(position);
         SELECTED_POSITION = position;
+        if(mapView!=null)
+            ((MapViewFragment)mapView).onTabClick(position,calendarList.get(SELECTED_POSITION));
         try {
             ((ViewPagerFragmentSelection) findClassAdapter.getFragments().get(position)).onTabSelection(position);
         } catch (Exception e) {
@@ -269,14 +308,14 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
 
     }
 
-    private void markSelectedTab(int position){
+    private void markSelectedTab(int position) {
         for (int index = 0; index < TOTAL_DATE_TABS; index++) {
             View customView = tabLayout.getTabAt(index).getCustomView();
-            ImageView selectedTabImage = (ImageView)customView.findViewById(R.id.selectedTabImage);
-            if(position==index){
+            ImageView selectedTabImage = customView.findViewById(R.id.selectedTabImage);
+            if (position == index) {
                 selectedTabImage.setVisibility(View.VISIBLE);
 
-            }else{
+            } else {
                 selectedTabImage.setVisibility(View.INVISIBLE);
             }
             tabLayout.getTabAt(index).setCustomView(customView);
@@ -284,4 +323,8 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
     }
 
 
+
 }
+
+
+

@@ -13,8 +13,6 @@ import com.p5m.me.fxn.utility.Constants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LanguageUtils;
 
-import org.intellij.lang.annotations.Language;
-
 import java.util.Locale;
 
 import butterknife.BindView;

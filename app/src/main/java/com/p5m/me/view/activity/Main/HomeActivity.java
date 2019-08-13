@@ -569,7 +569,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
 
 interface TabChange {
-    public void onTabChange(int initial_position, int schedule_tab_position);
+    void onTabChange(int initial_position, int schedule_tab_position);
 }
 
 

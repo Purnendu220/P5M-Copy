@@ -15,7 +15,6 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.p5m.me.R;
 import com.p5m.me.adapters.viewholder.ImageViewHolder;
 import com.p5m.me.data.main.MediaModel;
-import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
 
 import java.util.List;

@@ -14,8 +14,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.p5m.me.R;
-import com.p5m.me.utils.AppConstants;
-import com.p5m.me.utils.RefrenceWrapper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,7 +23,7 @@ import butterknife.ButterKnife;
 
 public class CustomAlertDialog extends Dialog implements View.OnClickListener {
 
-    public abstract interface OnAlertButtonAction {
+    public interface OnAlertButtonAction {
 
         void onOkClick(int requestCode,Object data);
 
@@ -148,8 +146,8 @@ public class CustomAlertDialog extends Dialog implements View.OnClickListener {
 
     }
 public  interface AlertRequestCodes{
-        public int ALERT_REQUEST_SUCCESSFULL_UNJOIN=1;
-    public int ALERT_REQUEST_WALLET_INFO=2;
+        int ALERT_REQUEST_SUCCESSFULL_UNJOIN=1;
+    int ALERT_REQUEST_WALLET_INFO=2;
 
 
 }

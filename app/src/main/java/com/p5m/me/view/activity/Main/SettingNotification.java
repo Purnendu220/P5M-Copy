@@ -9,14 +9,12 @@ import android.widget.CompoundButton;
 import androidx.appcompat.widget.SwitchCompat;
 
 import com.p5m.me.R;
-import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.request.UserUpdateRequest;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
-import com.p5m.me.utils.AppConstants;
 import com.p5m.me.view.activity.base.BaseActivity;
 
 import butterknife.BindView;

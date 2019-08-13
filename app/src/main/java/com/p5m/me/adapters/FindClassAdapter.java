@@ -3,13 +3,16 @@ package com.p5m.me.adapters;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.p5m.me.R;
 import com.p5m.me.view.fragment.ClassList;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.view.fragment.MapViewFragment;
 
 /**
  * Created by MyU10 on 3/10/2018.
@@ -52,6 +55,7 @@ public class FindClassAdapter extends FragmentStatePagerAdapter {
                 AppConstants.AppNavigation.SHOWN_IN_HOME_FIND_CLASSES);
 
         fragments.set(position, tabFragment);
+
         return tabFragment;
     }
 

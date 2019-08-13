@@ -640,6 +640,9 @@ public class MixPanel {
             props.put("trainerName", classModel.getTrainerDetail() == null ? "No Trainer" : classModel.getTrainerDetail().getFirstName());
             props.put("gymName", classModel.getGymBranchDetail() == null ? "No Trainer" : classModel.getGymBranchDetail().getGymName());
             props.put("Classgender", Helper.getClassGenderTextForTracker(classModel.getClassType()));
+            props.put("start_time", DateUtils.getHours(classModel.getFromTime()));
+            props.put("start_time", DateUtils.getHours(classModel.getFromTime()));
+            props.put("booking_time", DateUtils.getCurrentDateandTime());
 
             float hourDiff = DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime());
             props.put("diffHrs", DateUtils.getHourDiff(hourDiff));
@@ -707,6 +710,7 @@ public class MixPanel {
             props.put("trainerName", classModel.getTrainerDetail() == null ? "No Trainer" : classModel.getTrainerDetail().getFirstName());
             props.put("gymName", classModel.getGymBranchDetail() == null ? "No Trainer" : classModel.getGymBranchDetail().getGymName());
             props.put("Classgender", Helper.getClassGenderTextForTracker(classModel.getClassType()));
+            props.put("cancellation_time", DateUtils.getCurrentDateandTime());
 
             float hourDiff = DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime());
             props.put("diffHrs", DateUtils.getHourDiff(hourDiff));
@@ -734,7 +738,7 @@ public class MixPanel {
             props.put("$first_name", user.getFirstName());
             props.put("$email", user.getEmail());
             props.put("User Category", user.getUserCategory());
-            props.put("Has Active Package", userPackageInfo.havePackages ? true : false);
+            props.put("Has Active Package", userPackageInfo.havePackages);
 
             props.put("Gender", user.getGender());
 
@@ -764,7 +768,7 @@ public class MixPanel {
     }
 
     private static String getCategoryList(List<ClassActivity> list) {
-        StringBuffer categoryList = new StringBuffer("");
+        StringBuffer categoryList = new StringBuffer();
         try {
             if (list != null && list.size() > 0) {
                 for (ClassActivity object : list) {
@@ -798,4 +802,15 @@ public class MixPanel {
         }
     }
 
+    public static void trackGymVisitLimitView(String packageName) {
+        try {
+            JSONObject props = new JSONObject();
+            props.put("view_limit", packageName);
+
+            trackEvent(props, "Open_Membership");
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
 }

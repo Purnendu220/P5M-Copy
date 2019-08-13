@@ -1,10 +1,7 @@
 package com.p5m.me.notifications;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
-import android.os.Parcelable;
 
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
 import com.p5m.me.utils.AppConstants;
@@ -18,11 +15,6 @@ import com.p5m.me.view.activity.Main.SettingActivity;
 import com.p5m.me.view.activity.Main.SettingNotification;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
 import com.p5m.me.view.activity.Main.TransactionHistoryActivity;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class HandleNotificationDeepLink {
     public static Intent handleNotificationDeeplinking(Context context, String url) {
