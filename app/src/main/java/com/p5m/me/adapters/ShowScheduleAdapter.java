@@ -62,7 +62,7 @@ public class ShowScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ShowScheduleViewHolder) {
-            setFadeAnimation(holder.itemView);
+//            setFadeAnimation(holder.itemView);
             ((ShowScheduleViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
         }
     }

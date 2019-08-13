@@ -1,6 +1,5 @@
 package com.p5m.me.view.fragment;
 
-import android.graphics.Bitmap;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,21 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -43,7 +39,6 @@ import com.p5m.me.data.MapData;
 import com.p5m.me.data.main.BranchModel;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.GymDataModel;
-import com.p5m.me.data.main.MediaModel;
 import com.p5m.me.data.request.BranchListRequest;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
@@ -101,6 +96,9 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     private int fragmentPositionInViewPager;
     private boolean isShownFirstTime = true;
     private int currentPosition;
+    private CustomClusterRenderer customClusterRenderer;
+    private Marker mSelectedMarker;
+    private Marker mLastMarker;
 
     public static Fragment createFragment(String date, int position, int shownIn) {
         Fragment tabFragment = new MapViewFragment();
@@ -128,8 +126,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         ButterKnife.bind(this, getView());
 
         initializeMapView();
-
-        date = getArguments().getString(AppConstants.DataKey.CLASS_DATE_STRING, null);
+               date = getArguments().getString(AppConstants.DataKey.CLASS_DATE_STRING, null);
         showInScreen = getArguments().getInt(AppConstants.DataKey.TAB_SHOWN_IN_INT, 0);
         fragmentPositionInViewPager = getArguments().getInt(AppConstants.DataKey.TAB_POSITION_INT);
         setNearerGymView();
@@ -224,7 +221,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         mMap.getUiSettings().setMapToolbarEnabled(false);
         GoogleMapOptions options = new GoogleMapOptions().liteMode(true);
         mClusterManager = new ClusterManager<MapData>(context, mMap);
-        mClusterManager.setRenderer(new PersonRenderer());
+        mClusterManager.setRenderer(new CustomClusterRenderer());
         mMap.setOnCameraIdleListener(mClusterManager);
         mMap.setOnMarkerClickListener(mClusterManager);
         mClusterManager.setOnClusterClickListener(this);
@@ -324,7 +321,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
             mMap.clear();
 
 //            if ((fragmentPositionInViewPager == currentPosition)) {
-                onTabSelection(currentPosition);
+            onTabSelection(currentPosition);
 //                onTabClick(FindClass.SELECTED_POSITION);
 //            }
         }
@@ -337,7 +334,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
             mapGymAdapter.notifyDataSetChanged();
             mMap.clear();
 //            if ((fragmentPositionInViewPager == currentPosition)) {
-                onTabSelection(currentPosition);
+            onTabSelection(currentPosition);
 //            }
         }
     }
@@ -361,12 +358,12 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
 
 
     private void setUpClusterer() {
-        if(branchModel.size()>2)
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(branchModel.get(0).getLatitude(), branchModel.get(0).getLongitude()), 1));
-        else{
+        if (branchModel.size() > 2)
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(branchModel.get(0).getLatitude(), branchModel.get(0).getLongitude()), 1));
+        else {
             LatLngBounds.Builder builder = LatLngBounds.builder();
             for (BranchModel item : branchModel) {
-                LatLng latLng = new LatLng(item.getLatitude(),item.getLongitude());
+                LatLng latLng = new LatLng(item.getLatitude(), item.getLongitude());
                 builder.include(latLng);
             }
             final LatLngBounds bounds = builder.build();
@@ -421,21 +418,38 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
                 break;
             }
         }
+      /*  customClusterRenderer = new CustomClusterRenderer();
+        mSelectedMarker = customClusterRenderer.getMarker(mapData);
+        updateSelectedMarker();
+*/
         staggeredGridLayoutManager.smoothScrollToPosition(recyclerViewNearerClass, new RecyclerView.State(), position);
         return false;
     }
 
-    private class PersonRenderer extends DefaultClusterRenderer<MapData> {
-        private final IconGenerator mIconGenerator = new IconGenerator(getApplicationContext());
-        private final IconGenerator mClusterIconGenerator = new IconGenerator(getApplicationContext());
+    private void updateSelectedMarker() {
+        if (mSelectedMarker != null) {
+            mSelectedMarker.setIcon(
+                    BitmapDescriptorFactory.defaultMarker(
+                            BitmapDescriptorFactory.HUE_RED));
+        }
+       if (mLastMarker != null) {
+            mLastMarker.setIcon(
+                    BitmapDescriptorFactory.defaultMarker(
+                            BitmapDescriptorFactory.HUE_BLUE));
+        }
+        mLastMarker=mSelectedMarker;
 
-        public PersonRenderer() {
+    }
+
+    private class CustomClusterRenderer extends DefaultClusterRenderer<MapData> {
+
+        public CustomClusterRenderer() {
             super(getApplicationContext(), mMap, mClusterManager);
-
         }
 
         @Override
-        protected void onBeforeClusterItemRendered(MapData person, MarkerOptions markerOptions) {
+        protected void onBeforeClusterItemRendered(MapData mapData, MarkerOptions markerOptions) {
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
         }
 
         @Override
