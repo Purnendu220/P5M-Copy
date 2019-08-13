@@ -25,6 +25,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.intercom.android.sdk.Intercom;
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener, NetworkCommunicator.RequestListener {
 
@@ -113,8 +114,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 TransactionHistoryActivity.openActivity(context);
                 break;
             case R.id.layoutContactUs:
-//                dialogContactUs();
-                mailUs();
+                dialogContactUs();
+//                mailUs();
                 break;
             case R.id.layoutPrivacyPolicy:
                 Helper.openWebPage(context, AppConstants.Url.WEBSITE + "privacy");
@@ -136,7 +137,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     private void dialogContactUs() {
         final List<String> items = new ArrayList<>();
         items.add(getString(R.string.mail_us));
-        items.add(getString(R.string.make_a_call));
+        items.add(getString(R.string.message_us));
 
         DialogUtils.showBasicList(
                 context,
@@ -149,9 +150,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                         if (position == 0) {
                             mailUs();
                         } else if (position == 1) {
-                            Intent intent = new Intent(Intent.ACTION_DIAL);
+                            /*Intent intent = new Intent(Intent.ACTION_DIAL);
                             intent.setData(Uri.parse("tel:0096555028111"));
-                            startActivity(intent);
+                            startActivity(intent);*/
+                            Intercom.client().displayMessenger();
                         }
                     }
                 });

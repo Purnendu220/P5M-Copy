@@ -8,7 +8,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.Settings;
-
+import com.p5m.me.BuildConfig;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
+import io.intercom.android.sdk.Intercom;
 
 @SuppressLint("NewApi")
 public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.OnNetworkChangeListener, Application.ActivityLifecycleCallbacks, NetworkCommunicator.RequestListener {
@@ -80,6 +81,8 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         PackageManager packageManager = getPackageManager();
         String packageName = getPackageName();
 
+//        Intercom
+        Intercom.initialize(this, "android_sdk-0220c78a68a8a904e507a85bebd4eed53e4b7602", "qp091xcl");
         try {
             myVersionName = packageManager.getPackageInfo(packageName, 0).versionName;
         } catch (PackageManager.NameNotFoundException e) {

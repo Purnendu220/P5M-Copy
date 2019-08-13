@@ -536,12 +536,12 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
         } else {
             String days;
-            if(promoCode.getExtraNumberOfDays()==1) {
-                 days = LanguageUtils.numberConverter(promoCode.getExtraNumberOfDays()) + " " + getString(R.string.day);
+            if(promoCode.getExtraNumberOfDays()==1){
+                days = LanguageUtils.numberConverter(promoCode.getExtraNumberOfDays()) + " " + getString(R.string.day);
+
             }
             else
-                 days = LanguageUtils.numberConverter(promoCode.getExtraNumberOfDays()) + " " + getString(R.string.days);
-
+            days = LanguageUtils.numberConverter(promoCode.getExtraNumberOfDays()) + " " + getString(R.string.days);
             textViewPackageExtendNoOfDays.setText(days);
 
         }

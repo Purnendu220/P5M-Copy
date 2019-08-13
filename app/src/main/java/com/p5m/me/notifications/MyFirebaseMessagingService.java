@@ -7,8 +7,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
+
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -30,6 +32,10 @@ import com.p5m.me.view.activity.Main.TrainerProfileActivity;
 import org.json.JSONObject;
 
 import java.util.Hashtable;
+import java.util.Map;
+
+import io.intercom.android.sdk.Intercom;
+import io.intercom.android.sdk.push.IntercomPushClient;
 
 /**
  * Created by Varun John on 4/12/2018.
@@ -41,6 +47,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private Hashtable<String, String> calendarIdTable;
     private int calendar_id = -1;
     PushDetailModel pushDetailModel;
+    private final IntercomPushClient intercomPushClient = new IntercomPushClient();
 
 
     @Override
@@ -59,12 +66,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String message;
             if (remoteMessage.getData() != null) {
                 message = remoteMessage.getData().get("message");
-                if (message != null) {
+                Map dataMessage = remoteMessage.getData();
+                if (intercomPushClient.isIntercomPush(dataMessage)) {
+                    intercomPushClient.handlePush(getApplication(), dataMessage);
+//                    Intercom.client().handlePushMessage();
+
+                } else if (message != null) {
                     if (!message.equalsIgnoreCase("fcm")) {
                         JSONObject json = new JSONObject(message);
                         handleDataMessage(json);
                         handleDataMessageForNotificationSchedule(json);
                     }
+
                 } else {
                     Intent navgationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
                     if (remoteMessage.getNotification() != null) {
@@ -711,5 +724,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         super.onNewToken(refreshedToken);
         LogUtils.debug("Notifications onTokenRefresh " + refreshedToken);
         MyPreferences.getInstance().saveDeviceToken(refreshedToken);
+        intercomPushClient.sendTokenToIntercom(getApplication(), refreshedToken);
+
     }
 }

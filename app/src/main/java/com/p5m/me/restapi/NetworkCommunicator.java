@@ -65,6 +65,7 @@ import java.io.File;
 import java.util.List;
 
 import id.zelory.compressor.Compressor;
+import io.intercom.android.sdk.Intercom;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -946,6 +947,7 @@ public class NetworkCommunicator {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> restResponse, ResponseModel response) {
                 LogUtils.networkSuccess("NetworkCommunicator joinClass onResponse data " + response);
+                Intercom.client().logout();
                 requestListener.onApiSuccess(response, requestCode);
             }
         });
