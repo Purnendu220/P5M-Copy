@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -41,6 +42,7 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
 
     public static AdapterCallbacks<BranchModel> adapterCallbacks;
     private static List<Integer> branchList;
+    private static BranchModel branchModel;
     private static int branchModelId;
     private ShowScheduleAdapter showScheduleAdapter;
     public static Context context;
@@ -48,12 +50,13 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
     private NetworkCommunicator networkCommunicator;
     private ScheduleRequest scheduleRequest;
 
-    public static ShowSchedulesBootomDialogFragment newInstance(Context context,  String date,List<Integer> branchList,AdapterCallbacks<BranchModel> adapterCallbacks) {
+    public static ShowSchedulesBootomDialogFragment newInstance(Context context,  String date,List<Integer> branchList,BranchModel branchModel,AdapterCallbacks<BranchModel> adapterCallbacks) {
 
         ShowSchedulesBootomDialogFragment bottomSheetFragment = new ShowSchedulesBootomDialogFragment();
         ShowSchedulesBootomDialogFragment.context = context;
         ShowSchedulesBootomDialogFragment.date = date;
         ShowSchedulesBootomDialogFragment.branchList = branchList;
+        ShowSchedulesBootomDialogFragment.branchModel = branchModel;
 
         ShowSchedulesBootomDialogFragment.adapterCallbacks = adapterCallbacks;
         return bottomSheetFragment;
@@ -66,6 +69,8 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
     public ConstraintLayout layoutBottomSheet;
     @BindView(R.id.progressBar)
     public ProgressBar progressBar;
+    @BindView(R.id.textViewGymBranch)
+    public TextView textViewGymBranch;
 
     @Nullable
     @Override
@@ -79,8 +84,14 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
         networkCommunicator = NetworkCommunicator.getInstance(context);
         setShowScheduleView();
         callApiScheduleList();
+        setGymAndBranchName();
         return view;
 
+    }
+
+    private void setGymAndBranchName() {
+        String gymAndBranchName=branchModel.getGymName().toUpperCase()+" - "+branchModel.getBranchName();
+        textViewGymBranch.setText(gymAndBranchName);
     }
 
     private void callApiScheduleList() {
@@ -105,8 +116,6 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
         List<String> activities = new ArrayList<>();
         List<String> gymList = new ArrayList<>();
         List<String> genders = new ArrayList<>();
-//        List<Integer> branchList = new ArrayList<>();
-//        branchList = this.branchList;
 
         List<CityLocality> cityLocalities = new ArrayList<>();
 

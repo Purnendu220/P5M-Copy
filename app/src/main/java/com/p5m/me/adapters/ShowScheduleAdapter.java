@@ -19,9 +19,6 @@ import java.util.List;
 
 public class ShowScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-
-//    private final AdapterCallbacks<Object> adapterCallbacks;
-
     private List<Object> list;
     private Context context;
     private final AdapterCallbacks<Object> adapterCallbacks;
