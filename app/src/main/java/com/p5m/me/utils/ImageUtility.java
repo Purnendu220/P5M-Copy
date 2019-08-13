@@ -127,10 +127,7 @@ public class ImageUtility {
 
     public static boolean isSDCardWritable() {
         String status = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(status)) {
-            return true;
-        }
-        return false;
+        return Environment.MEDIA_MOUNTED.equals(status);
     }
 
     public static String compressImage(String filePath) {
@@ -304,7 +301,7 @@ public class ImageUtility {
                 try {
                     final String extractUriFrom = selectedImage.toString();
                     String firstExtraction = extractUriFrom.contains("com.google.android.apps.photos.contentprovider") ? extractUriFrom.split("/1/")[1] : extractUriFrom;
-                    firstExtraction = firstExtraction.contains("/ACTUAL") ? firstExtraction.replace("/ACTUAL", "").toString() : firstExtraction;
+                    firstExtraction = firstExtraction.contains("/ACTUAL") ? firstExtraction.replace("/ACTUAL", "") : firstExtraction;
 
                     String secondExtraction = URLDecoder.decode(firstExtraction, "UTF-8");
                     return Uri.parse(secondExtraction);

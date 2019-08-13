@@ -158,9 +158,7 @@ public class CalendarHelper {
             permissionCheck = ContextCompat.checkSelfPermission(caller,
                     Manifest.permission.WRITE_CALENDAR);
 
-            if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
-                return true;
-            }
+            return permissionCheck == PackageManager.PERMISSION_GRANTED;
         }
 
         return false;
@@ -172,7 +170,7 @@ public class CalendarHelper {
         if (haveCalendarReadWritePermissions(c)) {
 
 
-            String projection[] = {"_id", "calendar_displayName","visible"};
+            String[] projection = {"_id", "calendar_displayName", "visible"};
             Uri calendars;
             calendars = Uri.parse("content://com.android.calendar/calendars");
 

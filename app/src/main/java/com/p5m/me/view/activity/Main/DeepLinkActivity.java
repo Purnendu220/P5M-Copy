@@ -20,8 +20,6 @@ import com.p5m.me.view.activity.base.BaseActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
-
 public class DeepLinkActivity extends BaseActivity {
 
     private Intent navigationIntent;

@@ -38,7 +38,6 @@ import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.ClassModel;
-import com.p5m.me.data.main.DefaultSettingServer;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
@@ -574,8 +573,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
         v.findViewById(R.id.imageViewBack).setOnClickListener(this);
         imageViewOptions = v.findViewById(R.id.imageViewOptions);
-        mTextViewWalletAmount = (TextView) v.findViewById(R.id.textViewWalletAmount);
-        mLayoutUserWallet = (LinearLayout) v.findViewById(R.id.layoutUserWallet);
+        mTextViewWalletAmount = v.findViewById(R.id.textViewWalletAmount);
+        mLayoutUserWallet = v.findViewById(R.id.layoutUserWallet);
         mLayoutUserWallet.setOnClickListener(this);
         imageViewOptions.setOnClickListener(this);
         ((TextView) (v.findViewById(R.id.textViewTitle))).setText(RemoteConfigConst.CLASS_CARD_TEXT_VALUE);

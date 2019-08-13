@@ -3,7 +3,6 @@ package com.p5m.me.restapi;
 import com.p5m.me.data.City;
 import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.ContactRequestModel;
-import com.p5m.me.data.ContactResponse;
 import com.p5m.me.data.MediaResponse;
 import com.p5m.me.data.PackageLimitModel;
 import com.p5m.me.data.PaymentConfirmationResponse;
@@ -12,15 +11,18 @@ import com.p5m.me.data.RatingParamModel;
 import com.p5m.me.data.RatingResponseModel;
 import com.p5m.me.data.UnratedClassData;
 import com.p5m.me.data.WishListResponse;
+import com.p5m.me.data.main.BranchModel;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.data.main.Package;
+import com.p5m.me.data.main.ScheduleClassModel;
 import com.p5m.me.data.main.TrainerDetailModel;
 import com.p5m.me.data.main.TrainerModel;
 import com.p5m.me.data.main.Transaction;
 import com.p5m.me.data.main.User;
+import com.p5m.me.data.request.BranchListRequest;
 import com.p5m.me.data.request.ChangePasswordRequest;
 import com.p5m.me.data.request.ChooseFocusRequest;
 import com.p5m.me.data.request.ClassListRequest;
@@ -31,6 +33,7 @@ import com.p5m.me.data.request.PaymentUrlRequest;
 import com.p5m.me.data.request.PromoCodeRequest;
 import com.p5m.me.data.request.PublishRequest;
 import com.p5m.me.data.request.RegistrationRequest;
+import com.p5m.me.data.request.ScheduleRequest;
 import com.p5m.me.data.request.UserInfoUpdate;
 import com.p5m.me.data.request.WishListRequest;
 
@@ -111,6 +114,10 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @POST(AppConstants.Url.CLASS_LIST)
     Call<ResponseModel<List<ClassModel>>> getClassList(@Body ClassListRequest classListRequest);
+
+   @Headers("Content-type: application/json")
+    @POST(AppConstants.Url.BRANCH_LIST)
+    Call<ResponseModel<List<BranchModel>>> getBranchList(@Body BranchListRequest branchListRequest);
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.RECOMENDED_CLASS_LIST)
@@ -362,5 +369,9 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @POST(AppConstants.Url.SUPPORT_CONTACT )
     Call<ResponseModel<Object>> getContactResponse(@Body ContactRequestModel contactRequestModel);
+
+    @Headers("Content-type: application/json")
+    @POST(AppConstants.Url.CLASS_LIST)
+    Call<ResponseModel<List<ScheduleClassModel>>> getScheduleClass(@Body ScheduleRequest scheduleRequest);
 
 }

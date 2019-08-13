@@ -639,14 +639,23 @@
                     android:layout_width="120dp"
                     android:layout_height="120dp">
 
-                    <com.p5m.me.view.activity.custom.SquareImageView
+                  <!--  <com.p5m.me.view.activity.custom.SquareImageView
                         android:id="@+id/imageViewMap"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/no_map"
                         android:clickable="true"
                         android:scaleType="centerCrop" />
+-->
 
+                    <com.google.android.gms.maps.MapView
+                        android:id="@+id/mapImageView"
+                        xmlns:map="http://schemas.android.com/apk/res-auto"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        map:liteMode="true"
+                        map:mapType="normal"
+                        map:cameraZoom="15"/>
                     <FrameLayout
                         android:id="@+id/layoutMapClick"
                         android:layout_width="match_parent"

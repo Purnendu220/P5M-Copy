@@ -212,7 +212,7 @@ public class RemoteConfigSetUp {
                 DrawableCompat.setTint(wrappedDrawable.mutate(), color);
                 setBackgroundDrawable(view, wrappedDrawable);
             } else
-                ((TextView) view).setBackgroundColor(color);
+                view.setBackgroundColor(color);
 
         } else if (view instanceof Button) {
             Drawable wrappedDrawable = DrawableCompat.wrap(view.getBackground());
@@ -220,14 +220,14 @@ public class RemoteConfigSetUp {
                 DrawableCompat.setTint(wrappedDrawable.mutate(), color);
                 setBackgroundDrawable(view, wrappedDrawable);
             } else
-                ((Button) view).setBackgroundColor(color);
+                view.setBackgroundColor(color);
         } else if (view instanceof LinearLayout) {
             Drawable wrappedDrawable = DrawableCompat.wrap(view.getBackground());
             if (wrappedDrawable != null) {
                 DrawableCompat.setTint(wrappedDrawable.mutate(), color);
                 setBackgroundDrawable(view, wrappedDrawable);
             } else
-                ((LinearLayout) view).setBackgroundColor(color);
+                view.setBackgroundColor(color);
         }
 
 

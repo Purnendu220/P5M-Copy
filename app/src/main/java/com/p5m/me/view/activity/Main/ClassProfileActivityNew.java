@@ -91,7 +91,7 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
         intent.putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom);
         intent.putExtra(AppConstants.DataKey.CLASS_OBJECT, classModel);
         ActivityOptionsCompat options = ActivityOptionsCompat.
-                makeSceneTransitionAnimation((Activity) context, (View) ivProfile, "profile");
+                makeSceneTransitionAnimation((Activity) context, ivProfile, "profile");
         context.startActivity(intent, options.toBundle());
 
     }
@@ -554,8 +554,8 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
 
         v.findViewById(R.id.imageViewBack).setOnClickListener(this);
         imageViewOptions = v.findViewById(R.id.imageViewOptions);
-        mTextViewWalletAmount = (TextView) v.findViewById(R.id.textViewWalletAmount);
-        mLayoutUserWallet = (LinearLayout) v.findViewById(R.id.layoutUserWallet);
+        mTextViewWalletAmount = v.findViewById(R.id.textViewWalletAmount);
+        mLayoutUserWallet = v.findViewById(R.id.layoutUserWallet);
         mLayoutUserWallet.setOnClickListener(this);
         imageViewOptions.setOnClickListener(this);
         ((TextView) (v.findViewById(R.id.textViewTitle))).setText(RemoteConfigConst.CLASS_CARD_TEXT_VALUE);
@@ -1091,7 +1091,7 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
         } else {
             layoutMoreDetails.setVisibility(View.VISIBLE);
 
-            StringBuffer stringBuffer = new StringBuffer("");
+            StringBuffer stringBuffer = new StringBuffer();
 
             if (!model.getReminder().isEmpty()) {
                 stringBuffer.append(context.getString(R.string.remenders) + context.getString(R.string.gaping) + model.getReminder());
