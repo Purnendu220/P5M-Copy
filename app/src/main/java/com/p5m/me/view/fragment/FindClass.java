@@ -258,7 +258,7 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
             case R.id.imageViewSearch:
                 SearchActivity.openActivity(context, activity, view, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
                 break;
-            case R.id. textViewMapOrList:
+            case R.id.textViewMapOrList:
                 if(!isFindClass) {
                     textViewTitle.setVisibility(View.VISIBLE);
                     textViewTitle.setText(getString(R.string.map));

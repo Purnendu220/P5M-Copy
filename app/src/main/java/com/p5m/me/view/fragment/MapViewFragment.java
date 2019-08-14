@@ -418,10 +418,9 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
                 break;
             }
         }
-      /*  customClusterRenderer = new CustomClusterRenderer();
+        customClusterRenderer = (CustomClusterRenderer) mClusterManager.getRenderer();
         mSelectedMarker = customClusterRenderer.getMarker(mapData);
         updateSelectedMarker();
-*/
         staggeredGridLayoutManager.smoothScrollToPosition(recyclerViewNearerClass, new RecyclerView.State(), position);
         return false;
     }
@@ -429,13 +428,11 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     private void updateSelectedMarker() {
         if (mSelectedMarker != null) {
             mSelectedMarker.setIcon(
-                    BitmapDescriptorFactory.defaultMarker(
-                            BitmapDescriptorFactory.HUE_RED));
+                    BitmapDescriptorFactory.fromResource(R.drawable.red_marker));
         }
        if (mLastMarker != null) {
             mLastMarker.setIcon(
-                    BitmapDescriptorFactory.defaultMarker(
-                            BitmapDescriptorFactory.HUE_BLUE));
+                    BitmapDescriptorFactory.fromResource(R.drawable.blue_marker));
         }
         mLastMarker=mSelectedMarker;
 
@@ -449,7 +446,10 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
 
         @Override
         protected void onBeforeClusterItemRendered(MapData mapData, MarkerOptions markerOptions) {
-            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+            //markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.blue_marker));
+
         }
 
         @Override
