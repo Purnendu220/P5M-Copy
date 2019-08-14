@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.p5m.me.R;
 import com.p5m.me.adapters.viewholder.MapGymViewHolder;
+import com.p5m.me.data.ListLoader;
 import com.p5m.me.data.main.BranchModel;
 
 import java.util.ArrayList;
@@ -26,11 +27,13 @@ public class MapGymAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private int shownInScreen;
 
 
+
     public MapGymAdapter(Context context, int shownInScreen, boolean showLoader, AdapterCallbacks<Object> adapterCallbacks) {
         this.adapterCallbacks = adapterCallbacks;
         this.context = context;
         list = new ArrayList<>();
         this.shownInScreen = shownInScreen;
+
 
     }
 

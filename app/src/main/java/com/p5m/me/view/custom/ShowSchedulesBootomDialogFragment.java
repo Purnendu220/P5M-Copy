@@ -153,7 +153,7 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
     private void setShowScheduleView() {
         recycleViewShowSchedule.setLayoutManager(new LinearLayoutManager(context));
         recycleViewShowSchedule.setHasFixedSize(true);
-        showScheduleAdapter = new ShowScheduleAdapter(context, 2, this);
+        showScheduleAdapter = new ShowScheduleAdapter(context, 2,true, this);
         recycleViewShowSchedule.setAdapter(showScheduleAdapter);
     }
 
@@ -175,6 +175,8 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
                 if (!scheduleClassModels.isEmpty()) {
                     showScheduleAdapter.clearAll();
                     showScheduleAdapter.addAllClass(scheduleClassModels);
+                    showScheduleAdapter.loaderDone();
+
                     showScheduleAdapter.notifyDataSetChanged();
                 }
                 else {
