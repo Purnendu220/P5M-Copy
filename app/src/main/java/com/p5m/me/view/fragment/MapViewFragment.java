@@ -1,8 +1,6 @@
 package com.p5m.me.view.fragment;
 
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +26,6 @@ import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
-import com.google.maps.android.ui.IconGenerator;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.MapGymAdapter;
@@ -79,26 +76,21 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     private ClusterManager<MapData> mClusterManager;
 
     private static AdapterCallbacks adapterCallbacks;
-    private Handler handler;
-    private Runnable nextScreenRunnable;
     @BindView(R.id.recyclerViewNearerClass)
     public RecyclerView recyclerViewNearerClass;
 
-    List<LatLng> points;
-    private LocationManager locationManager;
     private MapGymAdapter mapGymAdapter;
     private String date;
     private List<BranchModel> branchModel;
-    private List<MapData> mapData;
     private BranchListRequest branchListRequest;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private int showInScreen;
     private int fragmentPositionInViewPager;
-    private boolean isShownFirstTime = true;
     private int currentPosition;
     private CustomClusterRenderer customClusterRenderer;
     private Marker mSelectedMarker;
     private Marker mLastMarker;
+    private boolean isShownFirstTime = true;
 
     public static Fragment createFragment(String date, int position, int shownIn) {
         Fragment tabFragment = new MapViewFragment();
@@ -115,7 +107,6 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_map_view, container, false);
     }
 
@@ -126,7 +117,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         ButterKnife.bind(this, getView());
 
         initializeMapView();
-               date = getArguments().getString(AppConstants.DataKey.CLASS_DATE_STRING, null);
+        date = getArguments().getString(AppConstants.DataKey.CLASS_DATE_STRING, null);
         showInScreen = getArguments().getInt(AppConstants.DataKey.TAB_SHOWN_IN_INT, 0);
         fragmentPositionInViewPager = getArguments().getInt(AppConstants.DataKey.TAB_POSITION_INT);
         setNearerGymView();
@@ -273,14 +264,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     public void onTabClick(int position, String selectedDate) {
         date = selectedDate;
         currentPosition = position;
-        if (((fragmentPositionInViewPager == position))
-                || ((fragmentPositionInViewPager == position) && isShownFirstTime)) {
-            isShownFirstTime = false;
-
-            callNearerGymApi();
-        } else {
-            callNearerGymApi();
-        }
+        callNearerGymApi();
     }
 
     @Override
@@ -290,11 +274,14 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.BRANCH_LIST:
                 mapGymAdapter.clearAll();
-                mMap.clear();
+                if (mMap != null)
+                    mMap.clear();
+                mSelectedMarker = null;
+                mLastMarker = null;
                 mClusterManager.clearItems();
                 branchModel = ((ResponseModel<List<BranchModel>>) response).data;
                 if (!branchModel.isEmpty()) {
-                    setUpClusterer();
+                    setUpCluster();
                     mapGymAdapter.addAllClass(branchModel);
                 }
                 break;
@@ -319,11 +306,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
             mapGymAdapter.clearAll();
             mapGymAdapter.notifyDataSetChanged();
             mMap.clear();
-
-//            if ((fragmentPositionInViewPager == currentPosition)) {
             onTabSelection(currentPosition);
-//                onTabClick(FindClass.SELECTED_POSITION);
-//            }
         }
     }
 
@@ -333,9 +316,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
             mapGymAdapter.clearAll();
             mapGymAdapter.notifyDataSetChanged();
             mMap.clear();
-//            if ((fragmentPositionInViewPager == currentPosition)) {
             onTabSelection(currentPosition);
-//            }
         }
     }
 
@@ -357,7 +338,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     }
 
 
-    private void setUpClusterer() {
+    private void setUpCluster() {
         if (branchModel.size() > 2)
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(branchModel.get(0).getLatitude(), branchModel.get(0).getLongitude()), 1));
         else {
@@ -430,12 +411,11 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
             mSelectedMarker.setIcon(
                     BitmapDescriptorFactory.fromResource(R.drawable.red_marker));
         }
-       if (mLastMarker != null) {
+        if (mLastMarker != null) {
             mLastMarker.setIcon(
                     BitmapDescriptorFactory.fromResource(R.drawable.blue_marker));
         }
-        mLastMarker=mSelectedMarker;
-
+        mLastMarker = mSelectedMarker;
     }
 
     private class CustomClusterRenderer extends DefaultClusterRenderer<MapData> {
@@ -446,10 +426,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
 
         @Override
         protected void onBeforeClusterItemRendered(MapData mapData, MarkerOptions markerOptions) {
-            //markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-
             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.blue_marker));
-
         }
 
         @Override

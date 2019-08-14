@@ -16,6 +16,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -51,6 +52,8 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
 
     @BindView(R.id.viewPager)
     public ViewPager viewPager;
+    @BindView(R.id.frameMapView)
+    public FrameLayout frameMapView;
     @BindView(R.id.tabs)
     public TabLayout tabLayout;
     @BindView(R.id.appBarLayout)
@@ -264,6 +267,8 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
                     textViewTitle.setText(getString(R.string.map));
                     textViewMapOrList.setText(R.string.list);
                     viewPager.setVisibility(View.GONE);
+                    frameMapView.setVisibility(View.VISIBLE);
+
                     mapView =  MapViewFragment.createFragment(calendarList.get(SELECTED_POSITION), SELECTED_POSITION,
                             AppConstants.AppNavigation.SHOWN_IN_HOME_MAP_CLASSES);
                     FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
@@ -271,10 +276,11 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
                     isFindClass=true;
                 }
                 else{
-                    viewPager.setVisibility(View.VISIBLE);
                     textViewTitle.setVisibility(View.VISIBLE);
                     textViewTitle.setText(getString(R.string.classes));
                     textViewMapOrList.setText(R.string.map);
+                    frameMapView.setVisibility(View.GONE);
+                    viewPager.setVisibility(View.VISIBLE);
                     isFindClass = false;
                 }
                 break;
