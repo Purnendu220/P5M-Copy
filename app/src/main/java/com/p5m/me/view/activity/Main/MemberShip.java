@@ -94,9 +94,6 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     public AppBarLayout appBarLayout;
     @BindView(R.id.swipeRefreshLayout)
     public SwipeRefreshLayout swipeRefreshLayout;
-
-
-
     private TextView mTextViewWalletAmount;
     private LinearLayout mLayoutUserWallet;
     private int navigatedFrom;

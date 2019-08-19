@@ -43,14 +43,15 @@ public class AppConstants {
         public static final int TAB_MY_SCHEDULE_UPCOMING = 0;
         public static final int TAB_MY_SCHEDULE_WISH_LIST = 1;
 
+
+        public static final int TAB_MEMBERSHIP_MULTI_GYM = 0;
+        public static final int TAB_MEMBERSHIP_SINGLE_GYM = 1;
+
         public static final int COUNT_FB_REGISTRATION = 3;
         public static final int COUNT_NORMAL_REGISTRATION = 4;
         public static final int OPEN_ABOUT_US = 100;
         public static final int OPEN_PRIVACY = 101;
         public static final int OPEN_TERMS = 102;
-
-
-
     }
 
     public static class Values {
