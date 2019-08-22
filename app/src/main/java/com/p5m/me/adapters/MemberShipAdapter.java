@@ -63,6 +63,23 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
     }
 
+    public MemberShipAdapter(Context context, int shownInScreen, int navigatedFrom, boolean showLoader, AdapterCallbacks adapterCallbacks) {
+        this.adapterCallbacks = adapterCallbacks;
+        this.context = context;
+        list = new ArrayList<>();
+        ownedPackages = new ArrayList<>();
+        offeredPackages = new ArrayList<>();
+
+        this.navigatedFrom = navigatedFrom;
+        this.showLoader = showLoader;
+        listLoader = new ListLoader();
+
+        headerSticky1 = new HeaderSticky("");
+        headerSticky2 = new HeaderSticky("");
+
+        dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
+    }
+
     public void addAllOfferedPackages(List<Package> data) {
         offeredPackages.addAll(data);
     }

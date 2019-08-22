@@ -358,7 +358,6 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         }
         addItems();
         mClusterManager.cluster();
-
     }
 
     private void addItems() {
@@ -384,7 +383,6 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return true;
     }
 
@@ -436,7 +434,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
 
         @Override
         protected boolean shouldRenderAsCluster(Cluster cluster) {
-            return cluster.getSize() > 2;
+            return cluster.getSize() > 1;
         }
     }
 }
