@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/theme_bg"
+    android:fitsSystemWindows="true"
+    tools:context=".view.fragment.MySchedule">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tool_bar_height"
+            android:background="?attr/colorPrimary"
+            android:contentInsetEnd="0dp"
+            android:contentInsetLeft="0dp"
+            android:contentInsetRight="0dp"
+            android:contentInsetStart="0dp"
+            android:elevation="4dp"
+            app:contentInsetEnd="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetRight="0dp"
+            app:contentInsetStart="0dp"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:tabIndicatorColor="@color/date_tabs" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:background="@color/white"
+            android:elevation="4dp"
+            app:tabGravity="fill"
+            android:visibility="gone"
+            app:tabIndicatorColor="@color/blue_light"
+            app:tabMode="fixed" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="@dimen/margin_20"
+    android:background="@color/theme_book"
+    >
+
+    <TextView
+        android:id="@+id/textview_membership_tip"
+        android:layout_width="269dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:gravity="left"
+        android:letterSpacing="@dimen/text_medium_letter_spacing"
+        android:lineSpacingExtra="@dimen/line_spacing_extra"
+        android:maxLines="3"
+        android:layout_alignParentStart="true"
+        android:text="Why a P5M membership? Because get more and pay less"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_large" />
+    <TextView
+        android:id="@+id/textViewViewLimit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:gravity="right"
+        android:letterSpacing="@dimen/text_medium_letter_spacing"
+        android:lineSpacingExtra="@dimen/line_spacing_extra"
+        android:text="@string/view_gym_visit_limits"
+        android:textColor="@color/white"
+        android:layout_toEndOf="@+id/textview_membership_tip"
+        android:layout_alignParentEnd="true"
+        android:textSize="@dimen/text_large"
+         />
+</RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+

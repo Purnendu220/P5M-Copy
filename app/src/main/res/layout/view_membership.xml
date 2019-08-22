@@ -10,8 +10,6 @@
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:paddingTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -21,109 +19,173 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="8dp"
             android:layout_marginRight="12dp"
             android:layout_marginBottom="12dp"
+            android:padding="@dimen/dp_16"
             android:elevation="0dp"
             android:orientation="vertical">
 
             <FrameLayout
+                android:id="@+id/frameLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
+                    android:id="@+id/linearLayout2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/linearLayout3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:paddingLeft="16dp">
+                        android:paddingLeft="16dp"
+                        android:paddingBottom="@dimen/margin_16">
 
-                        <TextView
-                            android:id="@+id/textViewPackageName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="left|center_vertical"
-                            android:ellipsize="end"
-                            android:fontFamily="sans-serif"
-                            android:gravity="left"
-                            android:letterSpacing="@dimen/button_letter_spacing_very_little"
-                            android:lineSpacingExtra="@dimen/line_spacing_extra_title"
-                            android:maxLines="1"
-                            android:paddingTop="16dp"
-                            android:paddingBottom="12dp"
-                            android:text="READY"
-                            android:textAllCaps="true"
-                            android:textColor="@color/theme_medium_light_text"
-                            android:textSize="@dimen/text_extra_large"
-                            android:textStyle="bold" />
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layout_active_drop_in"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-                        <TextView
-                            android:id="@+id/textViewPageTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:fontFamily="sans-serif"
-                            android:gravity="left"
-                            android:letterSpacing="@dimen/text_medium_letter_spacing"
-                            android:lineSpacingExtra="@dimen/line_spacing_extra_title"
-                            android:paddingRight="12dp"
-                            android:paddingBottom="4dp"
-                            android:text="10 of 10 Classes remaining"
-                            android:textColor="@color/theme_dark_text"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/textViewActiveDropIn"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:gravity="left|center_vertical"
+                                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                                android:lineSpacingExtra="@dimen/line_spacing_extra_title"
+                                android:maxLines="3"
+                                android:paddingRight="5dp"
+                                android:text="You have an active drop in for CPCF, exire in 7 days"
+                                android:textColor="@color/theme_dark_text"
+                                android:textSize="@dimen/text_medium"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/button"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0.0" />
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
+                            <Button
+                                android:id="@+id/button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginBottom="8dp"
+                                android:background="@drawable/join_rect"
+                                android:fontFamily="sans-serif-medium"
+                                android:letterSpacing="@dimen/button_letter_spacing"
+                                android:text="@string/book"
+                                android:textAllCaps="true"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_medium"
+                                app:layout_constraintBottom_toBottomOf="@+id/textViewActiveDropIn"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/textViewActiveDropIn" />
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_marginBottom="@dimen/margin_10">
+
+                            <TextView
+                                android:id="@+id/textViewPackageName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center_vertical"
+                                android:layout_marginTop="5dp"
+                                android:ellipsize="end"
+                                android:fontFamily="sans-serif"
+                                android:gravity="left"
+                                android:letterSpacing="@dimen/button_letter_spacing_very_little"
+                                android:lineSpacingExtra="@dimen/line_spacing_extra_title"
+                                android:maxLines="1"
+                                android:paddingTop="16dp"
+                                android:text="READY"
+                                android:textAllCaps="true"
+                                android:textColor="@color/theme_dark_text"
+                                android:textSize="@dimen/text_extra_large"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/textViewPageTitle"
+                                android:layout_width="205dp"
+                                android:layout_height="35dp"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginBottom="8dp"
+                                android:textStyle="bold"
+                                android:ellipsize="end"
+                                android:fontFamily="sans-serif"
+                                android:gravity="left|center_vertical"
+                                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                                android:lineSpacingExtra="@dimen/line_spacing_extra_title"
+                                android:paddingTop="@dimen/margin_5"
+                                android:paddingRight="12dp"
+                                android:paddingBottom="@dimen/margin_10"
+                                android:text="5 classes at any gym"
+                                android:textColor="@color/theme_medium_dark_text"
+                                android:textSize="@dimen/text_medium"
+                                app:layout_constraintEnd_toStartOf="@+id/textViewPackagePrice"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/textViewPackageName" />
 
                             <TextView
                                 android:id="@+id/textViewPackagePriceStrike"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginRight="10dp"
+                                android:layout_marginEnd="12dp"
                                 android:ellipsize="end"
                                 android:fontFamily="sans-serif-medium"
                                 android:gravity="left"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
                                 android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                                 android:maxLines="1"
-                                android:paddingTop="6dp"
+                                android:padding="@dimen/margin_5"
                                 android:text="50 KWD"
                                 android:textColor="@color/theme_medium_dark_text"
-                                android:textSize="@dimen/text_medium"
+                                android:textSize="@dimen/text_large"
                                 android:visibility="gone"
-
-                                />
+                                app:layout_constraintBottom_toTopOf="@+id/textViewPageTitle"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/textViewPageTitle" />
 
                             <TextView
                                 android:id="@+id/textViewPackagePrice"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginEnd="16dp"
                                 android:ellipsize="end"
                                 android:fontFamily="sans-serif-medium"
-                                android:gravity="left"
+                                android:gravity="center_vertical"
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
                                 android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                                 android:maxLines="1"
-                                android:paddingTop="6dp"
                                 android:text="50 KWD"
-                                android:textColor="@color/theme_dark_text"
-                                android:textSize="@dimen/text_medium"
-                                android:visibility="visible" />
+                                android:textColor="@color/theme_book"
+                                android:textSize="@dimen/text_large"
+                                android:textStyle="bold"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toBottomOf="@+id/textViewPageTitle"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/textViewPageTitle" />
 
-
-                        </LinearLayout>
-
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/margin_10"
                             android:orientation="horizontal">
 
                             <TextView
@@ -136,8 +198,6 @@
                                 android:letterSpacing="@dimen/text_medium_letter_spacing"
                                 android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                                 android:maxLines="1"
-                                android:paddingTop="12dp"
-                                android:paddingBottom="12dp"
                                 android:text="Valid for P5M Studio"
                                 android:textColor="@color/theme_dark_text"
                                 android:textSize="@dimen/text_medium"
@@ -171,18 +231,42 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif"
                             android:gravity="left"
+
                             android:letterSpacing="@dimen/text_medium_letter_spacing"
                             android:lineSpacingExtra="@dimen/line_spacing_extra"
                             android:text="@string/view_gym_visit_limits"
                             android:textColor="@color/theme_accent_text"
                             android:textSize="@dimen/text_large"
-                            android:visibility="visible" />
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/textViewVisisted"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="sans-serif"
+                            android:gravity="left"
+                            android:letterSpacing="@dimen/text_medium_letter_spacing"
+                            android:lineSpacingExtra="@dimen/line_spacing_extra_title"
+                            android:maxLines="1"
+                            android:paddingTop="@dimen/margin_10"
+                            android:paddingBottom="@dimen/margin_5"
+                            android:text="@string/so_far_you_visited"
+                            android:textColor="@color/theme_medium_text"
+                            android:textSize="@dimen/text_large"
+                            android:textStyle="normal"
+                            android:visibility="gone" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerViewLeftGymClasses"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone" />
 
                         <LinearLayout
                             android:id="@+id/layoutTimeClassPromo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_10"
                             android:layout_marginEnd="@dimen/margin_10"
                             android:orientation="horizontal"
 
@@ -217,19 +301,6 @@
 
                     </LinearLayout>
 
-                    <Button
-                        android:id="@+id/button"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_margin="16dp"
-                        android:background="@drawable/join_rect"
-                        android:fontFamily="sans-serif-medium"
-                        android:letterSpacing="@dimen/button_letter_spacing"
-                        android:text="@string/select_plan"
-                        android:textAllCaps="true"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/button_text_medium" />
-
                 </LinearLayout>
 
 
@@ -257,7 +328,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
-                        android:background="@color/green"
+                        android:layout_marginTop="@dimen/margin_2"
+                        android:background="@drawable/rounded_left_corner"
                         android:gravity="center"
                         android:paddingLeft="@dimen/margin_20"
                         android:paddingTop="5dp"
@@ -284,6 +356,7 @@
             style="@style/CardViewCircularMembership"
             android:layout_gravity="center_horizontal"
             android:elevation="0dp"
+            android:visibility="gone"
             android:orientation="vertical"
             android:translationZ="1px">
 
@@ -292,6 +365,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
+                android:visibility="gone"
                 android:src="@drawable/set_icon" />
 
         </androidx.cardview.widget.CardView>

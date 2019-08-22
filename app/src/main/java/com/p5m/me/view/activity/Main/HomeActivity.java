@@ -47,6 +47,7 @@ import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.activity.custom.BottomTapLayout;
 import com.p5m.me.view.custom.CustomRateAlertDialog;
+import com.p5m.me.view.fragment.MembershipFragment;
 import com.p5m.me.view.fragment.MySchedule;
 import com.p5m.me.view.fragment.ViewPagerFragmentSelection;
 
@@ -132,11 +133,12 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
     private BottomTapLayout bottomTapLayout;
 
-    private final int TOTAL_TABS = 4;
+    private final int TOTAL_TABS = 5;
     private int INITIAL_POSITION = AppConstants.Tab.TAB_FIND_CLASS;
     private int currentTab = INITIAL_POSITION;
     private int PROFILE_TAB_POSITION;
     private int SCHEDULE_TAB_POSITION;
+    private int MEMBERSHIP_TAB_POSITION;
 
     private Handler handler;
     public CustomRateAlertDialog mCustomMatchDialog;
@@ -163,6 +165,8 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
                     ProfileHeaderTabViewHolder.TAB_1);
             SCHEDULE_TAB_POSITION = getIntent().getIntExtra(AppConstants.DataKey.HOME_TABS_SCHEDULE_INNER_TAB_POSITION,
                     AppConstants.Tab.TAB_MY_SCHEDULE_UPCOMING);
+            MEMBERSHIP_TAB_POSITION = getIntent().getIntExtra(AppConstants.DataKey.HOME_TABS_MEMBERSHIP_INNER_TAB_POSITION,
+                    AppConstants.Tab.TAB_MEMBERSHIP_MULTI_GYM);
 
             LogUtils.debug("VarunSCHEDULE getIntent " + SCHEDULE_TAB_POSITION);
 
@@ -173,7 +177,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         FirebaseDynamicLinnk.getDynamicLink(this, getIntent());
         handler = new Handler(Looper.getMainLooper());
         setupBottomTabs();
-        homeAdapter = new HomeAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_TABS, PROFILE_TAB_POSITION, SCHEDULE_TAB_POSITION);
+        homeAdapter = new HomeAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_TABS, PROFILE_TAB_POSITION,MEMBERSHIP_TAB_POSITION, SCHEDULE_TAB_POSITION);
         viewPager.setAdapter(homeAdapter);
         viewPager.addOnPageChangeListener(this);
         viewPager.setOffscreenPageLimit(TOTAL_TABS);
@@ -255,6 +259,9 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_SCHEDULE, R.drawable.schedule, R.drawable.schedule,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
                 context.getString(R.string.schedule), context.getString(R.string.schedule)));
+        tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_MEMBERSHIP, R.drawable.schedule, R.drawable.schedule,
+                ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
+                context.getString(R.string.membership), context.getString(R.string.membership)));
         tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_MY_PROFILE, R.drawable.profile, R.drawable.profile,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
                 context.getString(R.string.profile), context.getString(R.string.profile)));
@@ -305,6 +312,15 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
                 LogUtils.debug("VarunSCHEDULE Error intent " + SCHEDULE_TAB_POSITION + e.getMessage());
             }
         }
+        if (position == AppConstants.Tab.TAB_MEMBERSHIP) {
+            try {
+                LogUtils.debug("VarunMEMBERSHIP intent " + MEMBERSHIP_TAB_POSITION);
+                ((MembershipFragment) homeAdapter.getFragments().get(position)).selectTab(MEMBERSHIP_TAB_POSITION);
+            } catch (Exception e) {
+                e.printStackTrace();
+                LogUtils.debug("VarunSCHEDULE Error intent " + MEMBERSHIP_TAB_POSITION + e.getMessage());
+            }
+        }
     }
 
     @Override
@@ -350,7 +366,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
     @Override
     public void onTabChange(int initial_position, int schedule_tab_position) {
-        homeAdapter = new HomeAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_TABS, 2, schedule_tab_position);
+        homeAdapter = new HomeAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_TABS, 2,1, schedule_tab_position);
         viewPager.setAdapter(homeAdapter);
         viewPager.addOnPageChangeListener(this);
         viewPager.setOffscreenPageLimit(TOTAL_TABS);

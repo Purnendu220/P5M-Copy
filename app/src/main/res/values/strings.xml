@@ -517,6 +517,8 @@ Would you like to view your balance? </string>
     <string name="_5000">(5000+)</string>
     <string name="show_schedule">Show Schedule</string>
     <string name="membership_page">Membership Page</string>
+    <string name="so_far_you_visited">So far you visited</string>
+    <string name="you_have">you have</string>
 
 
     <string-array name="schedule_list">
@@ -530,4 +532,7 @@ Would you like to view your balance? </string>
         <item>@string/gym</item>
     </string-array>
 
+    <string-array name="membership_list">
+        <item>PLANS \n Multi Gym</item>
+    </string-array>
 </resources>

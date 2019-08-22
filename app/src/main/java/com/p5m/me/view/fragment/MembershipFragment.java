@@ -21,6 +21,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.p5m.me.R;
+import com.p5m.me.adapters.MembershipTabAdapter;
 import com.p5m.me.adapters.ScheduleAdapter;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.ClassModel;
@@ -52,21 +53,18 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
     public AppBarLayout appBarLayout;
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
-
-
-    private ScheduleAdapter scheduleAdapter;
+    private MembershipTabAdapter membershipTabAdapter;
     private String[] titleTabs;
     private int tabPosition = -1;
 
     public MembershipFragment() {
     }
 
-    public static Fragment createScheduleFragment(int position) {
+    public static Fragment createMembershipFragment(int position) {
         Fragment tabFragment = new MembershipFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(AppConstants.DataKey.TAB_POSITION_INT, position);
         tabFragment.setArguments(bundle);
-
         return tabFragment;
     }
 
@@ -74,61 +72,21 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tabPosition = getArguments().getInt(AppConstants.DataKey.TAB_POSITION_INT, AppConstants.Tab.TAB_MEMBERSHIP_MULTI_GYM);
-        GlobalBus.getBus().register(this);
+//        GlobalBus.getBus().register(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        GlobalBus.getBus().unregister(this);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void notificationReceived(Events.NotificationCountUpdated notificationCountUpdated) {
-        setNotificationIcon();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void ClassAutoJoin(Events.ClassAutoJoin data) {
-        final ClassModel classModel = data.classModel;
-        if (classModel != null) {
-            try {
-//                    context.getResources().getString(R.string.invite_friends)
-                DialogUtils.showBasicMessage(context, "",
-                        getString(R.string.successfully_joined) + " " + classModel.getTitle()
-                        , RemoteConfigConst.INVITE_FRIENDS_VALUE, new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                dialog.dismiss();
-                                Helper.shareClass(context, classModel.getClassSessionId(), classModel.getTitle());
-
-                            }
-                        }, context.getResources().getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                dialog.dismiss();
-                            }
-                        });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
-        }
-
-
+//        GlobalBus.getBus().unregister(this);
     }
 
 
-    private void setNotificationIcon() {
-        int count = MyPreferences.initialize(context).getNotificationCount();
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_my_schedule, container, false);
+        return inflater.inflate(R.layout.fragment_membership, container, false);
     }
 
     @Override
@@ -138,19 +96,17 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         ButterKnife.bind(this, getView());
 
         setToolBar();
-        titleTabs = context.getResources().getStringArray(R.array.schedule_list);
-        scheduleAdapter = new ScheduleAdapter(getChildFragmentManager(), titleTabs);
-        viewPager.setAdapter(scheduleAdapter);
+        titleTabs = context.getResources().getStringArray(R.array.membership_list);
+        membershipTabAdapter = new MembershipTabAdapter(getChildFragmentManager(), titleTabs);
+        viewPager.setAdapter(membershipTabAdapter);
         viewPager.setOffscreenPageLimit(1);
 
-        tabLayout.setTabTextColors(ContextCompat.getColorStateList(context, R.color.date_tabs));
+        tabLayout.setTabTextColors(ContextCompat.getColorStateList(context, R.color.membership_tabs));
         tabLayout.setupWithViewPager(viewPager);
 
         viewPager.addOnPageChangeListener(this);
 
         viewPager.setCurrentItem(tabPosition);
-//        onTabSelection(tabPosition);
-        setNotificationIcon();
     }
 
     boolean isLoadingFirstTime = true;
@@ -189,9 +145,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
         activity.getSupportActionBar().setDisplayUseLogoEnabled(true);
 
-        View v = LayoutInflater.from(context).inflate(R.layout.view_tool_bar_my_schedule, null);
-
-        v.findViewById(R.id.imageViewSearch).setOnClickListener(this);
+        View v = LayoutInflater.from(context).inflate(R.layout.view_tool_bar_membership, null);
 
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT));
@@ -206,8 +160,8 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
     @Override
     public void onPageSelected(int position) {
         try {
-            LogUtils.debug("VarunSCHEDULE onPageSelected " + position);
-            ((ViewPagerFragmentSelection) scheduleAdapter.getFragments().get(position)).onTabSelection(position);
+            LogUtils.debug("VarunMEMBERSHIP onPageSelected " + position);
+            ((ViewPagerFragmentSelection) membershipTabAdapter.getFragments().get(position)).onTabSelection(position);
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -224,9 +178,6 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
     public void onClick(View view) {
         switch (view.getId()) {
 
-            case R.id.imageViewSearch:
-                SearchActivity.openActivity(context, activity, view, AppConstants.AppNavigation.NAVIGATION_FROM_SCHEDULE);
-                break;
         }
     }
 

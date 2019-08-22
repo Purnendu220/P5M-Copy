@@ -2,8 +2,12 @@ package com.p5m.me.adapters.viewholder;
 
 import android.content.Context;
 import android.graphics.Paint;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import android.text.Html;
 import android.view.View;
@@ -14,6 +18,8 @@ import android.widget.TextView;
 
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
+import com.p5m.me.adapters.GymListAdapter;
+import com.p5m.me.adapters.GymVisitListAdapter;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.UserPackage;
@@ -23,6 +29,7 @@ import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LanguageUtils;
+import com.p5m.me.utils.LogUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,6 +65,8 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
     public TextView textViewPackagePrice;
     @BindView(R.id.textViewPageTitle)
     public TextView textViewPageTitle;
+    @BindView(R.id.recyclerViewLeftGymClasses)
+    public RecyclerView recyclerViewLeftGymClasses;
 
     @BindView(R.id.linearLayoutOffer)
     public LinearLayout linearLayoutOffer;
@@ -71,9 +80,12 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
     public TextView textViewSpecialOffer;
     @BindView(R.id.viewOr)
     public View viewOr;
-
     @BindView(R.id.textViewPackagePriceStrike)
     public TextView textViewPackagePriceStrike;
+    @BindView(R.id.textViewVisisted)
+    public TextView textViewVisisted;
+    @BindView(R.id.layout_active_drop_in)
+    public ConstraintLayout layout_active_drop_in;
 
 
     @BindView(R.id.button)
@@ -84,6 +96,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
     private final Context context;
     private int shownInScreen;
+    private GymVisitListAdapter gymListAdapter;
 
     public MemberShipViewHolder(View itemView, int shownInScreen) {
         super(itemView);
@@ -91,7 +104,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
         context = itemView.getContext();
 
         ButterKnife.bind(this, itemView);
-        RemoteConfigSetUp.setBackgroundColor(linearLayoutOffer, RemoteConfigConst.MEMBERSHIP_OFFER_COLOR_VALUE, context.getResources().getColor(R.color.green));
+//        RemoteConfigSetUp.setBackgroundColor(linearLayoutOffer, RemoteConfigConst.MEMBERSHIP_OFFER_COLOR_VALUE, context.getResources().getColor(R.color.blue_light));
 
         this.shownInScreen = shownInScreen;
     }
@@ -100,8 +113,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
         if (data != null && (data instanceof UserPackage || data instanceof Package)) {
             textViewViewLimit.setText(Html.fromHtml(RemoteConfigConst.GYM_VISIT_LIMIT_VALUE));
-
-
+            layout_active_drop_in.setVisibility(View.GONE);
             itemView.setVisibility(View.VISIBLE);
             imageViewInfo.setVisibility(View.GONE);
 
@@ -112,6 +124,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
             // Package owned..
             if (data instanceof UserPackage) {
                 UserPackage model = (UserPackage) data;
+                layout_active_drop_in.setVisibility(View.GONE);
                 textViewPackagePrice.setVisibility(View.GONE);
                 linearLayoutOffer.setVisibility(View.GONE);
                 textViewPackagePriceStrike.setVisibility(View.GONE);
@@ -133,13 +146,18 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                 //imageViewHeader.setImageResource(R.drawable.set_icon);
 
                 if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
+                    layout_active_drop_in.setVisibility(View.GONE);
                     textViewPackageName.setText(model.getPackageName());
-
-                    textViewPageTitle.setText(LanguageUtils.numberConverter(model.getBalanceClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs), model.getBalanceClass()) + " " + context.getString(R.string.remaining));
+                    recyclerViewLeftGymClasses.setVisibility(View.VISIBLE);
+                    textViewVisisted.setVisibility(View.VISIBLE);
+                    setRecycleView();
+//                    textViewPageTitle.setText(LanguageUtils.numberConverter(model.getBalanceClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs), model.getBalanceClass()) + " " + context.getString(R.string.remaining));
+                    textViewPageTitle.setText(context.getString(R.string.you_have) + " " + LanguageUtils.numberConverter(model.getBalanceClass()) + "/" + LanguageUtils.numberConverter(model.getTotalNumberOfClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs), model.getBalanceClass()) + " " + context.getString(R.string.remaining));
 
                     textViewPackageValidity.setText(context.getString(R.string.valid_till) + " " + DateUtils.getPackageClassDate(model.getExpiryDate()));
 
-                    textViewViewLimit.setVisibility(View.VISIBLE);
+//                    textViewViewLimit.setVisibility(View.VISIBLE);
+                    textViewViewLimit.setVisibility(View.GONE);
                     if (classModel != null) {
                         int numberOfDays = DateUtils.getDaysLeftFromPackageExpiryDate(model.getExpiryDate());
 
@@ -151,9 +169,13 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                 } else if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                     textViewOr.setVisibility(View.GONE);
                     viewOr.setVisibility(View.GONE);
+                    textViewPackageName.setVisibility(View.GONE);
+                    textViewPageTitle.setVisibility(View.GONE);
+                    textViewPackageValidity.setVisibility(View.GONE);
+                    layout_active_drop_in.setVisibility(View.VISIBLE);
 
                     textViewPackageName.setText(model.getPackageName());
-                    LanguageUtils.setText(textViewPageTitle, model.getBalanceClass(), " " +AppConstants.pluralES(context.getString(R.string.classs), model.getBalanceClass())+" " + context.getString(R.string.class_remaining_for) + " " + model.getGymName());
+                   /* LanguageUtils.setText(textViewPageTitle, model.getBalanceClass(), " " + AppConstants.pluralES(context.getString(R.string.classs), model.getBalanceClass()) + " " + context.getString(R.string.class_remaining_for) + " " + model.getGymName());
 
                     textViewPackageValidity.setText(context.getString(R.string.valid_till) + " " + DateUtils.getPackageClassDate(model.getExpiryDate()));
                     if (model.getExpiryDate() == null || model.getExpiryDate().trim().length() == 0) {
@@ -161,7 +183,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                         textViewExtendPackage.setVisibility(View.GONE);
                     }
                     textViewViewLimit.setVisibility(View.GONE);
-                    imageViewInfo.setVisibility(View.VISIBLE);
+                    imageViewInfo.setVisibility(View.VISIBLE);*/
                 }
             } else
                 // Packages offered..
@@ -169,7 +191,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     Package model = (Package) data;
                     textViewPackagePrice.setVisibility(View.VISIBLE);
                     textViewExtendPackage.setVisibility(View.GONE);
-
+                    layout_active_drop_in.setVisibility(View.GONE);
 //                    button.setText(R.string.select_plan);
                     button.setText(RemoteConfigConst.SELECT_PLAN_TEXT_VALUE);
                     RemoteConfigSetUp.setBackgroundColor(button, RemoteConfigConst.SELECT_PLAN_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
@@ -189,9 +211,10 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                         }*/
 
                         setTextValidityPeriod(model);
-                        textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getCost(),2) + " " + context.getString(R.string.currency).toUpperCase());
+                        textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getCost(), 2) + " " + context.getString(R.string.currency).toUpperCase());
 
-                        textViewViewLimit.setVisibility(View.VISIBLE);
+//                        textViewViewLimit.setVisibility(View.VISIBLE);
+                        textViewViewLimit.setVisibility(View.GONE);
 
                         if (classModel != null) {
                             int numberOfDays = model.getDuration();
@@ -239,16 +262,16 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                             textViewPageTitle.setText(LanguageUtils.numberConverter(model.getNoOfClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass()) + " " + context.getString(R.string.at) + " " + model.getGymName());
 
                         textViewPackageValidity.setText(context.getString(R.string.valid_for) + " " + DateUtils.getPackageClassDate(classModel.getClassDate()) + " -" + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()));
-                        textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getCost(),2) + " " + context.getString(R.string.currency).toUpperCase());
+                        textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getCost(), 2) + " " + context.getString(R.string.currency).toUpperCase());
 
                         textViewViewLimit.setVisibility(View.GONE);
 
                         imageViewInfo.setVisibility(View.VISIBLE);
                     }
-                    if (model.getPromoResponseDto() != null ) {
-                        if( model.getPromoResponseDto().getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFCLASS))
+                    if (model.getPromoResponseDto() != null) {
+                        if (model.getPromoResponseDto().getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFCLASS))
                             setClassPromo(model);
-                        else if( model.getPromoResponseDto().getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFDAYS))
+                        else if (model.getPromoResponseDto().getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFDAYS))
                             setClassPromo(model);
                         else {
                             setPackagePriceAfterDiscount(model, textViewPackagePrice, textViewPackagePriceStrike);
@@ -295,8 +318,23 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
+    private void setRecycleView() {
+        recyclerViewLeftGymClasses.setLayoutManager(new LinearLayoutManager(context));
+        recyclerViewLeftGymClasses.setHasFixedSize(false);
+
+        try {
+            ((SimpleItemAnimator) recyclerViewLeftGymClasses.getItemAnimator()).setSupportsChangeAnimations(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+
+        gymListAdapter = new GymVisitListAdapter(context, shownInScreen, true);
+        recyclerViewLeftGymClasses.setAdapter(gymListAdapter);
+    }
+
     private void setClassPromo(Package model) {
-        if(model.getPromoResponseDto().getPromoDesc()!=null) {
+        if (model.getPromoResponseDto().getPromoDesc() != null) {
             layoutTimeClassPromo.setVisibility(View.VISIBLE);
             textViewSpecialOffer.setText(Html.fromHtml("<font color='#f34336'>" + context.getResources().getString(R.string.special_offer)
                     + "</font>" + " " + model.getPromoResponseDto().getPromoDesc()));
@@ -309,18 +347,15 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 //         textViewPackageValidity.setText(context.getString(R.string.valid_for) + " " + numberConverter(model.getDuration()) + " " + AppConstants.plural(validityPeriod, model.getDuration()));
 //            textViewPackageValidity.setText(String.format(context.getResources().getString(R.string.valid_for_months), model.getDuration()));
         {
-            if(model.getDuration()==1) {
+            if (model.getDuration() == 1) {
                 textViewPackageValidity.setText(context.getResources().getString(R.string.valid_for_a_months));
-            }
-            else
+            } else
                 textViewPackageValidity.setText(String.format(context.getResources().getString(R.string.valid_for_months), model.getDuration()));
 
-        }
-        else if (model.getValidityPeriod().contains("WEEK")) {
-            if(model.getDuration()==1) {
+        } else if (model.getValidityPeriod().contains("WEEK")) {
+            if (model.getDuration() == 1) {
                 textViewPackageValidity.setText(context.getResources().getString(R.string.valid_for_a_week));
-            }
-            else
+            } else
                 textViewPackageValidity.setText(String.format(context.getResources().getString(R.string.valid_for_weeks), model.getDuration()));
 
         }
@@ -345,12 +380,12 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                 textViewOffer.setText(currencyConverter(Math.round(model.getPromoResponseDto().getDiscount())) + offerText);
             }
         } catch (Exception e) {
-            textViewOffer.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getDiscount(),2) + offerText);
+            textViewOffer.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getDiscount(), 2) + offerText);
 
         }
 
-        textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getPriceAfterDiscount(),2) + " " + context.getString(R.string.currency).toUpperCase());
-        textViewPackagePriceStrike.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getPrice(),2) + " " + context.getString(R.string.currency).toUpperCase());
+        textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getPriceAfterDiscount(), 2) + " " + context.getString(R.string.currency).toUpperCase());
+        textViewPackagePriceStrike.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getPrice(), 2) + " " + context.getString(R.string.currency).toUpperCase());
         textViewPackagePriceStrike.setPaintFlags(textViewPackagePriceStrike.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
 
