@@ -1,5 +1,8 @@
 package com.p5m.me.view.fragment;
 
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,6 +94,9 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     private Marker mSelectedMarker;
     private Marker mLastMarker;
     private boolean isShownFirstTime = true;
+    private LocationManager locationManager;
+    private double latMin, longMax, latMax, longMin;
+    private List<MapData> mapData;
 
     public static Fragment createFragment(String date, int position, int shownIn) {
         Fragment tabFragment = new MapViewFragment();
@@ -117,13 +123,14 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         ButterKnife.bind(this, getView());
 
         initializeMapView();
+        getLocation();
         date = getArguments().getString(AppConstants.DataKey.CLASS_DATE_STRING, null);
         showInScreen = getArguments().getInt(AppConstants.DataKey.TAB_SHOWN_IN_INT, 0);
         fragmentPositionInViewPager = getArguments().getInt(AppConstants.DataKey.TAB_POSITION_INT);
         setNearerGymView();
         callNearerGymApi();
-
     }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -196,7 +203,6 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
 
     private void setNearerGymView() {
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
-
         recyclerViewNearerClass.setLayoutManager(staggeredGridLayoutManager);
         mapGymAdapter = new MapGymAdapter(context, 2, true, this);
         recyclerViewNearerClass.setAdapter(mapGymAdapter);
@@ -208,6 +214,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(context.getApplicationContext());
         mMap = googleMap;
+        mapData = new ArrayList<MapData>();
         mMap.getUiSettings().setAllGesturesEnabled(true);
         mMap.getUiSettings().setMapToolbarEnabled(false);
         GoogleMapOptions options = new GoogleMapOptions().liteMode(true);
@@ -281,8 +288,8 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
                 mClusterManager.clearItems();
                 branchModel = ((ResponseModel<List<BranchModel>>) response).data;
                 if (!branchModel.isEmpty()) {
-                    setUpCluster();
-                    mapGymAdapter.addAllClass(branchModel);
+                    addItems();
+
                 }
                 break;
         }
@@ -339,35 +346,40 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
 
 
     private void setUpCluster() {
-        if (branchModel.size() > 2)
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(branchModel.get(0).getLatitude(), branchModel.get(0).getLongitude()), 1));
-        else {
+        {
             LatLngBounds.Builder builder = LatLngBounds.builder();
-            for (BranchModel item : branchModel) {
-                LatLng latLng = new LatLng(item.getLatitude(), item.getLongitude());
-                builder.include(latLng);
+            for (MapData item : mapData) {
+                builder.include(item.getPosition());
             }
             final LatLngBounds bounds = builder.build();
-
             try {
-                mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 300));
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        addItems();
-        mClusterManager.cluster();
 
+        mClusterManager.cluster();
     }
 
     private void addItems() {
         for (int i = 0; i < branchModel.size(); i++) {
-            MapData data = new MapData(branchModel.get(i).getLatitude(),
-                    branchModel.get(i).getLongitude(), branchModel.get(i).getBranchName());
-            mClusterManager.addItem(data);
+            {
+                MapData data = new MapData(branchModel.get(i).getLatitude(),
+                        branchModel.get(i).getLongitude(), branchModel.get(i).getBranchName());
+                mClusterManager.addItem(data);
+                if (branchModel.get(i).getLatitude() < latMax &&
+                        branchModel.get(i).getLatitude() > latMin &&
+                        branchModel.get(i).getLongitude() < longMax &&
+                        branchModel.get(i).getLongitude() > longMin)
+                    mapData.add(data);
 
+            }
         }
+        setUpCluster();
+
+        mapGymAdapter.addAllClass(branchModel);
     }
 
     @Override
@@ -379,12 +391,11 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         final LatLngBounds bounds = builder.build();
 
         try {
-            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10));
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return true;
     }
 
@@ -418,6 +429,45 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         mLastMarker = mSelectedMarker;
     }
 
+    private void getLocation() {
+        Double lat = null;
+        Double lang = null;
+        try {
+            locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+            Location loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (loc != null) {
+                lat = loc.getLatitude();
+                lang = loc.getLongitude();
+            }
+
+        } catch (SecurityException e) {
+            e.printStackTrace();
+
+        }
+        findMarkers(lat, lang);
+
+    }
+
+    private void findMarkers(double lat, double lon) {
+
+        double R = 6378.1;
+        double brng = 1.57;
+        int d = 100;
+
+        latMin = Math.toRadians(lat);
+        longMin = Math.toRadians(lon);
+
+        latMax = Math.asin(Math.sin(latMin) * Math.cos(d / R) +
+                Math.cos(latMin) * Math.sin(d / R) * Math.cos(brng));
+
+        longMax = longMin + Math.atan2(Math.sin(brng) * Math.sin(d / R) * Math.cos(latMin),
+                Math.cos(d / R) - Math.sin(latMin) * Math.sin(latMax));
+
+        latMax = Math.toDegrees(latMax);
+        longMax = Math.toDegrees(longMax);
+
+    }
+
     private class CustomClusterRenderer extends DefaultClusterRenderer<MapData> {
 
         public CustomClusterRenderer() {
@@ -436,7 +486,8 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
 
         @Override
         protected boolean shouldRenderAsCluster(Cluster cluster) {
-            return cluster.getSize() > 2;
+            return cluster.getSize() > cluster.getSize();
         }
     }
+
 }

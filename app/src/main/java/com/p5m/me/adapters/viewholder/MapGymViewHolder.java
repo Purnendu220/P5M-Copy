@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.main.BranchModel;
+import com.p5m.me.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,7 +42,6 @@ public class MapGymViewHolder extends RecyclerView.ViewHolder {
     public void bind(Object data, AdapterCallbacks adapterCallbacks, final int position) {
         if (data != null && data instanceof BranchModel) {
             final BranchModel model = (BranchModel) data;
-
             textViewBranchName.setText(model.getBranchName());
             textViewGymName.setText(model.getGymName());
             textViewShowSchedule.setOnClickListener(v -> {
@@ -59,3 +59,4 @@ public class MapGymViewHolder extends RecyclerView.ViewHolder {
         }
     }
 }
+
