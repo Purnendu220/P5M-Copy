@@ -48,9 +48,7 @@ public class ShowScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         list = new ArrayList<>();
         this.shownInScreen = shownInScreen;
         this.showLoader = showLoader;
-
         listLoader = new ListLoader(true, context.getString(R.string.no_more_classes));
-
 
     }
 
@@ -131,6 +129,9 @@ public class ShowScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (position == getItemCount() - 1 && !listLoader.isFinish()) {
                 adapterCallbacks.onShowLastItem();
             }
+        }
+        else if (holder instanceof EmptyViewHolder) {
+            ((EmptyViewHolder) holder).bind();
         }
     }
 
