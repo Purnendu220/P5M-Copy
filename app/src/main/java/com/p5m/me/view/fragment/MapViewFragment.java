@@ -116,6 +116,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     private LatLng position = null;
     private int pastVisiblesItems;
     private boolean isMarkerClick = false;
+    private boolean loading = true;
 
     public static Fragment createFragment(String date, int position, int shownIn) {
         Fragment tabFragment = new MapViewFragment();
@@ -414,7 +415,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
                 mClusterManager.addItem(data);
 
                 if (mCircle != null) {
-                float[] distance = new float[2];
+                    float[] distance = new float[2];
                     Location.distanceBetween(branchModel.get(i).getLatitude(), branchModel.get(i).getLongitude(),
                             mCircle.getCenter().latitude, mCircle.getCenter().longitude, distance);
 
@@ -429,8 +430,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         }
 
         mapGymAdapter.addAllClass(branchModel);
-        if (!isMarkerClick)
-            findScrolledItem();
+        findScrolledItem();
     }
 
     private void findScrolledItem() {
@@ -439,37 +439,34 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-
                 int[] firstVisibleItems = null;
-                firstVisibleItems = staggeredGridLayoutManager.findLastCompletelyVisibleItemPositions(firstVisibleItems);
-                if (firstVisibleItems != null && firstVisibleItems.length > 0) {
-                    pastVisiblesItems = firstVisibleItems[0];
-                    if (pastVisiblesItems > -1) {
+                if (!isMarkerClick) {
+                    firstVisibleItems = staggeredGridLayoutManager.findLastCompletelyVisibleItemPositions(firstVisibleItems);
+//                if (firstVisibleItems != null && firstVisibleItems.length > 0 &&
+//                        firstVisibleItems[0] != -1 && firstVisibleItems[0] != pastVisiblesItems) {
+                    if (firstVisibleItems != null && firstVisibleItems.length > 0 &&
+                            firstVisibleItems[0] != -1 && firstVisibleItems[0] != pastVisiblesItems) {
+
+                        pastVisiblesItems = firstVisibleItems[0];
                         Collection<Marker> markers = mClusterManager.getMarkerCollection().getMarkers();
+
                         if (markers != null)
                             for (Marker m : markers) {
-                                try {
-                                    if (branchModel.get(pastVisiblesItems).getLatitude() == m.getPosition().latitude &&
-                                            branchModel.get(pastVisiblesItems).getLongitude() == m.getPosition().longitude) {
-                                        //set the icon
-                                        m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.red_marker));
 
-                                    } else {
-                                        m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.blue_marker));
-                                    }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                                if (branchModel.get(pastVisiblesItems).getLatitude() == m.getPosition().latitude &&
+                                        branchModel.get(pastVisiblesItems).getLongitude() == m.getPosition().longitude) {
+                                    mSelectedMarker = m;
+                                    if (mSelectedMarker != mLastMarker)
+                                        updateSelectedMarker();
+                                    break;
                                 }
                             }
-
                     }
-
-                }
+                } else
+                    isMarkerClick = false;
             }
 
         });
-        isMarkerClick = false;
-
     }
 
     @Override
@@ -499,15 +496,19 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
                 break;
             }
         }
+        staggeredGridLayoutManager.scrollToPosition(position);
         customClusterRenderer = (CustomClusterRenderer) mClusterManager.getRenderer();
-        mSelectedMarker = customClusterRenderer.getMarker(mapData);
-        updateSelectedMarker();
         isMarkerClick = true;
-        staggeredGridLayoutManager.smoothScrollToPosition(recyclerViewNearerClass, new RecyclerView.State(), position);
+        mSelectedMarker = customClusterRenderer.getMarker(mapData);
+
+//        staggeredGridLayoutManager.smoothScrollToPosition(recyclerViewNearerClass, new RecyclerView.State(), position);
+        if (mSelectedMarker != mLastMarker)
+            updateSelectedMarker();
         return false;
     }
 
     private void updateSelectedMarker() {
+
         if (mSelectedMarker != null) {
             mSelectedMarker.setIcon(
                     BitmapDescriptorFactory.fromResource(R.drawable.red_marker));
