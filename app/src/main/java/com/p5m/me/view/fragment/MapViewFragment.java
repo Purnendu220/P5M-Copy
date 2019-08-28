@@ -5,7 +5,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,7 +34,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.maps.android.MarkerManager;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
@@ -58,11 +56,9 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
-import com.p5m.me.utils.PermissionUtility;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.GymProfileActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
-import com.p5m.me.view.activity.Splash;
 import com.p5m.me.view.custom.ShowSchedulesBootomDialogFragment;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -117,6 +113,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     private int pastVisiblesItems;
     private boolean isMarkerClick = false;
     private boolean loading = true;
+    private boolean isLocationPermissionGranted =false;
 
     public static Fragment createFragment(String date, int position, int shownIn) {
         Fragment tabFragment = new MapViewFragment();
@@ -145,6 +142,17 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         initializeMapView();
         SnapHelper mSnapHelper = new PagerSnapHelper();
         mSnapHelper.attachToRecyclerView(recyclerViewNearerClass);
+
+        date = getArguments().getString(AppConstants.DataKey.CLASS_DATE_STRING, null);
+        showInScreen = getArguments().getInt(AppConstants.DataKey.TAB_SHOWN_IN_INT, 0);
+        fragmentPositionInViewPager = getArguments().getInt(AppConstants.DataKey.TAB_POSITION_INT);
+        setNearerGymView();
+        callNearerGymApi();
+        checkLocation();
+
+    }
+
+    private void checkLocation() {
         if (ActivityCompat.checkSelfPermission(getContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getContext(),
@@ -155,15 +163,10 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
                     REQUEST_LOCATION);
 //            ToastUtils.show(context, context.getString(R.string.permission_message_location));
         } else {
+            isLocationPermissionGranted =true;
             getLocation();
             Log.e("DB", "PERMISSION GRANTED");
         }
-
-        date = getArguments().getString(AppConstants.DataKey.CLASS_DATE_STRING, null);
-        showInScreen = getArguments().getInt(AppConstants.DataKey.TAB_SHOWN_IN_INT, 0);
-        fragmentPositionInViewPager = getArguments().getInt(AppConstants.DataKey.TAB_POSITION_INT);
-        setNearerGymView();
-        callNearerGymApi();
 
     }
 
@@ -251,6 +254,8 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         MapsInitializer.initialize(context.getApplicationContext());
         mMap = googleMap;
         mapDataList = new ArrayList<MapData>();
+        if(isLocationPermissionGranted)
+            getLocation();
         mSelectedMarker = null;
         mLastMarker = null;
         mMap.getUiSettings().setAllGesturesEnabled(true);
@@ -534,7 +539,20 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         Double lang = null;
         try {
             locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-            Location loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+            List<String> providers = locationManager.getProviders(true);
+            Location loc = null;
+            for (String provider : providers) {
+                Location l = locationManager.getLastKnownLocation(provider);
+                if (l == null) {
+                    continue;
+                }
+                if (loc == null || l.getAccuracy() < loc.getAccuracy()) {
+                    loc = l;
+                }
+            }
+
+//            Location loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (loc != null) {
                 lat = loc.getLatitude();
                 lang = loc.getLongitude();
