@@ -538,9 +538,8 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
             if (loc != null) {
                 lat = loc.getLatitude();
                 lang = loc.getLongitude();
+                position = new LatLng(lat, lang);
             }
-            position = new LatLng(lat, lang);
-
 
         } catch (SecurityException e) {
             e.printStackTrace();
