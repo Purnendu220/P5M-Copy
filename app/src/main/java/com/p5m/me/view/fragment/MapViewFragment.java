@@ -153,7 +153,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
                     new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
                             android.Manifest.permission.ACCESS_FINE_LOCATION},
                     REQUEST_LOCATION);
-            ToastUtils.show(context, context.getString(R.string.permission_message_location));
+//            ToastUtils.show(context, context.getString(R.string.permission_message_location));
         } else {
             getLocation();
             Log.e("DB", "PERMISSION GRANTED");
@@ -251,6 +251,8 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         MapsInitializer.initialize(context.getApplicationContext());
         mMap = googleMap;
         mapDataList = new ArrayList<MapData>();
+        mSelectedMarker = null;
+        mLastMarker = null;
         mMap.getUiSettings().setAllGesturesEnabled(true);
         mMap.getUiSettings().setMapToolbarEnabled(false);
         GoogleMapOptions options = new GoogleMapOptions().liteMode(true);
@@ -391,16 +393,17 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     private void setUpCluster() {
         {
             LatLngBounds.Builder builder = LatLngBounds.builder();
-            for (MapData item : mapDataList) {
-                builder.include(item.getPosition());
-            }
+            if (mapDataList.size() > 0) {
+                for (MapData item : mapDataList) {
+                    builder.include(item.getPosition());
+                }
+                try {
+                    final LatLngBounds bounds = builder.build();
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 300));
 
-            try {
-                final LatLngBounds bounds = builder.build();
-                mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 300));
-
-            } catch (Exception e) {
-                e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -508,16 +511,22 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     }
 
     private void updateSelectedMarker() {
+        try {
+            if (mSelectedMarker != null) {
+                mSelectedMarker.setIcon(
+                        BitmapDescriptorFactory.fromResource(R.drawable.red_marker));
 
-        if (mSelectedMarker != null) {
-            mSelectedMarker.setIcon(
-                    BitmapDescriptorFactory.fromResource(R.drawable.red_marker));
+
+            }
+            if (mLastMarker != null) {
+                mLastMarker.setIcon(
+                        BitmapDescriptorFactory.fromResource(R.drawable.blue_marker));
+            }
+            mLastMarker = mSelectedMarker;
         }
-        if (mLastMarker != null) {
-            mLastMarker.setIcon(
-                    BitmapDescriptorFactory.fromResource(R.drawable.blue_marker));
+        catch (Exception ex){
+            ex.printStackTrace();
         }
-        mLastMarker = mSelectedMarker;
     }
 
     private void getLocation() {
