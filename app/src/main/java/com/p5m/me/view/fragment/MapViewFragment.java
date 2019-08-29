@@ -410,6 +410,20 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
                     e.printStackTrace();
                 }
             }
+            else{
+                LatLng latLng;
+                for (BranchModel item : branchModel) {
+                    latLng = new LatLng(item.getLatitude(),item.getLongitude());
+                    builder.include(latLng);
+                }
+                try {
+                    final LatLngBounds bounds = builder.build();
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 300));
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         mClusterManager.cluster();
