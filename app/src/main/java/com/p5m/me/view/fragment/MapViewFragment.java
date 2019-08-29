@@ -284,6 +284,11 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        callNearerGymApi();
+    }
 
     @Override
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
