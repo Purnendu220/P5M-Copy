@@ -269,8 +269,8 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         mClusterManager.setOnClusterItemClickListener(this);
         mClusterManager.setAnimation(true);
         if (position != null) {
-            CircleOptions circleOptions = new CircleOptions().center(position).radius(50000).strokeColor(Color.RED)
-                    .fillColor(Color.BLUE);
+            CircleOptions circleOptions = new CircleOptions().center(position).radius(50000).strokeColor(Color.TRANSPARENT)
+                    .fillColor(Color.TRANSPARENT);
             mCircle = mMap.addCircle(circleOptions);
         }
 
