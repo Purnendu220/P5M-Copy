@@ -27,8 +27,8 @@
     <TextView
         android:id="@+id/textViewGymBranch"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_48"
-        android:padding="@dimen/margin_7"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_14"
         android:gravity="center"
         android:text="@string/gym_branch"
         android:textSize="@dimen/text_large"

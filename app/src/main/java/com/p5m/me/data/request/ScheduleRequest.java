@@ -23,6 +23,7 @@ public class ScheduleRequest {
     private List<?> gymList;
     private List<Integer> branchList;
     private List<?> timingList;
+    private int size;
 
     public String getClassDate() {
         return classDate;
@@ -86,5 +87,13 @@ public class ScheduleRequest {
 
     public void setTimingList(List<?> timingList) {
         this.timingList = timingList;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public int getSize() {
+        return size;
     }
 }

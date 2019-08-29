@@ -49,6 +49,7 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
     public static String date;
     private NetworkCommunicator networkCommunicator;
     private ScheduleRequest scheduleRequest;
+    private int pageSizeLimit = AppConstants.Limit.PAGE_LIMIT_UNLIMITED;
 
     public static ShowSchedulesBootomDialogFragment newInstance(Context context,  String date,List<Integer> branchList,BranchModel branchModel,AdapterCallbacks<BranchModel> adapterCallbacks) {
 
@@ -111,7 +112,7 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
         scheduleRequest.setGenderList(null);
         scheduleRequest.setTimingList(null);
         scheduleRequest.setLocationList(null);
-
+        scheduleRequest.setSize(pageSizeLimit);
         List<String> times = new ArrayList<>();
         List<String> activities = new ArrayList<>();
         List<String> gymList = new ArrayList<>();
@@ -175,14 +176,19 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
                 if (!scheduleClassModels.isEmpty()) {
                     showScheduleAdapter.clearAll();
                     showScheduleAdapter.addAllClass(scheduleClassModels);
-                    showScheduleAdapter.loaderDone();
-
+                    if (scheduleClassModels.size() < pageSizeLimit) {
+                        showScheduleAdapter.loaderDone();
+                    }
                     showScheduleAdapter.notifyDataSetChanged();
                 }
                 else {
-                    this.dismiss();
-                    ToastUtils.show(context, "Currently no class available");
+                    showScheduleAdapter.loaderDone();
+
+//                    this.dismiss();
+//                    ToastUtils.show(context, "Currently no class available");
                 }
+
+
                 break;
 
         }
