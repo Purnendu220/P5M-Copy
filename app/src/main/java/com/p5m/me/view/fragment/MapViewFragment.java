@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
@@ -34,6 +37,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
@@ -106,7 +110,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     private Marker mLastMarker;
     private boolean isShownFirstTime = true;
     private LocationManager locationManager;
-    private double latMin, longMax, latMax, longMin;
+//    private double latMin, longMax, latMax, longMin;
     private List<MapData> mapDataList;
     private Circle mCircle;
     private LatLng position = null;
@@ -114,6 +118,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     private boolean isMarkerClick = false;
     private boolean loading = true;
     private boolean isLocationPermissionGranted =false;
+    private FusedLocationProviderClient fusedLocationClient;
 
     public static Fragment createFragment(String date, int position, int shownIn) {
         Fragment tabFragment = new MapViewFragment();
@@ -142,7 +147,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         initializeMapView();
         SnapHelper mSnapHelper = new PagerSnapHelper();
         mSnapHelper.attachToRecyclerView(recyclerViewNearerClass);
-
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         date = getArguments().getString(AppConstants.DataKey.CLASS_DATE_STRING, null);
         showInScreen = getArguments().getInt(AppConstants.DataKey.TAB_SHOWN_IN_INT, 0);
         fragmentPositionInViewPager = getArguments().getInt(AppConstants.DataKey.TAB_POSITION_INT);
@@ -164,7 +169,18 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
 //            ToastUtils.show(context, context.getString(R.string.permission_message_location));
         } else {
             isLocationPermissionGranted =true;
-            getLocation();
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            // Got last known location. In some rare situations this can be null.
+                            if (location != null) {
+                                double lat = location.getLatitude();
+                                double lang = location.getLongitude();
+                                position = new LatLng(lat, lang);
+                            }
+                        }
+                    });
             Log.e("DB", "PERMISSION GRANTED");
         }
 
@@ -254,8 +270,10 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         MapsInitializer.initialize(context.getApplicationContext());
         mMap = googleMap;
         mapDataList = new ArrayList<MapData>();
-        if(isLocationPermissionGranted)
-            getLocation();
+       /* if(isLocationPermissionGranted) {
+
+
+        }*/
         mSelectedMarker = null;
         mLastMarker = null;
         mMap.getUiSettings().setAllGesturesEnabled(true);
@@ -435,6 +453,11 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     }
 
     private void addItems() {
+        if (position != null) {
+            CircleOptions circleOptions = new CircleOptions().center(position).radius(50000).strokeColor(Color.TRANSPARENT)
+                    .fillColor(Color.TRANSPARENT);
+            mCircle = mMap.addCircle(circleOptions);
+        }
         for (int i = 0; i < branchModel.size(); i++) {
             {
                 MapData data = new MapData(branchModel.get(i).getLatitude(),
@@ -582,31 +605,11 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
             e.printStackTrace();
 
         }
-        if (lat != null && lang != null)
-            findMarkers(lat, lang);
 
 
     }
 
-    private void findMarkers(double lat, double lon) {
 
-        double R = 6378.1;
-        double brng = 1.57;
-        int d = 1000;
-
-        latMin = Math.toRadians(lat);
-        longMin = Math.toRadians(lon);
-
-        latMax = Math.asin(Math.sin(latMin) * Math.cos(d / R) +
-                Math.cos(latMin) * Math.sin(d / R) * Math.cos(brng));
-
-        longMax = longMin + Math.atan2(Math.sin(brng) * Math.sin(d / R) * Math.cos(latMin),
-                Math.cos(d / R) - Math.sin(latMin) * Math.sin(latMax));
-
-        latMax = Math.toDegrees(latMax);
-        longMax = Math.toDegrees(longMax);
-
-    }
 
 
     private class CustomClusterRenderer extends DefaultClusterRenderer<MapData> {
