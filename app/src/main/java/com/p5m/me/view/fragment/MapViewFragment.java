@@ -305,6 +305,8 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     @Override
     public void onResume() {
         super.onResume();
+        if (mMap != null)
+            mMap.clear();
         callNearerGymApi();
     }
 
