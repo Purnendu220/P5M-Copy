@@ -3,6 +3,7 @@ package com.p5m.me.view.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.maps.model.LatLng;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.ClassListAdapter;
@@ -52,6 +54,7 @@ import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.RefrenceWrapper;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.ClassProfileActivity;
 import com.p5m.me.view.activity.Main.GymProfileActivity;
@@ -420,7 +423,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                 break;
             case R.id.buttonJoin:
                 if (model instanceof ClassModel) {
-                    ClassModel classModel = (ClassModel) model;
+                    ClassModel classModel = model;
                     // Check if class is allowed for the gender..
                     if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
                             && !Helper.isMalesAllowed(classModel)) {
@@ -478,7 +481,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
             default:
                 if (model instanceof ClassModel) {
-                    ClassModel classModel = (ClassModel) model;
+                    ClassModel classModel = model;
                     ClassProfileActivity.open(context, model, shownInScreen);
                 }
                 break;
@@ -515,11 +518,26 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
             if (loc != null) {
                 lat = loc.getLatitude();
                 lang = loc.getLongitude();
+                TempStorage.setLat(lat+"");
+                TempStorage.setLng(lang+"");
+
+            }else{
+               if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                   if(!TempStorage.getLat().isEmpty()&&TempStorage.getLat()!=null&&TempStorage.getLat()!=""){
+                       lat = Double.valueOf(TempStorage.getLat());
+                       lang = Double.valueOf(TempStorage.getLng());
+
+                   }
+               }
             }
+
 
         } catch (SecurityException e) {
             e.printStackTrace();
 
+        }
+        if(lat!=null&&lang!=null){
+            RefrenceWrapper.getRefrenceWrapper(context).setLatLng(new LatLng(lat, lang));
         }
         callRecomendedClassApi(lat, lang);
 

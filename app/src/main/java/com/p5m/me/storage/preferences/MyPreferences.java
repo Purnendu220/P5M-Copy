@@ -8,7 +8,6 @@ import com.p5m.me.data.City;
 import com.p5m.me.data.CityLocality;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.Filter;
-import com.p5m.me.data.LimitExceedErrorResponse;
 import com.p5m.me.data.RatingParamModel;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
@@ -34,7 +33,7 @@ public class MyPreferences {
     private Gson gson;
 
     private MyPreferences(Context context) {
-        this.context = context;
+        MyPreferences.context = context;
         gson = new Gson();
     }
 
@@ -62,12 +61,32 @@ public class MyPreferences {
         return PreferencesManager.getString(AppConstants.Pref.AUTH_TOKEN, "");
     }
 
+    public String getLat() {
+        return PreferencesManager.getString(AppConstants.Pref.LATITUDE, "");
+    }
+    public String getLng() {
+        return PreferencesManager.getString(AppConstants.Pref.LONGITUDE, "");
+    }
     public void saveAuthToken(String authToken) {
         if (authToken == null) {
             authToken = "";
         }
         PreferencesManager.putString(AppConstants.Pref.AUTH_TOKEN, authToken);
     }
+    public void saveLat(String lat) {
+        if (lat == null) {
+            lat = "";
+        }
+        PreferencesManager.putString(AppConstants.Pref.LATITUDE, lat);
+    }
+
+    public void saveLng(String lng) {
+        if (lng == null) {
+            lng = "";
+        }
+        PreferencesManager.putString(AppConstants.Pref.LONGITUDE, lng);
+    }
+
 
     public boolean isLogin() {
         return PreferencesManager.getBoolean(AppConstants.Pref.LOGIN, false);
@@ -114,7 +133,7 @@ public class MyPreferences {
 
     public void saveCities(List<City> activities) {
         try {
-            PreferencesManager.putString(AppConstants.Pref.CITIES, gson.toJson(activities).toString());
+            PreferencesManager.putString(AppConstants.Pref.CITIES, gson.toJson(activities));
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -133,7 +152,7 @@ public class MyPreferences {
 
     public void saveActivities(List<ClassActivity> activities) {
         try {
-            PreferencesManager.putString(AppConstants.Pref.ACTIVITIES, gson.toJson(activities).toString());
+            PreferencesManager.putString(AppConstants.Pref.ACTIVITIES, gson.toJson(activities));
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -141,7 +160,7 @@ public class MyPreferences {
     }
     public void saveRatingParams(List<RatingParamModel> ratingParamList) {
         try {
-            PreferencesManager.putString(AppConstants.Pref.RATING_PARAM, gson.toJson(ratingParamList).toString());
+            PreferencesManager.putString(AppConstants.Pref.RATING_PARAM, gson.toJson(ratingParamList));
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -150,7 +169,7 @@ public class MyPreferences {
 
     public void savePaymentErrorResponse(ResponseModel errorResponse){
         try {
-            PreferencesManager.putString(AppConstants.Pref.PAYMENT_ERROR_RESPONSE, gson.toJson(errorResponse.data).toString());
+            PreferencesManager.putString(AppConstants.Pref.PAYMENT_ERROR_RESPONSE, gson.toJson(errorResponse.data));
 
         }catch (Exception e){
             e.printStackTrace();
@@ -243,7 +262,7 @@ public class MyPreferences {
 
     public void saveFilters(List<ClassesFilter> filterList) {
         try {
-            PreferencesManager.putString(AppConstants.Pref.FILTERS, gson.toJson(filterList).toString());
+            PreferencesManager.putString(AppConstants.Pref.FILTERS, gson.toJson(filterList));
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -286,7 +305,7 @@ e.printStackTrace();
 
     public void saveUser(User user) {
         try {
-            PreferencesManager.putString(AppConstants.Pref.USER, gson.toJson(user).toString());
+            PreferencesManager.putString(AppConstants.Pref.USER, gson.toJson(user));
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -305,7 +324,7 @@ e.printStackTrace();
 
     public void saveDefaultSettingServer(DefaultSettingServer defaultSettingServer) {
         try {
-            PreferencesManager.putString(AppConstants.Pref.DEFAULT_SETTING_SERVER, gson.toJson(defaultSettingServer).toString());
+            PreferencesManager.putString(AppConstants.Pref.DEFAULT_SETTING_SERVER, gson.toJson(defaultSettingServer));
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);

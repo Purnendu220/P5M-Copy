@@ -62,6 +62,15 @@ public class LanguageUtils {
         return format.format(value);
 
     }
+    public static String promoConverter(double value,int decimalDigits)
+    {
+       /* NumberFormat format = DecimalFormat.getInstance();
+        format.setRoundingMode(RoundingMode.FLOOR);
+        format.setMinimumFractionDigits(decimalDigits);
+        format.setMaximumFractionDigits(decimalDigits);*/
+        return String.format("%.2f", value);
+
+    }
     public static String currencyConverter(long value)
     {
         String localLanguage=NumberFormat.getNumberInstance(Locale.getDefault()).format(value);

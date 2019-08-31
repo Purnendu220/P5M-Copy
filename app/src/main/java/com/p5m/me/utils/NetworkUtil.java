@@ -20,7 +20,7 @@ public class NetworkUtil {
     private static NetworkUtil networkUtil;
 
     private NetworkUtil(Context context) {
-        this.context = context;
+        NetworkUtil.context = context;
     }
 
     public static NetworkUtil getInstance(Context context) {

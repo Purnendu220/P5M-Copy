@@ -15,16 +15,9 @@ import com.brandongogetap.stickyheaders.exposed.StickyHeaderListener;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.TrainerProfileAdapter;
-import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.TrainerModel;
-import com.p5m.me.eventbus.Events;
 import com.p5m.me.helper.ClassListListenerHelper;
-import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
-import com.p5m.me.utils.LogUtils;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

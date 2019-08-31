@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,7 +9,8 @@
         android:layout_height="@dimen/tool_bar_height"
         android:background="@color/colorPrimaryDark"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/textViewTitle"
@@ -19,7 +21,24 @@
             android:layout_weight="1"
             android:gravity="left"
             android:text="@string/classes"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:visibility="visible" />
+
+        <Spinner
+            android:id="@+id/spinnerCountry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:dropDownWidth="160dp"
+            android:dropDownVerticalOffset="30dp"
+            android:gravity="left"
+            android:minWidth="160dp"
+            android:spinnerMode="dropdown"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+
 
         <ImageView
             android:id="@+id/imageViewSearch"
@@ -28,6 +47,17 @@
             android:padding="15dp"
             android:src="@drawable/search_white"
             android:transitionName="searchIcon" />
+
+        <TextView
+            android:id="@+id/textViewMapOrList"
+            android:text="@string/map"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textColor="@color/white"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/text_large"
+            android:padding="@dimen/margin_5"
+       />
 
         <FrameLayout
             android:id="@+id/layoutFilter"
@@ -42,9 +72,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clickable="true"
-                android:transitionName="filter"
                 android:padding="18dp"
-                android:src="@drawable/filter_icon" />
+                android:src="@drawable/filter_icon"
+                android:transitionName="filter" />
 
             <TextView
                 android:id="@+id/textViewNotificationMessageCounter"
@@ -52,8 +82,8 @@
                 android:layout_height="16dp"
                 android:layout_alignParentRight="true"
                 android:layout_gravity="center"
-                android:layout_marginBottom="12dp"
                 android:layout_marginLeft="8dp"
+                android:layout_marginBottom="12dp"
                 android:background="@drawable/notification_counter"
                 android:gravity="center"
                 android:text="99"

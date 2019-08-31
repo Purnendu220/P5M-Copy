@@ -218,8 +218,8 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         View v = LayoutInflater.from(context).inflate(R.layout.view_tool_normal, null);
 
         v.findViewById(R.id.imageViewBack).setVisibility(View.GONE);
-         mTextViewWalletAmount=(TextView)v.findViewById(R.id.textViewWalletAmount);
-         mLayoutUserWallet=(LinearLayout)v.findViewById(R.id.layoutUserWallet);
+         mTextViewWalletAmount= v.findViewById(R.id.textViewWalletAmount);
+         mLayoutUserWallet= v.findViewById(R.id.layoutUserWallet);
          mLayoutUserWallet.setVisibility(View.GONE);
 
         ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.payment_confirmation));
@@ -647,10 +647,11 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
             case PACKAGE:
 
             case CLASS_PURCHASE_WITH_PACKAGE:
+
                 if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                     if (paymentResponse.getClassDetailDto() != null)
                         textViewValidity.setText(DateUtils.getPackageClassDate(paymentResponse.getClassDetailDto().getClassDate()) + "\n" + DateUtils.getClassTime(paymentResponse.getClassDetailDto().getFromTime(), paymentResponse.getClassDetailDto().getToTime()));
-                } else {
+                    } else {
                     if (!TextUtils.isEmpty(paymentResponse.getExpiryDate())) {
                         textViewValidity.setText(DateUtils.getClassDate(paymentResponse.getExpiryDate()));
                     } else

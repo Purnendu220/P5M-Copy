@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.p5m.me.R;
 import com.p5m.me.adapters.viewholder.RatingImageViewHolder;
-import com.p5m.me.adapters.viewholder.SelectedImageViewHolder;
 import com.p5m.me.data.main.MediaModel;
 import com.p5m.me.utils.LogUtils;
 

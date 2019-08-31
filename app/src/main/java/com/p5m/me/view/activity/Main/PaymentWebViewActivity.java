@@ -202,11 +202,7 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
 
             LogUtils.debug("Payment shouldOverrideUrlLoading " + url);
 
-            if (url.startsWith("http:") || url.startsWith("https:")) {
-                return false;
-            }
-
-            return true;
+            return !url.startsWith("http:") && !url.startsWith("https:");
         }
 
         @Override
@@ -215,9 +211,7 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
             LogUtils.debug("Payment shouldOverrideUrlLoading " + request.toString());
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                if (request.getUrl().toString().startsWith("http:") || request.getUrl().toString().startsWith("https:")) {
-                    return false;
-                }
+                return !request.getUrl().toString().startsWith("http:") && !request.getUrl().toString().startsWith("https:");
             }
 
             return true;
@@ -229,7 +223,7 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
             layoutProgress.setVisibility(View.GONE);
             LogUtils.debug("Payment onPageFinished " + url);
 
-            if (url.toString().contains("profive-midl/api/v1/paymentsuccesspage")) {
+            if (url.contains("profive-midl/api/v1/paymentsuccesspage")) {
                 webView.setVisibility(View.INVISIBLE);
                 layoutProgress.setVisibility(View.VISIBLE);
             } else {

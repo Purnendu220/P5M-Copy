@@ -48,8 +48,6 @@ import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -570,7 +568,8 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                             layoutPromoCode.setVisibility(View.VISIBLE);
                             double discountedPrice = promoCode.getPrice() - promoCode.getPriceAfterDiscount();
                             textViewPromoCodePrice.setVisibility(View.VISIBLE);
-                            textViewPromoCodePrice.setText("- " + (LanguageUtils.numberConverter(discountedPrice, 2)) + " " + context.getString(R.string.currency));
+//                            ToastUtils.show(context," "+String.format("%.2f", discountedPrice));
+                            textViewPromoCodePrice.setText("- " + (LanguageUtils.promoConverter(discountedPrice, 2)) + " " + context.getString(R.string.currency));
                             buttonPromoCode.setText(context.getString(R.string.remove_promo_code));
                         } else {
                             layoutPromoCode.setVisibility(View.GONE);

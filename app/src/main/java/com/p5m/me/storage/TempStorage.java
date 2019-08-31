@@ -18,7 +18,6 @@ import com.p5m.me.utils.LogUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class TempStorage {
 
@@ -83,6 +82,21 @@ public class TempStorage {
     public static void setAuthToken(String authToken) {
         TempStorage.authToken = authToken;
         MyPreferences.getInstance().saveAuthToken(authToken);
+    }
+
+    public static void setLat(String Lat) {
+        MyPreferences.getInstance().saveLat(Lat);
+    }
+    public static void setLng(String Lng) {
+        MyPreferences.getInstance().saveLng(Lng);
+    }
+
+    public static String getLat() {
+        return MyPreferences.getInstance().getLat();
+    }
+
+    public static String getLng() {
+        return MyPreferences.getInstance().getLng();
     }
 
     public static List<ClassesFilter> getFilters() {

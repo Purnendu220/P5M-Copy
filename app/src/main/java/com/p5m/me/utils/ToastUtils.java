@@ -4,9 +4,11 @@ import android.content.Context;
 import androidx.core.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.p5m.me.R;
 
 
@@ -72,6 +74,12 @@ public class ToastUtils {
         toast.setView(textView);
 //        toast.setGravity(Gravity.BOTTOM, 0, 0);
         toast.show();
+    }
+
+    public static void showSnackbar(View view, String msg ){
+        Snackbar snackbar = Snackbar
+                .make(view, msg, Snackbar.LENGTH_SHORT);
+        snackbar.show();
     }
 }
 

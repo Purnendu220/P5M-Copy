@@ -6,6 +6,6 @@ package com.p5m.me.view.fragment;
 
 public interface ViewPagerFragmentSelection {
 
-    public void onTabSelection(int position);
+    void onTabSelection(int position);
 
 }

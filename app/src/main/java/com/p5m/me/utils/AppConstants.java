@@ -145,6 +145,9 @@ public class AppConstants {
 
         public static final String CLASS_MODEL = "class_model";
         public static final String RATING_PARAM = "rating_param";
+        public static final String LATITUDE = "latitude";
+        public static final String LONGITUDE = "longitude";
+
 
         public static final String PAYMENT_ERROR_RESPONSE = "payment_error_response";
 
@@ -218,6 +221,7 @@ public class AppConstants {
         public static final String CLASS_DETAILS = "api/v1/class";
 
         public static final String CLASS_LIST = "api/v1/class/getClassList";
+        public static final String BRANCH_LIST = "api/v1/gym/getBranches";
         public static final String RECOMENDED_CLASS_LIST = "api/v1/class/recommendClasses";
 
 
@@ -263,6 +267,7 @@ public class AppConstants {
 
         public static final String GET_PAYMENT_DETAIL = "api/v1/payment/package-purchase/{id}";
         public static final String SUPPORT_CONTACT = "api/v1/support/save";
+
     }
 
     public class ApiParamValue {
@@ -367,7 +372,8 @@ public class AppConstants {
         public static final int SHOWN_IN_GYM_PROFILE_TRAINERS = 12;
         public static final int SHOWN_IN_SEARCH_RESULTS = 13;
         public static final int SHOWN_IN_RATING_LIST = 15;
-
+        public static final int SHOWN_IN_MAP_VIEW = 16;
+        public static final int SHOWN_IN_HOME_MAP_CLASSES = 17;
 
         public static final int NAVIGATION_FROM_RESERVE_CLASS = 51;
         public static final int NAVIGATION_FROM_MY_PROFILE = 52;
@@ -383,7 +389,7 @@ public class AppConstants {
         public static final int NAVIGATION_FROM_SHARE = 61;
         public static final int NAVIGATION_FROM_DEEPLINK_ACTIVITY = 62;
         public static final int NAVIGATION_FROM_MEMBERSHIP = 63;
-
+        public static final int NAVIGATION_FROM_SHOW_SCHEDULER = 64;
 
     }
 

@@ -1,20 +1,13 @@
 package com.p5m.me.restapi;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 
-import androidx.annotation.NonNull;
-
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.login.LoginManager;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.p5m.me.R;
 import com.p5m.me.data.City;
 import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.ContactRequestModel;
-import com.p5m.me.data.ContactResponse;
 import com.p5m.me.data.FollowResponse;
 import com.p5m.me.data.MediaResponse;
 import com.p5m.me.data.PackageLimitModel;
@@ -24,6 +17,7 @@ import com.p5m.me.data.RatingParamModel;
 import com.p5m.me.data.RatingResponseModel;
 import com.p5m.me.data.UnratedClassData;
 import com.p5m.me.data.WishListResponse;
+import com.p5m.me.data.main.BranchModel;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.DefaultSettingServer;
@@ -32,12 +26,14 @@ import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.data.main.NotificationModel;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.PaymentUrl;
+import com.p5m.me.data.main.ScheduleClassModel;
 import com.p5m.me.data.main.SearchResults;
 import com.p5m.me.data.main.TrainerDetailModel;
 import com.p5m.me.data.main.TrainerModel;
 import com.p5m.me.data.main.Transaction;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
+import com.p5m.me.data.request.BranchListRequest;
 import com.p5m.me.data.request.ChangePasswordRequest;
 import com.p5m.me.data.request.ChooseFocusRequest;
 import com.p5m.me.data.request.ClassListRequest;
@@ -51,6 +47,7 @@ import com.p5m.me.data.request.PaymentUrlRequest;
 import com.p5m.me.data.request.PromoCodeRequest;
 import com.p5m.me.data.request.PublishRequest;
 import com.p5m.me.data.request.RegistrationRequest;
+import com.p5m.me.data.request.ScheduleRequest;
 import com.p5m.me.data.request.SelectedFileData;
 import com.p5m.me.data.request.UserInfoUpdate;
 import com.p5m.me.data.request.UserUpdateRequest;
@@ -61,10 +58,8 @@ import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.target_user_notification.UserPropertyConst;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CommonUtillity;
-import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
-import com.p5m.me.view.activity.Main.HomeActivity;
 
 import java.io.File;
 import java.util.List;
@@ -83,14 +78,14 @@ public class NetworkCommunicator {
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
-    public abstract interface RequestListener<T> {
+    public interface RequestListener<T> {
 
         void onApiSuccess(T response, int requestCode);
 
         void onApiFailure(String errorMessage, int requestCode);
     }
 
-    public abstract interface RequestListenerRequestDataModel<T> {
+    public interface RequestListenerRequestDataModel<T> {
 
         void onApiSuccess(Object response, int requestCode, T requestDataModel);
 
@@ -151,10 +146,11 @@ public class NetworkCommunicator {
         public static final int UNRATED_CLASS_COUNT = 138;
         public static final int CLASS_RATING_UPDATE = 139;
         public static final int MEDIA_DELETE = 140;
-
+        public static final int BRANCH_LIST = 141;
 
         public static final int PAYMENT_CONFIRMATION_DETAIL = 150;
         public static final int SUPPORT_RESPONSE_CONTACT = 160;
+
     }
 
     private Context context;
@@ -414,6 +410,27 @@ public class NetworkCommunicator {
 
             @Override
             public void onResponse(Call<ResponseModel<List<ClassModel>>> call, Response<ResponseModel<List<ClassModel>>> restResponse, ResponseModel<List<ClassModel>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getClassList onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call getBranchList(BranchListRequest branchListRequest, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.BRANCH_LIST;
+        Call<ResponseModel<List<BranchModel>>> call = apiService.getBranchList(branchListRequest);
+        LogUtils.debug("NetworkCommunicator hitting getClassList");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<BranchModel>>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<List<BranchModel>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getClassList onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<BranchModel>>> call, Response<ResponseModel<List<BranchModel>>> restResponse, ResponseModel<List<BranchModel>> response) {
                 LogUtils.networkSuccess("NetworkCommunicator getClassList onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
             }
@@ -843,24 +860,24 @@ public class NetworkCommunicator {
                     EventBroadcastHelper.sendUserUpdate(context, response.data);
                     setUserProperty(context, UserPropertyConst.GENDER, response.data.getGender());
                     setUserProperty(context, UserPropertyConst.NUMBER_OF_TRANSACTIONS, String.valueOf(response.data.getNumberOfTransactions()));
-                    String userMainPackage=UserPropertyConst.NO_PACKAGE;
-                    String userReadyPackage=UserPropertyConst.No_READY_PACKAGE;
+                    String userMainPackage = UserPropertyConst.NO_PACKAGE;
+                    String userReadyPackage = UserPropertyConst.No_READY_PACKAGE;
                     if (response.data.getUserPackageDetailDtoList() != null
                             && !response.data.getUserPackageDetailDtoList().isEmpty()) {
 
                         for (UserPackage userPackage : response.data.getUserPackageDetailDtoList()) {
                             if (userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)
                                     && userPackage.getBalanceClass() != 0) {
-                                userMainPackage=userPackage.getPackageName().toUpperCase();
+                                userMainPackage = userPackage.getPackageName().toUpperCase();
 
                             } else if (userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                                 userReadyPackage = UserPropertyConst.HAVE_READY_PACKAGE;
 
                             }
                         }
-                        }
-                        setUserProperty(context, UserPropertyConst.ACTIVE_PACKAGE, userMainPackage);
-                        setUserProperty(context, UserPropertyConst.READY_PACKAGE, userReadyPackage);
+                    }
+                    setUserProperty(context, UserPropertyConst.ACTIVE_PACKAGE, userMainPackage);
+                    setUserProperty(context, UserPropertyConst.READY_PACKAGE, userReadyPackage);
 
                 }
                 requestListener.onApiSuccess(response, requestCode);
@@ -870,7 +887,7 @@ public class NetworkCommunicator {
     }
 
     private void setUserProperty(Context context, String key, String value) {
-        mFirebaseAnalytics.getInstance(context).setUserProperty(key, value);
+        FirebaseAnalytics.getInstance(context).setUserProperty(key, value);
     }
 
     public Call getGym(int gymId, final RequestListener requestListener, boolean useCache) {
@@ -1380,13 +1397,12 @@ public class NetworkCommunicator {
     public Call addToWishList(final ClassModel classModel, final int classSessionId, final RequestListener requestListener) {
         final int requestCode = RequestCode.ADD_TO_WISH_LIST;
         String type;
-        if(classModel.getAvailableSeat()==0){
-            type="WAITLIST";
+        if (classModel.getAvailableSeat() == 0) {
+            type = "WAITLIST";
+        } else {
+            type = "WISHLIST";
         }
-        else{
-            type="WISHLIST";
-        }
-        Call<ResponseModel<WishListResponse>> call = apiService.addToWishList(new WishListRequest(TempStorage.getUser().getId(), classSessionId,type));
+        Call<ResponseModel<WishListResponse>> call = apiService.addToWishList(new WishListRequest(TempStorage.getUser().getId(), classSessionId, type));
         LogUtils.debug("NetworkCommunicator hitting addToWishList");
 
         call.enqueue(new RestCallBack<ResponseModel<WishListResponse>>(context) {
@@ -1549,6 +1565,27 @@ public class NetworkCommunicator {
             @Override
             public void onResponse(Call<ResponseModel<Object>> call, Response<ResponseModel<Object>> restResponse, ResponseModel<Object> response) {
                 LogUtils.networkSuccess("NetworkCommunicator contact onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call getScheduleClassList(ScheduleRequest scheduleRequest, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.SCHEDULE_LIST;
+        Call<ResponseModel<List<ScheduleClassModel>>> call = apiService.getScheduleClass(scheduleRequest);
+        LogUtils.debug("NetworkCommunicator hitting getClassList");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<ScheduleClassModel>>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<List<ScheduleClassModel>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getClassList onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<ScheduleClassModel>>> call, Response<ResponseModel<List<ScheduleClassModel>>> restResponse, ResponseModel<List<ScheduleClassModel>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getClassList onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
             }
         });

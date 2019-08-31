@@ -1,8 +1,6 @@
 
 package com.p5m.me.data;
 
-import com.google.gson.annotations.Expose;
-
 import java.io.Serializable;
 
 public class RatingFeedbackAreaResList implements Serializable {
