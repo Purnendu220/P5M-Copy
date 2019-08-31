@@ -39,8 +39,10 @@ public class ShowScheduleViewHolder extends RecyclerView.ViewHolder {
     public void bind(Object data, AdapterCallbacks adapterCallbacks, final int position) {
         if (data != null && data instanceof ScheduleClassModel) {
             final ScheduleClassModel model = (ScheduleClassModel) data;
-            if (model.getTrainerDetail() != null && model.getTrainerDetail().getFirstName() != null)
+            if (model.getTrainerDetail() != null && model.getTrainerDetail().getFirstName() != null) {
                 textViewTrainerName.setText(model.getTrainerDetail().getFirstName());
+                textViewTrainerName.setVisibility(View.VISIBLE);
+            }
             else
                 textViewTrainerName.setVisibility(View.GONE);
             if (model.getTitle() != null)
