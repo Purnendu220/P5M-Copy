@@ -1,9 +1,11 @@
 package com.p5m.me.view.fragment;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,12 +17,15 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
@@ -80,8 +85,10 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         NetworkCommunicator.RequestListener,
         FindClass.TabClickListener, ViewPagerFragmentSelection,
         ClusterManager.OnClusterClickListener<MapData>,
-        ClusterManager.OnClusterItemClickListener<MapData> {
+        ClusterManager.OnClusterItemClickListener<MapData>,
+        LocationListener {
 
+    private static final int LOCATION_REQUEST_PERMISSION = 111;
     private GoogleMap mMap;
     @BindView(R.id.mapView)
     public MapView mapView;
@@ -89,7 +96,6 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     public ProgressBar processingProgressBar;
     private ClusterManager<MapData> mClusterManager;
 
-    private static AdapterCallbacks adapterCallbacks;
     @BindView(R.id.recyclerViewNearerClass)
     public RecyclerView recyclerViewNearerClass;
 
@@ -106,14 +112,14 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     private Marker mLastMarker;
     private boolean isShownFirstTime = true;
     private LocationManager locationManager;
-    private double latMin, longMax, latMax, longMin;
     private List<MapData> mapDataList;
     private Circle mCircle;
     private LatLng position = null;
     private int pastVisiblesItems;
     private boolean isMarkerClick = false;
-    private boolean loading = true;
-    private boolean isLocationPermissionGranted =false;
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
+    private boolean isLocationPermissionGranted = false;
 
     public static Fragment createFragment(String date, int position, int shownIn) {
         Fragment tabFragment = new MapViewFragment();
@@ -140,20 +146,21 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         ButterKnife.bind(this, getView());
 
         initializeMapView();
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
         SnapHelper mSnapHelper = new PagerSnapHelper();
         mSnapHelper.attachToRecyclerView(recyclerViewNearerClass);
-
         date = getArguments().getString(AppConstants.DataKey.CLASS_DATE_STRING, null);
         showInScreen = getArguments().getInt(AppConstants.DataKey.TAB_SHOWN_IN_INT, 0);
         fragmentPositionInViewPager = getArguments().getInt(AppConstants.DataKey.TAB_POSITION_INT);
+        checkLocation();
         setNearerGymView();
         callNearerGymApi();
-        checkLocation();
 
     }
 
     private void checkLocation() {
-        if (ActivityCompat.checkSelfPermission(getContext(),
+       /* if (ActivityCompat.checkSelfPermission(getContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getContext(),
                         android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -163,14 +170,44 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
                     REQUEST_LOCATION);
 //            ToastUtils.show(context, context.getString(R.string.permission_message_location));
         } else {
-            isLocationPermissionGranted =true;
+            isLocationPermissionGranted = true;
             getLocation();
             Log.e("DB", "PERMISSION GRANTED");
+        }*/
+
+        if (ContextCompat.checkSelfPermission(getContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getContext(),
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+               /* ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,android.Manifest.permission.ACCESS_COARSE_LOCATION},
+                        LOCATION_REQUEST_PERMISSION);*/
+            requestPermissions(new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_REQUEST_PERMISSION);
+
+
+        } else {
+            getLocation();
         }
 
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case LOCATION_REQUEST_PERMISSION: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                   getLocation();
+                }
+                return;
+            }
 
+
+        }
+    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -254,8 +291,6 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         MapsInitializer.initialize(context.getApplicationContext());
         mMap = googleMap;
         mapDataList = new ArrayList<MapData>();
-        if(isLocationPermissionGranted)
-            getLocation();
         mSelectedMarker = null;
         mLastMarker = null;
         mMap.getUiSettings().setAllGesturesEnabled(true);
@@ -284,6 +319,13 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mMap != null)
+            mMap.clear();
+        callNearerGymApi();
+    }
 
     @Override
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
@@ -336,6 +378,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
                 mSelectedMarker = null;
                 mLastMarker = null;
                 mClusterManager.clearItems();
+
                 branchModel = ((ResponseModel<List<BranchModel>>) response).data;
                 if (!branchModel.isEmpty()) {
                     addItems();
@@ -409,6 +452,19 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            } else {
+                LatLng latLng;
+                for (BranchModel item : branchModel) {
+                    latLng = new LatLng(item.getLatitude(), item.getLongitude());
+                    builder.include(latLng);
+                }
+                try {
+                    final LatLngBounds bounds = builder.build();
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 300));
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -416,6 +472,11 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     }
 
     private void addItems() {
+        if (position != null) {
+            CircleOptions circleOptions = new CircleOptions().center(position).radius(50000).strokeColor(Color.TRANSPARENT)
+                    .fillColor(Color.TRANSPARENT);
+            mCircle = mMap.addCircle(circleOptions);
+        }
         for (int i = 0; i < branchModel.size(); i++) {
             {
                 MapData data = new MapData(branchModel.get(i).getLatitude(),
@@ -450,8 +511,6 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
                 int[] firstVisibleItems = null;
                 if (!isMarkerClick) {
                     firstVisibleItems = staggeredGridLayoutManager.findLastCompletelyVisibleItemPositions(firstVisibleItems);
-//                if (firstVisibleItems != null && firstVisibleItems.length > 0 &&
-//                        firstVisibleItems[0] != -1 && firstVisibleItems[0] != pastVisiblesItems) {
                     if (firstVisibleItems != null && firstVisibleItems.length > 0 &&
                             firstVisibleItems[0] != -1 && firstVisibleItems[0] != pastVisiblesItems) {
 
@@ -509,7 +568,6 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         isMarkerClick = true;
         mSelectedMarker = customClusterRenderer.getMarker(mapData);
 
-//        staggeredGridLayoutManager.smoothScrollToPosition(recyclerViewNearerClass, new RecyclerView.State(), position);
         if (mSelectedMarker != mLastMarker)
             updateSelectedMarker();
         return false;
@@ -528,8 +586,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
                         BitmapDescriptorFactory.fromResource(R.drawable.blue_marker));
             }
             mLastMarker = mSelectedMarker;
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -539,7 +596,10 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         Double lang = null;
         try {
             locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-
+            locationManager.requestLocationUpdates(
+                    LocationManager.NETWORK_PROVIDER,
+                    MIN_TIME_BW_UPDATES,
+                    MIN_DISTANCE_CHANGE_FOR_UPDATES, (LocationListener) this);
             List<String> providers = locationManager.getProviders(true);
             Location loc = null;
             for (String provider : providers) {
@@ -563,29 +623,34 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
             e.printStackTrace();
 
         }
-        if (lat != null && lang != null)
-            findMarkers(lat, lang);
 
 
     }
 
-    private void findMarkers(double lat, double lon) {
+    @Override
+    public void onLocationChanged(Location location) {
+        if (location != null) {
+            double lat = location.getLatitude();
+            double lang = location.getLongitude();
+            position = new LatLng(lat, lang);
+            CircleOptions circleOptions = new CircleOptions().center(position).radius(50000).strokeColor(Color.TRANSPARENT)
+                    .fillColor(Color.TRANSPARENT);
+            mCircle = mMap.addCircle(circleOptions);
+        }
+    }
 
-        double R = 6378.1;
-        double brng = 1.57;
-        int d = 1000;
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
 
-        latMin = Math.toRadians(lat);
-        longMin = Math.toRadians(lon);
+    }
 
-        latMax = Math.asin(Math.sin(latMin) * Math.cos(d / R) +
-                Math.cos(latMin) * Math.sin(d / R) * Math.cos(brng));
+    @Override
+    public void onProviderEnabled(String provider) {
 
-        longMax = longMin + Math.atan2(Math.sin(brng) * Math.sin(d / R) * Math.cos(latMin),
-                Math.cos(d / R) - Math.sin(latMin) * Math.sin(latMax));
+    }
 
-        latMax = Math.toDegrees(latMax);
-        longMax = Math.toDegrees(longMax);
+    @Override
+    public void onProviderDisabled(String provider) {
 
     }
 
