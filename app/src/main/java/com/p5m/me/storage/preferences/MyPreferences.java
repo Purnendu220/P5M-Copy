@@ -61,12 +61,32 @@ public class MyPreferences {
         return PreferencesManager.getString(AppConstants.Pref.AUTH_TOKEN, "");
     }
 
+    public String getLat() {
+        return PreferencesManager.getString(AppConstants.Pref.LATITUDE, "");
+    }
+    public String getLng() {
+        return PreferencesManager.getString(AppConstants.Pref.LONGITUDE, "");
+    }
     public void saveAuthToken(String authToken) {
         if (authToken == null) {
             authToken = "";
         }
         PreferencesManager.putString(AppConstants.Pref.AUTH_TOKEN, authToken);
     }
+    public void saveLat(String lat) {
+        if (lat == null) {
+            lat = "";
+        }
+        PreferencesManager.putString(AppConstants.Pref.LATITUDE, lat);
+    }
+
+    public void saveLng(String lng) {
+        if (lng == null) {
+            lng = "";
+        }
+        PreferencesManager.putString(AppConstants.Pref.LONGITUDE, lng);
+    }
+
 
     public boolean isLogin() {
         return PreferencesManager.getBoolean(AppConstants.Pref.LOGIN, false);

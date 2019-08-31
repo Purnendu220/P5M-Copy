@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -61,6 +62,7 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.RefrenceWrapper;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.GymProfileActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
@@ -118,7 +120,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     private int pastVisiblesItems;
     private boolean isMarkerClick = false;
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 10 * 1; // 1 minute
     private boolean isLocationPermissionGranted = false;
 
     public static Fragment createFragment(String date, int position, int shownIn) {
@@ -144,45 +146,24 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         super.onActivityCreated(savedInstanceState);
 
         ButterKnife.bind(this, getView());
-
         initializeMapView();
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-
         SnapHelper mSnapHelper = new PagerSnapHelper();
         mSnapHelper.attachToRecyclerView(recyclerViewNearerClass);
         date = getArguments().getString(AppConstants.DataKey.CLASS_DATE_STRING, null);
         showInScreen = getArguments().getInt(AppConstants.DataKey.TAB_SHOWN_IN_INT, 0);
         fragmentPositionInViewPager = getArguments().getInt(AppConstants.DataKey.TAB_POSITION_INT);
-        checkLocation();
+        position = RefrenceWrapper.getRefrenceWrapper(context).getLatLng();
         setNearerGymView();
-        callNearerGymApi();
+
 
     }
 
     private void checkLocation() {
-       /* if (ActivityCompat.checkSelfPermission(getContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(getContext(),
-                        android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                            android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_LOCATION);
-//            ToastUtils.show(context, context.getString(R.string.permission_message_location));
-        } else {
-            isLocationPermissionGranted = true;
-            getLocation();
-            Log.e("DB", "PERMISSION GRANTED");
-        }*/
-
         if (ContextCompat.checkSelfPermission(getContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getContext(),
                         android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-               /* ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,android.Manifest.permission.ACCESS_COARSE_LOCATION},
-                        LOCATION_REQUEST_PERMISSION);*/
             requestPermissions(new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_REQUEST_PERMISSION);
 
@@ -303,11 +284,9 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         mClusterManager.setOnClusterClickListener(this);
         mClusterManager.setOnClusterItemClickListener(this);
         mClusterManager.setAnimation(true);
-        if (position != null) {
-            CircleOptions circleOptions = new CircleOptions().center(position).radius(50000).strokeColor(Color.TRANSPARENT)
-                    .fillColor(Color.TRANSPARENT);
-            mCircle = mMap.addCircle(circleOptions);
-        }
+        checkLocation();
+        callNearerGymApi();
+
 
     }
 
@@ -322,9 +301,11 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     @Override
     public void onResume() {
         super.onResume();
-        if (mMap != null)
+        if (mMap != null){
             mMap.clear();
-        callNearerGymApi();
+            callNearerGymApi();
+        }
+
     }
 
     @Override
@@ -384,9 +365,13 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
                     addItems();
                     setUpCluster();
                 }
+
+
                 break;
         }
     }
+
+
 
 
     @Override
@@ -476,6 +461,8 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
             CircleOptions circleOptions = new CircleOptions().center(position).radius(50000).strokeColor(Color.TRANSPARENT)
                     .fillColor(Color.TRANSPARENT);
             mCircle = mMap.addCircle(circleOptions);
+        }else{
+            LogUtils.debug("Position is null");
         }
         for (int i = 0; i < branchModel.size(); i++) {
             {
@@ -489,7 +476,11 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
                             mCircle.getCenter().latitude, mCircle.getCenter().longitude, distance);
 
                     if (distance[0] > mCircle.getRadius()) {
+                        LogUtils.debug("MAp data is greater");
+
                     } else {
+                        LogUtils.debug("MAp data is less");
+
                         mapDataList.add(data);
                     }
                 }
@@ -500,6 +491,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
 
         mapGymAdapter.addAllClass(branchModel);
         findScrolledItem();
+
     }
 
     private void findScrolledItem() {
@@ -616,6 +608,8 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
             if (loc != null) {
                 lat = loc.getLatitude();
                 lang = loc.getLongitude();
+                TempStorage.setLat(lat+"");
+                TempStorage.setLng(lang+"");
                 position = new LatLng(lat, lang);
             }
 
