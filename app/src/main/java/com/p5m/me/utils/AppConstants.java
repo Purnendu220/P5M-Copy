@@ -145,6 +145,9 @@ public class AppConstants {
 
         public static final String CLASS_MODEL = "class_model";
         public static final String RATING_PARAM = "rating_param";
+        public static final String LATITUDE = "latitude";
+        public static final String LONGITUDE = "longitude";
+
 
         public static final String PAYMENT_ERROR_RESPONSE = "payment_error_response";
 
