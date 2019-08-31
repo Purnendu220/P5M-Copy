@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/layoutMainOfferedPackage"
+    >
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="50dp"
+          android:orientation="horizontal"
+          android:layout_marginTop="@dimen/margin_20"
+          android:layout_marginLeft="@dimen/margin_20"
+          >
+     <TextView
+         android:id="@+id/txtPackageName"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="SUMMER BODY"
+         android:textColor="@color/black"
+         android:textSize="@dimen/text_extra_large"
+         />
+      <TextView
+          android:id="@+id/txtIsPackagePopular"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="SUMMER BODY"
+          android:textColor="@color/colorAccent"
+          android:textSize="@dimen/text_small"
+          android:background="@drawable/rouded_corner_text"
+          android:layout_marginLeft="@dimen/margin_20"
+          android:padding="@dimen/margin_5"
+          />
+
+      </LinearLayout>
+      <TextView
+          android:id="@+id/txtPackageOffer"
+          android:layout_width="70dp"
+          android:layout_height="wrap_content"
+          android:text="15% off"
+          android:textColor="@color/white"
+          android:textSize="@dimen/text_small"
+          android:background="@drawable/rounded_corner_text_filled"
+          android:padding="@dimen/margin_5"
+          android:textStyle="bold"
+          android:layout_alignParentEnd="true"
+          android:layout_centerVertical="true"
+          android:gravity="center"
+          />
+  </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_marginLeft="@dimen/margin_20"
+            >
+            <TextView
+                android:id="@+id/txtPackageOffredClasses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5 classes at any gym"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_large"
+                android:layout_gravity="center"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="30 KWD"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/text_15sp"
+                android:id="@+id/txtPriceBeforeOffer"
+
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="30 KWD"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_large"
+                android:id="@+id/txtPriceAfterOffer"
+
+                />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/packageValidFor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/valid_for"
+        android:textSize="@dimen/text_extra_large"
+        android:textColor="@color/grey"
+        android:layout_marginLeft="@dimen/margin_20"        />
+
+</LinearLayout>

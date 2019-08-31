@@ -1,23 +1,25 @@
-package com.p5m.me.view.activity.Main;
+package com.p5m.me.view.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -45,6 +47,8 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.view.activity.Main.CheckoutActivity;
+import com.p5m.me.view.activity.Main.PackageLimitsActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.custom.PackageExtensionAlertDialog;
@@ -58,34 +62,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MemberShip extends BaseActivity implements AdapterCallbacks, NetworkCommunicator.RequestListener,
-        SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, CustomAlertDialog.OnAlertButtonAction {
 
-    public static void openActivity(Context context, int navigationFrom) {
-        context.startActivity(new Intent(context, MemberShip.class)
-                .putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom));
-    }
-
-    public static void openActivity(Context context, int navigationFrom, ClassModel classModel) {
-        Intent intent = new Intent(context, MemberShip.class)
-                .putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom);
-        intent.putExtra(AppConstants.DataKey.CLASS_OBJECT, classModel);
-        context.startActivity(intent);
-    }
-    public static void openActivity(Context context, int navigationFrom, ClassModel classModel, BookWithFriendData friendData,int numberOfPackagesToBuy) {
-        Intent intent = new Intent(context, MemberShip.class)
-                .putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom);
-        intent.putExtra(AppConstants.DataKey.CLASS_OBJECT, classModel);
-        intent.putExtra(AppConstants.DataKey.BOOK_WITH_FRIEND_DATA,friendData);
-        intent.putExtra(AppConstants.DataKey.NUMBER_OF_PACKAGES_TO_BUY,numberOfPackagesToBuy);
-        context.startActivity(intent);
-    }
-
-    public static Intent createIntent(Context context, int navigationFrom) {
-        return new Intent(context, MemberShip.class)
-                .putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom);
-    }
-
+public class MembershipFragment extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks, NetworkCommunicator.RequestListener,
+        SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, CustomAlertDialog.OnAlertButtonAction  {
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
     @BindView(R.id.recyclerView)
@@ -117,24 +96,71 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     private int mNumberOfPackagesToBuy;
     private static User.WalletDto mWalletCredit;
 
+    public MembershipFragment() {
+        // Required empty public constructor
+    }
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_member_ship);
-
-        ButterKnife.bind(activity);
         GlobalBus.getBus().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        GlobalBus.getBus().unregister(this);
+    }
+
+    public static MembershipFragment newInstance(int navigationFrom) {
+        MembershipFragment fragment = new MembershipFragment();
+        Bundle args = new Bundle();
+        args.putInt(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom);
+        fragment.setArguments(args);
+        return fragment;
+    }
+    public static MembershipFragment newInstance(int navigationFrom, ClassModel classModel) {
+        MembershipFragment fragment = new MembershipFragment();
+        Bundle args = new Bundle();
+        args.putInt(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom);
+        args.putSerializable(AppConstants.DataKey.CLASS_OBJECT, classModel);
+        fragment.setArguments(args);
+        return fragment;
+    }
+    public static MembershipFragment newInstance(int navigationFrom, ClassModel classModel, BookWithFriendData friendData,int numberOfPackagesToBuy) {
+        MembershipFragment fragment = new MembershipFragment();
+        Bundle args = new Bundle();
+        args.putInt(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom);
+        args.putInt(AppConstants.DataKey.NUMBER_OF_PACKAGES_TO_BUY,numberOfPackagesToBuy);
+        args.putSerializable(AppConstants.DataKey.CLASS_OBJECT, classModel);
+        args.putSerializable(AppConstants.DataKey.BOOK_WITH_FRIEND_DATA,friendData);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.activity_member_ship, container, false);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ButterKnife.bind(this, getView());
         setToolBar();
 
         handler = new Handler();
 
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setEnabled(true);
-        FirebaseDynamicLinnk.getDynamicLink(this,getIntent());
-        navigatedFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
-        classModel = (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_OBJECT);
-        mFriendsData = (BookWithFriendData) getIntent().getSerializableExtra(AppConstants.DataKey.BOOK_WITH_FRIEND_DATA);
-        mNumberOfPackagesToBuy=getIntent().getIntExtra(AppConstants.DataKey.NUMBER_OF_PACKAGES_TO_BUY,1);
+
+        //FirebaseDynamicLinnk.getDynamicLink(this,getArguments());
+        navigatedFrom = getArguments().getInt(AppConstants.DataKey.NAVIGATED_FROM_INT, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
+        classModel = (ClassModel) getArguments().getSerializable(AppConstants.DataKey.CLASS_OBJECT);
+        mFriendsData = (BookWithFriendData) getArguments().getSerializable(AppConstants.DataKey.BOOK_WITH_FRIEND_DATA);
+        mNumberOfPackagesToBuy=getArguments().getInt(AppConstants.DataKey.NUMBER_OF_PACKAGES_TO_BUY,1);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setHasFixedSize(false);
 
@@ -152,21 +178,9 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
 
         MixPanel.trackMembershipVisit(navigatedFrom);
-        onTrackingNotification();
+      //  onTrackingNotification();
         FirebaseAnalysic.trackMembershipVisit(navigatedFrom);
 
-    }
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        GlobalBus.getBus().unregister(this);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -184,7 +198,6 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
     public void packagePurchasedForClass(Events.PackagePurchasedForClass data) {
         refreshFromEvent();
         hasPurchased = true;
-        finish();
     }
 
     private void refreshFromEvent() {
@@ -220,12 +233,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
         View v = LayoutInflater.from(context).inflate(R.layout.view_tool_normal, null);
 
-        v.findViewById(R.id.imageViewBack).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        v.findViewById(R.id.imageViewBack).setVisibility(View.GONE);
         mTextViewWalletAmount= v.findViewById(R.id.textViewWalletAmount);
         mLayoutUserWallet= v.findViewById(R.id.layoutUserWallet);
         mLayoutUserWallet.setOnClickListener(this);
@@ -286,7 +294,9 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                 navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN ||
                 navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS||
                 navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_DEEPLINK_ACTIVITY||
-                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MEMBERSHIP) {
+                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MEMBERSHIP ||
+                navigatedFrom == -1
+        ) {
 
             if (userPackageInfo.havePackages) {
 
@@ -349,7 +359,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                     if(mFriendsData!=null && aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)){
                         CheckoutActivity.openActivity(context, aPackage, classModel,2,mFriendsData,aPackage.getNoOfClass());
                         return;
-                        }
+                    }
                     if(mFriendsData!=null && aPackage.getGymVisitLimit()==1){
                         DialogUtils.showBasicMessage(context,"",
                                 getString(R.string.this_package_has)+" "+aPackage.getGymVisitLimit()+getString(R.string.limit_for_this_gym)
@@ -372,7 +382,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
                         navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN ||
                         navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS||
                         navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_DEEPLINK_ACTIVITY
-                        ) {
+                ) {
                     CheckoutActivity.openActivity(context, aPackage);
 
                     MixPanel.trackPackagePreferred(aPackage.getName());
@@ -521,18 +531,18 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
         networkCommunicator.getMyUser(this, false);
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-        if (!hasPurchased && hasVisitedGymLimits) {
-            MixPanel.trackSequentialUpdate(AppConstants.Tracker.VIEW_LIMIT_NO_PURCHASE);
-        }
-
-        if (!hasVisitedGymLimits && !hasClickedCheckout) {
-            MixPanel.trackSequentialUpdate(AppConstants.Tracker.NO_ACTION);
-        }
-    }
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//
+//        if (!hasPurchased && hasVisitedGymLimits) {
+//            MixPanel.trackSequentialUpdate(AppConstants.Tracker.VIEW_LIMIT_NO_PURCHASE);
+//        }
+//
+//        if (!hasVisitedGymLimits && !hasClickedCheckout) {
+//            MixPanel.trackSequentialUpdate(AppConstants.Tracker.NO_ACTION);
+//        }
+//    }
 
     @Override
     public void onClick(View view) {
@@ -562,6 +572,11 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
 
     @Override
     public void onCancelClick(int requestCode, Object data) {
+
+    }
+
+    @Override
+    public void onTabSelection(int position) {
 
     }
 }

@@ -529,4 +529,10 @@ Would you like to view your balance? </string>
         <item>@string/gym</item>
     </string-array>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="classess_remaining" translatable="false">You have %d/%d classes remaining</string>
+    <string name="so_far_you_visited" translatable="false">So far you visited</string>
+    <string name="drop_in_text">You have an active drop in for %s, expire in %d days</string>
+
 </resources>

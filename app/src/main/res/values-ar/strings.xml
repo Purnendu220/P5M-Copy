@@ -893,6 +893,7 @@
     <string name="list">قائمة</string>
     <string name="gym_branch">Gym - Branch</string>
     <string name="message_us">تحدث معنا</string>
+    <string name="drop_in_text">You have an active drop in for %s, expire in %d days</string>
 
 
 </resources>

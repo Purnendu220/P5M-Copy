@@ -153,7 +153,8 @@ public class NotificationActivity extends BaseActivity implements SwipeRefreshLa
 
                         case "OnClassRefund":
                             //Membership..
-                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN);
+                           // MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN);
+                            HomeActivity.show(context,AppConstants.Tab.TAB_MY_MEMBERSHIP,AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN);
                             break;
 
                         case "OnSessionDeleteByGYM":

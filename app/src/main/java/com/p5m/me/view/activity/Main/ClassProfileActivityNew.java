@@ -793,7 +793,8 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
                         } else {
 
                             Package aPackage = packages.get(0);
-                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
+                            //MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
+                            HomeActivity.show(context,AppConstants.Tab.TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
                         }
 
                     } else {
@@ -809,7 +810,8 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
                             CheckoutActivity.openActivity(context, aPackage, classModel, 1, aPackage.getNoOfClass());
                             return;
                         } else {
-                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+                           // MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+                              HomeActivity.show(context,AppConstants.Tab.TAB_MY_MEMBERSHIP,AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
 
                         }
                     }
