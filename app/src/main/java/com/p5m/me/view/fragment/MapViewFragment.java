@@ -117,7 +117,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     private LatLng position = null;
     private int pastVisiblesItems;
     private boolean isMarkerClick = false;
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 100;
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
     private boolean isLocationPermissionGranted = false;
 
@@ -160,21 +160,6 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     }
 
     private void checkLocation() {
-       /* if (ActivityCompat.checkSelfPermission(getContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(getContext(),
-                        android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                            android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_LOCATION);
-//            ToastUtils.show(context, context.getString(R.string.permission_message_location));
-        } else {
-            isLocationPermissionGranted = true;
-            getLocation();
-            Log.e("DB", "PERMISSION GRANTED");
-        }*/
-
         if (ContextCompat.checkSelfPermission(getContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getContext(),
@@ -607,16 +592,18 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
                 if (l == null) {
                     continue;
                 }
-                if (loc == null || l.getAccuracy() < loc.getAccuracy()) {
+                if ((l!=null)&&(loc == null || l.getAccuracy() < loc.getAccuracy())) {
                     loc = l;
                 }
             }
 
 //            Location loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if (loc != null) {
+
+            if (loc != null&&loc.getLatitude()!=0&&loc.getLongitude()!=0) {
                 lat = loc.getLatitude();
                 lang = loc.getLongitude();
                 position = new LatLng(lat, lang);
+               return;
             }
 
         } catch (SecurityException e) {
