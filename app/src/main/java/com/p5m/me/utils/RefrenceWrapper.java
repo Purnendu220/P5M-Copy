@@ -2,6 +2,7 @@ package com.p5m.me.utils;
 
 import android.content.Context;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.custom.CustomRateAlertDialog;
@@ -17,6 +18,7 @@ public class RefrenceWrapper {
     }
     private int myProfileTabPosition= ProfileHeaderTabViewHolder.TAB_1;
     private String deviceId;
+    private  LatLng position = null;
 
 
     public static RefrenceWrapper getRefrenceWrapper(Context context) {
@@ -65,4 +67,15 @@ public class RefrenceWrapper {
     public void setAppContext(Context appContext) {
         this.appContext = appContext;
     }
+
+    public void setLatLng(LatLng position){
+        if(position!=null){
+            this.position=position;
+        }
+    }
+    public LatLng getLatLng(){
+        return position;
+    }
+
+
 }
