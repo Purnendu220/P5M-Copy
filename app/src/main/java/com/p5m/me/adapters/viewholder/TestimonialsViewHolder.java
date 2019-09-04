@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
-import com.p5m.me.data.Nationality;
 import com.p5m.me.data.Testimonials;
 import com.p5m.me.utils.ImageUtils;
 
