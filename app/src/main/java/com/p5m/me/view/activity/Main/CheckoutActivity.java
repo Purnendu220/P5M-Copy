@@ -16,14 +16,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.p5m.me.R;
+import com.p5m.me.adapters.AdapterCallbacks;
+import com.p5m.me.adapters.TestimonialsAdapter;
 import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.PromoCode;
+import com.p5m.me.data.Testimonials;
 import com.p5m.me.data.ValidityPackageList;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
@@ -62,12 +69,14 @@ import static com.p5m.me.fxn.utility.Constants.CheckoutFor.SPECIAL_CLASS;
 import static com.p5m.me.utils.LanguageUtils.numberConverter;
 
 
-public class CheckoutActivity extends BaseActivity implements View.OnClickListener, NetworkCommunicator.RequestListener, CustomAlertDialog.OnAlertButtonAction {
+public class CheckoutActivity extends BaseActivity implements View.OnClickListener, NetworkCommunicator.RequestListener, CustomAlertDialog.OnAlertButtonAction, AdapterCallbacks {
 
     private static int mNumberOfClasses = 1;
     private Handler handler;
     private Runnable nextScreenRunnable;
     private String refId;
+    private TestimonialsAdapter testimonialsAdapter;
+    private List<Testimonials> testimonials;
 
     /*
             if user is purchasing a package
@@ -267,6 +276,8 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     @BindView(R.id.textViewWalletAmount)
     TextView mTextViewWalletAmount;
 
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
 
     private PromoCode promoCode;
     private MaterialDialog materialDialog;
@@ -293,6 +304,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         MixPanel.trackCheckoutVisit(aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName());
         FirebaseAnalysic.trackCheckoutVisit(aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName());
         onTrackingNotification();
+        setTestimonialAdapter();
 
     }
 
@@ -568,8 +580,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                             layoutPromoCode.setVisibility(View.VISIBLE);
                             double discountedPrice = promoCode.getPrice() - promoCode.getPriceAfterDiscount();
                             textViewPromoCodePrice.setVisibility(View.VISIBLE);
-//                            ToastUtils.show(context," "+String.format("%.2f", discountedPrice));
-                            textViewPromoCodePrice.setText("- " + (LanguageUtils.promoConverter(discountedPrice, 2)) + " " + context.getString(R.string.currency));
+                            textViewPromoCodePrice.setText("- " + (LanguageUtils.numberConverter(discountedPrice, 2)) + " " + context.getString(R.string.currency));
                             buttonPromoCode.setText(context.getString(R.string.remove_promo_code));
                         } else {
                             layoutPromoCode.setVisibility(View.GONE);
@@ -1069,6 +1080,45 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onCancelClick(int requestCode, Object data) {
+
+    }
+
+
+    private void setTestimonialAdapter(){
+        try {
+            testimonials = new Gson().fromJson(Helper.getTestimonialsFileFromAsset(context), new TypeToken<List<Testimonials>>(){}.getType());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (testimonials == null) {
+           recyclerView.setVisibility(View.GONE);
+            return;
+        }
+        recyclerView.setVisibility(View.VISIBLE);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity,RecyclerView.HORIZONTAL,false));
+        recyclerView.setHasFixedSize(false);
+
+        testimonialsAdapter = new TestimonialsAdapter(context, this);
+        recyclerView.setAdapter(testimonialsAdapter);
+
+        testimonialsAdapter.addAll(testimonials);
+        testimonialsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
+
+    }
+
+    @Override
+    public void onAdapterItemLongClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
+
+    }
+
+    @Override
+    public void onShowLastItem() {
 
     }
 }
