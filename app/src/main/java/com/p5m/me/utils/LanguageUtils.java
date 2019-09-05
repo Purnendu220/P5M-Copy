@@ -47,7 +47,7 @@ public class LanguageUtils {
     public static String numberConverter(double value)
     {
         NumberFormat format = DecimalFormat.getInstance();
-        format.setRoundingMode(RoundingMode.FLOOR);
+        format.setRoundingMode(RoundingMode.CEILING);
         format.setMinimumFractionDigits(0);
         format.setMaximumFractionDigits(1);
         return format.format(value);
@@ -56,10 +56,11 @@ public class LanguageUtils {
     public static String numberConverter(double value,int decimalDigits)
     {
         NumberFormat format = DecimalFormat.getInstance();
-        format.setRoundingMode(RoundingMode.FLOOR);
+        format.setRoundingMode(RoundingMode.CEILING);
         format.setMinimumFractionDigits(decimalDigits);
         format.setMaximumFractionDigits(decimalDigits);
-        return format.format(value);
+        DecimalFormat df = new DecimalFormat("###.#");
+        return df.format(value);
 
     }
     public static String promoConverter(double value,int decimalDigits)
@@ -96,6 +97,17 @@ public class LanguageUtils {
         else{
             textViewId.setText(viewString+" ");
             textViewId.append(Html.fromHtml("<b>"+numberConverter(numberOfViews)+"</b> "));
+        }
+    }
+
+    public static void setTextNormal(TextView textViewId, int numberOfViews, String viewString) {
+        if(Constants.LANGUAGE==Locale.ENGLISH){
+            textViewId.setText(Html.fromHtml(""+numberConverter(numberOfViews)+" "));
+            textViewId.append(viewString);
+        }
+        else{
+            textViewId.setText(viewString+" ");
+            textViewId.append(Html.fromHtml(""+numberConverter(numberOfViews)+" "));
         }
     }
 

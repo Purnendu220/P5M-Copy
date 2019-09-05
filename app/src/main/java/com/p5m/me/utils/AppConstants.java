@@ -218,6 +218,8 @@ public class AppConstants {
 
         public static final String USER = "api/v1/user/find";
         public static final String CLASS_DETAILS = "api/v1/class";
+        public static final String USER_PACKAGE_DETAIL = "api/v1/user/packageDetail";
+
 
         public static final String CLASS_LIST = "api/v1/class/getClassList";
         public static final String BRANCH_LIST = "api/v1/gym/getBranches";

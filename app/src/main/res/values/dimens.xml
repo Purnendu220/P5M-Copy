@@ -128,7 +128,10 @@
     <dimen name="dp_80">80dp</dimen>
     <dimen name="dp_160">160dp</dimen>
 
-    <dimen name="md_bottom_sheet_separator_top_margin">7dp</dimen>
+    <dimen name="membership_img_width" >164dp</dimen>
+
+    <dimen name="membership_img_height">158dp</dimen>
+
 
 
 </resources>

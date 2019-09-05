@@ -73,39 +73,50 @@
     android:orientation="horizontal"
     android:background="@color/white"
     >
-
-    <TextView
-        android:id="@+id/textViewBook"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/bottom_text_button_height"
-        android:background="@drawable/theme_bottom_text_button_book"
-        android:clickable="true"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center"
-        android:letterSpacing="@dimen/button_letter_spacing"
-        android:text="@string/reserve_class"
-        android:textAllCaps="true"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_large"
-        android:layout_weight="1"
-        />
     <TextView
         android:id="@+id/textViewBookWithFriend"
         android:layout_width="0dp"
-        android:layout_height="@dimen/bottom_text_button_height"
-        android:background="@drawable/theme_bottom_text_button_book"
+        android:layout_height="wrap_content"
+        android:background="@drawable/theme_rounded_corner_button"
         android:clickable="true"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:letterSpacing="@dimen/button_letter_spacing"
         android:text="@string/reserve_class_with_friend"
         android:textAllCaps="true"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_large"
-        android:layout_weight="1"
-        android:layout_marginLeft="@dimen/margin_5"
+        android:textColor="@color/theme_book"
+        android:textSize="@dimen/text_small"
+        android:layout_marginTop="@dimen/margin_10"
+        android:layout_marginBottom="@dimen/margin_10"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:paddingTop="@dimen/margin_10"
+        android:paddingBottom="@dimen/margin_10"
+        android:layout_weight=".8"
         android:visibility="visible"
+
         />
+    <TextView
+        android:id="@+id/textViewBook"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/theme_rounded_corner_button_filled"
+        android:clickable="true"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:letterSpacing="@dimen/button_letter_spacing"
+        android:text="@string/reserve_class"
+        android:paddingTop="@dimen/margin_10"
+        android:paddingBottom="@dimen/margin_10"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_small"
+        android:layout_weight="1.2"
+        android:layout_marginTop="@dimen/margin_10"
+        android:layout_marginBottom="@dimen/margin_10"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:layout_marginRight="@dimen/margin_10"
+        />
+
 </LinearLayout>
 
     </LinearLayout>

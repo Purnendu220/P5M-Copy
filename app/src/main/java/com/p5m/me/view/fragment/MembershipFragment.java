@@ -9,8 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
@@ -45,9 +47,12 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
+import com.p5m.me.utils.DividerItemDecoration;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.Main.CheckoutActivity;
+import com.p5m.me.view.activity.Main.ClassProfileActivity;
+import com.p5m.me.view.activity.Main.MembershipInfoActivity;
 import com.p5m.me.view.activity.Main.PackageLimitsActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
@@ -73,6 +78,13 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
     public AppBarLayout appBarLayout;
     @BindView(R.id.swipeRefreshLayout)
     public SwipeRefreshLayout swipeRefreshLayout;
+
+    @BindView(R.id.textGymVisitLimits)
+    TextView textGymVisitLimits;
+
+    @BindView(R.id.constraintLayout)
+    ConstraintLayout constraintLayout;
+
 
 
 
@@ -154,15 +166,16 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         handler = new Handler();
 
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.setEnabled(true);
-
+        textGymVisitLimits.setOnClickListener(this);
+        constraintLayout.setOnClickListener(this);
         //FirebaseDynamicLinnk.getDynamicLink(this,getArguments());
         navigatedFrom = getArguments().getInt(AppConstants.DataKey.NAVIGATED_FROM_INT, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
         classModel = (ClassModel) getArguments().getSerializable(AppConstants.DataKey.CLASS_OBJECT);
         mFriendsData = (BookWithFriendData) getArguments().getSerializable(AppConstants.DataKey.BOOK_WITH_FRIEND_DATA);
         mNumberOfPackagesToBuy=getArguments().getInt(AppConstants.DataKey.NUMBER_OF_PACKAGES_TO_BUY,1);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        recyclerView.setHasFixedSize(false);
+       // recyclerView.setHasFixedSize(false);
+
 
         memberShipAdapter = new MemberShipAdapter(context, navigatedFrom, false, this);
         recyclerView.setAdapter(memberShipAdapter);
@@ -200,6 +213,18 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         hasPurchased = true;
     }
 
+    public  void refreshFragment(int navigatedFrom,ClassModel classModel,BookWithFriendData mFriendsData,int mNumberOfPackagesToBuy){
+        if(!swipeRefreshLayout.isRefreshing()){
+            if(this.navigatedFrom!=navigatedFrom||this.classModel !=classModel||this.mFriendsData !=mFriendsData||this.mNumberOfPackagesToBuy!=mNumberOfPackagesToBuy){
+                this.navigatedFrom = navigatedFrom;
+            this.classModel =classModel;
+            this.mFriendsData =mFriendsData ;
+            this.mNumberOfPackagesToBuy=mNumberOfPackagesToBuy;
+            refreshFromEvent();
+        }
+        }
+    }
+
     private void refreshFromEvent() {
         if (runnable != null) {
             handler.removeCallbacks(runnable);
@@ -216,7 +241,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
             }
         }, delay);
 
-//        onRefresh();
+        //onRefresh();
     }
 
     private void setToolBar() {
@@ -336,24 +361,8 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
 
         switch (view.getId()) {
-//            case R.id.textViewViewLimit: {
-//
-//                String name = "";
-//                if (model instanceof Package) {
-//                    Package aPackage = (Package) model;
-//                    name = aPackage.getName();
-//
-//                } else if (model instanceof UserPackage) {
-//                    UserPackage aPackage = (UserPackage) model;
-//                    name = aPackage.getPackageName();
-//                }
-//                MixPanel.trackGymVisitLimitView(name);
-//                PackageLimitsActivity.openActivity(context, name);
-//                hasVisitedGymLimits = true;
-//            }
-//            break;
-            case R.id.button: {
 
+            case R.id.layoutMainOfferedPackage: {
                 final Package aPackage = (Package) model;
                 if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS) {
                     if(mFriendsData!=null && aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)){
@@ -381,7 +390,8 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                         navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION ||
                         navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN ||
                         navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS||
-                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_DEEPLINK_ACTIVITY
+                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_DEEPLINK_ACTIVITY||
+                        navigatedFrom == -1
                 ) {
                     CheckoutActivity.openActivity(context, aPackage);
 
@@ -390,24 +400,6 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                 }
             }
             break;
-//            case R.id.imageViewInfo: {
-//                if (model instanceof Package) {
-//                    Package aPackage = (Package) model;
-//                    if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
-//                        DialogUtils.showBasicMessage(context, aPackage.getName().toUpperCase(), context.getString(R.string.ok), R.string.membership_package_limit_info);
-//                    } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
-//                        DialogUtils.showBasicMessage(context, aPackage.getName().toUpperCase(), context.getString(R.string.ok), R.string.membership_drop_in_info);
-//                    }
-//                } else if (model instanceof UserPackage) {
-//                    UserPackage aPackage = (UserPackage) model;
-//                    if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
-//                        DialogUtils.showBasicMessage(context, aPackage.getPackageName().toUpperCase(), context.getString(R.string.ok), R.string.membership_package_limit_info);
-//                    } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
-//                        DialogUtils.showBasicMessage(context, aPackage.getPackageName().toUpperCase(), context.getString(R.string.ok), R.string.membership_drop_in_info);
-//                    }
-//                }
-//            }
-//            break;
 
             case R.id.textViewExtendPackage:{
                 if(model instanceof UserPackage){
@@ -442,7 +434,6 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
             case NetworkCommunicator.RequestCode.PACKAGES_FOR_USER:
 
                 swipeRefreshLayout.setRefreshing(false);
-                swipeRefreshLayout.setEnabled(true);
 
                 List<Package> packagesTemp = ((ResponseModel<List<Package>>) response).data;
                 if (packagesTemp != null && !packagesTemp.isEmpty()) {
@@ -511,7 +502,6 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
     public void onApiFailure(String errorMessage, int requestCode) {
 
         swipeRefreshLayout.setRefreshing(false);
-        swipeRefreshLayout.setEnabled(true);
 
 //        switch (requestCode) {
 //            case NetworkCommunicator.RequestCode.BUY_PACKAGE:
@@ -550,7 +540,14 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
             case R.id.layoutUserWallet:
                 showWalletAlert();
                 break;
+            case R.id.textGymVisitLimits:
+                PackageLimitsActivity.openActivity(context, "");
 
+                break;
+            case R.id.constraintLayout:
+               MembershipInfoActivity.openActivity(context);
+
+                break;
         }
 
     }

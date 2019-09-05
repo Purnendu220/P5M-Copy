@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/margin_10"
+      >
+    <TextView
+        android:id="@+id/textGymNames"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Daratma"
+        android:textSize="@dimen/text_large"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/black"
+
+        />
+
+      <TextView
+          android:id="@+id/textGymVisits"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/visit_times"
+          android:textSize="@dimen/text_large"
+          android:layout_marginRight="@dimen/margin_10"
+          android:layout_alignParentEnd="true"
+          android:fontFamily="sans-serif"
+          android:textColor="@color/black"
+
+
+          />
+
+  </RelativeLayout>
+
+</LinearLayout>

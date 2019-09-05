@@ -395,6 +395,8 @@
     <string name="congratulation_class">Congratulations! Class</string>
     <string name="congratulation_package">Congratulations! Package</string>
     <string name="classs">Class</string>
+    <string name="classs_one">class</string>
+
     <string name="payment_pending">Payment pending</string>
     <string name="payment_sucessful">Payment successful</string>
     <string name="payment_unsucessful">Payment unsuccessful</string>
@@ -534,5 +536,37 @@ Would you like to view your balance? </string>
     <string name="classess_remaining" translatable="false">You have %d/%d classes remaining</string>
     <string name="so_far_you_visited" translatable="false">So far you visited</string>
     <string name="drop_in_text">You have an active drop in for %s, expire in %d days</string>
+    <string name="visit_times">%s times</string>
+    <string name="why_p5m">Why a P5M membership?\nBecause get more and pay less</string>
+    <string name="variety_of_activity_details">With the P5M Membership you can visit a swimming class today, crossfit tomorrow and yoga on the weekend.</string>
+    <string name="variety_of_activities">Variety of activities</string>
+    <string name="visit_gym_feature">Visit 40 gyms with 1 membership</string>
+    <string name="with_the_p5m_membership_you_can">With the P5M membership you can:</string>
+    <string name="on_p5m_you">On P5M you can visit multiple gyms and do multiple activities using 1 membership ONLY!</string>
+    <string name="visit_gym_detail">Go to a different gym for every workout if you want!</string>
+    <string name="save_percent">Save 30%</string>
+    <string name="save_detail">If you generally purchase a single entry pass to a gym, you would save 30% by getting a package. Pay 30KWD for 5 classes instead of 50 KWD</string>
+    <string name="instant_booking_detail">Book and pay for your workout at night, in the morning or on route to class. Don\'t wait on the phone or worry about your booking.\n\nWith the P5M Membership you can: \nVariety of activities again</string>
+    <string name="instant_booking"><![CDATA[Instant Booking & Payment Online]]></string>
+    <string name="how_its_work">How it works</string>
+    <string name="explore">Explore</string>
+    <string name="exploreDetail">Go to a different gym for every workout if you want!</string>
+    <string name="pick_a_plan">Pick a plan</string>
+    <string name="that_work_for_you">That works for you</string>
+    <string name="get_discount">Get a 15%</string>
+    <string name="go_to_different_gym">Go to a different gym for every workout if you want!</string>
+    <string name="workout_any_gym">Workout any gym \nyou want, anytime \nyou want, while \nsaving money</string>
+    <string name="frequently_asked_question">Frequently asked questions</string>
+    <string name="more_variety">More variety</string>
+    <string name="third_feature">Third Feature</string>
+    <string name="pay_for_bundle">Pay for the bundle of classes...etc</string>
+    <string name="bundle_of_classes">Bundle of classes</string>
+    <string name="flexible_timing">Flexible timings</string>
+    <string name="membership_info">Membership Info</string>
+    <string name="select_an_option">Select an option</string>
+    <string name="drop_in_package_desc">This is drop in package description</string>
+    <string name="buy_membership_description">This is P5M package description</string>
+    <string name="one_class_entry">%d class entry (%s KWD)</string>
+    <string name="book_with_p5m_membership">Book with P5M Membership</string>
 
 </resources>

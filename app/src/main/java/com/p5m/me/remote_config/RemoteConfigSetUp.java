@@ -209,7 +209,7 @@ public class RemoteConfigSetUp {
         if (view instanceof TextView) {
             Drawable wrappedDrawable = DrawableCompat.wrap(view.getBackground());
             if (wrappedDrawable != null) {
-                DrawableCompat.setTint(wrappedDrawable.mutate(), color);
+               // DrawableCompat.setTint(wrappedDrawable.mutate(), color);
                 setBackgroundDrawable(view, wrappedDrawable);
             } else
                 view.setBackgroundColor(color);
@@ -217,14 +217,14 @@ public class RemoteConfigSetUp {
         } else if (view instanceof Button) {
             Drawable wrappedDrawable = DrawableCompat.wrap(view.getBackground());
             if (wrappedDrawable != null) {
-                DrawableCompat.setTint(wrappedDrawable.mutate(), color);
+               // DrawableCompat.setTint(wrappedDrawable.mutate(), color);
                 setBackgroundDrawable(view, wrappedDrawable);
             } else
                 view.setBackgroundColor(color);
         } else if (view instanceof LinearLayout) {
             Drawable wrappedDrawable = DrawableCompat.wrap(view.getBackground());
             if (wrappedDrawable != null) {
-                DrawableCompat.setTint(wrappedDrawable.mutate(), color);
+                //DrawableCompat.setTint(wrappedDrawable.mutate(), color);
                 setBackgroundDrawable(view, wrappedDrawable);
             } else
                 view.setBackgroundColor(color);

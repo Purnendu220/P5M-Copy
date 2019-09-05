@@ -5,17 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/layoutMainOfferedPackage"
+    android:background="@color/theme_bg"
     >
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_separator_size"
+        android:background="@color/white"
+        android:elevation="@dimen/view_separator_elevation"
+        android:orientation="vertical">
   <RelativeLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:orientation="horizontal">
+      android:orientation="horizontal"
+      android:layout_marginTop="@dimen/margin_20"
+
+      >
       <LinearLayout
           android:layout_width="match_parent"
-          android:layout_height="50dp"
+          android:layout_height="wrap_content"
           android:orientation="horizontal"
-          android:layout_marginTop="@dimen/margin_20"
           android:layout_marginLeft="@dimen/margin_20"
           >
      <TextView
@@ -23,31 +32,39 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:text="SUMMER BODY"
-         android:textColor="@color/black"
+         android:textColor="@color/theme_dark_text"
+         android:textStyle="bold"
          android:textSize="@dimen/text_extra_large"
+         android:letterSpacing="@dimen/text_medium_letter_spacing"
+         android:lineSpacingExtra="@dimen/line_spacing_extra_title"
          />
       <TextView
           android:id="@+id/txtIsPackagePopular"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="SUMMER BODY"
-          android:textColor="@color/colorAccent"
+          android:textColor="@color/theme_dark_text"
           android:textSize="@dimen/text_small"
           android:background="@drawable/rouded_corner_text"
           android:layout_marginLeft="@dimen/margin_20"
           android:padding="@dimen/margin_5"
+          android:visibility="gone"
           />
 
       </LinearLayout>
       <TextView
           android:id="@+id/txtPackageOffer"
-          android:layout_width="70dp"
+          android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="15% off"
           android:textColor="@color/white"
           android:textSize="@dimen/text_small"
           android:background="@drawable/rounded_corner_text_filled"
-          android:padding="@dimen/margin_5"
+          android:paddingLeft="@dimen/margin_30"
+          android:paddingTop="@dimen/margin_5"
+          android:paddingBottom="@dimen/margin_5"
+          android:paddingRight="@dimen/margin_20"
+
           android:textStyle="bold"
           android:layout_alignParentEnd="true"
           android:layout_centerVertical="true"
@@ -58,7 +75,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/margin_10"
+        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -71,27 +90,32 @@
                 android:layout_height="wrap_content"
                 android:text="5 classes at any gym"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_large"
+                android:textSize="@dimen/text_medium"
                 android:layout_gravity="center"
+                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                 />
 
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="70dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_20"
             >
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="30 KWD"
                 android:textColor="@color/grey"
-                android:textSize="@dimen/text_15sp"
+                android:textSize="@dimen/text_large"
                 android:id="@+id/txtPriceBeforeOffer"
+                android:textStyle="bold"
+
 
                 />
             <TextView
@@ -99,8 +123,9 @@
                 android:layout_height="wrap_content"
                 android:text="30 KWD"
                 android:textColor="@color/colorAccent"
-                android:textSize="@dimen/text_large"
+                android:textSize="@dimen/text_extra_large"
                 android:id="@+id/txtPriceAfterOffer"
+                android:textStyle="bold"
 
                 />
 
@@ -113,8 +138,47 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/valid_for"
-        android:textSize="@dimen/text_extra_large"
+        android:textSize="@dimen/text_large"
         android:textColor="@color/grey"
         android:layout_marginLeft="@dimen/margin_20"        />
+
+    <LinearLayout
+        android:id="@+id/layoutTimeClassPromo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_10"
+        android:layout_marginEnd="@dimen/margin_10"
+        android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/margin_20"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imageViewSpecialOffer"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="@dimen/margin_3"
+            android:paddingTop="@dimen/margin_3"
+            android:paddingBottom="@dimen/margin_3"
+            android:src="@drawable/discount" />
+
+
+        <TextView
+            android:id="@+id/textViewSpecialOffer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif"
+            android:gravity="left"
+            android:letterSpacing="@dimen/text_medium_letter_spacing"
+            android:textColor="@color/theme_dark_text"
+            android:textSize="@dimen/text_medium"
+            android:visibility="visible"
+            android:text=""
+            />
+
+
+    </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

@@ -41,7 +41,6 @@ import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.RefrenceWrapper;
 import com.p5m.me.view.activity.Main.EditProfileActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
-import com.p5m.me.view.activity.Main.MemberShip;
 import com.p5m.me.view.activity.Main.SettingActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.activity.custom.MyRecyclerView;

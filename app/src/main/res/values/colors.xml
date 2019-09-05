@@ -30,6 +30,7 @@
     <color name="theme_error_text">#d50000</color>
     <color name="theme_accent_text">#3d85ea</color>
     <color name="theme_search">#fafafa</color>
+    <color name="text_grey">#595F6F</color>
 
     <color name="float_transparent">#00000000</color>
 
@@ -71,6 +72,13 @@
     <drawable name="no_map">#c7cfd4</drawable>
     <drawable name="grey_drawable">#999999</drawable>
     <color name="TransparentGrey">#7F000000</color>
+    <color name="text_dark_gray">#4C5053</color>
+
+
+
+
+    Type a message here
+
 
 
 </resources>

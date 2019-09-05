@@ -5,14 +5,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/theme_bg">
+    android:background="@color/theme_bg"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        >
+        <include layout="@layout/layout_user_pakages"
+            android:visibility="gone"></include>
+        <include layout="@layout/layout_user_package_dropin"
+            android:visibility="gone"></include>
+        <include layout="@layout/layout_offered_pakages"
+            android:visibility="visible"></include>
 
-    <include layout="@layout/layout_user_pakages"
-        android:visibility="gone"></include>
-    <include layout="@layout/layout_user_package_dropin"
-        android:visibility="gone"></include>
-    <include layout="@layout/layout_offered_pakages"
-        android:visibility="visible"></include>
+    </LinearLayout>
+
+
 
 
 
