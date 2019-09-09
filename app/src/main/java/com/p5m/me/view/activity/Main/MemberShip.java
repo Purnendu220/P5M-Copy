@@ -28,6 +28,7 @@ import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.MemberShipAdapter;
 import com.p5m.me.analytics.FirebaseAnalysic;
+import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.UserPackageInfo;
@@ -154,6 +155,7 @@ public class MemberShip extends BaseActivity implements AdapterCallbacks, Networ
         MixPanel.trackMembershipVisit(navigatedFrom);
         onTrackingNotification();
         FirebaseAnalysic.trackMembershipVisit(navigatedFrom);
+        IntercomEvents.trackMembershipVisit(navigatedFrom);
 
     }
 

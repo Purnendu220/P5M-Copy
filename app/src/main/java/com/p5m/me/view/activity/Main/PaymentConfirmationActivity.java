@@ -32,7 +32,9 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.material.appbar.AppBarLayout;
 import com.p5m.me.R;
+import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.data.PaymentConfirmationResponse;
+import com.p5m.me.data.PromoCode;
 import com.p5m.me.data.ValidityPackageList;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
@@ -278,9 +280,10 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
             PaymentStatus paymentStatus = PaymentStatus.valueOf(paymentResponse.getStatus());
             switch (paymentStatus) {
                 case SUCCESS:
-                    if (Constants.LANGUAGE == Locale.ENGLISH)
+                    if (Constants.LANGUAGE == Locale.ENGLISH) {
+                        IntercomEvents.trackExtendedPackage(paymentResponse.getPackageName(),selectedPacakageFromList.getDuration(),userPackage.getBalanceClass());
                         textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.congratulation_package_extended_en), "<b>" + getPurchasedPackageName() + "</b>", LanguageUtils.numberConverter(selectedPacakageFromList.getDuration()))));
-                    else
+                    }else
                         textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.congratulation_package_extended_ar), "<b>" + getPurchasedPackageName() + "</b>", LanguageUtils.numberConverter(selectedPacakageFromList.getDuration()))));
 
                     break;
@@ -456,7 +459,6 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 paymentResponse = ((ResponseModel<PaymentConfirmationResponse>) response).data;
                 setAnimation();
                 setData(PaymentStatus.valueOf(paymentResponse.getStatus()));
-
 //                paymentResponse.setStatus(PaymentStatus.FAILURE.name());
 //                setData(PaymentStatus.FAILURE);
                 buttonHandler();

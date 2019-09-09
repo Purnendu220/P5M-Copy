@@ -20,12 +20,14 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
 import com.p5m.me.analytics.FirebaseAnalysic;
+import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.PaymentUrl;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
@@ -141,6 +143,14 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
 //            MixPanel.trackJoinClass(AppConstants.Tracker.PURCHASE_PLAN, classModel);
 //        }
         FirebaseAnalysic.trackMembershipPurchase(couponCode, packageName);
+        if (packageName.equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN) &&
+                classModel.getTitle() != null) {
+            IntercomEvents.purchase_drop_in(classModel.getTitle(),packageName);
+        }
+        else
+        IntercomEvents.purchasedPlan(packageName, couponCode, classModel.getClassDate());
+//
+        IntercomEvents.purchase_drop_in(couponCode, packageName);
         if (classModel != null) {
             MixPanel.trackJoinClass(AppConstants.Tracker.PURCHASE_PLAN, classModel);
             FirebaseAnalysic.trackJoinClass(AppConstants.Tracker.PURCHASE_PLAN, classModel);

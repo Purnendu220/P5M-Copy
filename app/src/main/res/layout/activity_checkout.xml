@@ -684,7 +684,13 @@
                     android:text="@string/apply_promo_code"
                     android:textColor="@color/colorAccent"
                     android:textStyle="bold" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_marginEnd="@dimen/margin_12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
+                </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
         </ScrollView>
 

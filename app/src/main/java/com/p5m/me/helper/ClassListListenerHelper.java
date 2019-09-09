@@ -23,6 +23,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.analytics.FirebaseAnalysic;
+import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.ClassModel;
@@ -513,6 +514,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                             EventBroadcastHelper.sendClassJoin(context, model, AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS);
                             MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
                             FirebaseAnalysic.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
+                            IntercomEvents.trackUnJoinClass(model);
+//
                             materialDialog.dismiss();
                             openAlertForRefund(model);
                         } catch (Exception e) {
@@ -631,6 +634,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
                             MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
                             FirebaseAnalysic.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
+                            IntercomEvents.trackUnJoinClass(model);
+
                             materialDialog.dismiss();
                             openAlertForRefund(model);
 
