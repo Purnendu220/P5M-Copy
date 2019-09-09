@@ -174,7 +174,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         mFriendsData = (BookWithFriendData) getArguments().getSerializable(AppConstants.DataKey.BOOK_WITH_FRIEND_DATA);
         mNumberOfPackagesToBuy=getArguments().getInt(AppConstants.DataKey.NUMBER_OF_PACKAGES_TO_BUY,1);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-       // recyclerView.setHasFixedSize(false);
+        recyclerView.setHasFixedSize(false);
 
 
         memberShipAdapter = new MemberShipAdapter(context, navigatedFrom, false, this);
@@ -222,6 +222,20 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
             this.mNumberOfPackagesToBuy=mNumberOfPackagesToBuy;
             refreshFromEvent();
         }
+        }
+        if(TempStorage.isOpenMembershipInfo()){
+            MembershipInfoActivity.openActivity(context);
+        }
+    }
+    public  void refreshFragmentBackGroung(int navigatedFrom,ClassModel classModel,BookWithFriendData mFriendsData,int mNumberOfPackagesToBuy){
+        if(!swipeRefreshLayout.isRefreshing()){
+            if(this.navigatedFrom!=navigatedFrom||this.classModel !=classModel||this.mFriendsData !=mFriendsData||this.mNumberOfPackagesToBuy!=mNumberOfPackagesToBuy){
+                this.navigatedFrom = navigatedFrom;
+                this.classModel =classModel;
+                this.mFriendsData =mFriendsData ;
+                this.mNumberOfPackagesToBuy=mNumberOfPackagesToBuy;
+                refreshFromEvent();
+            }
         }
     }
 
@@ -353,6 +367,9 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                             context.getString(R.string.membership_general_package_heading_1));
                 }
 
+            }else{
+                constraintLayout.setVisibility(View.GONE);
+                textGymVisitLimits.setVisibility(View.GONE);
             }
         }
     }
@@ -519,6 +536,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         memberShipAdapter.notifyDataSetChanges();
 
         networkCommunicator.getMyUser(this, false);
+
     }
 
 //    @Override

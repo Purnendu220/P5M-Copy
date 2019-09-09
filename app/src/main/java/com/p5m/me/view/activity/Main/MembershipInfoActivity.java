@@ -10,15 +10,17 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.p5m.me.R;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.view.activity.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MembershipInfoActivity extends BaseActivity {
+public class MembershipInfoActivity extends BaseActivity implements View.OnClickListener {
 
     public static void openActivity(Context context) {
         context.startActivity(new Intent(context, MembershipInfoActivity.class));
@@ -28,6 +30,9 @@ public class MembershipInfoActivity extends BaseActivity {
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
 
+    @BindView(R.id.buyClassesLayout)
+    public LinearLayout buyClassesLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +40,10 @@ public class MembershipInfoActivity extends BaseActivity {
         setContentView(R.layout.activity_membership_info);
 
         ButterKnife.bind(activity);
+        buyClassesLayout.setOnClickListener(this);
         setToolBar();
+        TempStorage.setOpenMembershipInfo(false);
+
 
     }
 
@@ -78,5 +86,14 @@ public class MembershipInfoActivity extends BaseActivity {
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT));
         activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.buyClassesLayout:
+                finish();
+                break;
+        }
     }
 }

@@ -140,6 +140,9 @@ public class AppConstants {
         public static final String USER = "pref_user";
         public static final String DEFAULT_SETTING_SERVER = "pref_default_setting_server";
         public static final String AUTH_TOKEN = "pref_auth_token";
+        public static final String OPEN_MEMBERSHIP_INFO = "open_membership_info";
+
+
         public static final String DEVICE_TOKEN = "pref_device_token";
         public static final String NOTIFICATION_COUNT = "pref_notification_count";
         public static final String JOINED_CLASSES = "joined_classes";

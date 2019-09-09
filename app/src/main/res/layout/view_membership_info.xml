@@ -9,7 +9,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="700dp"
+        android:layout_height="wrap_content"
         android:background="@color/white"
         android:elevation="@dimen/margin_10"
         android:paddingTop="@dimen/margin_15"
@@ -605,6 +605,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewBundleOfClass"
             android:layout_marginBottom="@dimen/margin_15"/>
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

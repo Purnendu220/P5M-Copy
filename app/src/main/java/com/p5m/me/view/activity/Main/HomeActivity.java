@@ -654,7 +654,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
               CLASS_OBJECT=null;
               BOOK_WITH_FRIEND_DATA=null;
               NUMBER_OF_PACKAGES_TO_BUY=1;
-              fragment.refreshFragment(NAVIGATED_FROM_INT,CLASS_OBJECT,BOOK_WITH_FRIEND_DATA,NUMBER_OF_PACKAGES_TO_BUY);
+              fragment.refreshFragmentBackGroung(NAVIGATED_FROM_INT,CLASS_OBJECT,BOOK_WITH_FRIEND_DATA,NUMBER_OF_PACKAGES_TO_BUY);
 
           } catch (Exception e) {
               e.printStackTrace();

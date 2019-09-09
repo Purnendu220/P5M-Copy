@@ -84,6 +84,14 @@ public class TempStorage {
         MyPreferences.getInstance().saveAuthToken(authToken);
     }
 
+    public static boolean isOpenMembershipInfo() {
+        return  MyPreferences.getInstance().isOpenMembershipInfo();
+    }
+
+    public static void setOpenMembershipInfo(boolean isOpen) {
+        MyPreferences.getInstance().setOpenMembershipInfo(isOpen);
+    }
+
     public static List<ClassesFilter> getFilters() {
         if (filterList == null) {
             filterList = MyPreferences.getInstance().getFilters();
