@@ -68,6 +68,14 @@ public class MyPreferences {
         PreferencesManager.putString(AppConstants.Pref.AUTH_TOKEN, authToken);
     }
 
+    public void setOpenMembershipInfo(boolean isOpen){
+        PreferencesManager.putBoolean(AppConstants.Pref.OPEN_MEMBERSHIP_INFO, isOpen);
+
+    }
+    public boolean isOpenMembershipInfo(){
+        return PreferencesManager.getBoolean(AppConstants.Pref.OPEN_MEMBERSHIP_INFO, false);
+
+    }
     public boolean isLogin() {
         return PreferencesManager.getBoolean(AppConstants.Pref.LOGIN, false);
     }

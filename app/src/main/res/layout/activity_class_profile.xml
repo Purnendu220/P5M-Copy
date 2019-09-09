@@ -115,6 +115,7 @@
         android:layout_marginBottom="@dimen/margin_10"
         android:layout_marginLeft="@dimen/margin_10"
         android:layout_marginRight="@dimen/margin_10"
+        android:focusable="true"
         />
 
 </LinearLayout>

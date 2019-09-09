@@ -207,7 +207,7 @@ public class Helper {
         } else if (model.isUserJoinStatus()) {
 //            view.setText(context.getString(R.string.booked));
             view.setText(RemoteConfigConst.BOOKED_VALUE);
-//            view.setBackgroundResource(R.drawable.theme_bottom_text_button_booked);
+          //  view.setBackgroundColor(context.getResources().getColor(R.color.theme_booked));
             RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
 
             view.setEnabled(false);
@@ -253,7 +253,7 @@ public class Helper {
 //            view1.setText(context.getString(R.string.reserve_class_with_friend));
 
 //            view1.setBackgroundResource(R.drawable.theme_bottom_text_button_book);
-            RemoteConfigSetUp.setBackgroundColor(view1, RemoteConfigConst.BOOK_WITH_FRIEND_COLOR_VALUE, context.getResources().getColor(R.color.colorAccent));
+           // RemoteConfigSetUp.setBackgroundColor(view1, RemoteConfigConst.BOOK_WITH_FRIEND_COLOR_VALUE, context.getResources().getColor(R.color.colorAccent));
             view1.setText(RemoteConfigConst.BOOK_WITH_FRIEND_VALUE);
             view1.setEnabled(true);
 

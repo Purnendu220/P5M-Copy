@@ -111,12 +111,16 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             list.add(headerSticky1);
         }
 
+        if(!ownedPackages.isEmpty()){
+            list.addAll(ownedPackages);
+
+        }
+
         if (!offeredPackages.isEmpty()) {
             list.addAll(offeredPackages);
         }
 
         list.add(headerSticky2);
-        list.addAll(ownedPackages);
 
         notifyDataSetChanged();
     }

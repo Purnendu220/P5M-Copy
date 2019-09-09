@@ -173,7 +173,6 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder  {
                     if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
                         txtPackageName.setText(model.getName());
                         txtPackageOffredClasses.setText(numberConverter(model.getNoOfClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs_one), model.getNoOfClass()) + " " + context.getString(R.string.at_any_gym));
-
                         setTextValidityPeriod(model);
                         txtPriceAfterOffer.setText(LanguageUtils.numberConverter(model.getCost(),2) + " " + context.getString(R.string.currency).toUpperCase());
 
@@ -260,6 +259,8 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder  {
             layoutTimeClassPromo.setVisibility(View.GONE);
 
         }
+        txtPackageOffer.setVisibility(View.GONE);
+        txtPriceBeforeOffer.setVisibility(View.GONE);
 
     }
 

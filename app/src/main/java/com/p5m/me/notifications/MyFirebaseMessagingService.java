@@ -455,6 +455,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             break;
                         case "OnFinishedPackage":
                             title = "Finished Package";
+                            TempStorage.setOpenMembershipInfo(true);
                             break;
                         case "OnLowBalance":
                             title = "Low Balance";
