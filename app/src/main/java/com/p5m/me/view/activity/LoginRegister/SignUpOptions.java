@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.core.content.ContextCompat;
+
+import android.os.Handler;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -30,6 +32,7 @@ import com.p5m.me.helper.MyClickSpan;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.Main.HomeActivity;
@@ -178,6 +181,27 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
     @OnClick(R.id.buttonLogin)
     public void buttonLogin(View view) {
         RegistrationActivity.open(context);
+        view.setClickable(false);
+
+        try{
+            Handler handler;
+            Runnable nextScreenRunnable;
+            handler = new Handler();
+            nextScreenRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    view.setClickable(true);
+                }
+            };
+            handler.postDelayed(nextScreenRunnable, 500);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            view.setClickable(true);
+
+        }
+
+
     }
 
     @OnClick(R.id.textViewLogin)
