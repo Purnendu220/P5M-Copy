@@ -10,7 +10,7 @@ import com.p5m.me.restapi.NetworkCommunicator;
 public class MyFirebaseInstanceIDService extends FirebaseMessagingService implements NetworkCommunicator.RequestListener {
 
 //    @Override
-//    public void onTokenRefresh() {
+//    public void Notifications Received() {
 //        // Get updated InstanceID token.
 //        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
 //        LogUtils.debug("Notifications onTokenRefresh " + refreshedToken);

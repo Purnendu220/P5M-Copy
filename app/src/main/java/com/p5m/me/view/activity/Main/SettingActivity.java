@@ -108,7 +108,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 SettingNotification.openActivity(context);
                 break;
             case R.id.layoutMembership:
-                MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_SETTING);
+              //  MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_SETTING);
+                HomeActivity.show(context,AppConstants.Tab.TAB_MY_MEMBERSHIP,AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN);
                 break;
             case R.id.layoutTransHistory:
                 TransactionHistoryActivity.openActivity(context);

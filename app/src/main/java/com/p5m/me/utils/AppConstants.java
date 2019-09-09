@@ -37,7 +37,9 @@ public class AppConstants {
         public static final int TAB_TRAINER = 1;
         public static final int TAB_SCHEDULE = 2;
         public static final int TAB_MY_PROFILE = 3;
-        public static final int TAB_MY_PROFILE_FINISHED = 4;
+        public static final int TAB_MY_PROFILE_FINISHED = 5;
+        public static final int TAB_MY_MEMBERSHIP = 4;
+
 
 
         public static final int TAB_MY_SCHEDULE_UPCOMING = 0;
@@ -138,6 +140,9 @@ public class AppConstants {
         public static final String USER = "pref_user";
         public static final String DEFAULT_SETTING_SERVER = "pref_default_setting_server";
         public static final String AUTH_TOKEN = "pref_auth_token";
+        public static final String OPEN_MEMBERSHIP_INFO = "open_membership_info";
+
+
         public static final String DEVICE_TOKEN = "pref_device_token";
         public static final String NOTIFICATION_COUNT = "pref_notification_count";
         public static final String JOINED_CLASSES = "joined_classes";
@@ -219,6 +224,8 @@ public class AppConstants {
 
         public static final String USER = "api/v1/user/find";
         public static final String CLASS_DETAILS = "api/v1/class";
+        public static final String USER_PACKAGE_DETAIL = "api/v1/user/packageDetail";
+
 
         public static final String CLASS_LIST = "api/v1/class/getClassList";
         public static final String BRANCH_LIST = "api/v1/gym/getBranches";

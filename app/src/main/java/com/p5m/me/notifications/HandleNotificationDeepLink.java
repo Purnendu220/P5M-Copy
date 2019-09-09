@@ -9,12 +9,13 @@ import com.p5m.me.view.activity.Main.ClassProfileActivity;
 import com.p5m.me.view.activity.Main.EditProfileActivity;
 import com.p5m.me.view.activity.Main.GymProfileActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
-import com.p5m.me.view.activity.Main.MemberShip;
 import com.p5m.me.view.activity.Main.NotificationActivity;
 import com.p5m.me.view.activity.Main.SettingActivity;
 import com.p5m.me.view.activity.Main.SettingNotification;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
 import com.p5m.me.view.activity.Main.TransactionHistoryActivity;
+
+import static com.p5m.me.utils.AppConstants.Tab.TAB_MY_MEMBERSHIP;
 
 public class HandleNotificationDeepLink {
     public static Intent handleNotificationDeeplinking(Context context, String url) {
@@ -97,7 +98,8 @@ public class HandleNotificationDeepLink {
 
 
             } else if (url.contains( "/settings/membership")) {
-                navigationIntent = MemberShip.createIntent(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
+
+                navigationIntent =  HomeActivity.showMembership(context,TAB_MY_MEMBERSHIP,AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
 
 
             } else if (url.contains( "/settings/transaction") ) {
@@ -116,7 +118,7 @@ public class HandleNotificationDeepLink {
 
             }
             else if (url.contains( "/settings")) {
-                navigationIntent = MemberShip.createIntent(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
+                navigationIntent =  HomeActivity.showMembership(context,TAB_MY_MEMBERSHIP,AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
             }
             else if (url.contains( "/searchresults/") ) {
                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);

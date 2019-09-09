@@ -26,7 +26,6 @@ import com.p5m.me.utils.CalendarHelper;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.Main.ClassProfileActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
-import com.p5m.me.view.activity.Main.MemberShip;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
 
 import org.json.JSONObject;
@@ -34,8 +33,9 @@ import org.json.JSONObject;
 import java.util.Hashtable;
 import java.util.Map;
 
-import io.intercom.android.sdk.Intercom;
 import io.intercom.android.sdk.push.IntercomPushClient;
+
+import static com.p5m.me.utils.AppConstants.Tab.TAB_MY_MEMBERSHIP;
 
 /**
  * Created by Varun John on 4/12/2018.
@@ -443,7 +443,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 //********************MEMBERSHIP********************//
                 case "onPackageExpired":
-                    navigationIntent = MemberShip.createIntent(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
+                    navigationIntent =  HomeActivity.showMembership(context,TAB_MY_MEMBERSHIP,AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
                     break;
                 case "OnFinishedPackage":
                 case "OnLowBalance":
@@ -455,6 +455,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             break;
                         case "OnFinishedPackage":
                             title = "Finished Package";
+                            TempStorage.setOpenMembershipInfo(true);
                             break;
                         case "OnLowBalance":
                             title = "Low Balance";
@@ -464,7 +465,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             break;
                     }
 
-                    navigationIntent = MemberShip.createIntent(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
+                    navigationIntent =  HomeActivity.showMembership(context,TAB_MY_MEMBERSHIP,AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
                     break;
 
                 ////////////////////////////////////////////////////

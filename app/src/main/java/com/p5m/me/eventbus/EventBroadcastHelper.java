@@ -96,6 +96,10 @@ public class EventBroadcastHelper {
         GlobalBus.getBus().post(new Events.UpdatePackage());
     }
 
+    public static void refreshFragment(){
+        GlobalBus.getBus().post(new Events.refreshMembershipFragment());
+
+    }
     public static void updateUpcomingList() {
         GlobalBus.getBus().post(new Events.UpdateUpcomingClasses());
     }

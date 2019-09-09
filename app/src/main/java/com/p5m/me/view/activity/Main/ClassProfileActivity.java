@@ -65,6 +65,7 @@ import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.BookForAFriendPopup;
 import com.p5m.me.view.custom.CustomAlertDialog;
+import com.p5m.me.view.fragment.BottomSheetClassBookingOptions;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -790,7 +791,13 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                         } else {
 
                             Package aPackage = packages.get(0);
-                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
+                           // MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
+                            BottomSheetClassBookingOptions mBottomSheetClassBookingOptions = BottomSheetClassBookingOptions.newInstance(classModel,mBookWithFriendData,aPackage.getNoOfClass(),aPackage);
+                            mBottomSheetClassBookingOptions.show(((ClassProfileActivity) context).getSupportFragmentManager(),                                    "friend_booking");
+
+
+
+                            // HomeActivity.show(context,AppConstants.Tab.TAB_MY_MEMBERSHIP,AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
                         }
 
                     } else {
@@ -802,12 +809,14 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                         }
                         if (packages.size() == 1 || !user.isBuyMembership()) {
                             Package aPackage = packages.get(0);
-                            //////////
                             CheckoutActivity.openActivity(context, aPackage, classModel, 1, aPackage.getNoOfClass());
                             return;
                         } else {
-                            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+                            Package aPackage = packages.get(0);
+                            BottomSheetClassBookingOptions mBottomSheetClassBookingOptions = BottomSheetClassBookingOptions.newInstance(classModel,null,1,aPackage);
+                            mBottomSheetClassBookingOptions.show(((ClassProfileActivity) context).getSupportFragmentManager(),                                    "own booking");
 
+                            // HomeActivity.show(context,AppConstants.Tab.TAB_MY_MEMBERSHIP,AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
                         }
                     }
                 }

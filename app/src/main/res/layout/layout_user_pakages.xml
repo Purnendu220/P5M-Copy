@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/mainLayoutUserPakages"
+    android:background="@color/theme_bg"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_separator_size"
+        android:background="@color/white"
+        android:elevation="@dimen/view_separator_elevation"
+        android:orientation="vertical">
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/margin_20"
+      android:layout_marginBottom="@dimen/margin_20"
+      android:layout_marginLeft="@dimen/margin_20"
+      android:orientation="vertical"
+      >
+<TextView
+    android:id="@+id/packageTitle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="GET SET"
+    android:textSize="@dimen/text_extra_large"
+    android:textColor="@color/theme_dark_text"
+    android:textStyle="bold"
+    android:textAllCaps="true"
+    android:letterSpacing="@dimen/text_medium_letter_spacing"
+    android:lineSpacingExtra="@dimen/line_spacing_extra_title"
+    />
+      <TextView
+          android:id="@+id/packageUsage"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/classess_remaining"
+          android:textSize="@dimen/text_large"
+          android:textColor="@color/theme_dark_text"
+          android:layout_marginTop="@dimen/margin_10"
+          android:letterSpacing="@dimen/text_medium_letter_spacing"
+          android:lineSpacingExtra="@dimen/line_spacing_extra_title"
+          />
+      <TextView
+          android:id="@+id/packageValidForOwn"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/valid_for"
+          android:textSize="@dimen/text_large"
+          android:textColor="@color/grey"
+          android:layout_marginTop="@dimen/margin_20"
+          android:letterSpacing="@dimen/text_medium_letter_spacing"
+          android:lineSpacingExtra="@dimen/line_spacing_extra_title"
+          />
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/layoutSoFarYouVisited"
+    android:orientation="vertical"
+    android:visibility="gone"
+    >
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/margin_10"
+        android:background="@color/grey"
+
+        ></View>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/so_far_you_visited"
+        android:textSize="@dimen/text_large"
+        android:textColor="@color/grey"
+        android:layout_marginTop="@dimen/margin_10"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerSoFarYouVisited"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:layout_marginTop="@dimen/margin_10"
+        android:layout_marginRight="@dimen/margin_10"
+        />
+
+
+</LinearLayout>
+
+
+
+  </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

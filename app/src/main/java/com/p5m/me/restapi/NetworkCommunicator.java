@@ -16,6 +16,7 @@ import com.p5m.me.data.PromoCode;
 import com.p5m.me.data.RatingParamModel;
 import com.p5m.me.data.RatingResponseModel;
 import com.p5m.me.data.UnratedClassData;
+import com.p5m.me.data.UserPackageDetail;
 import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.BranchModel;
 import com.p5m.me.data.main.ClassActivity;
@@ -147,6 +148,8 @@ public class NetworkCommunicator {
         public static final int CLASS_RATING_UPDATE = 139;
         public static final int MEDIA_DELETE = 140;
         public static final int BRANCH_LIST = 141;
+        public static final int USER_PACKAGE_DETAIL = 142;
+
 
         public static final int PAYMENT_CONFIRMATION_DETAIL = 150;
         public static final int SUPPORT_RESPONSE_CONTACT = 160;
@@ -906,6 +909,27 @@ public class NetworkCommunicator {
             public void onResponse(Call<ResponseModel<GymDetailModel>> call, Response<ResponseModel<GymDetailModel>> restResponse, ResponseModel<GymDetailModel> response) {
                 LogUtils.networkSuccess("NetworkCommunicator getGym onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call getUserPackageDetails(int userId,long id, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.USER_PACKAGE_DETAIL;
+        Call<ResponseModel<List<UserPackageDetail>>> call = apiService.getUserPackageDetail(userId,id);
+        LogUtils.debug("NetworkCommunicator hitting getGym");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<UserPackageDetail>>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<List<UserPackageDetail>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getGym onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<UserPackageDetail>>> call, Response<ResponseModel<List<UserPackageDetail>>> restResponse, ResponseModel<List<UserPackageDetail>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getGym onResponse data " + response);
+                requestListener.onApiSuccess(response.data, requestCode);
             }
         });
         return call;
