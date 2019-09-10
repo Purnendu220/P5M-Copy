@@ -221,7 +221,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             classSessionId = classModel.getClassSessionId();
             classProfileAdapter.setClass(classModel);
             classProfileAdapter.notifyDataSetChanged();
-
+            IntercomEvents.trackClassVisit(classModel.getTitle());
             Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
         } else {
             layoutButton.setVisibility(View.VISIBLE);
@@ -241,7 +241,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         getDynamicLink();
         MixPanel.trackClassDetails();
         onTrackingNotification();
-        IntercomEvents.trackClassVisit(classModel.getTitle());
+
+
 //        networkCommunicator.getMyUser(this, false);
 
     }

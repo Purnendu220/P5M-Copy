@@ -2,6 +2,7 @@ package com.p5m.me.adapters.viewholder;
 
 import android.content.Context;
 import android.graphics.Paint;
+
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,17 +46,13 @@ import static com.p5m.me.utils.LanguageUtils.numberConverter;
  * Created by MyU10 on 3/10/2018.
  */
 
-public class MemberShipViewHolder extends RecyclerView.ViewHolder  {
-
-
-
-
+public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
 
     private final Context context;
     private int shownInScreen;
 
-/* User Existig Pakages Layout Declaration*/
+    /* User Existig Pakages Layout Declaration*/
 
     @BindView(R.id.mainLayoutUserPakages)
     RelativeLayout mainLayoutUserPakages;
@@ -85,7 +82,10 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder  {
     LinearLayout mainLayoutActivePackageDropin;
 
     @BindView(R.id.packageValidForOwn)
-     TextView packageValidForOwn;
+    TextView packageValidForOwn;
+
+    @BindView(R.id.textViewExtendPackage)
+    TextView textViewExtendPackage;
 
 
     /* User Existig Pakages DROP IN Layout Declaration*/
@@ -129,7 +129,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder  {
         context = itemView.getContext();
 
         ButterKnife.bind(this, itemView);
-       // RemoteConfigSetUp.setBackgroundColor(linearLayoutOffer, RemoteConfigConst.MEMBERSHIP_OFFER_COLOR_VALUE, context.getResources().getColor(R.color.green));
+        // RemoteConfigSetUp.setBackgroundColor(linearLayoutOffer, RemoteConfigConst.MEMBERSHIP_OFFER_COLOR_VALUE, context.getResources().getColor(R.color.green));
 
         this.shownInScreen = shownInScreen;
     }
@@ -138,31 +138,38 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder  {
 
         if (data != null && (data instanceof UserPackage || data instanceof Package)) {
             itemView.setVisibility(View.VISIBLE);
-
+            textViewExtendPackage.setVisibility(View.GONE);
             // Package owned..
             if (data instanceof UserPackage) {
                 UserPackage model = (UserPackage) data;
-                if(model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)){
+                if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
+                    textViewExtendPackage.setVisibility(View.VISIBLE);
+                    textViewExtendPackage.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            adapterCallbacks.onAdapterItemClick(MemberShipViewHolder.this, textViewExtendPackage, model,position);
+                        }
+                    });
                     mainLayoutActivePackageDropin.setVisibility(View.GONE);
                     mainLayoutUserPakages.setVisibility(View.VISIBLE);
                     layoutMainOfferedPackage.setVisibility(View.GONE);
                     packageTitle.setText(model.getPackageName());
-                    packageUsage.setText(String.format(context.getResources().getString(R.string.classess_remaining),model.getBalanceClass(),model.getTotalNumberOfClass()));
+                    packageUsage.setText(String.format(context.getResources().getString(R.string.classess_remaining), model.getBalanceClass(), model.getTotalNumberOfClass()));
                     packageValidForOwn.setText(context.getString(R.string.valid_till) + " " + DateUtils.getPackageClassDate(model.getExpiryDate()));
-                }
-                else{
+                } else {
                     mainLayoutActivePackageDropin.setVisibility(View.VISIBLE);
+                    textViewExtendPackage.setVisibility(View.GONE);
                     mainLayoutUserPakages.setVisibility(View.GONE);
                     layoutMainOfferedPackage.setVisibility(View.GONE);
-                    textViewActiveDropIn.setText(String.format(context.getResources().getString(R.string.drop_in_text),model.getGymName(),DateUtils.getDaysLeftFromPackageExpiryDate(model.getExpiryDate())));
-                     button.setOnClickListener(new View.OnClickListener() {
-                         @Override
-                         public void onClick(View v) {
-                             GymProfileActivity.open(context,model.getGymId(),AppConstants.AppNavigation.NAVIGATION_FROM_MEMBERSHIP);
-                         }
-                     });
+                    textViewActiveDropIn.setText(String.format(context.getResources().getString(R.string.drop_in_text), model.getGymName(), DateUtils.getDaysLeftFromPackageExpiryDate(model.getExpiryDate())));
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            GymProfileActivity.open(context, model.getGymId(), AppConstants.AppNavigation.NAVIGATION_FROM_MEMBERSHIP);
+                        }
+                    });
                 }
-                setUpUserPackageDetail(model.getId(),context,adapterCallbacks,recyclerSoFarYouVisited);
+                setUpUserPackageDetail(model.getId(), context, adapterCallbacks, recyclerSoFarYouVisited);
             } else
                 // Packages offered..
                 if (data instanceof Package) {
@@ -174,7 +181,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder  {
                         txtPackageName.setText(model.getName());
                         txtPackageOffredClasses.setText(numberConverter(model.getNoOfClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs_one), model.getNoOfClass()) + " " + context.getString(R.string.at_any_gym));
                         setTextValidityPeriod(model);
-                        txtPriceAfterOffer.setText(LanguageUtils.numberConverter(model.getCost(),2) + " " + context.getString(R.string.currency).toUpperCase());
+                        txtPriceAfterOffer.setText(LanguageUtils.numberConverter(model.getCost(), 2) + " " + context.getString(R.string.currency).toUpperCase());
 
 
                         if (classModel != null) {
@@ -219,17 +226,17 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder  {
                             txtPackageOffredClasses.setText(LanguageUtils.numberConverter(model.getNoOfClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass()) + " " + context.getString(R.string.at) + " " + model.getGymName());
 
                         packageValidFor.setText(context.getString(R.string.valid_for) + " " + DateUtils.getPackageClassDate(classModel.getClassDate()) + " -" + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()));
-                        txtPriceAfterOffer.setText(LanguageUtils.numberConverter(model.getCost(),2) + " " + context.getString(R.string.currency).toUpperCase());
+                        txtPriceAfterOffer.setText(LanguageUtils.numberConverter(model.getCost(), 2) + " " + context.getString(R.string.currency).toUpperCase());
 
 
                     }
-                    if (model.getPromoResponseDto() != null ) {
-                        if( model.getPromoResponseDto().getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFCLASS))
+                    if (model.getPromoResponseDto() != null) {
+                        if (model.getPromoResponseDto().getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFCLASS))
                             setClassPromo(model);
-                        else if( model.getPromoResponseDto().getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFDAYS))
+                        else if (model.getPromoResponseDto().getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFDAYS))
                             setClassPromo(model);
                         else {
-                            setPackagePriceAfterDiscount(model, txtPriceAfterOffer,txtPackageOffer, txtPriceBeforeOffer);
+                            setPackagePriceAfterDiscount(model, txtPriceAfterOffer, txtPackageOffer, txtPriceBeforeOffer);
                         }
                     } else {
                         txtPackageOffer.setVisibility(View.GONE);
@@ -242,7 +249,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder  {
                             adapterCallbacks.onAdapterItemClick(MemberShipViewHolder.this, layoutMainOfferedPackage, data, position);
                         }
                     });
-              }
+                }
 
         } else {
             itemView.setVisibility(View.GONE);
@@ -250,12 +257,12 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder  {
     }
 
     private void setClassPromo(Package model) {
-        if(model.getPromoResponseDto().getPromoDesc()!=null) {
+        if (model.getPromoResponseDto().getPromoDesc() != null) {
             layoutTimeClassPromo.setVisibility(View.VISIBLE);
             textViewSpecialOffer.setText(Html.fromHtml("<font color='#f34336'>" + context.getResources().getString(R.string.special_offer)
                     + "</font>" + " " + model.getPromoResponseDto().getPromoDesc()));
 
-        }else{
+        } else {
             layoutTimeClassPromo.setVisibility(View.GONE);
 
         }
@@ -265,26 +272,22 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder  {
     }
 
     private void setTextValidityPeriod(Package model) {
-        if (model.getValidityPeriod().contains("MONTH"))
-        {
-            if(model.getDuration()==1) {
-                packageValidFor.setText(String.format(context.getResources().getString(R.string.valid_for_months), model.getDuration()));
-            }
-            else
+        if (model.getValidityPeriod().contains("MONTH")) {
+            if (model.getDuration() == 1) {
+                packageValidFor.setText(context.getResources().getString(R.string.valid_for_a_months));
+            } else
                 packageValidFor.setText(String.format(context.getResources().getString(R.string.valid_for_months), model.getDuration()));
 
-        }
-        else if (model.getValidityPeriod().contains("WEEK")) {
-            if(model.getDuration()==1) {
-                packageValidFor.setText(String.format(context.getResources().getString(R.string.valid_for_months), model.getDuration()));
-            }
-            else
+        } else if (model.getValidityPeriod().contains("WEEK")) {
+            if (model.getDuration() == 1) {
+                packageValidFor.setText(context.getResources().getString(R.string.valid_for_a_week));
+            } else
                 packageValidFor.setText(String.format(context.getResources().getString(R.string.valid_for_weeks), model.getDuration()));
 
         }
     }
 
-    private void setPackagePriceAfterDiscount(Package model, TextView textViewPackagePrice,TextView textViewOffer, TextView textViewPackagePriceStrike) {
+    private void setPackagePriceAfterDiscount(Package model, TextView textViewPackagePrice, TextView textViewOffer, TextView textViewPackagePriceStrike) {
         textViewOffer.setVisibility(View.VISIBLE);
         textViewPackagePriceStrike.setVisibility(View.VISIBLE);
         textViewOffer.setVisibility(View.VISIBLE);
@@ -305,32 +308,32 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder  {
                 textViewOffer.setText(currencyConverter(Math.round(model.getPromoResponseDto().getDiscount())) + offerText);
             }
         } catch (Exception e) {
-            textViewOffer.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getDiscount(),2) + offerText);
+            textViewOffer.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getDiscount(), 2) + offerText);
 
         }
 
-        textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getPriceAfterDiscount(),2) + " " + context.getString(R.string.currency).toUpperCase());
-        textViewPackagePriceStrike.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getPrice(),2) + " " + context.getString(R.string.currency).toUpperCase());
+        textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getPriceAfterDiscount(), 2) + " " + context.getString(R.string.currency).toUpperCase());
+        textViewPackagePriceStrike.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getPrice(), 2) + " " + context.getString(R.string.currency).toUpperCase());
         textViewPackagePriceStrike.setPaintFlags(textViewPackagePriceStrike.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
 
     }
 
-    private void setUpUserPackageDetail(long packageId,Context context,AdapterCallbacks adapterCallbacks,RecyclerView recyclerView){
+    private void setUpUserPackageDetail(long packageId, Context context, AdapterCallbacks adapterCallbacks, RecyclerView recyclerView) {
         NetworkCommunicator networkCommunicator = NetworkCommunicator.getInstance(context);
-        networkCommunicator.getUserPackageDetails(TempStorage.getUser().getId(),packageId,new NetworkCommunicator.RequestListener() {
+        networkCommunicator.getUserPackageDetails(TempStorage.getUser().getId(), packageId, new NetworkCommunicator.RequestListener() {
             @Override
             public void onApiSuccess(Object response, int requestCode) {
-                List<UserPackageDetail> packageDetail= (List<UserPackageDetail>) response;
-                if(packageDetail!=null&&packageDetail.size()>0){
+                List<UserPackageDetail> packageDetail = (List<UserPackageDetail>) response;
+                if (packageDetail != null && packageDetail.size() > 0) {
                     layoutSoFarYouVisited.setVisibility(View.VISIBLE);
 
-                    UserPackageDetailAdapter adapter = new UserPackageDetailAdapter(context,adapterCallbacks);
+                    UserPackageDetailAdapter adapter = new UserPackageDetailAdapter(context, adapterCallbacks);
                     recyclerView.setLayoutManager(new LinearLayoutManager(context));
                     recyclerView.setHasFixedSize(false);
                     adapter.addAll(packageDetail);
                     recyclerView.setAdapter(adapter);
-                }else{
+                } else {
 
                     layoutSoFarYouVisited.setVisibility(View.GONE);
 

@@ -13,6 +13,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -57,6 +58,7 @@ import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
@@ -170,7 +172,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 
 
     TextView mTextViewWalletAmount;
-    LinearLayout  mLayoutUserWallet;
+    LinearLayout mLayoutUserWallet;
     User.WalletDto mWalletCredit;
 
     public static String BOOKED_ON = "";
@@ -220,9 +222,9 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         View v = LayoutInflater.from(context).inflate(R.layout.view_tool_normal, null);
 
         v.findViewById(R.id.imageViewBack).setVisibility(View.GONE);
-         mTextViewWalletAmount= v.findViewById(R.id.textViewWalletAmount);
-         mLayoutUserWallet= v.findViewById(R.id.layoutUserWallet);
-         mLayoutUserWallet.setVisibility(View.GONE);
+        mTextViewWalletAmount = v.findViewById(R.id.textViewWalletAmount);
+        mLayoutUserWallet = v.findViewById(R.id.layoutUserWallet);
+        mLayoutUserWallet.setVisibility(View.GONE);
 
         ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.payment_confirmation));
         ((TextView) v.findViewById(R.id.textViewTitle)).setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
@@ -281,9 +283,10 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
             switch (paymentStatus) {
                 case SUCCESS:
                     if (Constants.LANGUAGE == Locale.ENGLISH) {
-                        IntercomEvents.trackExtendedPackage(paymentResponse.getPackageName(),selectedPacakageFromList.getDuration(),userPackage.getBalanceClass());
+                        if (paymentResponse != null && selectedPacakageFromList != null && userPackage != null)
+                            IntercomEvents.trackExtendedPackage(paymentResponse.getPackageName(), selectedPacakageFromList.getDuration(), DateUtils.getDaysLeftFromPackageExpiryDate(userPackage.getExpiryDate()));
                         textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.congratulation_package_extended_en), "<b>" + getPurchasedPackageName() + "</b>", LanguageUtils.numberConverter(selectedPacakageFromList.getDuration()))));
-                    }else
+                    } else
                         textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.congratulation_package_extended_ar), "<b>" + getPurchasedPackageName() + "</b>", LanguageUtils.numberConverter(selectedPacakageFromList.getDuration()))));
 
                     break;
@@ -465,11 +468,11 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 break;
             case NetworkCommunicator.RequestCode.ME_USER:
                 user = TempStorage.getUser();
-                mWalletCredit= user.getWalletDto();
-                if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
+                mWalletCredit = user.getWalletDto();
+                if (mWalletCredit != null && mWalletCredit.getBalance() > 0) {
                     mLayoutUserWallet.setVisibility(View.VISIBLE);
-                    mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(),2)+" "+context.getResources().getString(R.string.wallet_currency));
-                }else{
+                    mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(), 2) + " " + context.getResources().getString(R.string.wallet_currency));
+                } else {
                     mLayoutUserWallet.setVisibility(View.GONE);
 
                 }
@@ -643,7 +646,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         if (!TextUtils.isEmpty(paymentResponse.getExpiryDate())) {
             textViewValidity.setText(DateUtils.getClassDate(paymentResponse.getExpiryDate()));
         }
-        textViewAmount.setText(LanguageUtils.numberConverter(paymentResponse.getAmount(),2) + " " + context.getString(R.string.currency));
+        textViewAmount.setText(LanguageUtils.numberConverter(paymentResponse.getAmount(), 2) + " " + context.getString(R.string.currency));
 
         switch (checkoutFor) {
             case PACKAGE:
@@ -653,7 +656,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                     if (paymentResponse.getClassDetailDto() != null)
                         textViewValidity.setText(DateUtils.getPackageClassDate(paymentResponse.getClassDetailDto().getClassDate()) + "\n" + DateUtils.getClassTime(paymentResponse.getClassDetailDto().getFromTime(), paymentResponse.getClassDetailDto().getToTime()));
-                    } else {
+                } else {
                     if (!TextUtils.isEmpty(paymentResponse.getExpiryDate())) {
                         textViewValidity.setText(DateUtils.getClassDate(paymentResponse.getExpiryDate()));
                     } else
@@ -751,8 +754,9 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                     }
                 });
     }
-    private void showWalletAlert(){
-        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.wallet_alert_title), context.getString(R.string.wallet_alert),1,"",context.getResources().getString(R.string.ok),CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO,null,true, this);
+
+    private void showWalletAlert() {
+        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.wallet_alert_title), context.getString(R.string.wallet_alert), 1, "", context.getResources().getString(R.string.ok), CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO, null, true, this);
         try {
             mCustomAlertDialog.show();
         } catch (Exception e) {

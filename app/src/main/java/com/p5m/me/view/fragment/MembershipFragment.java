@@ -1,9 +1,13 @@
 package com.p5m.me.view.fragment;
 
-import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,19 +15,10 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.os.Handler;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -42,17 +37,14 @@ import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
-import com.p5m.me.firebase_dynamic_link.FirebaseDynamicLinnk;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
-import com.p5m.me.utils.DividerItemDecoration;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.Main.CheckoutActivity;
-import com.p5m.me.view.activity.Main.ClassProfileActivity;
 import com.p5m.me.view.activity.Main.MembershipInfoActivity;
 import com.p5m.me.view.activity.Main.PackageLimitsActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
@@ -371,7 +363,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
             }else{
                 constraintLayout.setVisibility(View.GONE);
-                textGymVisitLimits.setVisibility(View.GONE);
+                textGymVisitLimits.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -434,6 +426,8 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
             }
             break;
+
+
         }
     }
 
@@ -465,7 +459,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                             }
                         } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                             aPackage.setGymName(classModel.getGymBranchDetail().getGymName());
-                            packages.add(aPackage);
+                            //packages.add(aPackage);
                             mAvailableDropInPackage=aPackage;
                         }
                     }

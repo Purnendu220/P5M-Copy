@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -280,6 +281,10 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
+    @BindView(R.id.scrollview)
+    ScrollView scrollView;
+
+
     private PromoCode promoCode;
     private MaterialDialog materialDialog;
     private User user;
@@ -294,7 +299,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         handler = new Handler();
         checkUserCredits();
         setData();
-
+        scrollView.smoothScrollTo(0,0);
         textViewPay.setOnClickListener(this);
         buttonPromoCode.setOnClickListener(this);
         textViewLimit.setOnClickListener(this);
