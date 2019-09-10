@@ -102,9 +102,6 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
     private int delay = 500;
 
     private User user;
-    private boolean hasVisitedGymLimits;
-    private boolean hasPurchased;
-    private boolean hasClickedCheckout;
     private int mNumberOfPackagesToBuy;
     private static User.WalletDto mWalletCredit;
 
@@ -198,20 +195,50 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updatePackage(Events.UpdatePackage data) {
+        if(!swipeRefreshLayout.isRefreshing()){
+            this.navigatedFrom = -1;
+        this.classModel =null;
+        this.mFriendsData =null ;
+        this.mNumberOfPackagesToBuy=1;
         refreshFromEvent();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getPackagePurchased(Events.PackagePurchased packagePurchased) {
+        if(!swipeRefreshLayout.isRefreshing()){
+
+            this.navigatedFrom = -1;
+        this.classModel =null;
+        this.mFriendsData =null ;
+        this.mNumberOfPackagesToBuy=1;
         refreshFromEvent();
-        hasPurchased = true;
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void packagePurchasedForClass(Events.PackagePurchasedForClass data) {
+        if(!swipeRefreshLayout.isRefreshing()){
+            this.navigatedFrom = -1;
+        this.classModel =null;
+        this.mFriendsData =null ;
+        this.mNumberOfPackagesToBuy=1;
         refreshFromEvent();
-        hasPurchased = true;
+        }
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void classJoin(Events.ClassJoin data) {
+        if(!swipeRefreshLayout.isRefreshing()){
+            this.navigatedFrom = -1;
+        this.classModel =null;
+        this.mFriendsData =null ;
+        this.mNumberOfPackagesToBuy=1;
+        refreshFromEvent();
+        }
+    }
+
+
+
 
     public  void refreshFragment(int navigatedFrom,ClassModel classModel,BookWithFriendData mFriendsData,int mNumberOfPackagesToBuy){
         if(!swipeRefreshLayout.isRefreshing()){
@@ -413,7 +440,6 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                     CheckoutActivity.openActivity(context, aPackage);
 
                     MixPanel.trackPackagePreferred(aPackage.getName());
-                    hasClickedCheckout = true;
                 }
             }
             break;
