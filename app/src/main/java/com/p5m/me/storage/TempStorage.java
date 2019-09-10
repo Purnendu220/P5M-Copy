@@ -84,6 +84,21 @@ public class TempStorage {
         MyPreferences.getInstance().saveAuthToken(authToken);
     }
 
+    public static void setLat(String Lat) {
+        MyPreferences.getInstance().saveLat(Lat);
+    }
+    public static void setLng(String Lng) {
+        MyPreferences.getInstance().saveLng(Lng);
+    }
+
+    public static String getLat() {
+        return MyPreferences.getInstance().getLat();
+    }
+
+    public static String getLng() {
+        return MyPreferences.getInstance().getLng();
+    }
+
     public static boolean isOpenMembershipInfo() {
         return  MyPreferences.getInstance().isOpenMembershipInfo();
     }
