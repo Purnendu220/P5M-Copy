@@ -57,6 +57,10 @@ public class GymListViewHolder extends RecyclerView.ViewHolder {
             if (model.getProfileImageThumbnail() != null) {
                 ImageUtils.setImage(context,
                         model.getProfileImageThumbnail(),
+                        R.color.white,R.drawable.profile_holder, imageViewProfile);
+            } else {
+                ImageUtils.setImage(context,
+                        model.getProfileImageThumbnail(),
                         R.drawable.profile_holder, imageViewProfile);
             }
 

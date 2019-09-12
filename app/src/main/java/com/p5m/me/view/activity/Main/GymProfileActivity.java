@@ -22,6 +22,7 @@ import com.brandongogetap.stickyheaders.exposed.StickyHeaderListener;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.GymProfileAdapter;
+import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.GymDetailModel;
@@ -345,7 +346,7 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
                 swipeRefreshLayout.setRefreshing(false);
 
                 gymDetailModel = ((ResponseModel<GymDetailModel>) response).data;
-
+                IntercomEvents.trackGymVisit(gymDetailModel.getStudioName());
                 gymProfileAdapter.setGymDetailModel(gymDetailModel);
                 break;
         }

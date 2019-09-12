@@ -270,7 +270,7 @@
 
     <string name="profile_package_expiry">"متبقية لنهاية صلاحية كلاساتك"</string>
 
-    <string name="view_gym_visit_limits"><u>الاطلاع على حدود زيارة النوادي</u></string>
+    <string name="view_gym_visit_limits">الاطلاع على حدود زيارة النوادي</string>
 
     <string name="gym_visit_limits_no_lines">حدود زيارة النوادي</string>
 
@@ -926,6 +926,7 @@
     <string name="buy_membership_description">This is P5M package description</string>
     <string name="one_class_entry">%d class entry (%s KWD)</string>
     <string name="book_with_p5m_membership">Book with P5M Membership</string>
+    <string name="welcome_to_p5m">Welcome to P5M!</string>
 
 
 </resources>

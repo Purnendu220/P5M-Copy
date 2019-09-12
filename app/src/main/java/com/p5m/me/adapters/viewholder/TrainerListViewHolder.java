@@ -67,9 +67,12 @@ public class TrainerListViewHolder extends RecyclerView.ViewHolder {
             if (model.getProfileImageThumbnail() != null) {
                 ImageUtils.setImage(context,
                         model.getProfileImageThumbnail(),
+                        R.color.white,R.drawable.profile_holder, imageViewProfile);
+            } else {
+                ImageUtils.setImage(context,
+                        model.getProfileImageThumbnail(),
                         R.drawable.profile_holder, imageViewProfile);
             }
-
             Helper.setFavButton(context, buttonFav, model);
 
             textViewTrainerName.setText(model.getFirstName());

@@ -3,15 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     android:background="@color/white">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/tool_bar_height"
             android:background="@color/colorPrimaryDark"
@@ -80,16 +82,50 @@
             </LinearLayout>
         </LinearLayout>
 
-        <ScrollView
+        <LinearLayout
+            android:id="@+id/layoutBottom"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="-4dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@drawable/bg_shadow_dark" />
+
+            <TextView
+                android:id="@+id/textViewPay"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bottom_text_button_height"
+                android:background="@drawable/theme_bottom_text_button_book"
+                android:clickable="true"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:letterSpacing="@dimen/button_letter_spacing"
+                android:text="@string/pay"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_large" />
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/layout"
+            android:layout_above="@id/layoutBottom"
+
             android:layout_weight="1"
             android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:gravity="top"
                 android:paddingTop="16dp"
                 android:paddingBottom="16dp">
 
@@ -684,36 +720,17 @@
                     android:text="@string/apply_promo_code"
                     android:textColor="@color/colorAccent"
                     android:textStyle="bold" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_marginEnd="@dimen/margin_12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
+                </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
         </ScrollView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="-4dp"
-            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:background="@drawable/bg_shadow_dark" />
-
-            <TextView
-                android:id="@+id/textViewPay"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/bottom_text_button_height"
-                android:background="@drawable/theme_bottom_text_button_book"
-                android:clickable="true"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="center"
-                android:letterSpacing="@dimen/button_letter_spacing"
-                android:text="@string/pay"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_large" />
-        </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

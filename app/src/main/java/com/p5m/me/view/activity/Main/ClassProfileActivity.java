@@ -32,6 +32,7 @@ import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.ClassProfileAdapter;
 import com.p5m.me.analytics.FirebaseAnalysic;
+import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.ClassRatingUserData;
@@ -220,7 +221,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             classSessionId = classModel.getClassSessionId();
             classProfileAdapter.setClass(classModel);
             classProfileAdapter.notifyDataSetChanged();
-
+            IntercomEvents.trackClassVisit(classModel.getTitle());
             Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
         } else {
             layoutButton.setVisibility(View.VISIBLE);
@@ -240,6 +241,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         getDynamicLink();
         MixPanel.trackClassDetails();
         onTrackingNotification();
+
+
 //        networkCommunicator.getMyUser(this, false);
 
     }
@@ -701,6 +704,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
                 MixPanel.trackJoinClass(navigationFrom, classModel);
                 FirebaseAnalysic.trackJoinClass(navigationFrom, classModel);
+                IntercomEvents.trackJoinClass( classModel);
                 if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
 //                    context.getResources().getString(R.string.invite_friends)
                     DialogUtils.showBasicMessage(context, "",
