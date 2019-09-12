@@ -88,12 +88,12 @@ public class MyPreferences {
     }
 
 
-    public void setOpenMembershipInfo(boolean isOpen){
-        PreferencesManager.putBoolean(AppConstants.Pref.OPEN_MEMBERSHIP_INFO, isOpen);
+    public void setOpenMembershipInfo(int state){
+        PreferencesManager.putInt(AppConstants.Pref.OPEN_MEMBERSHIP_INFO, state);
 
     }
-    public boolean isOpenMembershipInfo(){
-        return PreferencesManager.getBoolean(AppConstants.Pref.OPEN_MEMBERSHIP_INFO, false);
+    public int isOpenMembershipInfo(){
+        return PreferencesManager.getInt(AppConstants.Pref.OPEN_MEMBERSHIP_INFO, 0);
 
     }
     public boolean isLogin() {

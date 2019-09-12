@@ -42,7 +42,6 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
         ButterKnife.bind(activity);
         buyClassesLayout.setOnClickListener(this);
         setToolBar();
-        TempStorage.setOpenMembershipInfo(false);
 
 
     }

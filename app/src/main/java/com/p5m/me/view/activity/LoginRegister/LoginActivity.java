@@ -50,6 +50,9 @@ import io.intercom.android.sdk.Intercom;
 import io.intercom.android.sdk.UserAttributes;
 import io.intercom.android.sdk.identity.Registration;
 
+import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_HAVE_PACKAGE;
+import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_NO_PACKAGE;
+
 public class LoginActivity extends BaseActivity implements NetworkCommunicator.RequestListener {
 
 
@@ -264,6 +267,7 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                     setUserProperty();
 
                     MixPanel.trackLogin(AppConstants.Tracker.EMAIL, TempStorage.getUser());
+                    handleMembershipInfoState(user);
 
                     finish();
                 } else {
@@ -281,6 +285,7 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                     successfulLoginIntercom();
                     EventBroadcastHelper.sendLogin(context, user);
                     HomeActivity.open(context);
+                    handleMembershipInfoState(user);
 
                     if (user.getDateOfJoining() >= loginTime) {
                         MixPanel.trackRegister(AppConstants.Tracker.FB, TempStorage.getUser());
@@ -324,6 +329,16 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
             Registration registration = Registration.create().withUserId(user.getFirstName() + " " + user.getLastName()).withEmail(user.getEmail());
             Intercom.client().registerIdentifiedUser(registration);
             LogUtils.debug("Intercom Working");
+        }
+    }
+
+    private void handleMembershipInfoState(User user){
+        if (user.isBuyMembership()) {
+           TempStorage.setOpenMembershipInfo(MEMBERSHIP_INFO_STATE_NO_PACKAGE);
+
+        }else{
+            TempStorage.setOpenMembershipInfo(MEMBERSHIP_INFO_STATE_HAVE_PACKAGE);
+
         }
     }
 }
