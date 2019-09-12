@@ -36,9 +36,9 @@ public class AppConstants {
         public static final int TAB_FIND_CLASS = 0;
         public static final int TAB_TRAINER = 1;
         public static final int TAB_SCHEDULE = 2;
-        public static final int TAB_MY_PROFILE = 3;
+        public static final int TAB_MY_PROFILE = 4;
         public static final int TAB_MY_PROFILE_FINISHED = 5;
-        public static final int TAB_MY_MEMBERSHIP = 4;
+        public static final int TAB_MY_MEMBERSHIP = 3;
 
 
 
