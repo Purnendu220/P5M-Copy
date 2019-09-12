@@ -300,7 +300,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         NUMBER_OF_PACKAGES_TO_BUY = intent.getIntExtra(AppConstants.DataKey.NUMBER_OF_PACKAGES_TO_BUY,
                 1);
         CLASS_OBJECT = (ClassModel) intent.getSerializableExtra(AppConstants.DataKey.CLASS_OBJECT);
-        BOOK_WITH_FRIEND_DATA = (BookWithFriendData) getIntent().getSerializableExtra(AppConstants.DataKey.BOOK_WITH_FRIEND_DATA);
+        BOOK_WITH_FRIEND_DATA = (BookWithFriendData) intent.getSerializableExtra(AppConstants.DataKey.BOOK_WITH_FRIEND_DATA);
 
 
         LogUtils.debug("VarunSCHEDULE getNewIntent " + SCHEDULE_TAB_POSITION);
