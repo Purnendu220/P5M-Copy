@@ -18,6 +18,7 @@ import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.view.activity.Main.CheckoutActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
@@ -75,7 +76,7 @@ public class BottomSheetClassBookingOptions extends BottomSheetDialogFragment im
         View view = inflater.inflate(R.layout.book_class_option, container,
                 false);
         ButterKnife.bind(this, view);
-        textViewDropIn.setText(String.format(getContext().getResources().getString(R.string.one_class_entry),noOfClasses,aPackage.getCost()+""));
+        textViewDropIn.setText(String.format(getContext().getResources().getString(R.string.one_class_entry),noOfClasses, LanguageUtils.numberConverter(aPackage.getCost(), 2)));
         handleClickEvent();
         return view;
 

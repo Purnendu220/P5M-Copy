@@ -50,6 +50,9 @@ import io.intercom.android.sdk.Intercom;
 import io.intercom.android.sdk.UserAttributes;
 import io.intercom.android.sdk.identity.Registration;
 
+import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_HAVE_PACKAGE;
+import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_NO_PACKAGE;
+
 public class LoginActivity extends BaseActivity implements NetworkCommunicator.RequestListener {
 
 
@@ -326,4 +329,6 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
             LogUtils.debug("Intercom Working");
         }
     }
+
+
 }

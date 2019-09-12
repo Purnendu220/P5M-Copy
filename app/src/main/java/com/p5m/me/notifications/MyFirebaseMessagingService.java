@@ -35,6 +35,7 @@ import java.util.Map;
 
 import io.intercom.android.sdk.push.IntercomPushClient;
 
+import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_NO_PACKAGE;
 import static com.p5m.me.utils.AppConstants.Tab.TAB_MY_MEMBERSHIP;
 
 /**
@@ -455,7 +456,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             break;
                         case "OnFinishedPackage":
                             title = "Finished Package";
-                            TempStorage.setOpenMembershipInfo(true);
+                            if(TempStorage.isOpenMembershipInfo()!=2){
+                                TempStorage.setOpenMembershipInfo(MEMBERSHIP_INFO_STATE_NO_PACKAGE);
+                            }
                             break;
                         case "OnLowBalance":
                             title = "Low Balance";

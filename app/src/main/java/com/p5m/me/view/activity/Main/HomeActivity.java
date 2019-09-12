@@ -66,6 +66,9 @@ import io.intercom.android.sdk.Intercom;
 import io.intercom.android.sdk.UserAttributes;
 import io.intercom.android.sdk.identity.Registration;
 
+import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_DONE;
+import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_HAVE_PACKAGE;
+import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_NO_PACKAGE;
 import static com.p5m.me.utils.AppConstants.Tab.TAB_MY_MEMBERSHIP;
 
 
@@ -259,6 +262,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 //        RemoteConfigSetUp.getValues();
         onTrackingNotification();
         networkCommunicator.getMyUser(this, false);
+        handleMembershipInfoState(TempStorage.getUser());
 
     }
 
@@ -322,7 +326,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_SCHEDULE, R.drawable.schedule, R.drawable.schedule,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
                 context.getString(R.string.schedule), context.getString(R.string.schedule)));
-        tabList.add(new BottomTapLayout.Tab(TAB_MY_MEMBERSHIP, R.drawable.membership_tab_icon, R.drawable.membership_tab_icon,
+        tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_MY_MEMBERSHIP, R.drawable.membership_tab_icon, R.drawable.membership_tab_icon,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
                 context.getString(R.string.membership), context.getString(R.string.membership)));
         tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_MY_PROFILE, R.drawable.profile, R.drawable.profile,
@@ -661,6 +665,19 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
           }
       }
   }
+
+    private void handleMembershipInfoState(User user){
+        if(TempStorage.isOpenMembershipInfo() != MEMBERSHIP_INFO_STATE_DONE){
+            if (user.isBuyMembership()) {
+                TempStorage.setOpenMembershipInfo(MEMBERSHIP_INFO_STATE_NO_PACKAGE);
+
+            }else{
+                TempStorage.setOpenMembershipInfo(MEMBERSHIP_INFO_STATE_HAVE_PACKAGE);
+
+            }
+        }
+
+    }
 }
 
 

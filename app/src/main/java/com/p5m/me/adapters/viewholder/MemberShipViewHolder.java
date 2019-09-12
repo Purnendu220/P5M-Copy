@@ -202,12 +202,15 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                                     break;
                             }
 
-                           /* if (DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays) {
-                                imageViewInfo.setVisibility(View.VISIBLE);
-                                button.setEnabled(false);
-                                button.setBackgroundResource(R.drawable.button_disabled);
-                                button.setTextColor(ContextCompat.getColor(context, R.color.theme_light_text));
-                            }*/
+                            if (DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays) {
+                                mainLayoutActivePackageDropin.setVisibility(View.GONE);
+                                mainLayoutUserPakages.setVisibility(View.GONE);
+                                layoutMainOfferedPackage.setVisibility(View.GONE);
+                            }else{
+                                mainLayoutActivePackageDropin.setVisibility(View.GONE);
+                                mainLayoutUserPakages.setVisibility(View.GONE);
+                                layoutMainOfferedPackage.setVisibility(View.VISIBLE);
+                            }
                         }
 
                     } else if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
