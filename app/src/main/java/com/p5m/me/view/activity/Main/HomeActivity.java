@@ -326,7 +326,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_SCHEDULE, R.drawable.schedule, R.drawable.schedule,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
                 context.getString(R.string.schedule), context.getString(R.string.schedule)));
-        tabList.add(new BottomTapLayout.Tab(TAB_MY_MEMBERSHIP, R.drawable.membership_tab_icon, R.drawable.membership_tab_icon,
+        tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_MY_MEMBERSHIP, R.drawable.membership_tab_icon, R.drawable.membership_tab_icon,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
                 context.getString(R.string.membership), context.getString(R.string.membership)));
         tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_MY_PROFILE, R.drawable.profile, R.drawable.profile,
