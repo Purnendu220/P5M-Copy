@@ -535,7 +535,7 @@ Would you like to view your balance? </string>
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="classess_remaining" translatable="false">You have %d/%d classes remaining</string>
     <string name="so_far_you_visited" translatable="false">So far you visited</string>
-    <string name="drop_in_text">You have an active drop in for %s, expire in %d days</string>
+    <string name="drop_in_text">You have an active drop in for %s, expire on %s</string>
     <string name="visit_times">%s times</string>
     <string name="why_p5m">Why a P5M membership?\nBecause get more and pay less</string>
     <string name="variety_of_activity_details">With the P5M Membership you can visit a swimming class today, crossfit tomorrow and yoga on the weekend.</string>
@@ -568,8 +568,9 @@ Would you like to view your balance? </string>
     <string name="select_an_option">Select an option</string>
     <string name="drop_in_package_desc">This is drop in package description</string>
     <string name="buy_membership_description">This is P5M package description</string>
-    <string name="one_class_entry">%d class entry (%s KWD)</string>
+    <string name="one_class_entry">1 class entry (%s KWD)</string>
     <string name="book_with_p5m_membership">Book with P5M Membership</string>
     <string name="welcome_to_p5m">Welcome to P5M!</string>
+    <string name="book_now">Book Now</string>
 
 </resources>

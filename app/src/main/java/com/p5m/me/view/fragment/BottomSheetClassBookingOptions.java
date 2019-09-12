@@ -76,13 +76,12 @@ public class BottomSheetClassBookingOptions extends BottomSheetDialogFragment im
         View view = inflater.inflate(R.layout.book_class_option, container,
                 false);
         ButterKnife.bind(this, view);
-        textViewDropIn.setText(String.format(getContext().getResources().getString(R.string.one_class_entry),noOfClasses, LanguageUtils.numberConverter(aPackage.getCost(), 2)));
+//        textViewDropIn.setText(String.format(getContext().getResources().getString(R.string.one_class_entry),noOfClasses, LanguageUtils.numberConverter(aPackage.getCost(), 2)));
+        textViewDropIn.setText(String.format(getContext().getResources().getString(R.string.one_class_entry), LanguageUtils.numberConverter(aPackage.getCost(), 2)));
         handleClickEvent();
         return view;
 
     }
-
-
 
     private void handleClickEvent() {
         bookWithDropInPackage.setOnClickListener(this);

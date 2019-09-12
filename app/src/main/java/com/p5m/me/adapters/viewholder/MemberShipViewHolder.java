@@ -161,7 +161,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     textViewExtendPackage.setVisibility(View.GONE);
                     mainLayoutUserPakages.setVisibility(View.GONE);
                     layoutMainOfferedPackage.setVisibility(View.GONE);
-                    textViewActiveDropIn.setText(String.format(context.getResources().getString(R.string.drop_in_text), model.getGymName(), DateUtils.getDaysLeftFromPackageExpiryDate(model.getExpiryDate())));
+                    textViewActiveDropIn.setText(String.format(context.getResources().getString(R.string.drop_in_text), model.getGymName(), DateUtils.getClassDate(model.getExpiryDate())));
                     button.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
