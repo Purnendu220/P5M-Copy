@@ -267,7 +267,6 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                     setUserProperty();
 
                     MixPanel.trackLogin(AppConstants.Tracker.EMAIL, TempStorage.getUser());
-                    handleMembershipInfoState(user);
 
                     finish();
                 } else {
@@ -285,7 +284,6 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                     successfulLoginIntercom();
                     EventBroadcastHelper.sendLogin(context, user);
                     HomeActivity.open(context);
-                    handleMembershipInfoState(user);
 
                     if (user.getDateOfJoining() >= loginTime) {
                         MixPanel.trackRegister(AppConstants.Tracker.FB, TempStorage.getUser());
@@ -332,13 +330,5 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
         }
     }
 
-    private void handleMembershipInfoState(User user){
-        if (user.isBuyMembership()) {
-           TempStorage.setOpenMembershipInfo(MEMBERSHIP_INFO_STATE_NO_PACKAGE);
 
-        }else{
-            TempStorage.setOpenMembershipInfo(MEMBERSHIP_INFO_STATE_HAVE_PACKAGE);
-
-        }
-    }
 }

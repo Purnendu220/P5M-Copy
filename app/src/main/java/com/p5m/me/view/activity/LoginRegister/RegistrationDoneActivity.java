@@ -38,7 +38,6 @@ public class RegistrationDoneActivity extends BaseActivity {
         setContentView(R.layout.activity_registration_done);
 
         ButterKnife.bind(activity);
-        handleMembershipInfoState(TempStorage.getUser());
     }
 
     @OnClick(R.id.buttonDone)
@@ -46,13 +45,5 @@ public class RegistrationDoneActivity extends BaseActivity {
         HomeActivity.open(context);
         finish();
     }
-    private void handleMembershipInfoState(User user){
-        if (user.isBuyMembership()) {
-            TempStorage.setOpenMembershipInfo(MEMBERSHIP_INFO_STATE_NO_PACKAGE);
 
-        }else{
-            TempStorage.setOpenMembershipInfo(MEMBERSHIP_INFO_STATE_HAVE_PACKAGE);
-
-        }
-    }
 }

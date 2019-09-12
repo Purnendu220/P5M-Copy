@@ -92,8 +92,13 @@ public class MyPreferences {
         PreferencesManager.putInt(AppConstants.Pref.OPEN_MEMBERSHIP_INFO, state);
 
     }
-    public int isOpenMembershipInfo(){
+    public int isOpenMembershipInfo(){try{
         return PreferencesManager.getInt(AppConstants.Pref.OPEN_MEMBERSHIP_INFO, 0);
+    }
+    catch (Exception e){
+        e.printStackTrace();
+       return 0;
+    }
 
     }
     public boolean isLogin() {
