@@ -60,6 +60,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_DONE;
+import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_NO_PACKAGE;
+
 
 public class MembershipFragment extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks, NetworkCommunicator.RequestListener,
         SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, CustomAlertDialog.OnAlertButtonAction  {
@@ -244,9 +247,14 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
             refreshFromEvent();
         }
         }
-        if(TempStorage.isOpenMembershipInfo()){
+        if(TempStorage.isOpenMembershipInfo() == MEMBERSHIP_INFO_STATE_NO_PACKAGE){
             MembershipInfoActivity.openActivity(context);
+            TempStorage.setOpenMembershipInfo(MEMBERSHIP_INFO_STATE_DONE);
         }
+        MixPanel.trackMembershipVisit(this.navigatedFrom);
+        //  onTrackingNotification();
+        FirebaseAnalysic.trackMembershipVisit(this.navigatedFrom);
+        IntercomEvents.trackMembershipVisit(this.navigatedFrom);
     }
     public  void refreshFragmentBackGroung(int navigatedFrom,ClassModel classModel,BookWithFriendData mFriendsData,int mNumberOfPackagesToBuy){
         if(!swipeRefreshLayout.isRefreshing()){

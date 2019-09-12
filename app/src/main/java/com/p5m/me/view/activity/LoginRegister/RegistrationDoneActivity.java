@@ -7,12 +7,17 @@ import android.view.View;
 import android.widget.Button;
 
 import com.p5m.me.R;
+import com.p5m.me.data.main.User;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_HAVE_PACKAGE;
+import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_NO_PACKAGE;
 
 public class RegistrationDoneActivity extends BaseActivity {
 
@@ -40,4 +45,5 @@ public class RegistrationDoneActivity extends BaseActivity {
         HomeActivity.open(context);
         finish();
     }
+
 }

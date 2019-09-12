@@ -156,6 +156,10 @@ public class AppConstants {
 
         public static final String PAYMENT_ERROR_RESPONSE = "payment_error_response";
 
+        public static final int MEMBERSHIP_INFO_STATE_HAVE_PACKAGE = 0;
+        public static final int MEMBERSHIP_INFO_STATE_NO_PACKAGE = 1;
+        public static final int MEMBERSHIP_INFO_STATE_DONE = 2;
+
 
 
     }
