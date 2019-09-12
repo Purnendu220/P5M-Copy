@@ -221,6 +221,17 @@ public class DateUtils {
         return "";
     }
 
+    public static String getTimespanDate(String date) {
+        try {
+            Date date1 = classDateExpiry.parse(date);
+            return String.valueOf(date1.getTime() / 1000);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+        return "";
+    }
+
 
     public static String getTransactionDate(long date) {
         try {
@@ -375,7 +386,7 @@ public class DateUtils {
     public static String getCurrentDateandTime() {
         try {
 
-            Log.d("DATEEEEEEEE",DateFormat.getDateTimeInstance().format(new Date()));
+            Log.d("DATEEEEEEEE", DateFormat.getDateTimeInstance().format(new Date()));
             return DateFormat.getDateTimeInstance().format(new Date());
         } catch (Exception e) {
             e.printStackTrace();
