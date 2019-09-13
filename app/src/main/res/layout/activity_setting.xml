@@ -114,6 +114,7 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/click_highlight"
                             android:clickable="true"
+                            android:visibility="gone"
                             android:gravity="center"
                             android:orientation="horizontal"
                             android:padding="@dimen/view_padding_setting">

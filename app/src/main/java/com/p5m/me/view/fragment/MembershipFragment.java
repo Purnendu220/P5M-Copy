@@ -386,6 +386,9 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                 }
             }
             if(user.isBuyMembership()){
+                constraintLayout.setVisibility(View.VISIBLE);
+
+
                 swipeRefreshLayout.setRefreshing(true);
                 networkCommunicator.getPackages(user.getId(), this, false);
                 if(userPackageInfo.haveDropInPackage||userPackageInfo.haveGeneralPackage){
