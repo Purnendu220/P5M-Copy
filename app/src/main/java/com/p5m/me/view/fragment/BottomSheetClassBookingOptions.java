@@ -27,13 +27,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-
-
 public class BottomSheetClassBookingOptions extends BottomSheetDialogFragment implements View.OnClickListener {
 
     public static AdapterCallbacks<ClassModel> adapterCallbacks;
 
-    public static BottomSheetClassBookingOptions newInstance(ClassModel classModel, BookWithFriendData bookWithFriendData, int noOfClasses,Package aPackage) {
+    public static BottomSheetClassBookingOptions newInstance(ClassModel classModel, BookWithFriendData bookWithFriendData, int noOfClasses, Package aPackage) {
 
         BottomSheetClassBookingOptions bottomSheetFragment = new BottomSheetClassBookingOptions();
         BottomSheetClassBookingOptions.classModel = classModel;
@@ -77,7 +75,10 @@ public class BottomSheetClassBookingOptions extends BottomSheetDialogFragment im
                 false);
         ButterKnife.bind(this, view);
 //        textViewDropIn.setText(String.format(getContext().getResources().getString(R.string.one_class_entry),noOfClasses, LanguageUtils.numberConverter(aPackage.getCost(), 2)));
-        textViewDropIn.setText(String.format(getContext().getResources().getString(R.string.one_class_entry), LanguageUtils.numberConverter(aPackage.getCost(), 2)));
+        if (bookWithFriendData != null && aPackage.getPackageType().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN))
+            textViewDropIn.setText(String.format(getContext().getResources().getString(R.string.one_class_entry), LanguageUtils.numberConverter(aPackage.getCost(), 2)));
+        else
+            textViewDropIn.setText(String.format(getContext().getResources().getString(R.string.one_class_entry), LanguageUtils.numberConverter(aPackage.getCost(), 2)));
         handleClickEvent();
         return view;
 
@@ -94,20 +95,20 @@ public class BottomSheetClassBookingOptions extends BottomSheetDialogFragment im
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bookWithP5mMembership:
-                if(bookWithFriendData!=null){
-                    HomeActivity.show(getContext(),AppConstants.Tab.TAB_MY_MEMBERSHIP,AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, bookWithFriendData, aPackage.getNoOfClass());
+                if (bookWithFriendData != null) {
+                    HomeActivity.show(getContext(), AppConstants.Tab.TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, bookWithFriendData, aPackage.getNoOfClass());
 
-                }else{
-                     HomeActivity.show(getContext(),AppConstants.Tab.TAB_MY_MEMBERSHIP,AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+                } else {
+                    HomeActivity.show(getContext(), AppConstants.Tab.TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
                 }
                 dismiss();
 
                 break;
             case R.id.bookWithDropInPackage:
-                if(bookWithFriendData!=null){
+                if (bookWithFriendData != null) {
                     CheckoutActivity.openActivity(getContext(), aPackage, classModel, 2, bookWithFriendData, aPackage.getNoOfClass());
 
-                }else{
+                } else {
                     CheckoutActivity.openActivity(getContext(), aPackage, classModel, 1, aPackage.getNoOfClass());
                 }
                 dismiss();
