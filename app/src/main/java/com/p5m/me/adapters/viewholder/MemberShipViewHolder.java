@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -147,7 +148,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     textViewExtendPackage.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            adapterCallbacks.onAdapterItemClick(MemberShipViewHolder.this, textViewExtendPackage, model,position);
+                            adapterCallbacks.onAdapterItemClick(MemberShipViewHolder.this, textViewExtendPackage, model, position);
                         }
                     });
                     mainLayoutActivePackageDropin.setVisibility(View.GONE);
@@ -161,7 +162,18 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     textViewExtendPackage.setVisibility(View.GONE);
                     mainLayoutUserPakages.setVisibility(View.GONE);
                     layoutMainOfferedPackage.setVisibility(View.GONE);
-                    textViewActiveDropIn.setText(String.format(context.getResources().getString(R.string.drop_in_text), model.getGymName(), DateUtils.getDaysLeftFromPackageExpiryDate(model.getExpiryDate())));
+                    if (model.getBalanceClass() == 2) {
+                        if (model.getExpiryDate() == null || TextUtils.isEmpty(model.getExpiryDate()))
+                            textViewActiveDropIn.setText(String.format(context.getResources().getString(R.string.drop_in_unlimited), model.getGymName()));
+                        else
+                            textViewActiveDropIn.setText(String.format(context.getResources().getString(R.string._two_drop_in_text), model.getGymName(), DateUtils.getClassDate(model.getExpiryDate())));
+                    } else {
+                        if (model.getExpiryDate() == null || TextUtils.isEmpty(model.getExpiryDate()))
+                            textViewActiveDropIn.setText(String.format(context.getResources().getString(R.string.drop_in_unlimited), model.getGymName()));
+                        else
+                            textViewActiveDropIn.setText(String.format(context.getResources().getString(R.string.drop_in_text), model.getGymName(), DateUtils.getClassDate(model.getExpiryDate())));
+                    }
+
                     button.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -206,7 +218,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                                 mainLayoutActivePackageDropin.setVisibility(View.GONE);
                                 mainLayoutUserPakages.setVisibility(View.GONE);
                                 layoutMainOfferedPackage.setVisibility(View.GONE);
-                            }else{
+                            } else {
                                 mainLayoutActivePackageDropin.setVisibility(View.GONE);
                                 mainLayoutUserPakages.setVisibility(View.GONE);
                                 layoutMainOfferedPackage.setVisibility(View.VISIBLE);

@@ -790,8 +790,13 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             return;
 
                         } else {
+                            Package aPackage = null;
+                            for( Package p : packages){
+                                if(p.getPackageType().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)){
+                                    aPackage = p;
 
-                            Package aPackage = packages.get(0);
+                                }
+                            }
                            // MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
                             BottomSheetClassBookingOptions mBottomSheetClassBookingOptions = BottomSheetClassBookingOptions.newInstance(classModel,mBookWithFriendData,aPackage.getNoOfClass(),aPackage);
                             mBottomSheetClassBookingOptions.show(((ClassProfileActivity) context).getSupportFragmentManager(),                                    "friend_booking");

@@ -11,11 +11,12 @@ import io.intercom.android.sdk.Intercom;
 
 public class IntercomEvents {
 
-    public static void purchasedPlan(String plan, String coupon, String purchase_date) {
+    public static void purchasedPlan(String plan, String coupon, ClassModel model) {
         Map<String, Object> eventData = new HashMap<>();
         eventData.put("plan", plan);
         eventData.put("coupon", coupon);
-        eventData.put("purchase_date", purchase_date);
+//        eventData.put("purchase_date", DateUtils.getPackageClassDate(purchase_date) );
+        eventData.put("purchase_date", DateUtils.getTimespanDate(model.getClassDate()+" "+model.getFromTime()) );
         Intercom.client().logEvent("Purchase_Plan", eventData);
     }
 
@@ -41,10 +42,10 @@ public class IntercomEvents {
         float hourDiff = DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime());
         Map<String, Object> eventData = new HashMap<>();
         eventData.put("activity", model.getClassCategory());
-        eventData.put("time", model.getClassDate());
+        eventData.put("time", DateUtils.getTimespanDate(model.getClassDate()+" "+ model.getFromTime()));
         eventData.put("gym_name", model.getGymBranchDetail().getGymName());
         eventData.put("locality", model.getGymBranchDetail().getLocalityName());
-        eventData.put("time_difference", hourDiff);
+        eventData.put("time_difference",  DateUtils.getHourDiff(hourDiff));
         Intercom.client().logEvent("Cancel_Booking", eventData);
     }
 
@@ -52,8 +53,8 @@ public class IntercomEvents {
         Map<String, Object> eventData = new HashMap<>();
         eventData.put("rating", model.getmRating());
         eventData.put("class_name", classModel.getTitle());
-        eventData.put("class_time", classModel.getClassDate() + " " + classModel.getFromTime());
-        eventData.put("rating_time", DateUtils.getCurrentDateandTime());
+        eventData.put("class_time", DateUtils.getTimespanDate(classModel.getClassDate() + " " + classModel.getFromTime()));
+        eventData.put("rating_time",System.currentTimeMillis());
         Intercom.client().logEvent("Rated_Class", eventData);
     }
 
@@ -61,7 +62,7 @@ public class IntercomEvents {
         try {
             Map<String, Object> eventData = new HashMap<>();
             eventData.put("activity", classModel.getClassCategory());
-            eventData.put("class_timing", DateUtils.getDayTiming(classModel.getClassDate() + " " + classModel.getFromTime()));
+            eventData.put("class_timing", DateUtils.getTimespanDate(classModel.getClassDate() + " " + classModel.getFromTime()));
             eventData.put("gym_name", classModel.getGymBranchDetail() == null ? "No Trainer" : classModel.getGymBranchDetail().getGymName());
 
             float hourDiff = DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime());

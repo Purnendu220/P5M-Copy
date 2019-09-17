@@ -98,6 +98,7 @@
             android:text="@string/variety_of_activities"
             android:textColor="@color/text_dark_gray"
             android:textSize="@dimen/text_large"
+            android:fontFamily="sans-serif-medium"
             app:layout_constraintStart_toEndOf="@+id/imageViewVarietyActivity"
             app:layout_constraintTop_toTopOf="@+id/imageViewVarietyActivity" />
 
@@ -134,6 +135,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:fontFamily="sans-serif-medium"
             android:letterSpacing="@dimen/text_medium_letter_spacing"
             android:lineSpacingExtra="@dimen/line_spacing_extra"
             android:layout_marginEnd="@dimen/margin_8"
@@ -176,6 +178,8 @@
             android:letterSpacing="@dimen/text_medium_letter_spacing"
             android:lineSpacingExtra="@dimen/line_spacing_extra"
             android:text="@string/save_percent"
+            android:fontFamily="sans-serif-medium"
+
             android:textColor="@color/text_dark_gray"
             android:layout_marginEnd="@dimen/margin_8"
             android:textSize="@dimen/text_large"
@@ -220,6 +224,7 @@
             android:textColor="@color/text_dark_gray"
             android:layout_marginEnd="@dimen/margin_8"
             android:textSize="@dimen/text_large"
+            android:fontFamily="sans-serif-medium"
             app:layout_constraintStart_toStartOf="@+id/textViewVarietyActivity"
             app:layout_constraintTop_toTopOf="@+id/imageViewInstantBooking" />
 
@@ -292,6 +297,7 @@
                 android:letterSpacing="@dimen/text_medium_letter_spacing"
                 android:lineSpacingExtra="@dimen/line_spacing_extra"
                 android:text="@string/explore"
+
                 android:textColor="@color/theme_book"
                 android:textSize="@dimen/text_extra_large"
                />

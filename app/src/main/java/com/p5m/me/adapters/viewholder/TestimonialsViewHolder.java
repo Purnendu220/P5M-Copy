@@ -46,8 +46,8 @@ public class TestimonialsViewHolder extends RecyclerView.ViewHolder {
             itemView.setVisibility(View.VISIBLE);
 
             Testimonials model = (Testimonials) data;
-            if (model.getProfile_img() != null)
-                ImageUtils.setImage(context, model.getProfile_img(), imageViewProfile);
+//            if (model.getProfile_img() != null)
+//                ImageUtils.setImage(context, model.getProfile_img(), imageViewProfile);
             if (!model.getName().isEmpty())
                 textViewName.setText(model.getName());
             if (!model.getComments().isEmpty())

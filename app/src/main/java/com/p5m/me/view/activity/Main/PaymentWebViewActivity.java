@@ -145,7 +145,7 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
             IntercomEvents.purchase_drop_in(classModel.getTitle(), packageName);
         } else {
             if (packageName != null && couponCode != null && classModel != null)
-                IntercomEvents.purchasedPlan(packageName, couponCode, classModel.getClassDate());
+                IntercomEvents.purchasedPlan(packageName, couponCode, classModel);
         }
         if (classModel != null) {
             MixPanel.trackJoinClass(AppConstants.Tracker.PURCHASE_PLAN, classModel);

@@ -52,7 +52,7 @@
             android:background="@drawable/join_rect"
             android:fontFamily="sans-serif-medium"
             android:letterSpacing="@dimen/button_letter_spacing"
-            android:text="@string/book"
+            android:text="@string/book_now"
             android:textAllCaps="true"
             android:textColor="@color/white"
             android:textSize="@dimen/text_medium"
