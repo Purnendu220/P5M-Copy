@@ -78,6 +78,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     private Runnable nextScreenRunnable;
     private String refId;
     private TestimonialsAdapter testimonialsAdapter;
+    private List<Testimonials> default_testimonials;
     private List<Testimonials> testimonials;
 
     /*
@@ -306,7 +307,6 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         textViewCancellationPolicyToggle.setOnClickListener(this);
         textViewCancellationPolicyGeneralToggle.setOnClickListener(this);
         mLayoutUserWallet.setOnClickListener(this);
-
         MixPanel.trackCheckoutVisit(aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName());
         FirebaseAnalysic.trackCheckoutVisit(aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName());
         IntercomEvents.trackCheckoutVisit(aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName());
@@ -334,7 +334,6 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 layoutSpecialClassDetails.setVisibility(View.GONE);
                 layoutNormalClassDetails.setVisibility(View.VISIBLE);
                 layoutPromoCode.setVisibility(View.GONE);
-
                 if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
                     setTextValidityPeriod(aPackage);
                     textViewLimit.setVisibility(View.GONE);
@@ -1093,7 +1092,18 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
     private void setTestimonialAdapter(){
         try {
-            testimonials = new Gson().fromJson(Helper.getTestimonialsFileFromAsset(context), new TypeToken<List<Testimonials>>(){}.getType());
+            default_testimonials = new Gson().fromJson(Helper.getTestimonialsFileFromAsset(context), new TypeToken<List<Testimonials>>(){}.getType());
+            String testimonial = RemoteConfigConst.TESTIMONIALS_VALUE;
+            if(testimonial!=null && !testimonial.isEmpty()){
+                Gson g = new Gson();
+                List<Testimonials> p = g.fromJson(testimonial, new TypeToken<List<Testimonials>>() {
+                }.getType());
+                testimonials =p;
+            }
+            else
+            {
+                testimonials = default_testimonials;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1128,4 +1138,6 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     public void onShowLastItem() {
 
     }
+
+
 }

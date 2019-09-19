@@ -27,6 +27,7 @@ import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
 import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.UnratedClassData;
+import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.request.LogoutRequest;
@@ -41,6 +42,7 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
@@ -58,6 +60,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -627,12 +630,25 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     private void updateIntercom() {
         if (TempStorage.getUser() != null) {
             User user = TempStorage.getUser();
+            UserPackageInfo userPackageInfo = new UserPackageInfo(user);
+
+            String balanceWallet = "0";
 
             Registration registration = Registration.create().withUserId(user.getFirstName() + " " + user.getLastName());
             Intercom.client().registerIdentifiedUser(registration);
+            if(user.getWalletDto()!=null){
+                balanceWallet=String.valueOf(user.getWalletDto().getBalance());
+            }
+
             UserAttributes userAttributes = new UserAttributes.Builder()
                     .withName(user.getFirstName() + " " + user.getLastName())
                     .withEmail(user.getEmail())
+                    .withCustomAttribute("Gender",user.getGender())
+                    .withCustomAttribute("wallet balance",balanceWallet)
+                    .withCustomAttribute("Registration date", user.getDateOfJoining() == 0 ?
+                            "" : DateUtils.getDateFormatter(new Date(user.getDateOfJoining())) + "")
+                    .withCustomAttribute("",userPackageInfo.haveGeneralPackage ?
+                            userPackageInfo.userPackageGeneral.getPackageName() : "")
                     .build();
             Intercom.client().updateUser(userAttributes);
 

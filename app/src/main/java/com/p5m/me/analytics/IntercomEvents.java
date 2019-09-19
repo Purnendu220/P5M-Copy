@@ -5,6 +5,8 @@ import com.p5m.me.data.request.ClassRatingRequest;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LogUtils;
+
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import io.intercom.android.sdk.Intercom;
@@ -15,7 +17,6 @@ public class IntercomEvents {
         Map<String, Object> eventData = new HashMap<>();
         eventData.put("plan", plan);
         eventData.put("coupon", coupon);
-//        eventData.put("purchase_date", DateUtils.getPackageClassDate(purchase_date) );
         eventData.put("purchase_date", DateUtils.getTimespanDate(model.getClassDate()+" "+model.getFromTime()) );
         Intercom.client().logEvent("Purchase_Plan", eventData);
     }
@@ -35,17 +36,16 @@ public class IntercomEvents {
         eventData.put("gym_name", gymName);
         eventData.put("package_name", packageName);
         Intercom.client().logEvent("Purchase_Drop_In", eventData);
-
     }
 
     public static void trackUnJoinClass(ClassModel model) {
-        float hourDiff = DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime());
+        String hourDiff = DateUtils.findDifference(model.getClassDate() + " " + model.getFromTime(), Calendar.getInstance().getTime());
         Map<String, Object> eventData = new HashMap<>();
         eventData.put("activity", model.getClassCategory());
-        eventData.put("time", DateUtils.getTimespanDate(model.getClassDate()+" "+ model.getFromTime()));
+        eventData.put("class_date", DateUtils.getTimespanDate(model.getClassDate()+" "+ model.getFromTime()));
         eventData.put("gym_name", model.getGymBranchDetail().getGymName());
         eventData.put("locality", model.getGymBranchDetail().getLocalityName());
-        eventData.put("time_difference",  DateUtils.getHourDiff(hourDiff));
+        eventData.put("time_difference",  hourDiff);
         Intercom.client().logEvent("Cancel_Booking", eventData);
     }
 
@@ -53,8 +53,8 @@ public class IntercomEvents {
         Map<String, Object> eventData = new HashMap<>();
         eventData.put("rating", model.getmRating());
         eventData.put("class_name", classModel.getTitle());
-        eventData.put("class_time", DateUtils.getTimespanDate(classModel.getClassDate() + " " + classModel.getFromTime()));
-        eventData.put("rating_time",System.currentTimeMillis());
+        eventData.put("class_date", DateUtils.getTimespanDate(classModel.getClassDate() + " " + classModel.getFromTime()));
+        eventData.put("rating_date",DateUtils.getTimespanDate(DateUtils.getCurrentDateandTime()));
         Intercom.client().logEvent("Rated_Class", eventData);
     }
 
@@ -62,11 +62,11 @@ public class IntercomEvents {
         try {
             Map<String, Object> eventData = new HashMap<>();
             eventData.put("activity", classModel.getClassCategory());
-            eventData.put("class_timing", DateUtils.getTimespanDate(classModel.getClassDate() + " " + classModel.getFromTime()));
+            eventData.put("class_date", DateUtils.getTimespanDate(classModel.getClassDate() + " " + classModel.getFromTime()));
             eventData.put("gym_name", classModel.getGymBranchDetail() == null ? "No Trainer" : classModel.getGymBranchDetail().getGymName());
 
-            float hourDiff = DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime());
-            eventData.put("diffHrs", DateUtils.getHourDiff(hourDiff));
+            String hourDiff = DateUtils.findDifference(classModel.getClassDate() + " " + classModel.getFromTime(), Calendar.getInstance().getTime());
+            eventData.put("diffHrs",hourDiff);
 
             eventData.put("locality_preferred", classModel.getGymBranchDetail() == null ? "" : classModel.getGymBranchDetail().getLocalityName());
             Intercom.client().logEvent("Join_Class", eventData);
@@ -76,40 +76,16 @@ public class IntercomEvents {
         }
     }
 
-
     public static void trackMembershipVisit(int navigatedFrom) {
-
-        String origin = "";
-
-        if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS) {
-            origin = AppConstants.Tracker.JOIN_CLASS;
-        } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE) {
-            origin = AppConstants.Tracker.RECHARGE;
-        } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SETTING) {
-            origin = AppConstants.Tracker.SETTINGS;
-        } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION) {
-            origin = AppConstants.Tracker.NOTIFICATION;
-        } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN) {
-            origin = AppConstants.Tracker.PUSH_NOTIFICATION;
-        } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS) {
-            origin = AppConstants.Tracker.FIND_CLASS;
-        }
-
-        if (origin.isEmpty()) {
-            return;
-        }
-
-        try {
+         try {
             Map<String, Object> eventData = new HashMap<>();
-            eventData.put("origin", origin);
 
-            Intercom.client().logEvent("Visit_Membership", eventData);
+            Intercom.client().logEvent("Visit_Membership",eventData );
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
         }
     }
-
 
     public static void trackCheckoutVisit(String packageName) {
         try {
@@ -137,17 +113,28 @@ public class IntercomEvents {
         }
     }
 
-    public static void trackGymVisit(String gymName) {
+    public static void trackGymVisit() {
         try {
             Map<String, Object> eventData = new HashMap<>();
-            eventData.put("gym_name", gymName);
-
             Intercom.client().logEvent("Visit_Gym", eventData);
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
         }
     }
+ public static void attended_class() {
+        try {
+            Map<String, Object> eventData = new HashMap<>();
+            Intercom.client().logEvent("activity", eventData);
+            Intercom.client().logEvent("class_date", eventData);
+            Intercom.client().logEvent("gym", eventData);
+            Intercom.client().logEvent("locality", eventData);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
 
 
     public static void trackClassVisit(String className) {

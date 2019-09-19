@@ -475,143 +475,24 @@
             app:layout_constraintStart_toStartOf="@+id/textViewWelcome"
             app:layout_constraintTop_toBottomOf="@+id/view2" />
 
-        <TextView
-            android:id="@+id/textViewMoreVariety"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewFAQ"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:drawableEnd="@drawable/blue_arrow"
             android:gravity="center_vertical"
             android:paddingTop="8dp"
-            android:paddingBottom="@dimen/margin_5"
+            android:paddingBottom="@dimen/margin_45"
             android:drawableTint="@color/theme_book"
             android:text="@string/more_variety"
+            android:layout_marginBottom="@dimen/margin_15"
             android:textColor="@color/theme_dark_text"
             android:textSize="@dimen/text_large"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/textViewFrequentlyAskedQuestions"
             app:layout_constraintTop_toBottomOf="@+id/textViewFrequentlyAskedQuestions" />
-
-        <View
-            android:id="@+id/view3"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#DFDDDD"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewMoreVariety" />
-
-        <TextView
-            android:id="@+id/textViewFlexible_timing"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:drawableEnd="@drawable/blue_arrow"
-            android:gravity="center_vertical"
-            android:letterSpacing="@dimen/text_medium_letter_spacing"
-            android:lineSpacingExtra="@dimen/line_spacing_extra"
-            android:paddingTop="8dp"
-            android:paddingBottom="@dimen/margin_5"
-            android:text="@string/flexible_timing"
-            android:drawableTint="@color/theme_book"
-            android:textColor="@color/theme_dark_text"
-            android:textSize="@dimen/text_large"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textViewFrequentlyAskedQuestions"
-            app:layout_constraintTop_toBottomOf="@+id/view3" />
-
-        <View
-            android:id="@+id/view4"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="@dimen/margin_12"
-            android:background="#DFDDDD"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewFlexible_timing" />
-        <TextView
-            android:id="@+id/textViewThirdFeature"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:drawableEnd="@drawable/blue_arrow"
-            android:gravity="center_vertical"
-            android:paddingTop="8dp"
-            android:drawableTint="@color/theme_book"
-            android:paddingBottom="@dimen/margin_5"
-            android:text="@string/third_feature"
-            android:textColor="@color/theme_dark_text"
-            android:textSize="@dimen/text_large"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textViewFrequentlyAskedQuestions"
-            app:layout_constraintTop_toBottomOf="@+id/view4" />
-
-        <View
-            android:id="@+id/view5"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#DFDDDD"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewThirdFeature" />
-
-         <TextView
-            android:id="@+id/textViewPay"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:drawableEnd="@drawable/blue_arrow"
-            android:gravity="center_vertical"
-             android:drawableTint="@color/theme_book"
-            android:paddingTop="8dp"
-            android:paddingBottom="@dimen/margin_5"
-            android:text="@string/pay_for_bundle"
-            android:textColor="@color/theme_dark_text"
-            android:textSize="@dimen/text_large"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textViewFrequentlyAskedQuestions"
-            app:layout_constraintTop_toBottomOf="@+id/view5" />
-
-        <View
-            android:id="@+id/view6"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#DFDDDD"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewPay" />
-        <TextView
-            android:id="@+id/textViewBundleOfClass"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:drawableEnd="@drawable/blue_arrow"
-            android:gravity="center_vertical"
-            android:drawableTint="@color/theme_book"
-            android:paddingTop="8dp"
-            android:paddingBottom="@dimen/margin_5"
-            android:text="@string/bundle_of_classes"
-            android:textColor="@color/theme_dark_text"
-            android:textSize="@dimen/text_large"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textViewFrequentlyAskedQuestions"
-            app:layout_constraintTop_toBottomOf="@+id/view6" />
-
-        <View
-            android:id="@+id/view7"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#DFDDDD"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewBundleOfClass"
-            android:layout_marginBottom="@dimen/margin_15"/>
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

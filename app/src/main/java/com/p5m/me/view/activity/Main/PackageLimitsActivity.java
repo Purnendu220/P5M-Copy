@@ -19,6 +19,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.PackageLimitAdapter;
+import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.data.PackageLimitListItem;
 import com.p5m.me.data.PackageLimitModel;
 import com.p5m.me.remote_config.RemoteConfigConst;
@@ -39,6 +40,12 @@ public class PackageLimitsActivity extends BaseActivity implements NetworkCommun
 
     public static void openActivity(Context context, String packageName) {
         context.startActivity(new Intent(context, PackageLimitsActivity.class).putExtra(AppConstants.DataKey.PACKAGE_NAME_STRING, packageName));
+    }
+    public static Intent createIntent(Context context) {
+        Intent intent = new Intent(context, PackageLimitsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        return intent;
     }
 
     @BindView(R.id.toolbar)
@@ -73,6 +80,7 @@ public class PackageLimitsActivity extends BaseActivity implements NetworkCommun
 
         packageLimitAdapter = new PackageLimitAdapter(context, this);
         recyclerView.setAdapter(packageLimitAdapter);
+        IntercomEvents.trackGymVisit();
 
         onRefresh();
         setToolBar();

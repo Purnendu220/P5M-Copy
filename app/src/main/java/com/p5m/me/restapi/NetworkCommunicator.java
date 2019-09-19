@@ -67,6 +67,7 @@ import java.util.List;
 
 import id.zelory.compressor.Compressor;
 import io.intercom.android.sdk.Intercom;
+import io.intercom.android.sdk.UserAttributes;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -865,6 +866,7 @@ public class NetworkCommunicator {
                     setUserProperty(context, UserPropertyConst.NUMBER_OF_TRANSACTIONS, String.valueOf(response.data.getNumberOfTransactions()));
                     String userMainPackage = UserPropertyConst.NO_PACKAGE;
                     String userReadyPackage = UserPropertyConst.No_READY_PACKAGE;
+                    String userReadyGym = "";
                     if (response.data.getUserPackageDetailDtoList() != null
                             && !response.data.getUserPackageDetailDtoList().isEmpty()) {
 
@@ -875,12 +877,21 @@ public class NetworkCommunicator {
 
                             } else if (userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                                 userReadyPackage = UserPropertyConst.HAVE_READY_PACKAGE;
+                                if (userReadyGym.isEmpty())
+                                    userReadyGym += userPackage.getGymName();
+                                else
+                                    userReadyGym += ", "+userPackage.getGymName();
 
                             }
                         }
                     }
                     setUserProperty(context, UserPropertyConst.ACTIVE_PACKAGE, userMainPackage);
                     setUserProperty(context, UserPropertyConst.READY_PACKAGE, userReadyPackage);
+                    UserAttributes userAttributes = new UserAttributes.Builder()
+                            .withCustomAttribute("Active plan", userMainPackage)
+                            .withCustomAttribute("Active drop in", userReadyGym)
+                            .build();
+                    Intercom.client().updateUser(userAttributes);
 
                 }
                 requestListener.onApiSuccess(response, requestCode);
@@ -914,9 +925,9 @@ public class NetworkCommunicator {
         return call;
     }
 
-    public Call getUserPackageDetails(int userId,long id, final RequestListener requestListener, boolean useCache) {
+    public Call getUserPackageDetails(int userId, long id, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.USER_PACKAGE_DETAIL;
-        Call<ResponseModel<List<UserPackageDetail>>> call = apiService.getUserPackageDetail(userId,id);
+        Call<ResponseModel<List<UserPackageDetail>>> call = apiService.getUserPackageDetail(userId, id);
         LogUtils.debug("NetworkCommunicator hitting getGym");
 
         call.enqueue(new RestCallBack<ResponseModel<List<UserPackageDetail>>>(context) {

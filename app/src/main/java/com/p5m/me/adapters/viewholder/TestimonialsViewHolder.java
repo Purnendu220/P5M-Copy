@@ -11,6 +11,7 @@ import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.Testimonials;
 import com.p5m.me.utils.ImageUtils;
+import com.p5m.me.utils.LanguageUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,8 +51,10 @@ public class TestimonialsViewHolder extends RecyclerView.ViewHolder {
 //                ImageUtils.setImage(context, model.getProfile_img(), imageViewProfile);
             if (!model.getName().isEmpty())
                 textViewName.setText(model.getName());
-            if (!model.getComments().isEmpty())
-                textViewComment.setText(model.getComments());
+            if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en") || !model.getMessage_eng().isEmpty())
+                textViewComment.setText(model.getMessage_eng());
+            else  if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar") || !model.getMessage_ar().isEmpty())
+                textViewComment.setText(model.getMessage_ar());
 
 
         }

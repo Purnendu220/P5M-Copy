@@ -1,15 +1,17 @@
 package com.p5m.me.data;
 
 public class Testimonials {
+
+
     /**
-     * name : X Athletic
-     * profile_img : https://d15r6mjl4pq1lw.cloudfront.net/class/6f724f48-476f-4e56-a934-98c66d291a93.png
-     * comments : Filter classes based on location, time and activity to find your perfect workout
+     * name : Dima
+     * message_ar :
+     * message_eng : I love the app. It solved the problem I had of getting bored too quickly of the gym.
      */
 
     private String name;
-//    private String profile_img;
-    private String comments;
+    private String message_ar;
+    private String message_eng;
 
     public String getName() {
         return name;
@@ -19,19 +21,19 @@ public class Testimonials {
         this.name = name;
     }
 
-//    public String getProfile_img() {
-//        return profile_img;
-//    }
-//
-//    public void setProfile_img(String profile_img) {
-//        this.profile_img = profile_img;
-//    }
-
-    public String getComments() {
-        return comments;
+    public String getMessage_ar() {
+        return message_ar;
     }
 
-    public void setComments(String comments) {
-        this.comments = comments;
+    public void setMessage_ar(String message_ar) {
+        this.message_ar = message_ar;
+    }
+
+    public String getMessage_eng() {
+        return message_eng;
+    }
+
+    public void setMessage_eng(String message_eng) {
+        this.message_eng = message_eng;
     }
 }

@@ -819,6 +819,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             return;
                         } else {
                             Package aPackage = packages.get(0);
+                            textViewBook.setEnabled(true);
                             BottomSheetClassBookingOptions mBottomSheetClassBookingOptions = BottomSheetClassBookingOptions.newInstance(classModel,null,1,aPackage);
                             mBottomSheetClassBookingOptions.show(((ClassProfileActivity) context).getSupportFragmentManager(),                                    "own booking");
 

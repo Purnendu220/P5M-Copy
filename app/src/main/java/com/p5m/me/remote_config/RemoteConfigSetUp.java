@@ -4,13 +4,12 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-
-import androidx.core.graphics.drawable.DrawableCompat;
-
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -36,6 +35,7 @@ import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_WITH_FRIEND_COLOR_
 import static com.p5m.me.remote_config.RemoteConfigConst.BUY_CLASS_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BUY_CLASS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.CLASS_CARD_TEXT_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.FAQ_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.FULL_BUTTON_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.FULL_BUTTON_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.GYM_VISIT_LIMIT_DETAIL_TEXT_KEY;
@@ -53,23 +53,21 @@ import static com.p5m.me.remote_config.RemoteConfigConst.SEARCH_BAR_TEXT_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.SELECT_PLAN_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.SELECT_PLAN_TEXT_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.SESSION_EXPIRED_COLOR_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.TESTIMONIALS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.WAITLISTED_BUTTON_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.WAITLIST_BUTTON_KEY;
 
 public class RemoteConfigSetUp {
+
     public static final FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
     private static Activity context;
 
     public static void setup(Activity activity) {
-
-        firebaseRemoteConfig.setConfigSettings(new FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(true)
-                .build());
-
         context = activity;
-
+        firebaseRemoteConfig.setConfigSettingsAsync(new FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(1600)
+                .build());
     }
-
 
     public static void setValue(final int constValue, final String key, final String defaultValue) {
 
@@ -193,6 +191,13 @@ public class RemoteConfigSetUp {
                 case BOOK_IN_CLASS_COLOR_KEY:
                     RemoteConfigConst.BOOK_IN_CLASS_COLOR_VALUE = keyValue;
                     break;
+
+                case TESTIMONIALS_KEY:
+                    RemoteConfigConst.TESTIMONIALS_VALUE = keyValue;
+                    break;
+                case FAQ_KEY:
+                    RemoteConfigConst.FAQ_VALUE = keyValue;
+                    break;
             }
         }
     }
@@ -263,10 +268,6 @@ public class RemoteConfigSetUp {
         setValue(RemoteConfigConst.BOOKED_BUTTON_KEY,
                 RemoteConfigConst.BOOKED_BUTTON,
                 context.getString(R.string.booked));
-
-//        setValue(RemoteConfigConst.FULL_BUTTON_KEY,
-//                RemoteConfigConst.FULL_BUTTON,
-//                context.getString(R.string.full));
 
         setValue(RemoteConfigConst.WAITLISTED_BUTTON_KEY,
                 RemoteConfigConst.WAITLISTED_BUTTON,
@@ -356,6 +357,11 @@ public class RemoteConfigSetUp {
         setValue(MEMBERSHIP_OFFER_COLOR_KEY,
                 RemoteConfigConst.MEMBERSHIP_OFFER_COLOR, "#1FB257");
 
+        setValue(TESTIMONIALS_KEY,
+                RemoteConfigConst.TESTIMONIALS_VALUE, "[{\"name\":\"Dima\", \"message_ar\": \"\", \"message_eng\":\"I love the app. It solved the problem I had of getting bored too quickly of the gym.\"},{\"name\":\"XEINA\", \"message_ar\": \"\", \"message_eng\":\"I love how P5M now includes the option of booking classes with friends.\"},{\"name\":\"RANA\", \"message_ar\": \"\", \"message_eng\":\"Great way to try out new gyms & classes and decide where you wanna go.\"}]");
+        setValue(FAQ_KEY,
+                RemoteConfigConst.FAQ_VALUE, "[{\"english_question\": \"Why use P5M?\", \"english_answer\": \"P5M app enables you to visit multiple gyms and attend diffent activities with only one membership. You can even buy monthly subscriptions if you wish that is how you would like to roll.\", \"arabic_question\": \"\", \"arabic_answer\": \"\"}]");
 
     }
+
 }

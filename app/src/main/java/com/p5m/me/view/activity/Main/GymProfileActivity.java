@@ -346,7 +346,6 @@ public class GymProfileActivity extends BaseActivity implements AdapterCallbacks
                 swipeRefreshLayout.setRefreshing(false);
 
                 gymDetailModel = ((ResponseModel<GymDetailModel>) response).data;
-                IntercomEvents.trackGymVisit(gymDetailModel.getStudioName());
                 gymProfileAdapter.setGymDetailModel(gymDetailModel);
                 break;
         }
