@@ -140,13 +140,7 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
 //            MixPanel.trackJoinClass(AppConstants.Tracker.PURCHASE_PLAN, classModel);
 //        }
         FirebaseAnalysic.trackMembershipPurchase(couponCode, packageName);
-        if (packageName.equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN) &&
-                classModel.getTitle() != null) {
-            IntercomEvents.purchase_drop_in(classModel.getTitle(), packageName);
-        } else {
-            if (packageName != null && couponCode != null && classModel != null)
-                IntercomEvents.purchasedPlan(packageName, couponCode, classModel);
-        }
+
         if (classModel != null) {
             MixPanel.trackJoinClass(AppConstants.Tracker.PURCHASE_PLAN, classModel);
             FirebaseAnalysic.trackJoinClass(AppConstants.Tracker.PURCHASE_PLAN, classModel);

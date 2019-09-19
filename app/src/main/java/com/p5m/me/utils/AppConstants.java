@@ -291,6 +291,7 @@ public class AppConstants {
 
         public static final String PACKAGE_TYPE_GENERAL = "GENERAL";
         public static final String PACKAGE_TYPE_DROP_IN = "DROPIN";
+        public static final String PACKAGE_TYPE_DROP_IN_INTERCOM = "DROP IN";
 
         public static final String GENDER_MALE = "MALE";
         public static final String GENDER_FEMALE = "FEMALE";

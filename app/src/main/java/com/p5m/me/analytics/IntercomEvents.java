@@ -9,6 +9,7 @@ import com.p5m.me.utils.LogUtils;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+
 import io.intercom.android.sdk.Intercom;
 
 public class IntercomEvents {
@@ -17,7 +18,7 @@ public class IntercomEvents {
         Map<String, Object> eventData = new HashMap<>();
         eventData.put("plan", plan);
         eventData.put("coupon", coupon);
-        eventData.put("purchase_date", DateUtils.getTimespanDate(model.getClassDate()+" "+model.getFromTime()) );
+        eventData.put("purchase_date", DateUtils.getTimespanDate(model.getClassDate() + " " + model.getFromTime()));
         Intercom.client().logEvent("Purchase_Plan", eventData);
     }
 
@@ -31,10 +32,9 @@ public class IntercomEvents {
         Intercom.client().logEvent("renewed_plan", eventData);
     }
 
-    public static void purchase_drop_in(String gymName, String packageName) {
+    public static void purchase_drop_in(String gymName) {
         Map<String, Object> eventData = new HashMap<>();
         eventData.put("gym_name", gymName);
-        eventData.put("package_name", packageName);
         Intercom.client().logEvent("Purchase_Drop_In", eventData);
     }
 
@@ -42,10 +42,10 @@ public class IntercomEvents {
         String hourDiff = DateUtils.findDifference(model.getClassDate() + " " + model.getFromTime(), Calendar.getInstance().getTime());
         Map<String, Object> eventData = new HashMap<>();
         eventData.put("activity", model.getClassCategory());
-        eventData.put("class_date", DateUtils.getTimespanDate(model.getClassDate()+" "+ model.getFromTime()));
+        eventData.put("class_date", DateUtils.getTimespanDate(model.getClassDate() + " " + model.getFromTime()));
         eventData.put("gym_name", model.getGymBranchDetail().getGymName());
         eventData.put("locality", model.getGymBranchDetail().getLocalityName());
-        eventData.put("time_difference",  hourDiff);
+        eventData.put("time_difference", hourDiff);
         Intercom.client().logEvent("Cancel_Booking", eventData);
     }
 
@@ -54,7 +54,7 @@ public class IntercomEvents {
         eventData.put("rating", model.getmRating());
         eventData.put("class_name", classModel.getTitle());
         eventData.put("class_date", DateUtils.getTimespanDate(classModel.getClassDate() + " " + classModel.getFromTime()));
-        eventData.put("rating_date",DateUtils.getTimespanDate(DateUtils.getCurrentDateandTime()));
+        eventData.put("rating_date", DateUtils.getTimespanDate(DateUtils.getCurrentDateandTime()));
         Intercom.client().logEvent("Rated_Class", eventData);
     }
 
@@ -66,7 +66,7 @@ public class IntercomEvents {
             eventData.put("gym_name", classModel.getGymBranchDetail() == null ? "No Trainer" : classModel.getGymBranchDetail().getGymName());
 
             String hourDiff = DateUtils.findDifference(classModel.getClassDate() + " " + classModel.getFromTime(), Calendar.getInstance().getTime());
-            eventData.put("diffHrs",hourDiff);
+            eventData.put("diffHrs", hourDiff);
 
             eventData.put("locality_preferred", classModel.getGymBranchDetail() == null ? "" : classModel.getGymBranchDetail().getLocalityName());
             Intercom.client().logEvent("Join_Class", eventData);
@@ -77,10 +77,10 @@ public class IntercomEvents {
     }
 
     public static void trackMembershipVisit(int navigatedFrom) {
-         try {
+        try {
             Map<String, Object> eventData = new HashMap<>();
 
-            Intercom.client().logEvent("Visit_Membership",eventData );
+            Intercom.client().logEvent("Visit_Membership", eventData);
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -88,18 +88,24 @@ public class IntercomEvents {
     }
 
     public static void trackCheckoutVisit(String packageName) {
-        try {
-            Map<String, Object> eventData = new HashMap<>();
-            eventData.put("package_name", packageName);
+        if (packageName.equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN) ||
+                packageName.equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN_INTERCOM)
+                || packageName.equalsIgnoreCase(AppConstants.Tracker.SPECIAL)) {
+        } else {
+            try {
+                Map<String, Object> eventData = new HashMap<>();
+                eventData.put("package_name", packageName);
 
-            Intercom.client().logEvent("Visit_Checkout", eventData);
-        } catch (Exception e) {
-            e.printStackTrace();
-            LogUtils.exception(e);
+                Intercom.client().logEvent("Visit_Checkout", eventData);
+            } catch (Exception e) {
+                e.printStackTrace();
+                LogUtils.exception(e);
+            }
         }
     }
 
-    public static void trackExtendedPackage(String packageName, Integer weekExtended, int daysLeft) {
+    public static void trackExtendedPackage(String packageName, Integer weekExtended,
+                                            int daysLeft) {
         try {
             Map<String, Object> eventData = new HashMap<>();
             eventData.put("package_name", packageName);
@@ -122,7 +128,8 @@ public class IntercomEvents {
             LogUtils.exception(e);
         }
     }
- public static void attended_class() {
+
+    public static void attended_class() {
         try {
             Map<String, Object> eventData = new HashMap<>();
             Intercom.client().logEvent("activity", eventData);
@@ -134,7 +141,6 @@ public class IntercomEvents {
             LogUtils.exception(e);
         }
     }
-
 
 
     public static void trackClassVisit(String className) {

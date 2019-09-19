@@ -979,27 +979,29 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void redirectOnResult1() {
+        String couponCode = promoCode == null ? AppConstants.Tracker.NO_COUPON : promoCode.code;
+
 //        PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,refId,aPackage,classModel,checkoutFor,userPackage,selectedPacakageFromList);
         switch (checkoutFor) {
             case PACKAGE:
 
                 PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,
-                        refId, aPackage, null, checkoutFor, null, null, mNumberOfPackagesToBuy);
+                        refId, aPackage, null, checkoutFor, null, null, mNumberOfPackagesToBuy,couponCode);
 
                 break;
             case CLASS_PURCHASE_WITH_PACKAGE:
                 PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,
-                        refId, aPackage, classModel, checkoutFor, null, null, mNumberOfPackagesToBuy);
+                        refId, aPackage, classModel, checkoutFor, null, null, mNumberOfPackagesToBuy,couponCode);
 
                 break;
             case SPECIAL_CLASS:
                 PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,
-                        refId, null, classModel, checkoutFor, null, selectedPacakageFromList, mNumberOfPackagesToBuy);
+                        refId, null, classModel, checkoutFor, null, selectedPacakageFromList, mNumberOfPackagesToBuy,couponCode);
 
                 break;
             case EXTENSION:
                 PaymentConfirmationActivity.openActivity(context, navigatinFrom,
-                        refId, null, null, checkoutFor, userPackage, selectedPacakageFromList, mNumberOfPackagesToBuy);
+                        refId, null, null, checkoutFor, userPackage, selectedPacakageFromList, mNumberOfPackagesToBuy,couponCode);
 
                 break;
         }
