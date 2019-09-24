@@ -1094,7 +1094,6 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
     private void setTestimonialAdapter(){
         try {
-            default_testimonials = new Gson().fromJson(Helper.getTestimonialsFileFromAsset(context), new TypeToken<List<Testimonials>>(){}.getType());
             String testimonial = RemoteConfigConst.TESTIMONIALS_VALUE;
             if(testimonial!=null && !testimonial.isEmpty()){
                 Gson g = new Gson();
@@ -1102,10 +1101,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 }.getType());
                 testimonials =p;
             }
-            else
-            {
-                testimonials = default_testimonials;
-            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

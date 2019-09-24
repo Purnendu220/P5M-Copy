@@ -36,6 +36,7 @@ import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.ClassRatingUserData;
+import com.p5m.me.data.Join5MinModel;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.ClassModel;
@@ -49,6 +50,8 @@ import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.firebase_dynamic_link.FirebaseDynamicLinnk;
 import com.p5m.me.helper.ClassListListenerHelper;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.ratemanager.RateAlarmReceiver;
+import com.p5m.me.ratemanager.ScheduleAlarmManager;
 import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
@@ -71,6 +74,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -127,6 +131,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public View imageViewOptions;
     private ClassProfileAdapter classProfileAdapter;
     private ClassModel classModel;
+    private Join5MinModel join5MinModel;
     private int classSessionId;
     private int page;
     private boolean isNavigationFromSharing;
@@ -200,6 +205,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         classSessionId = getIntent().getIntExtra(AppConstants.DataKey.CLASS_SESSION_ID_INT, -1);
         navigationFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
         textViewBook.setEnabled(true);
+        join5MinModel = new Join5MinModel();
         if (classModel == null && classSessionId == -1) {
             finish();
             return;
@@ -286,7 +292,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
     @OnClick(R.id.textViewBook)
     public void textViewBook() {
-       isBookWithFriendInProgress = false;
+        isBookWithFriendInProgress = false;
         mBookWithFriendData = null;
         // Check if class is allowed for the gender..
         if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
@@ -301,13 +307,13 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         textViewBook.setEnabled(false);
 
         textViewBook.setText(context.getResources().getString(R.string.please_wait));
-        if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus()==false) {
+        if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus() == false) {
             networkCommunicator.addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
                 @Override
                 public void onApiSuccess(Object response, int requestCode) {
                     textViewBook.setEnabled(false);
                     try {
-                        if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus()==false) {
+                        if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus() == false) {
                             String message = String.format(context.getString(R.string.added_to_waitlist));
                             DialogUtils.showBasicMessage(context, message, context.getString(R.string.view_wishlist), new MaterialDialog.SingleButtonCallback() {
                                 @Override
@@ -325,7 +331,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                         classModel.setWishType(AppConstants.ApiParamKey.WAITLIST);
                         EventBroadcastHelper.sendWishAdded(classModel);
                         EventBroadcastHelper.waitlistClassJoin(context, classModel);
-
                         Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
 
@@ -560,7 +565,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     }
 
 
-
     private void setToolBar() {
 
         BaseActivity activity = (BaseActivity) this.activity;
@@ -652,8 +656,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 onBackPressed();
                 break;
             case R.id.imageViewOptions:
-                if(classModel.isUserJoinStatus()){
-                    ClassListListenerHelper classListListenerHelper= new ClassListListenerHelper(context, activity, AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING, this);
+                if (classModel.isUserJoinStatus()) {
+                    ClassListListenerHelper classListListenerHelper = new ClassListListenerHelper(context, activity, AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING, this);
 
                     if (classModel.getRefBookingId() != null && classModel.getRefBookingId() > 0) {
                         classListListenerHelper.popupOptionsCancelClassBookedWithFriend(context, ((BaseActivity) activity).networkCommunicator, view, classModel);
@@ -662,9 +666,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                         classListListenerHelper.popupOptionsCancelClass(context, ((BaseActivity) activity).networkCommunicator, view, classModel, true);
 
                     }
-                }
-                else
-                ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, classModel, navigationFrom, null);
+                } else
+                    ClassListListenerHelper.popupOptionsAdd(context, networkCommunicator, view, classModel, navigationFrom, null);
                 break;
 
             case R.id.layoutUserWallet:
@@ -688,15 +691,16 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public void onApiSuccess(Object response, int requestCode) {
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.JOIN_CLASS:
-
                 User user = ((ResponseModel<User>) response).data;
                 classModel.setUserJoinStatus(true);
+
+                saved5MinClass();
+
                 EventBroadcastHelper.sendUserUpdate(context, user);
                 int joinWith;
-                if(isBookWithFriendInProgress){
+                if (isBookWithFriendInProgress) {
                     joinWith = AppConstants.Values.UNJOIN_BOTH_CLASS; // Book With Friend
-                }
-                else{
+                } else {
                     joinWith = AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS;
                 }
                 EventBroadcastHelper.sendClassJoin(context, classModel, joinWith);
@@ -704,7 +708,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
                 MixPanel.trackJoinClass(navigationFrom, classModel);
                 FirebaseAnalysic.trackJoinClass(navigationFrom, classModel);
-                IntercomEvents.trackJoinClass( classModel);
+                IntercomEvents.trackJoinClass(classModel);
                 if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
 //                    context.getResources().getString(R.string.invite_friends)
                     DialogUtils.showBasicMessage(context, "",
@@ -791,16 +795,15 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
                         } else {
                             Package aPackage = null;
-                            for( Package p : packages){
-                                if(p.getPackageType().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)){
+                            for (Package p : packages) {
+                                if (p.getPackageType().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                                     aPackage = p;
 
                                 }
                             }
-                           // MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
-                            BottomSheetClassBookingOptions mBottomSheetClassBookingOptions = BottomSheetClassBookingOptions.newInstance(classModel,mBookWithFriendData,aPackage.getNoOfClass(),aPackage);
-                            mBottomSheetClassBookingOptions.show(((ClassProfileActivity) context).getSupportFragmentManager(),                                    "friend_booking");
-
+                            // MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
+                            BottomSheetClassBookingOptions mBottomSheetClassBookingOptions = BottomSheetClassBookingOptions.newInstance(classModel, mBookWithFriendData, aPackage.getNoOfClass(), aPackage);
+                            mBottomSheetClassBookingOptions.show(((ClassProfileActivity) context).getSupportFragmentManager(), "friend_booking");
 
 
                             // HomeActivity.show(context,AppConstants.Tab.TAB_MY_MEMBERSHIP,AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
@@ -820,8 +823,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                         } else {
                             Package aPackage = packages.get(0);
                             textViewBook.setEnabled(true);
-                            BottomSheetClassBookingOptions mBottomSheetClassBookingOptions = BottomSheetClassBookingOptions.newInstance(classModel,null,1,aPackage);
-                            mBottomSheetClassBookingOptions.show(((ClassProfileActivity) context).getSupportFragmentManager(),                                    "own booking");
+                            BottomSheetClassBookingOptions mBottomSheetClassBookingOptions = BottomSheetClassBookingOptions.newInstance(classModel, null, 1, aPackage);
+                            mBottomSheetClassBookingOptions.show(((ClassProfileActivity) context).getSupportFragmentManager(), "own booking");
 
                             // HomeActivity.show(context,AppConstants.Tab.TAB_MY_MEMBERSHIP,AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
                         }
@@ -844,6 +847,26 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 break;
 
         }
+
+    }
+
+    private void saved5MinClass() {
+        join5MinModel.setClassId(classModel.getClassId());
+        join5MinModel.setJoiningTime(Calendar.getInstance().getTime());
+        List<Join5MinModel> bookedClassList = MyPreferences.getInstance().getBookingTime();
+        if (bookedClassList != null && bookedClassList.size() > 0) {
+            bookedClassList.add(join5MinModel);
+            MyPreferences.getInstance().saveBookingTime(bookedClassList);
+            LogUtils.debug("Class Booked " + classModel.getTitle());
+            return;
+
+        } else {
+            bookedClassList = new ArrayList<>();
+            bookedClassList.add(join5MinModel);
+            MyPreferences.getInstance().saveBookingTime(bookedClassList);
+
+        }
+
 
     }
 
@@ -963,7 +986,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     DialogUtils.showBasicMessage(context, errorMessage, getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                              finish();
+                            finish();
                         }
                     }, false);
                 }
@@ -988,7 +1011,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     @Override
     protected void onResume() {
         super.onResume();
-        if(classModel!=null)
+        if (classModel != null)
             Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
     }

@@ -177,6 +177,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 case "OnJoinClass":
                     setNotification(jsonObject, dataID);
                     addEvent(jsonObject, dataID);
+
                     break;
                 case "OnSeatAvailableForWishlistFromClassUpdate":
                 case "OnSeatAvailableForWishlist":

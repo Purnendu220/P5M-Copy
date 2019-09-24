@@ -232,7 +232,7 @@ public class DateUtils {
             e.printStackTrace();
             LogUtils.exception(e);
         }
-        return new Timestamp(System.nanoTime())  ;
+        return new Timestamp(System.nanoTime());
     }
 
 
@@ -398,7 +398,7 @@ public class DateUtils {
         return "";
     }
 
-    public static String   findDifference(String date, Date endDate) {
+    public static String findDifference(String date, Date endDate) {
         //milliseconds
         try {
             Date startDate = classDateExpiry.parse(date);
@@ -430,5 +430,18 @@ public class DateUtils {
        /* System.out.printf(
                 "%d days, %d hours, %d minutes, %d seconds%n",
                 elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds);*/
+    }
+
+    public static double find5MinDifference(Date startDate, Date endDate) {
+        try {
+
+            long diff = endDate.getTime() - startDate.getTime();
+            long diffMinutes = diff / (60 * 1000) % 60;
+            return diffMinutes;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 2;
+
     }
 }

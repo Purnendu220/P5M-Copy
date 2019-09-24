@@ -434,7 +434,7 @@ public class Helper {
         }
         return json;
     }
-    public static String getTestimonialsFileFromAsset(Context context) {
+   /* public static String getTestimonialsFileFromAsset(Context context) {
         String json = null;
         try {
             InputStream is = context.getAssets().open("Testimonials.json");
@@ -448,7 +448,7 @@ public class Helper {
             return "";
         }
         return json;
-    }
+    }*/
     public static boolean isSpecialClass(ClassModel model) {
         return model!=null&&model.getPriceModel()!=null&&model.getPriceModel().equals("SPECIAL") || model.getPriceModel().equals("FOC");
     }

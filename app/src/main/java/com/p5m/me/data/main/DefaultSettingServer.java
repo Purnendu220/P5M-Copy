@@ -13,6 +13,7 @@ public class DefaultSettingServer implements java.io.Serializable {
     private List<ValidityPackageList> validityPackageList = null;
     private String popularClassesText;
     private float refundAllowedbeforeForSpecial;
+    private String cancel_5_minPolicy;
 
     public String getSpecialClassCancellationPolicy() {
         return this.specialClassCancellationPolicy;

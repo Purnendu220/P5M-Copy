@@ -56,7 +56,7 @@ public class FAQViewHolder extends RecyclerView.ViewHolder {
                 if (!model.getArabic_answer().isEmpty())
                     textViewAnswer.setText(model.getArabic_answer());
             }
-            model.setSelected(false);
+            model.setSelected(true);
 
             textViewQuestion.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -69,7 +69,9 @@ public class FAQViewHolder extends RecyclerView.ViewHolder {
                         model.setSelected(true);
                         textViewAnswer.setVisibility(View.VISIBLE);
                     }
+                    adapterCallbacks.onAdapterItemClick(FAQViewHolder.this, textViewQuestion, model, position);
                 }
+
             });
             textViewAnswer.setOnClickListener(new View.OnClickListener() {
                 @Override

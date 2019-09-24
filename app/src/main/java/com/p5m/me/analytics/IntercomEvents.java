@@ -1,6 +1,9 @@
 package com.p5m.me.analytics;
 
+import com.p5m.me.data.PaymentConfirmationResponse;
+import com.p5m.me.data.ValidityPackageList;
 import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.data.request.ClassRatingRequest;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
@@ -14,11 +17,11 @@ import io.intercom.android.sdk.Intercom;
 
 public class IntercomEvents {
 
-    public static void purchasedPlan(String plan, String coupon, ClassModel model) {
+    public static void purchasedPlan(PaymentConfirmationResponse plan, String coupon, ClassModel model) {
         Map<String, Object> eventData = new HashMap<>();
-        eventData.put("plan", plan);
-        eventData.put("coupon", coupon);
-        eventData.put("purchase_date", DateUtils.getTimespanDate(model.getClassDate() + " " + model.getFromTime()));
+        eventData.put("plan", plan!=null?plan.getPackageName():"");
+        eventData.put("coupon", coupon!=null?coupon:"");
+        eventData.put("purchase_date", DateUtils.getTimespanDate(DateUtils.getCurrentDateandTime()));
         Intercom.client().logEvent("Purchase_Plan", eventData);
     }
 
@@ -32,30 +35,36 @@ public class IntercomEvents {
         Intercom.client().logEvent("renewed_plan", eventData);
     }
 
-    public static void purchase_drop_in(String gymName) {
+    public static void purchase_drop_in(ClassModel classModel) {
         Map<String, Object> eventData = new HashMap<>();
-        eventData.put("gym_name", gymName);
+        eventData.put("gym_name", classModel != null ? classModel.getTitle() : "");
         Intercom.client().logEvent("Purchase_Drop_In", eventData);
     }
 
     public static void trackUnJoinClass(ClassModel model) {
-        String hourDiff = DateUtils.findDifference(model.getClassDate() + " " + model.getFromTime(), Calendar.getInstance().getTime());
-        Map<String, Object> eventData = new HashMap<>();
-        eventData.put("activity", model.getClassCategory());
-        eventData.put("class_date", DateUtils.getTimespanDate(model.getClassDate() + " " + model.getFromTime()));
-        eventData.put("gym_name", model.getGymBranchDetail().getGymName());
-        eventData.put("locality", model.getGymBranchDetail().getLocalityName());
-        eventData.put("time_difference", hourDiff);
-        Intercom.client().logEvent("Cancel_Booking", eventData);
+        if (model != null) {
+            String hourDiff = DateUtils.findDifference(model.getClassDate() + " " + model.getFromTime(), Calendar.getInstance().getTime());
+            Map<String, Object> eventData = new HashMap<>();
+            eventData.put("activity", model.getClassCategory());
+            eventData.put("class_date", DateUtils.getTimespanDate(model.getClassDate() + " " + model.getFromTime()));
+            eventData.put("gym_name", model.getGymBranchDetail().getGymName());
+            eventData.put("locality", model.getGymBranchDetail().getLocalityName());
+            eventData.put("time_difference", hourDiff);
+            Intercom.client().logEvent("Cancel_Booking", eventData);
+        }
     }
 
     public static void ratedClass(ClassRatingRequest model, ClassModel classModel) {
-        Map<String, Object> eventData = new HashMap<>();
-        eventData.put("rating", model.getmRating());
-        eventData.put("class_name", classModel.getTitle());
-        eventData.put("class_date", DateUtils.getTimespanDate(classModel.getClassDate() + " " + classModel.getFromTime()));
-        eventData.put("rating_date", DateUtils.getTimespanDate(DateUtils.getCurrentDateandTime()));
-        Intercom.client().logEvent("Rated_Class", eventData);
+        if (model != null && classModel != null) {
+            String hourDiff = DateUtils.findDifference(classModel.getClassDate() + " " + classModel.getToTime(), Calendar.getInstance().getTime());
+            Map<String, Object> eventData = new HashMap<>();
+            eventData.put("rating", model.getmRating());
+            eventData.put("class_name", classModel.getTitle());
+            eventData.put("class_date", DateUtils.getTimespanDate(classModel.getClassDate() + " " + classModel.getFromTime()));
+            eventData.put("rating_date", DateUtils.getTimespanDate(DateUtils.getCurrentDateandTime()));
+            eventData.put("time_difference", hourDiff);
+            Intercom.client().logEvent("Rated_Class", eventData);
+        }
     }
 
     public static void trackJoinClass(ClassModel classModel) {
@@ -104,13 +113,14 @@ public class IntercomEvents {
         }
     }
 
-    public static void trackExtendedPackage(String packageName, Integer weekExtended,
-                                            int daysLeft) {
+    public static void trackExtendedPackage(PaymentConfirmationResponse paymentResponse, ValidityPackageList selectedPacakageFromList,
+                                            UserPackage userPackage) {
         try {
             Map<String, Object> eventData = new HashMap<>();
-            eventData.put("package_name", packageName);
-            eventData.put("week_extended", weekExtended);
-            eventData.put("days_left_in_expiry", daysLeft);
+            eventData.put("package_name", paymentResponse != null ? paymentResponse.getPackageName() : "");
+
+            eventData.put("week_extended", selectedPacakageFromList != null ? selectedPacakageFromList.getDuration() : "");
+            eventData.put("days_left_in_expiry", userPackage != null ? DateUtils.getDaysLeftFromPackageExpiryDate(userPackage.getExpiryDate()) : "");
 
             Intercom.client().logEvent("Extended_Package", eventData);
         } catch (Exception e) {

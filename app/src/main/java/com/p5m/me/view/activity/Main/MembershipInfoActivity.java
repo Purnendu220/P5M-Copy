@@ -11,9 +11,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.common.reflect.TypeToken;
@@ -27,6 +29,7 @@ import com.p5m.me.helper.Helper;
 import com.p5m.me.notifications.HandleNotificationDeepLink;
 import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 
 import java.util.List;
@@ -51,8 +54,14 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
     @BindView(R.id.buyClassesLayout)
     public LinearLayout buyClassesLayout;
 
+    @BindView(R.id.textViewFrequentlyAskedQuestions)
+    public TextView textViewFrequentlyAskedQuestions;
+
     @BindView(R.id.recyclerViewFAQ)
     public RecyclerView recyclerView;
+
+    @BindView(R.id.scroll_view)
+    public ScrollView scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,35 +124,35 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
 
     private void setFAQAdapter() {
         try {
-            defaultFAQList = new Gson().fromJson(Helper.getTestimonialsFileFromAsset(context), new TypeToken<List<Testimonials>>() {
-            }.getType());
+
             String faqValue = RemoteConfigConst.FAQ_VALUE;
             if (faqValue != null && !faqValue.isEmpty()) {
                 Gson g = new Gson();
                 List<FAQ> p = g.fromJson(faqValue, new TypeToken<List<FAQ>>() {
                 }.getType());
                 faqList = p;
-            } else {
-                faqList = defaultFAQList;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         if (faqList == null) {
+            textViewFrequentlyAskedQuestions.setVisibility(View.GONE);
             recyclerView.setVisibility(View.GONE);
             return;
         }
-        recyclerView.setVisibility(View.VISIBLE);
+        else {
+            recyclerView.setVisibility(View.VISIBLE);
+            textViewFrequentlyAskedQuestions.setVisibility(View.VISIBLE);
+            recyclerView.setLayoutManager(new LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false));
+            recyclerView.setHasFixedSize(false);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false));
-        recyclerView.setHasFixedSize(false);
+            faqAdapter = new FAQAdapter(context, MembershipInfoActivity.this);
+            recyclerView.setAdapter(faqAdapter);
 
-        faqAdapter = new FAQAdapter(context, MembershipInfoActivity.this);
-        recyclerView.setAdapter(faqAdapter);
-
-        faqAdapter.addAll(faqList);
-        faqAdapter.notifyDataSetChanged();
+            faqAdapter.addAll(faqList);
+            faqAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -152,11 +161,27 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
             case R.id.textViewAnswer:
                 if (model != null && model instanceof FAQ) {
                     FAQ data = (FAQ) model;
-                        overridePendingTransition(0, 0);
-                    Intent navigationIntent= HandleNotificationDeepLink.handleNotificationDeeplinking(this,data.getRedirect_android_link());
+                    overridePendingTransition(0, 0);
+                    Intent navigationIntent = HandleNotificationDeepLink.handleNotificationDeeplinking(this, data.getRedirect_android_link());
                     startActivity(navigationIntent);
                 }
                 break;
+            case R.id.textViewQuestions:
+//                scrollView.setSmoothScrollingEnabled(true);
+//                scrollView.smoothScrollTo(0,scrollView.getMaxScrollAmount());
+//                scrollView.fullScroll(View.FOCUS_DOWN);
+                scrollView.fullScroll(View.FOCUS_DOWN);
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            // This method will be executed once the timer is over
+                            scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                        }
+                    }, 10);
+                    scrollView.fullScroll(View.FOCUS_DOWN);
+
+
         }
     }
 

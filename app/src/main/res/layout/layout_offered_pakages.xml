@@ -43,11 +43,15 @@
                 <TextView
                     android:id="@+id/txtIsPackagePopular"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_20"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/margin_10"
                     android:background="@drawable/rouded_corner_text"
-                    android:padding="@dimen/margin_5"
+                    android:gravity="center_vertical"
+                    android:paddingStart="@dimen/margin_8"
+                    android:paddingEnd="@dimen/margin_8"
                     android:text="SUMMER BODY"
+                    android:textAllCaps="true"
                     android:textColor="@color/theme_dark_text"
                     android:textSize="@dimen/text_small"
                     android:visibility="gone" />

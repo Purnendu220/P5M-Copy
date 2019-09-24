@@ -25,6 +25,7 @@ import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.analytics.MixPanel;
+import com.p5m.me.data.Join5MinModel;
 import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.DefaultSettingServer;
@@ -48,6 +49,9 @@ import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.custom.CustomRateAlertDialog;
+
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by Varun John on 4/19/2018.
@@ -216,6 +220,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             @Override
             public void onClick(View view) {
                 popupWindow.dismiss();
+
                 dialogConfirmUnJoin(context, networkCommunicator, model, model.getJoinClassId());
             }
         });
@@ -444,7 +449,10 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
         String serverMessageNormalClass = message;
         String serverMessageSpecialClass = message;
+        String serverMessage5MinPolicy = context.getString(R.string.cancel_5_min_policy);
+
         float cancelTime = 2;
+
 
         DefaultSettingServer defaultSettingServer = MyPreferences.getInstance().getDefaultSettingServer();
         if (defaultSettingServer != null) {
@@ -465,7 +473,9 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model)) {
             if (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) <= cancelTime) {
                 message = serverMessageSpecialClass;
-
+                if (checkFor5MinDifference(model)) {
+                    message = serverMessage5MinPolicy;
+                }
             } else {
                 message = context.getString(R.string.sure_unjoin);
 
@@ -477,6 +487,9 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         } else if (DateUtils.hoursLeft(
                 model.getClassDate() + " " + model.getFromTime()) <= cancelTime) {
             message = serverMessageNormalClass;
+            if (checkFor5MinDifference(model)) {
+                message = serverMessage5MinPolicy;
+            }
         }
 
         final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
@@ -509,7 +522,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
                         try {
                             model.setUserJoinStatus(false);
-                            TempStorage.setUser(context,((ResponseModel<User>) response).data);
+                            TempStorage.setUser(context, ((ResponseModel<User>) response).data);
                             EventBroadcastHelper.sendUserUpdate(context, ((ResponseModel<User>) response).data);
                             EventBroadcastHelper.sendClassJoin(context, model, AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS);
                             MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
@@ -539,6 +552,24 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         });
     }
 
+    private boolean checkFor5MinDifference(ClassModel model) {
+
+        double cancel5min = 0.0833333;
+        Boolean isClassBookedIn5Min = false;
+        List<Join5MinModel> bookedList = MyPreferences.getInstance().getBookingTime();
+        if(bookedList !=null){
+        for (Join5MinModel bookedClass : bookedList) {
+            if (bookedClass.getClassId() == model.getClassId()) {
+                if ((DateUtils.find5MinDifference(bookedClass.getJoiningTime(), Calendar.getInstance().getTime())) <= cancel5min) {
+                    isClassBookedIn5Min = true;
+                }
+
+            }
+        }}
+        return isClassBookedIn5Min;
+
+    }
+
 
     public void dialogConfirmUnJoinBookWithFriend(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, final int unJoinClassId, final int unJoinType) {
 
@@ -546,6 +577,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
         String serverMessageNormalClass = message;
         String serverMessageSpecialClass = message;
+        String serverMessage5MinPolicy = context.getString(R.string.cancel_5_min_policy);
         float cancelTime = 2;
 
         DefaultSettingServer defaultSettingServer = MyPreferences.getInstance().getDefaultSettingServer();
@@ -568,6 +600,9 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model)) {
             if (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) <= cancelTime) {
                 message = serverMessageSpecialClass;
+                if (checkFor5MinDifference(model)) {
+                    message = serverMessage5MinPolicy;
+                }
 
             } else {
                 message = context.getString(R.string.sure_unjoin);
@@ -579,6 +614,9 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
         } else if (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) <= cancelTime) {
             message = serverMessageNormalClass;
+            if (checkFor5MinDifference(model)) {
+                message = serverMessage5MinPolicy;
+            }
         } else if (unJoinType == AppConstants.Values.UNJOIN_BOTH_CLASS) {
             message = context.getString(R.string.sure_unjoin_both);
 
@@ -619,7 +657,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
                             if (unJoinType == AppConstants.Values.UNJOIN_BOTH_CLASS)
                                 model.setUserJoinStatus(false);
-                            else if(unJoinType == AppConstants.Values.UNJOIN_FRIEND_CLASS) {
+                            else if (unJoinType == AppConstants.Values.UNJOIN_FRIEND_CLASS) {
                                 model.setUserJoinStatus(true);
                                 model.setRefBookingId(null);
                             }

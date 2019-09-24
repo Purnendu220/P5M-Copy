@@ -43,6 +43,7 @@ import static com.p5m.me.remote_config.RemoteConfigConst.GYM_VISIT_LIMIT_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.INVITE_FRIENDS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.JOIN_WAITLIST_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.MEMBERSHIP_OFFER_COLOR_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.PACKAGE_TAGS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_CLASS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_FAILURE_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_PACKAGE_KEY;
@@ -197,6 +198,10 @@ public class RemoteConfigSetUp {
                     break;
                 case FAQ_KEY:
                     RemoteConfigConst.FAQ_VALUE = keyValue;
+                    break;
+
+                case PACKAGE_TAGS_KEY:
+                    RemoteConfigConst.PACKAGE_TAGS_VALUE = keyValue;
                     break;
             }
         }
@@ -358,9 +363,11 @@ public class RemoteConfigSetUp {
                 RemoteConfigConst.MEMBERSHIP_OFFER_COLOR, "#1FB257");
 
         setValue(TESTIMONIALS_KEY,
-                RemoteConfigConst.TESTIMONIALS_VALUE, "[{\"name\":\"Dima\", \"message_ar\": \"\", \"message_eng\":\"I love the app. It solved the problem I had of getting bored too quickly of the gym.\"},{\"name\":\"XEINA\", \"message_ar\": \"\", \"message_eng\":\"I love how P5M now includes the option of booking classes with friends.\"},{\"name\":\"RANA\", \"message_ar\": \"\", \"message_eng\":\"Great way to try out new gyms & classes and decide where you wanna go.\"}]");
+                RemoteConfigConst.TESTIMONIALS, "[{\"name\":\"XEINA\", \"message_ar\": \"\", \"message_eng\":\"I love how P5M now includes the option of booking classes with friends.\"},{\"name\":\"RANA\", \"message_ar\": \"\", \"message_eng\":\"Great way to try out new gyms & classes and decide where you wanna go.\"}]");
         setValue(FAQ_KEY,
-                RemoteConfigConst.FAQ_VALUE, "[{\"english_question\": \"Why use P5M?\", \"english_answer\": \"P5M app enables you to visit multiple gyms and attend diffent activities with only one membership. You can even buy monthly subscriptions if you wish that is how you would like to roll.\", \"arabic_question\": \"\", \"arabic_answer\": \"\"}]");
+                RemoteConfigConst.FAQ, "[{\"english_question\": \"Why are you use P5M?\", \"english_answer\": \"P5M app enables you to visit multiple gyms and attend diffent activities with only one membership. You can even buy monthly subscriptions if you wish that is how you would like to roll.\", \"arabic_question\": \"\", \"arabic_answer\": \"\"}]");
+        setValue(PACKAGE_TAGS_KEY,
+                RemoteConfigConst.PACKAGE_TAGS,"[{\"id\": 2, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 3, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 4, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 10, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 11, \"tag_en\": \"\", \"tag_ar\": \"\"}]");
 
     }
 

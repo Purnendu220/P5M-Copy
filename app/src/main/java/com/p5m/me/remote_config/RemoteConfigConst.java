@@ -34,8 +34,9 @@ public class RemoteConfigConst {
     public static final String SELECT_PLAN_COLOR = "SELECT_PLAN_COLOR";
     public static final String GYM_VISIT_LIMIT_DETAIL_TEXT = "GYM_VISIT_LIMIT_DETAIL_TEXT";
     public static final String MEMBERSHIP_OFFER_COLOR = "MEMBERSHIP_OFFER_COLOR";
-    public static final String TESTIMONIALS = "TESTIMONIALS";
-    public static final String FAQ = "FAQ";
+    public static final String TESTIMONIALS = "testimonials";
+    public static final String FAQ = "faqs";
+    public static final String PACKAGE_TAGS = "package_tags";
 
 
     /*------KEY VALUES------*/
@@ -73,9 +74,10 @@ public class RemoteConfigConst {
     public static final int JOIN_WAITLIST_KEY = 958;
     public static final int TESTIMONIALS_KEY = 959;
     public static final int FAQ_KEY = 960;
+    public static final int PACKAGE_TAGS_KEY = 961;
 
     /* ------VALUES---------*/
-    public static String BOOKED_VALUE ="Booked";
+    public static String BOOKED_VALUE = "Booked";
     public static String BOOK_VALUE = "Book";
     public static String FULL_VALUE = "Full";
     public static String WAITLISTED_VALUE = "Waitlisted";
@@ -107,6 +109,7 @@ public class RemoteConfigConst {
     public static String BOOK_IN_CLASS_COLOR_VALUE = "#3d85ea";
     public static String GYM_VISIT_LIMIT_DETAIL_TEXT_VALUE = "Under each plan, there are limits to the number of times you can visit each gym. Check below for the number of time you can visit a gym per plan. Once the limit is reached, you may still visit your favorite gym by purchasing a single visit pass.";
     public static String MEMBERSHIP_OFFER_COLOR_VALUE = "#1FB257";
-    public static String TESTIMONIALS_VALUE = "[{\"name\":\"Dima\", \"message_ar\": \"\", \"message_eng\":\"I love the app. It solved the problem I had of getting bored too quickly of the gym.\"},{\"name\":\"XEINA\", \"message_ar\": \"\", \"message_eng\":\"I love how P5M now includes the option of booking classes with friends.\"},{\"name\":\"RANA\", \"message_ar\": \"\", \"message_eng\":\"Great way to try out new gyms & classes and decide where you wanna go.\"}]";
-    public static String FAQ_VALUE = "[{\"english_question\": \"Why use P5M?\", \"english_answer\": \"P5M app enables you to visit multiple gyms and attend diffent activities with only one membership. You can even buy monthly subscriptions if you wish that is how you would like to roll.\", \"arabic_question\": \"\", \"arabic_answer\": \"\"}]";
+    public static String TESTIMONIALS_VALUE = "";
+    public static String PACKAGE_TAGS_VALUE = "";
+    public static String FAQ_VALUE = "";
 }

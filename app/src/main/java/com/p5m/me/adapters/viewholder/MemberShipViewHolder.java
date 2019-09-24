@@ -3,7 +3,6 @@ package com.p5m.me.adapters.viewholder;
 import android.content.Context;
 import android.graphics.Paint;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,22 +10,21 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
-import com.p5m.me.adapters.TransactionsAdapter;
 import com.p5m.me.adapters.UserPackageDetailAdapter;
+import com.p5m.me.data.PackageTags;
 import com.p5m.me.data.UserPackageDetail;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.UserPackage;
-import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
-import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
@@ -52,6 +50,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
     private final Context context;
     private int shownInScreen;
+    private List<PackageTags> listPackageTags;
 
     /* User Existig Pakages Layout Declaration*/
 
@@ -138,6 +137,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
     public void bind(ClassModel classModel, final Object data, final AdapterCallbacks adapterCallbacks, final int position) {
 
         if (data != null && (data instanceof UserPackage || data instanceof Package)) {
+
             itemView.setVisibility(View.VISIBLE);
             textViewExtendPackage.setVisibility(View.GONE);
             // Package owned..
@@ -157,6 +157,8 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     packageTitle.setText(model.getPackageName());
                     packageUsage.setText(String.format(context.getResources().getString(R.string.classess_remaining), model.getBalanceClass(), model.getTotalNumberOfClass()));
                     packageValidForOwn.setText(context.getString(R.string.valid_till) + " " + DateUtils.getPackageClassDate(model.getExpiryDate()));
+                    setPackageTags(model.getPackageId()
+                    );
                 } else {
                     mainLayoutActivePackageDropin.setVisibility(View.VISIBLE);
                     textViewExtendPackage.setVisibility(View.GONE);
@@ -166,7 +168,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                         if (model.getExpiryDate() == null || TextUtils.isEmpty(model.getExpiryDate()))
                             textViewActiveDropIn.setText(String.format(context.getResources().getString(R.string.drop_in_unlimited), model.getGymName()));
                         else
-                            textViewActiveDropIn.setText(String.format(context.getResources().getString(R.string._two_drop_in_text), model.getGymName(), DateUtils.getClassDate(model.getExpiryDate())));
+                            textViewActiveDropIn.setText(String.format(context.getResources().getString(R.string._two_drop_in_text), model.getGymName(),DateUtils.getClassDate(model.getExpiryDate())));
                     } else {
                         if (model.getExpiryDate() == null || TextUtils.isEmpty(model.getExpiryDate()))
                             textViewActiveDropIn.setText(String.format(context.getResources().getString(R.string.drop_in_unlimited), model.getGymName()));
@@ -194,7 +196,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                         txtPackageOffredClasses.setText(numberConverter(model.getNoOfClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs_one), model.getNoOfClass()) + " " + context.getString(R.string.at_any_gym));
                         setTextValidityPeriod(model);
                         txtPriceAfterOffer.setText(LanguageUtils.numberConverter(model.getCost(), 2) + " " + context.getString(R.string.currency).toUpperCase());
-
+                        setPackageTags(model.getId());
 
                         if (classModel != null) {
                             int numberOfDays = model.getDuration();
@@ -368,4 +370,41 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
     }
 
+    private void setPackageTags(int packageId) {
+        txtIsPackagePopular.setVisibility(View.GONE);
+        try {
+            String packageTags = RemoteConfigConst.PACKAGE_TAGS_VALUE;
+            if (packageTags != null && !packageTags.isEmpty()) {
+                Gson g = new Gson();
+                List<PackageTags> p = g.fromJson(packageTags, new TypeToken<List<PackageTags>>() {
+                }.getType());
+                listPackageTags = p;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (listPackageTags!=null && listPackageTags.size() >0) {
+            for (PackageTags p : listPackageTags) {
+                if (p.getId() == packageId) {
+                    if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en")
+                    && !p.getTag_en().isEmpty()) {
+                        txtIsPackagePopular.setText(p.getTag_en());
+                        txtIsPackagePopular.setVisibility(View.VISIBLE);
+
+                    } else if(LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")
+                            && !p.getTag_ar().isEmpty()){
+                        txtIsPackagePopular.setText(p.getTag_ar());
+                        txtIsPackagePopular.setVisibility(View.VISIBLE);
+
+                    }
+
+
+                }
+
+            }
+
+        }
+
+    }
 }

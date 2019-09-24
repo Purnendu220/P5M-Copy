@@ -8,6 +8,7 @@ import com.p5m.me.data.City;
 import com.p5m.me.data.CityLocality;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.Filter;
+import com.p5m.me.data.Join5MinModel;
 import com.p5m.me.data.RatingParamModel;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
@@ -23,6 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -64,15 +66,18 @@ public class MyPreferences {
     public String getLat() {
         return PreferencesManager.getString(AppConstants.Pref.LATITUDE, "");
     }
+
     public String getLng() {
         return PreferencesManager.getString(AppConstants.Pref.LONGITUDE, "");
     }
+
     public void saveAuthToken(String authToken) {
         if (authToken == null) {
             authToken = "";
         }
         PreferencesManager.putString(AppConstants.Pref.AUTH_TOKEN, authToken);
     }
+
     public void saveLat(String lat) {
         if (lat == null) {
             lat = "";
@@ -88,19 +93,21 @@ public class MyPreferences {
     }
 
 
-    public void setOpenMembershipInfo(int state){
+    public void setOpenMembershipInfo(int state) {
         PreferencesManager.putInt(AppConstants.Pref.OPEN_MEMBERSHIP_INFO, state);
 
     }
-    public int isOpenMembershipInfo(){try{
-        return PreferencesManager.getInt(AppConstants.Pref.OPEN_MEMBERSHIP_INFO, 0);
-    }
-    catch (Exception e){
-        e.printStackTrace();
-       return 0;
-    }
+
+    public int isOpenMembershipInfo() {
+        try {
+            return PreferencesManager.getInt(AppConstants.Pref.OPEN_MEMBERSHIP_INFO, 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
 
     }
+
     public boolean isLogin() {
         return PreferencesManager.getBoolean(AppConstants.Pref.LOGIN, false);
     }
@@ -112,6 +119,7 @@ public class MyPreferences {
     public void setLoginWithFacebook(boolean isLogin) {
         PreferencesManager.putBoolean(AppConstants.Pref.FACEBOOK_LOGIN, isLogin);
     }
+
     public boolean isLoginWithFacebook() {
         return PreferencesManager.getBoolean(AppConstants.Pref.FACEBOOK_LOGIN, false);
     }
@@ -171,6 +179,7 @@ public class MyPreferences {
             LogUtils.exception(e);
         }
     }
+
     public void saveRatingParams(List<RatingParamModel> ratingParamList) {
         try {
             PreferencesManager.putString(AppConstants.Pref.RATING_PARAM, gson.toJson(ratingParamList));
@@ -180,11 +189,11 @@ public class MyPreferences {
         }
     }
 
-    public void savePaymentErrorResponse(ResponseModel errorResponse){
+    public void savePaymentErrorResponse(ResponseModel errorResponse) {
         try {
             PreferencesManager.putString(AppConstants.Pref.PAYMENT_ERROR_RESPONSE, gson.toJson(errorResponse.data));
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
 
@@ -192,7 +201,7 @@ public class MyPreferences {
         }
     }
 
-    public User getPaymentErrorResponse(){
+    public User getPaymentErrorResponse() {
         try {
             return gson.fromJson(PreferencesManager.getString(AppConstants.Pref.PAYMENT_ERROR_RESPONSE), new TypeToken<User>() {
             }.getType());
@@ -202,6 +211,7 @@ public class MyPreferences {
         return null;
 
     }
+
     public List<RatingParamModel> getRatingParams() {
         try {
             return gson.fromJson(PreferencesManager.getString(AppConstants.Pref.RATING_PARAM), new TypeToken<List<RatingParamModel>>() {
@@ -211,6 +221,7 @@ public class MyPreferences {
         }
         return new ArrayList<>();
     }
+
     public List<ClassesFilter> getFilters() {
         List<ClassesFilter> classesFilters = new ArrayList<>();
         try {
@@ -254,10 +265,9 @@ public class MyPreferences {
                     Filter.Gender model = new Filter.Gender(object.getString("id"), object.getString("name"));
                     classesFilter.setObject(model);
 
-                }
-                else if (classesFilter.getObjectClassName().equals("Gym")) {
+                } else if (classesFilter.getObjectClassName().equals("Gym")) {
 
-                    Filter.Gym model = new Filter.Gym(object.getInt("id")+"", object.getString("name"));
+                    Filter.Gym model = new Filter.Gym(object.getInt("id") + "", object.getString("name"));
                     classesFilter.setObject(model);
 
                 }
@@ -281,29 +291,30 @@ public class MyPreferences {
             LogUtils.exception(e);
         }
     }
+
     public void saveJoinedClassList(List<ClassModel> classList) {
         try {
             String joinedClassesList = JsonUtils.toJson(classList);
-            PreferencesManager.putString(AppConstants.Pref.JOINED_CLASSES,joinedClassesList);
+            PreferencesManager.putString(AppConstants.Pref.JOINED_CLASSES, joinedClassesList);
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
         }
     }
+
     public List<ClassModel> getJoinedClassList() {
-        try{
+        try {
             String joinedClassList = PreferencesManager.getString(AppConstants.Pref.JOINED_CLASSES);
             if (joinedClassList != null) {
-                List<ClassModel> classList = gson.fromJson(joinedClassList, new TypeToken<List<ClassModel>>(){}.getType());
+                List<ClassModel> classList = gson.fromJson(joinedClassList, new TypeToken<List<ClassModel>>() {
+                }.getType());
                 return classList;
             }
-        }catch (Exception e){
-e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
-        }
-
-
+    }
 
 
     public User getUser() {
@@ -343,4 +354,29 @@ e.printStackTrace();
             LogUtils.exception(e);
         }
     }
+
+    public void saveBookingTime(List<Join5MinModel> bookedClassList) {
+        try {
+            String bookedClass = JsonUtils.toJson(bookedClassList);
+            PreferencesManager.putString(AppConstants.Pref.CLASS_BOOKING_TIME, bookedClass);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
+    public List<Join5MinModel> getBookingTime() {
+        try {
+            String bookedClassList = PreferencesManager.getString(AppConstants.Pref.CLASS_BOOKING_TIME);
+            if (bookedClassList != null) {
+                List<Join5MinModel> classList = gson.fromJson(bookedClassList, new TypeToken<List<Join5MinModel>>() {
+                }.getType());
+                return classList;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

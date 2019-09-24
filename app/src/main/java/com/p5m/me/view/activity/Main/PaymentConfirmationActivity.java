@@ -65,6 +65,9 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.intercom.android.sdk.Intercom;
+import io.intercom.android.sdk.UserAttributes;
+import io.intercom.android.sdk.identity.Registration;
 
 import static com.p5m.me.fxn.utility.Constants.CheckoutFor.EXTENSION;
 import static com.p5m.me.fxn.utility.Constants.CheckoutFor.PENDING_TRANSACTION;
@@ -83,14 +86,14 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
     private String referenceNo;
     private Hashtable<String, String> calendarIdTable;
     private int calendar_id = -1;
-    public static String couponCode="";
+    public static String couponCode = "";
     private User user;
 
     public static void openActivity(Context context, int navigationFrom, String refId,
                                     Package aPackage, ClassModel classModel,
                                     Constants.CheckoutFor checkoutFor,
                                     UserPackage userPackage,
-                                    ValidityPackageList selectedPacakageFromList, int mNumberOfClassesToBuy,String couponCode) {
+                                    ValidityPackageList selectedPacakageFromList, int mNumberOfClassesToBuy, String couponCode) {
         Intent intent = new Intent(context, PaymentConfirmationActivity.class)
 
                 .putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom);
@@ -106,7 +109,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         PaymentConfirmationActivity.userPackage = userPackage;
         PaymentConfirmationActivity.selectedPacakageFromList = selectedPacakageFromList;
         PaymentConfirmationActivity.mNumberOfClassesToBuy = mNumberOfClassesToBuy;
-        PaymentConfirmationActivity.couponCode=couponCode;
+        PaymentConfirmationActivity.couponCode = couponCode;
         context.startActivity(intent);
     }
 
@@ -286,7 +289,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 case SUCCESS:
                     if (Constants.LANGUAGE == Locale.ENGLISH) {
                         if (paymentResponse != null && selectedPacakageFromList != null && userPackage != null)
-                             textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.congratulation_package_extended_en), "<b>" + getPurchasedPackageName() + "</b>", LanguageUtils.numberConverter(selectedPacakageFromList.getDuration()))));
+                            textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.congratulation_package_extended_en), "<b>" + getPurchasedPackageName() + "</b>", LanguageUtils.numberConverter(selectedPacakageFromList.getDuration()))));
                     } else
                         textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.congratulation_package_extended_ar), "<b>" + getPurchasedPackageName() + "</b>", LanguageUtils.numberConverter(selectedPacakageFromList.getDuration()))));
 
@@ -462,7 +465,19 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 layoutConfirmation.setVisibility(View.VISIBLE);
                 paymentResponse = ((ResponseModel<PaymentConfirmationResponse>) response).data;
                 setAnimation();
-                IntercomEvents.trackExtendedPackage(paymentResponse.getPackageName(), selectedPacakageFromList.getDuration(), DateUtils.getDaysLeftFromPackageExpiryDate(userPackage.getExpiryDate()));
+                if (selectedPacakageFromList != null && userPackage != null && selectedPacakageFromList.getPackageType().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_TYPE_EXTENSION))
+                    IntercomEvents.trackExtendedPackage(paymentResponse, selectedPacakageFromList, userPackage);
+
+                else {
+                    if (paymentResponse.getPackageName().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN_INTERCOM) ||
+                            paymentResponse.getPackageName().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
+                        IntercomEvents.purchase_drop_in(classModel);
+                        IntercomEvents.trackJoinClass(classModel);
+                    } else {
+
+                        IntercomEvents.purchasedPlan(paymentResponse, couponCode, classModel);
+                    }
+                }
                 setData(PaymentStatus.valueOf(paymentResponse.getStatus()));
 //                paymentResponse.setStatus(PaymentStatus.FAILURE.name());
 //                setData(PaymentStatus.FAILURE);
@@ -478,8 +493,30 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                     mLayoutUserWallet.setVisibility(View.GONE);
 
                 }
+                updateIntercomWallet();
                 break;
         }
+    }
+
+    private void updateIntercomWallet() {
+        String balanceWallet = "0";
+
+        Registration registration = Registration.create().withUserId(user.getFirstName() + " " + user.getLastName());
+        Intercom.client().registerIdentifiedUser(registration);
+        if (mWalletCredit != null) {
+            balanceWallet = String.valueOf(mWalletCredit.getBalance());
+        }
+
+      /*  UserAttributes userAttributes = new UserAttributes.Builder()
+                .withName(user.getFirstName() + " " + user.getLastName())
+                .withEmail(user.getEmail())
+                .withCustomAttribute("Gender",user.getGender())
+                .withCustomAttribute("wallet balance",balanceWallet)
+                .withCustomAttribute("Registration date", user.getDateOfJoining() == 0 ?
+                        "" : DateUtils.getDateFormatter(new Date(user.getDateOfJoining())) + "")
+                .build();
+        Intercom.client().updateUser(userAttributes);*/
+
     }
 
     private void setData(PaymentStatus paymentStatus) {
@@ -495,15 +532,6 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                         if (CalendarHelper.haveCalendarReadWritePermissions(this))
                             CalendarHelper.scheduleCalenderEvent(this, classModel);
                     }
-                }
-
-                if (paymentResponse.getPackageName().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN_INTERCOM) &&
-                        classModel.getTitle() != null) {
-                    IntercomEvents.purchase_drop_in(classModel.getTitle());
-                    IntercomEvents.trackJoinClass( classModel);
-                } else {
-                    if (paymentResponse.getPackageName() != null && classModel != null)
-                        IntercomEvents.purchasedPlan(paymentResponse.getPackageName(), couponCode, classModel);
                 }
                 break;
             case FAILURE:
