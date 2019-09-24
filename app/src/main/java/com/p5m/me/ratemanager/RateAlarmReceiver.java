@@ -4,8 +4,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.p5m.me.data.Join5MinModel;
+import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
+
+import org.json.JSONObject;
+
+import java.util.List;
 
 public class RateAlarmReceiver extends BroadcastReceiver {
 
@@ -26,5 +32,8 @@ public class RateAlarmReceiver extends BroadcastReceiver {
             }
 
     }
+
+
+
 
 }

@@ -365,6 +365,16 @@ public class MyPreferences {
         }
     }
 
+    public void removeBookingTime(List<Join5MinModel> bookedClassList) {
+        try {
+            String bookedClass = JsonUtils.toJson(bookedClassList);
+            PreferencesManager.putString(AppConstants.Pref.CLASS_BOOKING_TIME, bookedClass);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
     public List<Join5MinModel> getBookingTime() {
         try {
             String bookedClassList = PreferencesManager.getString(AppConstants.Pref.CLASS_BOOKING_TIME);

@@ -63,11 +63,11 @@ public class FAQViewHolder extends RecyclerView.ViewHolder {
                 public void onClick(View view) {
                     if(model.getSelected()) {
                         model.setSelected(false);
-                        textViewAnswer.setVisibility(View.GONE);
+                        textViewAnswer.setVisibility(View.VISIBLE);
                     }
                     else {
                         model.setSelected(true);
-                        textViewAnswer.setVisibility(View.VISIBLE);
+                        textViewAnswer.setVisibility(View.GONE);
                     }
                     adapterCallbacks.onAdapterItemClick(FAQViewHolder.this, textViewQuestion, model, position);
                 }

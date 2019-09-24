@@ -16,6 +16,7 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.p5m.me.R;
+import com.p5m.me.data.Join5MinModel;
 import com.p5m.me.data.PushDetailModel;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
@@ -30,7 +31,10 @@ import com.p5m.me.view.activity.Main.TrainerProfileActivity;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
 import io.intercom.android.sdk.push.IntercomPushClient;
@@ -460,6 +464,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             if(TempStorage.isOpenMembershipInfo()!=2){
                                 TempStorage.setOpenMembershipInfo(MEMBERSHIP_INFO_STATE_NO_PACKAGE);
                             }
+
                             break;
                         case "OnLowBalance":
                             title = "Low Balance";
@@ -613,4 +618,5 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intercomPushClient.sendTokenToIntercom(getApplication(), refreshedToken);
 
     }
+
 }
