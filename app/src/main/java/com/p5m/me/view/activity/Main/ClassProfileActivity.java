@@ -50,8 +50,6 @@ import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.firebase_dynamic_link.FirebaseDynamicLinnk;
 import com.p5m.me.helper.ClassListListenerHelper;
 import com.p5m.me.helper.Helper;
-import com.p5m.me.ratemanager.RateAlarmReceiver;
-import com.p5m.me.ratemanager.ScheduleAlarmManager;
 import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
@@ -320,7 +318,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     Intent navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
                                     context.startActivity(navigationIntent);
-
+                                    textViewBook.setEnabled(true);
                                 }
                             });
                         } else {
@@ -531,10 +529,12 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     return;
                 } else {
                     if (userHaveExpiredGeneralPackageForClass) {
+                        textViewBook.setEnabled(true);
                         DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), getString(R.string.purchase), new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 dialog.dismiss();
+
                                 joinClass();
 
                             }
@@ -694,7 +694,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 User user = ((ResponseModel<User>) response).data;
                 classModel.setUserJoinStatus(true);
 
-                saved5MinClass();
+                saved5MinClass(classModel);
 
                 EventBroadcastHelper.sendUserUpdate(context, user);
                 int joinWith;
@@ -850,8 +850,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
     }
 
-    private void saved5MinClass() {
-        join5MinModel.setClassId(classModel.getClassId());
+    private void saved5MinClass(ClassModel classModel) {
+        join5MinModel.setGetClassSessionId(classModel.getClassSessionId());
         join5MinModel.setJoiningTime(Calendar.getInstance().getTime());
         List<Join5MinModel> bookedClassList = MyPreferences.getInstance().getBookingTime();
         if (bookedClassList != null && bookedClassList.size() > 0) {
@@ -1011,6 +1011,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     @Override
     protected void onResume() {
         super.onResume();
+        textViewBook.setEnabled(true);
         if (classModel != null)
             Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 

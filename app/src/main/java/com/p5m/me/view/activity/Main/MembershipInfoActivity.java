@@ -141,16 +141,19 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
             recyclerView.setVisibility(View.GONE);
             return;
         }
+
         else {
+
             recyclerView.setVisibility(View.VISIBLE);
             textViewFrequentlyAskedQuestions.setVisibility(View.VISIBLE);
             recyclerView.setLayoutManager(new LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false));
             recyclerView.setHasFixedSize(false);
 
             faqAdapter = new FAQAdapter(context, MembershipInfoActivity.this);
-            recyclerView.setAdapter(faqAdapter);
 
             faqAdapter.addAll(faqList);
+            recyclerView.setAdapter(faqAdapter);
+
             faqAdapter.notifyDataSetChanged();
         }
     }

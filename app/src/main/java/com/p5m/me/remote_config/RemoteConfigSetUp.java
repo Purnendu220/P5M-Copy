@@ -18,6 +18,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.p5m.me.BuildConfig;
 import com.p5m.me.R;
 import com.p5m.me.fxn.utility.Constants;
+import com.p5m.me.utils.LanguageUtils;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -76,135 +77,154 @@ public class RemoteConfigSetUp {
         defaults.put(key, defaultValue);
         firebaseRemoteConfig.setDefaults(defaults);
         setValueOfField(constValue, defaultValue);
-        if (Constants.LANGUAGE == Locale.ENGLISH) {
-            final Task<Void> fetch = firebaseRemoteConfig.fetch(BuildConfig.DEBUG ? 0 : TimeUnit.HOURS.toSeconds(0));
-            fetch.addOnSuccessListener(context, new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    firebaseRemoteConfig.activateFetched();
-                    String keyValue = firebaseRemoteConfig.getString(key);
-                    firebaseRemoteConfig.activateFetched();
-                    if (!keyValue.isEmpty())
-                        setValueOfField(constValue, keyValue);
-                }
-            });
-        }
+
+        final Task<Void> fetch = firebaseRemoteConfig.fetch(BuildConfig.DEBUG ? 0 : TimeUnit.HOURS.toSeconds(0));
+        fetch.addOnSuccessListener(context, new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                firebaseRemoteConfig.activate();
+                String keyValue = firebaseRemoteConfig.getString(key);
+                firebaseRemoteConfig.activate();
+                if (!keyValue.isEmpty())
+                    setValueOfField(constValue, keyValue);
+            }
+        });
+
     }
 
     private static void setValueOfField(int constValue, String keyValue) {
-        if (!keyValue.isEmpty()) {
-            switch (constValue) {
-                case BOOKED_BUTTON_KEY:
-                    RemoteConfigConst.BOOKED_VALUE = keyValue;
-                    break;
-                case BOOK_BUTTON_KEY:
-                    RemoteConfigConst.BOOK_VALUE = keyValue;
-                    break;
-                case FULL_BUTTON_KEY:
-                    RemoteConfigConst.FULL_VALUE = keyValue;
-                    break;
-                case WAITLISTED_BUTTON_KEY:
-                    RemoteConfigConst.WAITLISTED_VALUE = keyValue;
-                    break;
-                case WAITLIST_BUTTON_KEY:
-                    RemoteConfigConst.WAITLIST_VALUE = keyValue;
-                    break;
-                case BOOK_WITH_FRIEND_BUTTON_KEY:
-                    RemoteConfigConst.BOOK_WITH_FRIEND_VALUE = keyValue;
-                    break;
-                case BOOK_WITH_FRIEND_COLOR_KEY:
-                    RemoteConfigConst.BOOK_WITH_FRIEND_COLOR_VALUE = keyValue;
-                    break;
-                case SEARCH_BAR_TEXT_KEY:
-                    RemoteConfigConst.SEARCH_BAR_TEXT_VALUE = keyValue;
-                    break;
-                case BOOK_IN_CLASS_PROFILE_KEY:
-                    RemoteConfigConst.BOOK_IN_CLASS_VALUE = keyValue;
-                    break;
-                case BOOKED_BUTTON_COLOR_KEY:
-                    RemoteConfigConst.BOOKED_COLOR_VALUE = keyValue;
-                    break;
-                case BOOK_BUTTON_COLOR_KEY:
-                    RemoteConfigConst.BOOK_COLOR_VALUE = keyValue;
-                    break;
-                case FULL_BUTTON_COLOR_KEY:
-                    RemoteConfigConst.FULL_COLOR_VALUE = keyValue;
-                    break;
-                case CLASS_CARD_TEXT_KEY:
-                    RemoteConfigConst.CLASS_CARD_TEXT_VALUE = keyValue;
-                    break;
+        if (Constants.LANGUAGE == Locale.ENGLISH) {
+            if (!keyValue.isEmpty()) {
+                switch (constValue) {
+                    case BOOKED_BUTTON_KEY:
+                        RemoteConfigConst.BOOKED_VALUE = keyValue;
+                        break;
+                    case BOOK_BUTTON_KEY:
+                        RemoteConfigConst.BOOK_VALUE = keyValue;
+                        break;
+                    case FULL_BUTTON_KEY:
+                        RemoteConfigConst.FULL_VALUE = keyValue;
+                        break;
+                    case WAITLISTED_BUTTON_KEY:
+                        RemoteConfigConst.WAITLISTED_VALUE = keyValue;
+                        break;
+                    case WAITLIST_BUTTON_KEY:
+                        RemoteConfigConst.WAITLIST_VALUE = keyValue;
+                        break;
+                    case BOOK_WITH_FRIEND_BUTTON_KEY:
+                        RemoteConfigConst.BOOK_WITH_FRIEND_VALUE = keyValue;
+                        break;
+                    case BOOK_WITH_FRIEND_COLOR_KEY:
+                        RemoteConfigConst.BOOK_WITH_FRIEND_COLOR_VALUE = keyValue;
+                        break;
+                    case SEARCH_BAR_TEXT_KEY:
+                        RemoteConfigConst.SEARCH_BAR_TEXT_VALUE = keyValue;
+                        break;
+                    case BOOK_IN_CLASS_PROFILE_KEY:
+                        RemoteConfigConst.BOOK_IN_CLASS_VALUE = keyValue;
+                        break;
+                    case BOOKED_BUTTON_COLOR_KEY:
+                        RemoteConfigConst.BOOKED_COLOR_VALUE = keyValue;
+                        break;
+                    case BOOK_BUTTON_COLOR_KEY:
+                        RemoteConfigConst.BOOK_COLOR_VALUE = keyValue;
+                        break;
+                    case FULL_BUTTON_COLOR_KEY:
+                        RemoteConfigConst.FULL_COLOR_VALUE = keyValue;
+                        break;
+                    case CLASS_CARD_TEXT_KEY:
+                        RemoteConfigConst.CLASS_CARD_TEXT_VALUE = keyValue;
+                        break;
 
-                case RECOMMENDED_FOR_YOU_KEY:
-                    RemoteConfigConst.RECOMMENDED_FOR_YOU_VALUE = keyValue;
-                    break;
+                    case RECOMMENDED_FOR_YOU_KEY:
+                        RemoteConfigConst.RECOMMENDED_FOR_YOU_VALUE = keyValue;
+                        break;
 
-                case RECOMMENDED_FOR_YOU_COLOR_KEY:
-                    RemoteConfigConst.RECOMMENDED_FOR_YOU_COLOR_VALUE = keyValue;
-                    break;
+                    case RECOMMENDED_FOR_YOU_COLOR_KEY:
+                        RemoteConfigConst.RECOMMENDED_FOR_YOU_COLOR_VALUE = keyValue;
+                        break;
 
-                case BUY_CLASS_KEY:
-                    RemoteConfigConst.BUY_CLASS_VALUE = keyValue;
-                    break;
+                    case BUY_CLASS_KEY:
+                        RemoteConfigConst.BUY_CLASS_VALUE = keyValue;
+                        break;
 
-                case BUY_CLASS_COLOR_KEY:
-                    RemoteConfigConst.BUY_CLASS_COLOR_VALUE = keyValue;
-                    break;
-                case ADD_TO_WISHLIST_KEY:
-                    RemoteConfigConst.ADD_TO_WISHLIST_VALUE = keyValue;
-                    break;
-                case JOIN_WAITLIST_KEY:
-                    RemoteConfigConst.JOIN_WAITLIST_VALUE = keyValue;
-                    break;
+                    case BUY_CLASS_COLOR_KEY:
+                        RemoteConfigConst.BUY_CLASS_COLOR_VALUE = keyValue;
+                        break;
+                    case ADD_TO_WISHLIST_KEY:
+                        RemoteConfigConst.ADD_TO_WISHLIST_VALUE = keyValue;
+                        break;
+                    case JOIN_WAITLIST_KEY:
+                        RemoteConfigConst.JOIN_WAITLIST_VALUE = keyValue;
+                        break;
 
-                case INVITE_FRIENDS_KEY:
-                    RemoteConfigConst.INVITE_FRIENDS_VALUE = keyValue;
-                    break;
-                case PAYMENT_PACKAGE_KEY:
-                    RemoteConfigConst.PAYMENT_PACKAGE_VALUE = keyValue;
-                    break;
-                case PAYMENT_PENDING_KEY:
-                    RemoteConfigConst.PAYMENT_PENDING_VALUE = keyValue;
-                    break;
-                case PAYMENT_FAILURE_KEY:
-                    RemoteConfigConst.PAYMENT_FAILURE_VALUE = keyValue;
-                    break;
-                case PAYMENT_CLASS_KEY:
-                    RemoteConfigConst.PAYMENT_CLASS_VALUE = keyValue;
-                    break;
-                case GYM_VISIT_LIMIT_KEY:
-                    RemoteConfigConst.GYM_VISIT_LIMIT_VALUE = keyValue;
-                    break;
-                case SELECT_PLAN_TEXT_KEY:
-                    RemoteConfigConst.SELECT_PLAN_TEXT_VALUE = keyValue;
-                    break;
-                case SELECT_PLAN_COLOR_KEY:
-                    RemoteConfigConst.SELECT_PLAN_COLOR_VALUE = keyValue;
-                    break;
-                case GYM_VISIT_LIMIT_DETAIL_TEXT_KEY:
-                    RemoteConfigConst.GYM_VISIT_LIMIT_DETAIL_TEXT_VALUE = keyValue;
-                    break;
-                case MEMBERSHIP_OFFER_COLOR_KEY:
-                    RemoteConfigConst.MEMBERSHIP_OFFER_COLOR_VALUE = keyValue;
-                    break;
-                case SESSION_EXPIRED_COLOR_KEY:
-                    RemoteConfigConst.SESSION_EXPIRED_COLOR_VALUE = keyValue;
-                    break;
-                case BOOK_IN_CLASS_COLOR_KEY:
-                    RemoteConfigConst.BOOK_IN_CLASS_COLOR_VALUE = keyValue;
-                    break;
+                    case INVITE_FRIENDS_KEY:
+                        RemoteConfigConst.INVITE_FRIENDS_VALUE = keyValue;
+                        break;
+                    case PAYMENT_PACKAGE_KEY:
+                        RemoteConfigConst.PAYMENT_PACKAGE_VALUE = keyValue;
+                        break;
+                    case PAYMENT_PENDING_KEY:
+                        RemoteConfigConst.PAYMENT_PENDING_VALUE = keyValue;
+                        break;
+                    case PAYMENT_FAILURE_KEY:
+                        RemoteConfigConst.PAYMENT_FAILURE_VALUE = keyValue;
+                        break;
+                    case PAYMENT_CLASS_KEY:
+                        RemoteConfigConst.PAYMENT_CLASS_VALUE = keyValue;
+                        break;
+                    case GYM_VISIT_LIMIT_KEY:
+                        RemoteConfigConst.GYM_VISIT_LIMIT_VALUE = keyValue;
+                        break;
+                    case SELECT_PLAN_TEXT_KEY:
+                        RemoteConfigConst.SELECT_PLAN_TEXT_VALUE = keyValue;
+                        break;
+                    case SELECT_PLAN_COLOR_KEY:
+                        RemoteConfigConst.SELECT_PLAN_COLOR_VALUE = keyValue;
+                        break;
+                    case GYM_VISIT_LIMIT_DETAIL_TEXT_KEY:
+                        RemoteConfigConst.GYM_VISIT_LIMIT_DETAIL_TEXT_VALUE = keyValue;
+                        break;
+                    case MEMBERSHIP_OFFER_COLOR_KEY:
+                        RemoteConfigConst.MEMBERSHIP_OFFER_COLOR_VALUE = keyValue;
+                        break;
+                    case SESSION_EXPIRED_COLOR_KEY:
+                        RemoteConfigConst.SESSION_EXPIRED_COLOR_VALUE = keyValue;
+                        break;
+                    case BOOK_IN_CLASS_COLOR_KEY:
+                        RemoteConfigConst.BOOK_IN_CLASS_COLOR_VALUE = keyValue;
+                        break;
 
-                case TESTIMONIALS_KEY:
-                    RemoteConfigConst.TESTIMONIALS_VALUE = keyValue;
-                    break;
-                case FAQ_KEY:
-                    RemoteConfigConst.FAQ_VALUE = keyValue;
-                    break;
+                    case TESTIMONIALS_KEY:
+                        RemoteConfigConst.TESTIMONIALS_VALUE = keyValue;
+                        break;
+                    case FAQ_KEY:
+                        RemoteConfigConst.FAQ_VALUE = keyValue;
+                        break;
 
-                case PACKAGE_TAGS_KEY:
-                    RemoteConfigConst.PACKAGE_TAGS_VALUE = keyValue;
-                    break;
+                    case PACKAGE_TAGS_KEY:
+                        RemoteConfigConst.PACKAGE_TAGS_VALUE = keyValue;
+                        break;
+                }
             }
         }
+        else if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+            if (!keyValue.isEmpty()) {
+                switch (constValue) {
+                    case TESTIMONIALS_KEY:
+                        RemoteConfigConst.TESTIMONIALS_VALUE = keyValue;
+                        break;
+                    case FAQ_KEY:
+                        RemoteConfigConst.FAQ_VALUE = keyValue;
+                        break;
+
+                    case PACKAGE_TAGS_KEY:
+                        RemoteConfigConst.PACKAGE_TAGS_VALUE = keyValue;
+                        break;
+                }
+            }
+        }
+
     }
 
     public static void setBackgroundColor(View view, String keyValue, int defaultColor) {
@@ -367,7 +387,7 @@ public class RemoteConfigSetUp {
         setValue(FAQ_KEY,
                 RemoteConfigConst.FAQ, "[{\"english_question\": \"Why are you use P5M?\", \"english_answer\": \"P5M app enables you to visit multiple gyms and attend diffent activities with only one membership. You can even buy monthly subscriptions if you wish that is how you would like to roll.\", \"arabic_question\": \"\", \"arabic_answer\": \"\"}]");
         setValue(PACKAGE_TAGS_KEY,
-                RemoteConfigConst.PACKAGE_TAGS,"[{\"id\": 2, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 3, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 4, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 10, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 11, \"tag_en\": \"\", \"tag_ar\": \"\"}]");
+                RemoteConfigConst.PACKAGE_TAGS, "[{\"id\": 2, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 3, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 4, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 10, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 11, \"tag_en\": \"\", \"tag_ar\": \"\"}]");
 
     }
 

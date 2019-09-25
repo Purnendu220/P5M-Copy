@@ -41,6 +41,7 @@ import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
@@ -65,7 +66,7 @@ import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_NO_PACKAG
 
 
 public class MembershipFragment extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks, NetworkCommunicator.RequestListener,
-        SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, CustomAlertDialog.OnAlertButtonAction  {
+        SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, CustomAlertDialog.OnAlertButtonAction {
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
     @BindView(R.id.recyclerView)
@@ -80,8 +81,6 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
     @BindView(R.id.constraintLayout)
     ConstraintLayout constraintLayout;
-
-
 
 
     private TextView mTextViewWalletAmount;
@@ -104,6 +103,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
     public MembershipFragment() {
         // Required empty public constructor
     }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,6 +123,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         fragment.setArguments(args);
         return fragment;
     }
+
     public static MembershipFragment newInstance(int navigationFrom, ClassModel classModel) {
         MembershipFragment fragment = new MembershipFragment();
         Bundle args = new Bundle();
@@ -131,13 +132,14 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         fragment.setArguments(args);
         return fragment;
     }
-    public static MembershipFragment newInstance(int navigationFrom, ClassModel classModel, BookWithFriendData friendData,int numberOfPackagesToBuy) {
+
+    public static MembershipFragment newInstance(int navigationFrom, ClassModel classModel, BookWithFriendData friendData, int numberOfPackagesToBuy) {
         MembershipFragment fragment = new MembershipFragment();
         Bundle args = new Bundle();
         args.putInt(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom);
-        args.putInt(AppConstants.DataKey.NUMBER_OF_PACKAGES_TO_BUY,numberOfPackagesToBuy);
+        args.putInt(AppConstants.DataKey.NUMBER_OF_PACKAGES_TO_BUY, numberOfPackagesToBuy);
         args.putSerializable(AppConstants.DataKey.CLASS_OBJECT, classModel);
-        args.putSerializable(AppConstants.DataKey.BOOK_WITH_FRIEND_DATA,friendData);
+        args.putSerializable(AppConstants.DataKey.BOOK_WITH_FRIEND_DATA, friendData);
         fragment.setArguments(args);
         return fragment;
     }
@@ -165,7 +167,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         navigatedFrom = getArguments().getInt(AppConstants.DataKey.NAVIGATED_FROM_INT, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
         classModel = (ClassModel) getArguments().getSerializable(AppConstants.DataKey.CLASS_OBJECT);
         mFriendsData = (BookWithFriendData) getArguments().getSerializable(AppConstants.DataKey.BOOK_WITH_FRIEND_DATA);
-        mNumberOfPackagesToBuy=getArguments().getInt(AppConstants.DataKey.NUMBER_OF_PACKAGES_TO_BUY,1);
+        mNumberOfPackagesToBuy = getArguments().getInt(AppConstants.DataKey.NUMBER_OF_PACKAGES_TO_BUY, 1);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setHasFixedSize(false);
 
@@ -184,7 +186,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
 
         MixPanel.trackMembershipVisit(navigatedFrom);
-      //  onTrackingNotification();
+        //  onTrackingNotification();
         FirebaseAnalysic.trackMembershipVisit(navigatedFrom);
         IntercomEvents.trackMembershipVisit(navigatedFrom);
 
@@ -192,62 +194,64 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updatePackage(Events.UpdatePackage data) {
-        if(!swipeRefreshLayout.isRefreshing()){
+        if (!swipeRefreshLayout.isRefreshing()) {
             this.navigatedFrom = -1;
-        this.classModel =null;
-        this.mFriendsData =null ;
-        this.mNumberOfPackagesToBuy=1;
-        refreshFromEvent();
+            this.classModel = null;
+            this.mFriendsData = null;
+            this.mNumberOfPackagesToBuy = 1;
+            refreshFromEvent();
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getPackagePurchased(Events.PackagePurchased packagePurchased) {
-        if(!swipeRefreshLayout.isRefreshing()){
+        if (!swipeRefreshLayout.isRefreshing()) {
 
             this.navigatedFrom = -1;
-        this.classModel =null;
-        this.mFriendsData =null ;
-        this.mNumberOfPackagesToBuy=1;
-        refreshFromEvent();
+            this.classModel = null;
+            this.mFriendsData = null;
+            this.mNumberOfPackagesToBuy = 1;
+            refreshFromEvent();
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void packagePurchasedForClass(Events.PackagePurchasedForClass data) {
-        if(!swipeRefreshLayout.isRefreshing()){
+        if (!swipeRefreshLayout.isRefreshing()) {
             this.navigatedFrom = -1;
-        this.classModel =null;
-        this.mFriendsData =null ;
-        this.mNumberOfPackagesToBuy=1;
-        refreshFromEvent();
-        }
-    }
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void classJoin(Events.ClassJoin data) {
-        if(!swipeRefreshLayout.isRefreshing()){
-            this.navigatedFrom = -1;
-        this.classModel =null;
-        this.mFriendsData =null ;
-        this.mNumberOfPackagesToBuy=1;
-        refreshFromEvent();
-        }
-    }
-
-
-
-
-    public  void refreshFragment(int navigatedFrom,ClassModel classModel,BookWithFriendData mFriendsData,int mNumberOfPackagesToBuy){
-        if(!swipeRefreshLayout.isRefreshing()){
-            if(this.navigatedFrom!=navigatedFrom||this.classModel !=classModel||this.mFriendsData !=mFriendsData||this.mNumberOfPackagesToBuy!=mNumberOfPackagesToBuy){
-                this.navigatedFrom = navigatedFrom;
-            this.classModel =classModel;
-            this.mFriendsData =mFriendsData ;
-            this.mNumberOfPackagesToBuy=mNumberOfPackagesToBuy;
+            this.classModel = null;
+            this.mFriendsData = null;
+            this.mNumberOfPackagesToBuy = 1;
             refreshFromEvent();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void classJoin(Events.ClassJoin data) {
+        if (!swipeRefreshLayout.isRefreshing()) {
+            this.navigatedFrom = -1;
+            this.classModel = null;
+            this.mFriendsData = null;
+            this.mNumberOfPackagesToBuy = 1;
+            refreshFromEvent();
         }
-        if(TempStorage.isOpenMembershipInfo() == MEMBERSHIP_INFO_STATE_NO_PACKAGE){
+    }
+
+
+    public void refreshFragment(int navigatedFrom, ClassModel classModel, BookWithFriendData mFriendsData, int mNumberOfPackagesToBuy) {
+        if (!swipeRefreshLayout.isRefreshing()) {
+            if (this.navigatedFrom != navigatedFrom || this.classModel != classModel || this.mFriendsData != mFriendsData || this.mNumberOfPackagesToBuy != mNumberOfPackagesToBuy) {
+                this.navigatedFrom = navigatedFrom;
+                this.classModel = classModel;
+                this.mFriendsData = mFriendsData;
+                this.mNumberOfPackagesToBuy = mNumberOfPackagesToBuy;
+                refreshFromEvent();
+            }else{
+                memberShipAdapter.setClassModel(null);
+                memberShipAdapter.notifyDataSetChanges();
+            }
+        }
+        if (TempStorage.isOpenMembershipInfo() == MEMBERSHIP_INFO_STATE_NO_PACKAGE) {
             MembershipInfoActivity.openActivity(context);
             TempStorage.setOpenMembershipInfo(MEMBERSHIP_INFO_STATE_DONE);
         }
@@ -256,14 +260,19 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         FirebaseAnalysic.trackMembershipVisit(this.navigatedFrom);
         IntercomEvents.trackMembershipVisit(this.navigatedFrom);
     }
-    public  void refreshFragmentBackGroung(int navigatedFrom,ClassModel classModel,BookWithFriendData mFriendsData,int mNumberOfPackagesToBuy){
-        if(!swipeRefreshLayout.isRefreshing()){
-            if(this.navigatedFrom!=navigatedFrom||this.classModel !=classModel||this.mFriendsData !=mFriendsData||this.mNumberOfPackagesToBuy!=mNumberOfPackagesToBuy){
+
+    public void refreshFragmentBackGroung(int navigatedFrom, ClassModel classModel, BookWithFriendData mFriendsData, int mNumberOfPackagesToBuy) {
+        if (!swipeRefreshLayout.isRefreshing()) {
+            if (this.navigatedFrom != navigatedFrom || this.classModel != classModel || this.mFriendsData != mFriendsData || this.mNumberOfPackagesToBuy != mNumberOfPackagesToBuy) {
                 this.navigatedFrom = navigatedFrom;
-                this.classModel =classModel;
-                this.mFriendsData =mFriendsData ;
-                this.mNumberOfPackagesToBuy=mNumberOfPackagesToBuy;
+                this.classModel = classModel;
+                this.mFriendsData = mFriendsData;
+                this.mNumberOfPackagesToBuy = mNumberOfPackagesToBuy;
                 refreshFromEvent();
+            }else{
+                memberShipAdapter.setClassModel(null);
+                memberShipAdapter.notifyDataSetChanges();
+
             }
         }
     }
@@ -302,8 +311,8 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         View v = LayoutInflater.from(context).inflate(R.layout.view_tool_normal, null);
 
         v.findViewById(R.id.imageViewBack).setVisibility(View.GONE);
-        mTextViewWalletAmount= v.findViewById(R.id.textViewWalletAmount);
-        mLayoutUserWallet= v.findViewById(R.id.layoutUserWallet);
+        mTextViewWalletAmount = v.findViewById(R.id.textViewWalletAmount);
+        mLayoutUserWallet = v.findViewById(R.id.layoutUserWallet);
         mLayoutUserWallet.setOnClickListener(this);
 
         ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.membership));
@@ -330,14 +339,11 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                     memberShipAdapter.addOwnedPackages(userPackageInfo.userPackageGeneral);
                     memberShipAdapter.setHeaderText(context.getString(R.string.membership_only_drop_in_package_heading_1),
                             context.getString(R.string.membership_only_drop_in_package_heading_2));
-                }
-                else if(userPackageInfo.haveGeneralPackage && user.isBuyMembership()){
+                } else if (userPackageInfo.haveGeneralPackage && user.isBuyMembership()) {
                     memberShipAdapter.addOwnedPackages(userPackageInfo.userPackageGeneral);
                     memberShipAdapter.setHeaderText(context.getString(R.string.membership_no_package_heading_1),
                             context.getString(R.string.membership_only_drop_in_package_heading_2));
-                }
-
-                else {
+                } else {
                     // User don't have General package but may have dropins..
                     memberShipAdapter.setHeaderText(context.getString(R.string.membership_drop_in_package_heading_1), context.getString(R.string.membership_drop_in_package_heading_2));
                 }
@@ -348,23 +354,25 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
             }
 
             swipeRefreshLayout.setRefreshing(true);
-            if(mFriendsData!=null){
-                networkCommunicator.getPackagesForClass(user.getId(), classModel.getGymBranchDetail().getGymId(), classModel.getClassSessionId(),mNumberOfPackagesToBuy, this, false);
+            if (mFriendsData != null) {
+                networkCommunicator.getPackagesForClass(user.getId(), classModel.getGymBranchDetail().getGymId(), classModel.getClassSessionId(), mNumberOfPackagesToBuy, this, false);
 
-            }else{
-                networkCommunicator.getPackagesForClass(user.getId(), classModel.getGymBranchDetail().getGymId(), classModel.getClassSessionId(),1, this, false);
+            } else {
+                networkCommunicator.getPackagesForClass(user.getId(), classModel.getGymBranchDetail().getGymId(), classModel.getClassSessionId(), 1, this, false);
 
             }
+            memberShipAdapter.notifyDataSetChanges();
 
         } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SETTING ||
                 navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE ||
                 navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION ||
                 navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN ||
-                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS||
-                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_DEEPLINK_ACTIVITY||
+                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS ||
+                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_DEEPLINK_ACTIVITY ||
                 navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MEMBERSHIP ||
                 navigatedFrom == -1
         ) {
+            memberShipAdapter.setClassModel(null);
 
             if (userPackageInfo.havePackages) {
 
@@ -385,24 +393,26 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                     memberShipAdapter.notifyDataSetChanges();
                 }
             }
-            if(user.isBuyMembership()){
+            if (user.isBuyMembership()) {
                 constraintLayout.setVisibility(View.VISIBLE);
 
 
                 swipeRefreshLayout.setRefreshing(true);
                 networkCommunicator.getPackages(user.getId(), this, false);
-                if(userPackageInfo.haveDropInPackage||userPackageInfo.haveGeneralPackage){
+                if (userPackageInfo.haveDropInPackage || userPackageInfo.haveGeneralPackage) {
                     memberShipAdapter.setHeaderText(context.getString(R.string.membership_drop_in_package_heading_1),
                             context.getString(R.string.membership_drop_in_package_heading_2));
-                }else{
+                } else {
                     memberShipAdapter.setHeaderText(context.getString(R.string.membership_drop_in_package_heading_1),
                             context.getString(R.string.membership_general_package_heading_1));
                 }
 
-            }else{
+            } else {
                 constraintLayout.setVisibility(View.GONE);
                 textGymVisitLimits.setVisibility(View.VISIBLE);
             }
+            memberShipAdapter.notifyDataSetChanges();
+
         }
     }
 
@@ -414,14 +424,14 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
             case R.id.layoutMainOfferedPackage: {
                 final Package aPackage = (Package) model;
                 if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS) {
-                    if(mFriendsData!=null && aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)){
-                        CheckoutActivity.openActivity(context, aPackage, classModel,2,mFriendsData,aPackage.getNoOfClass());
+                    if (mFriendsData != null && aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
+                        CheckoutActivity.openActivity(context, aPackage, classModel, 2, mFriendsData, aPackage.getNoOfClass());
                         return;
                     }
-                    if(mFriendsData!=null && aPackage.getGymVisitLimit()==1){
-                        DialogUtils.showBasicMessage(context,"",
-                                getString(R.string.this_package_has)+" "+aPackage.getGymVisitLimit()+getString(R.string.limit_for_this_gym)
-                                ,context.getResources().getString(R.string.continue_with), new MaterialDialog.SingleButtonCallback() {
+                    if (mFriendsData != null && aPackage.getGymVisitLimit() == 1) {
+                        DialogUtils.showBasicMessage(context, "",
+                                getString(R.string.this_package_has) + " " + aPackage.getGymVisitLimit() + getString(R.string.limit_for_this_gym)
+                                , context.getResources().getString(R.string.continue_with), new MaterialDialog.SingleButtonCallback() {
                                     @Override
                                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                         dialog.dismiss();
@@ -429,8 +439,9 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                                     }
                                 });
 
-                    }else{
-                        CheckoutActivity.openActivity(context, aPackage, classModel,1,mFriendsData,aPackage.getNoOfClass());
+                    } else {
+
+                        CheckoutActivity.openActivity(context, aPackage, classModel, 1, mFriendsData, aPackage.getNoOfClass());
                         return;
                     }
 
@@ -438,8 +449,8 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                         navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE ||
                         navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION ||
                         navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN ||
-                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS||
-                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_DEEPLINK_ACTIVITY||
+                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS ||
+                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_DEEPLINK_ACTIVITY ||
                         navigatedFrom == -1
                 ) {
                     CheckoutActivity.openActivity(context, aPackage);
@@ -449,12 +460,12 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
             }
             break;
 
-            case R.id.textViewExtendPackage:{
-                if(model instanceof UserPackage){
+            case R.id.textViewExtendPackage: {
+                if (model instanceof UserPackage) {
                     try {
-                        PackageExtensionAlertDialog dialog=new PackageExtensionAlertDialog(context,AppConstants.AppNavigation.NAVIGATION_FROM_MEMBERSHIP, (UserPackage) model) ;
+                        PackageExtensionAlertDialog dialog = new PackageExtensionAlertDialog(context, AppConstants.AppNavigation.NAVIGATION_FROM_MEMBERSHIP, (UserPackage) model);
                         dialog.show();
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
@@ -464,63 +475,92 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
             }
             break;
 
+            case R.id.imageViewNotApplicableInfo: {
+                if (model instanceof Package) {
+                    Package classModel = (Package) model;
+                    String message = "";
+                    if (classModel.getValidityPeriod().contains("MONTH")) {
+                        if (classModel.getDuration() == 1) {
+                            message = context.getResources().getString(R.string.valid_for_a_months);
+
+                        } else
+                            message = String.format(context.getResources().getString(R.string.valid_for_months), classModel.getDuration());
+
+
+                    } else if (classModel.getValidityPeriod().contains("WEEK")) {
+                        if (classModel.getDuration() == 1) {
+                            message = context.getResources().getString(R.string.valid_for_a_week);
+                        } else
+                            message = String.format(context.getResources().getString(R.string.valid_for_weeks), classModel.getDuration());
+
+                    }
+                    DialogUtils.showBasic(context, String.format(getString(R.string.clas_exceed), message), getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            dialog.dismiss();
+                        }
+                    });
+                }
+            }
+            break;
 
         }
-    }
+        }
 
-    @Override
-    public void onAdapterItemLongClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
-    }
+        @Override
+        public void onAdapterItemLongClick (RecyclerView.ViewHolder viewHolder, View view, Object
+        model,int position){
+        }
 
-    @Override
-    public void onShowLastItem() {
-    }
+        @Override
+        public void onShowLastItem () {
+        }
 
-    @Override
-    public void onApiSuccess(Object response, int requestCode) {
+        @Override
+        public void onApiSuccess (Object response,int requestCode){
 
-        switch (requestCode) {
-            case NetworkCommunicator.RequestCode.PACKAGES_LIMIT:
-            case NetworkCommunicator.RequestCode.PACKAGES_FOR_USER:
+            switch (requestCode) {
+                case NetworkCommunicator.RequestCode.PACKAGES_LIMIT:
+                case NetworkCommunicator.RequestCode.PACKAGES_FOR_USER:
 
-                swipeRefreshLayout.setRefreshing(false);
+                    swipeRefreshLayout.setRefreshing(false);
 
-                List<Package> packagesTemp = ((ResponseModel<List<Package>>) response).data;
-                if (packagesTemp != null && !packagesTemp.isEmpty()) {
-                    List<Package> packages = new ArrayList<>(packagesTemp.size());
+                    List<Package> packagesTemp = ((ResponseModel<List<Package>>) response).data;
+                    if (packagesTemp != null && !packagesTemp.isEmpty()) {
+                        List<Package> packages = new ArrayList<>(packagesTemp.size());
 
-                    for (Package aPackage : packagesTemp) {
-                        if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
-                            if (user.isBuyMembership()) {
-                                packages.add(aPackage);
+                        for (Package aPackage : packagesTemp) {
+                            if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
+                                if (user.isBuyMembership()) {
+                                    packages.add(aPackage);
+                                }
+                            } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
+                                aPackage.setGymName(classModel.getGymBranchDetail().getGymName());
+                                //packages.add(aPackage);
+                                mAvailableDropInPackage = aPackage;
                             }
-                        } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
-                            aPackage.setGymName(classModel.getGymBranchDetail().getGymName());
-                            //packages.add(aPackage);
-                            mAvailableDropInPackage=aPackage;
                         }
-                    }
-                    if(mFriendsData!=null){
-                        List<Package> packagesWithVisitLimit = new ArrayList<>();
-                        for (Package aPackage : packages) {
-                            aPackage.setBookingWithFriend(true);
-                            if(aPackage.getGymVisitLimit()!=1){
-                                packagesWithVisitLimit.add(aPackage);
+                        if (mFriendsData != null) {
+                            List<Package> packagesWithVisitLimit = new ArrayList<>();
+                            for (Package aPackage : packages) {
+                                aPackage.setBookingWithFriend(true);
+                                if (aPackage.getGymVisitLimit() != 1) {
+                                    packagesWithVisitLimit.add(aPackage);
+                                }
+
                             }
+                            memberShipAdapter.addAllOfferedPackages(packagesWithVisitLimit);
+
+
+                        } else {
+                            memberShipAdapter.addAllOfferedPackages(packages);
 
                         }
-                        memberShipAdapter.addAllOfferedPackages(packagesWithVisitLimit);
 
-
-                    }else{
-                        memberShipAdapter.addAllOfferedPackages(packages);
 
                     }
-
-
-                }
-                memberShipAdapter.notifyDataSetChanges();
-                break;
+                    memberShipAdapter.notifyDataSetChanges();
+                    break;
 
 //            case NetworkCommunicator.RequestCode.BUY_PACKAGE:
 //
@@ -530,28 +570,28 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 //                memberShipAdapter.notifyDataSetChanges();
 //                break;
 
-            case NetworkCommunicator.RequestCode.ME_USER:
-                user = TempStorage.getUser();
-                mWalletCredit= user.getWalletDto();
-                if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
-                    mLayoutUserWallet.setVisibility(View.VISIBLE);
-                    mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(),2)+" "+context.getResources().getString(R.string.wallet_currency));
-                }else{
-                    mLayoutUserWallet.setVisibility(View.GONE);
+                case NetworkCommunicator.RequestCode.ME_USER:
+                    user = TempStorage.getUser();
+                    mWalletCredit = user.getWalletDto();
+                    if (mWalletCredit != null && mWalletCredit.getBalance() > 0) {
+                        mLayoutUserWallet.setVisibility(View.VISIBLE);
+                        mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(), 2) + " " + context.getResources().getString(R.string.wallet_currency));
+                    } else {
+                        mLayoutUserWallet.setVisibility(View.GONE);
 
-                }
-                checkPackages();
+                    }
 
-                break;
+                    checkPackages();
+
+                    break;
+            }
         }
-    }
 
 
+        @Override
+        public void onApiFailure (String errorMessage,int requestCode){
 
-    @Override
-    public void onApiFailure(String errorMessage, int requestCode) {
-
-        swipeRefreshLayout.setRefreshing(false);
+            swipeRefreshLayout.setRefreshing(false);
 
 //        switch (requestCode) {
 //            case NetworkCommunicator.RequestCode.BUY_PACKAGE:
@@ -560,17 +600,17 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 //
 //                break;
 //        }
-    }
+        }
 
-    @Override
-    public void onRefresh() {
+        @Override
+        public void onRefresh () {
 
-        memberShipAdapter.clearAll();
-        memberShipAdapter.notifyDataSetChanges();
+            memberShipAdapter.clearAll();
+            memberShipAdapter.notifyDataSetChanges();
 
-        networkCommunicator.getMyUser(this, false);
+            networkCommunicator.getMyUser(this, false);
 
-    }
+        }
 
 //    @Override
 //    public void onBackPressed() {
@@ -585,46 +625,46 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 //        }
 //    }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.layoutUserWallet:
-                showWalletAlert();
-                break;
-            case R.id.textGymVisitLimits:
-                PackageLimitsActivity.openActivity(context, "");
+        @Override
+        public void onClick (View view){
+            switch (view.getId()) {
+                case R.id.layoutUserWallet:
+                    showWalletAlert();
+                    break;
+                case R.id.textGymVisitLimits:
+                    PackageLimitsActivity.openActivity(context, "");
 
-                break;
-            case R.id.constraintLayout:
-               MembershipInfoActivity.openActivity(context);
+                    break;
+                case R.id.constraintLayout:
+                    MembershipInfoActivity.openActivity(context);
 
-                break;
+                    break;
+            }
+
         }
 
-    }
+        private void showWalletAlert () {
+            CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.wallet_alert_title), context.getString(R.string.wallet_alert), 1, "", context.getResources().getString(R.string.ok), CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO, null, true, this);
+            try {
+                mCustomAlertDialog.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-    private void showWalletAlert(){
-        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.wallet_alert_title), context.getString(R.string.wallet_alert),1,"",context.getResources().getString(R.string.ok),CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO,null,true, this);
-        try {
-            mCustomAlertDialog.show();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
+        @Override
+        public void onOkClick ( int requestCode, Object data){
+
+        }
+
+        @Override
+        public void onCancelClick ( int requestCode, Object data){
+
+        }
+
+        @Override
+        public void onTabSelection ( int position){
+
+        }
     }
-
-    @Override
-    public void onOkClick(int requestCode, Object data) {
-
-    }
-
-    @Override
-    public void onCancelClick(int requestCode, Object data) {
-
-    }
-
-    @Override
-    public void onTabSelection(int position) {
-
-    }
-}

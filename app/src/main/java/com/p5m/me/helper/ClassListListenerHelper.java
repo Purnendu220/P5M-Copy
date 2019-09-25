@@ -449,7 +449,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
         String serverMessageNormalClass = message;
         String serverMessageSpecialClass = message;
-        String serverMessage5MinPolicy = context.getString(R.string.cancel_5_min_policy);
+        String serverMessage5MinPolicy = context.getString(R.string.sure_unjoin);
 
         float cancelTime = 2;
 
@@ -559,7 +559,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         List<Join5MinModel> bookedList = MyPreferences.getInstance().getBookingTime();
         if(bookedList !=null){
         for (Join5MinModel bookedClass : bookedList) {
-            if (bookedClass.getClassId() == model.getClassId()) {
+            if (bookedClass.getGetClassSessionId() == model.getClassSessionId()) {
                 if ((DateUtils.find5MinDifference(bookedClass.getJoiningTime(), Calendar.getInstance().getTime())) <= cancel5min) {
                     isClassBookedIn5Min = true;
                 }
@@ -577,7 +577,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
         String serverMessageNormalClass = message;
         String serverMessageSpecialClass = message;
-        String serverMessage5MinPolicy = context.getString(R.string.cancel_5_min_policy);
+        String serverMessage5MinPolicy = context.getString(R.string.sure_unjoin);
         float cancelTime = 2;
 
         DefaultSettingServer defaultSettingServer = MyPreferences.getInstance().getDefaultSettingServer();

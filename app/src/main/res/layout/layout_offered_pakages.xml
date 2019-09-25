@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/packageLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/view_separator_size"
@@ -55,8 +56,18 @@
                     android:textColor="@color/theme_dark_text"
                     android:textSize="@dimen/text_small"
                     android:visibility="gone" />
+                <ImageView
+                    android:layout_width="@dimen/margin_35"
+                    android:layout_height="@dimen/margin_35"
+                    android:layout_toLeftOf="@id/txtPackageOffer"
+                    android:layout_marginRight="@dimen/margin_5"
+                    android:padding="@dimen/margin_5"
+                    android:src="@drawable/info"
+                    android:visibility="gone"/>
 
             </LinearLayout>
+
+
 
             <TextView
                 android:id="@+id/txtPackageOffer"
@@ -75,6 +86,8 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_small"
                 android:textStyle="bold" />
+
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -184,6 +197,47 @@
 
 
         </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/layoutNotApplicable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/margin_20"
+            android:paddingEnd="@dimen/margin_10"
+            android:orientation="horizontal"
+            android:background="@color/text_dark_gray"
+            android:visibility="gone"
+            android:weightSum="4">
+
+
+            <TextView
+                android:id="@+id/textViewNotApplicable"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/margin_35"
+                android:layout_gravity="center_vertical"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:gravity="left|center_vertical"
+                android:layout_alignParentStart="true"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                android:text="@string/not_applicable"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_medium"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/imageViewNotApplicableInfo"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/margin_3"
+                android:padding="@dimen/margin_5"
+                android:src="@drawable/not_applicable_info" />
+
+
+
+        </RelativeLayout>
     </LinearLayout>
 
 </LinearLayout>

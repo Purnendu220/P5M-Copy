@@ -107,6 +107,7 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void notifyDataSetChanges() {
         list.clear();
 
+
         if (!headerSticky1.getTitle().isEmpty()) {
             list.add(headerSticky1);
         }

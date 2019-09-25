@@ -10,6 +10,7 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -113,12 +114,21 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.layoutMainOfferedPackage)
     LinearLayout layoutMainOfferedPackage;
+    @BindView(R.id.packageLayout)
+    LinearLayout packageLayout;
+    @BindView(R.id.layoutNotApplicable)
+    RelativeLayout layoutNotApplicable;
+    @BindView(R.id.imageViewNotApplicableInfo)
+    ImageView imageViewNotApplicableInfo;
 
     @BindView(R.id.layoutTimeClassPromo)
     LinearLayout layoutTimeClassPromo;
 
     @BindView(R.id.textViewSpecialOffer)
     TextView textViewSpecialOffer;
+
+
+    private int numberOfDays;
 
     /* User Offered Pakages   Layout Declaration*/
 
@@ -168,7 +178,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                         if (model.getExpiryDate() == null || TextUtils.isEmpty(model.getExpiryDate()))
                             textViewActiveDropIn.setText(String.format(context.getResources().getString(R.string.drop_in_unlimited), model.getGymName()));
                         else
-                            textViewActiveDropIn.setText(String.format(context.getResources().getString(R.string._two_drop_in_text), model.getGymName(),DateUtils.getClassDate(model.getExpiryDate())));
+                            textViewActiveDropIn.setText(String.format(context.getResources().getString(R.string._two_drop_in_text), model.getGymName(), DateUtils.getClassDate(model.getExpiryDate())));
                     } else {
                         if (model.getExpiryDate() == null || TextUtils.isEmpty(model.getExpiryDate()))
                             textViewActiveDropIn.setText(String.format(context.getResources().getString(R.string.drop_in_unlimited), model.getGymName()));
@@ -199,7 +209,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                         setPackageTags(model.getId());
 
                         if (classModel != null) {
-                            int numberOfDays = model.getDuration();
+                            numberOfDays = model.getDuration();
 
                             switch (model.getValidityPeriod()) {
                                 case "DAYS":
@@ -219,12 +229,29 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                             if (DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays) {
                                 mainLayoutActivePackageDropin.setVisibility(View.GONE);
                                 mainLayoutUserPakages.setVisibility(View.GONE);
-                                layoutMainOfferedPackage.setVisibility(View.GONE);
+                                layoutMainOfferedPackage.setVisibility(View.VISIBLE);
+                                layoutMainOfferedPackage.setClickable(true);
+                                layoutMainOfferedPackage.setAlpha(0.5f);
+                                layoutNotApplicable.setVisibility(View.VISIBLE);
+//                                packageLayout.setBackgroundColor(context.getResources().getColor(R.color.grey));
+
                             } else {
                                 mainLayoutActivePackageDropin.setVisibility(View.GONE);
                                 mainLayoutUserPakages.setVisibility(View.GONE);
                                 layoutMainOfferedPackage.setVisibility(View.VISIBLE);
+                                layoutMainOfferedPackage.setClickable(true);
+                                layoutMainOfferedPackage.setAlpha(1.0f);
+                                layoutNotApplicable.setVisibility(View.GONE);
+//                                packageLayout.setBackgroundColor(context.getResources().getColor(R.color.white));
+
                             }
+                        }else{
+                            mainLayoutActivePackageDropin.setVisibility(View.GONE);
+                            mainLayoutUserPakages.setVisibility(View.GONE);
+                            layoutMainOfferedPackage.setVisibility(View.VISIBLE);
+                            layoutMainOfferedPackage.setClickable(true);
+                            layoutMainOfferedPackage.setAlpha(1.0f);
+                            layoutNotApplicable.setVisibility(View.GONE);
                         }
 
                     } else if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
@@ -263,9 +290,24 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     layoutMainOfferedPackage.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            adapterCallbacks.onAdapterItemClick(MemberShipViewHolder.this, layoutMainOfferedPackage, data, position);
+                            if (classModel != null && DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays) {
+
+                            } else
+                                adapterCallbacks.onAdapterItemClick(MemberShipViewHolder.this, layoutMainOfferedPackage, data, position);
+
                         }
                     });
+                    imageViewNotApplicableInfo.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (classModel != null && DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays) {
+                                adapterCallbacks.onAdapterItemClick(MemberShipViewHolder.this, imageViewNotApplicableInfo, data, position);
+
+                            }
+                        }
+                    });
+
+
                 }
 
         } else {
@@ -384,16 +426,16 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
             e.printStackTrace();
         }
 
-        if (listPackageTags!=null && listPackageTags.size() >0) {
+        if (listPackageTags != null && listPackageTags.size() > 0) {
             for (PackageTags p : listPackageTags) {
                 if (p.getId() == packageId) {
                     if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en")
-                    && !p.getTag_en().isEmpty()) {
+                            && !p.getTag_en().isEmpty()) {
                         txtIsPackagePopular.setText(p.getTag_en());
                         txtIsPackagePopular.setVisibility(View.VISIBLE);
 
-                    } else if(LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")
-                            && !p.getTag_ar().isEmpty()){
+                    } else if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")
+                            && !p.getTag_ar().isEmpty()) {
                         txtIsPackagePopular.setText(p.getTag_ar());
                         txtIsPackagePopular.setVisibility(View.VISIBLE);
 

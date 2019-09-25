@@ -528,8 +528,8 @@ Would you like to view your balance? </string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
-    <string name="classess_remaining" translatable="false">You have %d/%d classes remaining</string>
-    <string name="so_far_you_visited" translatable="false">So far you visited</string>
+    <string name="classess_remaining">You have %d/%d classes remaining</string>
+    <string name="so_far_you_visited">So far you visited</string>
     <string name="drop_in_text">You have an active drop in for %s, expire on %s</string>
     <string name="drop_in_unlimited">You have an active drop in for %s</string>
     <string name="_two_drop_in_text">You have 2 active drop-ins for %s, expires on %s</string>
@@ -574,5 +574,7 @@ Would you like to view your balance? </string>
     <string name="easy_booking">Easy Bookings | Secure Payments</string>
     <string name="cancel_5_min_policy">Until 5 minutes from booking we will allow free cancellation even if it is under 2 hours</string>
     <string name="train">Train</string>
+    <string name="clas_exceed">The class you selected it past the expiration date of this package. choose a class that is taking place within the next %s to purchase this package</string>
+    <string name="not_applicable">Not Applicable</string>
 
 </resources>

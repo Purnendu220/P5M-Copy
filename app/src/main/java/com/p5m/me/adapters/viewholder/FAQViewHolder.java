@@ -24,6 +24,8 @@ public class FAQViewHolder extends RecyclerView.ViewHolder {
     public TextView textViewQuestion;
     @BindView(R.id.textViewAnswer)
     public TextView textViewAnswer;
+    @BindView(R.id.view)
+    public View view;
 
     private final Context context;
 
@@ -37,7 +39,7 @@ public class FAQViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void bind(final Object data, final AdapterCallbacks adapterCallbacks, final int position) {
+    public void bind(final Object data, final AdapterCallbacks adapterCallbacks, final int position,final  int lastPosition) {
         textViewAnswer.setVisibility(View.GONE);
         if (data != null && data instanceof FAQ) {
             itemView.setVisibility(View.VISIBLE);
@@ -46,15 +48,29 @@ public class FAQViewHolder extends RecyclerView.ViewHolder {
 //            if (model.getProfile_img() != null)
 //                ImageUtils.setImage(context, model.getProfile_img(), imageViewProfile);
             if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en")) {
-                if (!model.getEnglish_question().isEmpty())
+                if (!model.getEnglish_question().isEmpty()) {
                     textViewQuestion.setText(model.getEnglish_question());
-                if (!model.getEnglish_answer().isEmpty())
+                }
+                else
+                    textViewQuestion.setVisibility(View.GONE);
+
+                if (!model.getEnglish_answer().isEmpty()) {
                     textViewAnswer.setText(model.getEnglish_answer());
+                }
+                else
+                    textViewAnswer.setVisibility(View.GONE);
+
             } else if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
-                if (!model.getArabic_question().isEmpty())
+                if (!model.getArabic_question().isEmpty()) {
                     textViewQuestion.setText(model.getArabic_question());
-                if (!model.getArabic_answer().isEmpty())
+                }
+                else
+                    textViewQuestion.setVisibility(View.GONE);
+                if (!model.getArabic_answer().isEmpty()) {
                     textViewAnswer.setText(model.getArabic_answer());
+                }
+                else
+                    textViewAnswer.setVisibility(View.GONE);
             }
             model.setSelected(true);
 
@@ -79,8 +95,8 @@ public class FAQViewHolder extends RecyclerView.ViewHolder {
                     adapterCallbacks.onAdapterItemClick(FAQViewHolder.this, textViewAnswer, model, position);
                 }
             });
-
-
+            if(position+1 == lastPosition)
+                view.setVisibility(View.GONE);
         }
     }
 }

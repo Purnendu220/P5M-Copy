@@ -77,7 +77,7 @@ public class FAQAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof FAQViewHolder) {
-            ((FAQViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
+            ((FAQViewHolder) holder).bind(getItem(position), adapterCallbacks, position,list.size());
         } else if (holder instanceof LoaderViewHolder) {
             ((LoaderViewHolder) holder).bind(listLoader, adapterCallbacks);
         }

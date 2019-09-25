@@ -26,8 +26,6 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.Main.HomeActivity;
 
-import org.json.JSONObject;
-
 import java.util.List;
 
 public class ClassFinishNotificationService extends Service {
@@ -61,7 +59,7 @@ public class ClassFinishNotificationService extends Service {
                 showNotification(model);
                 try {
                     TempStorage.removeSavedClassOnly(model.getClassSessionId(), mContext);
-                    remove5MinClass(model.getClassId());
+                    remove5MinClass(model.getClassSessionId());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -141,13 +139,13 @@ public class ClassFinishNotificationService extends Service {
 
 
     }
-    private void remove5MinClass(int classId) {
+    private void remove5MinClass(int classSessionId) {
 
 
         List<Join5MinModel> bookedList = MyPreferences.getInstance().getBookingTime();
         if(bookedList !=null){
             for (Join5MinModel bookedClass : bookedList) {
-                if (bookedClass.getClassId() == classId) {
+                if (bookedClass.getGetClassSessionId() == classSessionId) {
                     bookedList.remove(bookedClass);
                 }
             }

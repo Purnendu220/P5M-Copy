@@ -4,15 +4,15 @@ import java.util.Date;
 
 public class Join5MinModel {
 
-    private int classId;
+    private int getClassSessionId;
     private Date joiningTime;
 
-    public int getClassId() {
-        return classId;
+    public int getGetClassSessionId() {
+        return getClassSessionId;
     }
 
-    public void setClassId(int classId) {
-        this.classId = classId;
+    public void setGetClassSessionId(int getClassSessionId) {
+        this.getClassSessionId = getClassSessionId;
     }
 
     public Date getJoiningTime() {
