@@ -9,6 +9,7 @@ public class RemoteConfigConst {
     public static final String BOOK_WITH_FRIEND = "BookWithFriend";
     public static final String BOOK_IN_CLASS_COLOR = "BookInClassProfileColor";
     public static final String BOOK_WITH_FRIEND_COLOR = "BookWithFriendColor";
+    public static final String BOOK_WITH_FRIEND_BACKGROUND_COLOR  = "BookWithFriendBGColor";
     public static final String BOOKED_BUTTON = "BookedButton";
     public static final String FULL_BUTTON = "FullButton";
     public static final String WAITLIST_BUTTON = "WAITLIST_BUTTON";
@@ -75,6 +76,8 @@ public class RemoteConfigConst {
     public static final int TESTIMONIALS_KEY = 959;
     public static final int FAQ_KEY = 960;
     public static final int PACKAGE_TAGS_KEY = 961;
+    public static final int BOOK_WITH_FRIEND_BACKGROUND_COLOR_KEY = 962;
+
 
     /* ------VALUES---------*/
     public static String BOOKED_VALUE = "Booked";
@@ -97,6 +100,7 @@ public class RemoteConfigConst {
     public static String RECOMMENDED_FOR_YOU_COLOR_VALUE = "#262626";
     public static String BOOK_WITH_FRIEND_COLOR_VALUE = "#3d85ea";
     public static String SESSION_EXPIRED_COLOR_VALUE = "#FF0000";
+    public static String BOOK_WITH_FRIEND_BACKGROUND_COLOR_VALUE = "#FFFFFF";
     public static String INVITE_FRIENDS_VALUE = "Invite Friends";
     public static String ADD_TO_WISHLIST_VALUE = "Add to wishlist";
     public static String PAYMENT_PACKAGE_VALUE = "Book Classes";

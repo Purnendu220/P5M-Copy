@@ -34,6 +34,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.material.appbar.AppBarLayout;
 import com.p5m.me.R;
 import com.p5m.me.analytics.IntercomEvents;
+import com.p5m.me.data.Join5MinModel;
 import com.p5m.me.data.PaymentConfirmationResponse;
 import com.p5m.me.data.PromoCode;
 import com.p5m.me.data.ValidityPackageList;
@@ -48,16 +49,19 @@ import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CalendarHelper;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LanguageUtils;
+import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
@@ -364,11 +368,13 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 break;
             case CLASS_PURCHASE_WITH_PACKAGE:
                 classModel.setUserJoinStatus(true);
+                saved5MinClass(classModel);
                 EventBroadcastHelper.sendPackagePurchasedForClass(classModel);
                 HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE);
                 break;
             case SPECIAL_CLASS:
                 classModel.setUserJoinStatus(true);
+                saved5MinClass(classModel);
                 EventBroadcastHelper.sendClassPurchased(classModel);
                 HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE);
                 break;
@@ -735,12 +741,14 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 
             case CLASS_PURCHASE_WITH_PACKAGE:
                 classModel.setUserJoinStatus(true);
+                saved5MinClass(classModel);
                 EventBroadcastHelper.sendPackagePurchasedForClass(classModel);
                 finish();
                 break;
 
             case SPECIAL_CLASS:
                 classModel.setUserJoinStatus(true);
+                saved5MinClass(classModel);
                 EventBroadcastHelper.sendClassPurchased(classModel);
                 finish();
                 super.onBackPressed();
@@ -804,5 +812,24 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 
     }
 
+    private void saved5MinClass(ClassModel classModel) {
+        Join5MinModel join5MinModel= new Join5MinModel();
+        join5MinModel.setGetClassSessionId(classModel.getClassSessionId());
+        join5MinModel.setJoiningTime(Calendar.getInstance().getTime());
+        List<Join5MinModel> bookedClassList = MyPreferences.getInstance().getBookingTime();
+        if (bookedClassList != null && bookedClassList.size() > 0) {
+            bookedClassList.add(join5MinModel);
+            MyPreferences.getInstance().saveBookingTime(bookedClassList);
+            LogUtils.debug("Class Booked " + classModel.getTitle());
+            return;
 
+        } else {
+            bookedClassList = new ArrayList<>();
+            bookedClassList.add(join5MinModel);
+            MyPreferences.getInstance().saveBookingTime(bookedClassList);
+
+        }
+
+
+    }
 }

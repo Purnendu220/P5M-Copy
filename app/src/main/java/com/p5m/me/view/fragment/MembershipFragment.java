@@ -494,7 +494,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                             message = String.format(context.getResources().getString(R.string.valid_for_weeks), classModel.getDuration());
 
                     }
-                    DialogUtils.showBasic(context, String.format(getString(R.string.clas_exceed), message), getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
+                    DialogUtils.showBasic(context, String.format(getString(R.string.clas_exceed), message),"", getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             dialog.dismiss();
@@ -607,7 +607,6 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
             memberShipAdapter.clearAll();
             memberShipAdapter.notifyDataSetChanges();
-
             networkCommunicator.getMyUser(this, false);
 
         }

@@ -866,8 +866,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             MyPreferences.getInstance().saveBookingTime(bookedClassList);
 
         }
-
-
     }
 
     @Override

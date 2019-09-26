@@ -31,6 +31,7 @@ import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_BUTTON_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_BUTTON_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_IN_CLASS_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_IN_CLASS_PROFILE_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_WITH_FRIEND_BACKGROUND_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_WITH_FRIEND_BUTTON_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_WITH_FRIEND_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BUY_CLASS_COLOR_KEY;
@@ -182,6 +183,9 @@ public class RemoteConfigSetUp {
                     case SELECT_PLAN_COLOR_KEY:
                         RemoteConfigConst.SELECT_PLAN_COLOR_VALUE = keyValue;
                         break;
+                    case BOOK_WITH_FRIEND_BACKGROUND_COLOR_KEY:
+                        RemoteConfigConst.BOOK_WITH_FRIEND_BACKGROUND_COLOR_VALUE = keyValue;
+                        break;
                     case GYM_VISIT_LIMIT_DETAIL_TEXT_KEY:
                         RemoteConfigConst.GYM_VISIT_LIMIT_DETAIL_TEXT_VALUE = keyValue;
                         break;
@@ -207,8 +211,7 @@ public class RemoteConfigSetUp {
                         break;
                 }
             }
-        }
-        else if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+        } else if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
             if (!keyValue.isEmpty()) {
                 switch (constValue) {
                     case TESTIMONIALS_KEY:

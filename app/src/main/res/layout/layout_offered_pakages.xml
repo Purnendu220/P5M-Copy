@@ -111,7 +111,7 @@
                     android:lineSpacingExtra="@dimen/line_spacing_extra_title"
                     android:text="5 classes at any gym"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/text_medium" />
+                    android:textSize="@dimen/text_small" />
 
 
             </LinearLayout>

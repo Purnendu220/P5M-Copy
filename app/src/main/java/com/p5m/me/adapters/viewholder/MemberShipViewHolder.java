@@ -155,6 +155,11 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                 UserPackage model = (UserPackage) data;
                 if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
                     textViewExtendPackage.setVisibility(View.VISIBLE);
+                    if (model != null && model.getTotalRemainingWeeks() != null && model.getTotalRemainingWeeks() < 1) {
+                        textViewExtendPackage.setVisibility(View.GONE);
+
+                    }
+
                     textViewExtendPackage.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
