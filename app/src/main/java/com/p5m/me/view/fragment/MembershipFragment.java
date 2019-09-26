@@ -482,17 +482,17 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                     String message = "";
                     if (classModel.getValidityPeriod().contains("MONTH")) {
                         if (classModel.getDuration() == 1) {
-                            message = context.getResources().getString(R.string.valid_for_a_months);
+                            message = context.getResources().getString(R.string.a_month);
 
                         } else
-                            message = String.format(context.getResources().getString(R.string.valid_for_months), classModel.getDuration());
+                            message = String.format(context.getResources().getString(R.string.months), classModel.getDuration());
 
 
                     } else if (classModel.getValidityPeriod().contains("WEEK")) {
                         if (classModel.getDuration() == 1) {
-                            message = context.getResources().getString(R.string.valid_for_a_week);
+                            message = context.getResources().getString(R.string.a_week);
                         } else
-                            message = String.format(context.getResources().getString(R.string.valid_for_weeks), classModel.getDuration());
+                            message = String.format(context.getResources().getString(R.string.weeks_value), String.valueOf(classModel.getDuration()));
 
                     }
                     DialogUtils.showBasic(context, String.format(getString(R.string.clas_exceed), message),"", getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
@@ -581,12 +581,12 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                         mLayoutUserWallet.setVisibility(View.GONE);
 
                     }
-                    if(isTabSelected){
+                   /* if(isTabSelected){
                         isTabSelected = false;
                     }
-                    else {
+                    else {*/
                         checkPackages();
-                    }
+//                    }
 
                     break;
             }
@@ -670,7 +670,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         @Override
         public void onTabSelection ( int position){
             isTabSelected=true;
-            networkCommunicator.getMyUser(this, false);
+
 
         }
     }

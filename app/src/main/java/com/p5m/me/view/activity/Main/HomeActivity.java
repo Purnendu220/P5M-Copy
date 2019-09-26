@@ -634,7 +634,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
             String balanceWallet = "0";
 
-            Registration registration = Registration.create().withUserId(user.getFirstName() + " " + user.getLastName());
+            Registration registration = Registration.create().withEmail(user.getEmail());
             Intercom.client().registerIdentifiedUser(registration);
             if(user.getWalletDto()!=null){
                 balanceWallet=String.valueOf(user.getWalletDto().getBalance());

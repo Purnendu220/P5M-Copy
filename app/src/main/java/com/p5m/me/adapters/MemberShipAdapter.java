@@ -96,6 +96,7 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         setHeaderText("", "");
         offeredPackages.clear();
         ownedPackages.clear();
+
         list.clear();
     }
 

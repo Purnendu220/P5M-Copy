@@ -583,6 +583,7 @@
     <string name="please_enter_a_new_password">يرجى إدخال كلمة مرور جديدة</string>
 
     <string name="weeks">أسابيع</string>
+    <string name="weeks_value">%s أسابيع</string>
 
     <string name="please_allow_location">يرجى السماح لP5M بإستخدام موقعك</string>
 

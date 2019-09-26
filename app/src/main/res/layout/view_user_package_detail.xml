@@ -13,10 +13,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Daratma"
-        android:textSize="@dimen/text_large"
+        android:textSize="@dimen/text_medium"
         android:textStyle="bold"
         android:fontFamily="sans-serif"
-        android:textColor="@color/black"
+        android:textColor="@color/gray_class"
 
         />
 
@@ -25,11 +25,11 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/visit_times"
-          android:textSize="@dimen/text_large"
+          android:textSize="@dimen/text_medium"
           android:layout_marginRight="@dimen/margin_10"
           android:layout_alignParentEnd="true"
           android:fontFamily="sans-serif"
-          android:textColor="@color/black"
+          android:textColor="@color/gray_class"
 
 
           />
