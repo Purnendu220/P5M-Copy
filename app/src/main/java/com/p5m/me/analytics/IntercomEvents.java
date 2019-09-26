@@ -36,9 +36,11 @@ public class IntercomEvents {
     }
 
     public static void purchase_drop_in(ClassModel classModel) {
-        Map<String, Object> eventData = new HashMap<>();
-        eventData.put("gym_name", classModel != null ? classModel.getTitle() : "");
-        Intercom.client().logEvent("Purchase_Drop_In", eventData);
+        if(classModel!=null) {
+            Map<String, Object> eventData = new HashMap<>();
+            eventData.put("gym_name", classModel.getGymBranchDetail() != null ? classModel.getGymBranchDetail().getGymName() : "");
+            Intercom.client().logEvent("Purchase_Drop_In", eventData);
+        }
     }
 
     public static void trackUnJoinClass(ClassModel model) {
@@ -61,7 +63,7 @@ public class IntercomEvents {
             eventData.put("rating", model.getmRating());
             eventData.put("class_name", classModel.getTitle());
             eventData.put("class_date", DateUtils.getTimespanDate(classModel.getClassDate() + " " + classModel.getFromTime()));
-            eventData.put("rating_date", DateUtils.getTimespanDate(DateUtils.getCurrentDateandTime()));
+//            eventData.put("rating_date", DateUtils.getTimespanDate(DateUtils.getCurrentDateandTime()));
             eventData.put("time_difference", hourDiff);
             Intercom.client().logEvent("Rated_Class", eventData);
         }

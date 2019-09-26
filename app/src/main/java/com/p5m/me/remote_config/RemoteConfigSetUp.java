@@ -68,7 +68,7 @@ public class RemoteConfigSetUp {
     public static void setup(Activity activity) {
         context = activity;
         firebaseRemoteConfig.setConfigSettingsAsync(new FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(1600)
+                .setMinimumFetchIntervalInSeconds(3600)
                 .build());
     }
 

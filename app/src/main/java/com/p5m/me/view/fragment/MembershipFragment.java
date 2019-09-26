@@ -99,6 +99,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
     private User user;
     private int mNumberOfPackagesToBuy;
     private static User.WalletDto mWalletCredit;
+    private boolean isTabSelected=false;
 
     public MembershipFragment() {
         // Required empty public constructor
@@ -580,8 +581,12 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                         mLayoutUserWallet.setVisibility(View.GONE);
 
                     }
-
-                    checkPackages();
+                    if(isTabSelected){
+                        isTabSelected = false;
+                    }
+                    else {
+                        checkPackages();
+                    }
 
                     break;
             }
@@ -664,6 +669,8 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
         @Override
         public void onTabSelection ( int position){
+            isTabSelected=true;
+            networkCommunicator.getMyUser(this, false);
 
         }
     }

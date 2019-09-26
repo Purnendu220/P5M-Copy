@@ -31,6 +31,7 @@ import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
+import com.p5m.me.data.Join5MinModel;
 import com.p5m.me.data.PromoCode;
 import com.p5m.me.data.Testimonials;
 import com.p5m.me.data.ValidityPackageList;
@@ -48,6 +49,7 @@ import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
@@ -58,6 +60,7 @@ import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -1048,6 +1051,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void run() {
                 EventBroadcastHelper.classAutoJoin(context, classModel);
+                saved5MinClass(classModel);
             }
         };
 
@@ -1137,5 +1141,22 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
     }
 
+    private void saved5MinClass(ClassModel classModel) {
+        Join5MinModel join5MinModel= new Join5MinModel();
+        join5MinModel.setGetClassSessionId(classModel.getClassSessionId());
+        join5MinModel.setJoiningTime(Calendar.getInstance().getTime());
+        List<Join5MinModel> bookedClassList = MyPreferences.getInstance().getBookingTime();
+        if (bookedClassList != null && bookedClassList.size() > 0) {
+            bookedClassList.add(join5MinModel);
+            MyPreferences.getInstance().saveBookingTime(bookedClassList);
+            LogUtils.debug("Class Booked " + classModel.getTitle());
+            return;
 
+        } else {
+            bookedClassList = new ArrayList<>();
+            bookedClassList.add(join5MinModel);
+            MyPreferences.getInstance().saveBookingTime(bookedClassList);
+
+        }
+    }
 }
