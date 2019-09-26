@@ -34,6 +34,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.material.appbar.AppBarLayout;
 import com.p5m.me.R;
 import com.p5m.me.analytics.IntercomEvents;
+import com.p5m.me.data.Join5MinModel;
 import com.p5m.me.data.PaymentConfirmationResponse;
 import com.p5m.me.data.PromoCode;
 import com.p5m.me.data.ValidityPackageList;
@@ -48,16 +49,19 @@ import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CalendarHelper;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LanguageUtils;
+import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
@@ -65,6 +69,9 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.intercom.android.sdk.Intercom;
+import io.intercom.android.sdk.UserAttributes;
+import io.intercom.android.sdk.identity.Registration;
 
 import static com.p5m.me.fxn.utility.Constants.CheckoutFor.EXTENSION;
 import static com.p5m.me.fxn.utility.Constants.CheckoutFor.PENDING_TRANSACTION;
@@ -83,13 +90,14 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
     private String referenceNo;
     private Hashtable<String, String> calendarIdTable;
     private int calendar_id = -1;
+    public static String couponCode = "";
     private User user;
 
     public static void openActivity(Context context, int navigationFrom, String refId,
                                     Package aPackage, ClassModel classModel,
                                     Constants.CheckoutFor checkoutFor,
                                     UserPackage userPackage,
-                                    ValidityPackageList selectedPacakageFromList, int mNumberOfClassesToBuy) {
+                                    ValidityPackageList selectedPacakageFromList, int mNumberOfClassesToBuy, String couponCode) {
         Intent intent = new Intent(context, PaymentConfirmationActivity.class)
 
                 .putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom);
@@ -105,6 +113,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         PaymentConfirmationActivity.userPackage = userPackage;
         PaymentConfirmationActivity.selectedPacakageFromList = selectedPacakageFromList;
         PaymentConfirmationActivity.mNumberOfClassesToBuy = mNumberOfClassesToBuy;
+        PaymentConfirmationActivity.couponCode = couponCode;
         context.startActivity(intent);
     }
 
@@ -284,8 +293,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 case SUCCESS:
                     if (Constants.LANGUAGE == Locale.ENGLISH) {
                         if (paymentResponse != null && selectedPacakageFromList != null && userPackage != null)
-                            IntercomEvents.trackExtendedPackage(paymentResponse.getPackageName(), selectedPacakageFromList.getDuration(), DateUtils.getDaysLeftFromPackageExpiryDate(userPackage.getExpiryDate()));
-                        textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.congratulation_package_extended_en), "<b>" + getPurchasedPackageName() + "</b>", LanguageUtils.numberConverter(selectedPacakageFromList.getDuration()))));
+                            textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.congratulation_package_extended_en), "<b>" + getPurchasedPackageName() + "</b>", LanguageUtils.numberConverter(selectedPacakageFromList.getDuration()))));
                     } else
                         textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.congratulation_package_extended_ar), "<b>" + getPurchasedPackageName() + "</b>", LanguageUtils.numberConverter(selectedPacakageFromList.getDuration()))));
 
@@ -360,11 +368,13 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 break;
             case CLASS_PURCHASE_WITH_PACKAGE:
                 classModel.setUserJoinStatus(true);
+                saved5MinClass(classModel);
                 EventBroadcastHelper.sendPackagePurchasedForClass(classModel);
                 HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE);
                 break;
             case SPECIAL_CLASS:
                 classModel.setUserJoinStatus(true);
+                saved5MinClass(classModel);
                 EventBroadcastHelper.sendClassPurchased(classModel);
                 HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE);
                 break;
@@ -461,6 +471,19 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 layoutConfirmation.setVisibility(View.VISIBLE);
                 paymentResponse = ((ResponseModel<PaymentConfirmationResponse>) response).data;
                 setAnimation();
+                if (selectedPacakageFromList != null && userPackage != null && selectedPacakageFromList.getPackageType().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_TYPE_EXTENSION))
+                    IntercomEvents.trackExtendedPackage(paymentResponse, selectedPacakageFromList, userPackage);
+
+                else {
+                    if (paymentResponse.getPackageName().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN_INTERCOM) ||
+                            paymentResponse.getPackageName().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
+                        IntercomEvents.purchase_drop_in(classModel);
+                        IntercomEvents.trackJoinClass(classModel);
+                    } else {
+
+                        IntercomEvents.purchasedPlan(paymentResponse, couponCode, classModel);
+                    }
+                }
                 setData(PaymentStatus.valueOf(paymentResponse.getStatus()));
 //                paymentResponse.setStatus(PaymentStatus.FAILURE.name());
 //                setData(PaymentStatus.FAILURE);
@@ -476,8 +499,30 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                     mLayoutUserWallet.setVisibility(View.GONE);
 
                 }
+                updateIntercomWallet();
                 break;
         }
+    }
+
+    private void updateIntercomWallet() {
+        String balanceWallet = "0";
+
+        Registration registration = Registration.create().withUserId(user.getFirstName() + " " + user.getLastName());
+        Intercom.client().registerIdentifiedUser(registration);
+        if (mWalletCredit != null) {
+            balanceWallet = String.valueOf(mWalletCredit.getBalance());
+        }
+
+      /*  UserAttributes userAttributes = new UserAttributes.Builder()
+                .withName(user.getFirstName() + " " + user.getLastName())
+                .withEmail(user.getEmail())
+                .withCustomAttribute("Gender",user.getGender())
+                .withCustomAttribute("wallet balance",balanceWallet)
+                .withCustomAttribute("Registration date", user.getDateOfJoining() == 0 ?
+                        "" : DateUtils.getDateFormatter(new Date(user.getDateOfJoining())) + "")
+                .build();
+        Intercom.client().updateUser(userAttributes);*/
+
     }
 
     private void setData(PaymentStatus paymentStatus) {
@@ -696,12 +741,14 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 
             case CLASS_PURCHASE_WITH_PACKAGE:
                 classModel.setUserJoinStatus(true);
+                saved5MinClass(classModel);
                 EventBroadcastHelper.sendPackagePurchasedForClass(classModel);
                 finish();
                 break;
 
             case SPECIAL_CLASS:
                 classModel.setUserJoinStatus(true);
+                saved5MinClass(classModel);
                 EventBroadcastHelper.sendClassPurchased(classModel);
                 finish();
                 super.onBackPressed();
@@ -765,5 +812,24 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 
     }
 
+    private void saved5MinClass(ClassModel classModel) {
+        Join5MinModel join5MinModel= new Join5MinModel();
+        join5MinModel.setGetClassSessionId(classModel.getClassSessionId());
+        join5MinModel.setJoiningTime(Calendar.getInstance().getTime());
+        List<Join5MinModel> bookedClassList = MyPreferences.getInstance().getBookingTime();
+        if (bookedClassList != null && bookedClassList.size() > 0) {
+            bookedClassList.add(join5MinModel);
+            MyPreferences.getInstance().saveBookingTime(bookedClassList);
+            LogUtils.debug("Class Booked " + classModel.getTitle());
+            return;
 
+        } else {
+            bookedClassList = new ArrayList<>();
+            bookedClassList.add(join5MinModel);
+            MyPreferences.getInstance().saveBookingTime(bookedClassList);
+
+        }
+
+
+    }
 }

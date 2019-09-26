@@ -213,7 +213,7 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
                 if(model instanceof ScheduleClassModel) {
                     ScheduleClassModel model1 = (ScheduleClassModel) model;
                     ClassProfileActivity.open(context, model1.getClassSessionId(), AppConstants.AppNavigation.NAVIGATION_FROM_SHOW_SCHEDULER);
-                    //this.dismiss();
+                    this.dismiss();
                 }
                 break;
         }

@@ -88,8 +88,8 @@ public class BookForAFriendPopup extends Dialog implements View.OnClickListener 
         getWindow().setAttributes(lp);
         User user = MyPreferences.getInstance().getUser();
         setListeners();
-
-        RemoteConfigSetUp.setBackgroundColor(textViewBookWithFriend, RemoteConfigConst.BOOK_WITH_FRIEND_COLOR_VALUE, context.getResources().getColor(R.color.colorAccent));
+            RemoteConfigSetUp.setBackgroundColor(textViewBookWithFriend, RemoteConfigConst.BOOK_WITH_FRIEND_COLOR_VALUE, context.getResources().getColor(R.color.colorAccent));
+//        RemoteConfigSetUp.setBackgroundColor(textViewBookWithFriend, RemoteConfigConst.BOOK_WITH_FRIEND_BACKGROUND_COLOR_VALUE, context.getResources().getColor(R.color.colorAccent));
         textViewBookWithFriend.setText(RemoteConfigConst.BOOK_WITH_FRIEND_VALUE);
 
         // selectGender(model.getClassType());

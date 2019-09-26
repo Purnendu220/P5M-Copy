@@ -2,6 +2,8 @@ package com.p5m.me.data.main;
 
 import com.p5m.me.data.ClassRatingListData;
 
+import java.util.Date;
+
 public class ClassModel implements java.io.Serializable {
     private static final long serialVersionUID = -7121053493736355823L;
 
@@ -49,6 +51,7 @@ public class ClassModel implements java.io.Serializable {
     private ClassRatingListData ratingResDto;
 
     private String fitnessLevel;
+
     private boolean isExpired;
 
     public boolean isExpired() {
@@ -73,6 +76,7 @@ public class ClassModel implements java.io.Serializable {
         this.fromTime=fromTime;
         this.toTime=toTime;
         this.classSessionId=(int)dataID;
+
     }
     //////////////////////////////////
 
@@ -350,4 +354,6 @@ public class ClassModel implements java.io.Serializable {
     public void setWishType(String wishType) {
         this.wishType = wishType;
     }
+
+
 }

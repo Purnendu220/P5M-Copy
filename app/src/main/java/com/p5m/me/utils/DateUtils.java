@@ -2,6 +2,7 @@ package com.p5m.me.utils;
 
 import android.util.Log;
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
@@ -221,15 +222,17 @@ public class DateUtils {
         return "";
     }
 
-    public static String getTimespanDate(String date) {
+    public static Timestamp getTimespanDate(String date) {
         try {
-            Date date1 = classDateExpiry.parse(date);
-            return String.valueOf(date1.getTime() / 1000);
+//            Date date1 = classDateExpiry.parse(date);
+            Date date1 = classDate.parse(date);
+            Timestamp timeStampDate = new Timestamp(date1.getTime());
+            return timeStampDate;
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
         }
-        return "";
+        return new Timestamp(System.nanoTime());
     }
 
 
@@ -393,5 +396,52 @@ public class DateUtils {
             LogUtils.exception(e);
         }
         return "";
+    }
+
+    public static String findDifference(String date, Date endDate) {
+        //milliseconds
+        try {
+            Date startDate = classDateExpiry.parse(date);
+            long different = endDate.getTime() - startDate.getTime();
+
+            long secondsInMilli = 1000;
+            long minutesInMilli = secondsInMilli * 60;
+            long hoursInMilli = minutesInMilli * 60;
+            long daysInMilli = hoursInMilli * 24;
+
+            long elapsedDays = different / daysInMilli;
+            different = different % daysInMilli;
+
+            long elapsedHours = different / hoursInMilli;
+            different = different % hoursInMilli;
+
+            long elapsedMinutes = different / minutesInMilli;
+            different = different % minutesInMilli;
+
+            long elapsedSeconds = different / secondsInMilli;
+            if (elapsedDays < 0)
+                elapsedDays = -elapsedDays;
+            String timeDifference = elapsedDays + " days " + elapsedHours + " hours " + elapsedMinutes + " minutes";
+            return timeDifference;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+       /* System.out.printf(
+                "%d days, %d hours, %d minutes, %d seconds%n",
+                elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds);*/
+    }
+
+    public static double find5MinDifference(Date startDate, Date endDate) {
+        try {
+
+            long diff = endDate.getTime() - startDate.getTime();
+            long diffMinutes = diff / (60 * 1000) % 60;
+            return diffMinutes;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 2;
+
     }
 }

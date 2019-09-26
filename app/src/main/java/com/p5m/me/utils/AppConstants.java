@@ -161,7 +161,7 @@ public class AppConstants {
         public static final int MEMBERSHIP_INFO_STATE_DONE = 2;
 
 
-
+        public static final String CLASS_BOOKING_TIME = "Class_booking_time";
     }
 
     public class DataKey {
@@ -291,11 +291,13 @@ public class AppConstants {
 
         public static final String PACKAGE_TYPE_GENERAL = "GENERAL";
         public static final String PACKAGE_TYPE_DROP_IN = "DROPIN";
+        public static final String PACKAGE_TYPE_DROP_IN_INTERCOM = "DROP IN";
 
         public static final String GENDER_MALE = "MALE";
         public static final String GENDER_FEMALE = "FEMALE";
         public static final String GENDER_BOTH = "MIXED";
         public static final String PACKAGE_OFFER_PERCENTAGE = "PERCENTAGE";
+        public static final String PACKAGE_TYPE_EXTENSION = "EXTENSION";
 
     }
 

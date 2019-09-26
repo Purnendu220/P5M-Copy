@@ -64,6 +64,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -690,7 +691,6 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
     public void onApiSuccess(Object response, int requestCode) {
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.JOIN_CLASS:
-
                 User user = ((ResponseModel<User>) response).data;
 
                 EventBroadcastHelper.sendUserUpdate(context, user);

@@ -78,7 +78,6 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
         }
         networkCommunicator.getActivities(this, false);
         RemoteConfigSetUp.getValues();
-        Log.d("Instance ID", FirebaseInstanceId.getInstance().getId());
         if (Build.VERSION.SDK_INT >= 23) {
             if (PermissionUtility.verifyLocationPermissions(Splash.this)) {
                 startTimerForGoToNextScreen();

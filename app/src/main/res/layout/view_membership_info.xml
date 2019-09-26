@@ -2,10 +2,10 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    >
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -13,11 +13,11 @@
         android:background="@color/white"
         android:elevation="@dimen/margin_10"
         android:paddingTop="@dimen/margin_15"
+        android:paddingBottom="@dimen/margin_10"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.6"
-        android:paddingBottom="@dimen/margin_10"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="parent">
 
@@ -88,17 +88,18 @@
 
         <TextView
             android:id="@+id/textViewVarietyActivity"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_16"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="5dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="5dp"
+            android:fontFamily="sans-serif-medium"
             android:letterSpacing="@dimen/text_medium_letter_spacing"
             android:lineSpacingExtra="@dimen/line_spacing_extra"
             android:text="@string/variety_of_activities"
             android:textColor="@color/text_dark_gray"
             android:textSize="@dimen/text_large"
-            android:fontFamily="sans-serif-medium"
+            app:layout_constraintEnd_toEndOf="@+id/textViewMembershipFeatures"
             app:layout_constraintStart_toEndOf="@+id/imageViewVarietyActivity"
             app:layout_constraintTop_toTopOf="@+id/imageViewVarietyActivity" />
 
@@ -106,9 +107,8 @@
             android:id="@+id/textViewVarietyActivityDetail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-
             android:layout_marginEnd="@dimen/margin_12"
-            android:paddingTop="8dp"
+            android:paddingTop="@dimen/margin_8"
             android:paddingBottom="@dimen/margin_5"
             android:text="@string/variety_of_activity_details"
             android:textColor="@color/theme_dark_text"
@@ -132,16 +132,16 @@
 
         <TextView
             android:id="@+id/textViewVisitGym"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:fontFamily="sans-serif-medium"
             android:letterSpacing="@dimen/text_medium_letter_spacing"
             android:lineSpacingExtra="@dimen/line_spacing_extra"
-            android:layout_marginEnd="@dimen/margin_8"
             android:text="@string/visit_gym_feature"
             android:textColor="@color/text_dark_gray"
             android:textSize="@dimen/text_large"
+            app:layout_constraintEnd_toEndOf="@+id/textViewVarietyActivity"
             app:layout_constraintStart_toStartOf="@+id/textViewVarietyActivity"
             app:layout_constraintTop_toTopOf="@+id/imageViewVisitGym" />
 
@@ -172,17 +172,17 @@
 
         <TextView
             android:id="@+id/textViewSave"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:fontFamily="sans-serif-medium"
             android:letterSpacing="@dimen/text_medium_letter_spacing"
             android:lineSpacingExtra="@dimen/line_spacing_extra"
-            android:text="@string/save_percent"
-            android:fontFamily="sans-serif-medium"
 
+            android:text="@string/save_percent"
             android:textColor="@color/text_dark_gray"
-            android:layout_marginEnd="@dimen/margin_8"
             android:textSize="@dimen/text_large"
+            app:layout_constraintEnd_toEndOf="@+id/textViewVarietyActivity"
             app:layout_constraintStart_toStartOf="@+id/textViewVarietyActivity"
             app:layout_constraintTop_toTopOf="@+id/imageViewSave" />
 
@@ -215,16 +215,16 @@
 
         <TextView
             android:id="@+id/textViewInstantBooking"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:fontFamily="sans-serif-medium"
             android:letterSpacing="@dimen/text_medium_letter_spacing"
             android:lineSpacingExtra="@dimen/line_spacing_extra"
             android:text="@string/instant_booking"
             android:textColor="@color/text_dark_gray"
-            android:layout_marginEnd="@dimen/margin_8"
             android:textSize="@dimen/text_large"
-            android:fontFamily="sans-serif-medium"
+            app:layout_constraintEnd_toEndOf="@+id/textViewVarietyActivity"
             app:layout_constraintStart_toStartOf="@+id/textViewVarietyActivity"
             app:layout_constraintTop_toTopOf="@+id/imageViewInstantBooking" />
 
@@ -291,7 +291,7 @@
 
             <TextView
                 android:id="@+id/textViewExplore"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:letterSpacing="@dimen/text_medium_letter_spacing"
@@ -299,16 +299,14 @@
                 android:text="@string/explore"
 
                 android:textColor="@color/theme_book"
-                android:textSize="@dimen/text_extra_large"
-               />
+                android:textSize="@dimen/text_extra_large" />
 
             <TextView
                 android:id="@+id/textViewExploreDetail"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:paddingTop="8dp"
                 android:maxLines="4"
+                android:paddingTop="8dp"
                 android:paddingBottom="@dimen/margin_5"
                 android:text="@string/exploreDetail"
                 android:textColor="@color/theme_dark_text"
@@ -333,17 +331,16 @@
             android:id="@+id/layoutPlan"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="16dp"
             android:orientation="vertical"
             android:padding="18dp"
-
             app:layout_constraintBottom_toBottomOf="@+id/imageViewPickPlan"
             app:layout_constraintEnd_toStartOf="@+id/imageViewPickPlan"
             app:layout_constraintStart_toStartOf="@+id/imageViewExplore"
             app:layout_constraintTop_toTopOf="@+id/imageViewPickPlan">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:letterSpacing="@dimen/text_medium_letter_spacing"
@@ -357,7 +354,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+
                 android:paddingTop="8dp"
                 android:paddingBottom="@dimen/margin_5"
                 android:text="@string/that_work_for_you"
@@ -375,7 +372,7 @@
             app:layout_constraintEnd_toEndOf="@+id/layoutPlan"
             app:layout_constraintStart_toStartOf="@+id/imageViewExplore"
             app:layout_constraintTop_toBottomOf="@+id/imageViewPickPlan"
-            app:srcCompat="@drawable/get_a_illustration" />
+            app:srcCompat="@drawable/any_gym_illustration" />
 
         <LinearLayout
             android:id="@+id/layoutDiscount"
@@ -391,7 +388,42 @@
 
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                android:lineSpacingExtra="@dimen/line_spacing_extra"
+                android:text="@string/train"
+                android:textColor="@color/theme_book"
+                android:textSize="@dimen/text_extra_large"
+                app:layout_constraintStart_toStartOf="@+id/textViewVarietyActivity"
+                app:layout_constraintTop_toTopOf="@+id/imageViewInstantBooking" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingBottom="@dimen/margin_5"
+                android:text="@string/workout_any_gym"
+                android:textColor="@color/theme_dark_text"
+                android:textSize="@dimen/text_medium" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:orientation="vertical"
+            android:padding="15dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewWorkout"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewWorkout"
+            app:layout_constraintStart_toStartOf="@+id/imageViewDiscount"
+            app:layout_constraintTop_toTopOf="@+id/imageViewWorkout">
+
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:letterSpacing="@dimen/text_medium_letter_spacing"
@@ -403,9 +435,9 @@
                 app:layout_constraintTop_toTopOf="@+id/imageViewInstantBooking" />
 
             <TextView
-                android:layout_width="183dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="18dp"
+
                 android:paddingTop="8dp"
                 android:paddingBottom="@dimen/margin_5"
                 android:text="@string/go_to_different_gym"
@@ -413,8 +445,6 @@
                 android:textSize="@dimen/text_medium" />
 
         </LinearLayout>
-
-
         <ImageView
             android:id="@+id/imageViewWorkout"
             android:layout_width="@dimen/membership_img_width"
@@ -425,36 +455,14 @@
             app:layout_constraintEnd_toEndOf="@id/layoutDiscount"
             app:layout_constraintStart_toEndOf="@id/imageViewDiscount"
             app:layout_constraintTop_toBottomOf="@+id/imageViewDiscount"
-            app:srcCompat="@drawable/any_gym_illustration" />
-
-        <LinearLayout
-            android:id="@+id/layoutworkout"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="8dp"
-            android:orientation="vertical"
-
-            app:layout_constraintBottom_toBottomOf="@+id/imageViewWorkout"
-            app:layout_constraintEnd_toStartOf="@+id/imageViewWorkout"
-            app:layout_constraintStart_toStartOf="@+id/imageViewExplore"
-            app:layout_constraintTop_toTopOf="@+id/imageViewWorkout">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:text="@string/workout_any_gym"
-                android:textColor="@color/theme_dark_text"
-                android:textSize="@dimen/text_medium" />
-
-        </LinearLayout>
+            app:srcCompat="@drawable/get_a_illustration" />
 
         <View
             android:id="@+id/view2"
             android:layout_width="match_parent"
             android:layout_height="10dp"
-            android:background="#DFDDDD"
             android:layout_marginTop="@dimen/margin_10"
+            android:background="#DFDDDD"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageViewWorkout" />
@@ -475,16 +483,17 @@
             app:layout_constraintStart_toStartOf="@+id/textViewWelcome"
             app:layout_constraintTop_toBottomOf="@+id/view2" />
 
-        <TextView
-            android:id="@+id/textViewMoreVariety"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewFAQ"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="@dimen/margin_15"
             android:drawableEnd="@drawable/blue_arrow"
+            android:drawableTint="@color/theme_book"
             android:gravity="center_vertical"
             android:paddingTop="8dp"
-            android:paddingBottom="@dimen/margin_5"
-            android:drawableTint="@color/theme_book"
+            android:paddingBottom="@dimen/margin_45"
             android:text="@string/more_variety"
             android:textColor="@color/theme_dark_text"
             android:textSize="@dimen/text_large"
@@ -492,126 +501,6 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/textViewFrequentlyAskedQuestions"
             app:layout_constraintTop_toBottomOf="@+id/textViewFrequentlyAskedQuestions" />
-
-        <View
-            android:id="@+id/view3"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#DFDDDD"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewMoreVariety" />
-
-        <TextView
-            android:id="@+id/textViewFlexible_timing"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:drawableEnd="@drawable/blue_arrow"
-            android:gravity="center_vertical"
-            android:letterSpacing="@dimen/text_medium_letter_spacing"
-            android:lineSpacingExtra="@dimen/line_spacing_extra"
-            android:paddingTop="8dp"
-            android:paddingBottom="@dimen/margin_5"
-            android:text="@string/flexible_timing"
-            android:drawableTint="@color/theme_book"
-            android:textColor="@color/theme_dark_text"
-            android:textSize="@dimen/text_large"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textViewFrequentlyAskedQuestions"
-            app:layout_constraintTop_toBottomOf="@+id/view3" />
-
-        <View
-            android:id="@+id/view4"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="@dimen/margin_12"
-            android:background="#DFDDDD"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewFlexible_timing" />
-        <TextView
-            android:id="@+id/textViewThirdFeature"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:drawableEnd="@drawable/blue_arrow"
-            android:gravity="center_vertical"
-            android:paddingTop="8dp"
-            android:drawableTint="@color/theme_book"
-            android:paddingBottom="@dimen/margin_5"
-            android:text="@string/third_feature"
-            android:textColor="@color/theme_dark_text"
-            android:textSize="@dimen/text_large"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textViewFrequentlyAskedQuestions"
-            app:layout_constraintTop_toBottomOf="@+id/view4" />
-
-        <View
-            android:id="@+id/view5"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#DFDDDD"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewThirdFeature" />
-
-         <TextView
-            android:id="@+id/textViewPay"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:drawableEnd="@drawable/blue_arrow"
-            android:gravity="center_vertical"
-             android:drawableTint="@color/theme_book"
-            android:paddingTop="8dp"
-            android:paddingBottom="@dimen/margin_5"
-            android:text="@string/pay_for_bundle"
-            android:textColor="@color/theme_dark_text"
-            android:textSize="@dimen/text_large"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textViewFrequentlyAskedQuestions"
-            app:layout_constraintTop_toBottomOf="@+id/view5" />
-
-        <View
-            android:id="@+id/view6"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#DFDDDD"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewPay" />
-        <TextView
-            android:id="@+id/textViewBundleOfClass"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:drawableEnd="@drawable/blue_arrow"
-            android:gravity="center_vertical"
-            android:drawableTint="@color/theme_book"
-            android:paddingTop="8dp"
-            android:paddingBottom="@dimen/margin_5"
-            android:text="@string/bundle_of_classes"
-            android:textColor="@color/theme_dark_text"
-            android:textSize="@dimen/text_large"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textViewFrequentlyAskedQuestions"
-            app:layout_constraintTop_toBottomOf="@+id/view6" />
-
-        <View
-            android:id="@+id/view7"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#DFDDDD"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewBundleOfClass"
-            android:layout_marginBottom="@dimen/margin_15"/>
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
