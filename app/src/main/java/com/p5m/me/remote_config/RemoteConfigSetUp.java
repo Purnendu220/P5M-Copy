@@ -4,13 +4,16 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.graphics.drawable.DrawableCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -24,6 +27,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import static com.facebook.login.widget.ProfilePictureView.TAG;
 import static com.p5m.me.remote_config.RemoteConfigConst.ADD_TO_WISHLIST_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BOOKED_BUTTON_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BOOKED_BUTTON_KEY;
@@ -62,18 +66,25 @@ import static com.p5m.me.remote_config.RemoteConfigConst.WAITLIST_BUTTON_KEY;
 
 public class RemoteConfigSetUp {
 
-    public static final FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+    public static FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
     private static Activity context;
+
+    public static void reInitialize() {
+        firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+    }
 
     public static void setup(Activity activity) {
         context = activity;
-      /*  firebaseRemoteConfig.setConfigSettingsAsync(new FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(10)
-                .build());*/
 
-        firebaseRemoteConfig.setConfigSettings(new FirebaseRemoteConfigSettings.Builder()
+
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(3600)
+                .build();
+        firebaseRemoteConfig.setConfigSettingsAsync(configSettings);
+
+        /*firebaseRemoteConfig.setConfigSettings(new FirebaseRemoteConfigSettings.Builder()
                 .setDeveloperModeEnabled(true)
-                .build());
+                .build());*/
 
     }
 
@@ -81,21 +92,38 @@ public class RemoteConfigSetUp {
 
         HashMap<String, Object> defaults = new HashMap<>();
         defaults.put(key, defaultValue);
-        firebaseRemoteConfig.setDefaults(defaults);
+        firebaseRemoteConfig.setDefaultsAsync(defaults);
         setValueOfField(constValue, defaultValue);
         if (Constants.LANGUAGE == Locale.ENGLISH || constValue == TESTIMONIALS_KEY ||
                 constValue == FAQ_KEY || constValue == PACKAGE_TAGS_KEY) {
-            final Task<Void> fetch = firebaseRemoteConfig.fetch(BuildConfig.DEBUG ? 0 : TimeUnit.HOURS.toSeconds(0));
+            /*final Task<Void> fetch = firebaseRemoteConfig.fetch(BuildConfig.DEBUG ? 0 : TimeUnit.HOURS.toSeconds(10));
             fetch.addOnSuccessListener(context, new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    firebaseRemoteConfig.activateFetched();
+                    firebaseRemoteConfig.activate();
                     String keyValue = firebaseRemoteConfig.getString(key);
-                    firebaseRemoteConfig.activateFetched();
+                    firebaseRemoteConfig.activate();
                     if (!keyValue.isEmpty())
                         setValueOfField(constValue, keyValue);
                 }
-            });
+            });*/
+
+            firebaseRemoteConfig.fetchAndActivate()
+                    .addOnCompleteListener(context, new OnCompleteListener<Boolean>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Boolean> task) {
+                            if (task.isSuccessful()) {
+                                boolean updated = task.getResult();
+                                Log.d(TAG, "Config params updated: " + updated);
+                                firebaseRemoteConfig.activate();
+                                String keyValue = firebaseRemoteConfig.getString(key);
+                                firebaseRemoteConfig.activate();
+                                if (!keyValue.isEmpty())
+                                    setValueOfField(constValue, keyValue);
+
+                            }
+                        }
+                    });
         }
 
     }

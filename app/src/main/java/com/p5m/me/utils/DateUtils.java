@@ -39,6 +39,26 @@ public class DateUtils {
     private static SimpleDateFormat classTime12Format = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
     private static SimpleDateFormat ExtendedDateFormat = new SimpleDateFormat("d MMM ", Locale.getDefault());
 
+    public static void reInitialize() {
+
+        dfs = new DateFormatSymbols(Locale.getDefault());
+
+        classTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        classTimeFormat = new SimpleDateFormat("h:mma", Locale.getDefault());
+        classDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        classDateSec = new SimpleDateFormat("dd-mm-yyyy", Locale.getDefault());
+        classDateExpiry = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        classDateTime = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault());
+        eventDateTime = new SimpleDateFormat("dd-MM-yyyy hh:mm aa", Locale.getDefault());
+
+        classDateFormat = new SimpleDateFormat("EEE, d MMM yyyy", Locale.getDefault());
+        packageDateFormat = new SimpleDateFormat("d MMM yyyy", Locale.getDefault());
+        notificationDate = new SimpleDateFormat("h:mm a, MMM d", Locale.getDefault());
+        classRatingDate = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+        classTime24Format = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        classTime12Format = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
+        ExtendedDateFormat = new SimpleDateFormat("d MMM ", Locale.getDefault());
+    }
 
     public static String getMonthName(int monthCode) {
         String month = "wrong";
@@ -449,4 +469,5 @@ public class DateUtils {
         return 10;
 
     }
+
 }

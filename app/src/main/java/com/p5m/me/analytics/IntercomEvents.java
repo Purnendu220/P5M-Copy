@@ -9,6 +9,7 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LogUtils;
 
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,10 +19,12 @@ import io.intercom.android.sdk.Intercom;
 public class IntercomEvents {
 
     public static void purchasedPlan(PaymentConfirmationResponse plan, String coupon, ClassModel model) {
+        Timestamp timeStampDate = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
         Map<String, Object> eventData = new HashMap<>();
         eventData.put("plan", plan!=null?plan.getPackageName():"");
         eventData.put("coupon", coupon!=null?coupon:"");
-        eventData.put("purchase_date", DateUtils.getTimespanDate(String.valueOf(Calendar.getInstance().getTime())));
+        eventData.put("purchase_date", timeStampDate);
         Intercom.client().logEvent("Purchase_Plan", eventData);
     }
 

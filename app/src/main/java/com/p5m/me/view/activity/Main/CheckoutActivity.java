@@ -1119,7 +1119,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     !TextUtils.isEmpty(testimonials.get(0).getMessage_ar())) {
                 setTestimonialVisible();
             } else if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en") &&
-                    !TextUtils.isEmpty(testimonials.get(0).getMessage_ar())) {
+                    !TextUtils.isEmpty(testimonials.get(0).getMessage_eng())) {
                 setTestimonialVisible();
             } else {
                 recyclerView.setVisibility(View.GONE);

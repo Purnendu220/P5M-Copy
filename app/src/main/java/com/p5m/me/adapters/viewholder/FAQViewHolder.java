@@ -57,7 +57,15 @@ public class FAQViewHolder extends RecyclerView.ViewHolder {
                     textViewQuestion.setVisibility(View.GONE);
 
                 if (!model.getEnglish_answer().isEmpty()) {
-                    textViewAnswer.setText(model.getEnglish_answer());
+                    if(model.getRedirect_android_link()!=null && !TextUtils.isEmpty(model.getRedirect_android_link()))
+                    {
+                        String str= "<u><font color='#3d85ea'>"+  model.getEnglish_answer() +"</font></u>";
+                        textViewAnswer.setText(Html.fromHtml(str));
+                    }
+                    else
+                    {
+                        textViewAnswer.setText(model.getEnglish_answer());
+                    }
                 }
                 else
                     textViewAnswer.setVisibility(View.GONE);

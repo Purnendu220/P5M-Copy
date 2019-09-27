@@ -67,12 +67,9 @@ import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_NO_PACKAG
 
 public class MembershipFragment extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks, NetworkCommunicator.RequestListener,
         SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, CustomAlertDialog.OnAlertButtonAction {
-    @BindView(R.id.toolbar)
-    public Toolbar toolbar;
+
     @BindView(R.id.recyclerView)
     public RecyclerView recyclerView;
-    @BindView(R.id.appBarLayout)
-    public AppBarLayout appBarLayout;
     @BindView(R.id.swipeRefreshLayout)
     public SwipeRefreshLayout swipeRefreshLayout;
 
@@ -83,8 +80,10 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
     ConstraintLayout constraintLayout;
 
 
-    private TextView mTextViewWalletAmount;
-    private LinearLayout mLayoutUserWallet;
+    @BindView(R.id.textViewWalletAmount)
+    public TextView mTextViewWalletAmount;
+    @BindView(R.id.layoutUserWallet)
+    public LinearLayout mLayoutUserWallet;
     private int navigatedFrom;
     private ClassModel classModel;
     private MemberShipAdapter memberShipAdapter;
@@ -157,7 +156,6 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ButterKnife.bind(this, getView());
-        setToolBar();
 
         handler = new Handler();
 
@@ -189,7 +187,6 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         MixPanel.trackMembershipVisit(navigatedFrom);
         //  onTrackingNotification();
         FirebaseAnalysic.trackMembershipVisit(navigatedFrom);
-        IntercomEvents.trackMembershipVisit(navigatedFrom);
 
     }
 
@@ -299,32 +296,32 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         //onRefresh();
     }
 
-    private void setToolBar() {
-
-        BaseActivity activity = (BaseActivity) this.activity;
-        activity.setSupportActionBar(toolbar);
-
-        activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(context, R.color.colorPrimaryDark)));
-        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        activity.getSupportActionBar().setHomeButtonEnabled(true);
-        activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
-        activity.getSupportActionBar().setDisplayUseLogoEnabled(true);
-
-        View v = LayoutInflater.from(context).inflate(R.layout.view_tool_normal, null);
-
-        v.findViewById(R.id.imageViewBack).setVisibility(View.GONE);
-        mTextViewWalletAmount = v.findViewById(R.id.textViewWalletAmount);
-        mLayoutUserWallet = v.findViewById(R.id.layoutUserWallet);
-        mLayoutUserWallet.setOnClickListener(this);
-
-
-        ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.membership));
-
-        activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
-                ActionBar.LayoutParams.MATCH_PARENT));
-        activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
-    }
+//    private void setToolBar() {
+//
+//        BaseActivity activity = (BaseActivity) this.activity;
+//        activity.setSupportActionBar(toolbar);
+//
+//        activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(context, R.color.colorPrimaryDark)));
+//        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+//        activity.getSupportActionBar().setHomeButtonEnabled(true);
+//        activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
+//        activity.getSupportActionBar().setDisplayUseLogoEnabled(true);
+//
+//        View v = LayoutInflater.from(context).inflate(R.layout.view_tool_normal, null);
+//
+//        v.findViewById(R.id.imageViewBack).setVisibility(View.GONE);
+//        mTextViewWalletAmount = v.findViewById(R.id.textViewWalletAmount);
+//        mLayoutUserWallet = v.findViewById(R.id.layoutUserWallet);
+//        mLayoutUserWallet.setOnClickListener(this);
+//
+//
+//        ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.membership));
+//
+//        activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
+//                ActionBar.LayoutParams.MATCH_PARENT));
+//        activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
+//    }
 
     private void checkPackages() {
         userPackageInfo = new UserPackageInfo(user);

@@ -651,10 +651,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
                             userPackageInfo.userPackageGeneral.getPackageName() : "")
                     .build();
             Intercom.client().updateUser(userAttributes);
-
-
         }
-
     }
 
   private void handleTabChangeForMembership(int position){
