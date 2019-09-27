@@ -194,6 +194,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
+
     private void addEvent(JSONObject jsonObject, long dataID) {
         String title = jsonObject.optString(AppConstants.Notification.CLASS_TITLE);
         String classDate = jsonObject.optString(AppConstants.Notification.CLASS_DATE);

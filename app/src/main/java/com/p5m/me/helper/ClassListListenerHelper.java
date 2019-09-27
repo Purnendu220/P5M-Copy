@@ -554,7 +554,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
     private boolean checkFor5MinDifference(ClassModel model) {
 
-        double cancel5min = 0.0833333;
+        double cancel5min =5;
         Boolean isClassBookedIn5Min = false;
         List<Join5MinModel> bookedList = MyPreferences.getInstance().getBookingTime();
         if(bookedList !=null){

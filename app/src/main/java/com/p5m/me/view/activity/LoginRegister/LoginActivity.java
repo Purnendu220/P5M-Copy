@@ -324,7 +324,7 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
     private void successfulLoginIntercom() {
         if (TempStorage.getUser() != null) {
             User user = TempStorage.getUser();
-            Registration registration = Registration.create().withEmail(user.getEmail());
+            Registration registration = Registration.create().withUserId(String.valueOf(user.getId()));
             Intercom.client().registerIdentifiedUser(registration);
             LogUtils.debug("Intercom Working");
         }

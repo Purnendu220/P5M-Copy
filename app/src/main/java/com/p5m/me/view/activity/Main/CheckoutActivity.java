@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.Html;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
@@ -1096,14 +1097,14 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     }
 
 
-    private void setTestimonialAdapter(){
+    private void setTestimonialAdapter() {
         try {
             String testimonial = RemoteConfigConst.TESTIMONIALS_VALUE;
-            if(testimonial!=null && !testimonial.isEmpty()){
+            if (testimonial != null && !testimonial.isEmpty()) {
                 Gson g = new Gson();
                 List<Testimonials> p = g.fromJson(testimonial, new TypeToken<List<Testimonials>>() {
                 }.getType());
-                testimonials =p;
+                testimonials = p;
             }
 
         } catch (Exception e) {
@@ -1111,9 +1112,22 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         }
 
         if (testimonials == null) {
-           recyclerView.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
             return;
+        } else {
+            if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar") &&
+                    !TextUtils.isEmpty(testimonials.get(0).getMessage_ar())) {
+                setTestimonialVisible();
+            } else if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en") &&
+                    !TextUtils.isEmpty(testimonials.get(0).getMessage_ar())) {
+                setTestimonialVisible();
+            } else {
+                recyclerView.setVisibility(View.GONE);
+
+            }
         }
+    }
+    private void setTestimonialVisible() {
         recyclerView.setVisibility(View.VISIBLE);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(activity,RecyclerView.HORIZONTAL,false));

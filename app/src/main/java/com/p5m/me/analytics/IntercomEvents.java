@@ -21,7 +21,7 @@ public class IntercomEvents {
         Map<String, Object> eventData = new HashMap<>();
         eventData.put("plan", plan!=null?plan.getPackageName():"");
         eventData.put("coupon", coupon!=null?coupon:"");
-        eventData.put("purchase_date", DateUtils.getTimespanDate(DateUtils.getCurrentDateandTime()));
+        eventData.put("purchase_date", DateUtils.getTimespanDate(String.valueOf(Calendar.getInstance().getTime())));
         Intercom.client().logEvent("Purchase_Plan", eventData);
     }
 
@@ -119,10 +119,9 @@ public class IntercomEvents {
                                             UserPackage userPackage) {
         try {
             Map<String, Object> eventData = new HashMap<>();
-            eventData.put("package_name", paymentResponse != null ? paymentResponse.getPackageName() : "");
-
+            eventData.put("package_name", userPackage != null ? userPackage.getPackageName() : "");
             eventData.put("week_extended", selectedPacakageFromList != null ? selectedPacakageFromList.getDuration() : "");
-            eventData.put("days_left_in_expiry", userPackage != null ? DateUtils.getDaysLeftFromPackageExpiryDate(userPackage.getExpiryDate()) : "");
+            eventData.put("days_left_in_expiry", paymentResponse != null ? DateUtils.getDaysLeftFromPackageExpiryDate(userPackage.getExpiryDate()) : "");
 
             Intercom.client().logEvent("Extended_Package", eventData);
         } catch (Exception e) {

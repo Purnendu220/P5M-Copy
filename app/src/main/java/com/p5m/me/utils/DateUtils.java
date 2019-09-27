@@ -435,13 +435,18 @@ public class DateUtils {
     public static double find5MinDifference(Date startDate, Date endDate) {
         try {
 
-            long diff = endDate.getTime() - startDate.getTime();
-            long diffMinutes = diff / (60 * 1000) % 60;
-            return diffMinutes;
+            long mills = endDate.getTime() - startDate.getTime();
+            long hours = mills / (1000 * 60 * 60);
+            long mins = (mills/(1000*60)) % 60;
+//            long diffMinutes = diff / (60 * 1000) % 60;
+            if(hours<1)
+                return mins;
+            else
+                return 10;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return 2;
+        return 10;
 
     }
 }

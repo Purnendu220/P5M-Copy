@@ -1,6 +1,8 @@
 package com.p5m.me.adapters.viewholder;
 
 import android.content.Context;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -66,8 +68,17 @@ public class FAQViewHolder extends RecyclerView.ViewHolder {
                 }
                 else
                     textViewQuestion.setVisibility(View.GONE);
+
                 if (!model.getArabic_answer().isEmpty()) {
-                    textViewAnswer.setText(model.getArabic_answer());
+                    if(model.getRedirect_android_link()!=null && !TextUtils.isEmpty(model.getRedirect_android_link()))
+                    {
+                        String str= "<u><font color='#3d85ea'>"+  model.getArabic_answer() +"</font></u>";
+                        textViewAnswer.setText(Html.fromHtml(str));
+                    }
+                    else
+                    {
+                        textViewAnswer.setText(model.getArabic_answer());
+                    }
                 }
                 else
                     textViewAnswer.setVisibility(View.GONE);
@@ -89,12 +100,15 @@ public class FAQViewHolder extends RecyclerView.ViewHolder {
                 }
 
             });
-            textViewAnswer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    adapterCallbacks.onAdapterItemClick(FAQViewHolder.this, textViewAnswer, model, position);
-                }
-            });
+            if(model.getRedirect_android_link()!=null && !TextUtils.isEmpty(model.getRedirect_android_link())) {
+                textViewAnswer.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        adapterCallbacks.onAdapterItemClick(FAQViewHolder.this, textViewAnswer, model, position);
+                    }
+                });
+            }
+
             if(position+1 == lastPosition)
                 view.setVisibility(View.GONE);
         }

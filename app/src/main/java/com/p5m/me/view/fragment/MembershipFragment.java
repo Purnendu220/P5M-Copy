@@ -260,6 +260,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         //  onTrackingNotification();
         FirebaseAnalysic.trackMembershipVisit(this.navigatedFrom);
         IntercomEvents.trackMembershipVisit(this.navigatedFrom);
+        setUserWalletDetail();
     }
 
     public void refreshFragmentBackGroung(int navigatedFrom, ClassModel classModel, BookWithFriendData mFriendsData, int mNumberOfPackagesToBuy) {
@@ -276,6 +277,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
             }
         }
+        setUserWalletDetail();
     }
 
     private void refreshFromEvent() {
@@ -315,6 +317,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         mTextViewWalletAmount = v.findViewById(R.id.textViewWalletAmount);
         mLayoutUserWallet = v.findViewById(R.id.layoutUserWallet);
         mLayoutUserWallet.setOnClickListener(this);
+
 
         ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.membership));
 
@@ -572,21 +575,11 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 //                break;
 
                 case NetworkCommunicator.RequestCode.ME_USER:
-                    user = TempStorage.getUser();
-                    mWalletCredit = user.getWalletDto();
-                    if (mWalletCredit != null && mWalletCredit.getBalance() > 0) {
-                        mLayoutUserWallet.setVisibility(View.VISIBLE);
-                        mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(), 2) + " " + context.getResources().getString(R.string.wallet_currency));
-                    } else {
-                        mLayoutUserWallet.setVisibility(View.GONE);
+                    setUserWalletDetail();
 
-                    }
-                   /* if(isTabSelected){
-                        isTabSelected = false;
-                    }
-                    else {*/
+
                         checkPackages();
-//                    }
+
 
                     break;
             }
@@ -605,6 +598,18 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 //
 //                break;
 //        }
+        }
+
+        private void setUserWalletDetail(){
+            user = TempStorage.getUser();
+            mWalletCredit = user.getWalletDto();
+            if (mWalletCredit != null && mWalletCredit.getBalance() > 0) {
+                mLayoutUserWallet.setVisibility(View.VISIBLE);
+                mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(), 2) + " " + context.getResources().getString(R.string.wallet_currency));
+            } else {
+                mLayoutUserWallet.setVisibility(View.GONE);
+
+            }
         }
 
         @Override
@@ -669,8 +674,6 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
         @Override
         public void onTabSelection ( int position){
-            isTabSelected=true;
-
 
         }
     }

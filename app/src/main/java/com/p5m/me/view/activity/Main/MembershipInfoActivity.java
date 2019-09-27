@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -142,11 +143,11 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
             return;
         } else {
             if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar") &&
-                    faqList.get(0).getArabic_question() != "") {
+                    !TextUtils.isEmpty(faqList.get(0).getArabic_question())) {
                 setVisibleAdapter();
             }
             else if(LanguageUtils.getLocalLanguage().equalsIgnoreCase("en") &&
-                    faqList.get(0).getEnglish_question() != "") {
+                    !TextUtils.isEmpty(faqList.get(0).getEnglish_question())) {
                 setVisibleAdapter();
             }
             else
