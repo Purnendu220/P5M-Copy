@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -169,8 +170,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         mNumberOfPackagesToBuy = getArguments().getInt(AppConstants.DataKey.NUMBER_OF_PACKAGES_TO_BUY, 1);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setHasFixedSize(false);
-
-
+        mLayoutUserWallet.setOnClickListener(this);
         memberShipAdapter = new MemberShipAdapter(context, navigatedFrom, false, this);
         recyclerView.setAdapter(memberShipAdapter);
 
@@ -673,4 +673,5 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         public void onTabSelection ( int position){
 
         }
-    }
+
+}
