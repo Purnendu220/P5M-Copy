@@ -368,13 +368,11 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 break;
             case CLASS_PURCHASE_WITH_PACKAGE:
                 classModel.setUserJoinStatus(true);
-                saved5MinClass(classModel);
                 EventBroadcastHelper.sendPackagePurchasedForClass(classModel);
                 HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE);
                 break;
             case SPECIAL_CLASS:
                 classModel.setUserJoinStatus(true);
-                saved5MinClass(classModel);
                 EventBroadcastHelper.sendClassPurchased(classModel);
                 HomeActivity.show(context, AppConstants.Tab.TAB_SCHEDULE);
                 break;
@@ -535,6 +533,8 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                     CalendarHelper.requestCalendarReadWritePermission(this);
                 } else {
                     if (paymentResponse.getClassDetailDto() != null) {
+                        saved5MinClass(classModel);
+
                         if (CalendarHelper.haveCalendarReadWritePermissions(this))
                             CalendarHelper.scheduleCalenderEvent(this, classModel);
                     }
@@ -741,14 +741,12 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 
             case CLASS_PURCHASE_WITH_PACKAGE:
                 classModel.setUserJoinStatus(true);
-                saved5MinClass(classModel);
                 EventBroadcastHelper.sendPackagePurchasedForClass(classModel);
                 finish();
                 break;
 
             case SPECIAL_CLASS:
                 classModel.setUserJoinStatus(true);
-                saved5MinClass(classModel);
                 EventBroadcastHelper.sendClassPurchased(classModel);
                 finish();
                 super.onBackPressed();
@@ -813,7 +811,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
     }
 
     private void saved5MinClass(ClassModel classModel) {
-        Join5MinModel join5MinModel= new Join5MinModel();
+        Join5MinModel join5MinModel = new Join5MinModel();
         join5MinModel.setGetClassSessionId(classModel.getClassSessionId());
         join5MinModel.setJoiningTime(Calendar.getInstance().getTime());
         List<Join5MinModel> bookedClassList = MyPreferences.getInstance().getBookingTime();

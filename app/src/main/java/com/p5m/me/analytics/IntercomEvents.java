@@ -9,6 +9,7 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LogUtils;
 
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,10 +19,12 @@ import io.intercom.android.sdk.Intercom;
 public class IntercomEvents {
 
     public static void purchasedPlan(PaymentConfirmationResponse plan, String coupon, ClassModel model) {
+        Timestamp timeStampDate = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
         Map<String, Object> eventData = new HashMap<>();
         eventData.put("plan", plan!=null?plan.getPackageName():"");
         eventData.put("coupon", coupon!=null?coupon:"");
-        eventData.put("purchase_date", DateUtils.getTimespanDate(DateUtils.getCurrentDateandTime()));
+        eventData.put("purchase_date", timeStampDate);
         Intercom.client().logEvent("Purchase_Plan", eventData);
     }
 
@@ -36,9 +39,11 @@ public class IntercomEvents {
     }
 
     public static void purchase_drop_in(ClassModel classModel) {
-        Map<String, Object> eventData = new HashMap<>();
-        eventData.put("gym_name", classModel != null ? classModel.getTitle() : "");
-        Intercom.client().logEvent("Purchase_Drop_In", eventData);
+        if(classModel!=null) {
+            Map<String, Object> eventData = new HashMap<>();
+            eventData.put("gym_name", classModel.getGymBranchDetail() != null ? classModel.getGymBranchDetail().getGymName() : "");
+            Intercom.client().logEvent("Purchase_Drop_In", eventData);
+        }
     }
 
     public static void trackUnJoinClass(ClassModel model) {
@@ -61,7 +66,7 @@ public class IntercomEvents {
             eventData.put("rating", model.getmRating());
             eventData.put("class_name", classModel.getTitle());
             eventData.put("class_date", DateUtils.getTimespanDate(classModel.getClassDate() + " " + classModel.getFromTime()));
-            eventData.put("rating_date", DateUtils.getTimespanDate(DateUtils.getCurrentDateandTime()));
+//            eventData.put("rating_date", DateUtils.getTimespanDate(DateUtils.getCurrentDateandTime()));
             eventData.put("time_difference", hourDiff);
             Intercom.client().logEvent("Rated_Class", eventData);
         }
@@ -117,10 +122,9 @@ public class IntercomEvents {
                                             UserPackage userPackage) {
         try {
             Map<String, Object> eventData = new HashMap<>();
-            eventData.put("package_name", paymentResponse != null ? paymentResponse.getPackageName() : "");
-
+            eventData.put("package_name", userPackage != null ? userPackage.getPackageName() : "");
             eventData.put("week_extended", selectedPacakageFromList != null ? selectedPacakageFromList.getDuration() : "");
-            eventData.put("days_left_in_expiry", userPackage != null ? DateUtils.getDaysLeftFromPackageExpiryDate(userPackage.getExpiryDate()) : "");
+            eventData.put("days_left_in_expiry", paymentResponse != null ? DateUtils.getDaysLeftFromPackageExpiryDate(userPackage.getExpiryDate()) : "");
 
             Intercom.client().logEvent("Extended_Package", eventData);
         } catch (Exception e) {

@@ -209,7 +209,7 @@
 
     <string name="of"><b>من</b></string>
 
-    <string name="classes_remaining">كلاسات متبقية</string>
+    <string name="classess_remaining">%d من %d كلاسات متبقية</string>
 
     <string name="valid_till">صالحة حتى</string>
 
@@ -583,6 +583,7 @@
     <string name="please_enter_a_new_password">يرجى إدخال كلمة مرور جديدة</string>
 
     <string name="weeks">أسابيع</string>
+    <string name="weeks_value">%s أسابيع</string>
 
     <string name="please_allow_location">يرجى السماح لP5M بإستخدام موقعك</string>
 
@@ -943,6 +944,5 @@
     <string name="train">تمرن</string>
     <string name="clas_exceed">الكلاس الذي حددتها يبدأ بعد تاريخ انتهاء صلاحية هذه الباقة. اختر كلاس جاري خلال  %s القادمة لشراء هذه الباقة</string>
     <string name="not_applicable">لا يمكن تفعيله</string>
-    <string name="classess_remaining">You have %d/%d classes remaining</string>
 
 </resources>

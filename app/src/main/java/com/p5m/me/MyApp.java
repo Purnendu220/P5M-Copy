@@ -3,12 +3,17 @@ package com.p5m.me;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.widget.Toast;
+
 import com.p5m.me.BuildConfig;
+
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
@@ -19,16 +24,17 @@ import com.google.firebase.FirebaseOptions;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.receivers.NetworkChangeReceiver;
+import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
+import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.RefrenceWrapper;
 
 
-
-
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
@@ -48,7 +54,7 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
     public final static List<Activity> ACTIVITIES = new ArrayList<>();
 
     public final static String MIX_PANEL_TOKEN = "705daac4d807e105c1ddc350c9324ca2";
-//    public final static String MIX_PANEL_TOKEN = "ac8ac225ea9618bad16a7fe25dfd548e";
+    //    public final static String MIX_PANEL_TOKEN = "ac8ac225ea9618bad16a7fe25dfd548e";
     public final static String GOOGLE_API_PROJECT = "109210713388";
 
     public boolean isAppForeground;
@@ -57,11 +63,20 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
     private boolean hasBeenInitialized;
     private FirebaseApp finestayApp;
 
+    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            RemoteConfigSetUp.reInitialize();
+            DateUtils.reInitialize();
+        }
+    };
 
     @Override
     public void onCreate() {
         super.onCreate();
 
+        registerReceiver(myReceiver, new IntentFilter(Intent.ACTION_LOCALE_CHANGED));
 
         context = getApplicationContext();
         RefrenceWrapper.getRefrenceWrapper(this).setAppContext(this);
@@ -81,7 +96,6 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         PackageManager packageManager = getPackageManager();
         String packageName = getPackageName();
 
-//        Intercom
         Intercom.initialize(this, "android_sdk-0220c78a68a8a904e507a85bebd4eed53e4b7602", "qp091xcl");
         try {
             myVersionName = packageManager.getPackageInfo(packageName, 0).versionName;
@@ -195,15 +209,14 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
     }
 
     private void firebaseDataSet() {
-        if(BuildConfig.FIREBASE_IS_PRODUCTION){
+        if (BuildConfig.FIREBASE_IS_PRODUCTION) {
             options = new FirebaseOptions.Builder()
                     .setApplicationId(BuildConfig.APP_ID) // Required for Analytics.
                     .setApiKey(BuildConfig.API_KEY) // Required for Auth.
                     .setDatabaseUrl(BuildConfig.DATABASE_URL) // Required for RTDB.
                     .build();
 //            FirebaseApp.initializeApp(getApplicationContext(), options);
-        }
-        else {
+        } else {
             options = new FirebaseOptions.Builder()
                     .setApplicationId(BuildConfig.APP_ID) // Required for Analytics.
                     .setApiKey(BuildConfig.API_KEY) // Required for Auth.
@@ -213,14 +226,14 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         }
 
         List<FirebaseApp> firebaseApps = FirebaseApp.getApps(context);
-        for(FirebaseApp app : firebaseApps){
-            if(app.getName().equals(FirebaseApp.DEFAULT_APP_NAME)){
-                hasBeenInitialized=true;
+        for (FirebaseApp app : firebaseApps) {
+            if (app.getName().equals(FirebaseApp.DEFAULT_APP_NAME)) {
+                hasBeenInitialized = true;
                 finestayApp = app;
             }
         }
 
-        if(!hasBeenInitialized) {
+        if (!hasBeenInitialized) {
             finestayApp = FirebaseApp.initializeApp(context, options);
         }
     }

@@ -245,6 +245,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         getDynamicLink();
         MixPanel.trackClassDetails();
         onTrackingNotification();
+        networkCommunicator.getMyUser(this, false);
 
 
 //        networkCommunicator.getMyUser(this, false);

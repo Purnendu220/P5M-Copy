@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.Html;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
+import com.p5m.me.data.Join5MinModel;
 import com.p5m.me.data.PromoCode;
 import com.p5m.me.data.Testimonials;
 import com.p5m.me.data.ValidityPackageList;
@@ -48,6 +50,7 @@ import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
@@ -58,6 +61,7 @@ import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -1048,6 +1052,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void run() {
                 EventBroadcastHelper.classAutoJoin(context, classModel);
+                saved5MinClass(classModel);
             }
         };
 
@@ -1092,14 +1097,14 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     }
 
 
-    private void setTestimonialAdapter(){
+    private void setTestimonialAdapter() {
         try {
             String testimonial = RemoteConfigConst.TESTIMONIALS_VALUE;
-            if(testimonial!=null && !testimonial.isEmpty()){
+            if (testimonial != null && !testimonial.isEmpty()) {
                 Gson g = new Gson();
                 List<Testimonials> p = g.fromJson(testimonial, new TypeToken<List<Testimonials>>() {
                 }.getType());
-                testimonials =p;
+                testimonials = p;
             }
 
         } catch (Exception e) {
@@ -1107,9 +1112,22 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         }
 
         if (testimonials == null) {
-           recyclerView.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
             return;
+        } else {
+            if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar") &&
+                    !TextUtils.isEmpty(testimonials.get(0).getMessage_ar())) {
+                setTestimonialVisible();
+            } else if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en") &&
+                    !TextUtils.isEmpty(testimonials.get(0).getMessage_eng())) {
+                setTestimonialVisible();
+            } else {
+                recyclerView.setVisibility(View.GONE);
+
+            }
         }
+    }
+    private void setTestimonialVisible() {
         recyclerView.setVisibility(View.VISIBLE);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(activity,RecyclerView.HORIZONTAL,false));
@@ -1137,5 +1155,22 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
     }
 
+    private void saved5MinClass(ClassModel classModel) {
+        Join5MinModel join5MinModel= new Join5MinModel();
+        join5MinModel.setGetClassSessionId(classModel.getClassSessionId());
+        join5MinModel.setJoiningTime(Calendar.getInstance().getTime());
+        List<Join5MinModel> bookedClassList = MyPreferences.getInstance().getBookingTime();
+        if (bookedClassList != null && bookedClassList.size() > 0) {
+            bookedClassList.add(join5MinModel);
+            MyPreferences.getInstance().saveBookingTime(bookedClassList);
+            LogUtils.debug("Class Booked " + classModel.getTitle());
+            return;
 
+        } else {
+            bookedClassList = new ArrayList<>();
+            bookedClassList.add(join5MinModel);
+            MyPreferences.getInstance().saveBookingTime(bookedClassList);
+
+        }
+    }
 }

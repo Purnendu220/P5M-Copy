@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -67,12 +68,9 @@ import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_NO_PACKAG
 
 public class MembershipFragment extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks, NetworkCommunicator.RequestListener,
         SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, CustomAlertDialog.OnAlertButtonAction {
-    @BindView(R.id.toolbar)
-    public Toolbar toolbar;
+
     @BindView(R.id.recyclerView)
     public RecyclerView recyclerView;
-    @BindView(R.id.appBarLayout)
-    public AppBarLayout appBarLayout;
     @BindView(R.id.swipeRefreshLayout)
     public SwipeRefreshLayout swipeRefreshLayout;
 
@@ -83,8 +81,10 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
     ConstraintLayout constraintLayout;
 
 
-    private TextView mTextViewWalletAmount;
-    private LinearLayout mLayoutUserWallet;
+    @BindView(R.id.textViewWalletAmount)
+    public TextView mTextViewWalletAmount;
+    @BindView(R.id.layoutUserWallet)
+    public LinearLayout mLayoutUserWallet;
     private int navigatedFrom;
     private ClassModel classModel;
     private MemberShipAdapter memberShipAdapter;
@@ -99,6 +99,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
     private User user;
     private int mNumberOfPackagesToBuy;
     private static User.WalletDto mWalletCredit;
+    private boolean isTabSelected=false;
 
     public MembershipFragment() {
         // Required empty public constructor
@@ -156,7 +157,6 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ButterKnife.bind(this, getView());
-        setToolBar();
 
         handler = new Handler();
 
@@ -170,8 +170,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         mNumberOfPackagesToBuy = getArguments().getInt(AppConstants.DataKey.NUMBER_OF_PACKAGES_TO_BUY, 1);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setHasFixedSize(false);
-
-
+        mLayoutUserWallet.setOnClickListener(this);
         memberShipAdapter = new MemberShipAdapter(context, navigatedFrom, false, this);
         recyclerView.setAdapter(memberShipAdapter);
 
@@ -188,7 +187,6 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         MixPanel.trackMembershipVisit(navigatedFrom);
         //  onTrackingNotification();
         FirebaseAnalysic.trackMembershipVisit(navigatedFrom);
-        IntercomEvents.trackMembershipVisit(navigatedFrom);
 
     }
 
@@ -259,6 +257,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         //  onTrackingNotification();
         FirebaseAnalysic.trackMembershipVisit(this.navigatedFrom);
         IntercomEvents.trackMembershipVisit(this.navigatedFrom);
+        setUserWalletDetail();
     }
 
     public void refreshFragmentBackGroung(int navigatedFrom, ClassModel classModel, BookWithFriendData mFriendsData, int mNumberOfPackagesToBuy) {
@@ -275,6 +274,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
             }
         }
+        setUserWalletDetail();
     }
 
     private void refreshFromEvent() {
@@ -296,31 +296,32 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         //onRefresh();
     }
 
-    private void setToolBar() {
-
-        BaseActivity activity = (BaseActivity) this.activity;
-        activity.setSupportActionBar(toolbar);
-
-        activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(context, R.color.colorPrimaryDark)));
-        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        activity.getSupportActionBar().setHomeButtonEnabled(true);
-        activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
-        activity.getSupportActionBar().setDisplayUseLogoEnabled(true);
-
-        View v = LayoutInflater.from(context).inflate(R.layout.view_tool_normal, null);
-
-        v.findViewById(R.id.imageViewBack).setVisibility(View.GONE);
-        mTextViewWalletAmount = v.findViewById(R.id.textViewWalletAmount);
-        mLayoutUserWallet = v.findViewById(R.id.layoutUserWallet);
-        mLayoutUserWallet.setOnClickListener(this);
-
-        ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.membership));
-
-        activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
-                ActionBar.LayoutParams.MATCH_PARENT));
-        activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
-    }
+//    private void setToolBar() {
+//
+//        BaseActivity activity = (BaseActivity) this.activity;
+//        activity.setSupportActionBar(toolbar);
+//
+//        activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(context, R.color.colorPrimaryDark)));
+//        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+//        activity.getSupportActionBar().setHomeButtonEnabled(true);
+//        activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
+//        activity.getSupportActionBar().setDisplayUseLogoEnabled(true);
+//
+//        View v = LayoutInflater.from(context).inflate(R.layout.view_tool_normal, null);
+//
+//        v.findViewById(R.id.imageViewBack).setVisibility(View.GONE);
+//        mTextViewWalletAmount = v.findViewById(R.id.textViewWalletAmount);
+//        mLayoutUserWallet = v.findViewById(R.id.layoutUserWallet);
+//        mLayoutUserWallet.setOnClickListener(this);
+//
+//
+//        ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.membership));
+//
+//        activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
+//                ActionBar.LayoutParams.MATCH_PARENT));
+//        activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
+//    }
 
     private void checkPackages() {
         userPackageInfo = new UserPackageInfo(user);
@@ -481,17 +482,17 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                     String message = "";
                     if (classModel.getValidityPeriod().contains("MONTH")) {
                         if (classModel.getDuration() == 1) {
-                            message = context.getResources().getString(R.string.valid_for_a_months);
+                            message = context.getResources().getString(R.string.a_month);
 
                         } else
-                            message = String.format(context.getResources().getString(R.string.valid_for_months), classModel.getDuration());
+                            message = String.format(context.getResources().getString(R.string.months), classModel.getDuration());
 
 
                     } else if (classModel.getValidityPeriod().contains("WEEK")) {
                         if (classModel.getDuration() == 1) {
-                            message = context.getResources().getString(R.string.valid_for_a_week);
+                            message = context.getResources().getString(R.string.a_week);
                         } else
-                            message = String.format(context.getResources().getString(R.string.valid_for_weeks), classModel.getDuration());
+                            message = String.format(context.getResources().getString(R.string.weeks_value), String.valueOf(classModel.getDuration()));
 
                     }
                     DialogUtils.showBasic(context, String.format(getString(R.string.clas_exceed), message),"", getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
@@ -571,17 +572,11 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 //                break;
 
                 case NetworkCommunicator.RequestCode.ME_USER:
-                    user = TempStorage.getUser();
-                    mWalletCredit = user.getWalletDto();
-                    if (mWalletCredit != null && mWalletCredit.getBalance() > 0) {
-                        mLayoutUserWallet.setVisibility(View.VISIBLE);
-                        mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(), 2) + " " + context.getResources().getString(R.string.wallet_currency));
-                    } else {
-                        mLayoutUserWallet.setVisibility(View.GONE);
+                    setUserWalletDetail();
 
-                    }
 
-                    checkPackages();
+                        checkPackages();
+
 
                     break;
             }
@@ -600,6 +595,18 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 //
 //                break;
 //        }
+        }
+
+        private void setUserWalletDetail(){
+            user = TempStorage.getUser();
+            mWalletCredit = user.getWalletDto();
+            if (mWalletCredit != null && mWalletCredit.getBalance() > 0) {
+                mLayoutUserWallet.setVisibility(View.VISIBLE);
+                mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(), 2) + " " + context.getResources().getString(R.string.wallet_currency));
+            } else {
+                mLayoutUserWallet.setVisibility(View.GONE);
+
+            }
         }
 
         @Override
@@ -666,4 +673,5 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         public void onTabSelection ( int position){
 
         }
-    }
+
+}

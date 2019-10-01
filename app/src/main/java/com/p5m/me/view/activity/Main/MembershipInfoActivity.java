@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -140,10 +141,27 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
             textViewFrequentlyAskedQuestions.setVisibility(View.GONE);
             recyclerView.setVisibility(View.GONE);
             return;
+        } else {
+            if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar") &&
+                    !TextUtils.isEmpty(faqList.get(0).getArabic_question())) {
+                setVisibleAdapter();
+            }
+            else if(LanguageUtils.getLocalLanguage().equalsIgnoreCase("en") &&
+                    !TextUtils.isEmpty(faqList.get(0).getEnglish_question())) {
+                setVisibleAdapter();
+            }
+            else
+            {
+                textViewFrequentlyAskedQuestions.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.GONE);
+
+            }
+
         }
+    }
 
-        else {
-
+    private void setVisibleAdapter() {
+        {
             recyclerView.setVisibility(View.VISIBLE);
             textViewFrequentlyAskedQuestions.setVisibility(View.VISIBLE);
             recyclerView.setLayoutManager(new LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false));
@@ -175,14 +193,14 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
 //                scrollView.fullScroll(View.FOCUS_DOWN);
                 scrollView.fullScroll(View.FOCUS_DOWN);
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            // This method will be executed once the timer is over
-                            scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-                        }
-                    }, 10);
-                    scrollView.fullScroll(View.FOCUS_DOWN);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // This method will be executed once the timer is over
+                        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                    }
+                }, 10);
+                scrollView.fullScroll(View.FOCUS_DOWN);
 
 
         }

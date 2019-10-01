@@ -634,7 +634,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
             String balanceWallet = "0";
 
-            Registration registration = Registration.create().withUserId(user.getFirstName() + " " + user.getLastName());
+            Registration registration = Registration.create().withUserId(String.valueOf(user.getId()));
             Intercom.client().registerIdentifiedUser(registration);
             if(user.getWalletDto()!=null){
                 balanceWallet=String.valueOf(user.getWalletDto().getBalance());
@@ -646,15 +646,12 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
                     .withCustomAttribute("Gender",user.getGender())
                     .withCustomAttribute("wallet balance",balanceWallet)
                     .withCustomAttribute("Registration date", user.getDateOfJoining() == 0 ?
-                            "" : DateUtils.getDateFormatter(new Date(user.getDateOfJoining())) + "")
+                            "" : DateUtils.getDateFormatter(new Date(user.getDateOfJoining())))
                     .withCustomAttribute("",userPackageInfo.haveGeneralPackage ?
                             userPackageInfo.userPackageGeneral.getPackageName() : "")
                     .build();
             Intercom.client().updateUser(userAttributes);
-
-
         }
-
     }
 
   private void handleTabChangeForMembership(int position){

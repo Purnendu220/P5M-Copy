@@ -52,9 +52,9 @@ public class TestimonialsViewHolder extends RecyclerView.ViewHolder {
             if (!model.getName().isEmpty())
                 textViewName.setText(model.getName());
             if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en") || !model.getMessage_eng().isEmpty())
-                textViewComment.setText(model.getMessage_eng());
+                textViewComment.setText("\""+model.getMessage_eng()+"\"");
             else  if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar") || !model.getMessage_ar().isEmpty())
-                textViewComment.setText(model.getMessage_ar());
+                textViewComment.setText("\""+model.getMessage_ar()+"\"");
 
 
         }

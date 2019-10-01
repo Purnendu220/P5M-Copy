@@ -508,6 +508,7 @@ Would you like to view your balance? </string>
     <string name="unlimited">UNLIMITED</string>
     <string name="days">days</string>
     <string name="a_week">1 week</string>
+    <string name="weeks_value">%s weeks</string>
     <string name="map" translatable="false">Map</string>
     <string name="list" translatable="false">List</string>
     <string name="gym_branch" translatable="false">Gym - Branch</string>

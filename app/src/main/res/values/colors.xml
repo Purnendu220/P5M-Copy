@@ -73,8 +73,7 @@
     <drawable name="grey_drawable">#999999</drawable>
     <color name="TransparentGrey">#7F000000</color>
     <color name="text_dark_gray">#4C5053</color>
-
-
+    <color name="gray_class">#595F6F</color>
 
 
     Type a message here
