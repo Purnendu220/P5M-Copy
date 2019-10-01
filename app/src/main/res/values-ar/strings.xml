@@ -209,7 +209,7 @@
 
     <string name="of"><b>من</b></string>
 
-    <string name="classes_remaining">كلاسات متبقية</string>
+    <string name="classess_remaining">%d من %d كلاسات متبقية</string>
 
     <string name="valid_till">صالحة حتى</string>
 
@@ -270,7 +270,7 @@
 
     <string name="profile_package_expiry">"متبقية لنهاية صلاحية كلاساتك"</string>
 
-    <string name="view_gym_visit_limits"><u>الاطلاع على حدود زيارة النوادي</u></string>
+    <string name="view_gym_visit_limits">الاطلاع على حدود زيارة النوادي</string>
 
     <string name="gym_visit_limits_no_lines">حدود زيارة النوادي</string>
 
@@ -583,6 +583,7 @@
     <string name="please_enter_a_new_password">يرجى إدخال كلمة مرور جديدة</string>
 
     <string name="weeks">أسابيع</string>
+    <string name="weeks_value">%s أسابيع</string>
 
     <string name="please_allow_location">يرجى السماح لP5M بإستخدام موقعك</string>
 
@@ -698,6 +699,8 @@
     <string name="congratulation_package">مبروك! تم شراء الإشتراك بنجاح.</string>
 
     <string name="classs">كلاسات</string>
+    <string name="classs_one">كلاسات</string>
+
 
     <string name="is_successfully_booked">تم حجز الكلاس بنجاح.</string>
 
@@ -893,6 +896,53 @@
     <string name="list">قائمة</string>
     <string name="gym_branch">Gym - Branch</string>
     <string name="message_us">تحدث معنا</string>
-
+    <string name="drop_in_text">لديك كلاس واحد لـ %s، وتنتهي في %s </string>
+    <string name="drop_in_unlimited">لديك كلاس واحد لـ %s</string>
+    <string name="_two_drop_in_unlimited">لديك كلاسين لـ %s</string>
+    <string name="_two_drop_in_text">لديك كلاسين لـ %s، وتنتهي في %s</string>
+    <string name="visit_times">%s الوقت</string>
+    <string name="why_p5m">لماذا اشتراك P5M؟\nأنك ستحصل على المزيد و تدفع أقل.</string>
+    <string name="variety_of_activity_details">مع اشتراك P5M يمكنك التسجيل في كلاس سباحة اليوم ، وغداً كلاس كروسفت و اليوغا في عطلة نهاية الأسبوع. كل كلاس في نادي رياضي مختلف.</string>
+    <string name="variety_of_activities">مجموعة متنوعة من الأنشطة الرياضية </string>
+    <string name="visit_gym_feature">انضم الى 40 نادي رياضي مع اشتراك واحدة</string>
+    <string name="with_the_p5m_membership_you_can">مع  اشتراك P5M ، يمكنك:</string>
+    <string name="on_p5m_you">على تطبيق  P5M يمكنك زيارة نوادي رياضية متعددة والقيام بأنشطة متعددة باستخدام باقة واحدة فقط!</string>
+    <string name="visit_gym_detail">يمكنك زيارة نادي رياضي مختلف لكل تمرين </string>
+    <string name="save_percent">وفر ٤٠٪</string>
+    <string name="save_detail">إذا تشتري عادتاً كلاس واحد إلىنادي رياضي ، ستوفر ٤٠ ٪ عن طريق اشتراك P5M.ادفع ٣٠KWD ل ٥ كلاسات بدلاً من ان تدفع  ٥٠KWD ! </string>
+    <string name="instant_booking_detail">احجز وادفع لتمرينك في الليل ، فيالصباح أو في الطريق إلى الكلاس. لا تنتظر عبر الهاتف أو تقلق بشأن حجزك.</string>
+    <string name="instant_booking"><![CDATA[الحجز الفوري والدفع عبر الإنترنت]]></string>
+    <string name="how_its_work">كيف يستخدم؟</string>
+    <string name="explore">اكتشف</string>
+    <string name="exploreDetail">يمكنك زيارة نادي رياضي مختلف لكل تمرين </string>
+    <string name="pick_a_plan">اختر الباقة</string>
+    <string name="that_work_for_you">اختر عدد الكلاسات بناءً على مستوى لياقتك الحالية. واستخدم كلاساتك في جميع النوادي الرياضية على التطبيق.
+    </string>
+    <string name="get_discount">احصل على خصم ١٥٪</string>
+    <string name="go_to_different_gym">في كل مرة تقوم بتجديد اشتراكك علىP5M سوف تحصل على خصم !  لمساعدتك في الحصول على اللياقة البدنية والحفاظ عليها!
+    </string>
+    <string name="workout_any_gym"> تدرب في أي نادي رياضي تريد ، في أي وقتتريد ،و ادفع أقل.</string>
+    <string name="frequently_asked_question">أسئلة متكررة:</string>
+    <string name="so_far_you_visited">So far you visited</string>
+    <string name="more_variety">More variety</string>
+    <string name="third_feature">Third Feature</string>
+    <string name="pay_for_bundle">Pay for the bundle of classes...etc</string>
+    <string name="bundle_of_classes">Bundle of classes</string>
+    <string name="flexible_timing">Flexible timings</string>
+    <string name="membership_info">معلومات عن الاشتراكات</string>
+    <string name="buy_membership_description">This is P5M package description</string>
+    <string name="one_class_entry">دخول كلاس واحد (KWD %s)</string>
+    <string name="book_with_p5m_membership">سجل في الكلاس مع اشتراك P5M</string>
+    <string name="welcome_to_p5m">مرحبًا بكم على تطبيق P5M !</string>
+    <string name="book_now">احجز الآن</string>
+    <string name="_100_purchase_protection">حماية الدفع 100% </string>
+    <string name="easy_booking">تسجيل اسهل | الدفع الآمنة</string>
+    <string name="select_an_option">اختر الباقة</string>
+    <string name="cancel_5_min_policy">Until 5 minutes from booking we will allow free cancellation even if it is under 2 hours</string>
+    <string name="drop_in_package_desc">This is drop in package description</string>
+    <string name="show_schedule">عرض الجدول</string>
+    <string name="train">تمرن</string>
+    <string name="clas_exceed">الكلاس الذي حددتها يبدأ بعد تاريخ انتهاء صلاحية هذه الباقة. اختر كلاس جاري خلال  %s القادمة لشراء هذه الباقة</string>
+    <string name="not_applicable">لا يمكن تفعيله</string>
 
 </resources>

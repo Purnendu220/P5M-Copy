@@ -20,16 +20,17 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
 import com.p5m.me.analytics.FirebaseAnalysic;
+import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.PaymentUrl;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
-
 
 
 import butterknife.BindView;
@@ -78,9 +79,9 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
         ButterKnife.bind(activity);
 
         openPage(getIntent());
-        mTimmer =  new CountDownTimer(timeFortransaction, 1000) {
+        mTimmer = new CountDownTimer(timeFortransaction, 1000) {
             public void onTick(long millisUntilFinished) {
-                text_timer.setText(secondsToString(millisUntilFinished/1000));
+                text_timer.setText(secondsToString(millisUntilFinished / 1000));
             }
 
             public void onFinish() {
@@ -89,11 +90,9 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
                 showSessionExpiredDialog();
 
 
-
-
             }
         };
-        mTimmer .start();
+        mTimmer.start();
     }
 
     @Override
@@ -131,7 +130,7 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
         layoutProgress.setVisibility(View.VISIBLE);
         webView.loadUrl(paymentUrl.getPaymentURL());
         webView.setWebViewClient(new MyWebViewClient());
-        refId=paymentUrl.getReferenceID();
+        refId = paymentUrl.getReferenceID();
 
     }
 
@@ -141,6 +140,7 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
 //            MixPanel.trackJoinClass(AppConstants.Tracker.PURCHASE_PLAN, classModel);
 //        }
         FirebaseAnalysic.trackMembershipPurchase(couponCode, packageName);
+
         if (classModel != null) {
             MixPanel.trackJoinClass(AppConstants.Tracker.PURCHASE_PLAN, classModel);
             FirebaseAnalysic.trackJoinClass(AppConstants.Tracker.PURCHASE_PLAN, classModel);
@@ -148,25 +148,25 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
         mTimmer.cancel();
         overridePendingTransition(0, 0);
         Intent returnIntent = getIntent();
-        returnIntent.putExtra(REFERENCE_ID,refId);
-        setResult(RESULT_OK,returnIntent);
-        finish();
-        overridePendingTransition(0, 0);
-
-
-        }
-    private void paymentSessionExpired() {
-        mTimmer.cancel();
-        overridePendingTransition(0, 0);
-        Intent returnIntent = getIntent();
-        returnIntent.putExtra(REFERENCE_ID,refId);
-        setResult(RESULT_OK,returnIntent);
+        returnIntent.putExtra(REFERENCE_ID, refId);
+        setResult(RESULT_OK, returnIntent);
         finish();
         overridePendingTransition(0, 0);
 
 
     }
 
+    private void paymentSessionExpired() {
+        mTimmer.cancel();
+        overridePendingTransition(0, 0);
+        Intent returnIntent = getIntent();
+        returnIntent.putExtra(REFERENCE_ID, refId);
+        setResult(RESULT_OK, returnIntent);
+        finish();
+        overridePendingTransition(0, 0);
+
+
+    }
 
 
     @Override
@@ -306,16 +306,17 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
         super.onDestroy();
     }
 
-    private void showSessionExpiredDialog(){
-        DialogUtils.showBasicMessage(context,  getString(R.string.payment_session_expired),
+    private void showSessionExpiredDialog() {
+        DialogUtils.showBasicMessage(context, getString(R.string.payment_session_expired),
                 getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         paymentSessionExpired();
                     }
-                },false);
+                }, false);
 
     }
+
     private String secondsToString(long pTime) {
         return String.format("%02d:%02d", pTime / 60, pTime % 60);
     }

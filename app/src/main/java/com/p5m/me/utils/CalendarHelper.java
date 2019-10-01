@@ -10,18 +10,17 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
 import android.provider.CalendarContract.Reminders;
+import android.util.Log;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import android.util.Log;
 
 import com.p5m.me.BuildConfig;
 import com.p5m.me.data.CalenderData;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.helper.Helper;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,11 +81,11 @@ public class CalendarHelper {
 
         ContentResolver cr = caller.getContentResolver();
         ContentValues values = new ContentValues();
-        values.put(CalendarContract.Events.TITLE, classModel.getTitle());
+        values.put(Events.TITLE, classModel.getTitle());
         values.put(Events.DTSTART, eventStartTime);
         values.put(Events.DTEND, eventEndTime);
 
-        Uri updateUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, classModel.getClassSessionId());
+        Uri updateUri = ContentUris.withAppendedId(Events.CONTENT_URI, classModel.getClassSessionId());
         int rows = caller.getContentResolver().update(updateUri, values, null, null);
         Log.i("Calendar", "Rows updated: " + rows);
     }

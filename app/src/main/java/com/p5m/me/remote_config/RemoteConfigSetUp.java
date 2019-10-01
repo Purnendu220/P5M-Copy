@@ -4,14 +4,16 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-
-import androidx.core.graphics.drawable.DrawableCompat;
-
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.core.graphics.drawable.DrawableCompat;
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -19,11 +21,13 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.p5m.me.BuildConfig;
 import com.p5m.me.R;
 import com.p5m.me.fxn.utility.Constants;
+import com.p5m.me.utils.LanguageUtils;
 
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import static com.facebook.login.widget.ProfilePictureView.TAG;
 import static com.p5m.me.remote_config.RemoteConfigConst.ADD_TO_WISHLIST_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BOOKED_BUTTON_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BOOKED_BUTTON_KEY;
@@ -31,11 +35,13 @@ import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_BUTTON_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_BUTTON_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_IN_CLASS_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_IN_CLASS_PROFILE_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_WITH_FRIEND_BACKGROUND_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_WITH_FRIEND_BUTTON_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_WITH_FRIEND_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BUY_CLASS_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BUY_CLASS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.CLASS_CARD_TEXT_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.FAQ_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.FULL_BUTTON_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.FULL_BUTTON_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.GYM_VISIT_LIMIT_DETAIL_TEXT_KEY;
@@ -43,6 +49,7 @@ import static com.p5m.me.remote_config.RemoteConfigConst.GYM_VISIT_LIMIT_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.INVITE_FRIENDS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.JOIN_WAITLIST_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.MEMBERSHIP_OFFER_COLOR_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.PACKAGE_TAGS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_CLASS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_FAILURE_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_PACKAGE_KEY;
@@ -53,43 +60,72 @@ import static com.p5m.me.remote_config.RemoteConfigConst.SEARCH_BAR_TEXT_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.SELECT_PLAN_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.SELECT_PLAN_TEXT_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.SESSION_EXPIRED_COLOR_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.TESTIMONIALS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.WAITLISTED_BUTTON_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.WAITLIST_BUTTON_KEY;
 
 public class RemoteConfigSetUp {
-    public static final FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+
+    public static FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
     private static Activity context;
 
-    public static void setup(Activity activity) {
-
-        firebaseRemoteConfig.setConfigSettings(new FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(true)
-                .build());
-
-        context = activity;
-
+    public static void reInitialize() {
+        firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
     }
 
+    public static void setup(Activity activity) {
+        context = activity;
+
+
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(3600)
+                .build();
+        firebaseRemoteConfig.setConfigSettingsAsync(configSettings);
+
+        /*firebaseRemoteConfig.setConfigSettings(new FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(true)
+                .build());*/
+
+    }
 
     public static void setValue(final int constValue, final String key, final String defaultValue) {
 
         HashMap<String, Object> defaults = new HashMap<>();
         defaults.put(key, defaultValue);
-        firebaseRemoteConfig.setDefaults(defaults);
+        firebaseRemoteConfig.setDefaultsAsync(defaults);
         setValueOfField(constValue, defaultValue);
-        if (Constants.LANGUAGE == Locale.ENGLISH) {
-            final Task<Void> fetch = firebaseRemoteConfig.fetch(BuildConfig.DEBUG ? 0 : TimeUnit.HOURS.toSeconds(0));
+        if (Constants.LANGUAGE == Locale.ENGLISH || constValue == TESTIMONIALS_KEY ||
+                constValue == FAQ_KEY || constValue == PACKAGE_TAGS_KEY) {
+            /*final Task<Void> fetch = firebaseRemoteConfig.fetch(BuildConfig.DEBUG ? 0 : TimeUnit.HOURS.toSeconds(10));
             fetch.addOnSuccessListener(context, new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    firebaseRemoteConfig.activateFetched();
+                    firebaseRemoteConfig.activate();
                     String keyValue = firebaseRemoteConfig.getString(key);
-                    firebaseRemoteConfig.activateFetched();
+                    firebaseRemoteConfig.activate();
                     if (!keyValue.isEmpty())
                         setValueOfField(constValue, keyValue);
                 }
-            });
+            });*/
+
+            firebaseRemoteConfig.fetchAndActivate()
+                    .addOnCompleteListener(context, new OnCompleteListener<Boolean>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Boolean> task) {
+                            if (task.isSuccessful()) {
+                                boolean updated = task.getResult();
+                                Log.d(TAG, "Config params updated: " + updated);
+                                firebaseRemoteConfig.activate();
+                                String keyValue = firebaseRemoteConfig.getString(key);
+                                firebaseRemoteConfig.activate();
+                                if (!keyValue.isEmpty())
+                                    setValueOfField(constValue, keyValue);
+
+                            }
+                        }
+                    });
         }
+
     }
 
     private static void setValueOfField(int constValue, String keyValue) {
@@ -181,6 +217,9 @@ public class RemoteConfigSetUp {
                 case SELECT_PLAN_COLOR_KEY:
                     RemoteConfigConst.SELECT_PLAN_COLOR_VALUE = keyValue;
                     break;
+                case BOOK_WITH_FRIEND_BACKGROUND_COLOR_KEY:
+                    RemoteConfigConst.BOOK_WITH_FRIEND_BACKGROUND_COLOR_VALUE = keyValue;
+                    break;
                 case GYM_VISIT_LIMIT_DETAIL_TEXT_KEY:
                     RemoteConfigConst.GYM_VISIT_LIMIT_DETAIL_TEXT_VALUE = keyValue;
                     break;
@@ -193,8 +232,37 @@ public class RemoteConfigSetUp {
                 case BOOK_IN_CLASS_COLOR_KEY:
                     RemoteConfigConst.BOOK_IN_CLASS_COLOR_VALUE = keyValue;
                     break;
+
+                case TESTIMONIALS_KEY:
+                    RemoteConfigConst.TESTIMONIALS_VALUE = keyValue;
+                    break;
+                case FAQ_KEY:
+                    RemoteConfigConst.FAQ_VALUE = keyValue;
+                    break;
+
+                case PACKAGE_TAGS_KEY:
+                    RemoteConfigConst.PACKAGE_TAGS_VALUE = keyValue;
+                    break;
             }
         }
+     /*   }
+        else if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+            if (!keyValue.isEmpty()) {
+                switch (constValue) {
+                    case TESTIMONIALS_KEY:
+                        RemoteConfigConst.TESTIMONIALS_VALUE = keyValue;
+                        break;
+                    case FAQ_KEY:
+                        RemoteConfigConst.FAQ_VALUE = keyValue;
+                        break;
+
+                    case PACKAGE_TAGS_KEY:
+                        RemoteConfigConst.PACKAGE_TAGS_VALUE = keyValue;
+                        break;
+                }
+            }
+        }*/
+
     }
 
     public static void setBackgroundColor(View view, String keyValue, int defaultColor) {
@@ -263,10 +331,6 @@ public class RemoteConfigSetUp {
         setValue(RemoteConfigConst.BOOKED_BUTTON_KEY,
                 RemoteConfigConst.BOOKED_BUTTON,
                 context.getString(R.string.booked));
-
-//        setValue(RemoteConfigConst.FULL_BUTTON_KEY,
-//                RemoteConfigConst.FULL_BUTTON,
-//                context.getString(R.string.full));
 
         setValue(RemoteConfigConst.WAITLISTED_BUTTON_KEY,
                 RemoteConfigConst.WAITLISTED_BUTTON,
@@ -356,6 +420,13 @@ public class RemoteConfigSetUp {
         setValue(MEMBERSHIP_OFFER_COLOR_KEY,
                 RemoteConfigConst.MEMBERSHIP_OFFER_COLOR, "#1FB257");
 
+        setValue(TESTIMONIALS_KEY,
+                RemoteConfigConst.TESTIMONIALS, "[{\"name\":\"XEINA\", \"message_ar\": \"\", \"message_eng\":\"I love how P5M now includes the option of booking classes with friends.\"},{\"name\":\"RANA\", \"message_ar\": \"\", \"message_eng\":\"Great way to try out new gyms & classes and decide where you wanna go.\"}]");
+        setValue(FAQ_KEY,
+                RemoteConfigConst.FAQ, "[{\"english_question\": \"Why are you use P5M?\", \"english_answer\": \"P5M app enables you to visit multiple gyms and attend diffent activities with only one membership. You can even buy monthly subscriptions if you wish that is how you would like to roll.\", \"arabic_question\": \"\", \"arabic_answer\": \"\"}]");
+        setValue(PACKAGE_TAGS_KEY,
+                RemoteConfigConst.PACKAGE_TAGS, "[{\"id\": 2, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 3, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 4, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 10, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 11, \"tag_en\": \"\", \"tag_ar\": \"\"}]");
 
     }
+
 }

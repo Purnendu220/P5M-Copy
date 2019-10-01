@@ -10,6 +10,7 @@ import com.p5m.me.data.PromoCode;
 import com.p5m.me.data.RatingParamModel;
 import com.p5m.me.data.RatingResponseModel;
 import com.p5m.me.data.UnratedClassData;
+import com.p5m.me.data.UserPackageDetail;
 import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.BranchModel;
 import com.p5m.me.data.main.ClassActivity;
@@ -252,6 +253,10 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.USER + "/{" + AppConstants.ApiParamKey.USER_ID + "}")
     Call<ResponseModel<GymDetailModel>> getGym(@Path(AppConstants.ApiParamKey.USER_ID) int gymId);
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.USER_PACKAGE_DETAIL)
+    Call<ResponseModel<List<UserPackageDetail>>> getUserPackageDetail(@Query(AppConstants.ApiParamKey.USER_ID) int userId, @Query(AppConstants.ApiParamKey.ID) long id);
 
     @Headers("Content-type: application/json")
     @POST(AppConstants.Url.DEVICE_SAVE)

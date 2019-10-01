@@ -16,6 +16,7 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.p5m.me.R;
+import com.p5m.me.data.Join5MinModel;
 import com.p5m.me.data.PushDetailModel;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
@@ -26,16 +27,20 @@ import com.p5m.me.utils.CalendarHelper;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.Main.ClassProfileActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
-import com.p5m.me.view.activity.Main.MemberShip;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
-import io.intercom.android.sdk.Intercom;
 import io.intercom.android.sdk.push.IntercomPushClient;
+
+import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_NO_PACKAGE;
+import static com.p5m.me.utils.AppConstants.Tab.TAB_MY_MEMBERSHIP;
 
 /**
  * Created by Varun John on 4/12/2018.
@@ -176,6 +181,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 case "OnJoinClass":
                     setNotification(jsonObject, dataID);
                     addEvent(jsonObject, dataID);
+
                     break;
                 case "OnSeatAvailableForWishlistFromClassUpdate":
                 case "OnSeatAvailableForWishlist":
@@ -187,6 +193,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             e.printStackTrace();
         }
     }
+
 
     private void addEvent(JSONObject jsonObject, long dataID) {
         String title = jsonObject.optString(AppConstants.Notification.CLASS_TITLE);
@@ -443,7 +450,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 //********************MEMBERSHIP********************//
                 case "onPackageExpired":
-                    navigationIntent = MemberShip.createIntent(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
+                    navigationIntent =  HomeActivity.showMembership(context,TAB_MY_MEMBERSHIP,AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
                     break;
                 case "OnFinishedPackage":
                 case "OnLowBalance":
@@ -455,6 +462,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             break;
                         case "OnFinishedPackage":
                             title = "Finished Package";
+                            if(TempStorage.isOpenMembershipInfo()!=2){
+                                TempStorage.setOpenMembershipInfo(MEMBERSHIP_INFO_STATE_NO_PACKAGE);
+                            }
+
                             break;
                         case "OnLowBalance":
                             title = "Low Balance";
@@ -464,7 +475,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             break;
                     }
 
-                    navigationIntent = MemberShip.createIntent(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
+                    navigationIntent =  HomeActivity.showMembership(context,TAB_MY_MEMBERSHIP,AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
                     break;
 
                 ////////////////////////////////////////////////////
@@ -579,126 +590,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
-    /*private Intent handleNotificationDeeplinking(String url) {
-        Intent navigationIntent;
 
-        try {
-            if (url.contains( "/classes/") || url.contains( "/share/classes/")  ) {
-                String classId = null;
-                String[] stringlist = url.split("/classes/");
-                if (stringlist != null && stringlist.length > 1) {
-                    classId = stringlist[1].split("/")[0];
-                }
-                try {
-                    navigationIntent = ClassProfileActivity.createIntent(context, Integer.parseInt(classId), AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
-
-                }
-
-            } else if (url.contains( "/share/gym/") || url.contains( "/gym/") ) {
-                String gymId = null;
-                String[] stringlist = url.split("/gym/");
-                if (stringlist != null && stringlist.length > 1) {
-                    gymId = stringlist[1].split("/")[0];
-                }
-                try {
-                    navigationIntent = GymProfileActivity.createIntent(context, Integer.parseInt(gymId), AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
-
-                }
-
-            } else if (url.contains( "/share/trainer/") || url.contains( "/trainer/") ) {
-                String trainerId = null;
-                String[] stringlist = url.split("/trainer/");
-                if (stringlist != null && stringlist.length > 1) {
-                    trainerId = stringlist[1].split("/")[0];
-                }
-                try {
-                    navigationIntent = TrainerProfileActivity.createIntent(context, Integer.parseInt(trainerId), AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
-
-                }
-            } else if (url.contains( "/classes") ) {
-                navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
-
-
-            } else if (url.contains( "/trainers") ) {
-                navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_TRAINER, 0);
-
-
-            } else if (url.contains( "/userschedule")) {
-                navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, 0);
-
-
-            } else if (url.contains( "/profile?type=favTrainer") ) {
-                navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_MY_PROFILE, 0, ProfileHeaderTabViewHolder.TAB_1);
-
-
-            } else if (url.contains( "/profile?type=finishedClasses")) {
-                navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_MY_PROFILE, 0, ProfileHeaderTabViewHolder.TAB_2);
-
-
-            } else if (url.contains( "/profile")) {
-                navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_MY_PROFILE, 0);
-
-
-            } else if (url.contains( "/editprofile")) {
-                navigationIntent = EditProfileActivity.createIntent(context);
-
-
-            } else if (url.contains( "/settings/membership")) {
-                navigationIntent = MemberShip.createIntent(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
-
-
-            } else if (url.contains( "/settings/transaction") ) {
-                navigationIntent = TransactionHistoryActivity.createIntent(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
-
-
-            } else if (url.contains( "/settings/notification")) {
-                navigationIntent = SettingNotification.createIntent(context);
-
-            } else if (url.contains( "/settings/aboutus")  ||
-                    url.contains( "/aboutus") ) {
-                navigationIntent = SettingActivity.createIntent(context, AppConstants.Tab.OPEN_ABOUT_US);
-
-            } else if (url.contains( "/settings/notifications") ) {
-                navigationIntent = NotificationActivity.createIntent(context);
-
-            }
-            else if (url.contains( "/settings")) {
-                navigationIntent = MemberShip.createIntent(context, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
-            }
-            else if (url.contains( "/searchresults/") ) {
-                navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
-
-            } else {
-
-                navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
-
-        }
-
-
-        return navigationIntent;
-
-    }
-*/
 
     private void setPushDetail(String type, String message, String url) {
         pushDetailModel = new PushDetailModel();
@@ -727,4 +619,5 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intercomPushClient.sendTokenToIntercom(getApplication(), refreshedToken);
 
     }
+
 }

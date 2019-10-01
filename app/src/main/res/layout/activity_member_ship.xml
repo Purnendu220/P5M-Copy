@@ -1,35 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/theme_bg"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context=".view.activity.Main.MemberShip">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/tool_bar_height"
+        android:background="@color/colorPrimaryDark"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/tool_bar_height"
-            android:background="?attr/colorPrimary"
-            android:contentInsetEnd="0dp"
-            android:contentInsetLeft="0dp"
-            android:contentInsetRight="0dp"
-            android:contentInsetStart="0dp"
-            android:elevation="4dp"
-            app:contentInsetEnd="0dp"
-            app:contentInsetLeft="0dp"
-            app:contentInsetRight="0dp"
-            app:contentInsetStart="0dp"
-            app:layout_scrollFlags="enterAlways"
-            app:tabIndicatorColor="@color/date_tabs" />
-    </com.google.android.material.appbar.AppBarLayout>
+        <TextView
+            android:id="@+id/textViewTitle"
+            style="@style/ToolBarTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:text="@string/membership"
+            android:textColor="@color/white" />
+
+        <LinearLayout
+            android:id="@+id/layoutUserWallet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginRight="@dimen/margin_10"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|left"
+                android:layout_margin="2dp"
+                android:background="@drawable/rounded_wallet_bg"
+                android:gravity="center_vertical"
+                android:padding="5dp" >
+
+                <ImageView
+                    android:id="@+id/imageViewWalletIcon"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginLeft="@dimen/margin_5"
+                    android:src="@drawable/wallet_icon"
+                    android:tint="@color/white"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/textViewWalletAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_5"
+                    android:layout_marginRight="@dimen/margin_5"
+                    android:fontFamily="sans-serif"
+                    android:text="30.00"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_small" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageViewShare"
+            style="@style/ToolBarIcon"
+            android:layout_height="match_parent"
+            android:padding="14dp"
+            android:src="@drawable/share"
+            android:tint="@color/white"
+            android:visibility="gone" />
+
+    </LinearLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
@@ -37,18 +87,101 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:clipToPadding="false"
-            android:paddingBottom="16dp"
-            android:paddingTop="12dp"
-            android:scrollbars="none" />
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="@dimen/margin_110"
+                android:scrollbars="none" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@android:color/transparent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textGymVisitLimits"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/margin_5"
+                    android:background="@drawable/rounded_corner_gym_visit_text"
+                    android:elevation="@dimen/margin_10"
+                    android:paddingLeft="@dimen/margin_20"
+                    android:paddingTop="@dimen/margin_5"
+                    android:paddingRight="@dimen/margin_20"
+                    android:paddingBottom="@dimen/margin_5"
+                    android:text="@string/view_gym_visit_limits"
+                    android:textColor="@color/theme_book"
+                    android:textSize="@dimen/text_medium"
+                    app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/theme_book"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <TextView
+                        android:id="@+id/textview_membership_tip"
+                        android:layout_width="269dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="8dp"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left"
+                        android:letterSpacing="@dimen/text_medium_letter_spacing"
+                        android:lineSpacingExtra="@dimen/line_spacing_extra"
+                        android:maxLines="3"
+                        android:paddingTop="@dimen/margin_10"
+                        android:paddingBottom="@dimen/margin_10"
+                        android:text="@string/why_p5m"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_large"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/imageViewViewLimit"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageViewViewLimit"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/textview_membership_tip"
+                        android:layout_alignBottom="@+id/textview_membership_tip"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="8dp"
+                        android:src="@drawable/arrow_right_blu"
+                        android:tint="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/textview_membership_tip"
+                        app:layout_constraintTop_toTopOf="@+id/textview_membership_tip" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </FrameLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>
 
 
 

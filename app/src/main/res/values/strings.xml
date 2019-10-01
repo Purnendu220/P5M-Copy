@@ -158,7 +158,7 @@
     <string name="today">Today</string>
     <string name="sign_up">"<b><u>Sign Up</u></b>"</string>
     <string name="profile_package_expiry">" remaining until your classes expire."</string>
-    <string name="view_gym_visit_limits"><u>View gym visit limits</u></string>
+    <string name="view_gym_visit_limits">View gym visit limits</string>
     <string name="gym_visit_limits_no_lines">gym visit limits</string>
     <string name="select_plan">Select Plan</string>
     <string name="membership_no_package_heading_1">Pick a plan that suits your fitness needs. The ‘Get Set’ and ‘Pro’ options will allow you to visit all the gyms available on P5M. Be sure to check each gym visit limits to find the plan that works best for you.</string>
@@ -395,6 +395,8 @@
     <string name="congratulation_class">Congratulations! Class</string>
     <string name="congratulation_package">Congratulations! Package</string>
     <string name="classs">Class</string>
+    <string name="classs_one">class</string>
+
     <string name="payment_pending">Payment pending</string>
     <string name="payment_sucessful">Payment successful</string>
     <string name="payment_unsucessful">Payment unsuccessful</string>
@@ -506,15 +508,11 @@ Would you like to view your balance? </string>
     <string name="unlimited">UNLIMITED</string>
     <string name="days">days</string>
     <string name="a_week">1 week</string>
+    <string name="weeks_value">%s weeks</string>
     <string name="map" translatable="false">Map</string>
     <string name="list" translatable="false">List</string>
     <string name="gym_branch" translatable="false">Gym - Branch</string>
     <string name="message_us">Chat with us</string>
-    <string name="todo">TODO</string>
-    <string name="cycling">Cycling</string>
-    <string name="red_bike_studio">Red Bike Studio</string>
-    <string name="_4_9">4.9</string>
-    <string name="_5000">(5000+)</string>
     <string name="show_schedule">Show Schedule</string>
 
 
@@ -528,5 +526,56 @@ Would you like to view your balance? </string>
         <item>@string/trainers</item>
         <item>@string/gym</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="classess_remaining">You have %d/%d classes remaining</string>
+    <string name="so_far_you_visited">So far you visited</string>
+    <string name="drop_in_text">You have an active drop in for %s, expire on %s</string>
+    <string name="drop_in_unlimited">You have an active drop in for %s</string>
+    <string name="_two_drop_in_text">You have 2 active drop-ins for %s, expires on %s</string>
+    <string name="_two_drop_in_unlimited">You have 2 active drop-ins for %s</string>
+    <string name="visit_times">%s times</string>
+    <string name="why_p5m">Why a P5M membership?\nBecause get more and pay less</string>
+    <string name="variety_of_activity_details">With the P5M membership you can visit a swimming class today, crossfit tomorrow and yoga on the weekend. Each class at a different gym.</string>
+    <string name="variety_of_activities">Variety of activities</string>
+    <string name="visit_gym_feature">Visit 40 gyms with 1 membership</string>
+    <string name="with_the_p5m_membership_you_can">With the P5M membership you can:</string>
+    <string name="on_p5m_you">On P5M you can visit multiple gyms and do multiple activities using 1 membership ONLY!</string>
+    <string name="visit_gym_detail">Go to a different gym for every workout if you want!</string>
+    <string name="save_percent">Save 40%</string>
+    <string name="save_detail">If you generally purchase a single entry pass to a gym, you would save 40% by getting a package.Pay 30KWD for 5 classes instead of 50KWD!</string>
+    <string name="instant_booking_detail">Book and pay for your workout at night, in the morning or on route to class. Don\'t wait on the phone or worry about your confirmation.</string>
+    <string name="instant_booking"><![CDATA[Instant Booking & Payment Online]]></string>
+    <string name="how_its_work">How it works</string>
+    <string name="explore">Explore</string>
+    <string name="exploreDetail">Go to a different gym for every workout if you want!</string>
+    <string name="pick_a_plan">Pick a plan</string>
+    <string name="that_work_for_you">Choose the number of classes that suits you, and use your classes at all the gyms on board.</string>
+    <string name="get_discount">Get 15% discount</string>
+    <string name="go_to_different_gym"><![CDATA[Every time you renew your P5M plan! Helping you get fit & stay fit!]]></string>
+    <!--<string name="workout_any_gym">Workout any gym \nyou want, anytime \nyou want, while \nsaving money</string>-->
+    <string name="workout_any_gym">Workout any gym\nyou want,anytime\nyou want, while \nsaving money
+    </string>
+    <string name="frequently_asked_question">Frequently asked questions</string>
+    <string name="more_variety">More variety</string>
+    <string name="third_feature">Third Feature</string>
+    <string name="pay_for_bundle">Pay for the bundle of classes...etc</string>
+    <string name="bundle_of_classes">Bundle of classes</string>
+    <string name="flexible_timing">Flexible timings</string>
+    <string name="membership_info">Membership Info</string>
+    <string name="select_an_option">Select an option</string>
+    <string name="drop_in_package_desc">This is drop in package description</string>
+    <string name="buy_membership_description">This is P5M package description</string>
+    <string name="one_class_entry">1 class entry (%s KWD)</string>
+    <string name="book_with_p5m_membership">Book with P5M Membership</string>
+    <string name="welcome_to_p5m">Welcome to P5M!</string>
+    <string name="book_now">Book Now</string>
+    <string name="_100_purchase_protection">100% Payment Protection</string>
+    <string name="easy_booking">Easy Bookings | Secure Payments</string>
+    <string name="cancel_5_min_policy">Until 5 minutes from booking we will allow free cancellation even if it is under 2 hours</string>
+    <string name="train">Train</string>
+    <string name="clas_exceed">The class you selected it past the expiration date of this package. choose a class that is taking place within the next %s to purchase this package</string>
+    <string name="not_applicable">Not Applicable</string>
 
 </resources>

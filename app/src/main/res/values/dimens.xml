@@ -42,6 +42,7 @@
     <dimen name="text_extra_large">18sp</dimen>
     <dimen name="text_extra_extra_large">22sp</dimen>
     <dimen name="text_large">16sp</dimen>
+    <dimen name="text_15sp">15sp</dimen>
     <dimen name="text_medium">14sp</dimen>
     <dimen name="text_s_medium">13sp</dimen>
     <dimen name="text_small">12sp</dimen>
@@ -75,6 +76,7 @@
     <dimen name="margin_16">16dp</dimen>
     <dimen name="margin_22">22dp</dimen>
     <dimen name="margin_110">110dp</dimen>
+    <dimen name="margin_140">140dp</dimen>
     <dimen name="margin_80">80dp</dimen>
     <dimen name="margin_15">15dp</dimen>
     <dimen name="margin_30">30dp</dimen>
@@ -127,7 +129,10 @@
     <dimen name="dp_80">80dp</dimen>
     <dimen name="dp_160">160dp</dimen>
 
-    <dimen name="md_bottom_sheet_separator_top_margin">7dp</dimen>
+    <dimen name="membership_img_width" >164dp</dimen>
+
+    <dimen name="membership_img_height">158dp</dimen>
+
 
 
 </resources>

@@ -13,6 +13,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -32,7 +33,10 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.material.appbar.AppBarLayout;
 import com.p5m.me.R;
+import com.p5m.me.analytics.IntercomEvents;
+import com.p5m.me.data.Join5MinModel;
 import com.p5m.me.data.PaymentConfirmationResponse;
+import com.p5m.me.data.PromoCode;
 import com.p5m.me.data.ValidityPackageList;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
@@ -45,22 +49,29 @@ import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CalendarHelper;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LanguageUtils;
+import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.intercom.android.sdk.Intercom;
+import io.intercom.android.sdk.UserAttributes;
+import io.intercom.android.sdk.identity.Registration;
 
 import static com.p5m.me.fxn.utility.Constants.CheckoutFor.EXTENSION;
 import static com.p5m.me.fxn.utility.Constants.CheckoutFor.PENDING_TRANSACTION;
@@ -79,13 +90,14 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
     private String referenceNo;
     private Hashtable<String, String> calendarIdTable;
     private int calendar_id = -1;
+    public static String couponCode = "";
     private User user;
 
     public static void openActivity(Context context, int navigationFrom, String refId,
                                     Package aPackage, ClassModel classModel,
                                     Constants.CheckoutFor checkoutFor,
                                     UserPackage userPackage,
-                                    ValidityPackageList selectedPacakageFromList, int mNumberOfClassesToBuy) {
+                                    ValidityPackageList selectedPacakageFromList, int mNumberOfClassesToBuy, String couponCode) {
         Intent intent = new Intent(context, PaymentConfirmationActivity.class)
 
                 .putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom);
@@ -101,6 +113,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         PaymentConfirmationActivity.userPackage = userPackage;
         PaymentConfirmationActivity.selectedPacakageFromList = selectedPacakageFromList;
         PaymentConfirmationActivity.mNumberOfClassesToBuy = mNumberOfClassesToBuy;
+        PaymentConfirmationActivity.couponCode = couponCode;
         context.startActivity(intent);
     }
 
@@ -168,7 +181,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 
 
     TextView mTextViewWalletAmount;
-    LinearLayout  mLayoutUserWallet;
+    LinearLayout mLayoutUserWallet;
     User.WalletDto mWalletCredit;
 
     public static String BOOKED_ON = "";
@@ -218,9 +231,9 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         View v = LayoutInflater.from(context).inflate(R.layout.view_tool_normal, null);
 
         v.findViewById(R.id.imageViewBack).setVisibility(View.GONE);
-         mTextViewWalletAmount= v.findViewById(R.id.textViewWalletAmount);
-         mLayoutUserWallet= v.findViewById(R.id.layoutUserWallet);
-         mLayoutUserWallet.setVisibility(View.GONE);
+        mTextViewWalletAmount = v.findViewById(R.id.textViewWalletAmount);
+        mLayoutUserWallet = v.findViewById(R.id.layoutUserWallet);
+        mLayoutUserWallet.setVisibility(View.GONE);
 
         ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.payment_confirmation));
         ((TextView) v.findViewById(R.id.textViewTitle)).setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
@@ -278,9 +291,10 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
             PaymentStatus paymentStatus = PaymentStatus.valueOf(paymentResponse.getStatus());
             switch (paymentStatus) {
                 case SUCCESS:
-                    if (Constants.LANGUAGE == Locale.ENGLISH)
-                        textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.congratulation_package_extended_en), "<b>" + getPurchasedPackageName() + "</b>", LanguageUtils.numberConverter(selectedPacakageFromList.getDuration()))));
-                    else
+                    if (Constants.LANGUAGE == Locale.ENGLISH) {
+                        if (paymentResponse != null && selectedPacakageFromList != null && userPackage != null)
+                            textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.congratulation_package_extended_en), "<b>" + getPurchasedPackageName() + "</b>", LanguageUtils.numberConverter(selectedPacakageFromList.getDuration()))));
+                    } else
                         textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.congratulation_package_extended_ar), "<b>" + getPurchasedPackageName() + "</b>", LanguageUtils.numberConverter(selectedPacakageFromList.getDuration()))));
 
                     break;
@@ -455,24 +469,58 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 layoutConfirmation.setVisibility(View.VISIBLE);
                 paymentResponse = ((ResponseModel<PaymentConfirmationResponse>) response).data;
                 setAnimation();
-                setData(PaymentStatus.valueOf(paymentResponse.getStatus()));
+                if (selectedPacakageFromList != null && userPackage != null && selectedPacakageFromList.getPackageType().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_TYPE_EXTENSION))
+                    IntercomEvents.trackExtendedPackage(paymentResponse, selectedPacakageFromList, userPackage);
 
+                else {
+                    if (paymentResponse.getPackageName().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN_INTERCOM) ||
+                            paymentResponse.getPackageName().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
+                        IntercomEvents.purchase_drop_in(classModel);
+                        IntercomEvents.trackJoinClass(classModel);
+                    } else {
+
+                        IntercomEvents.purchasedPlan(paymentResponse, couponCode, classModel);
+                    }
+                }
+                setData(PaymentStatus.valueOf(paymentResponse.getStatus()));
 //                paymentResponse.setStatus(PaymentStatus.FAILURE.name());
 //                setData(PaymentStatus.FAILURE);
                 buttonHandler();
                 break;
             case NetworkCommunicator.RequestCode.ME_USER:
                 user = TempStorage.getUser();
-                mWalletCredit= user.getWalletDto();
-                if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
+                mWalletCredit = user.getWalletDto();
+                if (mWalletCredit != null && mWalletCredit.getBalance() > 0) {
                     mLayoutUserWallet.setVisibility(View.VISIBLE);
-                    mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(),2)+" "+context.getResources().getString(R.string.wallet_currency));
-                }else{
+                    mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(), 2) + " " + context.getResources().getString(R.string.wallet_currency));
+                } else {
                     mLayoutUserWallet.setVisibility(View.GONE);
 
                 }
+                updateIntercomWallet();
                 break;
         }
+    }
+
+    private void updateIntercomWallet() {
+        String balanceWallet = "0";
+
+        Registration registration = Registration.create().withUserId(user.getFirstName() + " " + user.getLastName());
+        Intercom.client().registerIdentifiedUser(registration);
+        if (mWalletCredit != null) {
+            balanceWallet = String.valueOf(mWalletCredit.getBalance());
+        }
+
+      /*  UserAttributes userAttributes = new UserAttributes.Builder()
+                .withName(user.getFirstName() + " " + user.getLastName())
+                .withEmail(user.getEmail())
+                .withCustomAttribute("Gender",user.getGender())
+                .withCustomAttribute("wallet balance",balanceWallet)
+                .withCustomAttribute("Registration date", user.getDateOfJoining() == 0 ?
+                        "" : DateUtils.getDateFormatter(new Date(user.getDateOfJoining())) + "")
+                .build();
+        Intercom.client().updateUser(userAttributes);*/
+
     }
 
     private void setData(PaymentStatus paymentStatus) {
@@ -485,6 +533,8 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                     CalendarHelper.requestCalendarReadWritePermission(this);
                 } else {
                     if (paymentResponse.getClassDetailDto() != null) {
+                        saved5MinClass(classModel);
+
                         if (CalendarHelper.haveCalendarReadWritePermissions(this))
                             CalendarHelper.scheduleCalenderEvent(this, classModel);
                     }
@@ -641,7 +691,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         if (!TextUtils.isEmpty(paymentResponse.getExpiryDate())) {
             textViewValidity.setText(DateUtils.getClassDate(paymentResponse.getExpiryDate()));
         }
-        textViewAmount.setText(LanguageUtils.numberConverter(paymentResponse.getAmount(),2) + " " + context.getString(R.string.currency));
+        textViewAmount.setText(LanguageUtils.numberConverter(paymentResponse.getAmount(), 2) + " " + context.getString(R.string.currency));
 
         switch (checkoutFor) {
             case PACKAGE:
@@ -651,7 +701,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                     if (paymentResponse.getClassDetailDto() != null)
                         textViewValidity.setText(DateUtils.getPackageClassDate(paymentResponse.getClassDetailDto().getClassDate()) + "\n" + DateUtils.getClassTime(paymentResponse.getClassDetailDto().getFromTime(), paymentResponse.getClassDetailDto().getToTime()));
-                    } else {
+                } else {
                     if (!TextUtils.isEmpty(paymentResponse.getExpiryDate())) {
                         textViewValidity.setText(DateUtils.getClassDate(paymentResponse.getExpiryDate()));
                     } else
@@ -749,8 +799,9 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                     }
                 });
     }
-    private void showWalletAlert(){
-        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.wallet_alert_title), context.getString(R.string.wallet_alert),1,"",context.getResources().getString(R.string.ok),CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO,null,true, this);
+
+    private void showWalletAlert() {
+        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.wallet_alert_title), context.getString(R.string.wallet_alert), 1, "", context.getResources().getString(R.string.ok), CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO, null, true, this);
         try {
             mCustomAlertDialog.show();
         } catch (Exception e) {
@@ -759,5 +810,24 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
 
     }
 
+    private void saved5MinClass(ClassModel classModel) {
+        Join5MinModel join5MinModel = new Join5MinModel();
+        join5MinModel.setGetClassSessionId(classModel.getClassSessionId());
+        join5MinModel.setJoiningTime(Calendar.getInstance().getTime());
+        List<Join5MinModel> bookedClassList = MyPreferences.getInstance().getBookingTime();
+        if (bookedClassList != null && bookedClassList.size() > 0) {
+            bookedClassList.add(join5MinModel);
+            MyPreferences.getInstance().saveBookingTime(bookedClassList);
+            LogUtils.debug("Class Booked " + classModel.getTitle());
+            return;
 
+        } else {
+            bookedClassList = new ArrayList<>();
+            bookedClassList.add(join5MinModel);
+            MyPreferences.getInstance().saveBookingTime(bookedClassList);
+
+        }
+
+
+    }
 }

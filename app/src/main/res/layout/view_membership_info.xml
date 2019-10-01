@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:elevation="@dimen/margin_10"
+        android:paddingTop="@dimen/margin_15"
+        android:paddingBottom="@dimen/margin_10"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/textViewWelcome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_15"
+            android:layout_marginEnd="@dimen/margin_15"
+            android:letterSpacing="@dimen/text_medium_letter_spacing"
+            android:lineSpacingExtra="@dimen/line_spacing_extra"
+            android:text="@string/welcome_to_p5m"
+            android:textColor="#000000"
+            android:textSize="@dimen/text_extra_large"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewWelcomeDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_12"
+            android:letterSpacing="@dimen/text_medium_letter_spacing"
+            android:lineSpacingExtra="@dimen/line_spacing_extra"
+            android:paddingBottom="@dimen/margin_15"
+            android:text="@string/on_p5m_you"
+            android:textColor="@color/theme_dark_text"
+            android:textSize="@dimen/text_medium"
+            app:layout_constraintEnd_toEndOf="@+id/textViewWelcome"
+            app:layout_constraintStart_toStartOf="@+id/textViewWelcome"
+            app:layout_constraintTop_toBottomOf="@id/textViewWelcome" />
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="#DADEE1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewWelcomeDetail" />
+
+        <TextView
+            android:id="@+id/textViewMembershipFeatures"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:letterSpacing="@dimen/text_medium_letter_spacing"
+            android:lineSpacingExtra="@dimen/line_spacing_extra"
+            android:text="@string/with_the_p5m_membership_you_can"
+            android:textColor="#000000"
+            android:textSize="@dimen/text_extra_large"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/textViewWelcome"
+            app:layout_constraintStart_toStartOf="@+id/textViewWelcome"
+            app:layout_constraintTop_toBottomOf="@id/view1" />
+
+        <ImageView
+            android:id="@+id/imageViewVarietyActivity"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="@dimen/margin_20"
+            android:background="@drawable/bg_oval_shape_blue"
+            android:padding="@dimen/margin_10"
+            android:tint="@color/theme_book"
+            app:layout_constraintStart_toStartOf="@+id/textViewMembershipFeatures"
+            app:layout_constraintTop_toBottomOf="@+id/textViewMembershipFeatures"
+            app:srcCompat="@drawable/gymnastics" />
+
+        <TextView
+            android:id="@+id/textViewVarietyActivity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="@dimen/text_medium_letter_spacing"
+            android:lineSpacingExtra="@dimen/line_spacing_extra"
+            android:text="@string/variety_of_activities"
+            android:textColor="@color/text_dark_gray"
+            android:textSize="@dimen/text_large"
+            app:layout_constraintEnd_toEndOf="@+id/textViewMembershipFeatures"
+            app:layout_constraintStart_toEndOf="@+id/imageViewVarietyActivity"
+            app:layout_constraintTop_toTopOf="@+id/imageViewVarietyActivity" />
+
+        <TextView
+            android:id="@+id/textViewVarietyActivityDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_12"
+            android:paddingTop="@dimen/margin_8"
+            android:paddingBottom="@dimen/margin_5"
+            android:text="@string/variety_of_activity_details"
+            android:textColor="@color/theme_dark_text"
+            android:textSize="@dimen/text_medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textViewVarietyActivity"
+            app:layout_constraintTop_toBottomOf="@+id/textViewVarietyActivity" />
+
+        <ImageView
+            android:id="@+id/imageViewVisitGym"
+            android:layout_width="@dimen/margin_70"
+            android:layout_height="@dimen/margin_70"
+            android:layout_marginTop="@dimen/margin_16"
+            android:background="@drawable/bg_oval_shape_blue"
+            android:padding="@dimen/margin_12"
+            android:tint="@color/theme_book"
+            app:layout_constraintStart_toStartOf="@+id/textViewMembershipFeatures"
+            app:layout_constraintTop_toBottomOf="@+id/textViewVarietyActivityDetail"
+            app:srcCompat="@drawable/stationary_bike" />
+
+        <TextView
+            android:id="@+id/textViewVisitGym"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="@dimen/text_medium_letter_spacing"
+            android:lineSpacingExtra="@dimen/line_spacing_extra"
+            android:text="@string/visit_gym_feature"
+            android:textColor="@color/text_dark_gray"
+            android:textSize="@dimen/text_large"
+            app:layout_constraintEnd_toEndOf="@+id/textViewVarietyActivity"
+            app:layout_constraintStart_toStartOf="@+id/textViewVarietyActivity"
+            app:layout_constraintTop_toTopOf="@+id/imageViewVisitGym" />
+
+        <TextView
+            android:id="@+id/textViewVisitGymDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="@dimen/margin_5"
+            android:text="@string/visit_gym_detail"
+            android:textColor="@color/theme_dark_text"
+            android:textSize="@dimen/text_medium"
+            app:layout_constraintEnd_toEndOf="@+id/textViewVarietyActivityDetail"
+            app:layout_constraintStart_toStartOf="@+id/textViewVarietyActivity"
+            app:layout_constraintTop_toBottomOf="@+id/textViewVisitGym" />
+
+        <ImageView
+            android:id="@+id/imageViewSave"
+            android:layout_width="@dimen/margin_70"
+            android:layout_height="@dimen/margin_70"
+            android:layout_marginTop="@dimen/margin_16"
+            android:background="@drawable/bg_oval_shape_blue"
+            android:padding="@dimen/margin_15"
+            android:tint="@color/theme_book"
+            app:layout_constraintStart_toStartOf="@+id/textViewMembershipFeatures"
+            app:layout_constraintTop_toBottomOf="@+id/textViewVisitGymDetail"
+            app:srcCompat="@drawable/discount_x" />
+
+        <TextView
+            android:id="@+id/textViewSave"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="@dimen/text_medium_letter_spacing"
+            android:lineSpacingExtra="@dimen/line_spacing_extra"
+
+            android:text="@string/save_percent"
+            android:textColor="@color/text_dark_gray"
+            android:textSize="@dimen/text_large"
+            app:layout_constraintEnd_toEndOf="@+id/textViewVarietyActivity"
+            app:layout_constraintStart_toStartOf="@+id/textViewVarietyActivity"
+            app:layout_constraintTop_toTopOf="@+id/imageViewSave" />
+
+        <TextView
+            android:id="@+id/textViewSaveDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="@dimen/margin_5"
+            android:text="@string/save_detail"
+            android:textColor="@color/theme_dark_text"
+            android:textSize="@dimen/text_medium"
+            app:layout_constraintEnd_toEndOf="@+id/textViewVarietyActivityDetail"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textViewVarietyActivity"
+            app:layout_constraintTop_toBottomOf="@+id/textViewSave" />
+
+
+        <ImageView
+            android:id="@+id/imageViewInstantBooking"
+            android:layout_width="@dimen/margin_70"
+            android:layout_height="@dimen/margin_70"
+            android:layout_marginTop="@dimen/margin_16"
+            android:background="@drawable/bg_oval_shape_blue"
+            android:padding="@dimen/margin_15"
+            android:tint="@color/theme_book"
+            app:layout_constraintStart_toStartOf="@+id/textViewMembershipFeatures"
+            app:layout_constraintTop_toBottomOf="@+id/textViewSaveDetail"
+            app:srcCompat="@drawable/online_payment" />
+
+        <TextView
+            android:id="@+id/textViewInstantBooking"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="@dimen/text_medium_letter_spacing"
+            android:lineSpacingExtra="@dimen/line_spacing_extra"
+            android:text="@string/instant_booking"
+            android:textColor="@color/text_dark_gray"
+            android:textSize="@dimen/text_large"
+            app:layout_constraintEnd_toEndOf="@+id/textViewVarietyActivity"
+            app:layout_constraintStart_toStartOf="@+id/textViewVarietyActivity"
+            app:layout_constraintTop_toTopOf="@+id/imageViewInstantBooking" />
+
+        <TextView
+            android:id="@+id/textViewInstantBookingDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="@dimen/margin_5"
+            android:text="@string/instant_booking_detail"
+            android:textColor="@color/theme_dark_text"
+            android:textSize="@dimen/text_medium"
+            app:layout_constraintEnd_toEndOf="@+id/textViewVarietyActivityDetail"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textViewVarietyActivity"
+            app:layout_constraintTop_toBottomOf="@+id/textViewInstantBooking" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_marginTop="@dimen/margin_10"
+            android:background="#DADEE1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewInstantBookingDetail" />
+
+        <TextView
+            android:id="@+id/textViewHowItWorks"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/how_its_work"
+            android:textColor="#5E6474"
+            android:textSize="@dimen/text_extra_large"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textViewWelcome"
+            app:layout_constraintTop_toBottomOf="@+id/view" />
+
+        <ImageView
+            android:id="@+id/imageViewExplore"
+            android:layout_width="@dimen/membership_img_width"
+            android:layout_height="@dimen/membership_img_height"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintStart_toStartOf="@+id/textViewHowItWorks"
+            app:layout_constraintTop_toBottomOf="@+id/textViewHowItWorks"
+            app:srcCompat="@drawable/explore_illustration" />
+
+        <LinearLayout
+            android:id="@+id/layoutExplore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewExplore"
+            app:layout_constraintEnd_toEndOf="@+id/textViewHowItWorks"
+            app:layout_constraintStart_toEndOf="@+id/imageViewExplore"
+            app:layout_constraintTop_toTopOf="@+id/imageViewExplore">
+
+
+            <TextView
+                android:id="@+id/textViewExplore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                android:lineSpacingExtra="@dimen/line_spacing_extra"
+                android:text="@string/explore"
+
+                android:textColor="@color/theme_book"
+                android:textSize="@dimen/text_extra_large" />
+
+            <TextView
+                android:id="@+id/textViewExploreDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="4"
+                android:paddingTop="8dp"
+                android:paddingBottom="@dimen/margin_5"
+                android:text="@string/exploreDetail"
+                android:textColor="@color/theme_dark_text"
+                android:textSize="@dimen/text_medium" />
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/imageViewPickPlan"
+            android:layout_width="@dimen/membership_img_width"
+            android:layout_height="@dimen/membership_img_height"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintEnd_toEndOf="@id/layoutExplore"
+            app:layout_constraintStart_toEndOf="@id/imageViewExplore"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewExplore"
+            app:srcCompat="@drawable/pick_a_plan_illustration" />
+
+        <LinearLayout
+            android:id="@+id/layoutPlan"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:orientation="vertical"
+            android:padding="18dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewPickPlan"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewPickPlan"
+            app:layout_constraintStart_toStartOf="@+id/imageViewExplore"
+            app:layout_constraintTop_toTopOf="@+id/imageViewPickPlan">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                android:lineSpacingExtra="@dimen/line_spacing_extra"
+                android:text="@string/pick_a_plan"
+                android:textColor="@color/theme_book"
+                android:textSize="@dimen/text_extra_large"
+                app:layout_constraintStart_toStartOf="@+id/textViewVarietyActivity"
+                app:layout_constraintTop_toTopOf="@+id/imageViewInstantBooking" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:paddingTop="8dp"
+                android:paddingBottom="@dimen/margin_5"
+                android:text="@string/that_work_for_you"
+                android:textColor="@color/theme_dark_text"
+                android:textSize="@dimen/text_medium" />
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/imageViewDiscount"
+            android:layout_width="@dimen/membership_img_width"
+            android:layout_height="@dimen/membership_img_height"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toEndOf="@+id/layoutPlan"
+            app:layout_constraintStart_toStartOf="@+id/imageViewExplore"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewPickPlan"
+            app:srcCompat="@drawable/any_gym_illustration" />
+
+        <LinearLayout
+            android:id="@+id/layoutDiscount"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewDiscount"
+            app:layout_constraintEnd_toEndOf="@+id/textViewHowItWorks"
+            app:layout_constraintStart_toStartOf="@+id/imageViewPickPlan"
+            app:layout_constraintTop_toTopOf="@+id/imageViewDiscount">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                android:lineSpacingExtra="@dimen/line_spacing_extra"
+                android:text="@string/train"
+                android:textColor="@color/theme_book"
+                android:textSize="@dimen/text_extra_large"
+                app:layout_constraintStart_toStartOf="@+id/textViewVarietyActivity"
+                app:layout_constraintTop_toTopOf="@+id/imageViewInstantBooking" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingBottom="@dimen/margin_5"
+                android:text="@string/workout_any_gym"
+                android:textColor="@color/theme_dark_text"
+                android:textSize="@dimen/text_medium" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:orientation="vertical"
+            android:padding="15dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewWorkout"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewWorkout"
+            app:layout_constraintStart_toStartOf="@+id/imageViewDiscount"
+            app:layout_constraintTop_toTopOf="@+id/imageViewWorkout">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:letterSpacing="@dimen/text_medium_letter_spacing"
+                android:lineSpacingExtra="@dimen/line_spacing_extra"
+                android:text="@string/get_discount"
+                android:textColor="@color/theme_book"
+                android:textSize="@dimen/text_extra_large"
+                app:layout_constraintStart_toStartOf="@+id/textViewVarietyActivity"
+                app:layout_constraintTop_toTopOf="@+id/imageViewInstantBooking" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:paddingTop="8dp"
+                android:paddingBottom="@dimen/margin_5"
+                android:text="@string/go_to_different_gym"
+                android:textColor="@color/theme_dark_text"
+                android:textSize="@dimen/text_medium" />
+
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/imageViewWorkout"
+            android:layout_width="@dimen/membership_img_width"
+            android:layout_height="@dimen/membership_img_height"
+            android:layout_marginTop="@dimen/margin_15"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:layout_marginBottom="@dimen/dp_24"
+            app:layout_constraintEnd_toEndOf="@id/layoutDiscount"
+            app:layout_constraintStart_toEndOf="@id/imageViewDiscount"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewDiscount"
+            app:srcCompat="@drawable/get_a_illustration" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_marginTop="@dimen/margin_10"
+            android:background="#DFDDDD"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewWorkout" />
+
+        <TextView
+            android:id="@+id/textViewFrequentlyAskedQuestions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:letterSpacing="@dimen/text_medium_letter_spacing"
+            android:lineSpacingExtra="@dimen/line_spacing_extra"
+            android:paddingTop="@dimen/margin_10"
+            android:paddingBottom="@dimen/margin_10"
+            android:text="@string/frequently_asked_question"
+            android:textColor="#5E6474"
+            android:textSize="@dimen/text_extra_large"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textViewWelcome"
+            app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewFAQ"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="@dimen/margin_15"
+            android:drawableEnd="@drawable/blue_arrow"
+            android:drawableTint="@color/theme_book"
+            android:gravity="center_vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="@dimen/margin_45"
+            android:text="@string/more_variety"
+            android:textColor="@color/theme_dark_text"
+            android:textSize="@dimen/text_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textViewFrequentlyAskedQuestions"
+            app:layout_constraintTop_toBottomOf="@+id/textViewFrequentlyAskedQuestions" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

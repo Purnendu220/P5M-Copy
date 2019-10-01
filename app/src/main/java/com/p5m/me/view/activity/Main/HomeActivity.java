@@ -9,6 +9,7 @@ import android.os.Looper;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.View;
@@ -24,7 +25,9 @@ import com.p5m.me.R;
 import com.p5m.me.adapters.HomeAdapter;
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
 import com.p5m.me.analytics.FirebaseAnalysic;
+import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.UnratedClassData;
+import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.request.LogoutRequest;
@@ -39,6 +42,7 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
@@ -47,6 +51,7 @@ import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.activity.custom.BottomTapLayout;
 import com.p5m.me.view.custom.CustomRateAlertDialog;
+import com.p5m.me.view.fragment.MembershipFragment;
 import com.p5m.me.view.fragment.MySchedule;
 import com.p5m.me.view.fragment.ViewPagerFragmentSelection;
 
@@ -55,6 +60,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -62,6 +68,11 @@ import butterknife.ButterKnife;
 import io.intercom.android.sdk.Intercom;
 import io.intercom.android.sdk.UserAttributes;
 import io.intercom.android.sdk.identity.Registration;
+
+import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_DONE;
+import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_HAVE_PACKAGE;
+import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_NO_PACKAGE;
+import static com.p5m.me.utils.AppConstants.Tab.TAB_MY_MEMBERSHIP;
 
 
 public class HomeActivity extends BaseActivity implements BottomTapLayout.TabListener, ViewPager.OnPageChangeListener, View.OnClickListener, NetworkCommunicator.RequestListener, TabChange {
@@ -75,15 +86,48 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         context.startActivity(intent);
     }
 
+
+    public static void show(Context context, int tabPosition,int navigationFrom) {
+        Intent intent = new Intent(context, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra(AppConstants.DataKey.HOME_TAB_POSITION, tabPosition);
+        intent.putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom);
+        context.startActivity(intent);
+
+    }
+    public static void show(Context context, int tabPosition,int navigationFrom, ClassModel classModel) {
+        Intent intent = new Intent(context, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra(AppConstants.DataKey.HOME_TAB_POSITION, tabPosition);
+        intent.putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom);
+        intent.putExtra(AppConstants.DataKey.CLASS_OBJECT, classModel);
+        context.startActivity(intent);
+
+    }
+    public static void show(Context context, int tabPosition, int navigationFrom, ClassModel classModel, BookWithFriendData friendData, int numberOfPackagesToBuy) {
+        Intent intent = new Intent(context, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra(AppConstants.DataKey.HOME_TAB_POSITION, tabPosition);
+        intent.putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom);
+        intent.putExtra(AppConstants.DataKey.CLASS_OBJECT, classModel);
+        intent.putExtra(AppConstants.DataKey.BOOK_WITH_FRIEND_DATA,friendData);
+        intent.putExtra(AppConstants.DataKey.NUMBER_OF_PACKAGES_TO_BUY,numberOfPackagesToBuy);
+        context.startActivity(intent);
+
+    }
+
+
     public static void show(Context context, int tabPosition) {
         Intent intent = new Intent(context, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra(AppConstants.DataKey.HOME_TAB_POSITION, tabPosition);
         context.startActivity(intent);
+
     }
-
-
     public static Intent createIntent(Context context, int tabPosition, int innerTabPosition) {
         Intent intent = new Intent(context, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
@@ -115,6 +159,16 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         return intent;
     }
 
+    public static Intent showMembership(Context context, int tabPosition,int navigationFrom) {
+        Intent intent = new Intent(context, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra(AppConstants.DataKey.HOME_TAB_POSITION, tabPosition);
+        intent.putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom);
+        return intent;
+
+    }
+
     @BindView(R.id.viewPager)
     public ViewPager viewPager;
 
@@ -132,11 +186,16 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
     private BottomTapLayout bottomTapLayout;
 
-    private final int TOTAL_TABS = 4;
+    private final int TOTAL_TABS = 5;
     private int INITIAL_POSITION = AppConstants.Tab.TAB_FIND_CLASS;
     private int currentTab = INITIAL_POSITION;
     private int PROFILE_TAB_POSITION;
     private int SCHEDULE_TAB_POSITION;
+    private int NAVIGATED_FROM_INT = -1;
+    private int NUMBER_OF_PACKAGES_TO_BUY = -1;
+    private BookWithFriendData BOOK_WITH_FRIEND_DATA ;
+    private ClassModel CLASS_OBJECT ;
+
 
     private Handler handler;
     public CustomRateAlertDialog mCustomMatchDialog;
@@ -164,6 +223,13 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             SCHEDULE_TAB_POSITION = getIntent().getIntExtra(AppConstants.DataKey.HOME_TABS_SCHEDULE_INNER_TAB_POSITION,
                     AppConstants.Tab.TAB_MY_SCHEDULE_UPCOMING);
 
+            NAVIGATED_FROM_INT = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT,
+                    -1);
+            NUMBER_OF_PACKAGES_TO_BUY = getIntent().getIntExtra(AppConstants.DataKey.NUMBER_OF_PACKAGES_TO_BUY,
+                    1);
+            CLASS_OBJECT = (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_OBJECT);
+            BOOK_WITH_FRIEND_DATA = (BookWithFriendData) getIntent().getSerializableExtra(AppConstants.DataKey.BOOK_WITH_FRIEND_DATA);
+
             LogUtils.debug("VarunSCHEDULE getIntent " + SCHEDULE_TAB_POSITION);
 
         }
@@ -173,7 +239,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         FirebaseDynamicLinnk.getDynamicLink(this, getIntent());
         handler = new Handler(Looper.getMainLooper());
         setupBottomTabs();
-        homeAdapter = new HomeAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_TABS, PROFILE_TAB_POSITION, SCHEDULE_TAB_POSITION);
+        homeAdapter = new HomeAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_TABS, PROFILE_TAB_POSITION, SCHEDULE_TAB_POSITION,NAVIGATED_FROM_INT,NUMBER_OF_PACKAGES_TO_BUY,CLASS_OBJECT,BOOK_WITH_FRIEND_DATA);
         viewPager.setAdapter(homeAdapter);
         viewPager.addOnPageChangeListener(this);
         viewPager.setOffscreenPageLimit(TOTAL_TABS);
@@ -199,6 +265,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 //        RemoteConfigSetUp.getValues();
         onTrackingNotification();
         networkCommunicator.getMyUser(this, false);
+        handleMembershipInfoState(TempStorage.getUser());
 
     }
 
@@ -231,10 +298,17 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         SCHEDULE_TAB_POSITION = intent.getIntExtra(AppConstants.DataKey.HOME_TABS_SCHEDULE_INNER_TAB_POSITION,
                 AppConstants.Tab.TAB_MY_SCHEDULE_UPCOMING);
 
+        NAVIGATED_FROM_INT = intent.getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT,
+                -1);
+        NUMBER_OF_PACKAGES_TO_BUY = intent.getIntExtra(AppConstants.DataKey.NUMBER_OF_PACKAGES_TO_BUY,
+                1);
+        CLASS_OBJECT = (ClassModel) intent.getSerializableExtra(AppConstants.DataKey.CLASS_OBJECT);
+        BOOK_WITH_FRIEND_DATA = (BookWithFriendData) intent.getSerializableExtra(AppConstants.DataKey.BOOK_WITH_FRIEND_DATA);
+
+
         LogUtils.debug("VarunSCHEDULE getNewIntent " + SCHEDULE_TAB_POSITION);
 
         LogUtils.debug("Home screen onNewIntent " + INITIAL_POSITION);
-
         viewPager.post(new Runnable() {
             @Override
             public void run() {
@@ -255,6 +329,9 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_SCHEDULE, R.drawable.schedule, R.drawable.schedule,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
                 context.getString(R.string.schedule), context.getString(R.string.schedule)));
+        tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_MY_MEMBERSHIP, R.drawable.membership_tab_icon, R.drawable.membership_tab_icon,
+                ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
+                context.getString(R.string.membership), context.getString(R.string.membership)));
         tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_MY_PROFILE, R.drawable.profile, R.drawable.profile,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
                 context.getString(R.string.profile), context.getString(R.string.profile)));
@@ -280,7 +357,6 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
     @Override
     public void onPageSelected(int position) {
-        currentTab = position;
         try {
             ((ViewPagerFragmentSelection) homeAdapter.getFragments().get(position)).onTabSelection(position);
         } catch (Exception e) {
@@ -290,7 +366,6 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         bottomTapLayout.setTab(position);
 
         if (position == AppConstants.Tab.TAB_FIND_CLASS) {
-//            handleApptimize();
             handleBuyClassesButton();
         } else {
             buyClassesLayout.setVisibility(View.GONE);
@@ -298,13 +373,14 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
         if (position == AppConstants.Tab.TAB_SCHEDULE) {
             try {
-                LogUtils.debug("VarunSCHEDULE intent " + SCHEDULE_TAB_POSITION);
                 ((MySchedule) homeAdapter.getFragments().get(position)).selectTab(SCHEDULE_TAB_POSITION);
             } catch (Exception e) {
                 e.printStackTrace();
-                LogUtils.debug("VarunSCHEDULE Error intent " + SCHEDULE_TAB_POSITION + e.getMessage());
             }
         }
+        handleTabChangeForMembership(position);
+        currentTab = position;
+
     }
 
     @Override
@@ -427,7 +503,9 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.buyClassesLayout: {
-                MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
+               // MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
+                HomeActivity.show(context, TAB_MY_MEMBERSHIP,AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
+
             }
             break;
         }
@@ -552,16 +630,64 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     private void updateIntercom() {
         if (TempStorage.getUser() != null) {
             User user = TempStorage.getUser();
+            UserPackageInfo userPackageInfo = new UserPackageInfo(user);
 
-            Registration registration = Registration.create().withUserId(user.getFirstName() + " " + user.getLastName());
+            String balanceWallet = "0";
+
+            Registration registration = Registration.create().withUserId(String.valueOf(user.getId()));
             Intercom.client().registerIdentifiedUser(registration);
+            if(user.getWalletDto()!=null){
+                balanceWallet=String.valueOf(user.getWalletDto().getBalance());
+            }
+
             UserAttributes userAttributes = new UserAttributes.Builder()
                     .withName(user.getFirstName() + " " + user.getLastName())
                     .withEmail(user.getEmail())
+                    .withCustomAttribute("Gender",user.getGender())
+                    .withCustomAttribute("wallet balance",balanceWallet)
+                    .withCustomAttribute("Registration date", user.getDateOfJoining() == 0 ?
+                            "" : DateUtils.getDateFormatter(new Date(user.getDateOfJoining())))
+                    .withCustomAttribute("",userPackageInfo.haveGeneralPackage ?
+                            userPackageInfo.userPackageGeneral.getPackageName() : "")
                     .build();
             Intercom.client().updateUser(userAttributes);
+        }
+    }
 
+  private void handleTabChangeForMembership(int position){
+      if (position == TAB_MY_MEMBERSHIP && currentTab != position) {
+          try {
+              MembershipFragment fragment = ((MembershipFragment) homeAdapter.getFragments().get(position));
+              fragment.refreshFragment(NAVIGATED_FROM_INT,CLASS_OBJECT,BOOK_WITH_FRIEND_DATA,NUMBER_OF_PACKAGES_TO_BUY);
 
+          } catch (Exception e) {
+              e.printStackTrace();
+          }
+      }
+      if (position != TAB_MY_MEMBERSHIP ) {
+          try {
+              MembershipFragment fragment = ((MembershipFragment) homeAdapter.getFragments().get(TAB_MY_MEMBERSHIP));
+              NAVIGATED_FROM_INT=-1;
+              CLASS_OBJECT=null;
+              BOOK_WITH_FRIEND_DATA=null;
+              NUMBER_OF_PACKAGES_TO_BUY=1;
+              fragment.refreshFragmentBackGroung(NAVIGATED_FROM_INT,CLASS_OBJECT,BOOK_WITH_FRIEND_DATA,NUMBER_OF_PACKAGES_TO_BUY);
+
+          } catch (Exception e) {
+              e.printStackTrace();
+          }
+      }
+  }
+
+    private void handleMembershipInfoState(User user){
+        if(TempStorage.isOpenMembershipInfo() != MEMBERSHIP_INFO_STATE_DONE){
+            if (user.isBuyMembership()) {
+                TempStorage.setOpenMembershipInfo(MEMBERSHIP_INFO_STATE_NO_PACKAGE);
+
+            }else{
+                TempStorage.setOpenMembershipInfo(MEMBERSHIP_INFO_STATE_HAVE_PACKAGE);
+
+            }
         }
 
     }

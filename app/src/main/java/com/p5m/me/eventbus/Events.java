@@ -66,6 +66,8 @@ public class Events {
 
     public static class UpdatePackage {
     }
+    public static class refreshMembershipFragment {
+    }
 
     public static class PackagePurchasedForClass {
         public ClassModel data;

@@ -96,6 +96,7 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         setHeaderText("", "");
         offeredPackages.clear();
         ownedPackages.clear();
+
         list.clear();
     }
 
@@ -107,8 +108,14 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void notifyDataSetChanges() {
         list.clear();
 
+
         if (!headerSticky1.getTitle().isEmpty()) {
             list.add(headerSticky1);
+        }
+
+        if(!ownedPackages.isEmpty()){
+            list.addAll(ownedPackages);
+
         }
 
         if (!offeredPackages.isEmpty()) {
@@ -116,7 +123,6 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         list.add(headerSticky2);
-        list.addAll(ownedPackages);
 
         notifyDataSetChanged();
     }

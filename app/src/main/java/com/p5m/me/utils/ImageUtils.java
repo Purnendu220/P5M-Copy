@@ -23,7 +23,7 @@ import com.p5m.me.helper.GlideApp;
 public class ImageUtils {
 
     public static String generateMapImageUrlClassDetail(double latitude, double longitude) {
-        String url ="https://maps.googleapis.com/maps/api/staticmap?zoom=13&size=200x240" +
+        String url = "https://maps.googleapis.com/maps/api/staticmap?zoom=13&size=200x240" +
                 "&maptype=roadmap&scale=2&markers=color:red%7C" + latitude + "," + longitude + "&key=AIzaSyCrAO08EU2sNMocuMZv03sSkOj6NQrOzSs";
         LogUtils.debug(url);
         return url;
@@ -41,6 +41,19 @@ public class ImageUtils {
                     .load(url).transition(DrawableTransitionOptions.withCrossFade())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(placeHolder)
+                    .into(imageView);
+        } else {
+            clearImage(context, imageView);
+        }
+    }
+
+    public static void setImage(Context context, String url, int placeHolder, int errorPlaceHolder, ImageView imageView) {
+        if (url != null && !url.isEmpty()) {
+            GlideApp.with(context)
+                    .load(url).transition(DrawableTransitionOptions.withCrossFade())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(placeHolder)
+                    .error(errorPlaceHolder)
                     .into(imageView);
         } else {
             clearImage(context, imageView);
@@ -85,7 +98,7 @@ public class ImageUtils {
                 .load(url)
                 .centerCrop().transition(DrawableTransitionOptions.withCrossFade())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .skipMemoryCache( true )
+                .skipMemoryCache(true)
                 .placeholder(placeHolder)
                 .into(imageView);
     }

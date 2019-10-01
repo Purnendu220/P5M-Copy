@@ -37,6 +37,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.SelectedImageListAdapter;
+import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.data.RatingFeedbackAreaResList;
 import com.p5m.me.data.RatingParamModel;
 import com.p5m.me.data.RatingResponseModel;
@@ -71,16 +72,18 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FullRatingActivity extends BaseActivity implements View.OnClickListener,AdapterCallbacks<Object>,NetworkCommunicator.RequestListener {
-    private long ratingId=-1;
+public class FullRatingActivity extends BaseActivity implements View.OnClickListener, AdapterCallbacks<Object>, NetworkCommunicator.RequestListener {
+    private long ratingId = -1;
+    private ClassRatingRequest request;
 
     public static void open(Context context, int navigationFrom, ClassModel classModel, int rating) {
         Intent intent = new Intent(context, FullRatingActivity.class);
         intent.putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom);
         intent.putExtra(AppConstants.DataKey.CLASS_MODEL, classModel);
-        intent.putExtra(AppConstants.DataKey.RATING_VALUE,rating);
+        intent.putExtra(AppConstants.DataKey.RATING_VALUE, rating);
         context.startActivity(intent);
-        }
+    }
+
     private PickerDialog pickerDialog;
 
     @BindView(R.id.textViewHowWasExperiance)
@@ -132,14 +135,13 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
     public RelativeLayout parentLayout;
 
 
-
     ArrayList<SelectedFileData> fileList = new ArrayList<>();
     int ratingValue;
     private ClassModel model;
-    private List<RatingParamModel> selectedRatingParam=new ArrayList<>();
+    private List<RatingParamModel> selectedRatingParam = new ArrayList<>();
     int navigatinFrom;
     private SelectedImageListAdapter adapter;
-    private boolean isThereClassForRating=false;
+    private boolean isThereClassForRating = false;
     private List<Long> deletedMediaList = new ArrayList<>();
 
 
@@ -153,11 +155,11 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
         StrictMode.setVmPolicy(builder.build());
         ratingValue = getIntent().getIntExtra(AppConstants.DataKey.RATING_VALUE, -1);
         navigatinFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
-        model= (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_MODEL);
+        model = (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_MODEL);
         flexBoxLayoutOptions.setFlexDirection(FlexDirection.ROW);
         setListeners();
-        if(model!=null){
-            CharSequence text = String.format(mContext.getString(R.string.how_was_your_class_v_two),model.getTitle());
+        if (model != null) {
+            CharSequence text = String.format(mContext.getString(R.string.how_was_your_class_v_two), model.getTitle());
             textViewHowWasExperiance.setText(text);
         }
 
@@ -165,39 +167,40 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
         editTextComment.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                LogUtils.debug("Focus Changed "+hasFocus);
+                LogUtils.debug("Focus Changed " + hasFocus);
                 if (!hasFocus) {
-                    KeyboardUtils.close(v,mContext);
+                    KeyboardUtils.close(v, mContext);
                 }
             }
         });
-        if(model.getRatingResDto()!=null&&model.getRatingResDto().getRating()>0){
-            ratingId=model.getRatingResDto().getId();
-            ratingValue= model.getRatingResDto().getRating().intValue();
+        if (model.getRatingResDto() != null && model.getRatingResDto().getRating() > 0) {
+            ratingId = model.getRatingResDto().getId();
+            ratingValue = model.getRatingResDto().getRating().intValue();
             setStarRating(ratingValue);
-            if(TempStorage.getRatingParams()!=null&&TempStorage.getRatingParams().size()>0){
+            if (TempStorage.getRatingParams() != null && TempStorage.getRatingParams().size() > 0) {
                 createRatingParamList();
-                }else{
-                networkCommunicator.getRatingParameters(this,true);
-                }
-                if(model.getRatingResDto().getMediaList()!=null&&model.getRatingResDto().getMediaList().size()>0){
-                    fileList.addAll(createSelectedFileDataList(model.getRatingResDto().getMediaList()));
+            } else {
+                networkCommunicator.getRatingParameters(this, true);
+            }
+            if (model.getRatingResDto().getMediaList() != null && model.getRatingResDto().getMediaList().size() > 0) {
+                fileList.addAll(createSelectedFileDataList(model.getRatingResDto().getMediaList()));
 
-                }
-                setImagesToView();
-                if(model.getRatingResDto().getRemark()!=null&&model.getRatingResDto().getRemark().length()>0){
-                    editTextComment.setText(model.getRatingResDto().getRemark());
-                }
+            }
+            setImagesToView();
+            if (model.getRatingResDto().getRemark() != null && model.getRatingResDto().getRemark().length() > 0) {
+                editTextComment.setText(model.getRatingResDto().getRemark());
+            }
 
 
-        }
-        else{
-            if(ratingValue>-1){ setStarRating(ratingValue); }
+        } else {
+            if (ratingValue > -1) {
+                setStarRating(ratingValue);
+            }
             refrenceWrapper.getCustomRateAlertDialog().dismiss();
-            if(TempStorage.getRatingParams()!=null&&TempStorage.getRatingParams().size()>0){
+            if (TempStorage.getRatingParams() != null && TempStorage.getRatingParams().size() > 0) {
                 createRatingParamList();
-            }else{
-                networkCommunicator.getRatingParameters(this,true);
+            } else {
+                networkCommunicator.getRatingParameters(this, true);
             }
         }
         onTrackingNotification();
@@ -205,8 +208,7 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
     }
 
 
-
-    public void setListeners(){
+    public void setListeners() {
         imageViewChooseImage.setOnClickListener(this);
         ratingStar1.setOnClickListener(this);
         ratingStar2.setOnClickListener(this);
@@ -247,6 +249,7 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
                 ActionBar.LayoutParams.MATCH_PARENT));
         activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -258,55 +261,53 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
 
                 break;
             case R.id.rateClasses:
-                handleSubmitButton(mContext.getResources().getString(R.string.submiting_review),false,View.VISIBLE);
-                if(model.getRatingResDto()!=null&&model.getRatingResDto().getRating()>0){
+                handleSubmitButton(mContext.getResources().getString(R.string.submiting_review), false, View.VISIBLE);
+                if (model.getRatingResDto() != null && model.getRatingResDto().getRating() > 0) {
                     updateRateClass();
-                }else{
-                    if(ratingId>0){
-                        if(isAllResponseReceived()){
-                            if(isFileUploadCompleteSuccess()){
-                                networkCommunicator.publishClassRating(ratingId,new PublishRequest(1),this,false);
+                } else {
+                    if (ratingId > 0) {
+                        if (isAllResponseReceived()) {
+                            if (isFileUploadCompleteSuccess()) {
+                                networkCommunicator.publishClassRating(ratingId, new PublishRequest(1), this, false);
                                 return;
                             }
                         }
                         processFileUpload();
-                    }
-                    else{
+                    } else {
                         rateClass();
                     }
                 }
 
                 break;
-            case R.id.ratingStar1:{
+            case R.id.ratingStar1: {
                 setStarRating(1);
 
             }
             break;
-            case R.id.ratingStar2:{
+            case R.id.ratingStar2: {
                 setStarRating(2);
 
 
             }
             break;
-            case R.id.ratingStar3:{
+            case R.id.ratingStar3: {
                 setStarRating(3);
 
 
             }
             break;
-            case R.id.ratingStar4:{
+            case R.id.ratingStar4: {
                 setStarRating(4);
-
 
 
             }
             break;
-            case R.id.ratingStar5:{
+            case R.id.ratingStar5: {
                 setStarRating(5);
 
             }
             break;
-            case R.id.buttonParam:{
+            case R.id.buttonParam: {
 
             }
             break;
@@ -318,6 +319,7 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
             ((ImageView) v).setImageResource(R.drawable.star_filled);
         }
     }
+
     public void setStarRatingsBlank(Context context, View... view) {
         for (View v : view) {
             ((ImageView) v).setImageResource(R.drawable.star_blank);
@@ -326,7 +328,7 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
 
 
     private void imagePicker() {
-        ImageUtility.openCameraGallery(mContext,(ImageUtility.IMAGE_SELECTION_LIMIT-fileList.size()));
+        ImageUtility.openCameraGallery(mContext, (ImageUtility.IMAGE_SELECTION_LIMIT - fileList.size()));
 
     }
 
@@ -339,22 +341,21 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
                 if (Manifest.permission.CAMERA.equals(permission)) {
                     showPermissionImportantAlert(context.getResources().getString(R.string.permission_message_camera));
                     return;
-                }
-                else if (Manifest.permission.WRITE_EXTERNAL_STORAGE.equals(permission)) {
+                } else if (Manifest.permission.WRITE_EXTERNAL_STORAGE.equals(permission)) {
                     showPermissionImportantAlert(context.getResources().getString(R.string.permission_message_media));
                     return;
-                }
-                else if (Manifest.permission.READ_EXTERNAL_STORAGE.equals(permission)) {
+                } else if (Manifest.permission.READ_EXTERNAL_STORAGE.equals(permission)) {
                     showPermissionImportantAlert(context.getResources().getString(R.string.permission_message_media));
 
                     return;
                 }
             }
         }
-        ImageUtility.openCameraGallery(mContext,(ImageUtility.IMAGE_SELECTION_LIMIT-fileList.size()));
-        }
-    private void showPermissionImportantAlert(String message){
-        DialogUtils.showBasicMessage(context,context.getResources().getString(R.string.permission_alert), message,
+        ImageUtility.openCameraGallery(mContext, (ImageUtility.IMAGE_SELECTION_LIMIT - fileList.size()));
+    }
+
+    private void showPermissionImportantAlert(String message) {
+        DialogUtils.showBasicMessage(context, context.getResources().getString(R.string.permission_alert), message,
                 context.getResources().getString(R.string.go_to_settings), new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -368,7 +369,7 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
                         context.startActivity(i);
                         dialog.dismiss();
                     }
-                },context.getResources().getString(R.string.cancel), new MaterialDialog.SingleButtonCallback() {
+                }, context.getResources().getString(R.string.cancel), new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         dialog.dismiss();
@@ -380,30 +381,31 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && requestCode == ImageUtility.REQUEST_CODE_GALLERY) {
-             fileList.addAll(createSelectedFileDataList(data.getStringArrayListExtra(Pix.IMAGE_RESULTS)));
-             setImagesToView();
+            fileList.addAll(createSelectedFileDataList(data.getStringArrayListExtra(Pix.IMAGE_RESULTS)));
+            setImagesToView();
         }
 
     }
 
-    private List<SelectedFileData> createSelectedFileDataList(ArrayList<String> returnValue){
-     List<SelectedFileData> fileDataList=new ArrayList<>();
-        for (String path:returnValue) {
-            fileDataList.add(new SelectedFileData(path,0,0,System.currentTimeMillis(), CommonUtillity.getnerateUniqueToken(this)));
+    private List<SelectedFileData> createSelectedFileDataList(ArrayList<String> returnValue) {
+        List<SelectedFileData> fileDataList = new ArrayList<>();
+        for (String path : returnValue) {
+            fileDataList.add(new SelectedFileData(path, 0, 0, System.currentTimeMillis(), CommonUtillity.getnerateUniqueToken(this)));
         }
-      return fileDataList;
+        return fileDataList;
     }
+
     private List<SelectedFileData> createSelectedFileDataList(List<MediaModel> mediaList) {
-        List<SelectedFileData> fileDataList=new ArrayList<>();
-        for (MediaModel mediaModel:mediaList) {
-            fileDataList.add(new SelectedFileData(mediaModel.getMediaThumbNailUrl(),100,2,mediaModel.getMediaId(), CommonUtillity.getnerateUniqueToken(this)));
+        List<SelectedFileData> fileDataList = new ArrayList<>();
+        for (MediaModel mediaModel : mediaList) {
+            fileDataList.add(new SelectedFileData(mediaModel.getMediaThumbNailUrl(), 100, 2, mediaModel.getMediaId(), CommonUtillity.getnerateUniqueToken(this)));
         }
         return fileDataList;
     }
 
 
-    private void setImagesToView(){
-        adapter = new SelectedImageListAdapter(context, AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE,fileList,this);
+    private void setImagesToView() {
+        adapter = new SelectedImageListAdapter(context, AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE, fileList, this);
         selectedImageRecyclerView.setAdapter(adapter);
         selectedImageRecyclerView.setHasFixedSize(true);
 
@@ -411,22 +413,22 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
         selectedImageRecyclerView.setLayoutManager(layoutManager);
 
         adapter.notifyDataSetChanged();
-        if(fileList.size()>=ImageUtility.IMAGE_SELECTION_LIMIT){
+        if (fileList.size() >= ImageUtility.IMAGE_SELECTION_LIMIT) {
             imageViewChooseImage.setVisibility(View.GONE);
-        }
-        else{
+        } else {
             imageViewChooseImage.setVisibility(View.VISIBLE);
 
         }
 
 
     }
-    private void createRatingParamList(){
-        if(model.getRatingResDto()!=null&&model.getRatingResDto().getRatingFeedbackAreaResList()!=null&&model.getRatingResDto().getRatingFeedbackAreaResList().size()>0){
-            List<RatingParamModel> ratingParamModels=new ArrayList<>();
-            for (RatingParamModel param:TempStorage.getRatingParams()) {
-                for (RatingFeedbackAreaResList ratingFeedbackAreaResList:model.getRatingResDto().getRatingFeedbackAreaResList()) {
-                    if(param.getId()==ratingFeedbackAreaResList.getParameterId()){
+
+    private void createRatingParamList() {
+        if (model.getRatingResDto() != null && model.getRatingResDto().getRatingFeedbackAreaResList() != null && model.getRatingResDto().getRatingFeedbackAreaResList().size() > 0) {
+            List<RatingParamModel> ratingParamModels = new ArrayList<>();
+            for (RatingParamModel param : TempStorage.getRatingParams()) {
+                for (RatingFeedbackAreaResList ratingFeedbackAreaResList : model.getRatingResDto().getRatingFeedbackAreaResList()) {
+                    if (param.getId() == ratingFeedbackAreaResList.getParameterId()) {
                         param.setSelected(true);
                     }
                 }
@@ -434,7 +436,7 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
             }
             addRatingParams(ratingParamModels);
 
-        }else{
+        } else {
             addRatingParams(TempStorage.getRatingParams());
 
         }
@@ -443,13 +445,13 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
     private void addRatingParams(final List<RatingParamModel> ratingParamModelList) {
         flexBoxLayoutOptions.removeAllViews();
         selectedRatingParam = new ArrayList<>();
-        int i=0;
-        for(i=0;i<ratingParamModelList.size();i++){
-            if((((int) ratingParamModelList.get(i).getRating()))==ratingValue){
+        int i = 0;
+        for (i = 0; i < ratingParamModelList.size(); i++) {
+            if ((((int) ratingParamModelList.get(i).getRating())) == ratingValue) {
                 final View view = LayoutInflater.from(context).inflate(R.layout.layout_rating_param_item, flexBoxLayoutOptions, false);
                 final Button textView = view.findViewById(R.id.buttonParam);
                 textView.setText(ratingParamModelList.get(i).getParameter());
-                if(ratingParamModelList.get(i).isSelected()){
+                if (ratingParamModelList.get(i).isSelected()) {
                     textView.setTextColor(mContext.getResources().getColor(R.color.white));
                     textView.setBackgroundResource(R.drawable.bg_rounded_selected);
                     ratingParamModelList.get(i).setSelected(true);
@@ -462,13 +464,13 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
                 textView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(ratingParamModelList.get(finalI).isSelected()){
+                        if (ratingParamModelList.get(finalI).isSelected()) {
                             selectedRatingParam.remove(ratingParamModelList.get(finalI));
                             textView.setTextColor(mContext.getResources().getColor(R.color.black));
                             textView.setBackgroundResource(R.drawable.bg_rounded_unselected);
                             ratingParamModelList.get(finalI).setSelected(false);
 
-                        }else{
+                        } else {
                             textView.setTextColor(mContext.getResources().getColor(R.color.white));
                             textView.setBackgroundResource(R.drawable.bg_rounded_selected);
                             ratingParamModelList.get(finalI).setSelected(true);
@@ -480,18 +482,19 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
             }
         }
     }
+
     @Override
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.imageViewCross:
-                if(fileList.get(position).getFileUploadStatus()!=2){
+                if (fileList.get(position).getFileUploadStatus() != 2) {
                     fileList.remove(position);
                     setImagesToView();
-                }else{
+                } else {
                     deletedMediaList.add(fileList.get(position).getFileId());
                     fileList.remove(position);
                     setImagesToView();
-                    }
+                }
 
                 break;
 
@@ -508,40 +511,42 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
     public void onShowLastItem() {
 
     }
-    private void setStarRating(int rating){
-        ratingValue=rating;
+
+    private void setStarRating(int rating) {
+        ratingValue = rating;
         createRatingParamList();
-        switch (rating){
+        switch (rating) {
             case 1:
-                setStarRatingsFilled(mContext,ratingStar1);
-                setStarRatingsBlank(mContext,ratingStar2,ratingStar3,ratingStar4,ratingStar5);
+                setStarRatingsFilled(mContext, ratingStar1);
+                setStarRatingsBlank(mContext, ratingStar2, ratingStar3, ratingStar4, ratingStar5);
                 break;
             case 2:
-                setStarRatingsFilled(mContext,ratingStar1,ratingStar2);
-                setStarRatingsBlank(mContext,ratingStar3,ratingStar4,ratingStar5);
+                setStarRatingsFilled(mContext, ratingStar1, ratingStar2);
+                setStarRatingsBlank(mContext, ratingStar3, ratingStar4, ratingStar5);
                 break;
             case 3:
-                setStarRatingsFilled(mContext,ratingStar1,ratingStar2,ratingStar3);
-                setStarRatingsBlank(mContext,ratingStar4,ratingStar5);
+                setStarRatingsFilled(mContext, ratingStar1, ratingStar2, ratingStar3);
+                setStarRatingsBlank(mContext, ratingStar4, ratingStar5);
                 break;
             case 4:
-                setStarRatingsFilled(mContext,ratingStar1,ratingStar2,ratingStar3,ratingStar4);
-                setStarRatingsBlank(mContext,ratingStar5);
+                setStarRatingsFilled(mContext, ratingStar1, ratingStar2, ratingStar3, ratingStar4);
+                setStarRatingsBlank(mContext, ratingStar5);
                 break;
             case 5:
-                setStarRatingsFilled(mContext,ratingStar1,ratingStar2,ratingStar3,ratingStar4,ratingStar5);
+                setStarRatingsFilled(mContext, ratingStar1, ratingStar2, ratingStar3, ratingStar4, ratingStar5);
                 break;
         }
 
     }
-    private void updateRateClass(){
-        if(deletedMediaList!=null&&deletedMediaList.size()>0){
-            for (Long meidaId:deletedMediaList) {
-                networkCommunicator.deleteMedia(meidaId,this,true);
+
+    private void updateRateClass() {
+        if (deletedMediaList != null && deletedMediaList.size() > 0) {
+            for (Long meidaId : deletedMediaList) {
+                networkCommunicator.deleteMedia(meidaId, this, true);
 
             }
         }
-        ClassRatingRequest request =new ClassRatingRequest();
+        ClassRatingRequest request = new ClassRatingRequest();
         request.setmRating(ratingValue);
         request.setmObjectTypeId(5);
         request.setmObjectDataId(model.getClassSessionId());
@@ -549,18 +554,18 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
 //        if(fileList!=null&&fileList.size()>0){
 //            request.setmIsImage(fileList.size());
 //        }
-        if(editTextComment.getText().toString()!=null&&editTextComment.getText().toString().trim().length()>0){
+        if (editTextComment.getText().toString() != null && editTextComment.getText().toString().trim().length() > 0) {
             request.setRemark(editTextComment.getText().toString());
         }
-        if(selectedRatingParam!=null&&selectedRatingParam.size()>0){
-            List<RatingFeedbackAreaList> ratingFeedbackAreaList=new ArrayList<>();
-            for (RatingParamModel modelRatingParam:selectedRatingParam) {
+        if (selectedRatingParam != null && selectedRatingParam.size() > 0) {
+            List<RatingFeedbackAreaList> ratingFeedbackAreaList = new ArrayList<>();
+            for (RatingParamModel modelRatingParam : selectedRatingParam) {
                 RatingFeedbackAreaList feedbackAreaList = new RatingFeedbackAreaList();
-                feedbackAreaList.setRatingParameterId(modelRatingParam.getId()+"");
+                feedbackAreaList.setRatingParameterId(modelRatingParam.getId() + "");
                 ratingFeedbackAreaList.add(feedbackAreaList);
             }
             request.setRatingFeedbackAreaList(ratingFeedbackAreaList);
-            }
+        }
 //        if(model.getRatingResDto()!=null&&model.getRatingResDto().getRatingFeedbackAreaResList()!=null&&model.getRatingResDto().getRatingFeedbackAreaResList().size()>0){
 //            for (RatingFeedbackAreaResList data:model.getRatingResDto().getRatingFeedbackAreaResList()) {
 //                boolean isDeleted=true;
@@ -577,20 +582,20 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
 //        if(deletedRatingFeedbackIds!=null&&deletedRatingFeedbackIds.size()>0){
 //            request.setDeletedRatingFeedbackIds(deletedRatingFeedbackIds);
 //        }
-        if((fileList==null||fileList.size()==0)&&(editTextComment.getText().toString()==null||editTextComment.getText().toString().trim().length()==0)){
+        if ((fileList == null || fileList.size() == 0) && (editTextComment.getText().toString() == null || editTextComment.getText().toString().trim().length() == 0)) {
             request.setIsPublish(1);
             request.setStatus(1);
-        }
-        else{
+        } else {
             request.setStatus(0);
             request.setIsPublish(0);
         }
 
-        networkCommunicator.updateClassRating(ratingId,request,this,false);
+        networkCommunicator.updateClassRating(ratingId, request, this, false);
 
     }
-    private void rateClass(){
-        ClassRatingRequest request =new ClassRatingRequest();
+
+    private void rateClass() {
+        request = new ClassRatingRequest();
         request.setmRating(ratingValue);
         request.setmObjectTypeId(5);
         request.setmObjectDataId(model.getClassSessionId());
@@ -598,81 +603,80 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
 //        if(fileList!=null&&fileList.size()>0){
 //            request.setmIsImage(fileList.size());
 //        }
-        if(editTextComment.getText().toString()!=null&&editTextComment.getText().toString().trim().length()>0){
+        if (editTextComment.getText().toString() != null && editTextComment.getText().toString().trim().length() > 0) {
             request.setRemark(editTextComment.getText().toString());
         }
-        if(selectedRatingParam!=null&&selectedRatingParam.size()>0){
-            List<RatingFeedbackAreaList> ratingFeedbackAreaList=new ArrayList<>();
-            for (RatingParamModel modelRatingParam:selectedRatingParam) {
+        if (selectedRatingParam != null && selectedRatingParam.size() > 0) {
+            List<RatingFeedbackAreaList> ratingFeedbackAreaList = new ArrayList<>();
+            for (RatingParamModel modelRatingParam : selectedRatingParam) {
                 RatingFeedbackAreaList feedbackAreaList = new RatingFeedbackAreaList();
-                feedbackAreaList.setRatingParameterId(modelRatingParam.getId()+"");
+                feedbackAreaList.setRatingParameterId(modelRatingParam.getId() + "");
                 ratingFeedbackAreaList.add(feedbackAreaList);
             }
             request.setRatingFeedbackAreaList(ratingFeedbackAreaList);
         }
-        if((fileList==null||fileList.size()==0)&&(editTextComment.getText().toString()==null||editTextComment.getText().toString().trim().length()==0)){
+        if ((fileList == null || fileList.size() == 0) && (editTextComment.getText().toString() == null || editTextComment.getText().toString().trim().length() == 0)) {
             request.setIsPublish(1);
             request.setStatus(1);
-        }
-    else{
-            if(isFileUploadCompleteSuccess()){
-                if(editTextComment.getText().toString()==null||editTextComment.getText().toString().trim().length()==0){
-                  request.setIsPublish(1);
-                  request.setStatus(1);
-              }else{
-                  request.setIsPublish(0);
-                  request.setStatus(0);
-              }
-            }else{
+        } else {
+            if (isFileUploadCompleteSuccess()) {
+                if (editTextComment.getText().toString() == null || editTextComment.getText().toString().trim().length() == 0) {
+                    request.setIsPublish(1);
+                    request.setStatus(1);
+                } else {
+                    request.setIsPublish(0);
+                    request.setStatus(0);
+                }
+            } else {
                 request.setIsPublish(0);
                 request.setStatus(0);
             }
 
         }
 
-        networkCommunicator.submitClassRating(request,this,false);
+        networkCommunicator.submitClassRating(request, this, false);
 
     }
 
     @Override
     public void onApiSuccess(Object response, int requestCode) {
-        switch (requestCode){
+        switch (requestCode) {
             case NetworkCommunicator.RequestCode.CLASS_RATING:
                 RatingResponseModel responseModel = ((ResponseModel<RatingResponseModel>) response).data;
-                ratingId=responseModel.getId();
+                ratingId = responseModel.getId();
+                IntercomEvents.ratedClass(request,model);
                 processFileUpload();
-                    TempStorage.removeSavedClass(model.getClassSessionId(),context);
-                    break;
+                TempStorage.removeSavedClass(model.getClassSessionId(), context);
+                break;
             case NetworkCommunicator.RequestCode.CLASS_RATING_UPDATE:
                 RatingResponseModel responseModelUpdate = ((ResponseModel<RatingResponseModel>) response).data;
                 processFileUpload();
                 break;
             case NetworkCommunicator.RequestCode.CLASS_RATING_PUBLISH:
-                handleSubmitButton(mContext.getResources().getString(R.string.submit_review),true,View.GONE);
+                handleSubmitButton(mContext.getResources().getString(R.string.submit_review), true, View.GONE);
                 showTahnkYou(isThereClassForRating);
                 break;
             case NetworkCommunicator.RequestCode.PHOTO_UPLOAD:
-               SelectedFileData fileData= (SelectedFileData) response;
-               int indexOfFileData = adapter.getList().indexOf(fileData);
-               if(indexOfFileData!=-1){
-                   Object obj = adapter.getList().get(indexOfFileData);
-                   if (obj instanceof SelectedFileData) {
-                       SelectedFileData selectedFileDataModel = (SelectedFileData) obj;
-                       selectedFileDataModel.setFileUploadStatus(2);
-                       adapter.notifyItemChanged(indexOfFileData);
-                       fileList.get(indexOfFileData).setFileUploadStatus(2);
+                SelectedFileData fileData = (SelectedFileData) response;
+                int indexOfFileData = adapter.getList().indexOf(fileData);
+                if (indexOfFileData != -1) {
+                    Object obj = adapter.getList().get(indexOfFileData);
+                    if (obj instanceof SelectedFileData) {
+                        SelectedFileData selectedFileDataModel = (SelectedFileData) obj;
+                        selectedFileDataModel.setFileUploadStatus(2);
+                        adapter.notifyItemChanged(indexOfFileData);
+                        fileList.get(indexOfFileData).setFileUploadStatus(2);
 
-                   }
-               }
-               publishReview();
-
+                    }
+                }
+                publishReview();
 
 
                 break;
             case NetworkCommunicator.RequestCode.IMAGE_UPLOAD_PROGRESS:
                 SelectedFileData fileDataProgress = (SelectedFileData) response;
                 int indexOfFileDataProgress = adapter.getList().indexOf(fileDataProgress);
-                if(indexOfFileDataProgress!=-1){
+                if (indexOfFileDataProgress != -1) {
                     Object obj = adapter.getList().get(indexOfFileDataProgress);
                     if (obj instanceof SelectedFileData) {
 //                        SelectedFileData selectedFileDataModel = (SelectedFileData) obj;
@@ -686,7 +690,7 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
             case NetworkCommunicator.RequestCode.IMAGE_UPLOAD_FAILED:
                 SelectedFileData fileDataFailed = (SelectedFileData) response;
                 int indexOfFileDataFailed = adapter.getList().indexOf(fileDataFailed);
-                if(indexOfFileDataFailed!=-1){
+                if (indexOfFileDataFailed != -1) {
                     Object obj = adapter.getList().get(indexOfFileDataFailed);
                     if (obj instanceof SelectedFileData) {
                         SelectedFileData selectedFileDataModel = (SelectedFileData) obj;
@@ -696,9 +700,9 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
 
                     }
                 }
-                if(isAllResponseReceived()){
-                    ToastUtils.show(mContext,R.string.image_upload_failed);
-                    handleSubmitButton(mContext.getResources().getString(R.string.retry_review),true,View.GONE);
+                if (isAllResponseReceived()) {
+                    ToastUtils.show(mContext, R.string.image_upload_failed);
+                    handleSubmitButton(mContext.getResources().getString(R.string.retry_review), true, View.GONE);
 
 
                 }
@@ -706,13 +710,13 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
                 break;
             case NetworkCommunicator.RequestCode.UNRATED_CLASS_COUNT:
                 UnratedClassData classModels = ((ResponseModel<UnratedClassData>) response).data;
-                if(model.getRatingResDto()!=null&&model.getRatingResDto().getRating()>0){
-                    if(classModels!=null&&classModels.getCount()>0){
-                        isThereClassForRating=true;
+                if (model.getRatingResDto() != null && model.getRatingResDto().getRating() > 0) {
+                    if (classModels != null && classModels.getCount() > 0) {
+                        isThereClassForRating = true;
                     }
-                }else{
-                    if(classModels!=null&&classModels.getCount()>1){
-                        isThereClassForRating=true;
+                } else {
+                    if (classModels != null && classModels.getCount() > 1) {
+                        isThereClassForRating = true;
                     }
                 }
 
@@ -725,110 +729,109 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
 
 
                 break;
-                }
+        }
     }
 
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
-        switch (requestCode){
-                case NetworkCommunicator.RequestCode.CLASS_RATING:
-                handleSubmitButton(mContext.getResources().getString(R.string.retry_review),true,View.GONE);
-                ToastUtils.show(mContext,errorMessage);
+        switch (requestCode) {
+            case NetworkCommunicator.RequestCode.CLASS_RATING:
+                handleSubmitButton(mContext.getResources().getString(R.string.retry_review), true, View.GONE);
+                ToastUtils.show(mContext, errorMessage);
                 break;
-                case NetworkCommunicator.RequestCode.CLASS_RATING_UPDATE:
-                handleSubmitButton(mContext.getResources().getString(R.string.retry_review),true,View.GONE);
-                ToastUtils.show(mContext,errorMessage);
+            case NetworkCommunicator.RequestCode.CLASS_RATING_UPDATE:
+                handleSubmitButton(mContext.getResources().getString(R.string.retry_review), true, View.GONE);
+                ToastUtils.show(mContext, errorMessage);
                 break;
-                case NetworkCommunicator.RequestCode.CLASS_RATING_PUBLISH:
-                    ToastUtils.show(mContext,errorMessage);
-                     handleSubmitButton(mContext.getResources().getString(R.string.retry_review),true,View.GONE);
-                     break;
+            case NetworkCommunicator.RequestCode.CLASS_RATING_PUBLISH:
+                ToastUtils.show(mContext, errorMessage);
+                handleSubmitButton(mContext.getResources().getString(R.string.retry_review), true, View.GONE);
+                break;
             case NetworkCommunicator.RequestCode.MEDIA_DELETE:
-                ToastUtils.show(mContext,errorMessage);
-                    break;
+                ToastUtils.show(mContext, errorMessage);
+                break;
 
         }
     }
 
-    private boolean isFileUploadCompleteSuccess(){
-        boolean isUploadCompleted=true;
-        if(fileList!=null&&fileList.size()>0){
-            for (int i=0;i<fileList.size();i++){
-            if(fileList.get(i).getFileUploadStatus()!=2){
-                isUploadCompleted=false;
+    private boolean isFileUploadCompleteSuccess() {
+        boolean isUploadCompleted = true;
+        if (fileList != null && fileList.size() > 0) {
+            for (int i = 0; i < fileList.size(); i++) {
+                if (fileList.get(i).getFileUploadStatus() != 2) {
+                    isUploadCompleted = false;
+                }
             }
-        }
         }
         return isUploadCompleted;
     }
 
-    private boolean isAllResponseReceived(){
-       boolean isAllResponseReceived=false;
-       if(fileList!=null&&fileList.size()>0){
-           for (int i=0;i<fileList.size();i++){
-               if(fileList.get(i).getFileUploadStatus()==2||fileList.get(i).getFileUploadStatus()==3){
-                   isAllResponseReceived=true;
-               }else{
-                   return false;
-               }
-           }
-       }else{
-           isAllResponseReceived=true;
+    private boolean isAllResponseReceived() {
+        boolean isAllResponseReceived = false;
+        if (fileList != null && fileList.size() > 0) {
+            for (int i = 0; i < fileList.size(); i++) {
+                if (fileList.get(i).getFileUploadStatus() == 2 || fileList.get(i).getFileUploadStatus() == 3) {
+                    isAllResponseReceived = true;
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            isAllResponseReceived = true;
 
-       }
+        }
 
-      return isAllResponseReceived;
+        return isAllResponseReceived;
     }
 
-    private void processFileUpload(){
-      boolean isProcessComplete=true;
-        if(fileList!=null&&fileList.size()>0){
-            for (SelectedFileData file:fileList) {
-                if(file.getFileUploadStatus()!=2){
-                    networkCommunicator.uploadRatingImages(mContext,file,(int)ratingId,new File(file.getFilepath()),this,false);
-                  isProcessComplete=false;
+    private void processFileUpload() {
+        boolean isProcessComplete = true;
+        if (fileList != null && fileList.size() > 0) {
+            for (SelectedFileData file : fileList) {
+                if (file.getFileUploadStatus() != 2) {
+                    networkCommunicator.uploadRatingImages(mContext, file, (int) ratingId, new File(file.getFilepath()), this, false);
+                    isProcessComplete = false;
                 }
             }
         }
-        if(isProcessComplete){
-            if(editTextComment.getText().toString()==null||editTextComment.getText().toString().length()==0){
+        if (isProcessComplete) {
+            if (editTextComment.getText().toString() == null || editTextComment.getText().toString().length() == 0) {
                 showTahnkYou(isThereClassForRating);
-                handleSubmitButton(mContext.getResources().getString(R.string.submit_review),true,View.GONE);
-            }else{
-               publishReview();
+                handleSubmitButton(mContext.getResources().getString(R.string.submit_review), true, View.GONE);
+            } else {
+                publishReview();
             }
 
-            }
+        }
     }
 
-    private void publishReview(){
-        if(isAllResponseReceived()){
-            if(isFileUploadCompleteSuccess()){
-                networkCommunicator.publishClassRating(ratingId,new PublishRequest(1),this,false);
+    private void publishReview() {
+        if (isAllResponseReceived()) {
+            if (isFileUploadCompleteSuccess()) {
+                networkCommunicator.publishClassRating(ratingId, new PublishRequest(1), this, false);
                 return;
             }
-            handleSubmitButton(mContext.getResources().getString(R.string.retry_review),true,View.GONE);
+            handleSubmitButton(mContext.getResources().getString(R.string.retry_review), true, View.GONE);
         }
     }
 
 
-
-
-    private void showTahnkYou(boolean isThereClassForRating){
-        EventBroadcastHelper.sendclassRating(context,model.getTitle());
-        CustomDialogThankYou mCustomThankyouDialog = new CustomDialogThankYou(RefrenceWrapper.getRefrenceWrapper(this).getActivity(),isThereClassForRating,navigatinFrom);
+    private void showTahnkYou(boolean isThereClassForRating) {
+        EventBroadcastHelper.sendclassRating(context, model.getTitle());
+        CustomDialogThankYou mCustomThankyouDialog = new CustomDialogThankYou(RefrenceWrapper.getRefrenceWrapper(this).getActivity(), isThereClassForRating, navigatinFrom);
         try {
             mCustomThankyouDialog.show();
-            }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         finish();
     }
 
-    private void getUnRatedClassList(){
-        networkCommunicator.getUnratedClassList(0,AppConstants.Limit.PAGE_LIMIT_MAIN_CLASS_LIST,this,true);
+    private void getUnRatedClassList() {
+        networkCommunicator.getUnratedClassList(0, AppConstants.Limit.PAGE_LIMIT_MAIN_CLASS_LIST, this, true);
     }
-    private void handleSubmitButton(String message,boolean isClikable,int visibility){
+
+    private void handleSubmitButton(String message, boolean isClikable, int visibility) {
         rateClasses.setText(message);
         rateClasses.setClickable(isClikable);
         parentLayout.setEnabled(isClikable);

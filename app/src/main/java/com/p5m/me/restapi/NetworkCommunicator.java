@@ -9,6 +9,7 @@ import com.p5m.me.data.City;
 import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.ContactRequestModel;
 import com.p5m.me.data.FollowResponse;
+import com.p5m.me.data.Join5MinModel;
 import com.p5m.me.data.MediaResponse;
 import com.p5m.me.data.PackageLimitModel;
 import com.p5m.me.data.PaymentConfirmationResponse;
@@ -16,6 +17,7 @@ import com.p5m.me.data.PromoCode;
 import com.p5m.me.data.RatingParamModel;
 import com.p5m.me.data.RatingResponseModel;
 import com.p5m.me.data.UnratedClassData;
+import com.p5m.me.data.UserPackageDetail;
 import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.BranchModel;
 import com.p5m.me.data.main.ClassActivity;
@@ -62,10 +64,12 @@ import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 
 import java.io.File;
+import java.util.Calendar;
 import java.util.List;
 
 import id.zelory.compressor.Compressor;
 import io.intercom.android.sdk.Intercom;
+import io.intercom.android.sdk.UserAttributes;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -147,6 +151,8 @@ public class NetworkCommunicator {
         public static final int CLASS_RATING_UPDATE = 139;
         public static final int MEDIA_DELETE = 140;
         public static final int BRANCH_LIST = 141;
+        public static final int USER_PACKAGE_DETAIL = 142;
+
 
         public static final int PAYMENT_CONFIRMATION_DETAIL = 150;
         public static final int SUPPORT_RESPONSE_CONTACT = 160;
@@ -862,6 +868,7 @@ public class NetworkCommunicator {
                     setUserProperty(context, UserPropertyConst.NUMBER_OF_TRANSACTIONS, String.valueOf(response.data.getNumberOfTransactions()));
                     String userMainPackage = UserPropertyConst.NO_PACKAGE;
                     String userReadyPackage = UserPropertyConst.No_READY_PACKAGE;
+                    String userReadyGym = "";
                     if (response.data.getUserPackageDetailDtoList() != null
                             && !response.data.getUserPackageDetailDtoList().isEmpty()) {
 
@@ -872,12 +879,21 @@ public class NetworkCommunicator {
 
                             } else if (userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                                 userReadyPackage = UserPropertyConst.HAVE_READY_PACKAGE;
+                                if (userReadyGym.isEmpty())
+                                    userReadyGym += userPackage.getGymName();
+                                else
+                                    userReadyGym += ", "+userPackage.getGymName();
 
                             }
                         }
                     }
                     setUserProperty(context, UserPropertyConst.ACTIVE_PACKAGE, userMainPackage);
                     setUserProperty(context, UserPropertyConst.READY_PACKAGE, userReadyPackage);
+                    UserAttributes userAttributes = new UserAttributes.Builder()
+                            .withCustomAttribute("Active plan", userMainPackage)
+                            .withCustomAttribute("Active drop in", userReadyGym)
+                            .build();
+                    Intercom.client().updateUser(userAttributes);
 
                 }
                 requestListener.onApiSuccess(response, requestCode);
@@ -911,6 +927,27 @@ public class NetworkCommunicator {
         return call;
     }
 
+    public Call getUserPackageDetails(int userId, long id, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.USER_PACKAGE_DETAIL;
+        Call<ResponseModel<List<UserPackageDetail>>> call = apiService.getUserPackageDetail(userId, id);
+        LogUtils.debug("NetworkCommunicator hitting getGym");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<UserPackageDetail>>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<List<UserPackageDetail>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getGym onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<UserPackageDetail>>> call, Response<ResponseModel<List<UserPackageDetail>>> restResponse, ResponseModel<List<UserPackageDetail>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getGym onResponse data " + response);
+                requestListener.onApiSuccess(response.data, requestCode);
+            }
+        });
+        return call;
+    }
+
     public Call joinClass(JoinClassRequest joinClassRequest, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.JOIN_CLASS;
         Call<ResponseModel<User>> call = apiService.joinClass(joinClassRequest);
@@ -926,7 +963,10 @@ public class NetworkCommunicator {
             @Override
             public void onResponse(Call<ResponseModel<User>> call, Response<ResponseModel<User>> restResponse, ResponseModel<User> response) {
                 LogUtils.networkSuccess("NetworkCommunicator joinClass onResponse data " + response);
+
+
                 requestListener.onApiSuccess(response, requestCode);
+
             }
         });
         return call;

@@ -171,7 +171,6 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         } else {
             getLocation();
         }
-
     }
 
     @Override

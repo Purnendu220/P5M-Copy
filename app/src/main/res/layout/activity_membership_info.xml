@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/theme_bg"
+    android:fitsSystemWindows="true"
+    tools:context=".view.activity.Main.MembershipInfoActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tool_bar_height"
+            android:background="?attr/colorPrimary"
+            android:contentInsetEnd="0dp"
+            android:contentInsetLeft="0dp"
+            android:contentInsetRight="0dp"
+            android:contentInsetStart="0dp"
+            android:elevation="4dp"
+            app:contentInsetEnd="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetRight="0dp"
+            app:contentInsetStart="0dp"
+            app:layout_scrollFlags="enterAlways"
+            app:tabIndicatorColor="@color/date_tabs" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <include layout="@layout/view_membership_info"/>
+
+    <LinearLayout
+        android:id="@+id/buyClassesLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_text_button_height"
+        android:layout_gravity="bottom"
+        android:background="@color/colorAccent"
+        android:clickable="true"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:letterSpacing="@dimen/button_letter_spacing"
+        android:maxLines="1"
+        android:orientation="horizontal"
+        android:text="@string/buy_classes"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_large"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:focusable="true">
+
+        <TextView
+            android:id="@+id/buyClasses"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/transparent"
+            android:maxLines="1"
+            android:text="@string/buy_classes"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_medium" />
+
+        <TextView
+            android:id="@+id/availableCredit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/bg_white_border"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/margin_2"
+            android:paddingTop="@dimen/margin_1"
+            android:paddingRight="@dimen/margin_2"
+            android:paddingBottom="@dimen/margin_1"
+            android:text="@string/buy_classes"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_medium"
+            android:visibility="gone" />
+
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+

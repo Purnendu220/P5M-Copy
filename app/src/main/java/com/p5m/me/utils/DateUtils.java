@@ -2,6 +2,7 @@ package com.p5m.me.utils;
 
 import android.util.Log;
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
@@ -38,6 +39,26 @@ public class DateUtils {
     private static SimpleDateFormat classTime12Format = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
     private static SimpleDateFormat ExtendedDateFormat = new SimpleDateFormat("d MMM ", Locale.getDefault());
 
+    public static void reInitialize() {
+
+        dfs = new DateFormatSymbols(Locale.getDefault());
+
+        classTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        classTimeFormat = new SimpleDateFormat("h:mma", Locale.getDefault());
+        classDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        classDateSec = new SimpleDateFormat("dd-mm-yyyy", Locale.getDefault());
+        classDateExpiry = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        classDateTime = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault());
+        eventDateTime = new SimpleDateFormat("dd-MM-yyyy hh:mm aa", Locale.getDefault());
+
+        classDateFormat = new SimpleDateFormat("EEE, d MMM yyyy", Locale.getDefault());
+        packageDateFormat = new SimpleDateFormat("d MMM yyyy", Locale.getDefault());
+        notificationDate = new SimpleDateFormat("h:mm a, MMM d", Locale.getDefault());
+        classRatingDate = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+        classTime24Format = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        classTime12Format = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
+        ExtendedDateFormat = new SimpleDateFormat("d MMM ", Locale.getDefault());
+    }
 
     public static String getMonthName(int monthCode) {
         String month = "wrong";
@@ -221,6 +242,19 @@ public class DateUtils {
         return "";
     }
 
+    public static Timestamp getTimespanDate(String date) {
+        try {
+//            Date date1 = classDateExpiry.parse(date);
+            Date date1 = classDate.parse(date);
+            Timestamp timeStampDate = new Timestamp(date1.getTime());
+            return timeStampDate;
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+        return new Timestamp(System.nanoTime());
+    }
+
 
     public static String getTransactionDate(long date) {
         try {
@@ -375,7 +409,7 @@ public class DateUtils {
     public static String getCurrentDateandTime() {
         try {
 
-            Log.d("DATEEEEEEEE",DateFormat.getDateTimeInstance().format(new Date()));
+            Log.d("DATEEEEEEEE", DateFormat.getDateTimeInstance().format(new Date()));
             return DateFormat.getDateTimeInstance().format(new Date());
         } catch (Exception e) {
             e.printStackTrace();
@@ -383,4 +417,57 @@ public class DateUtils {
         }
         return "";
     }
+
+    public static String findDifference(String date, Date endDate) {
+        //milliseconds
+        try {
+            Date startDate = classDateExpiry.parse(date);
+            long different = endDate.getTime() - startDate.getTime();
+
+            long secondsInMilli = 1000;
+            long minutesInMilli = secondsInMilli * 60;
+            long hoursInMilli = minutesInMilli * 60;
+            long daysInMilli = hoursInMilli * 24;
+
+            long elapsedDays = different / daysInMilli;
+            different = different % daysInMilli;
+
+            long elapsedHours = different / hoursInMilli;
+            different = different % hoursInMilli;
+
+            long elapsedMinutes = different / minutesInMilli;
+            different = different % minutesInMilli;
+
+            long elapsedSeconds = different / secondsInMilli;
+            if (elapsedDays < 0)
+                elapsedDays = -elapsedDays;
+            String timeDifference = elapsedDays + " days " + elapsedHours + " hours " + elapsedMinutes + " minutes";
+            return timeDifference;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+       /* System.out.printf(
+                "%d days, %d hours, %d minutes, %d seconds%n",
+                elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds);*/
+    }
+
+    public static double find5MinDifference(Date startDate, Date endDate) {
+        try {
+
+            long mills = endDate.getTime() - startDate.getTime();
+            long hours = mills / (1000 * 60 * 60);
+            long mins = (mills/(1000*60)) % 60;
+//            long diffMinutes = diff / (60 * 1000) % 60;
+            if(hours<1)
+                return mins;
+            else
+                return 10;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 10;
+
+    }
+
 }

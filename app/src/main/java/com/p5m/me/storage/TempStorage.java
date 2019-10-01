@@ -99,6 +99,14 @@ public class TempStorage {
         return MyPreferences.getInstance().getLng();
     }
 
+    public static int isOpenMembershipInfo() {
+        return  MyPreferences.getInstance().isOpenMembershipInfo();
+    }
+
+    public static void setOpenMembershipInfo(int state) {
+        MyPreferences.getInstance().setOpenMembershipInfo(state);
+    }
+
     public static List<ClassesFilter> getFilters() {
         if (filterList == null) {
             filterList = MyPreferences.getInstance().getFilters();

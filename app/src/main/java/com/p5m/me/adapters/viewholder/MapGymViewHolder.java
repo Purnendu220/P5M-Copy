@@ -7,9 +7,12 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.main.BranchModel;
+import com.p5m.me.helper.GlideApp;
 import com.p5m.me.utils.ImageUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.squareup.picasso.Picasso;
@@ -44,11 +47,24 @@ public class MapGymViewHolder extends RecyclerView.ViewHolder {
     public void bind(Object data, AdapterCallbacks adapterCallbacks, final int position) {
         if (data != null && data instanceof BranchModel) {
             final BranchModel model = (BranchModel) data;
+
             textViewBranchName.setText(model.getBranchName());
             textViewGymName.setText(model.getGymName());
-            ImageUtils.setImage(context,
+            if (model.getMediaUrl() != null) {
+                ImageUtils.setImage(context,
+                        model.getMediaUrl(),
+                        R.color.white,R.drawable.profile_holder, imageViewOfGym);
+            } else {
+                ImageUtils.setImage(context,
+                        model.getMediaUrl(),
+                        R.drawable.profile_holder, imageViewOfGym);
+            }
+
+
+           /* ImageUtils.setImage(context,
                     model.getMediaUrl(),
                     R.drawable.profile_holder, imageViewOfGym);
+*/
             textViewShowSchedule.setOnClickListener(v -> {
                 adapterCallbacks.onAdapterItemClick(MapGymViewHolder.this, textViewShowSchedule, model, position);
             });

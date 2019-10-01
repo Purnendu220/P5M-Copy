@@ -1,12 +1,13 @@
 package com.p5m.me.utils;
 
 import android.content.Context;
-import androidx.core.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.p5m.me.R;

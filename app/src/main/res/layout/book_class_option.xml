@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/dp_8"
+    android:layout_marginTop="@dimen/dp_8"
+    android:orientation="vertical">
+
+
+
+    <TextView
+        android:id="@+id/textViewDialogDismiss"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:layout_marginStart="@dimen/dp_16"
+        android:backgroundTint="@android:color/white"
+        android:drawablePadding="@dimen/dp_32"
+        android:text="@string/select_an_option"
+        android:textColor="@color/text_grey"
+        android:layout_marginTop="@dimen/margin_15"
+        android:layout_marginBottom="@dimen/margin_15"
+        android:textSize="@dimen/text_large" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/bookWithDropInPackage"
+
+        >
+        <TextView
+            android:id="@+id/textViewDropIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:layout_marginStart="@dimen/dp_16"
+            android:backgroundTint="@android:color/white"
+            android:text="@string/one_class_entry"
+            android:textColor="@color/theme_book"
+            android:textSize="@dimen/text_large"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginBottom="@dimen/margin_10"
+            />
+        <TextView
+            android:id="@+id/textViewDropInDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:layout_marginStart="@dimen/dp_16"
+            android:backgroundTint="@android:color/white"
+            android:text="@string/drop_in_package_desc"
+            android:textColor="@color/theme_medium_text"
+            android:textSize="@dimen/text_medium"
+            android:visibility="gone"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:layout_marginTop="@dimen/margin_5"
+
+            />
+
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/bookWithP5mMembership"
+        >
+        <TextView
+            android:id="@+id/textViewBuyMembership"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:layout_marginStart="@dimen/dp_16"
+            android:paddingBottom="@dimen/margin_10"
+            android:backgroundTint="@android:color/white"
+            android:drawablePadding="@dimen/dp_32"
+            android:text="@string/book_with_p5m_membership"
+            android:textColor="@color/theme_book"
+            android:textSize="16sp"
+            android:layout_marginTop="@dimen/margin_10"
+            />
+        <TextView
+            android:id="@+id/textViewBuyMembershipDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:layout_marginStart="@dimen/dp_16"
+            android:visibility="gone"
+            android:backgroundTint="@android:color/white"
+            android:drawablePadding="@dimen/dp_32"
+            android:text="@string/buy_membership_description"
+            android:textColor="@color/theme_medium_text"
+            android:textSize="@dimen/text_medium"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:layout_marginTop="@dimen/margin_5"
+            />
+
+    </LinearLayout>
+
+
+
+
+
+
+
+</LinearLayout>

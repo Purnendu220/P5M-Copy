@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.Html;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +14,27 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.p5m.me.R;
+import com.p5m.me.adapters.AdapterCallbacks;
+import com.p5m.me.adapters.TestimonialsAdapter;
 import com.p5m.me.analytics.FirebaseAnalysic;
+import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
+import com.p5m.me.data.Join5MinModel;
 import com.p5m.me.data.PromoCode;
+import com.p5m.me.data.Testimonials;
 import com.p5m.me.data.ValidityPackageList;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
@@ -39,6 +50,7 @@ import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
@@ -49,6 +61,7 @@ import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -62,12 +75,15 @@ import static com.p5m.me.fxn.utility.Constants.CheckoutFor.SPECIAL_CLASS;
 import static com.p5m.me.utils.LanguageUtils.numberConverter;
 
 
-public class CheckoutActivity extends BaseActivity implements View.OnClickListener, NetworkCommunicator.RequestListener, CustomAlertDialog.OnAlertButtonAction {
+public class CheckoutActivity extends BaseActivity implements View.OnClickListener, NetworkCommunicator.RequestListener, CustomAlertDialog.OnAlertButtonAction, AdapterCallbacks {
 
     private static int mNumberOfClasses = 1;
     private Handler handler;
     private Runnable nextScreenRunnable;
     private String refId;
+    private TestimonialsAdapter testimonialsAdapter;
+    private List<Testimonials> default_testimonials;
+    private List<Testimonials> testimonials;
 
     /*
             if user is purchasing a package
@@ -267,6 +283,12 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     @BindView(R.id.textViewWalletAmount)
     TextView mTextViewWalletAmount;
 
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
+
+    @BindView(R.id.scrollview)
+    ScrollView scrollView;
+
 
     private PromoCode promoCode;
     private MaterialDialog materialDialog;
@@ -282,17 +304,18 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         handler = new Handler();
         checkUserCredits();
         setData();
-
+        scrollView.smoothScrollTo(0,0);
         textViewPay.setOnClickListener(this);
         buttonPromoCode.setOnClickListener(this);
         textViewLimit.setOnClickListener(this);
         textViewCancellationPolicyToggle.setOnClickListener(this);
         textViewCancellationPolicyGeneralToggle.setOnClickListener(this);
         mLayoutUserWallet.setOnClickListener(this);
-
         MixPanel.trackCheckoutVisit(aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName());
         FirebaseAnalysic.trackCheckoutVisit(aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName());
+        IntercomEvents.trackCheckoutVisit(aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName());
         onTrackingNotification();
+        setTestimonialAdapter();
 
     }
 
@@ -315,7 +338,6 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 layoutSpecialClassDetails.setVisibility(View.GONE);
                 layoutNormalClassDetails.setVisibility(View.VISIBLE);
                 layoutPromoCode.setVisibility(View.GONE);
-
                 if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
                     setTextValidityPeriod(aPackage);
                     textViewLimit.setVisibility(View.GONE);
@@ -568,8 +590,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                             layoutPromoCode.setVisibility(View.VISIBLE);
                             double discountedPrice = promoCode.getPrice() - promoCode.getPriceAfterDiscount();
                             textViewPromoCodePrice.setVisibility(View.VISIBLE);
-//                            ToastUtils.show(context," "+String.format("%.2f", discountedPrice));
-                            textViewPromoCodePrice.setText("- " + (LanguageUtils.promoConverter(discountedPrice, 2)) + " " + context.getString(R.string.currency));
+                            textViewPromoCodePrice.setText("- " + (LanguageUtils.numberConverter(discountedPrice, 2)) + " " + context.getString(R.string.currency));
                             buttonPromoCode.setText(context.getString(R.string.remove_promo_code));
                         } else {
                             layoutPromoCode.setVisibility(View.GONE);
@@ -962,27 +983,29 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void redirectOnResult1() {
+        String couponCode = promoCode == null ? AppConstants.Tracker.NO_COUPON : promoCode.code;
+
 //        PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,refId,aPackage,classModel,checkoutFor,userPackage,selectedPacakageFromList);
         switch (checkoutFor) {
             case PACKAGE:
 
                 PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,
-                        refId, aPackage, null, checkoutFor, null, null, mNumberOfPackagesToBuy);
+                        refId, aPackage, null, checkoutFor, null, null, mNumberOfPackagesToBuy,couponCode);
 
                 break;
             case CLASS_PURCHASE_WITH_PACKAGE:
                 PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,
-                        refId, aPackage, classModel, checkoutFor, null, null, mNumberOfPackagesToBuy);
+                        refId, aPackage, classModel, checkoutFor, null, null, mNumberOfPackagesToBuy,couponCode);
 
                 break;
             case SPECIAL_CLASS:
                 PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,
-                        refId, null, classModel, checkoutFor, null, selectedPacakageFromList, mNumberOfPackagesToBuy);
+                        refId, null, classModel, checkoutFor, null, selectedPacakageFromList, mNumberOfPackagesToBuy,couponCode);
 
                 break;
             case EXTENSION:
                 PaymentConfirmationActivity.openActivity(context, navigatinFrom,
-                        refId, null, null, checkoutFor, userPackage, selectedPacakageFromList, mNumberOfPackagesToBuy);
+                        refId, null, null, checkoutFor, userPackage, selectedPacakageFromList, mNumberOfPackagesToBuy,couponCode);
 
                 break;
         }
@@ -1029,6 +1052,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void run() {
                 EventBroadcastHelper.classAutoJoin(context, classModel);
+                saved5MinClass(classModel);
             }
         };
 
@@ -1070,5 +1094,83 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onCancelClick(int requestCode, Object data) {
 
+    }
+
+
+    private void setTestimonialAdapter() {
+        try {
+            String testimonial = RemoteConfigConst.TESTIMONIALS_VALUE;
+            if (testimonial != null && !testimonial.isEmpty()) {
+                Gson g = new Gson();
+                List<Testimonials> p = g.fromJson(testimonial, new TypeToken<List<Testimonials>>() {
+                }.getType());
+                testimonials = p;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (testimonials == null) {
+            recyclerView.setVisibility(View.GONE);
+            return;
+        } else {
+            if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar") &&
+                    !TextUtils.isEmpty(testimonials.get(0).getMessage_ar())) {
+                setTestimonialVisible();
+            } else if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en") &&
+                    !TextUtils.isEmpty(testimonials.get(0).getMessage_eng())) {
+                setTestimonialVisible();
+            } else {
+                recyclerView.setVisibility(View.GONE);
+
+            }
+        }
+    }
+    private void setTestimonialVisible() {
+        recyclerView.setVisibility(View.VISIBLE);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity,RecyclerView.HORIZONTAL,false));
+        recyclerView.setHasFixedSize(false);
+
+        testimonialsAdapter = new TestimonialsAdapter(context, this);
+        recyclerView.setAdapter(testimonialsAdapter);
+
+        testimonialsAdapter.addAll(testimonials);
+        testimonialsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
+
+    }
+
+    @Override
+    public void onAdapterItemLongClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
+
+    }
+
+    @Override
+    public void onShowLastItem() {
+
+    }
+
+    private void saved5MinClass(ClassModel classModel) {
+        Join5MinModel join5MinModel= new Join5MinModel();
+        join5MinModel.setGetClassSessionId(classModel.getClassSessionId());
+        join5MinModel.setJoiningTime(Calendar.getInstance().getTime());
+        List<Join5MinModel> bookedClassList = MyPreferences.getInstance().getBookingTime();
+        if (bookedClassList != null && bookedClassList.size() > 0) {
+            bookedClassList.add(join5MinModel);
+            MyPreferences.getInstance().saveBookingTime(bookedClassList);
+            LogUtils.debug("Class Booked " + classModel.getTitle());
+            return;
+
+        } else {
+            bookedClassList = new ArrayList<>();
+            bookedClassList.add(join5MinModel);
+            MyPreferences.getInstance().saveBookingTime(bookedClassList);
+
+        }
     }
 }
