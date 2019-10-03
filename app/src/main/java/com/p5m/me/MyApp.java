@@ -209,22 +209,6 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
     }
 
     private void firebaseDataSet() {
-        if (BuildConfig.FIREBASE_IS_PRODUCTION) {
-            options = new FirebaseOptions.Builder()
-                    .setApplicationId(BuildConfig.APP_ID) // Required for Analytics.
-                    .setApiKey(BuildConfig.API_KEY) // Required for Auth.
-                    .setDatabaseUrl(BuildConfig.DATABASE_URL) // Required for RTDB.
-                    .build();
-//            FirebaseApp.initializeApp(getApplicationContext(), options);
-        } else {
-            options = new FirebaseOptions.Builder()
-                    .setApplicationId(BuildConfig.APP_ID) // Required for Analytics.
-                    .setApiKey(BuildConfig.API_KEY) // Required for Auth.
-                    .setDatabaseUrl(BuildConfig.DATABASE_URL) // Required for RTDB.
-                    .build();
-//            FirebaseApp.initializeApp(getApplicationContext(), options);
-        }
-
         List<FirebaseApp> firebaseApps = FirebaseApp.getApps(context);
         for (FirebaseApp app : firebaseApps) {
             if (app.getName().equals(FirebaseApp.DEFAULT_APP_NAME)) {
