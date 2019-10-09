@@ -193,6 +193,8 @@ public class AppConstants {
         public static final String BOOK_WITH_FRIEND_DATA = "book_with_friend_data";
         public static final String NUMBER_OF_PACKAGES_TO_BUY = "number_of_packages_to_buy";
         public static final String PAGES_TO_OPEN = "pages_to_open";
+        public static final String SHOW_DROPIN = "show_drop_in";
+
 
 
 

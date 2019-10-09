@@ -260,6 +260,8 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                         }
 
                     } else if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
+                        setPackageTags(model.getId());
+
                         txtPackageName.setText(model.getName());
                         if (model.isBookingWithFriend() && model.getNoOfClass() == 1) {
 

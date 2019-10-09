@@ -38,6 +38,12 @@ public class RemoteConfigConst {
     public static final String TESTIMONIALS = "testimonials";
     public static final String FAQ = "faqs";
     public static final String PACKAGE_TAGS = "package_tags";
+    public static String PLAN_DESCRIPTION = "plan_description";
+    public static String DROP_IN_COST = "drop_in_cost";
+    public static String SHOW_SELECTION_OPTIONS = "show_select_options";
+    public static String PLAN_DESCRIPTION_DROP_IN = "drop_in_description";
+
+
 
 
     /*------KEY VALUES------*/
@@ -78,6 +84,11 @@ public class RemoteConfigConst {
     public static final int PACKAGE_TAGS_KEY = 961;
     public static final int BOOK_WITH_FRIEND_BACKGROUND_COLOR_KEY = 962;
 
+    public static final int PLAN_DESCRIPTION_KEY = 963;
+    public static final int DROP_IN_COST_KEY =964;
+    public static final int SHOW_SELECTION_OPTIONS_KEY = 965;
+    public static final int PLAN_DESCRIPTION_DROP_IN_KEY = 966;
+
 
     /* ------VALUES---------*/
     public static String BOOKED_VALUE = "Booked";
@@ -116,4 +127,12 @@ public class RemoteConfigConst {
     public static String TESTIMONIALS_VALUE = "";
     public static String PACKAGE_TAGS_VALUE = "";
     public static String FAQ_VALUE = "";
+
+    public static String PLAN_DESCRIPTION_DROP_IN_VALUE = "";
+    public static String PLAN_DESCRIPTION_VALUE = "";
+    public static String DROP_IN_COST_VALUE = "true";
+    public static String SHOW_SELECTION_OPTIONS_VALUE = "true";
+
+
+
 }

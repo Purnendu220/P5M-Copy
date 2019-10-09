@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.graphics.drawable.DrawableCompat;
 
+import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -41,6 +42,7 @@ import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_WITH_FRIEND_COLOR_
 import static com.p5m.me.remote_config.RemoteConfigConst.BUY_CLASS_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BUY_CLASS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.CLASS_CARD_TEXT_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.DROP_IN_COST_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.FAQ_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.FULL_BUTTON_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.FULL_BUTTON_KEY;
@@ -54,12 +56,15 @@ import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_CLASS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_FAILURE_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_PACKAGE_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_PENDING_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.PLAN_DESCRIPTION_DROP_IN_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.PLAN_DESCRIPTION_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.RECOMMENDED_FOR_YOU_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.RECOMMENDED_FOR_YOU_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.SEARCH_BAR_TEXT_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.SELECT_PLAN_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.SELECT_PLAN_TEXT_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.SESSION_EXPIRED_COLOR_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.SHOW_SELECTION_OPTIONS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.TESTIMONIALS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.WAITLISTED_BUTTON_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.WAITLIST_BUTTON_KEY;
@@ -89,41 +94,52 @@ public class RemoteConfigSetUp {
     }
 
     public static void setValue(final int constValue, final String key, final String defaultValue) {
-
+        long cacheExpiration = 0;
         HashMap<String, Object> defaults = new HashMap<>();
         defaults.put(key, defaultValue);
         firebaseRemoteConfig.setDefaultsAsync(defaults);
         setValueOfField(constValue, defaultValue);
         if (Constants.LANGUAGE == Locale.ENGLISH || constValue == TESTIMONIALS_KEY ||
                 constValue == FAQ_KEY || constValue == PACKAGE_TAGS_KEY) {
-            /*final Task<Void> fetch = firebaseRemoteConfig.fetch(BuildConfig.DEBUG ? 0 : TimeUnit.HOURS.toSeconds(10));
-            fetch.addOnSuccessListener(context, new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    firebaseRemoteConfig.activate();
-                    String keyValue = firebaseRemoteConfig.getString(key);
-                    firebaseRemoteConfig.activate();
-                    if (!keyValue.isEmpty())
-                        setValueOfField(constValue, keyValue);
-                }
-            });*/
 
-            firebaseRemoteConfig.fetchAndActivate()
-                    .addOnCompleteListener(context, new OnCompleteListener<Boolean>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Boolean> task) {
-                            if (task.isSuccessful()) {
-                                boolean updated = task.getResult();
-                                Log.d(TAG, "Config params updated: " + updated);
-                                firebaseRemoteConfig.activate();
-                                String keyValue = firebaseRemoteConfig.getString(key);
-                                firebaseRemoteConfig.activate();
-                                if (!keyValue.isEmpty())
-                                    setValueOfField(constValue, keyValue);
+            if(BuildConfig.FIREBASE_IS_PRODUCTION){
+                firebaseRemoteConfig.fetchAndActivate()
+                        .addOnCompleteListener(context, new OnCompleteListener<Boolean>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Boolean> task) {
+                                if (task.isSuccessful()) {
+                                    boolean updated = task.getResult();
+                                    firebaseRemoteConfig.activate();
+                                    String keyValue = firebaseRemoteConfig.getString(key);
+                                    firebaseRemoteConfig.activate();
+                                    if (!keyValue.isEmpty())
+                                        setValueOfField(constValue, keyValue);
 
+                                }
                             }
-                        }
-                    });
+                        });
+            }
+            else{
+                firebaseRemoteConfig.fetch(cacheExpiration)
+                        .addOnCompleteListener(context, new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    firebaseRemoteConfig.activate();
+                                    String keyValue = firebaseRemoteConfig.getString(key);
+                                    firebaseRemoteConfig.activate();
+                                    if (!keyValue.isEmpty())
+                                        setValueOfField(constValue, keyValue);
+
+                                } else {
+
+                                }
+                            }
+                        });
+            }
+
+
+
         }
 
     }
@@ -242,6 +258,19 @@ public class RemoteConfigSetUp {
 
                 case PACKAGE_TAGS_KEY:
                     RemoteConfigConst.PACKAGE_TAGS_VALUE = keyValue;
+                    break;
+
+                case PLAN_DESCRIPTION_KEY:
+                    RemoteConfigConst.PLAN_DESCRIPTION_VALUE = keyValue;
+                    break;
+                    case DROP_IN_COST_KEY:
+                    RemoteConfigConst.DROP_IN_COST_VALUE = keyValue;
+                    break;
+                    case SHOW_SELECTION_OPTIONS_KEY:
+                    RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE = keyValue;
+                    break;
+                case PLAN_DESCRIPTION_DROP_IN_KEY:
+                    RemoteConfigConst.PLAN_DESCRIPTION_DROP_IN_VALUE = keyValue;
                     break;
             }
         }
@@ -426,6 +455,20 @@ public class RemoteConfigSetUp {
                 RemoteConfigConst.FAQ, "[{\"english_question\": \"Why are you use P5M?\", \"english_answer\": \"P5M app enables you to visit multiple gyms and attend diffent activities with only one membership. You can even buy monthly subscriptions if you wish that is how you would like to roll.\", \"arabic_question\": \"\", \"arabic_answer\": \"\"}]");
         setValue(PACKAGE_TAGS_KEY,
                 RemoteConfigConst.PACKAGE_TAGS, "[{\"id\": 2, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 3, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 4, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 10, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 11, \"tag_en\": \"\", \"tag_ar\": \"\"}]");
+
+        setValue(SELECT_PLAN_TEXT_KEY,
+                RemoteConfigConst.SELECT_PLAN_TEXT, context.getResources().getString(R.string.select_plan));
+
+        setValue(PLAN_DESCRIPTION_KEY,
+                RemoteConfigConst.PLAN_DESCRIPTION, context.getResources().getString(R.string.plan_description));
+
+        setValue(DROP_IN_COST_KEY,
+                RemoteConfigConst.DROP_IN_COST, context.getResources().getString(R.string.show_drop_in_cost));
+
+        setValue(SHOW_SELECTION_OPTIONS_KEY,
+                RemoteConfigConst.SHOW_SELECTION_OPTIONS, context.getResources().getString(R.string.show_selection_option));
+        setValue(PLAN_DESCRIPTION_DROP_IN_KEY,
+                RemoteConfigConst.PLAN_DESCRIPTION_DROP_IN, context.getResources().getString(R.string.drop_in_description));
 
     }
 
