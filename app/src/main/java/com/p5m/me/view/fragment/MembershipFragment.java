@@ -1,21 +1,16 @@
 package com.p5m.me.view.fragment;
 
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
@@ -23,7 +18,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.android.material.appbar.AppBarLayout;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.MemberShipAdapter;
@@ -42,14 +36,12 @@ import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
-import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.Main.CheckoutActivity;
 import com.p5m.me.view.activity.Main.MembershipInfoActivity;
 import com.p5m.me.view.activity.Main.PackageLimitsActivity;
-import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.custom.PackageExtensionAlertDialog;
 
@@ -61,9 +53,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_DONE;
-import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_NO_PACKAGE;
 
 
 public class MembershipFragment extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks, NetworkCommunicator.RequestListener,
@@ -249,10 +238,10 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                 memberShipAdapter.notifyDataSetChanges();
             }
         }
-        if (TempStorage.isOpenMembershipInfo() == MEMBERSHIP_INFO_STATE_NO_PACKAGE) {
+       /* if (TempStorage.isOpenMembershipInfo() == MEMBERSHIP_INFO_STATE_NO_PACKAGE) {
             MembershipInfoActivity.openActivity(context);
             TempStorage.setOpenMembershipInfo(MEMBERSHIP_INFO_STATE_DONE);
-        }
+        }*/
         MixPanel.trackMembershipVisit(this.navigatedFrom);
         //  onTrackingNotification();
         FirebaseAnalysic.trackMembershipVisit(this.navigatedFrom);
@@ -296,32 +285,6 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         //onRefresh();
     }
 
-//    private void setToolBar() {
-//
-//        BaseActivity activity = (BaseActivity) this.activity;
-//        activity.setSupportActionBar(toolbar);
-//
-//        activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(context, R.color.colorPrimaryDark)));
-//        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-//        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-//        activity.getSupportActionBar().setHomeButtonEnabled(true);
-//        activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
-//        activity.getSupportActionBar().setDisplayUseLogoEnabled(true);
-//
-//        View v = LayoutInflater.from(context).inflate(R.layout.view_tool_normal, null);
-//
-//        v.findViewById(R.id.imageViewBack).setVisibility(View.GONE);
-//        mTextViewWalletAmount = v.findViewById(R.id.textViewWalletAmount);
-//        mLayoutUserWallet = v.findViewById(R.id.layoutUserWallet);
-//        mLayoutUserWallet.setOnClickListener(this);
-//
-//
-//        ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.membership));
-//
-//        activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
-//                ActionBar.LayoutParams.MATCH_PARENT));
-//        activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
-//    }
 
     private void checkPackages() {
         userPackageInfo = new UserPackageInfo(user);

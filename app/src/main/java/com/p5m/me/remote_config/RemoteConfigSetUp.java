@@ -14,18 +14,14 @@ import androidx.annotation.NonNull;
 import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
-import com.p5m.me.BuildConfig;
 import com.p5m.me.R;
 import com.p5m.me.fxn.utility.Constants;
-import com.p5m.me.utils.LanguageUtils;
 
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import static com.facebook.login.widget.ProfilePictureView.TAG;
 import static com.p5m.me.remote_config.RemoteConfigConst.ADD_TO_WISHLIST_KEY;
@@ -57,12 +53,34 @@ import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_PENDING_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.RECOMMENDED_FOR_YOU_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.RECOMMENDED_FOR_YOU_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.SEARCH_BAR_TEXT_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.SECTION_ONE_SUB_FOUR_DETAIL_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.SECTION_ONE_SUB_FOUR_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.SECTION_ONE_SUB_ONE_CONTAIN_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.SECTION_ONE_SUB_ONE_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.SECTION_ONE_SUB_THREE_DETAIL_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.SECTION_ONE_SUB_THREE_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.SECTION_ONE_SUB_TWO_CONTAIN_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.SECTION_ONE_SUB_TWO_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.SECTION_ONE_TITLE_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.SECTION_TWO_SUB_FOUR_DETAIL_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.SECTION_TWO_SUB_FOUR_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.SECTION_TWO_SUB_ONE_DETAIL_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.SECTION_TWO_SUB_ONE_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.SECTION_TWO_SUB_THREE_DETAIL_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.SECTION_TWO_SUB_THREE_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.SECTION_TWO_SUB_TWO_DETAIL_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.SECTION_TWO_SUB_TWO_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.SECTION_TWO_TITLE_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.SELECT_PLAN_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.SELECT_PLAN_TEXT_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.SESSION_EXPIRED_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.TESTIMONIALS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.WAITLISTED_BUTTON_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.WAITLIST_BUTTON_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.WAITLIST_BUTTON_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.WAITLIST_BUTTON_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.WELCOME_P5M_CONTAIN_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.WELCOME_P5M_KEY;
 
 public class RemoteConfigSetUp {
 
@@ -82,11 +100,8 @@ public class RemoteConfigSetUp {
                 .build();
         firebaseRemoteConfig.setConfigSettingsAsync(configSettings);
 
-        /*firebaseRemoteConfig.setConfigSettings(new FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(true)
-                .build());*/
-
     }
+
 
     public static void setValue(final int constValue, final String key, final String defaultValue) {
 
@@ -95,18 +110,14 @@ public class RemoteConfigSetUp {
         firebaseRemoteConfig.setDefaultsAsync(defaults);
         setValueOfField(constValue, defaultValue);
         if (Constants.LANGUAGE == Locale.ENGLISH || constValue == TESTIMONIALS_KEY ||
-                constValue == FAQ_KEY || constValue == PACKAGE_TAGS_KEY) {
-            /*final Task<Void> fetch = firebaseRemoteConfig.fetch(BuildConfig.DEBUG ? 0 : TimeUnit.HOURS.toSeconds(10));
-            fetch.addOnSuccessListener(context, new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    firebaseRemoteConfig.activate();
-                    String keyValue = firebaseRemoteConfig.getString(key);
-                    firebaseRemoteConfig.activate();
-                    if (!keyValue.isEmpty())
-                        setValueOfField(constValue, keyValue);
-                }
-            });*/
+                constValue == FAQ_KEY || constValue == SECTION_ONE_SUB_ONE_KEY || constValue == WELCOME_P5M_KEY || constValue == WELCOME_P5M_CONTAIN_KEY ||
+                constValue == SECTION_ONE_TITLE_KEY || constValue == PACKAGE_TAGS_KEY || constValue == SECTION_ONE_SUB_ONE_CONTAIN_KEY || constValue == SECTION_ONE_SUB_TWO_KEY ||
+                constValue == SECTION_ONE_SUB_TWO_CONTAIN_KEY || constValue == SECTION_ONE_SUB_THREE_KEY || constValue == SECTION_ONE_SUB_THREE_DETAIL_KEY || constValue == SECTION_ONE_SUB_FOUR_KEY ||
+                constValue == SECTION_ONE_SUB_FOUR_DETAIL_KEY || constValue == SECTION_TWO_TITLE_KEY || constValue == SECTION_TWO_SUB_ONE_KEY || constValue == SECTION_TWO_SUB_ONE_DETAIL_KEY ||
+                constValue == SECTION_TWO_SUB_TWO_KEY || constValue == SECTION_TWO_SUB_TWO_DETAIL_KEY || constValue == SECTION_TWO_SUB_THREE_KEY || constValue == SECTION_TWO_SUB_THREE_DETAIL_KEY ||
+                constValue == SECTION_TWO_SUB_FOUR_KEY || constValue == SECTION_TWO_SUB_FOUR_DETAIL_KEY
+
+        ) {
 
             firebaseRemoteConfig.fetchAndActivate()
                     .addOnCompleteListener(context, new OnCompleteListener<Boolean>() {
@@ -243,25 +254,70 @@ public class RemoteConfigSetUp {
                 case PACKAGE_TAGS_KEY:
                     RemoteConfigConst.PACKAGE_TAGS_VALUE = keyValue;
                     break;
+                case WELCOME_P5M_KEY:
+                    RemoteConfigConst.WELCOME_P5M_VALUE = keyValue;
+                    break;
+                case RemoteConfigConst.WELCOME_P5M_CONTAIN_KEY:
+                    RemoteConfigConst.WELCOME_P5M_CONTAIN_VALUE = keyValue;
+                    break;
+                case RemoteConfigConst.SECTION_ONE_SUB_ONE_KEY:
+                    RemoteConfigConst.SECTION_ONE_SUB_ONE_VALUE = keyValue;
+                    break;
+                case RemoteConfigConst.SECTION_ONE_SUB_ONE_CONTAIN_KEY:
+                    RemoteConfigConst.SECTION_ONE_SUB_ONE_CONTAIN_VALUE = keyValue;
+                    break;
+                case RemoteConfigConst.SECTION_ONE_SUB_TWO_KEY:
+                    RemoteConfigConst.SECTION_ONE_SUB_TWO_VALUE = keyValue;
+                    break;
+                case RemoteConfigConst.SECTION_ONE_SUB_TWO_CONTAIN_KEY:
+                    RemoteConfigConst.SECTION_ONE_SUB_TWO_CONTAIN_VALUE = keyValue;
+                    break;
+                case RemoteConfigConst.SECTION_ONE_TITLE_KEY:
+                    RemoteConfigConst.SECTION_ONE_TITLE_VALUE = keyValue;
+                    break;
+                case RemoteConfigConst.SECTION_ONE_SUB_THREE_KEY:
+                    RemoteConfigConst.SECTION_ONE_SUB_THREE_VALUE = keyValue;
+                    break;
+                case RemoteConfigConst.SECTION_ONE_SUB_THREE_DETAIL_KEY:
+                    RemoteConfigConst.SECTION_ONE_SUB_THREE_DETAIL_VALUE = keyValue;
+                    break;
+                case RemoteConfigConst.SECTION_ONE_SUB_FOUR_KEY:
+                    RemoteConfigConst.SECTION_ONE_SUB_FOUR_VALUE = keyValue;
+                    break;
+                case RemoteConfigConst.SECTION_ONE_SUB_FOUR_DETAIL_KEY:
+                    RemoteConfigConst.SECTION_ONE_SUB_FOUR_DETAIL_VALUE = keyValue;
+                    break;
+                case RemoteConfigConst.SECTION_TWO_TITLE_KEY:
+                    RemoteConfigConst.SECTION_TWO_TITLE_VALUE = keyValue;
+                    break;
+                case RemoteConfigConst.SECTION_TWO_SUB_ONE_KEY:
+                    RemoteConfigConst.SECTION_TWO_SUB_ONE_VALUE = keyValue;
+                    break;
+                case RemoteConfigConst.SECTION_TWO_SUB_ONE_DETAIL_KEY:
+                    RemoteConfigConst.SECTION_TWO_SUB_ONE_DETAIL_VALUE = keyValue;
+                    break;
+                case RemoteConfigConst.SECTION_TWO_SUB_TWO_KEY:
+                    RemoteConfigConst.SECTION_TWO_SUB_TWO_VALUE = keyValue;
+                    break;
+                case RemoteConfigConst.SECTION_TWO_SUB_TWO_DETAIL_KEY:
+                    RemoteConfigConst.SECTION_TWO_SUB_TWO_DETAIL_VALUE = keyValue;
+                    break;
+                case RemoteConfigConst.SECTION_TWO_SUB_THREE_KEY:
+                    RemoteConfigConst.SECTION_TWO_SUB_THREE_VALUE = keyValue;
+                    break;
+                case RemoteConfigConst.SECTION_TWO_SUB_THREE_DETAIL_KEY:
+                    RemoteConfigConst.SECTION_TWO_SUB_THREE_DETAIL_VALUE = keyValue;
+                    break;
+                case RemoteConfigConst.SECTION_TWO_SUB_FOUR_KEY:
+                    RemoteConfigConst.SECTION_TWO_SUB_FOUR_VALUE = keyValue;
+                    break;
+                case RemoteConfigConst.SECTION_TWO_SUB_FOUR_DETAIL_KEY:
+                    RemoteConfigConst.SECTION_TWO_SUB_FOUR_DETAIL_VALUE = keyValue;
+                    break;
+
             }
         }
-     /*   }
-        else if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
-            if (!keyValue.isEmpty()) {
-                switch (constValue) {
-                    case TESTIMONIALS_KEY:
-                        RemoteConfigConst.TESTIMONIALS_VALUE = keyValue;
-                        break;
-                    case FAQ_KEY:
-                        RemoteConfigConst.FAQ_VALUE = keyValue;
-                        break;
 
-                    case PACKAGE_TAGS_KEY:
-                        RemoteConfigConst.PACKAGE_TAGS_VALUE = keyValue;
-                        break;
-                }
-            }
-        }*/
 
     }
 
@@ -426,7 +482,71 @@ public class RemoteConfigSetUp {
                 RemoteConfigConst.FAQ, "[{\"english_question\": \"Why are you use P5M?\", \"english_answer\": \"P5M app enables you to visit multiple gyms and attend diffent activities with only one membership. You can even buy monthly subscriptions if you wish that is how you would like to roll.\", \"arabic_question\": \"\", \"arabic_answer\": \"\"}]");
         setValue(PACKAGE_TAGS_KEY,
                 RemoteConfigConst.PACKAGE_TAGS, "[{\"id\": 2, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 3, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 4, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 10, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 11, \"tag_en\": \"\", \"tag_ar\": \"\"}]");
+        setValue(WELCOME_P5M_KEY,
+                RemoteConfigConst.WELCOME_P5M, context.getResources().getString(R.string.welcome_to_p5m));
+        setValue(RemoteConfigConst.WELCOME_P5M_CONTAIN_KEY,
+                RemoteConfigConst.WELCOME_P5M_CONTAIN, context.getResources().getString(R.string.on_p5m_you));
+
+        setValue(RemoteConfigConst.SECTION_ONE_TITLE_KEY,
+                RemoteConfigConst.SECTION_ONE_TITLE, context.getResources().getString(R.string.with_the_p5m_membership_you_can));
+        setValue(RemoteConfigConst.SECTION_ONE_SUB_ONE_KEY,
+                RemoteConfigConst.SECTION_ONE_SUB_ONE, context.getResources().getString(R.string.variety_of_activities));
+        setValue(RemoteConfigConst.SECTION_ONE_SUB_ONE_CONTAIN_KEY,
+                RemoteConfigConst.SECTION_ONE_SUB_ONE_CONTAIN, context.getResources().getString(R.string.variety_of_activity_details));
+
+
+        setValue(RemoteConfigConst.SECTION_ONE_SUB_TWO_KEY,
+                RemoteConfigConst.SECTION_ONE_SUB_TWO, context.getResources().getString(R.string.visit_gym_feature));
+
+
+        setValue(RemoteConfigConst.SECTION_ONE_SUB_TWO_CONTAIN_KEY,
+                RemoteConfigConst.SECTION_ONE_SUB_TWO_CONTAIN, context.getResources().getString(R.string.exploreDetail));
+
+        setValue(RemoteConfigConst.SECTION_ONE_SUB_THREE_KEY,
+                RemoteConfigConst.SECTION_ONE_SUB_THREE, context.getResources().getString(R.string.save_percent));
+
+        setValue(RemoteConfigConst.SECTION_ONE_SUB_THREE_DETAIL_KEY,
+                RemoteConfigConst.SECTION_ONE_SUB_THREE_DETAIL, context.getResources().getString(R.string.save_detail));
+
+        setValue(RemoteConfigConst.SECTION_ONE_SUB_FOUR_KEY,
+                RemoteConfigConst.SECTION_ONE_SUB_FOUR, context.getResources().getString(R.string.instant_booking));
+        setValue(RemoteConfigConst.SECTION_ONE_SUB_FOUR_DETAIL_KEY,
+                RemoteConfigConst.SECTION_ONE_SUB_FOUR_DETAIL, context.getResources().getString(R.string.instant_booking_detail));
+
+        setValue(RemoteConfigConst.SECTION_TWO_TITLE_KEY,
+                RemoteConfigConst.SECTION_TWO_TITLE, context.getResources().getString(R.string.how_its_work));
+
+        setValue(RemoteConfigConst.SECTION_TWO_SUB_ONE_KEY,
+                RemoteConfigConst.SECTION_TWO_SUB_ONE, context.getResources().getString(R.string.explore));
+
+        setValue(RemoteConfigConst.SECTION_TWO_SUB_ONE_DETAIL_KEY,
+                RemoteConfigConst.SECTION_TWO_SUB_ONE_DETAIL, context.getResources().getString(R.string.exploreDetail));
+        setValue(RemoteConfigConst.SECTION_TWO_SUB_TWO_KEY,
+                RemoteConfigConst.SECTION_TWO_SUB_TWO, context.getResources().getString(R.string.pick_a_plan));
+
+        setValue(RemoteConfigConst.SECTION_TWO_SUB_TWO_KEY,
+                RemoteConfigConst.SECTION_TWO_SUB_TWO, context.getResources().getString(R.string.pick_a_plan));
+
+        setValue(RemoteConfigConst.SECTION_TWO_SUB_TWO_DETAIL_KEY,
+                RemoteConfigConst.SECTION_TWO_SUB_TWO_DETAIL, context.getResources().getString(R.string.that_work_for_you));
+
+        setValue(RemoteConfigConst.SECTION_TWO_SUB_THREE_KEY,
+                RemoteConfigConst.SECTION_TWO_SUB_THREE, context.getResources().getString(R.string.train));
+
+        setValue(RemoteConfigConst.SECTION_TWO_SUB_THREE_KEY,
+                RemoteConfigConst.SECTION_TWO_SUB_THREE, context.getResources().getString(R.string.train));
+
+        setValue(RemoteConfigConst.SECTION_TWO_SUB_THREE_DETAIL_KEY,
+                RemoteConfigConst.SECTION_TWO_SUB_THREE_DETAIL, context.getResources().getString(R.string.workout_any_gym));
+
+        setValue(RemoteConfigConst.SECTION_TWO_SUB_FOUR_KEY,
+                RemoteConfigConst.SECTION_TWO_SUB_FOUR, context.getResources().getString(R.string.get_discount));
+
+        setValue(RemoteConfigConst.SECTION_TWO_SUB_FOUR_DETAIL_KEY,
+                RemoteConfigConst.SECTION_TWO_SUB_FOUR_DETAIL, context.getResources().getString(R.string.go_to_different_gym));
 
     }
+
+
 
 }

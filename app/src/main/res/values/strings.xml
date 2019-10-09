@@ -122,7 +122,7 @@
     <string name="your_current_plan">YOUR CURRENT PLAN</string>
     <string name="select">SELECT</string>
     <string name="of"><b>of</b></string>
-    <string name="classes_remaining">classes remaining</string>
+    <string name="classes_remaining" translatable="false">classes remaining</string>
     <string name="valid_till">Valid till</string>
     <string name="coach_at">Coach at </string>
     <string name="recharge">"<u>Buy Classes</u>"</string>
@@ -531,8 +531,8 @@ Would you like to view your balance? </string>
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="classess_remaining">You have %d/%d classes remaining</string>
     <string name="so_far_you_visited">So far you visited</string>
-    <string name="drop_in_text">You have an active drop in for %s, expire on %s</string>
-    <string name="drop_in_unlimited">You have an active drop in for %s</string>
+    <string name="drop_in_text">You have 1 active drop in for %s, expire on %s</string>
+    <string name="drop_in_unlimited">You have 1 active drop in for %s</string>
     <string name="_two_drop_in_text">You have 2 active drop-ins for %s, expires on %s</string>
     <string name="_two_drop_in_unlimited">You have 2 active drop-ins for %s</string>
     <string name="visit_times">%s times</string>
