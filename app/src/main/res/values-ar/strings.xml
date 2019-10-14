@@ -932,6 +932,8 @@
     <string name="membership_info">معلومات عن الاشتراكات</string>
     <string name="buy_membership_description">This is P5M package description</string>
     <string name="one_class_entry">دخول كلاس واحد (KWD %s)</string>
+    <string name="one_class_entry_without_price">دخول كلاس واحد</string>
+
     <string name="book_with_p5m_membership">سجل في الكلاس مع اشتراك P5M</string>
     <string name="welcome_to_p5m">مرحبًا بكم على تطبيق P5M !</string>
     <string name="book_now">احجز الآن</string>
@@ -944,5 +946,7 @@
     <string name="train">تمرن</string>
     <string name="clas_exceed">الكلاس الذي حددتها يبدأ بعد تاريخ انتهاء صلاحية هذه الباقة. اختر كلاس جاري خلال  %s القادمة لشراء هذه الباقة</string>
     <string name="not_applicable">لا يمكن تفعيله</string>
+    <string name="plan_description">\"\"</string>
+    <string name="show_selection_option">true</string>
 
 </resources>

@@ -58,6 +58,12 @@ public class RemoteConfigConst {
     public static final String SECTION_TWO_SUB_THREE_DETAIL = "Section_two_sub_three_detail";
     public static final String SECTION_TWO_SUB_FOUR = "Section_two_sub_four";
     public static final String SECTION_TWO_SUB_FOUR_DETAIL = "Section_two_sub_four_detail";
+    public static String PLAN_DESCRIPTION = "plan_description";
+    public static String DROP_IN_COST = "drop_in_cost";
+    public static String SHOW_SELECTION_OPTIONS = "show_select_options";
+    public static String PLAN_DESCRIPTION_DROP_IN = "drop_in_description";
+
+
 
 
     /*------KEY VALUES------*/
@@ -118,6 +124,11 @@ public class RemoteConfigConst {
     public static final int SECTION_TWO_SUB_FOUR_KEY = 981;
     public static final int SECTION_TWO_SUB_FOUR_DETAIL_KEY = 982;
 
+    public static final int PLAN_DESCRIPTION_KEY = 983;
+    public static final int DROP_IN_COST_KEY =984;
+    public static final int SHOW_SELECTION_OPTIONS_KEY = 985;
+    public static final int PLAN_DESCRIPTION_DROP_IN_KEY = 986;
+
 
     /* ------VALUES---------*/
     public static String BOOKED_VALUE = "Booked";
@@ -176,4 +187,12 @@ public class RemoteConfigConst {
     public static String SECTION_TWO_SUB_THREE_DETAIL_VALUE = "";
     public static String SECTION_TWO_SUB_FOUR_VALUE = "";
     public static String SECTION_TWO_SUB_FOUR_DETAIL_VALUE = "";
+
+    public static String PLAN_DESCRIPTION_DROP_IN_VALUE = "";
+    public static String PLAN_DESCRIPTION_VALUE = "";
+    public static String DROP_IN_COST_VALUE = "true";
+    public static String SHOW_SELECTION_OPTIONS_VALUE = "true";
+
+
+
 }

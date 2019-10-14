@@ -448,7 +448,7 @@
                 android:layout_height="wrap_content"
 
                 android:paddingTop="8dp"
-                android:paddingBottom="@dimen/margin_5"
+                android:paddingBottom="@dimen/margin_10"
                 android:text="@string/go_to_different_gym"
                 android:textColor="@color/theme_dark_text"
                 android:textSize="@dimen/text_medium" />

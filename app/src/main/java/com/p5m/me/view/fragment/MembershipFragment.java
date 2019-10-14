@@ -32,6 +32,7 @@ import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
+import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -53,6 +54,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_NO_PACKAGE;
 
 
 public class MembershipFragment extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks, NetworkCommunicator.RequestListener,
@@ -89,6 +92,8 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
     private int mNumberOfPackagesToBuy;
     private static User.WalletDto mWalletCredit;
     private boolean isTabSelected=false;
+    private boolean showChoosePackageOption=true;
+
 
     public MembershipFragment() {
         // Required empty public constructor
@@ -130,6 +135,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         args.putInt(AppConstants.DataKey.NUMBER_OF_PACKAGES_TO_BUY, numberOfPackagesToBuy);
         args.putSerializable(AppConstants.DataKey.CLASS_OBJECT, classModel);
         args.putSerializable(AppConstants.DataKey.BOOK_WITH_FRIEND_DATA, friendData);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -176,6 +182,9 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         MixPanel.trackMembershipVisit(navigatedFrom);
         //  onTrackingNotification();
         FirebaseAnalysic.trackMembershipVisit(navigatedFrom);
+        if(RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE!=null && !RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE.isEmpty()){
+            showChoosePackageOption = Boolean.valueOf(RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE);
+        }
 
     }
 
@@ -238,10 +247,10 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                 memberShipAdapter.notifyDataSetChanges();
             }
         }
-       /* if (TempStorage.isOpenMembershipInfo() == MEMBERSHIP_INFO_STATE_NO_PACKAGE) {
-            MembershipInfoActivity.openActivity(context);
-            TempStorage.setOpenMembershipInfo(MEMBERSHIP_INFO_STATE_DONE);
-        }*/
+        if (TempStorage.isOpenMembershipInfo() == MEMBERSHIP_INFO_STATE_NO_PACKAGE) {
+//           MembershipInfoActivity.openActivity(context);
+//            TempStorage.setOpenMembershipInfo(MEMBERSHIP_INFO_STATE_DONE);
+        }
         MixPanel.trackMembershipVisit(this.navigatedFrom);
         //  onTrackingNotification();
         FirebaseAnalysic.trackMembershipVisit(this.navigatedFrom);
@@ -500,7 +509,9 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                                 }
                             } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                                 aPackage.setGymName(classModel.getGymBranchDetail().getGymName());
-                                //packages.add(aPackage);
+                                if(!showChoosePackageOption){
+                                    packages.add(aPackage);
+                                }
                                 mAvailableDropInPackage = aPackage;
                             }
                         }

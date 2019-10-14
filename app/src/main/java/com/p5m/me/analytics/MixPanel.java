@@ -170,6 +170,16 @@ public class MixPanel {
             LogUtils.exception(e);
         }
     }
+    public static void trackBottomSheetChoosePackageButton() {
+        try {
+            JSONObject props = new JSONObject();
+            trackEvent(props, "Select_Option");
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
 
     public static void trackEditProfileFocus(List<ClassActivity> activities) {
         try {

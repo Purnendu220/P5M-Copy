@@ -450,7 +450,10 @@ public class Helper {
         return json;
     }*/
     public static boolean isSpecialClass(ClassModel model) {
-        return model!=null&&model.getPriceModel()!=null&&model.getPriceModel().equals("SPECIAL") || model.getPriceModel().equals("FOC");
+        return model!=null&&model.getPriceModel()!=null&& model.getPriceModel().equals("SPECIAL")
+                || model.getPriceModel().equalsIgnoreCase("PT")
+                || model.getPriceModel().equalsIgnoreCase("WORKSHOP")
+                || model.getPriceModel().equals("FOC");
     }
 
     public static boolean isFreeClass(ClassModel model) {
