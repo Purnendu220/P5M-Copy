@@ -25,6 +25,7 @@ import com.p5m.me.FAQAdapter;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.FAQ;
+import com.p5m.me.data.RemoteConfigValueModel;
 import com.p5m.me.data.Testimonials;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.notifications.HandleNotificationDeepLink;
@@ -43,6 +44,7 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
     private FAQAdapter faqAdapter;
     private List<FAQ> defaultFAQList;
     private List<FAQ> faqList;
+    private RemoteConfigValueModel remoteConfigdata;
 
     public static void openActivity(Context context) {
         context.startActivity(new Intent(context, MembershipInfoActivity.class));
@@ -64,6 +66,51 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
     @BindView(R.id.scroll_view)
     public ScrollView scrollView;
 
+    @BindView(R.id.textViewWelcome)
+    public TextView textViewWelcome;
+
+    @BindView(R.id.textViewWelcomeDetail)
+    public TextView textViewWelcomeDetail;
+    @BindView(R.id.textViewMembershipFeatures)
+    public TextView textViewMembershipFeatures;
+    @BindView(R.id.textViewVarietyActivity)
+    public TextView textViewVarietyActivity;
+    @BindView(R.id.textViewVarietyActivityDetail)
+    public TextView textViewVarietyActivityDetail;
+
+    @BindView(R.id.textViewVisitGym)
+    public TextView textViewVisitGym;
+    @BindView(R.id.textViewVisitGymDetail)
+    public TextView textViewVisitGymDetail;
+    @BindView(R.id.textViewSave)
+    public TextView textViewSave;
+    @BindView(R.id.textViewSaveDetail)
+    public TextView textViewSaveDetail;
+    @BindView(R.id.textViewInstantBooking)
+    public TextView textViewInstantBooking;
+    @BindView(R.id.textViewInstantBookingDetail)
+    public TextView textViewInstantBookingDetail;
+    @BindView(R.id.textViewHowItWorks)
+    public TextView textViewHowItWorks;
+    @BindView(R.id.textViewExplore)
+    public TextView textViewExplore;
+    @BindView(R.id.textViewExploreDetail)
+    public TextView textViewExploreDetail;
+    @BindView(R.id.textViewPickPlan)
+    public TextView textViewPickPlan;
+    @BindView(R.id.textViewPickPlanDetail)
+    public TextView textViewPickPlanDetail;
+    @BindView(R.id.textViewTrain)
+    public TextView textViewTrain;
+    @BindView(R.id.textViewTrainDetail)
+    public TextView textViewTrainDetail;
+
+    @BindView(R.id.textViewDiscount)
+    public TextView textViewDiscount;
+    @BindView(R.id.textViewDiscountDetail)
+    public TextView textViewDiscountDetail;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +121,61 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
         buyClassesLayout.setOnClickListener(this);
         setToolBar();
         setFAQAdapter();
+        setValues();
+    }
 
+    private void setValues() {
+        textViewWelcome.setText(getValueFromConfig(RemoteConfigConst.WELCOME_P5M_VALUE,context.getResources().getString(R.string.welcome_to_p5m)));
+        textViewWelcomeDetail.setText(getValueFromConfig(RemoteConfigConst.WELCOME_P5M_CONTAIN_VALUE,getString(R.string.on_p5m_you)));
+        textViewMembershipFeatures.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_TITLE_VALUE,getString(R.string.with_the_p5m_membership_you_can)));
+        textViewVarietyActivity.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_ONE_VALUE,getString(R.string.variety_of_activities)));
+        textViewVarietyActivityDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_ONE_CONTAIN_VALUE,getString(R.string.variety_of_activity_details)));
+        textViewVisitGym.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_TWO_VALUE,getString(R.string.visit_gym_feature)));
+        textViewVisitGymDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_TWO_CONTAIN_VALUE,getString(R.string.visit_gym_detail)));
+        textViewSave.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_THREE_VALUE,getString(R.string.save_percent)));
+        textViewSaveDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_THREE_DETAIL_VALUE,getString(R.string.save_detail)));
+        textViewInstantBooking.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_FOUR_VALUE,getString(R.string.instant_booking)));
+        textViewInstantBookingDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_FOUR_DETAIL_VALUE,getString(R.string.instant_booking_detail)));
+        textViewHowItWorks.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_TITLE_VALUE,getString(R.string.how_its_work)));
+        textViewExplore.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_ONE_VALUE,getString(R.string.explore)));
+        textViewExploreDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_ONE_DETAIL_VALUE,getString(R.string.exploreDetail)));
+        textViewPickPlan.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_TWO_VALUE,getString(R.string.pick_a_plan)));
+        textViewPickPlanDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_TWO_DETAIL_VALUE,getString(R.string.that_work_for_you)));
+        textViewTrain.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_THREE_VALUE,getString(R.string.train)));
+        textViewTrainDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_THREE_DETAIL_VALUE,getString(R.string.workout_any_gym)));
+        textViewDiscount.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_FOUR_VALUE,getString(R.string.get_discount)));
+        textViewDiscountDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_FOUR_DETAIL_VALUE,getString(R.string.go_to_different_gym)));
+
+    }
+
+    private String getValueFromConfig(String remoteConfigValue,String defaultValue){
+        try {
+            String value = remoteConfigValue;
+
+            if (value != null && !value.isEmpty()) {
+                Gson g = new Gson();
+                RemoteConfigValueModel p = g.fromJson(value, new com.google.gson.reflect.TypeToken<RemoteConfigValueModel>() {
+                }.getType());
+                remoteConfigdata = p;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (remoteConfigdata == null) {
+            return defaultValue;
+        } else {
+            if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar") &&
+                    !TextUtils.isEmpty(remoteConfigdata.getAr())) {
+                return remoteConfigdata.getAr();
+            } else if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en") &&
+                    !TextUtils.isEmpty(remoteConfigdata.getEn())) {
+                return remoteConfigdata.getEn();
+            }
+            else
+                return defaultValue;
+        }
     }
 
     @Override
@@ -145,13 +246,10 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
             if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar") &&
                     !TextUtils.isEmpty(faqList.get(0).getArabic_question())) {
                 setVisibleAdapter();
-            }
-            else if(LanguageUtils.getLocalLanguage().equalsIgnoreCase("en") &&
+            } else if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en") &&
                     !TextUtils.isEmpty(faqList.get(0).getEnglish_question())) {
                 setVisibleAdapter();
-            }
-            else
-            {
+            } else {
                 textViewFrequentlyAskedQuestions.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.GONE);
 

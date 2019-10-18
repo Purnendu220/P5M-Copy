@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<defaultsMap>
+    <entry>
+        <key>SearchBarText</key>
+        <value>البحث</value>
+    </entry>
+    <entry>
+        <key>BookButton</key>
+        <value>حجز</value>
+    </entry>
+    <entry>
+        <key>BookButtonColor</key>
+        <value>#3d85ea</value>
+    </entry>
+    <entry>
+        <key>BookInClassProfile</key>
+        <value>احجز الكلاس</value>
+    </entry>
+    <entry>
+        <key>BookWithFriend</key>
+        <value>احجز مع صديق</value>
+    </entry>
+    <entry>
+        <key>BookInClassProfileColor</key>
+        <value>#3d85ea</value>
+    </entry>
+    <entry>
+        <key>BookWithFriendColor</key>
+        <value>#3d85ea</value>
+    </entry>
+    <entry>
+        <key>BookWithFriendBGColor</key>
+        <value>#FFFFFF</value>
+    </entry>
+    <entry>
+        <key>BookedButton</key>
+        <value>محجوز</value>
+    </entry>
+
+    <entry>
+        <key>WAITLIST_BUTTON</key>
+        <value>قائمة الانتظار</value>
+    </entry>
+    <entry>
+        <key>WAITLISTED_BUTTON</key>
+        <value>في قائمة الانتظار</value>
+    </entry>
+    <entry>
+        <key>FullButtonColor</key>
+        <value>#FF0000</value>
+    </entry>
+    <entry>
+        <key>BookedButtonColor</key>
+        <value>#FF8C00</value>
+    </entry>
+    <entry>
+        <key>buyClassButtonColor</key>
+        <value>#3d85ea</value>
+    </entry>
+    <entry>
+        <key>buyClasses</key>
+        <value>شراء كلاسات</value>
+    </entry>
+    <entry>
+        <key>CLASS_CARD_TEXT</key>
+        <value>احجز الكلاس</value>
+    </entry>
+    <entry>
+        <key>Recommended_For_You</key>
+        <value>مقترح لك</value>
+    </entry>
+    <entry>
+        <key>RECOMMENDED_FOR_YOU_COLOR</key>
+        <value>#262626</value>
+    </entry>
+    <entry>
+        <key>SESSION_EXPIRED</key>
+        <value>انتهت الجلسة</value>
+    </entry>
+    <entry>
+        <key>SESSION_EXPIRED_COLOR</key>
+        <value>#FF0000</value>
+    </entry>
+    <entry>
+        <key>INVITE_FRIENDS</key>
+        <value>دعوة الأصدقاء</value>
+    </entry>
+    <entry>
+        <key>ADD_TO_WISHLIST</key>
+        <value>إضافة لقائمة الأمنيات</value>
+    </entry>
+    <entry>
+        <key>JOIN_WAITLIST</key>
+        <value>انضم إلى قائمة الانتظار</value>
+    </entry>
+    <entry>
+        <key>PAYMENT_PACKAGE</key>
+        <value>حجز الكلاس</value>
+    </entry>
+    <entry>
+        <key>PAYMENT_PENDING</key>
+        <value>عرض تاريخ الدفع</value>
+    </entry>
+    <entry>
+        <key>PAYMENT_FAILURE</key>
+        <value>عرض تاريخ الدفع</value>
+    </entry>
+    <entry>
+        <key>PAYMENT_CLASS</key>
+        <value>عرض الجدول</value>
+    </entry>
+    <entry>
+        <key>GYM_VISIT_LIMIT_TEXT</key>
+        <value>الاطلاع على حدود زيارة النوادي</value>
+    </entry>
+    <entry>
+        <key>SELECT_PLAN_TEXT</key>
+        <value>اختر خطة</value>
+    </entry>
+    <entry>
+        <key>SELECT_PLAN_COLOR</key>
+        <value>#3d85ea</value>
+    </entry>
+    <entry>
+        <key>GYM_VISIT_LIMIT_DETAIL_TEXT</key>
+        <value>هناك حد لعدد المرات التي يمكن أن تزور فيها كل نادي. قم بالاطلاع على ذلك تحت كل اشتراك. عند الوصول للحد، بالامكان مواصلة زيارة النادي المفضل لديك عن طريق شراء زيارة واحدة.</value>
+    </entry>
+    <entry>
+        <key>MEMBERSHIP_OFFER_COLOR</key>
+        <value>#1FB257</value>
+    </entry>
+    <entry>
+        <key>testimonials</key>
+        <value>
+            <![CDATA[[{"name":"XEINA", "message_ar": "", "message_eng":"I love how P5M now includes the option of booking classes with friends."},{"name":"RANA", "message_ar": "", "message_eng":"Great way to try out new gyms & classes and decide where you wanna go."}]]]></value>
+    </entry>
+    <entry>
+        <key>faqs</key>
+        <value>[{"english_question": "Why are you use P5M?", "english_answer": "P5M app enables you
+            to visit multiple gyms and attend diffent activities with only one membership. You can
+            even buy monthly subscriptions if you wish that is how you would like to roll.",
+            "arabic_question": "", "arabic_answer": ""}]
+        </value>
+    </entry>
+
+    <entry>
+        <key>package_tags</key>
+        <value>[{\"id\": 2, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 3, \"tag_en\": \"\",
+            \"tag_ar\": \"\"}, {\"id\": 4, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 10,
+            \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 11, \"tag_en\": \"\", \"tag_ar\": \"\"}]
+        </value>
+    </entry>
+    <entry>
+        <key>Welcome_title</key>
+        <value>مرحبًا بكم على تطبيق P5M!</value>
+    </entry>
+    <entry>
+        <key>Welcome_sub</key>
+        <value>على تطبيق  P5M يمكنك زيارة نوادي رياضية متعددة والقيام بأنشطة متعددة باستخدام باقة واحدة فقط!
+        </value>
+    </entry>
+    <entry>
+        <key>Section_one_title</key>
+        <value>مع  اشتراك P5M ، يمكنك:</value>
+    </entry>
+    <entry>
+        <key>Section_one_sub_one</key>
+        <value>مجموعة متنوعة من الأنشطة الرياضية</value>
+    </entry>
+    <entry>
+        <key>Section_one_sub_one_detail</key>
+        <value>مع اشتراك P5M يمكنك التسجيل في كلاس سباحة اليوم ، وغداً كلاس كروسفت و اليوغا في عطلة نهاية الأسبوع. كل كلاس في نادي رياضي مختلف. </value>
+    </entry>
+    <entry>
+        <key>Section_one_sub_two</key>
+        <value>انضم الى 40 نادي رياضي مع اشتراك واحدة</value>
+    </entry>
+    <entry>
+        <key>Section_one_sub_two_detail</key>
+        <value>يمكنك زيارة نادي رياضي مختلف لكل تمرين</value>
+    </entry>
+    <entry>
+        <key>Section_one_sub_three</key>
+        <value>وفر ٤٠٪</value>
+    </entry>
+    <entry>
+        <key>Section_one_sub_three_detail</key>
+        <value>إذا تشتري عادتاً كلاس واحد إلىنادي رياضي ، ستوفر ٤٠ ٪ عن طريق اشتراك P5M.ادفع ٣٠KWD ل ٥ كلاسات بدلاً من ان تدفع  ٥٠KWD !
+        </value>
+    </entry>
+    <entry>
+        <key>Section_one_sub_four</key>
+        <value><![CDATA[الحجز الفوري والدفع عبر الإنترنت]]></value>
+    </entry>
+    <entry>
+        <key>Section_one_sub_four_detail</key>
+        <value>احجز وادفع لتمرينك في الليل ، فيالصباح أو في الطريق إلى الكلاس. لا تنتظر عبر الهاتف أو تقلق بشأن حجزك.
+        </value>
+    </entry>
+    <entry>
+        <key>Section_two_title</key>
+        <value>كيف يستخدم؟</value>
+    </entry>
+    <entry>
+        <key>Section_two_sub_one</key>
+        <value>اكتشف</value>
+    </entry>
+    <entry>
+        <key>Section_two_sub_one_detail</key>
+        <value>يمكنك زيارة نادي رياضي مختلف لكل تمرين</value>
+    </entry>
+    <entry>
+        <key>Section_two_sub_two_detail</key>
+        <value>اختر عدد الكلاسات بناءً على مستوى لياقتك الحالية. واستخدم كلاساتك في جميع النوادي الرياضية على التطبيق.
+        </value>
+    </entry>
+    <entry>
+        <key>Section_two_sub_three</key>
+        <value>تمرن</value>
+    </entry>
+    <entry>
+        <key>Section_two_sub_three_detail</key>
+        <value> تدرب في أي نادي رياضي تريد ، في أي وقتتريد ،و ادفع أقل.</value>
+    </entry>
+    <entry>
+        <key>Section_two_sub_four</key>
+        <value>احصل على خصم ١٥٪</value>
+    </entry>
+    <entry>
+        <key>Section_two_sub_four_detail</key>
+        <value>
+            <![CDATA[في كل مرة تقوم بتجديد اشتراكك علىP5M سوف تحصل على خصم !  لمساعدتك في الحصول على اللياقة البدنية والحفاظ عليها!]]></value>
+    </entry>
+    <entry>
+        <key>plan_description</key>
+        <value>\"\"</value>
+    </entry>
+    <entry>
+        <key>drop_in_cost</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>show_select_options</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>drop_in_description</key>
+        <value></value>
+    </entry>
+
+</defaultsMap>
