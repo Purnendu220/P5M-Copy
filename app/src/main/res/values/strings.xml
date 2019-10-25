@@ -583,5 +583,8 @@ Would you like to view your balance? </string>
     <string name="show_drop_in_cost" translatable="false">true</string>
     <string name="show_selection_option">true</string>
     <string name="drop_in_description" translatable="false" />
+    <string name="fitness_level">Class Level</string>
+    <string name="priceModel">Class Type</string>
+    <string name="no_class_available">No Class Available</string>
 
 </resources>

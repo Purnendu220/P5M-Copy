@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -68,6 +69,9 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
     @BindView(R.id.textGymVisitLimits)
     TextView textGymVisitLimits;
+
+    @BindView(R.id.imageViewInfo)
+    ImageView imageViewInfo;
 
     @BindView(R.id.constraintLayout)
     ConstraintLayout constraintLayout;
@@ -157,7 +161,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
         swipeRefreshLayout.setOnRefreshListener(this);
         textGymVisitLimits.setOnClickListener(this);
-        constraintLayout.setOnClickListener(this);
+        imageViewInfo.setOnClickListener(this);
         //FirebaseDynamicLinnk.getDynamicLink(this,getArguments());
         navigatedFrom = getArguments().getInt(AppConstants.DataKey.NAVIGATED_FROM_INT, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
         classModel = (ClassModel) getArguments().getSerializable(AppConstants.DataKey.CLASS_OBJECT);
@@ -367,7 +371,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                 }
             }
             if (user.isBuyMembership()) {
-                constraintLayout.setVisibility(View.VISIBLE);
+                imageViewInfo.setVisibility(View.VISIBLE);
 
 
                 swipeRefreshLayout.setRefreshing(true);
@@ -381,7 +385,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                 }
 
             } else {
-                constraintLayout.setVisibility(View.GONE);
+//                constraintLayout.setVisibility(View.GONE);
                 textGymVisitLimits.setVisibility(View.VISIBLE);
             }
             memberShipAdapter.notifyDataSetChanges();
@@ -615,7 +619,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                     PackageLimitsActivity.openActivity(context, "");
 
                     break;
-                case R.id.constraintLayout:
+                case R.id.imageViewInfo:
                     MembershipInfoActivity.openActivity(context);
 
                     break;

@@ -23,6 +23,9 @@ public class ScheduleRequest {
     private List<?> gymList;
     private List<Integer> branchList;
     private List<?> timingList;
+    private List<String> fitnessLevelList;
+    private List<String> priceModelList;
+
     private int size;
 
     public String getClassDate() {
@@ -95,5 +98,21 @@ public class ScheduleRequest {
 
     public int getSize() {
         return size;
+    }
+
+    public List<String> getFitnessLevelList() {
+        return fitnessLevelList;
+    }
+
+    public void setFitnessLevelList(List<String> fitnessLevelList) {
+        this.fitnessLevelList = fitnessLevelList;
+    }
+
+    public List<String> getPriceModelList() {
+        return priceModelList;
+    }
+
+    public void setPriceModelList(List<String> priceModelList) {
+        this.priceModelList = priceModelList;
     }
 }

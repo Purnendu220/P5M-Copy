@@ -272,6 +272,22 @@ public class MyPreferences {
 
                 }
 
+                else if (classesFilter.getObjectClassName().equals("FitnessLevel")) {
+
+                    Filter.Gym model = new Filter.Gym(object.getInt("id") + "", object.getString("name"));
+                    classesFilter.setObject(model);
+
+                }
+ else if (classesFilter.getObjectClassName().equals("PriceModel")) {
+
+                    Filter.Gym model = new Filter.Gym(object.getInt("id") + "", object.getString("name"));
+                    classesFilter.setObject(model);
+
+                }
+
+
+                // Todo Filter fitnessLevel
+
                 classesFilters.add(classesFilter);
             }
 

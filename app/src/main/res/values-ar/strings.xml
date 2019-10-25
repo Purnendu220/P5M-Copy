@@ -948,5 +948,7 @@
     <string name="not_applicable">لا يمكن تفعيله</string>
     <string name="plan_description">\"\"</string>
     <string name="show_selection_option">true</string>
+    <string name="fitness_level">Fitness Level</string>
+    <string name="priceModel">PriceModel</string>
 
 </resources>
