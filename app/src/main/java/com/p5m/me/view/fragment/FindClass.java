@@ -29,6 +29,7 @@ import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.Main.FilterActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
@@ -176,7 +177,7 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
             textViewNotificationMessageCounter.setVisibility(View.INVISIBLE);
         } else {
             textViewNotificationMessageCounter.setVisibility(View.VISIBLE);
-            textViewNotificationMessageCounter.setText(String.valueOf(TempStorage.getFilters().size()));
+            textViewNotificationMessageCounter.setText(LanguageUtils.numberConverter(TempStorage.getFilters().size()));
         }
     }
 

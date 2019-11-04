@@ -53,6 +53,8 @@
             android:text="Red Bike Studio"
             android:textColor="@color/black"
             android:textSize="@dimen/text_medium"
+            android:ellipsize="end"
+            android:maxLines="2"
             app:layout_constraintEnd_toEndOf="@+id/textViewGymName"
             app:layout_constraintStart_toStartOf="@+id/textViewGymName"
             app:layout_constraintTop_toBottomOf="@+id/textViewGymName" />

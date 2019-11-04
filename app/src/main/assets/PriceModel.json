@@ -2,24 +2,28 @@
     {
         "id" : "4",
         "name" : "Group",
+        "name_ar" : "مجموعة",
         "priceModel" : "CHARGABLE",
         "status": false
     },
     {
         "id" : "1",
         "name" : "Free",
+        "name_ar" : "مجاناً",
         "priceModel" : "FOC",
         "status": false
     },
     {
         "id" : "2",
-        "name" : "PT",
+        "name" : "Personal Training",
+        "name_ar" : "تمرين فردي",
         "priceModel" : "PT",
         "status": false
     },
     {
         "id" : "3",
         "name" : "Workshop",
+        "name_ar" : "ورشة عمل",
         "priceModel" : "WORKSHOP",
         "status": false
     }

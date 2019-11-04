@@ -109,6 +109,8 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
     public TextView textViewDiscount;
     @BindView(R.id.textViewDiscountDetail)
     public TextView textViewDiscountDetail;
+   @BindView(R.id.buyClasses)
+    public TextView buyClasses;
 
 
     @Override
@@ -166,15 +168,12 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
         if (remoteConfigdata == null) {
             return defaultValue;
         } else {
-            if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar") &&
-                    !TextUtils.isEmpty(remoteConfigdata.getAr())) {
+            if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
                 return remoteConfigdata.getAr();
-            } else if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en") &&
-                    !TextUtils.isEmpty(remoteConfigdata.getEn())) {
+            } else  {
                 return remoteConfigdata.getEn();
             }
-            else
-                return defaultValue;
+
         }
     }
 

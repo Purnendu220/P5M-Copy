@@ -132,7 +132,7 @@
     <dimen name="membership_img_width" >164dp</dimen>
 
     <dimen name="membership_img_height">158dp</dimen>
-
+    <dimen name="membership_icon">60dp</dimen>
 
 
 </resources>

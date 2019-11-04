@@ -20,6 +20,7 @@ public class RemoteConfigure {
     private Context context;
 
     public RemoteConfigure() {
+
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         configSettings = new FirebaseRemoteConfigSettings.Builder()
                 .setDeveloperModeEnabled(BuildConfig.DEBUG)
@@ -43,8 +44,6 @@ public class RemoteConfigure {
                             if (task.isSuccessful()) {
                                 mFirebaseRemoteConfig.setDefaults(R.xml.remote_configure_ar);
                                 mFirebaseRemoteConfig.fetchAndActivate();
-
-
 
                                 setArabicConfigValues();
                             }
@@ -137,6 +136,9 @@ public class RemoteConfigure {
         RemoteConfigConst.DROP_IN_COST_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.DROP_IN_COST);
         RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.SHOW_SELECTION_OPTIONS);
         RemoteConfigConst.PLAN_DESCRIPTION_DROP_IN_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.PLAN_DESCRIPTION_DROP_IN);
+        RemoteConfigConst.ON_BOARDING_DATA_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.ON_BOARDING_DATA);
+
+
     }
 
 
@@ -192,5 +194,7 @@ public class RemoteConfigure {
         RemoteConfigConst.DROP_IN_COST_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.DROP_IN_COST);
         RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.SHOW_SELECTION_OPTIONS);
         RemoteConfigConst.PLAN_DESCRIPTION_DROP_IN_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.PLAN_DESCRIPTION_DROP_IN);
+        RemoteConfigConst.ON_BOARDING_DATA_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.ON_BOARDING_DATA);
+
     }
 }

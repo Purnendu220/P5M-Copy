@@ -2,16 +2,19 @@
     {
         "id" : "1",
         "name" : "Basic",
+        "name_ar" : "مبتدئ",
         "level" : "BASIC"
     },
     {
         "id" : "2",
         "name" : "Intermediate",
+        "name_ar" : "متوسط",
         "level" : "INTERMEDIATE"
     },
     {
         "id" : "3",
         "name" : "Advanced",
+        "name_ar" : "متقدم",
         "level" : "ADVANCED"
     }
 ]

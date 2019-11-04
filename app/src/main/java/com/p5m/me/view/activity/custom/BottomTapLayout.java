@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.p5m.me.R;
+import com.p5m.me.utils.LanguageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -172,7 +173,7 @@ public class BottomTapLayout implements View.OnClickListener {
 
             if (tabView.tab.id == id) {
                 tabView.textViewNotificationCounter.setVisibility(count == 0 ? View.GONE : View.VISIBLE);
-                tabView.textViewNotificationCounter.setText(String.valueOf(count));
+                tabView.textViewNotificationCounter.setText(LanguageUtils.numberConverter(count));
             }
         }
     }

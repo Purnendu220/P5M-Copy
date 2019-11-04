@@ -78,7 +78,9 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif"
                             android:gravity="top"
-                            android:text="  OR  "
+                            android:paddingLeft="@dimen/margin_10"
+                            android:paddingRight="@dimen/margin_10"
+                            android:text="@string/or"
                             android:textColor="@color/theme_dark_text"
                             android:textSize="18sp" />
 

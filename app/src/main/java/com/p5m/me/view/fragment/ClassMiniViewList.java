@@ -141,7 +141,8 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
     public void updateUpcomingClasses(Events.UpdateUpcomingClasses data) {
         if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING ||
                 shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
-            classListAdapter.getList().clear();
+            classListAdapter.clearAll();
+            /////////
             classListAdapter.notifyDataSetChanged();
             onRefresh();
         }
@@ -152,7 +153,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
         if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
             shouldRefresh = true;
             onTabSelection(fragmentPositionInViewPager);
-            classListAdapter.getList().clear();
+            classListAdapter.clearAll();
             classListAdapter.notifyDataSetChanged();
         } else {
             handleClassJoined(data.data);
@@ -190,7 +191,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
         if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
             shouldRefresh = true;
             onTabSelection(fragmentPositionInViewPager);
-            classListAdapter.getList().clear();
+            classListAdapter.clearAll();
             classListAdapter.notifyDataSetChanged();
         }
         else {
@@ -394,6 +395,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
         page = 0;
+
         classListAdapter.loaderReset();
 
         callApi();
@@ -419,7 +421,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
             onRefresh();
         } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST ||
                 shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
-            classListAdapter.getList().clear();
+            classListAdapter.clearAll();
             classListAdapter.notifyDataSetChanged();
             onRefresh();
 
