@@ -35,18 +35,17 @@ public class Filter implements Serializable {
     }
 
     public static class FitnessLevel {
-        public String id;
-        public String name;
+        /**
+         * id : 1
+         * name : Basic
+         * name_ar : مبتدئ
+         * level : BASIC
+         */
 
-
-
-        public String level;
-
-        public FitnessLevel(String id, String name,String level) {
-            this.id = id;
-            this.name = name;
-            this.level = level;
-        }
+        private String id;
+        private String name;
+        private String name_ar;
+        private String level;
 
         public String getId() {
             return id;
@@ -62,6 +61,14 @@ public class Filter implements Serializable {
 
         public void setName(String name) {
             this.name = name;
+        }
+
+        public String getName_ar() {
+            return name_ar;
+        }
+
+        public void setName_ar(String name_ar) {
+            this.name_ar = name_ar;
         }
 
         public String getLevel() {
@@ -74,25 +81,20 @@ public class Filter implements Serializable {
     }
 
     public static class PriceModel {
-        public String id;
-        public String name;
-        public String priceModel;
 
-        public Boolean getStatus() {
-            return status;
-        }
+        /**
+         * id : 4
+         * name : Group
+         * name_ar : مجموعة
+         * priceModel : CHARGABLE
+         * status : false
+         */
 
-        public void setStatus(Boolean status) {
-            this.status = status;
-        }
-
-        public Boolean status;
-
-        public PriceModel(String id, String name, String priceModel) {
-            this.id = id;
-            this.name = name;
-            this.priceModel = priceModel;
-        }
+        private String id;
+        private String name;
+        private String name_ar;
+        private String priceModel;
+        private boolean status;
 
         public String getId() {
             return id;
@@ -106,18 +108,33 @@ public class Filter implements Serializable {
             return name;
         }
 
-        public String getPriceModel() {
-            return priceModel;
-        }
-
         public void setName(String name) {
             this.name = name;
+        }
+
+        public String getName_ar() {
+            return name_ar;
+        }
+
+        public void setName_ar(String name_ar) {
+            this.name_ar = name_ar;
+        }
+
+        public String getPriceModel() {
+            return priceModel;
         }
 
         public void setPriceModel(String priceModel) {
             this.priceModel = priceModel;
         }
 
+        public boolean isStatus() {
+            return status;
+        }
+
+        public void setStatus(boolean status) {
+            this.status = status;
+        }
     }
 
     public static class Gender implements Serializable {

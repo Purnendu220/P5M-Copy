@@ -48,6 +48,7 @@ import static com.p5m.me.remote_config.RemoteConfigConst.GYM_VISIT_LIMIT_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.INVITE_FRIENDS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.JOIN_WAITLIST_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.MEMBERSHIP_OFFER_COLOR_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.ON_BOARDING_DATA_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PACKAGE_TAGS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_CLASS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_FAILURE_KEY;
@@ -116,7 +117,7 @@ public class RemoteConfigSetUp {
         firebaseRemoteConfig.setDefaultsAsync(defaults);
         setValueOfField(constValue, defaultValue);
         if (Constants.LANGUAGE == Locale.ENGLISH || constValue == TESTIMONIALS_KEY ||
-                constValue == FAQ_KEY || constValue == SECTION_ONE_SUB_ONE_KEY || constValue == WELCOME_P5M_KEY || constValue == WELCOME_P5M_CONTAIN_KEY ||
+                constValue == FAQ_KEY ||constValue == ON_BOARDING_DATA_KEY || constValue == SECTION_ONE_SUB_ONE_KEY || constValue == WELCOME_P5M_KEY || constValue == WELCOME_P5M_CONTAIN_KEY ||
                 constValue == SECTION_ONE_TITLE_KEY || constValue == PACKAGE_TAGS_KEY || constValue == SECTION_ONE_SUB_ONE_CONTAIN_KEY || constValue == SECTION_ONE_SUB_TWO_KEY ||
                 constValue == SECTION_ONE_SUB_TWO_CONTAIN_KEY || constValue == SECTION_ONE_SUB_THREE_KEY || constValue == SECTION_ONE_SUB_THREE_DETAIL_KEY || constValue == SECTION_ONE_SUB_FOUR_KEY ||
                 constValue == SECTION_ONE_SUB_FOUR_DETAIL_KEY || constValue == SECTION_TWO_TITLE_KEY || constValue == SECTION_TWO_SUB_ONE_KEY || constValue == SECTION_TWO_SUB_ONE_DETAIL_KEY ||
@@ -125,7 +126,7 @@ public class RemoteConfigSetUp {
 
         ) {
 
-            if(BuildConfig.FIREBASE_IS_PRODUCTION){
+            if (BuildConfig.FIREBASE_IS_PRODUCTION) {
                 firebaseRemoteConfig.fetchAndActivate()
                         .addOnCompleteListener(context, new OnCompleteListener<Boolean>() {
                             @Override
@@ -141,8 +142,7 @@ public class RemoteConfigSetUp {
                                 }
                             }
                         });
-            }
-            else{
+            } else {
                 firebaseRemoteConfig.fetch(cacheExpiration)
                         .addOnCompleteListener(context, new OnCompleteListener<Void>() {
                             @Override
@@ -160,7 +160,6 @@ public class RemoteConfigSetUp {
                             }
                         });
             }
-
 
 
         }
@@ -342,17 +341,20 @@ public class RemoteConfigSetUp {
                 case RemoteConfigConst.SECTION_TWO_SUB_FOUR_DETAIL_KEY:
                     RemoteConfigConst.SECTION_TWO_SUB_FOUR_DETAIL_VALUE = keyValue;
                     break;
-                    case PLAN_DESCRIPTION_KEY:
+                case PLAN_DESCRIPTION_KEY:
                     RemoteConfigConst.PLAN_DESCRIPTION_VALUE = keyValue;
                     break;
-                    case DROP_IN_COST_KEY:
+                case DROP_IN_COST_KEY:
                     RemoteConfigConst.DROP_IN_COST_VALUE = keyValue;
                     break;
-                    case SHOW_SELECTION_OPTIONS_KEY:
+                case SHOW_SELECTION_OPTIONS_KEY:
                     RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE = keyValue;
                     break;
                 case PLAN_DESCRIPTION_DROP_IN_KEY:
                     RemoteConfigConst.PLAN_DESCRIPTION_DROP_IN_VALUE = keyValue;
+                    break;
+                case ON_BOARDING_DATA_KEY:
+                    RemoteConfigConst.ON_BOARDING_DATA_VALUE = keyValue;
                     break;
             }
         }
@@ -611,9 +613,10 @@ public class RemoteConfigSetUp {
                 RemoteConfigConst.SHOW_SELECTION_OPTIONS, context.getResources().getString(R.string.show_selection_option));
         setValue(PLAN_DESCRIPTION_DROP_IN_KEY,
                 RemoteConfigConst.PLAN_DESCRIPTION_DROP_IN, context.getResources().getString(R.string.drop_in_description));
+        setValue(ON_BOARDING_DATA_KEY,
+                RemoteConfigConst.ON_BOARDING_DATA, "");
 
     }
-
 
 
 }

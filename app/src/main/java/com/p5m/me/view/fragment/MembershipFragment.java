@@ -468,7 +468,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                         if (classModel.getDuration() == 1) {
                             message = context.getResources().getString(R.string.a_week);
                         } else
-                            message = String.format(context.getResources().getString(R.string.weeks_value), String.valueOf(classModel.getDuration()));
+                            message = String.format(context.getResources().getString(R.string.weeks_value), String.valueOf(LanguageUtils.numberConverter(classModel.getDuration())));
 
                     }
                     DialogUtils.showBasic(context, String.format(getString(R.string.clas_exceed), message),"", getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {

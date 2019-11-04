@@ -12,6 +12,8 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.p5m.me.R;
 import com.p5m.me.data.InfoScreenData;
+import com.p5m.me.utils.ImageUtils;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -22,10 +24,12 @@ import java.util.List;
 public class InfoScreenAdapter extends PagerAdapter {
     private LayoutInflater layoutInflater;
     private List<InfoScreenData> infoScreenDataList;
+    private Context context;
 
     public InfoScreenAdapter(Context context, Activity activity, List<InfoScreenData> infoScreenDataList) {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.infoScreenDataList = infoScreenDataList;
+        this.context = context;
     }
 
     @Override
@@ -37,7 +41,11 @@ public class InfoScreenAdapter extends PagerAdapter {
         TextView text = view.findViewById(R.id.text);
         InfoScreenData infoScreenData = infoScreenDataList.get(position);
 
-        image.setImageResource(infoScreenData.resource);
+        if (infoScreenData.image != null)
+            ImageUtils.setImage(context, infoScreenData.image, image);
+        else
+            image.setImageResource(infoScreenData.resource);
+
         text.setText(infoScreenData.text);
 
         return view;

@@ -41,6 +41,7 @@ import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.activity.custom.MaxHeightScrollView;
@@ -53,6 +54,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FilterActivity extends BaseActivity implements NetworkCommunicator.RequestListener<ResponseModel>, AdapterCallbacks, View.OnClickListener {
+
 
     public static void openActivity(Context context, Activity activity, View sharedElement) {
 
@@ -165,9 +167,9 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
         } else if (classesFilter.getObject() instanceof GymDataModel) {
             imageLeft.setImageResource(R.drawable.filter_gym);
         } else if (classesFilter.getObject() instanceof Filter.PriceModel) {
-            imageLeft.setImageResource(R.drawable.small_special_icon);
+            imageLeft.setImageResource(R.drawable.multiple_users_grey_fill);
         } else if (classesFilter.getObject() instanceof Filter.FitnessLevel) {
-            imageLeft.setImageResource(R.drawable.class_level_get);
+            imageLeft.setImageResource(R.drawable.outline_gray);
         } else {
             imageLeft.setImageResource(R.drawable.filter_activity);
         }
@@ -268,8 +270,8 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
         classesFilterList.add(new ClassesFilter<ClassActivity>("", true, "ClassActivity", getString(R.string.activity), R.drawable.filter_activity_main, ClassesFilter.TYPE_HEADER));
         classesFilterList.add(new ClassesFilter<Filter.Time>("", true, "Time", getString(R.string.time), R.drawable.filter_time_main, ClassesFilter.TYPE_HEADER));
         classesFilterList.add(new ClassesFilter<Filter.Gym>("", true, "Gym", getString(R.string.gym), R.drawable.filter_gym_main, ClassesFilter.TYPE_HEADER));
-        classesFilterList.add(new ClassesFilter<Filter.FitnessLevel>("", true, "FitnessLevel", getString(R.string.fitness_level), R.drawable.class_level_get, ClassesFilter.TYPE_HEADER));
-        classesFilterList.add(new ClassesFilter<Filter.PriceModel>("", true, "PriceModel", getString(R.string.priceModel), R.drawable.small_special_icon, ClassesFilter.TYPE_HEADER));
+        classesFilterList.add(new ClassesFilter<Filter.FitnessLevel>("", true, "FitnessLevel", getString(R.string.fitness_level), R.drawable.outline, ClassesFilter.TYPE_HEADER));
+        classesFilterList.add(new ClassesFilter<Filter.PriceModel>("", true, "PriceModel", getString(R.string.priceModel), R.drawable.multiple_users_silhouette, ClassesFilter.TYPE_HEADER));
 
         filterAdapter.setClassesFilterList(classesFilterList);
 
@@ -299,7 +301,6 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
 
         classesFilters.add(filter);
     }
-
 
 
     public void addClassFilterGender(List<ClassesFilter> classesFilters, Filter.Gender gender) {
@@ -388,7 +389,8 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
 
     private void getFitnessLevelAndPriceModel() {
         try {
-            fitnessLevelList = new Gson().fromJson(Helper.getFitnessLevelFromAsset(context), new TypeToken<List<Filter.FitnessLevel>>(){}.getType());
+            fitnessLevelList = new Gson().fromJson(Helper.getFitnessLevelFromAsset(context), new TypeToken<List<Filter.FitnessLevel>>() {
+            }.getType());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -396,7 +398,11 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
         if (!fitnessLevelList.isEmpty()) {
             List<ClassesFilter> classesFilters = new ArrayList<>();
             for (Filter.FitnessLevel fitnessLevel : fitnessLevelList) {
-                ClassesFilter classesFilter = new ClassesFilter(fitnessLevel.getId() + "", true, "FitnessLevel",fitnessLevel.getName(), 0, ClassesFilter.TYPE_ITEM);
+                ClassesFilter classesFilter;
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar"))
+                    classesFilter = new ClassesFilter(fitnessLevel.getId() + "", true, "FitnessLevel", fitnessLevel.getName_ar(), 0, ClassesFilter.TYPE_ITEM);
+                else
+                    classesFilter = new ClassesFilter(fitnessLevel.getId() + "", true, "FitnessLevel", fitnessLevel.getName(), 0, ClassesFilter.TYPE_ITEM);
                 classesFilter.setObject(fitnessLevel);
                 classesFilters.add(classesFilter);
             }
@@ -414,7 +420,11 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
         if (!priceModelList.isEmpty()) {
             List<ClassesFilter> classesFilters = new ArrayList<>();
             for (Filter.PriceModel priceModel : priceModelList) {
-                ClassesFilter classesFilter = new ClassesFilter(priceModel.getId() + "", true, "PriceModel", priceModel.getName(), 0, ClassesFilter.TYPE_ITEM);
+                ClassesFilter classesFilter;
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar"))
+                    classesFilter = new ClassesFilter(priceModel.getId() + "", true, "PriceModel", priceModel.getName_ar(), 0, ClassesFilter.TYPE_ITEM);
+                else
+                    classesFilter = new ClassesFilter(priceModel.getId() + "", true, "PriceModel", priceModel.getName(), 0, ClassesFilter.TYPE_ITEM);
                 classesFilter.setObject(priceModel);
                 classesFilters.add(classesFilter);
             }

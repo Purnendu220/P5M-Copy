@@ -6,12 +6,20 @@ import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import com.p5m.me.R;
 import com.p5m.me.adapters.InfoScreenAdapter;
+import com.p5m.me.data.FAQ;
 import com.p5m.me.data.InfoScreenData;
+import com.p5m.me.data.OnBoardingData;
+import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.ViewPagerIndicator;
 import com.p5m.me.view.activity.base.BaseActivity;
 
@@ -33,6 +41,7 @@ public class InfoScreen extends BaseActivity implements ViewPager.OnPageChangeLi
     public Button buttonRegister;
 
     private InfoScreenAdapter infoScreenAdapter;
+    private List<OnBoardingData> onBoardingDataList;
 
     public static void open(Context context) {
         context.startActivity(new Intent(context, InfoScreen.class));
@@ -50,8 +59,61 @@ public class InfoScreen extends BaseActivity implements ViewPager.OnPageChangeLi
 
         viewPager.addOnPageChangeListener(this);
     }
-
     private void setViewPagerAdapter() {
+        try {
+
+            String onBoardingDataValue = RemoteConfigConst.ON_BOARDING_DATA_VALUE;
+            if (onBoardingDataValue != null && !onBoardingDataValue.isEmpty()) {
+                Gson g = new Gson();
+                List<OnBoardingData> p = g.fromJson(onBoardingDataValue, new TypeToken<List<OnBoardingData>>() {
+                }.getType());
+                onBoardingDataList = p;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (onBoardingDataList == null) {
+            setDefaultViewPagerAdapter();
+            return;
+        } else {
+            if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar") &&
+                    !TextUtils.isEmpty(onBoardingDataList.get(0).getText_ar())) {
+                setViewPager();
+            } else if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en") &&
+                    !TextUtils.isEmpty(onBoardingDataList.get(0).getText_en())) {
+                setViewPager();
+            } else {
+               setDefaultViewPagerAdapter();
+
+            }
+
+        }
+    }
+
+    private void setViewPager() {
+        List<InfoScreenData> infoScreenDataList = new ArrayList<InfoScreenData>();
+        if(LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+            for (OnBoardingData data : onBoardingDataList) {
+                infoScreenDataList.add(new InfoScreenData(data.getText_ar(), data.getImage()));
+            }
+        }
+        else {
+            for (OnBoardingData data : onBoardingDataList) {
+                infoScreenDataList.add(new InfoScreenData(data.getText_en(), data.getImage()));
+            }
+        }
+        // Pager Setup..
+
+        infoScreenAdapter = new InfoScreenAdapter(context, activity, infoScreenDataList);
+        viewPager.setAdapter(infoScreenAdapter);
+
+        // Indicator setup..
+        new ViewPagerIndicator(context, ViewPagerIndicator.STYLE_SMALL).setup(viewPager, layoutIndicator, R.drawable.circle_black, R.drawable.circle_grey);
+
+    }
+
+    private void setDefaultViewPagerAdapter() {
         // Create data..
         List<InfoScreenData> infoScreenDataList = new ArrayList<>(4);
         infoScreenDataList.add(new InfoScreenData(context.getString(R.string.info_screen_desc_1), R.drawable.info_screen_1));
