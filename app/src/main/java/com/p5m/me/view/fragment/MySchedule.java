@@ -33,6 +33,7 @@ import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.Main.NotificationActivity;
 import com.p5m.me.view.activity.Main.SearchActivity;
@@ -131,7 +132,7 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
         int count = MyPreferences.initialize(context).getNotificationCount();
 
         textViewNotificationMessageCounter.setVisibility(count == 0 ? View.GONE : View.VISIBLE);
-        textViewNotificationMessageCounter.setText(String.valueOf(count));
+        textViewNotificationMessageCounter.setText(String.valueOf(LanguageUtils.numberConverter(count)));
     }
 
     @Override

@@ -531,8 +531,8 @@ Would you like to view your balance? </string>
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="classess_remaining">You have %d/%d classes remaining</string>
     <string name="so_far_you_visited">So far you visited</string>
-    <string name="drop_in_text">You have 1 active drop in for %s, expire on %s</string>
-    <string name="drop_in_unlimited">You have 1 active drop in for %s</string>
+    <string name="drop_in_text">You have 1 active drop-in at %s, expire on %s</string>
+    <string name="drop_in_unlimited">You have 1 active drop-in for %s</string>
     <string name="_two_drop_in_text">You have 2 active drop-ins for %s, expires on %s</string>
     <string name="_two_drop_in_unlimited">You have 2 active drop-ins for %s</string>
     <string name="visit_times">%s times</string>
@@ -586,5 +586,7 @@ Would you like to view your balance? </string>
     <string name="fitness_level">Class Level</string>
     <string name="priceModel">Class Type</string>
     <string name="no_class_available">No Class Available</string>
+    <string name="male_small">Male</string>
+    <string name="female_small">Female</string>
 
 </resources>

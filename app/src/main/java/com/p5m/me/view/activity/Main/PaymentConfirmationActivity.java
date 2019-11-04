@@ -536,7 +536,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 if (!CalendarHelper.haveCalendarReadWritePermissions(this)) {
                     CalendarHelper.requestCalendarReadWritePermission(this);
                 } else {
-                    if (CalendarHelper.haveCalendarReadWritePermissions(this))
+                    if (classModel!=null && CalendarHelper.haveCalendarReadWritePermissions(this))
                         CalendarHelper.scheduleCalenderEvent(this, classModel);
 
                 }

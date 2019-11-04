@@ -183,12 +183,12 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                         if (model.getExpiryDate() == null || TextUtils.isEmpty(model.getExpiryDate()))
                             textViewActiveDropIn.setText(String.format(context.getResources().getString(R.string.drop_in_unlimited), model.getGymName()));
                         else
-                            textViewActiveDropIn.setText(String.format(context.getResources().getString(R.string._two_drop_in_text), model.getGymName(), DateUtils.getClassDate(model.getExpiryDate())));
+                            textViewActiveDropIn.setText(String.format(context.getResources().getString(R.string._two_drop_in_text), model.getGymName(), DateUtils.getPackageClassDate(model.getExpiryDate())));
                     } else {
                         if (model.getExpiryDate() == null || TextUtils.isEmpty(model.getExpiryDate()))
                             textViewActiveDropIn.setText(String.format(context.getResources().getString(R.string.drop_in_unlimited), model.getGymName()));
                         else
-                            textViewActiveDropIn.setText(String.format(context.getResources().getString(R.string.drop_in_text), model.getGymName(), DateUtils.getClassDate(model.getExpiryDate())));
+                            textViewActiveDropIn.setText(String.format(context.getResources().getString(R.string.drop_in_text), model.getGymName(), DateUtils.getPackageClassDate(model.getExpiryDate())));
                     }
 
                     button.setOnClickListener(new View.OnClickListener() {

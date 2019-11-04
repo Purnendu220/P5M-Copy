@@ -71,6 +71,8 @@
                         android:fontFamily="sans-serif"
                         android:gravity="top"
                         android:text="@string/or"
+                        android:paddingLeft="@dimen/margin_10"
+                        android:paddingRight="@dimen/margin_10"
                         android:textColor="@color/theme_dark_text"
                         android:textSize="18sp" />
 

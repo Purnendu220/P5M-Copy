@@ -76,8 +76,8 @@
 
         <ImageView
             android:id="@+id/imageViewVarietyActivity"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="@dimen/membership_icon"
+            android:layout_height="@dimen/membership_icon"
             android:layout_marginTop="@dimen/margin_20"
             android:background="@drawable/bg_oval_shape_blue"
             android:padding="@dimen/margin_10"
@@ -110,7 +110,6 @@
             android:layout_marginEnd="@dimen/margin_12"
             android:paddingTop="@dimen/margin_8"
             android:paddingBottom="@dimen/margin_5"
-            android:text="@string/variety_of_activity_details"
             android:textColor="@color/theme_dark_text"
             android:textSize="@dimen/text_medium"
             app:layout_constraintEnd_toEndOf="parent"
@@ -120,8 +119,8 @@
 
         <ImageView
             android:id="@+id/imageViewVisitGym"
-            android:layout_width="@dimen/margin_70"
-            android:layout_height="@dimen/margin_70"
+            android:layout_width="@dimen/membership_icon"
+            android:layout_height="@dimen/membership_icon"
             android:layout_marginTop="@dimen/margin_16"
             android:background="@drawable/bg_oval_shape_blue"
             android:padding="@dimen/margin_12"
@@ -151,7 +150,6 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
             android:paddingBottom="@dimen/margin_5"
-            android:text="@string/visit_gym_detail"
             android:textColor="@color/theme_dark_text"
             android:textSize="@dimen/text_medium"
             app:layout_constraintEnd_toEndOf="@+id/textViewVarietyActivityDetail"
@@ -160,8 +158,8 @@
 
         <ImageView
             android:id="@+id/imageViewSave"
-            android:layout_width="@dimen/margin_70"
-            android:layout_height="@dimen/margin_70"
+            android:layout_width="@dimen/membership_icon"
+            android:layout_height="@dimen/membership_icon"
             android:layout_marginTop="@dimen/margin_16"
             android:background="@drawable/bg_oval_shape_blue"
             android:padding="@dimen/margin_15"
@@ -192,7 +190,6 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
             android:paddingBottom="@dimen/margin_5"
-            android:text="@string/save_detail"
             android:textColor="@color/theme_dark_text"
             android:textSize="@dimen/text_medium"
             app:layout_constraintEnd_toEndOf="@+id/textViewVarietyActivityDetail"
@@ -203,13 +200,12 @@
 
         <ImageView
             android:id="@+id/imageViewInstantBooking"
-            android:layout_width="@dimen/margin_70"
-            android:layout_height="@dimen/margin_70"
+            android:layout_width="@dimen/membership_icon"
+            android:layout_height="@dimen/membership_icon"
             android:layout_marginTop="@dimen/margin_16"
-            android:layout_marginBottom="@dimen/margin_8"
+            android:layout_marginBottom="@dimen/margin_10"
             android:background="@drawable/bg_oval_shape_blue"
             android:padding="@dimen/margin_15"
-
             android:tint="@color/theme_book"
             app:layout_constraintStart_toStartOf="@+id/textViewMembershipFeatures"
             app:layout_constraintTop_toBottomOf="@+id/textViewSaveDetail"
@@ -237,7 +233,6 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
             android:paddingBottom="@dimen/margin_5"
-            android:text="@string/instant_booking_detail"
             android:textColor="@color/theme_dark_text"
             android:textSize="@dimen/text_medium"
             app:layout_constraintEnd_toEndOf="@+id/textViewVarietyActivityDetail"

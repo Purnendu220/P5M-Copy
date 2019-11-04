@@ -948,7 +948,10 @@
     <string name="not_applicable">لا يمكن تفعيله</string>
     <string name="plan_description">\"\"</string>
     <string name="show_selection_option">true</string>
-    <string name="fitness_level">Fitness Level</string>
-    <string name="priceModel">PriceModel</string>
+    <string name="fitness_level">مستوى  الكلاس</string>
+    <string name="priceModel">نوع الكلاس</string>
+    <string name="male_small">ذكر</string>
+    <string name="female_small">أنثى</string>
+    <string name="no_class_available">No Class Available</string>
 
 </resources>

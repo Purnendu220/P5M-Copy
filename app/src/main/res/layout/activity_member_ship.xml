@@ -76,7 +76,7 @@
             style="@style/ToolBarIcon"
             android:layout_height="match_parent"
             android:padding="14dp"
-            android:src="@drawable/info"
+            android:src="@drawable/info_membership"
             android:tint="@color/white"
             android:visibility="visible" />
         <ImageView

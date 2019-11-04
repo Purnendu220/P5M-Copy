@@ -62,6 +62,7 @@ public class RemoteConfigConst {
     public static String DROP_IN_COST = "drop_in_cost";
     public static String SHOW_SELECTION_OPTIONS = "show_select_options";
     public static String PLAN_DESCRIPTION_DROP_IN = "drop_in_description";
+    public static String ON_BOARDING_DATA = "onboarding";
 
 
 
@@ -128,6 +129,7 @@ public class RemoteConfigConst {
     public static final int DROP_IN_COST_KEY =984;
     public static final int SHOW_SELECTION_OPTIONS_KEY = 985;
     public static final int PLAN_DESCRIPTION_DROP_IN_KEY = 986;
+    public static final int ON_BOARDING_DATA_KEY = 987;
 
 
     /* ------VALUES---------*/
@@ -192,6 +194,7 @@ public class RemoteConfigConst {
     public static String PLAN_DESCRIPTION_VALUE = "";
     public static String DROP_IN_COST_VALUE = "true";
     public static String SHOW_SELECTION_OPTIONS_VALUE = "true";
+    public static String ON_BOARDING_DATA_VALUE = "";
 
 
 
