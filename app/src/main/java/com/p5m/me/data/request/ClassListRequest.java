@@ -12,6 +12,8 @@ public class ClassListRequest implements java.io.Serializable {
     private List<String> activityList;
     private List<String> genderList;
     private  List<String> gymList;
+    private  List<String> priceModelList;
+    private  List<String> fitnessLevelList;
 
     private String classDate;
     private int userId;
@@ -91,5 +93,21 @@ public class ClassListRequest implements java.io.Serializable {
 
     public void setGymList(List<String> gymList) {
         this.gymList = gymList;
+    }
+
+    public List<String> getpriceModelList() {
+        return priceModelList;
+    }
+
+    public void setpriceModelList(List<String> priceModelList) {
+        this.priceModelList = priceModelList;
+    }
+
+    public List<String> getfitnessLevelList() {
+        return fitnessLevelList;
+    }
+
+    public void setfitnessLevelList(List<String> fitnessLevelList) {
+        this.fitnessLevelList = fitnessLevelList;
     }
 }

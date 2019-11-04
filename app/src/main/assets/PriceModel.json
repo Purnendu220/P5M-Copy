@@ -1,0 +1,27 @@
+[
+    {
+        "id" : "4",
+        "name" : "Group",
+        "priceModel" : "CHARGABLE",
+        "status": false
+    },
+    {
+        "id" : "1",
+        "name" : "Free",
+        "priceModel" : "FOC",
+        "status": false
+    },
+    {
+        "id" : "2",
+        "name" : "PT",
+        "priceModel" : "PT",
+        "status": false
+    },
+    {
+        "id" : "3",
+        "name" : "Workshop",
+        "priceModel" : "WORKSHOP",
+        "status": false
+    }
+
+]

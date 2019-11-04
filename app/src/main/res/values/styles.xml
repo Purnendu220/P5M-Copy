@@ -98,6 +98,7 @@
         <item name="android:activityCloseEnterAnimation">@anim/slide_up_animation</item>
         <item name="android:activityCloseExitAnimation">@anim/slide_down_animation</item>
     </style>
+
     <style name="CustomActivityAnimationRating" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/slide_up_dialog_slow</item>
         <item name="android:activityOpenExitAnimation">@anim/slide_out_down_slow</item>
@@ -193,6 +194,7 @@
         <item name="android:layout_width">32dp</item>
         <item name="cardCornerRadius">16dp</item>
     </style>
+
     <style name="CardViewCircularProfileSmallClass" parent="CardViewTheme">
         <item name="android:layout_height">24dp</item>
         <item name="android:layout_width">24dp</item>
@@ -271,6 +273,7 @@
         <item name="android:scaleType">fitCenter</item>
         <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
     </style>
+
     <style name="ChatIcon">
         <item name="android:paddingLeft">15dp</item>
         <item name="android:paddingRight">15dp</item>
@@ -299,22 +302,27 @@
         <item name="colorControlActivated">@color/colorAccent</item>
         <item name="colorControlHighlight">@color/colorAccent</item>
     </style>
+
     <style name="DialogAnimation">
         <item name="android:windowEnterAnimation">@anim/slide_up_dialog</item>
         <item name="android:windowExitAnimation">@anim/slide_out_down</item>
     </style>
+
     <style name="myRatingBar" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/my_ratingbar_full</item>
         <item name="android:indeterminateDrawable">@drawable/my_ratingbar_full</item>
     </style>
+
     <style name="customRatingBar" parent="@android:style/Widget.RatingBar">
         <item name="android:minHeight">21dip</item>
         <item name="android:maxHeight">21dip</item>
     </style>
+
     <style name="RatingBar" parent="Theme.AppCompat">
         <item name="colorControlNormal">@color/rating_blank</item>
         <item name="colorControlActivated">@color/rating_filled</item>
     </style>
+
     <style name="full_screen_dialog" parent="@android:style/Theme.Translucent.NoTitleBar">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>
@@ -322,6 +330,7 @@
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
     </style>
+
     <style name="AppTheme.BottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppTheme.BottomSheetStyle</item>
     </style>
@@ -330,12 +339,16 @@
         <item name="behavior_hideable">true</item>
         <item name="behavior_skipCollapsed">true</item>
     </style>
+
     <style name="RedAccent" parent="ThemeOverlay.AppCompat.Light">
         <item name="colorAccent">@color/white</item>
     </style>
+
     <style name="DialogAnimationUpDown">
         <item name="android:windowEnterAnimation">@anim/slide_up</item>
         <item name="android:windowExitAnimation">@anim/slide_down</item>
     </style>
+
+
 
 </resources>

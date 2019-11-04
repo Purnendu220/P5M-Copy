@@ -133,7 +133,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
     /* User Offered Pakages   Layout Declaration*/
 
 
-    public MemberShipViewHolder(View itemView, int shownInScreen) {
+    public  MemberShipViewHolder(View itemView, int shownInScreen) {
         super(itemView);
 
         context = itemView.getContext();
@@ -213,53 +213,10 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                         txtPriceAfterOffer.setText(LanguageUtils.numberConverter(model.getCost(), 2) + " " + context.getString(R.string.currency).toUpperCase());
                         setPackageTags(model.getId());
 
-                        if (classModel != null) {
-                            numberOfDays = model.getDuration();
-
-                            switch (model.getValidityPeriod()) {
-                                case "DAYS":
-                                    numberOfDays *= 1;
-                                    break;
-                                case "WEEKS":
-                                    numberOfDays *= 7;
-                                    break;
-                                case "MONTHS":
-                                    numberOfDays *= 30;
-                                    break;
-                                case "YEARS":
-                                    numberOfDays *= 365;
-                                    break;
-                            }
-
-                            if (DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays) {
-                                mainLayoutActivePackageDropin.setVisibility(View.GONE);
-                                mainLayoutUserPakages.setVisibility(View.GONE);
-                                layoutMainOfferedPackage.setVisibility(View.VISIBLE);
-                                layoutMainOfferedPackage.setClickable(true);
-                                layoutMainOfferedPackage.setAlpha(0.5f);
-                                layoutNotApplicable.setVisibility(View.VISIBLE);
-//                                packageLayout.setBackgroundColor(context.getResources().getColor(R.color.grey));
-
-                            } else {
-                                mainLayoutActivePackageDropin.setVisibility(View.GONE);
-                                mainLayoutUserPakages.setVisibility(View.GONE);
-                                layoutMainOfferedPackage.setVisibility(View.VISIBLE);
-                                layoutMainOfferedPackage.setClickable(true);
-                                layoutMainOfferedPackage.setAlpha(1.0f);
-                                layoutNotApplicable.setVisibility(View.GONE);
-//                                packageLayout.setBackgroundColor(context.getResources().getColor(R.color.white));
-
-                            }
-                        }else{
-                            mainLayoutActivePackageDropin.setVisibility(View.GONE);
-                            mainLayoutUserPakages.setVisibility(View.GONE);
-                            layoutMainOfferedPackage.setVisibility(View.VISIBLE);
-                            layoutMainOfferedPackage.setClickable(true);
-                            layoutMainOfferedPackage.setAlpha(1.0f);
-                            layoutNotApplicable.setVisibility(View.GONE);
-                        }
 
                     } else if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
+                        setPackageTags(model.getId());
+
                         txtPackageName.setText(model.getName());
                         if (model.isBookingWithFriend() && model.getNoOfClass() == 1) {
 
@@ -279,6 +236,8 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
 
                     }
+
+                    manageViews(classModel,model);
                     if (model.getPromoResponseDto() != null) {
                         if (model.getPromoResponseDto().getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFCLASS))
                             setClassPromo(model);
@@ -295,7 +254,8 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     layoutMainOfferedPackage.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            if (classModel != null && DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays) {
+                            if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)&&
+                                classModel != null && DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays) {
 
                             } else
                                 adapterCallbacks.onAdapterItemClick(MemberShipViewHolder.this, layoutMainOfferedPackage, data, position);
@@ -317,6 +277,56 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
         } else {
             itemView.setVisibility(View.GONE);
+        }
+    }
+
+    private void manageViews(ClassModel classModel,Package model) {
+
+        if (classModel != null) {
+                numberOfDays = model.getDuration();
+
+
+            switch (model.getValidityPeriod()) {
+                case "DAYS":
+                    numberOfDays *= 1;
+                    break;
+                case "WEEKS":
+                    numberOfDays *= 7;
+                    break;
+                case "MONTHS":
+                    numberOfDays *= 30;
+                    break;
+                case "YEARS":
+                    numberOfDays *= 365;
+                    break;
+            }
+
+            if (numberOfDays>0&&DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays) {
+                mainLayoutActivePackageDropin.setVisibility(View.GONE);
+                mainLayoutUserPakages.setVisibility(View.GONE);
+                layoutMainOfferedPackage.setVisibility(View.VISIBLE);
+                layoutMainOfferedPackage.setClickable(true);
+                layoutMainOfferedPackage.setAlpha(0.5f);
+                layoutNotApplicable.setVisibility(View.VISIBLE);
+//                                packageLayout.setBackgroundColor(context.getResources().getColor(R.color.grey));
+
+            } else {
+                mainLayoutActivePackageDropin.setVisibility(View.GONE);
+                mainLayoutUserPakages.setVisibility(View.GONE);
+                layoutMainOfferedPackage.setVisibility(View.VISIBLE);
+                layoutMainOfferedPackage.setClickable(true);
+                layoutMainOfferedPackage.setAlpha(1.0f);
+                layoutNotApplicable.setVisibility(View.GONE);
+//                                packageLayout.setBackgroundColor(context.getResources().getColor(R.color.white));
+
+            }
+        }else{
+            mainLayoutActivePackageDropin.setVisibility(View.GONE);
+            mainLayoutUserPakages.setVisibility(View.GONE);
+            layoutMainOfferedPackage.setVisibility(View.VISIBLE);
+            layoutMainOfferedPackage.setClickable(true);
+            layoutMainOfferedPackage.setAlpha(1.0f);
+            layoutNotApplicable.setVisibility(View.GONE);
         }
     }
 

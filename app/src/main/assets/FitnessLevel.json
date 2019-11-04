@@ -1,0 +1,17 @@
+[
+    {
+        "id" : "1",
+        "name" : "Basic",
+        "level" : "BASIC"
+    },
+    {
+        "id" : "2",
+        "name" : "Intermediate",
+        "level" : "INTERMEDIATE"
+    },
+    {
+        "id" : "3",
+        "name" : "Advanced",
+        "level" : "ADVANCED"
+    }
+]

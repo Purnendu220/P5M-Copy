@@ -206,12 +206,15 @@
             android:layout_width="@dimen/margin_70"
             android:layout_height="@dimen/margin_70"
             android:layout_marginTop="@dimen/margin_16"
+            android:layout_marginBottom="@dimen/margin_8"
             android:background="@drawable/bg_oval_shape_blue"
             android:padding="@dimen/margin_15"
+
             android:tint="@color/theme_book"
             app:layout_constraintStart_toStartOf="@+id/textViewMembershipFeatures"
             app:layout_constraintTop_toBottomOf="@+id/textViewSaveDetail"
-            app:srcCompat="@drawable/online_payment" />
+            app:srcCompat="@drawable/online_payment"
+            />
 
         <TextView
             android:id="@+id/textViewInstantBooking"
@@ -340,6 +343,7 @@
             app:layout_constraintTop_toTopOf="@+id/imageViewPickPlan">
 
             <TextView
+                android:id="@+id/textViewPickPlan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -352,6 +356,7 @@
                 app:layout_constraintTop_toTopOf="@+id/imageViewInstantBooking" />
 
             <TextView
+                android:id="@+id/textViewPickPlanDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
@@ -388,6 +393,7 @@
 
 
             <TextView
+                android:id="@+id/textViewTrain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -400,6 +406,7 @@
                 app:layout_constraintTop_toTopOf="@+id/imageViewInstantBooking" />
 
             <TextView
+                android:id="@+id/textViewTrainDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
@@ -423,6 +430,7 @@
             app:layout_constraintTop_toTopOf="@+id/imageViewWorkout">
 
             <TextView
+                android:id="@+id/textViewDiscount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -435,11 +443,12 @@
                 app:layout_constraintTop_toTopOf="@+id/imageViewInstantBooking" />
 
             <TextView
+                android:id="@+id/textViewDiscountDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
                 android:paddingTop="8dp"
-                android:paddingBottom="@dimen/margin_5"
+                android:paddingBottom="@dimen/margin_10"
                 android:text="@string/go_to_different_gym"
                 android:textColor="@color/theme_dark_text"
                 android:textSize="@dimen/text_medium" />

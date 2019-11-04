@@ -271,6 +271,10 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
      *  Set Congratulation Title
      * */
     private void setConfirmBookingTitle() {
+        if (classModel != null) {
+            saved5MinClass(classModel);
+
+        }
         if (paymentResponse.getClassDetailDto() != null) {
             if (!TextUtils.isEmpty(paymentResponse.getClassDetailDto().getTitle())) {
                 textViewPaymentDetail.setText(Html.fromHtml(String.format(mContext.getString(R.string.congratulation_class_booked), "<b>" + paymentResponse.getClassDetailDto().getTitle() + "</b>")));
@@ -532,12 +536,9 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 if (!CalendarHelper.haveCalendarReadWritePermissions(this)) {
                     CalendarHelper.requestCalendarReadWritePermission(this);
                 } else {
-                    if (paymentResponse.getClassDetailDto() != null) {
-                        saved5MinClass(classModel);
+                    if (CalendarHelper.haveCalendarReadWritePermissions(this))
+                        CalendarHelper.scheduleCalenderEvent(this, classModel);
 
-                        if (CalendarHelper.haveCalendarReadWritePermissions(this))
-                            CalendarHelper.scheduleCalenderEvent(this, classModel);
-                    }
                 }
                 break;
             case FAILURE:

@@ -156,7 +156,6 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         position = RefrenceWrapper.getRefrenceWrapper(context).getLatLng();
         setNearerGymView();
 
-
     }
 
     private void checkLocation() {
@@ -217,12 +216,16 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         branchListRequest.setGenderList(null);
         branchListRequest.setTimingList(null);
         branchListRequest.setLocationList(null);
+        branchListRequest.setFitnessLevelList(null);
+        branchListRequest.setPriceModelList(null);
 
         List<String> times = new ArrayList<>();
         List<String> activities = new ArrayList<>();
         List<String> gymList = new ArrayList<>();
         List<String> genders = new ArrayList<>();
         List<String> branches = new ArrayList<>();
+        List<String> priceModelList = new ArrayList<>();
+        List<String> fitnessLevelList = new ArrayList<>();
 
         List<CityLocality> cityLocalities = new ArrayList<>();
 
@@ -237,6 +240,10 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
                 activities.add(String.valueOf(((ClassActivity) classesFilter.getObject()).getId()));
             } else if (classesFilter.getObject() instanceof GymDataModel) {
                 gymList.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getId()));
+            }else if (classesFilter.getObject() instanceof Filter.PriceModel) {
+                priceModelList.add(String.valueOf(((Filter.PriceModel) classesFilter.getObject()).getPriceModel()));
+            } else if (classesFilter.getObject() instanceof Filter.FitnessLevel) {
+                fitnessLevelList.add(String.valueOf(((Filter.FitnessLevel) classesFilter.getObject()).getLevel()));
             }
         }
 
@@ -252,6 +259,8 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         branchListRequest.setLocationList(cityLocalities);
         branchListRequest.setGymList(gymList);
         branchListRequest.setBranchList(branches);
+        branchListRequest.setFitnessLevelList(fitnessLevelList);
+        branchListRequest.setPriceModelList(priceModelList);
 
         return branchListRequest;
     }

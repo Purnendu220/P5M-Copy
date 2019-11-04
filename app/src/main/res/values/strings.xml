@@ -122,7 +122,7 @@
     <string name="your_current_plan">YOUR CURRENT PLAN</string>
     <string name="select">SELECT</string>
     <string name="of"><b>of</b></string>
-    <string name="classes_remaining">classes remaining</string>
+    <string name="classes_remaining" translatable="false">classes remaining</string>
     <string name="valid_till">Valid till</string>
     <string name="coach_at">Coach at </string>
     <string name="recharge">"<u>Buy Classes</u>"</string>
@@ -531,8 +531,8 @@ Would you like to view your balance? </string>
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="classess_remaining">You have %d/%d classes remaining</string>
     <string name="so_far_you_visited">So far you visited</string>
-    <string name="drop_in_text">You have an active drop in for %s, expire on %s</string>
-    <string name="drop_in_unlimited">You have an active drop in for %s</string>
+    <string name="drop_in_text">You have 1 active drop in for %s, expire on %s</string>
+    <string name="drop_in_unlimited">You have 1 active drop in for %s</string>
     <string name="_two_drop_in_text">You have 2 active drop-ins for %s, expires on %s</string>
     <string name="_two_drop_in_unlimited">You have 2 active drop-ins for %s</string>
     <string name="visit_times">%s times</string>
@@ -568,6 +568,8 @@ Would you like to view your balance? </string>
     <string name="drop_in_package_desc">This is drop in package description</string>
     <string name="buy_membership_description">This is P5M package description</string>
     <string name="one_class_entry">1 class entry (%s KWD)</string>
+    <string name="one_class_entry_without_price">1 class entry</string>
+
     <string name="book_with_p5m_membership">Book with P5M Membership</string>
     <string name="welcome_to_p5m">Welcome to P5M!</string>
     <string name="book_now">Book Now</string>
@@ -577,5 +579,12 @@ Would you like to view your balance? </string>
     <string name="train">Train</string>
     <string name="clas_exceed">The class you selected it past the expiration date of this package. choose a class that is taking place within the next %s to purchase this package</string>
     <string name="not_applicable">Not Applicable</string>
+    <string name="plan_description">\"\"</string>
+    <string name="show_drop_in_cost" translatable="false">true</string>
+    <string name="show_selection_option">true</string>
+    <string name="drop_in_description" translatable="false" />
+    <string name="fitness_level">Class Level</string>
+    <string name="priceModel">Class Type</string>
+    <string name="no_class_available">No Class Available</string>
 
 </resources>

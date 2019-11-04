@@ -95,6 +95,7 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         String myVersionName = "not available";
         PackageManager packageManager = getPackageManager();
         String packageName = getPackageName();
+        finestayApp = FirebaseApp.initializeApp(context);
 
         Intercom.initialize(this, "android_sdk-0220c78a68a8a904e507a85bebd4eed53e4b7602", "qp091xcl");
         try {
@@ -112,7 +113,6 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         IntentFilter filter = new IntentFilter();
         filter.addAction(android.net.ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(new NetworkChangeReceiver(), filter);
-        firebaseDataSet();
         if (MyPreferences.getInstance().isLogin()) {
             NetworkCommunicator.getInstance(context).getDefault();
         }
@@ -209,22 +209,6 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
     }
 
     private void firebaseDataSet() {
-        if (BuildConfig.FIREBASE_IS_PRODUCTION) {
-            options = new FirebaseOptions.Builder()
-                    .setApplicationId(BuildConfig.APP_ID) // Required for Analytics.
-                    .setApiKey(BuildConfig.API_KEY) // Required for Auth.
-                    .setDatabaseUrl(BuildConfig.DATABASE_URL) // Required for RTDB.
-                    .build();
-//            FirebaseApp.initializeApp(getApplicationContext(), options);
-        } else {
-            options = new FirebaseOptions.Builder()
-                    .setApplicationId(BuildConfig.APP_ID) // Required for Analytics.
-                    .setApiKey(BuildConfig.API_KEY) // Required for Auth.
-                    .setDatabaseUrl(BuildConfig.DATABASE_URL) // Required for RTDB.
-                    .build();
-//            FirebaseApp.initializeApp(getApplicationContext(), options);
-        }
-
         List<FirebaseApp> firebaseApps = FirebaseApp.getApps(context);
         for (FirebaseApp app : firebaseApps) {
             if (app.getName().equals(FirebaseApp.DEFAULT_APP_NAME)) {

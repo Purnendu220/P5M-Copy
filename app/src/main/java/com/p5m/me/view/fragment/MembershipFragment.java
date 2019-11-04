@@ -1,6 +1,5 @@
 package com.p5m.me.view.fragment;
 
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -12,10 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
@@ -23,7 +19,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.android.material.appbar.AppBarLayout;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.MemberShipAdapter;
@@ -38,18 +33,17 @@ import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
+import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
-import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.Main.CheckoutActivity;
 import com.p5m.me.view.activity.Main.MembershipInfoActivity;
 import com.p5m.me.view.activity.Main.PackageLimitsActivity;
-import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.custom.PackageExtensionAlertDialog;
 
@@ -62,7 +56,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_DONE;
 import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_NO_PACKAGE;
 
 
@@ -76,6 +69,9 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
     @BindView(R.id.textGymVisitLimits)
     TextView textGymVisitLimits;
+
+    @BindView(R.id.imageViewInfo)
+    ImageView imageViewInfo;
 
     @BindView(R.id.constraintLayout)
     ConstraintLayout constraintLayout;
@@ -100,6 +96,8 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
     private int mNumberOfPackagesToBuy;
     private static User.WalletDto mWalletCredit;
     private boolean isTabSelected=false;
+    private boolean showChoosePackageOption=true;
+
 
     public MembershipFragment() {
         // Required empty public constructor
@@ -141,6 +139,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         args.putInt(AppConstants.DataKey.NUMBER_OF_PACKAGES_TO_BUY, numberOfPackagesToBuy);
         args.putSerializable(AppConstants.DataKey.CLASS_OBJECT, classModel);
         args.putSerializable(AppConstants.DataKey.BOOK_WITH_FRIEND_DATA, friendData);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -162,7 +161,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
         swipeRefreshLayout.setOnRefreshListener(this);
         textGymVisitLimits.setOnClickListener(this);
-        constraintLayout.setOnClickListener(this);
+        imageViewInfo.setOnClickListener(this);
         //FirebaseDynamicLinnk.getDynamicLink(this,getArguments());
         navigatedFrom = getArguments().getInt(AppConstants.DataKey.NAVIGATED_FROM_INT, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
         classModel = (ClassModel) getArguments().getSerializable(AppConstants.DataKey.CLASS_OBJECT);
@@ -187,6 +186,9 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         MixPanel.trackMembershipVisit(navigatedFrom);
         //  onTrackingNotification();
         FirebaseAnalysic.trackMembershipVisit(navigatedFrom);
+        if(RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE!=null && !RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE.isEmpty()){
+            showChoosePackageOption = Boolean.valueOf(RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE);
+        }
 
     }
 
@@ -250,8 +252,8 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
             }
         }
         if (TempStorage.isOpenMembershipInfo() == MEMBERSHIP_INFO_STATE_NO_PACKAGE) {
-            MembershipInfoActivity.openActivity(context);
-            TempStorage.setOpenMembershipInfo(MEMBERSHIP_INFO_STATE_DONE);
+//           MembershipInfoActivity.openActivity(context);
+//            TempStorage.setOpenMembershipInfo(MEMBERSHIP_INFO_STATE_DONE);
         }
         MixPanel.trackMembershipVisit(this.navigatedFrom);
         //  onTrackingNotification();
@@ -296,32 +298,6 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         //onRefresh();
     }
 
-//    private void setToolBar() {
-//
-//        BaseActivity activity = (BaseActivity) this.activity;
-//        activity.setSupportActionBar(toolbar);
-//
-//        activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(context, R.color.colorPrimaryDark)));
-//        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-//        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-//        activity.getSupportActionBar().setHomeButtonEnabled(true);
-//        activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
-//        activity.getSupportActionBar().setDisplayUseLogoEnabled(true);
-//
-//        View v = LayoutInflater.from(context).inflate(R.layout.view_tool_normal, null);
-//
-//        v.findViewById(R.id.imageViewBack).setVisibility(View.GONE);
-//        mTextViewWalletAmount = v.findViewById(R.id.textViewWalletAmount);
-//        mLayoutUserWallet = v.findViewById(R.id.layoutUserWallet);
-//        mLayoutUserWallet.setOnClickListener(this);
-//
-//
-//        ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.membership));
-//
-//        activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
-//                ActionBar.LayoutParams.MATCH_PARENT));
-//        activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
-//    }
 
     private void checkPackages() {
         userPackageInfo = new UserPackageInfo(user);
@@ -395,7 +371,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                 }
             }
             if (user.isBuyMembership()) {
-                constraintLayout.setVisibility(View.VISIBLE);
+                imageViewInfo.setVisibility(View.VISIBLE);
 
 
                 swipeRefreshLayout.setRefreshing(true);
@@ -409,7 +385,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                 }
 
             } else {
-                constraintLayout.setVisibility(View.GONE);
+//                constraintLayout.setVisibility(View.GONE);
                 textGymVisitLimits.setVisibility(View.VISIBLE);
             }
             memberShipAdapter.notifyDataSetChanges();
@@ -537,7 +513,9 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                                 }
                             } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                                 aPackage.setGymName(classModel.getGymBranchDetail().getGymName());
-                                //packages.add(aPackage);
+                                if(!showChoosePackageOption){
+                                    packages.add(aPackage);
+                                }
                                 mAvailableDropInPackage = aPackage;
                             }
                         }
@@ -641,7 +619,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                     PackageLimitsActivity.openActivity(context, "");
 
                     break;
-                case R.id.constraintLayout:
+                case R.id.imageViewInfo:
                     MembershipInfoActivity.openActivity(context);
 
                     break;

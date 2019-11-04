@@ -70,6 +70,15 @@
             </LinearLayout>
         </LinearLayout>
 
+
+        <ImageView
+            android:id="@+id/imageViewInfo"
+            style="@style/ToolBarIcon"
+            android:layout_height="match_parent"
+            android:padding="14dp"
+            android:src="@drawable/info"
+            android:tint="@color/white"
+            android:visibility="visible" />
         <ImageView
             android:id="@+id/imageViewShare"
             style="@style/ToolBarIcon"
@@ -132,6 +141,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/theme_book"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent">

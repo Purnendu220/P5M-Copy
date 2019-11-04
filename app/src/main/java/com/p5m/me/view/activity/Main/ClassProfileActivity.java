@@ -142,6 +142,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     private TextView mTextViewWalletAmount;
     private LinearLayout mLayoutUserWallet;
     private static User.WalletDto mWalletCredit;
+    private boolean showChoosePackageOption = true;
 
 
     @Override
@@ -246,6 +247,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         MixPanel.trackClassDetails();
         onTrackingNotification();
         networkCommunicator.getMyUser(this, false);
+        if (RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE != null && !RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE.isEmpty()) {
+            showChoosePackageOption = Boolean.valueOf(RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE);
+        }
 
 
 //        networkCommunicator.getMyUser(this, false);
@@ -803,8 +807,21 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                                 }
                             }
                             // MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
-                            BottomSheetClassBookingOptions mBottomSheetClassBookingOptions = BottomSheetClassBookingOptions.newInstance(classModel, mBookWithFriendData, aPackage.getNoOfClass(), aPackage);
-                            mBottomSheetClassBookingOptions.show(((ClassProfileActivity) context).getSupportFragmentManager(), "friend_booking");
+                            if (showChoosePackageOption) {
+                                BottomSheetClassBookingOptions mBottomSheetClassBookingOptions = BottomSheetClassBookingOptions.newInstance(classModel, mBookWithFriendData, aPackage.getNoOfClass(), aPackage);
+                                mBottomSheetClassBookingOptions.show(((ClassProfileActivity) context).getSupportFragmentManager(), "friend_booking");
+                            } else {
+                                if (aPackage.getPackageType().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
+                                    if (mBookWithFriendData != null) {
+                                        CheckoutActivity.openActivity(context, aPackage, classModel, 2, mBookWithFriendData, aPackage.getNoOfClass());
+
+                                    } else {
+                                        CheckoutActivity.openActivity(context, aPackage, classModel, 1, aPackage.getNoOfClass());
+                                    }
+                                } else
+                                    HomeActivity.show(context, AppConstants.Tab.TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
+
+                            }
 
 
                             // HomeActivity.show(context,AppConstants.Tab.TAB_MY_MEMBERSHIP,AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
@@ -824,8 +841,13 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                         } else {
                             Package aPackage = packages.get(0);
                             textViewBook.setEnabled(true);
-                            BottomSheetClassBookingOptions mBottomSheetClassBookingOptions = BottomSheetClassBookingOptions.newInstance(classModel, null, 1, aPackage);
-                            mBottomSheetClassBookingOptions.show(((ClassProfileActivity) context).getSupportFragmentManager(), "own booking");
+                            if (showChoosePackageOption) {
+                                BottomSheetClassBookingOptions mBottomSheetClassBookingOptions = BottomSheetClassBookingOptions.newInstance(classModel, mBookWithFriendData, aPackage.getNoOfClass(), aPackage);
+                                mBottomSheetClassBookingOptions.show(((ClassProfileActivity) context).getSupportFragmentManager(), "friend_booking");
+                            } else {
+                                HomeActivity.show(context, AppConstants.Tab.TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+
+                            }
 
                             // HomeActivity.show(context,AppConstants.Tab.TAB_MY_MEMBERSHIP,AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
                         }

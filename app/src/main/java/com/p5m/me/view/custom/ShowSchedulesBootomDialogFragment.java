@@ -72,6 +72,8 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
     public ProgressBar progressBar;
     @BindView(R.id.textViewGymBranch)
     public TextView textViewGymBranch;
+  @BindView(R.id.textViewNoClass)
+    public TextView textViewNoClass;
 
     @Nullable
     @Override
@@ -112,11 +114,15 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
         scheduleRequest.setGenderList(null);
         scheduleRequest.setTimingList(null);
         scheduleRequest.setLocationList(null);
+        scheduleRequest.setFitnessLevelList(null);
+        scheduleRequest.setPriceModelList(null);
         scheduleRequest.setSize(pageSizeLimit);
         List<String> times = new ArrayList<>();
         List<String> activities = new ArrayList<>();
         List<String> gymList = new ArrayList<>();
         List<String> genders = new ArrayList<>();
+        List<String> fitnessLevel = new ArrayList<>();
+        List<String> priceModel = new ArrayList<>();
 
         List<CityLocality> cityLocalities = new ArrayList<>();
 
@@ -131,6 +137,10 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
                 activities.add(String.valueOf(((ClassActivity) classesFilter.getObject()).getId()));
             } else if (classesFilter.getObject() instanceof GymDataModel) {
                 gymList.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getId()));
+            }else if (classesFilter.getObject() instanceof Filter.FitnessLevel) {
+                fitnessLevel.add(String.valueOf(((Filter.FitnessLevel) classesFilter.getObject()).getLevel()));
+            }else if (classesFilter.getObject() instanceof Filter.PriceModel) {
+                priceModel.add(String.valueOf(((Filter.PriceModel) classesFilter.getObject()).getPriceModel()));
             }
         }
 
@@ -145,6 +155,8 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
         scheduleRequest.setTimingList(times);
         scheduleRequest.setLocationList(cityLocalities);
         scheduleRequest.setGymList(gymList);
+        scheduleRequest.setPriceModelList(priceModel);
+        scheduleRequest.setFitnessLevelList(fitnessLevel);
         scheduleRequest.setBranchList(branchList);
 
 
@@ -174,6 +186,7 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
                 List<ScheduleClassModel> scheduleClassModels = ((ResponseModel<List<ScheduleClassModel>>) response).data;
 
                 if (!scheduleClassModels.isEmpty()) {
+                    textViewNoClass.setVisibility(View.GONE);
                     showScheduleAdapter.clearAll();
                     showScheduleAdapter.addAllClass(scheduleClassModels);
                     if (scheduleClassModels.size() < pageSizeLimit) {
@@ -183,9 +196,9 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
                 }
                 else {
                     showScheduleAdapter.loaderDone();
-
+                    textViewNoClass.setVisibility(View.VISIBLE);
 //                    this.dismiss();
-//                    ToastUtils.show(context, "Currently no class available");
+//                    ToastUtils.show(context, " No class available");
                 }
 
 

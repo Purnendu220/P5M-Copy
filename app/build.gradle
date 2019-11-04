@@ -77,10 +77,6 @@ android {
             buildConfigField "String", "BASE_URL_MIDL", '\"/profive-midl/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://staging.p5m.me\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
-            buildConfigField "String", "DATABASE_URL", QA_DATABASE_URL
-            buildConfigField "String", "API_KEY", QA_API_KEY
-            buildConfigField "String", "APP_ID", QA_APPLICATION_ID
-
             manifestPlaceholders = [hostName: "staging.p5m.me", hostName_www: "www.staging.p5m.me", appName: "P5M LOCAL", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
 
         }
@@ -97,10 +93,6 @@ android {
             buildConfigField "String", "BASE_URL_MIDL", '\"/internationlization-midl/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://staging.p5m.me\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
-            buildConfigField "String", "DATABASE_URL", QA_DATABASE_URL
-            buildConfigField "String", "API_KEY", QA_API_KEY
-            buildConfigField "String", "APP_ID", QA_APPLICATION_ID
-
             manifestPlaceholders = [hostName: "staging.p5m.me", hostName_www: "www.staging.p5m.me", appName: "P5M LOCAL", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
 
         }
@@ -117,13 +109,8 @@ android {
             buildConfigField "String", "BASE_URL_MIDL", '\"/dev-midl/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://staging.p5m.me\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
-            buildConfigField "String", "DATABASE_URL", QA_DATABASE_URL
-            buildConfigField "String", "API_KEY", QA_API_KEY
-            buildConfigField "String", "APP_ID", QA_APPLICATION_ID
-
             manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
 
-//            manifestPlaceholders = [hostName: "staging.p5m.me", hostName_www: "www.staging.p5m.me", appName: "P5M DEV", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
         }
         qa {
             def id = 'com.p5m.me'
@@ -138,11 +125,6 @@ android {
             buildConfigField "String", "BASE_URL_MIDL", '\"/profive-midl/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://staging.p5m.me\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
-            buildConfigField "String", "DATABASE_URL", QA_DATABASE_URL
-            buildConfigField "String", "API_KEY", QA_API_KEY
-            buildConfigField "String", "APP_ID", QA_APPLICATION_ID
-
-//            manifestPlaceholders = [hostName: "staging.p5m.me", hostName_www: "www.staging.p5m.me", appName: "P5M QA", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
             manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
 
         }
@@ -161,9 +143,6 @@ android {
             buildConfigField "String", "BASE_URL_SHARE", '\"https://www.p5m.me\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"https://www.p5m.me\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
-            buildConfigField "String", "DATABASE_URL", PRODUCTION_DATABASE_URL
-            buildConfigField "String", "API_KEY", PRODUCTION_API_KEY
-            buildConfigField "String", "APP_ID", PRODUCTION_APPLICATION_ID
             manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "81e25498c1638dbcb2017cc88dba175c5d44a1a6"]
         }
 
@@ -213,7 +192,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:17.0.0'
     implementation 'com.google.firebase:firebase-messaging:19.0.0'
     implementation 'com.google.firebase:firebase-config:18.0.0'
-    implementation 'com.google.firebase:firebase-inappmessaging-display:18.0.0'
+    implementation 'com.google.firebase:firebase-inappmessaging-display:19.0.1'
 
 
     implementation 'com.google.android.gms:play-services-location:16.0.0'

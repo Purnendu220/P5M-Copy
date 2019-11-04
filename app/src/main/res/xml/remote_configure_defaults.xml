@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<defaultsMap>
+    <entry>
+        <key>SearchBarText</key>
+        <value>Search</value>
+    </entry>
+    <entry>
+        <key>BookButton</key>
+        <value>Book</value>
+    </entry>
+    <entry>
+        <key>BookButtonColor</key>
+        <value>#3d85ea</value>
+    </entry>
+    <entry>
+        <key>BookInClassProfile</key>
+        <value>Book Class</value>
+    </entry>
+    <entry>
+        <key>BookWithFriend</key>
+        <value>Book with a friend</value>
+    </entry>
+    <entry>
+        <key>BookInClassProfileColor</key>
+        <value>#3d85ea</value>
+    </entry>
+    <entry>
+        <key>BookWithFriendColor</key>
+        <value>#3d85ea</value>
+    </entry>
+    <entry>
+        <key>BookWithFriendBGColor</key>
+        <value>#FFFFFF</value>
+    </entry>
+    <entry>
+        <key>BookedButton</key>
+        <value>Booked</value>
+    </entry>
+    <entry>
+        <key>FullButton</key>
+        <value>Full</value>
+    </entry>
+    <entry>
+        <key>WAITLIST_BUTTON</key>
+        <value>Waitlist</value>
+    </entry>
+    <entry>
+        <key>WAITLISTED_BUTTON</key>
+        <value>Waitlisted</value>
+    </entry>
+    <entry>
+        <key>FullButtonColor</key>
+        <value>#FF0000</value>
+    </entry>
+    <entry>
+        <key>BookedButtonColor</key>
+        <value>#FF8C00</value>
+    </entry>
+    <entry>
+        <key>buyClassButtonColor</key>
+        <value>#3d85ea</value>
+    </entry>
+    <entry>
+        <key>buyClasses</key>
+        <value>Buy Classes</value>
+    </entry>
+    <entry>
+        <key>CLASS_CARD_TEXT</key>
+        <value>BOOK CLASS</value>
+    </entry>
+    <entry>
+        <key>Recommended_For_You</key>
+        <value>Recommended for you</value>
+    </entry>
+    <entry>
+        <key>RECOMMENDED_FOR_YOU_COLOR</key>
+        <value>#262626</value>
+    </entry>
+    <entry>
+        <key>SESSION_EXPIRED</key>
+        <value>Session Expired</value>
+    </entry>
+    <entry>
+        <key>SESSION_EXPIRED_COLOR</key>
+        <value>#FF0000</value>
+    </entry>
+    <entry>
+        <key>INVITE_FRIENDS</key>
+        <value>Invite Friends</value>
+    </entry>
+    <entry>
+        <key>ADD_TO_WISHLIST</key>
+        <value>Add to wishlist</value>
+    </entry>
+    <entry>
+        <key>JOIN_WAITLIST</key>
+        <value>Join Waitlist</value>
+    </entry>
+    <entry>
+        <key>PAYMENT_PACKAGE</key>
+        <value>Book Classes</value>
+    </entry>
+    <entry>
+        <key>PAYMENT_PENDING</key>
+        <value>View Payment History</value>
+    </entry>
+    <entry>
+        <key>PAYMENT_FAILURE</key>
+        <value>View Payment History</value>
+    </entry>
+    <entry>
+        <key>PAYMENT_CLASS</key>
+        <value>View Schedule</value>
+    </entry>
+    <entry>
+        <key>GYM_VISIT_LIMIT_TEXT</key>
+        <value>View gym visit limits</value>
+    </entry>
+    <entry>
+        <key>SELECT_PLAN_TEXT</key>
+        <value>View Plan</value>
+    </entry>
+    <entry>
+        <key>SELECT_PLAN_COLOR</key>
+        <value>#3d85ea</value>
+    </entry>
+    <entry>
+        <key>GYM_VISIT_LIMIT_DETAIL_TEXT</key>
+        <value>Under each plan, there are limits to the number of times you can visit each gym.
+            Check below for the number of time you can visit a gym per plan. Once the limit is
+            reached, you may still visit your favorite gym by purchasing a single visit pass.
+        </value>
+    </entry>
+    <entry>
+        <key>MEMBERSHIP_OFFER_COLOR</key>
+        <value>#1FB257</value>
+    </entry>
+    <entry>
+        <key>testimonials</key>
+        <value>
+            <![CDATA[[{"name":"XEINA", "message_ar": "", "message_eng":"I love how P5M now includes the option of booking classes with friends."},{"name":"RANA", "message_ar": "", "message_eng":"Great way to try out new gyms & classes and decide where you wanna go."}]]]></value>
+    </entry>
+    <entry>
+        <key>faqs</key>
+        <value>[{"english_question": "Why are you use P5M?", "english_answer": "P5M app enables you
+            to visit multiple gyms and attend diffent activities with only one membership. You can
+            even buy monthly subscriptions if you wish that is how you would like to roll.",
+            "arabic_question": "", "arabic_answer": ""}]
+        </value>
+    </entry>
+
+    <entry>
+        <key>package_tags</key>
+        <value>[{\"id\": 2, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 3, \"tag_en\": \"\",
+            \"tag_ar\": \"\"}, {\"id\": 4, \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 10,
+            \"tag_en\": \"\", \"tag_ar\": \"\"}, {\"id\": 11, \"tag_en\": \"\", \"tag_ar\": \"\"}]
+        </value>
+    </entry>
+    <entry>
+        <key>Welcome_title</key>
+        <value>Welcome to P5M!</value>
+    </entry>
+    <entry>
+        <key>Welcome_sub</key>
+        <value>On P5M you can visit multiple gyms and do multiple activities using 1 membership
+            ONLY!
+        </value>
+    </entry>
+    <entry>
+        <key>Section_one_title</key>
+        <value>With the P5M membership you can:</value>
+    </entry>
+    <entry>
+        <key>Section_one_sub_one</key>
+        <value>Variety of activities</value>
+    </entry>
+    <entry>
+        <key>Section_one_sub_one_detail</key>
+        <value>With the P5M membership you can visit a swimming class today, crossfit tomorrow and
+            yoga on the weekend. Each class at a different gym.
+        </value>
+    </entry>
+    <entry>
+        <key>Section_one_sub_two</key>
+        <value>Visit 40 gyms with 1 membership</value>
+    </entry>
+    <entry>
+        <key>Section_one_sub_two_detail</key>
+        <value>Go to a different gym for every workout if you want!</value>
+    </entry>
+    <entry>
+        <key>Section_one_sub_three</key>
+        <value>Save 40%</value>
+    </entry>
+    <entry>
+        <key>Section_one_sub_three_detail</key>
+        <value>If you generally purchase a single entry pass to a gym, you would save 40% by getting
+            a package.Pay 30KWD for 5 classes instead of 50KWD!
+        </value>
+    </entry>
+    <entry>
+        <key>Section_one_sub_four</key>
+        <value><![CDATA[Instant Booking & Payment Online]]></value>
+    </entry>
+    <entry>
+        <key>Section_one_sub_four_detail</key>
+        <value>Book and pay for your workout at night, in the morning or on route to class. Don\'t
+            wait on the phone or worry about your confirmation.
+        </value>
+    </entry>
+    <entry>
+        <key>Section_two_title</key>
+        <value>How it works</value>
+    </entry>
+    <entry>
+        <key>Section_two_sub_one</key>
+        <value>Explore</value>
+    </entry>
+    <entry>
+        <key>Section_two_sub_one_detail</key>
+        <value>Go to a different gym for every workout if you want!</value>
+    </entry>
+    <entry>
+        <key>Section_two_sub_two_detail</key>
+        <value>Choose the number of classes that suits you, and use your classes at all the gyms on
+            board.
+        </value>
+    </entry>
+    <entry>
+        <key>Section_two_sub_three</key>
+        <value>Train</value>
+    </entry>
+    <entry>
+        <key>Section_two_sub_three_detail</key>
+        <value>Workout any gym\nyou want,anytime\nyou want, while \nsaving money</value>
+    </entry>
+    <entry>
+        <key>Section_two_sub_four</key>
+        <value>Get 15% discount</value>
+    </entry>
+    <entry>
+        <key>Section_two_sub_four_detail</key>
+        <value>
+            <![CDATA[Every time you renew your P5M plan! Helping you get fit & stay fit!]]></value>
+    </entry>
+    <entry>
+        <key>plan_description</key>
+        <value>\"\"</value>
+    </entry>
+    <entry>
+        <key>drop_in_cost</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>show_select_options</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>drop_in_description</key>
+        <value></value>
+    </entry>
+
+</defaultsMap>

@@ -434,10 +434,10 @@ public class Helper {
         }
         return json;
     }
-   /* public static String getTestimonialsFileFromAsset(Context context) {
+    public static String getFitnessLevelFromAsset(Context context) {
         String json = null;
         try {
-            InputStream is = context.getAssets().open("Testimonials.json");
+            InputStream is = context.getAssets().open("FitnessLevel.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -448,9 +448,28 @@ public class Helper {
             return "";
         }
         return json;
-    }*/
+    }
+    public static String getPriceModelFromAsset(Context context) {
+        String json = null;
+        try {
+            InputStream is = context.getAssets().open("PriceModel.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, StandardCharsets.UTF_8);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return "";
+        }
+        return json;
+    }
     public static boolean isSpecialClass(ClassModel model) {
-        return model!=null&&model.getPriceModel()!=null&&model.getPriceModel().equals("SPECIAL") || model.getPriceModel().equals("FOC");
+        return model!=null && model.getPriceModel()!=null
+                && (model.getPriceModel().equals("SPECIAL")
+                || model.getPriceModel().equalsIgnoreCase("PT")
+                || model.getPriceModel().equalsIgnoreCase("WORKSHOP")
+                || model.getPriceModel().equals("FOC"));
     }
 
     public static boolean isFreeClass(ClassModel model) {

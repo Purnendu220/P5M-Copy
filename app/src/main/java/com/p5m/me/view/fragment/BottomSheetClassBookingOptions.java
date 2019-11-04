@@ -11,17 +11,25 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
+import com.p5m.me.data.PackageTags;
+import com.p5m.me.data.RemoteConfigDataModel;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.eventbus.Events;
+import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.view.activity.Main.CheckoutActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,6 +71,9 @@ public class BottomSheetClassBookingOptions extends BottomSheetDialogFragment im
     private static BookWithFriendData bookWithFriendData;
     private static Package aPackage;
     private static int noOfClasses;
+    private static boolean showDropInPrice=true;
+    private static String mPackageDescription="";
+    private static String mPackageDescriptionDropIn="";
 
 
     @Nullable
@@ -74,15 +85,76 @@ public class BottomSheetClassBookingOptions extends BottomSheetDialogFragment im
         View view = inflater.inflate(R.layout.book_class_option, container,
                 false);
         ButterKnife.bind(this, view);
-//        textViewDropIn.setText(String.format(getContext().getResources().getString(R.string.one_class_entry),noOfClasses, LanguageUtils.numberConverter(aPackage.getCost(), 2)));
-        if (bookWithFriendData != null && aPackage.getPackageType().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN))
+        setRemoteConfigValue();
+        if(showDropInPrice){
             textViewDropIn.setText(String.format(getContext().getResources().getString(R.string.one_class_entry), LanguageUtils.numberConverter(aPackage.getCost(), 2)));
-        else
-            textViewDropIn.setText(String.format(getContext().getResources().getString(R.string.one_class_entry), LanguageUtils.numberConverter(aPackage.getCost(), 2)));
-        handleClickEvent();
+
+        }else{
+            textViewDropIn.setText(getContext().getResources().getString(R.string.one_class_entry_without_price));
+
+        }
+            handleClickEvent();
+
+        if(mPackageDescription!=null&&!mPackageDescription.isEmpty()){
+            textViewBuyMembershipDesc.setVisibility(View.VISIBLE);
+            textViewBuyMembershipDesc.setText(mPackageDescription);
+        }else{
+            textViewDropInDesc.setVisibility(View.GONE);
+
+        }
+
+        if(mPackageDescriptionDropIn!=null&&!mPackageDescriptionDropIn.isEmpty()){
+            textViewDropInDesc.setVisibility(View.VISIBLE);
+            textViewDropInDesc.setText(mPackageDescriptionDropIn);
+        }else{
+            textViewDropInDesc.setVisibility(View.GONE);
+
+        }
+
         return view;
 
     }
+    private void setRemoteConfigValue(){
+        String PLAN_DESCRIPTION_DROP_IN_VALUE = RemoteConfigConst.PLAN_DESCRIPTION_DROP_IN_VALUE;
+        String PLAN_DESCRIPTION_VALUE = RemoteConfigConst.PLAN_DESCRIPTION_VALUE;
+
+        try{
+            if(RemoteConfigConst.DROP_IN_COST_VALUE!=null && !RemoteConfigConst.DROP_IN_COST_VALUE.isEmpty()){
+                showDropInPrice=Boolean.valueOf(RemoteConfigConst.DROP_IN_COST_VALUE);
+            }
+
+            if(PLAN_DESCRIPTION_DROP_IN_VALUE!=null && !PLAN_DESCRIPTION_DROP_IN_VALUE.isEmpty()){
+                Gson g = new Gson();
+                RemoteConfigDataModel p = g.fromJson(PLAN_DESCRIPTION_DROP_IN_VALUE, new TypeToken<RemoteConfigDataModel>() {}.getType());
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en") && !p.getEn().isEmpty()){
+                    mPackageDescriptionDropIn =p.getEn();
+
+                }
+                else  if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar") && !p.getAr().isEmpty()){
+                    mPackageDescriptionDropIn =p.getAr();
+
+                }
+            }
+            if(PLAN_DESCRIPTION_VALUE != null && !PLAN_DESCRIPTION_VALUE.isEmpty()){
+                    Gson g = new Gson();
+                    RemoteConfigDataModel p = g.fromJson(PLAN_DESCRIPTION_VALUE, new TypeToken<RemoteConfigDataModel>() {}.getType());
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en") && !p.getEn().isEmpty()){
+                    mPackageDescription =p.getEn();
+
+                }
+              else  if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar") && !p.getAr().isEmpty()){
+                    mPackageDescription =p.getAr();
+
+                }
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+    }
+
 
     private void handleClickEvent() {
         bookWithDropInPackage.setOnClickListener(this);
@@ -101,6 +173,7 @@ public class BottomSheetClassBookingOptions extends BottomSheetDialogFragment im
                 } else {
                     HomeActivity.show(getContext(), AppConstants.Tab.TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
                 }
+                MixPanel.trackBottomSheetChoosePackageButton();
                 dismiss();
 
                 break;
@@ -111,6 +184,7 @@ public class BottomSheetClassBookingOptions extends BottomSheetDialogFragment im
                 } else {
                     CheckoutActivity.openActivity(getContext(), aPackage, classModel, 1, aPackage.getNoOfClass());
                 }
+                MixPanel.trackBottomSheetChoosePackageButton();
                 dismiss();
 
                 break;
