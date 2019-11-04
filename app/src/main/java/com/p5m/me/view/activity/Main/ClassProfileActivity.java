@@ -244,15 +244,12 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         setToolBar();
 
         getDynamicLink();
+        networkCommunicator.getMyUser(this, false);
         MixPanel.trackClassDetails();
         onTrackingNotification();
-        networkCommunicator.getMyUser(this, false);
         if (RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE != null && !RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE.isEmpty()) {
             showChoosePackageOption = Boolean.valueOf(RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE);
         }
-
-
-//        networkCommunicator.getMyUser(this, false);
 
     }
 
