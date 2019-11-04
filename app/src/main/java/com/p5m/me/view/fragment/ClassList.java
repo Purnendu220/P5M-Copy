@@ -298,11 +298,15 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
         classListRequest.setGenderList(null);
         classListRequest.setTimingList(null);
         classListRequest.setLocationList(null);
+        classListRequest.setfitnessLevelList(null);
+        classListRequest.setpriceModelList(null);
 
         List<String> times = new ArrayList<>();
         List<String> activities = new ArrayList<>();
         List<String> gymList = new ArrayList<>();
         List<String> genders = new ArrayList<>();
+        List<String> priceModelList = new ArrayList<>();
+        List<String> fitnessLevelList = new ArrayList<>();
 
         List<CityLocality> cityLocalities = new ArrayList<>();
 
@@ -317,6 +321,10 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                 activities.add(String.valueOf(((ClassActivity) classesFilter.getObject()).getId()));
             } else if (classesFilter.getObject() instanceof GymDataModel) {
                 gymList.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getId()));
+            } else if (classesFilter.getObject() instanceof Filter.PriceModel) {
+                priceModelList.add(String.valueOf(((Filter.PriceModel) classesFilter.getObject()).getPriceModel()));
+            } else if (classesFilter.getObject() instanceof Filter.FitnessLevel) {
+                fitnessLevelList.add(String.valueOf(((Filter.FitnessLevel) classesFilter.getObject()).getLevel()));
             }
         }
 
@@ -331,6 +339,8 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
         classListRequest.setTimingList(times);
         classListRequest.setLocationList(cityLocalities);
         classListRequest.setGymList(gymList);
+        classListRequest.setfitnessLevelList(fitnessLevelList);
+        classListRequest.setpriceModelList(priceModelList);
 
 
         return classListRequest;
@@ -352,11 +362,15 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
         classListRequest.setGenderList(null);
         classListRequest.setTimingList(null);
         classListRequest.setLocationList(null);
+        classListRequest.setpriceModelList(null);
+        classListRequest.setfitnessLevelList(null);
 
         List<String> times = new ArrayList<>();
         List<String> activities = new ArrayList<>();
         List<String> gymList = new ArrayList<>();
         List<String> genders = new ArrayList<>();
+        List<String> priceModelList = new ArrayList<>();
+        List<String> fitnessLevelList = new ArrayList<>();
 
         List<CityLocality> cityLocalities = new ArrayList<>();
 
@@ -371,6 +385,10 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                 activities.add(String.valueOf(((ClassActivity) classesFilter.getObject()).getId()));
             } else if (classesFilter.getObject() instanceof GymDataModel) {
                 gymList.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getId()));
+            } else if (classesFilter.getObject() instanceof Filter.PriceModel) {
+                priceModelList.add(String.valueOf(((Filter.PriceModel) classesFilter.getObject()).getPriceModel()));
+            } else if (classesFilter.getObject() instanceof Filter.FitnessLevel) {
+                fitnessLevelList.add(String.valueOf(((Filter.FitnessLevel) classesFilter.getObject()).getLevel()));
             }
         }
 
@@ -385,6 +403,8 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
         classListRequest.setTimingList(times);
         classListRequest.setLocationList(cityLocalities);
         classListRequest.setGymList(gymList);
+        classListRequest.setfitnessLevelList(fitnessLevelList);
+        classListRequest.setpriceModelList(priceModelList);
 
 
         return classListRequest;

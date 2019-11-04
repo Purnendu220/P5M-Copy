@@ -56,4 +56,7 @@ public class ScheduleAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return titleTabs.length;
     }
+
+
+
 }

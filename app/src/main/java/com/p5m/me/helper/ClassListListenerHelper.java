@@ -453,7 +453,6 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
         float cancelTime = 2;
 
-
         DefaultSettingServer defaultSettingServer = MyPreferences.getInstance().getDefaultSettingServer();
         if (defaultSettingServer != null) {
             if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model)) {
@@ -764,7 +763,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             cancelTime = defaultSettingServer.getRefundAllowedbeforeForSpecial();
 
         }
-        if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model) && DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) > cancelTime) {
+        if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model) && (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) > cancelTime ||
+                checkFor5MinDifference(model))) {
             CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, "", context.getString(R.string.successfull_refund_message), 1, context.getString(R.string.not_now), context.getString(R.string.yes), CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_SUCCESSFULL_UNJOIN, null, false, ClassListListenerHelper.this);
             try {
                 mCustomAlertDialog.show();

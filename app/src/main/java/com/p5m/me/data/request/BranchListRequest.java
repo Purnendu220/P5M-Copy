@@ -25,6 +25,8 @@ public class BranchListRequest implements Serializable {
     private List<String> gymList;
     private List<String> branchList;
     private List<String> timingList;
+    private List<String> fitnessLevelList;
+    private List<String> priceModelList;
 
     public String getClassDate() {
         return classDate;
@@ -91,4 +93,19 @@ public class BranchListRequest implements Serializable {
     }
 
 
+    public List<String> getPriceModelList() {
+        return priceModelList;
+    }
+
+    public void setPriceModelList(List<String> priceModelList) {
+        this.priceModelList = priceModelList;
+    }
+
+    public List<String> getFitnessLevelList() {
+        return fitnessLevelList;
+    }
+
+    public void setFitnessLevelList(List<String> fitnessLevelList) {
+        this.fitnessLevelList = fitnessLevelList;
+    }
 }
