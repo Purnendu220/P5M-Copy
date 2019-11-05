@@ -41,6 +41,9 @@
             android:textAllCaps="true"
             android:textColor="@color/black"
             android:textSize="@dimen/text_medium"
+            android:ellipsize="end"
+            android:maxLines="2"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageViewOfGym"
             app:layout_constraintTop_toTopOf="@+id/imageViewOfGym" />
