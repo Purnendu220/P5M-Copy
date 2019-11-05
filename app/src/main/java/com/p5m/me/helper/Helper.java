@@ -466,10 +466,10 @@ public class Helper {
     }
     public static boolean isSpecialClass(ClassModel model) {
         return model!=null && model.getPriceModel()!=null
-                && (model.getPriceModel().equals("SPECIAL")
+                && ((model.getPriceModel().equals("SPECIAL")
                 || model.getPriceModel().equalsIgnoreCase("PT")
                 || model.getPriceModel().equalsIgnoreCase("WORKSHOP")
-                || model.getPriceModel().equals("FOC"));
+                || model.getPriceModel().equals("FOC")));
     }
 
     public static boolean isFreeClass(ClassModel model) {
