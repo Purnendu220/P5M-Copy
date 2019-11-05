@@ -36,7 +36,7 @@ public class SelectedImageViewHolder extends RecyclerView.ViewHolder {
     public void bind(final SelectedFileData item, final int position, final int showIn, final AdapterCallbacks<Object> adapterCallbacks) {
         if (item != null &&item.getFilepath()!=null&&!item.getFilepath().isEmpty()) {
             itemView.setVisibility(View.VISIBLE);
-            if(item.getFilepath().startsWith("https://")){
+            if(item.getFilepath().startsWith("https://")||item.getFilepath().startsWith("http://")){
                 ImageUtils.setImage(context,
                         item.getFilepath(),
                         R.drawable.image_holder, imageViewSelectedImage);
