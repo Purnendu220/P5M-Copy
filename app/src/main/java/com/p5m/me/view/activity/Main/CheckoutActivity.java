@@ -613,7 +613,6 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL))
                         textViewPackageClasses.setText(numberConverter(aPackage.getNoOfClass()) + " " + AppConstants.pluralES(getString(R.string.one_class), aPackage.getNoOfClass()) + " " + context.getString(R.string.at_any_gym));
                     else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
-
                         textViewPackageClasses.setText(LanguageUtils.numberConverter(mNumberOfClasses) + " " + AppConstants.pluralES(context.getString(R.string.classs), mNumberOfClasses) + " " + context.getString(R.string.at) + " " + classModel.getGymBranchDetail().getGymName());
                     }
                     textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + context.getString(R.string.currency));
@@ -811,14 +810,14 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     case PACKAGE:
                         textViewOk.setVisibility(View.INVISIBLE);
                         networkCommunicator.applyPromoCode(
-                                new PromoCodeRequest(promoCodeText, aPackage.getId(), TempStorage.getUser().getId(), mNumberOfPackagesToBuy),
+                                new PromoCodeRequest(promoCodeText, aPackage.getId(), TempStorage.getUser().getId(), mNumberOfClasses),
                                 CheckoutActivity.this, false);
                         break;
                     case CLASS_PURCHASE_WITH_PACKAGE:
                         textViewOk.setVisibility(View.INVISIBLE);
                         if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                             networkCommunicator.applyPromoCode(
-                                    new PromoCodeRequest(classModel.getGymBranchDetail().getGymId(), promoCodeText, aPackage.getId(), TempStorage.getUser().getId(), mNumberOfPackagesToBuy),
+                                    new PromoCodeRequest(classModel.getGymBranchDetail().getGymId(), promoCodeText, aPackage.getId(), TempStorage.getUser().getId(), mNumberOfClasses),
                                     CheckoutActivity.this, false);
                         } else {
                             networkCommunicator.applyPromoCode(
