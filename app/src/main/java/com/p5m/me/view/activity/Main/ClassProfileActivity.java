@@ -813,7 +813,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                                     if (mBookWithFriendData != null) {
 
                                         CheckoutActivity.openActivity(context, aPackage, classModel, 2, mBookWithFriendData, aPackage.getNoOfClass());
-//Todo : Open Membership Fragment
                                     } else {
                                         CheckoutActivity.openActivity(context, aPackage, classModel, 1, aPackage.getNoOfClass());
                                     }
