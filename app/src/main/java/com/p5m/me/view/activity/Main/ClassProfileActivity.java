@@ -67,6 +67,7 @@ import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.BookForAFriendPopup;
 import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.fragment.BottomSheetClassBookingOptions;
+import com.p5m.me.view.fragment.MembershipFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -808,14 +809,15 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                                 BottomSheetClassBookingOptions mBottomSheetClassBookingOptions = BottomSheetClassBookingOptions.newInstance(classModel, mBookWithFriendData, aPackage.getNoOfClass(), aPackage);
                                 mBottomSheetClassBookingOptions.show(((ClassProfileActivity) context).getSupportFragmentManager(), "friend_booking");
                             } else {
-                                if (aPackage.getPackageType().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
+                               /* if (aPackage.getPackageType().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                                     if (mBookWithFriendData != null) {
-                                        CheckoutActivity.openActivity(context, aPackage, classModel, 2, mBookWithFriendData, aPackage.getNoOfClass());
 
+                                        CheckoutActivity.openActivity(context, aPackage, classModel, 2, mBookWithFriendData, aPackage.getNoOfClass());
+//Todo : Open Membership Fragment
                                     } else {
                                         CheckoutActivity.openActivity(context, aPackage, classModel, 1, aPackage.getNoOfClass());
                                     }
-                                } else
+                                } else*/
                                     HomeActivity.show(context, AppConstants.Tab.TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
 
                             }
@@ -840,7 +842,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             textViewBook.setEnabled(true);
                             if (showChoosePackageOption) {
                                 BottomSheetClassBookingOptions mBottomSheetClassBookingOptions = BottomSheetClassBookingOptions.newInstance(classModel, mBookWithFriendData, aPackage.getNoOfClass(), aPackage);
-                                mBottomSheetClassBookingOptions.show(((ClassProfileActivity) context).getSupportFragmentManager(), "friend_booking");
+                                mBottomSheetClassBookingOptions.show(((ClassProfileActivity) activity).getSupportFragmentManager(), "friend_booking");
                             } else {
                                 HomeActivity.show(context, AppConstants.Tab.TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
 
