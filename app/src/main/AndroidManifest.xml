@@ -36,14 +36,14 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:supportsRtl">
-        <activity android:name=".view.activity.Main.MembershipInfoActivity"
+        <activity android:name=".view.activity.Main.GymTrainerListActivity"></activity>
+        <activity
+            android:name=".view.activity.Main.MembershipInfoActivity"
             android:label="@string/membership_info"
-            android:screenOrientation="portrait"
-            ></activity>
-        <activity android:name=".view.activity.Main.ClassProfileActivityNew"
-            android:screenOrientation="portrait"
-
-            />
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.Main.ClassProfileActivityNew"
+            android:screenOrientation="portrait" />
         <activity android:name=".view.activity.Main.WalletDetailActivity" />
 
         <meta-data
@@ -159,7 +159,7 @@
             android:name=".view.activity.Main.HomeActivity"
             android:parentActivityName=".view.activity.Splash"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing"></activity>
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".view.activity.LoginRegister.LoginActivity"
             android:launchMode="singleTop"
@@ -220,7 +220,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.Main.TransactionHistoryActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".view.activity.Main.SettingNotification"
             android:screenOrientation="portrait" />
@@ -295,8 +296,14 @@
             android:name=".view.activity.Main.ContactActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
-
-
+        <activity
+            android:name=".view.activity.Main.Gym"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".view.activity.Main.Trainers"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

@@ -56,6 +56,7 @@ public class InfoScreen extends BaseActivity implements ViewPager.OnPageChangeLi
         ButterKnife.bind(activity);
 
         setViewPagerAdapter();
+//        setDefaultViewPagerAdapter();
 
         viewPager.addOnPageChangeListener(this);
     }

@@ -3,6 +3,7 @@ package com.p5m.me.view.fragment;
 
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
@@ -64,6 +65,7 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
 
         return tabFragment;
     }
+
     @BindView(R.id.recyclerView)
     public RecyclerView recyclerView;
 
@@ -75,8 +77,8 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
     public Toolbar toolbar;
 
     private MyProfileAdapter myProfileAdapter;
-    private int page=0;
-    private int tabPosition=ProfileHeaderTabViewHolder.TAB_1;
+    private int page = 0;
+    private int tabPosition = ProfileHeaderTabViewHolder.TAB_1;
 
     public MyProfile() {
     }
@@ -108,11 +110,13 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
             LogUtils.exception(e);
         }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void ClassRating(Events.ClassRating data) {
         refreshFimishedClass();
-        LogUtils.debug(data+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        LogUtils.debug(data + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void trainerFollowed(Events.TrainerFollowed trainerFollowed) {
 
@@ -174,7 +178,7 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
         myProfileAdapter.setUser(TempStorage.getUser());
         myProfileAdapter.notifyDataSetChanges();
         recyclerView.setHasFixedSize(true);
-        LogUtils.debug(tabPosition+"sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
+        LogUtils.debug(tabPosition + "sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
 
         layoutManager.setStickyHeaderListener(new StickyHeaderListener() {
             @Override
@@ -206,7 +210,7 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
         networkCommunicator.getFavTrainerList(AppConstants.ApiParamValue.FOLLOW_TYPE_FOLLOWED, TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_TRAINER_LIST, this, false);
         networkCommunicator.getFinishedClassList(TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_UNLIMITED, this, false);
 
-        }
+    }
 
     boolean isLoadingFirstTime = true;
 
@@ -216,11 +220,12 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
             isLoadingFirstTime = false;
             networkCommunicator.getFavTrainerList(AppConstants.ApiParamValue.FOLLOW_TYPE_FOLLOWED, TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_TRAINER_LIST, this, false);
             networkCommunicator.getFinishedClassList(TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_UNLIMITED, this, false);
-            if(RefrenceWrapper.getRefrenceWrapper(getActivity()).getMyProfileTabPosition()==ProfileHeaderTabViewHolder.TAB_2){
+            if (RefrenceWrapper.getRefrenceWrapper(getActivity()).getMyProfileTabPosition() == ProfileHeaderTabViewHolder.TAB_2) {
                 myProfileAdapter.onTabSelection(ProfileHeaderTabViewHolder.TAB_2);
                 RefrenceWrapper.getRefrenceWrapper(getActivity()).setMyProfileTabPosition(ProfileHeaderTabViewHolder.TAB_1);
-                }
-            else{ myProfileAdapter.onTabSelection(tabPosition); }
+            } else {
+                myProfileAdapter.onTabSelection(tabPosition);
+            }
             myProfileAdapter.clearTrainers();
             myProfileAdapter.clearClasses();
             myProfileAdapter.notifyDataSetChanges();
@@ -307,20 +312,20 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
             break;
             case R.id.textViewMore:
             case R.id.textViewRecharge:
-               // MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE);
-                HomeActivity.show(context,AppConstants.Tab.TAB_MY_MEMBERSHIP,AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE);
+                // MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE);
+                HomeActivity.show(context, AppConstants.Tab.TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE);
                 break;
             case R.id.imageView:
                 if (!myProfileAdapter.getUser().getProfileImage().isEmpty()) {
-                    Helper.openImageViewer(context, activity, view, myProfileAdapter.getUser().getProfileImage(),AppConstants.ImageViewHolderType.PROFILE_IMAGE_HOLDER);
+                    Helper.openImageViewer(context, activity, view, myProfileAdapter.getUser().getProfileImage(), AppConstants.ImageViewHolderType.PROFILE_IMAGE_HOLDER);
                 }
                 break;
             case R.id.textViewExtendPackage:
-                if(myProfileAdapter.getUser().getUserPackageDetailDtoList()!=null){
+                if (myProfileAdapter.getUser().getUserPackageDetailDtoList() != null) {
                     try {
-                        PackageExtensionAlertDialog dialog=new PackageExtensionAlertDialog(context,AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE, (UserPackage) model) ;
+                        PackageExtensionAlertDialog dialog = new PackageExtensionAlertDialog(context, AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE, (UserPackage) model);
                         dialog.show();
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
@@ -406,18 +411,18 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
         }
     }
 
-    private void refreshFimishedClass(){
+    private void refreshFimishedClass() {
         networkCommunicator.getFinishedClassList(TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_UNLIMITED, this, false);
 
     }
-    private void showWalletAlert(){
-        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.wallet_alert_title), context.getString(R.string.wallet_alert),1,"",context.getResources().getString(R.string.ok),CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO,null,true, this);
+
+    private void showWalletAlert() {
+        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.wallet_alert_title), context.getString(R.string.wallet_alert), 1, "", context.getResources().getString(R.string.ok), CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO, null, true, this);
         try {
             mCustomAlertDialog.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
 
     }
