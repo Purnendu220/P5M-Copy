@@ -8,8 +8,8 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.p5m.me.data.City;
 import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.ContactRequestModel;
+import com.p5m.me.data.ExploreDataModel;
 import com.p5m.me.data.FollowResponse;
-import com.p5m.me.data.Join5MinModel;
 import com.p5m.me.data.MediaResponse;
 import com.p5m.me.data.PackageLimitModel;
 import com.p5m.me.data.PaymentConfirmationResponse;
@@ -25,6 +25,7 @@ import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.DefaultSettingServer;
 import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.data.main.GymDetailModel;
+import com.p5m.me.data.main.GymModel;
 import com.p5m.me.data.main.NotificationModel;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.PaymentUrl;
@@ -64,7 +65,6 @@ import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 
 import java.io.File;
-import java.util.Calendar;
 import java.util.List;
 
 import id.zelory.compressor.Compressor;
@@ -152,6 +152,8 @@ public class NetworkCommunicator {
         public static final int MEDIA_DELETE = 140;
         public static final int BRANCH_LIST = 141;
         public static final int USER_PACKAGE_DETAIL = 142;
+        public static final int GYM_LIST_BY_CATEGORY = 143;
+        public static final int GET_EXPLORE_DATA = 144;
 
 
         public static final int PAYMENT_CONFIRMATION_DETAIL = 150;
@@ -676,6 +678,27 @@ public class NetworkCommunicator {
         return call;
     }
 
+    public Call getGymList(int categoryId, int page, int size, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.GYM_LIST_BY_CATEGORY;
+        Call<ResponseModel<List<GymModel>>> call = apiService.getGyms(categoryId, page, size);
+        LogUtils.debug("NetworkCommunicator hitting getGymTrainerList");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<GymModel>>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<List<GymModel>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getGymTrainerList onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<GymModel>>> call, Response<ResponseModel<List<GymModel>>> restResponse, ResponseModel<List<GymModel>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getGymTrainerList onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
     public Call getNotifications(int page, int size, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.NOTIFICATIONS;
         Call<ResponseModel<List<NotificationModel>>> call = apiService.getNotifications(TempStorage.getUser().getId(), page, size);
@@ -882,7 +905,7 @@ public class NetworkCommunicator {
                                 if (userReadyGym.isEmpty())
                                     userReadyGym += userPackage.getGymName();
                                 else
-                                    userReadyGym += ", "+userPackage.getGymName();
+                                    userReadyGym += ", " + userPackage.getGymName();
 
                             }
                         }
@@ -1626,6 +1649,28 @@ public class NetworkCommunicator {
             @Override
             public void onResponse(Call<ResponseModel<List<ScheduleClassModel>>> call, Response<ResponseModel<List<ScheduleClassModel>>> restResponse, ResponseModel<List<ScheduleClassModel>> response) {
                 LogUtils.networkSuccess("NetworkCommunicator getClassList onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call getExploreData(final RequestListener requestListener, final boolean useCache) {
+        final int requestCode = RequestCode.GET_EXPLORE_DATA;
+        Call<ResponseModel<List<ExploreDataModel>>> call = apiService.getExploreData(TempStorage.getUser().getId());
+        LogUtils.debug("NetworkCommunicator hitting Explore Detail");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<ExploreDataModel>>>(context) {
+
+            @Override
+            public void onFailure(Call<ResponseModel<List<ExploreDataModel>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator User onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<ExploreDataModel>>> call, Response<ResponseModel<List<ExploreDataModel>>> restResponse, ResponseModel<List<ExploreDataModel>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator User onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
             }
         });

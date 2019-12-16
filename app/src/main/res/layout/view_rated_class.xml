@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
+    android:layout_width="220dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_5"
+    android:layout_marginLeft="@dimen/margin_5"
+    android:layout_marginRight="@dimen/margin_5"
+    app:cardCornerRadius="@dimen/margin_10"
+    app:cardElevation="@dimen/margin_3"
+    app:cardPreventCornerOverlap="false">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewRatingCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:layout_marginTop="@dimen/margin_5"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_horizontal"
+            android:text="4.5"
+            android:textColor="@color/theme_book"
+            android:textSize="@dimen/text_s_medium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewClassName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:layout_marginTop="@dimen/margin_4"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-medium"
+            android:lineSpacingExtra="6sp"
+            android:maxLines="1"
+            android:text="FNDURANCE"
+            android:textAllCaps="true"
+            android:textColor="@color/theme_dark_text"
+            android:textSize="@dimen/text_medium"
+            android:textStyle="normal"
+
+            />
+
+        <TextView
+            android:id="@+id/textViewTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif"
+            android:maxLines="1"
+            android:text="1:00-8:00PM"
+            android:textColor="@color/theme_dark_text"
+            android:textSize="@dimen/text_small"
+            android:textStyle="normal"
+
+
+            />
+
+        <TextView
+            android:id="@+id/textViewLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:layout_marginTop="@dimen/margin_6"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif"
+            android:gravity="center_vertical|left"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="gold gym"
+            android:textColor="@color/theme_dark_text"
+            android:paddingBottom="@dimen/margin_10"
+
+            android:textSize="@dimen/text_medium"
+            android:textStyle="normal" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -3,6 +3,7 @@ package com.p5m.me.restapi;
 import com.p5m.me.data.City;
 import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.ContactRequestModel;
+import com.p5m.me.data.ExploreDataModel;
 import com.p5m.me.data.MediaResponse;
 import com.p5m.me.data.PackageLimitModel;
 import com.p5m.me.data.PaymentConfirmationResponse;
@@ -17,6 +18,7 @@ import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.data.main.GymDetailModel;
+import com.p5m.me.data.main.GymModel;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.ScheduleClassModel;
 import com.p5m.me.data.main.TrainerDetailModel;
@@ -309,6 +311,12 @@ public interface ApiService {
                                                         @Query(AppConstants.ApiParamKey.PAGE) int page,
                                                         @Query(AppConstants.ApiParamKey.SIZE) int size);
 
+ @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.GYM_LIST)
+    Call<ResponseModel<List<GymModel>>> getGyms(@Query(AppConstants.ApiParamKey.CATEGORY_ID) int categoryId,
+                                                @Query(AppConstants.ApiParamKey.PAGE) int page,
+                                                @Query(AppConstants.ApiParamKey.SIZE) int size);
+
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.NOTIFICATIONS)
@@ -378,5 +386,10 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @POST(AppConstants.Url.CLASS_LIST)
     Call<ResponseModel<List<ScheduleClassModel>>> getScheduleClass(@Body ScheduleRequest scheduleRequest);
+
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.GET_EXPLORE_DETAIL)
+    Call<ResponseModel<List<ExploreDataModel>>> getExploreData(  @Query(AppConstants.ApiParamKey.USER_ID) long userId);
 
 }

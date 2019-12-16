@@ -90,11 +90,8 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
             if (userPackageInfo.havePackages) {
                 if (user.isBuyMembership()) {
                     textViewRecharge.setVisibility(View.VISIBLE);
-
-
                 } else {
                     textViewRecharge.setVisibility(View.GONE);
-
                 }
 
                if (user.isBuyMembership()) {

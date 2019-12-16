@@ -133,6 +133,9 @@ public class TrainerList extends BaseFragment implements ViewPagerFragmentSelect
         if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE_TRAINERS) {
             onRefresh();
         }
+     if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_HOME_TRAINERS) {
+            onRefresh();
+        }
     }
 
     @Override
@@ -199,6 +202,9 @@ public class TrainerList extends BaseFragment implements ViewPagerFragmentSelect
             networkCommunicator.getTrainerList(activityId, page, pageSizeLimit, this, false);
         } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SEARCH_RESULTS) {
             networkCommunicator.getSearchTrainerList(searchedKeywords , page, pageSizeLimit, this, false);
+        } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_GYM) {
+            networkCommunicator.getGymTrainerList(gymId, page, pageSizeLimit, this, false);
+
         }
     }
 
@@ -230,6 +236,7 @@ public class TrainerList extends BaseFragment implements ViewPagerFragmentSelect
 
                 if (page == 0) {
                     trainerListAdapter.clearAll();
+
                 }
 
                 if (!classModels.isEmpty()) {

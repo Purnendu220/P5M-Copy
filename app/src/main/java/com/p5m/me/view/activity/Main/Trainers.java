@@ -1,18 +1,18 @@
-package com.p5m.me.view.fragment;
+package com.p5m.me.view.activity.Main;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
@@ -25,8 +25,8 @@ import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
-import com.p5m.me.view.activity.Main.SearchActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
+import com.p5m.me.view.fragment.ViewPagerFragmentSelection;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -35,7 +35,20 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class Trainers extends BaseFragment implements ViewPagerFragmentSelection, ViewPager.OnPageChangeListener, View.OnClickListener, NetworkCommunicator.RequestListener {
+import static com.p5m.me.utils.AppConstants.Tab.TAB_EXPLORE_PAGE;
+
+public class Trainers extends BaseActivity implements ViewPagerFragmentSelection, ViewPager.OnPageChangeListener, View.OnClickListener, NetworkCommunicator.RequestListener {
+
+    public static Intent createIntent(Context context) {
+        Intent intent = new Intent(context, Trainers.class);
+        return intent;
+    }
+    public static void open(Context context) {
+        Intent intent = new Intent(context, Trainers.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(intent);
+    }
 
     @BindView(R.id.viewPager)
     public ViewPager viewPager;
@@ -51,20 +64,18 @@ public class Trainers extends BaseFragment implements ViewPagerFragmentSelection
 
     private List<ClassActivity> activities;
 
-    public Trainers() {
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_trainers, container, false);
-    }
+     @Override
+     protected void onCreate(@Nullable Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.fragment_trainers);
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+         onActivityCreated();
+     }
 
-        ButterKnife.bind(this, getView());
+    public void onActivityCreated() {
+
+        ButterKnife.bind(activity);
 
         setToolBar();
 
@@ -96,14 +107,39 @@ public class Trainers extends BaseFragment implements ViewPagerFragmentSelection
             }
         }
 
-        trainersAdapter = new TrainersAdapter(getChildFragmentManager(), activities);
+        trainersAdapter = new TrainersAdapter(getSupportFragmentManager(), activities);
         viewPager.setAdapter(trainersAdapter);
+
         viewPager.setOffscreenPageLimit(activities.size());
 
         tabLayout.setTabTextColors(ContextCompat.getColorStateList(context, R.color.date_tabs));
         tabLayout.setupWithViewPager(viewPager);
 
         viewPager.addOnPageChangeListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
+        try {
+            networkCommunicator.getActivities(this, true);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.finish();
+        HomeActivity.show(context, TAB_EXPLORE_PAGE, AppConstants.AppNavigation.SHOWN_IN_HOME_TRAINERS);
+
     }
 
     @Override

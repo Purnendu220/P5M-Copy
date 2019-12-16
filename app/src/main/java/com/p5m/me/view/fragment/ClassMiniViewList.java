@@ -13,6 +13,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,6 +31,7 @@ import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
+import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.custom.MyRecyclerView;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -72,6 +74,8 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
     public View layoutNoData;
     @BindView(R.id.imageViewEmptyLayoutImage)
     public ImageView imageViewEmptyLayoutImage;
+    @BindView(R.id.buttonBook)
+    public Button buttonBook;
     @BindView(R.id.textViewEmptyLayoutText)
     public TextView textViewEmptyLayoutText;
 
@@ -496,6 +500,10 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
                 textViewEmptyLayoutText.setText(R.string.no_data_schedule_upcoming_list);
                 imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_class);
+                buttonBook.setVisibility(View.VISIBLE);
+                buttonBook.setOnClickListener(v->{
+                    HomeActivity.show(context, AppConstants.Tab.TAB_FIND_CLASS);
+                });
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SEARCH_RESULTS) {
                 textViewEmptyLayoutText.setText(R.string.no_data_search_class_list);
                 imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_class);
