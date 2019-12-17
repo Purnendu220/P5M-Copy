@@ -40,6 +40,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_8"
+        android:layout_marginRight="@dimen/margin_8"
         android:layout_marginTop="@dimen/margin_8"
         android:fontFamily="sans-serif-medium"
         android:text="@string/workouts"
@@ -47,7 +48,7 @@
         android:textSize="@dimen/text_extra_large"
         android:textStyle="normal"
         app:layout_constraintLeft_toLeftOf="@id/guidelineLeft"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintRight_toRightOf="@id/guidelineRight"
         app:layout_constraintTop_toBottomOf="@id/view2" />
 
     <TextView
@@ -55,6 +56,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_8"
+        android:layout_marginRight="@dimen/margin_8"
         android:layout_marginTop="@dimen/margin_6"
         android:fontFamily="sans-serif"
         android:text="@string/desc_workout"

@@ -10,7 +10,7 @@ public class TryP5MData {
 
     private String message;
     private String buttonTitle;
-    private Object buttonTitleAr;
+    private String buttonTitleAr;
 
     public String getMessage() {
         return message;
@@ -28,11 +28,11 @@ public class TryP5MData {
         this.buttonTitle = buttonTitle;
     }
 
-    public Object getButtonTitleAr() {
+    public String getButtonTitleAr() {
         return buttonTitleAr;
     }
 
-    public void setButtonTitleAr(Object buttonTitleAr) {
+    public void setButtonTitleAr(String buttonTitleAr) {
         this.buttonTitleAr = buttonTitleAr;
     }
 }

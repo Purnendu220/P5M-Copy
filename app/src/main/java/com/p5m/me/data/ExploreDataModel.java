@@ -79,13 +79,18 @@ public class ExploreDataModel {
 
 
     public static class HeaderBean {
+
         /**
-         * title : Try P5M
-         * subTitle :
+         * title : Activities
+         * subTitle : What workout are you in the mood for today?
+         * titleAr : null
+         * subTitleAr : null
          */
 
         private String title;
         private String subTitle;
+        private String titleAr;
+        private String subTitleAr;
 
         public String getTitle() {
             return title;
@@ -101,6 +106,22 @@ public class ExploreDataModel {
 
         public void setSubTitle(String subTitle) {
             this.subTitle = subTitle;
+        }
+
+        public String getTitleAr() {
+            return titleAr;
+        }
+
+        public void setTitleAr(String titleAr) {
+            this.titleAr = titleAr;
+        }
+
+        public String getSubTitleAr() {
+            return subTitleAr;
+        }
+
+        public void setSubTitleAr(String subTitleAr) {
+            this.subTitleAr = subTitleAr;
         }
     }
 

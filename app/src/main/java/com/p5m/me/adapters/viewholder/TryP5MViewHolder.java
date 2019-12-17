@@ -1,6 +1,7 @@
 package com.p5m.me.adapters.viewholder;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -44,10 +45,10 @@ public class TryP5MViewHolder extends RecyclerView.ViewHolder {
     private final Context context;
     private final Gson gson;
     @BindView(R.id.textViewTryP5M)
-    TextView textViewTryP5M;
+    TextView textViewHeader;
 
     @BindView(R.id.textViewDescP5M)
-    TextView textViewDescP5M;
+    TextView textViewSubHeader;
 
     @BindView(R.id.explorePlans)
     Button explorePlans;
@@ -68,9 +69,31 @@ public class TryP5MViewHolder extends RecyclerView.ViewHolder {
         if (data != null && data instanceof ExploreDataModel) {
             final ExploreDataModel model = (ExploreDataModel) data;
 
-            textViewTryP5M.setText(model.getHeader().getTitle());
-            textViewDescP5M.setText(model.getHeader().getSubTitle());
+            if (model.getHeader() != null) {
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+                    if (!TextUtils.isEmpty(model.getHeader().getTitleAr()))
+                        textViewHeader.setText(model.getHeader().getTitleAr());
+                    else
+                        textViewHeader.setVisibility(View.GONE);
+                } else {
+                    if (!TextUtils.isEmpty(model.getHeader().getTitle()))
+                        textViewHeader.setText(model.getHeader().getTitle());
+                    else
+                        textViewHeader.setVisibility(View.GONE);
 
+                }
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+                    if (!TextUtils.isEmpty(model.getHeader().getSubTitleAr()))
+                        textViewSubHeader.setText(model.getHeader().getSubTitleAr());
+                    else
+                        textViewSubHeader.setVisibility(View.GONE);
+                } else {
+                    if (!TextUtils.isEmpty(model.getHeader().getSubTitle()))
+                        textViewSubHeader.setText(model.getHeader().getSubTitle());
+                    else
+                        textViewSubHeader.setVisibility(View.GONE);
+                }
+            }
             if (model.getData() != null) {
                 ExploreDataList exploreDataList = new ExploreDataList(model.getData());
                 String listString = convertorToModelClassList(exploreDataList);
@@ -79,7 +102,7 @@ public class TryP5MViewHolder extends RecyclerView.ViewHolder {
             }
             if (list != null) {
                 if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar"))
-                    explorePlans.setText(list.get(0).getButtonTitle());
+                    explorePlans.setText(list.get(0).getButtonTitleAr());
                 else
                     explorePlans.setText(list.get(0).getButtonTitle());
             }
