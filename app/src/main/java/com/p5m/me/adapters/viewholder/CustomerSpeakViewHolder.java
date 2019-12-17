@@ -78,8 +78,9 @@ public class CustomerSpeakViewHolder extends RecyclerView.ViewHolder implements 
             CustomerSpeakAdapter customerSpeakAdapter = new CustomerSpeakAdapter(context, testominalList);
             viewPager.setAdapter(customerSpeakAdapter);
             textViewCustomerSpeaks.setText(model.getHeader().getTitle());
+            layoutIndicator.removeAllViews();
             // Indicator setup..
-            new ViewPagerIndicator(context, ViewPagerIndicator.STYLE_NORMAL).setup(viewPager, layoutIndicator, R.drawable.circle_black, R.drawable.circle_grey);
+            new ViewPagerIndicator(context, ViewPagerIndicator.STYLE_NORMAL).setup(viewPager, layoutIndicator, R.drawable.circle_black, R.drawable.circle_white);
             if(model.isShowDivider()){
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layoutTestinomials.getLayoutParams();
                params.topMargin = 10;

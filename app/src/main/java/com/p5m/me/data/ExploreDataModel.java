@@ -19,6 +19,7 @@ public class ExploreDataModel {
     private HeaderBean header;
     private List<Object> data;
     private int maxItemNumber;
+    private boolean isMoreActivityShow;
 
     public String getWidgetType() {
         return widgetType;
@@ -66,6 +67,14 @@ public class ExploreDataModel {
 
     public void setMaxItemNumber(int maxItemNumber) {
         this.maxItemNumber = maxItemNumber;
+    }
+
+    public boolean isMoreActivityShow() {
+        return isMoreActivityShow;
+    }
+
+    public void setMoreActivityShow(boolean moreActivityShow) {
+        isMoreActivityShow = moreActivityShow;
     }
 
 

@@ -12,14 +12,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp" />
+        app:layout_constraintGuide_begin="16dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="20dp" />
+        app:layout_constraintGuide_end="@dimen/dp_16" />
 
 
 
@@ -40,9 +40,8 @@
         android:id="@+id/textViewDescP5M"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_8"
+        android:layout_marginTop="@dimen/margin_6"
         android:fontFamily="sans-serif"
-        android:text="@string/desc_try_p5m"
         android:textColor="@color/theme_dark_text"
         android:textSize="@dimen/text_medium"
         app:layout_constraintLeft_toLeftOf="@id/guidelineLeft"
@@ -54,7 +53,7 @@
         android:id="@+id/explorePlans"
         android:layout_width="@dimen/button_width"
         android:layout_height="@dimen/button_height_main_list"
-        android:layout_marginTop="@dimen/margin_15"
+        android:layout_marginTop="@dimen/margin_10"
         android:layout_marginBottom="@dimen/margin_15"
         android:background="@drawable/button_blue"
         android:maxLines="1"

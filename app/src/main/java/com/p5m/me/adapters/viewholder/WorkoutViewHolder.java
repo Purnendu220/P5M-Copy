@@ -44,7 +44,6 @@ public class WorkoutViewHolder extends RecyclerView.ViewHolder {
     TextView textViewWorkoutType;
 
 
-
     public WorkoutViewHolder(View itemView) {
         super(itemView);
 
@@ -63,16 +62,15 @@ public class WorkoutViewHolder extends RecyclerView.ViewHolder {
             textViewGymName.setVisibility(View.GONE);
             trainerName.setVisibility(View.GONE);
             textViewWorkoutType.setVisibility(View.VISIBLE);
-           /* if(LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+            if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+                textViewWorkoutType.setText(model.getArName());
+            } else
                 textViewWorkoutType.setText(model.getName());
-            }
-            else*/
-            textViewWorkoutType.setText(model.getName());
             if (model.getImageUrl() != null)
                 ImageUtils.setImage(context, model.getImageUrl(), imageViewClass);
 
-            itemView.setOnClickListener(v->{
-                adapterCallbacks.onAdapterItemClick(WorkoutViewHolder.this,imageViewClass,model,position);
+            itemView.setOnClickListener(v -> {
+                adapterCallbacks.onAdapterItemClick(WorkoutViewHolder.this, imageViewClass, model, position);
             });
 
         } else {

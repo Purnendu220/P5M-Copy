@@ -2,6 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layout"
+    android:layout_marginLeft="@dimen/margin_8"
+    android:layout_marginTop="@dimen/margin_8"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -9,10 +11,7 @@
         android:id="@+id/cardViewClass"
         style="@style/CardViewProfileLarge"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="150dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">

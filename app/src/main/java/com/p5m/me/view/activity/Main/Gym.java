@@ -46,8 +46,6 @@ public class Gym extends BaseActivity implements ViewPagerFragmentSelection, Vie
     }
     public static void open(Context context) {
         Intent intent = new Intent(context, Gym.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(intent);
     }
 
@@ -133,13 +131,6 @@ public class Gym extends BaseActivity implements ViewPagerFragmentSelection, Vie
             LogUtils.exception(e);
         }
 
-
-    }
-
-    @Override
-    public void onBackPressed() {
-        this.finish();
-        HomeActivity.show(context, TAB_EXPLORE_PAGE, AppConstants.AppNavigation.SHOWN_IN_HOME_TRAINERS);
 
     }
 

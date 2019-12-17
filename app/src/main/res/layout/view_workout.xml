@@ -5,52 +5,57 @@
     android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
     android:layout_marginTop="@dimen/margin_5"
+    android:background="@color/white"
     android:elevation="@dimen/margin_5">
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp" />
+        app:layout_constraintGuide_begin="8dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="20dp" />
+        app:layout_constraintGuide_end="8dp" />
 
     <View
         android:id="@+id/view2"
         android:layout_width="0dp"
         android:layout_height="5dp"
+        android:layout_marginTop="@dimen/margin_10"
+        android:background="@color/theme_bg"
         android:elevation="-10dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="@dimen/margin_10"
-        android:visibility="gone"
-        android:background="@color/theme_bg"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/textViewHeader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_8"
         android:layout_marginTop="@dimen/margin_8"
         android:fontFamily="sans-serif-medium"
         android:text="@string/workouts"
         android:textColor="@color/theme_dark_text"
         android:textSize="@dimen/text_extra_large"
+        android:textStyle="normal"
         app:layout_constraintLeft_toLeftOf="@id/guidelineLeft"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view2" />
+
     <TextView
         android:id="@+id/textViewSubHeader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_8"
+        android:layout_marginLeft="@dimen/margin_8"
+        android:layout_marginTop="@dimen/margin_6"
         android:fontFamily="sans-serif"
         android:text="@string/desc_workout"
         android:textColor="@color/theme_dark_text"
@@ -61,25 +66,28 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:paddingBottom="@dimen/margin_10"
-        android:nestedScrollingEnabled="false"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewSubHeader"/>
-    <TextView
-        android:id="@+id/textViewMoreWorkout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_6"
+        android:paddingBottom="@dimen/margin_10"
+        android:nestedScrollingEnabled="false"
+        app:layout_constraintLeft_toLeftOf="@id/guidelineLeft"
+        app:layout_constraintRight_toRightOf="@id/guidelineRight"
+        app:layout_constraintTop_toBottomOf="@id/textViewSubHeader" />
+
+    <TextView
+        android:id="@+id/textViewMore"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
         android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:paddingTop="@dimen/margin_2"
+        android:paddingBottom="@dimen/margin_8"
         android:textColor="@color/theme_dark_text"
         android:textSize="@dimen/text_medium"
         android:textStyle="normal"
-        android:layout_marginTop="@dimen/margin_5"
-        android:gravity="center"
-        android:padding="@dimen/margin_5"
-        tools:text="+ 14 more workouts style"
+
         app:layout_constraintLeft_toLeftOf="@id/guidelineLeft"
         app:layout_constraintRight_toRightOf="@id/guidelineRight"
         app:layout_constraintTop_toBottomOf="@id/recyclerView" />
