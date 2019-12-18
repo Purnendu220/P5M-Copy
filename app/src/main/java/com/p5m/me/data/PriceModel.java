@@ -2,17 +2,28 @@ package com.p5m.me.data;
 
 public class PriceModel {
 
+
     /**
+     * order : 1
      * name : Group Classes
-     * arName : فعاليات وورش
+     * arName : كلاسات جماعية
      * value : CHARGABLE
      * imageUrl : http://d1zfy71n00v47t.cloudfront.net/explore/categories/group.jpg
      */
 
+    private String order;
     private String name;
     private String arName;
     private String value;
     private String imageUrl;
+
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
+    }
 
     public String getName() {
         return name;

@@ -66,11 +66,11 @@ public class HomeAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
 
         Fragment frag = null;
-        if (position == AppConstants.Tab.TAB_EXPLORE_PAGE) {
-            frag = FragmentExplore.createExploreFragment();
-        } else if (position == AppConstants.Tab.TAB_FIND_CLASS) {
+        if (position == AppConstants.Tab.TAB_FIND_CLASS) {
             frag = new FindClass();
 
+        } else if (position == AppConstants.Tab.TAB_EXPLORE_PAGE) {
+            frag = FragmentExplore.createExploreFragment();
         } else if (position == AppConstants.Tab.TAB_SCHEDULE) {
             frag = MySchedule.createScheduleFragment(myScheduleTabPosition);
         } else if (position == AppConstants.Tab.TAB_MY_PROFILE) {

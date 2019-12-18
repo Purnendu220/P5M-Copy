@@ -33,8 +33,8 @@ public class AppConstants {
         public static final int REGISTRATION_STEP_GENDER = 3;
         public static final int REGISTRATION_STEP_PASSWORD = 2;
 
-        public static final int TAB_EXPLORE_PAGE = 0;
-        public static final int TAB_FIND_CLASS = 1;
+        public static final int TAB_EXPLORE_PAGE = 1;
+        public static final int TAB_FIND_CLASS = 0;
         public static final int TAB_SCHEDULE = 2;
         public static final int TAB_MY_PROFILE = 4;
         public static final int TAB_MY_PROFILE_FINISHED = 5;

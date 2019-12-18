@@ -69,10 +69,11 @@
 
                     <ImageView
                         android:id="@+id/imageViewSubtitle"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
+                        android:layout_width="13dp"
+                        android:layout_height="13dp"
                         android:layout_marginRight="4dp"
-                        android:src="@drawable/location_small" />
+android:layout_gravity="center_vertical"
+                        android:src="@drawable/loc" />
 
                     <TextView
                         android:id="@+id/textViewSubtitle"
@@ -82,9 +83,10 @@
                         android:layout_toEndOf="@+id/imageViewClassCategory"
                         android:fontFamily="sans-serif-medium"
                         android:gravity="left"
+                        android:text="Thdd"
+                        android:layout_gravity="center_vertical"
                         android:letterSpacing="@dimen/button_letter_spacing_very_little"
                         android:lineSpacingExtra="@dimen/line_spacing_extra"
-                        android:text="East American Yoga Club"
                         android:textColor="@color/theme_medium_dark_text"
                         android:textSize="@dimen/text_small" />
                 </LinearLayout>

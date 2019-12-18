@@ -1,6 +1,7 @@
 package com.p5m.me.adapters.viewholder;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -25,7 +26,7 @@ import butterknife.ButterKnife;
 
 public class GymListByCategoryViewHolder extends RecyclerView.ViewHolder {
 
-    @BindView(R.id.textViewTrainerName)
+    @BindView(R.id.textViewName)
     public TextView textViewTrainerName;
     @BindView(R.id.textViewSubtitle)
     public TextView textViewSubtitle;
@@ -34,9 +35,6 @@ public class GymListByCategoryViewHolder extends RecyclerView.ViewHolder {
     public ImageView imageViewProfile;
     @BindView(R.id.imageViewSubtitle)
     public ImageView imageViewSubtitle;
-
-    @BindView(R.id.buttonFav)
-    public ImageButton buttonFav;
 
     private final Context context;
     private int shownInScreen;
@@ -50,7 +48,6 @@ public class GymListByCategoryViewHolder extends RecyclerView.ViewHolder {
 
         this.shownInScreen = shownInScreen;
 
-            buttonFav.setVisibility(View.GONE);
     }
 
     public void bind(final Object data, final AdapterCallbacks adapterCallbacks, final int position) {
@@ -62,34 +59,30 @@ public class GymListByCategoryViewHolder extends RecyclerView.ViewHolder {
 
             if (model.getProfileImageThumbnail() != null) {
                 ImageUtils.setImage(context,
-                        model.getProfileImageThumbnail(),
+                        model.getProfileImage(),
                         R.color.white,R.drawable.profile_holder, imageViewProfile);
-            } else {
-                ImageUtils.setImage(context,
-                        model.getProfileImageThumbnail(),
-                        R.drawable.profile_holder, imageViewProfile);
             }
-
             textViewTrainerName.setText(model.getGymNames());
 
-            imageViewSubtitle.setVisibility(View.GONE);
+                if (model.getTrainerBranchResponseList() != null ) {
 
-            if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_GYM) {
-
-                if (model.getTrainerBranchResponseList() != null && !model.getTrainerBranchResponseList().isEmpty()) {
-                    textViewSubtitle.setVisibility(View.VISIBLE);
                     try {
                         String name = "";
                         for (int index = 0; index < model.getTrainerBranchResponseList().size(); index++) {
-                            String value = model.getTrainerBranchResponseList().get(index).getBranchName();
+                            String value = model.getTrainerBranchResponseList().get(index).getLocalityName();
                             if (!name.contains(value)) {
                                 name = index == 0 ? (name += value) : (name += ", " + value);
                             }
                         }
                         textViewSubtitle.setText(name);
+                        if(!TextUtils.isEmpty(name)){
+                            textViewSubtitle.setVisibility(View.VISIBLE);
+                            imageViewSubtitle.setVisibility(View.VISIBLE);
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                         LogUtils.exception(e);
+                        imageViewSubtitle.setVisibility(View.GONE);
                         textViewSubtitle.setVisibility(View.GONE);
                     }
                 } else {
@@ -104,8 +97,6 @@ public class GymListByCategoryViewHolder extends RecyclerView.ViewHolder {
             });
 
 
-        } else {
-            itemView.setVisibility(View.GONE);
-        }
+
     }
 }

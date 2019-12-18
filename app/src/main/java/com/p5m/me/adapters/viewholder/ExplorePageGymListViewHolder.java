@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +25,7 @@ import com.p5m.me.data.ExploreGymModel;
 import com.p5m.me.data.PriceModel;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LanguageUtils;
+import com.p5m.me.utils.SpaceItemDecoration;
 
 import java.util.List;
 
@@ -113,6 +115,9 @@ public class ExplorePageGymListViewHolder extends RecyclerView.ViewHolder {
                 recyclerView.setHasFixedSize(true);
                 LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
                 recyclerView.setLayoutManager(layoutManager);
+                SpaceItemDecoration dividerItemDecoration = new SpaceItemDecoration(10);
+                recyclerView.addItemDecoration(dividerItemDecoration);
+
                 adapter.notifyDataSetChanged();
 
             } else {
