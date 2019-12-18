@@ -89,6 +89,7 @@
         android:textColor="@color/theme_book"
         android:textSize="@dimen/text_medium"
         android:textStyle="normal"
+        android:visibility="gone"
 
         app:layout_constraintLeft_toLeftOf="@id/guidelineLeft"
         app:layout_constraintRight_toRightOf="@id/guidelineRight"

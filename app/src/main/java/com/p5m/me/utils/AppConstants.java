@@ -457,6 +457,8 @@ public class AppConstants {
   public class ExploreViewType{
       public static final String TRAINER_VIEW = "TRAINER_VIEW";
       public static final String GYM_VIEW = "GYM_VIEW";
+      public static final String CATEGORY_CAROUSEL_VIEW = "CATEGORY_CAROUSEL_VIEW";
+
 
   }
 
