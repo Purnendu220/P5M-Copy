@@ -16,6 +16,7 @@ import com.p5m.me.data.ListLoader;
 import com.p5m.me.data.WorkoutModel;
 import com.p5m.me.utils.LogUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -28,30 +29,26 @@ public class ExplorePageWorkoutListAdapter extends RecyclerView.Adapter<Recycler
 
     private final AdapterCallbacks<Object> adapterCallbacks;
 
-    private List<WorkoutModel> list;
+    private List<Object> list;
     private Context context;
 
-    private int shownInScreen;
-    private boolean isShowCompleteList;
-    private ListLoader listLoader;
 
 
-    public ExplorePageWorkoutListAdapter(Context context, int shownInScreen, List<WorkoutModel> list, AdapterCallbacks<Object> adapterCallbacks) {
+    public ExplorePageWorkoutListAdapter(Context context, int shownInScreen, AdapterCallbacks<Object> adapterCallbacks) {
         this.adapterCallbacks = adapterCallbacks;
         this.context = context;
-        this.list = list;
-        this.shownInScreen = shownInScreen;
+        list = new ArrayList<>();
     }
 
-    public List<WorkoutModel> getList() {
+    public List<Object> getList() {
         return list;
     }
 
-    public void addClass(WorkoutModel model) {
+    public void addWorkout(WorkoutModel model) {
         list.add(model);
     }
 
-    public void addAllClass(List<WorkoutModel> models) {
+    public void addAllWorkOut(List<WorkoutModel> models) {
         list.addAll(models);
         notifyDataSetChanged();
     }
@@ -61,15 +58,10 @@ public class ExplorePageWorkoutListAdapter extends RecyclerView.Adapter<Recycler
     }
 
 
-    public void isShowList(boolean isShowCompleteList) {
-        this.isShowCompleteList = isShowCompleteList;
-        notifyDataSetChanged();
-    }
 
     @Override
     public int getItemViewType(int position) {
         int itemViewType = VIEW_TYPE_UNKNOWN;
-
         Object item = getItem(position);
         if (item instanceof WorkoutModel) {
             itemViewType = VIEW_TYPE_LIST;
@@ -103,9 +95,7 @@ public class ExplorePageWorkoutListAdapter extends RecyclerView.Adapter<Recycler
 
     @Override
     public int getItemCount() {
-        if (list.size() > 4 && !isShowCompleteList)
-            return 4;
-        else
+
             return list.size();
     }
 
