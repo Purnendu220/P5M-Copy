@@ -608,6 +608,7 @@ Would you like to view your balance? </string>
     <string name="more_workouts">%s more activities</string>
     <string name="more_gyms">%s more gyms</string>
     <string name="more_trainers">%s more trainers</string>
+    <string name="less_workouts">show less</string>
 
 
 </resources>

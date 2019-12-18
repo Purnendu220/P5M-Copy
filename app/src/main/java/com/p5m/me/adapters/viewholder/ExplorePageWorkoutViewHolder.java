@@ -49,6 +49,9 @@ public class ExplorePageWorkoutViewHolder extends RecyclerView.ViewHolder {
     RecyclerView recyclerView;
     private Gson gson;
     private List<WorkoutModel> list;
+    private List<WorkoutModel> listInitial;
+
+    private ExplorePageWorkoutListAdapter adapter;
 
 
     public ExplorePageWorkoutViewHolder(View itemView) {
@@ -102,34 +105,38 @@ public class ExplorePageWorkoutViewHolder extends RecyclerView.ViewHolder {
 
             if (list != null) {
                 recyclerView.setVisibility(View.VISIBLE);
-                ExplorePageWorkoutListAdapter adapter = new ExplorePageWorkoutListAdapter(context, AppConstants.AppNavigation.SHOWN_IN_EXPLORE_PAGE, list, adapterCallbacks);
+                adapter = new ExplorePageWorkoutListAdapter(context, AppConstants.AppNavigation.SHOWN_IN_EXPLORE_PAGE, adapterCallbacks);
                 recyclerView.setAdapter(adapter);
-
                 recyclerView.setHasFixedSize(true);
                 GridLayoutManager layoutManager = new GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false);
                 recyclerView.setLayoutManager(layoutManager);
-                if (model.isMoreActivityShow()) {
-                    textViewMore.setVisibility(View.INVISIBLE);
-                }
-                if (list.size() > 4) {
-                    int count = list.size() - 4;
-                    String s = String.valueOf(LanguageUtils.numberConverter(count));
-//                    textViewMore.setText(String.format("+"+context.getResources().getString(R.string.more_workouts),  s));
-                    textViewMore.setText(Html.fromHtml(String.format( context.getResources().getString(R.string.more_workouts),"<b>"+"+"+ s+"</b>")));
+             if(!model.isMoreActivityShow()){
+                 if (list.size() > 4) {
+                     listInitial = list.subList(0,4);
+                     setData(listInitial);
+                     int count = list.size() - 4;
+                     String s = String.valueOf(LanguageUtils.numberConverter(count));
+                     textViewMore.setText(Html.fromHtml(String.format( context.getResources().getString(R.string.more_workouts),"<b>"+"+"+ s+"</b>")));
+                     textViewMore.setVisibility(View.VISIBLE);
+                 } else {
+                     setData(list);
+                     textViewMore.setVisibility(View.GONE);
+                 }
+             }else{
+                 setData(list);
+                 if (list.size() > 4) {
+                     textViewMore.setText(context.getResources().getString(R.string.less_workouts));
+                     textViewMore.setVisibility(View.VISIBLE);
+                 } else {
+                     textViewMore.setVisibility(View.GONE);
+                 }
+             }
 
-
-                    model.setMoreActivityShow(true);
-                    textViewMore.setVisibility(View.VISIBLE);
-                } else {
-                    textViewMore.setVisibility(View.INVISIBLE);
-                }
-                adapter.isShowList(false);
                 textViewMore.setOnClickListener(v -> {
-                    textViewMore.setVisibility(View.GONE);
-                    adapter.isShowList(true);
-//                    adapterCallbacks.onAdapterItemClick(ExplorePageWorkoutViewHolder.this,textViewMore,model,position);
+                    adapterCallbacks.onAdapterItemClick(ExplorePageWorkoutViewHolder.this,textViewMore,model,position);
                 });
-                adapter.notifyDataSetChanged();
+
+
 
             } else {
                 recyclerView.setVisibility(View.GONE);
@@ -139,6 +146,11 @@ public class ExplorePageWorkoutViewHolder extends RecyclerView.ViewHolder {
             itemView.setVisibility(View.GONE);
 
         }
+    }
+    private void setData(List<WorkoutModel> list){
+        adapter.clearAll();
+        adapter.addAllWorkOut(list);
+        adapter.notifyDataSetChanged();
     }
 
     private String convertorToModelClassList(ExploreDataList exploreDataList) {

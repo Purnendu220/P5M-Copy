@@ -38,6 +38,7 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DividerItemDecoration;
+import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.ClassProfileActivity;
 import com.p5m.me.view.activity.Main.Gym;
@@ -213,6 +214,27 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
                         Gym.open(context);
                     } else if (data.getViewType().equalsIgnoreCase(AppConstants.ExploreViewType.TRAINER_VIEW)) {
                         Trainers.open(context);
+                    }else if(data.getViewType().equalsIgnoreCase(AppConstants.ExploreViewType.CATEGORY_CAROUSEL_VIEW)){
+                        try {
+                            int index = explorePageAdapter.getList().indexOf(data);
+                            if (index != -1) {
+                                Object obj = explorePageAdapter.getList().get(index);
+                                if (obj instanceof ExploreDataModel) {
+                                    ExploreDataModel exploreData  = (ExploreDataModel) obj;
+                                    if(exploreData.isMoreActivityShow()){
+                                        exploreData.setMoreActivityShow(false);
+
+                                    }else{
+                                        exploreData.setMoreActivityShow(true);
+
+                                    }
+                                    explorePageAdapter.notifyItemChanged(index);
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            LogUtils.exception(e);
+                        }
                     }
                 }
                 break;
