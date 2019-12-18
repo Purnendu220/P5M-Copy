@@ -46,14 +46,14 @@ public class CustomerSpeakAdapter extends PagerAdapter {
 
         if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
             if (!TextUtils.isEmpty(customerSpeak.getMessage_ar())) {
-                textViewComment.setText(customerSpeak.getMessage_ar());
+                textViewComment.setText("\""+customerSpeak.getMessage_ar()+"\"");
                 textViewComment.setVisibility(View.VISIBLE);
             }
             else
                 textViewComment.setVisibility(View.GONE);
         } else {
             if (!TextUtils.isEmpty(customerSpeak.getMessage_eng())) {
-                textViewComment.setText(customerSpeak.getMessage_eng());
+                textViewComment.setText("\""+customerSpeak.getMessage_eng()+"\"");
                 textViewComment.setVisibility(View.VISIBLE);
             }
             else

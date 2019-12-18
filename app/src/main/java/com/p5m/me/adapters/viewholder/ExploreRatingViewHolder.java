@@ -65,7 +65,7 @@ public class ExploreRatingViewHolder extends RecyclerView.ViewHolder {
             }
             itemView.setOnClickListener(v -> adapterCallbacks.onAdapterItemClick(ExploreRatingViewHolder.this, textViewClassName, model, position));
 
-            if (model.getClassMedia().getMediaUrl() != null) {
+            if (model.getClassMedia()!=null && model.getClassMedia().getMediaUrl() != null) {
                 ImageUtils.setImage(context, model.getClassMedia().getMediaUrl(), imageView);
             }
         } else {

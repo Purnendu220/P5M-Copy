@@ -63,6 +63,10 @@ public class GymViewHolder extends RecyclerView.ViewHolder {
             itemView.setOnClickListener(v -> {
                 adapterCallbacks.onAdapterItemClick(GymViewHolder.this,imageViewClass,model,position);
             });
+            if(position==0){
+                itemView.setPadding(8,0,0,0);
+            }
+
 
         } else {
             itemView.setVisibility(View.GONE);

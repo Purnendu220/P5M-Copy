@@ -42,7 +42,7 @@ public class GymByCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.
         list = new ArrayList<>();
         this.shownInScreen = shownInScreen;
         this.showLoader = showLoader;
-        listLoader = new ListLoader(true, context.getString(R.string.no_more_trainers));
+        listLoader = new ListLoader(true, context.getString(R.string.no_more_gyms));
     }
 
 
@@ -107,7 +107,7 @@ public class GymByCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_TRAINER_LIST) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_trainer_list, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_gym_list, parent, false);
             return new GymListByCategoryViewHolder(view, shownInScreen);
         } else if (viewType == VIEW_TYPE_LOADER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_list_progress, parent, false);

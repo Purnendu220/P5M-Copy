@@ -54,7 +54,7 @@ public class ExplorePagePriceListAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_gym_trainer_explore, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_price, parent, false);
         return new PriceModelViewHolder(view);
 
     }
