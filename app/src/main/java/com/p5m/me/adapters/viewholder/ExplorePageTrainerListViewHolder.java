@@ -22,7 +22,6 @@ import com.p5m.me.data.ExploreDataModel;
 import com.p5m.me.data.ExploreTrainerModel;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LanguageUtils;
-import com.p5m.me.utils.SpaceItemDecoration;
 
 import java.util.List;
 
@@ -108,8 +107,6 @@ public class ExplorePageTrainerListViewHolder extends RecyclerView.ViewHolder {
                 recyclerView.setHasFixedSize(true);
                 LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
                 recyclerView.setLayoutManager(layoutManager);
-                SpaceItemDecoration dividerItemDecoration = new SpaceItemDecoration(10);
-                recyclerView.addItemDecoration(dividerItemDecoration);
                 adapter.notifyDataSetChanged();
                 if (model.getMaxItemNumber() > 10) {
                     int count = model.getMaxItemNumber() - 10;
@@ -133,4 +130,6 @@ public class ExplorePageTrainerListViewHolder extends RecyclerView.ViewHolder {
                 new TypeToken<List<LinkedTreeMap>>() {
                 }.getType());
     }
+
 }
+

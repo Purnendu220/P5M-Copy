@@ -16,11 +16,9 @@ import com.google.gson.internal.LinkedTreeMap;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.ExplorePageRatingListAdapter;
-import com.p5m.me.adapters.ExplorePageTrainerListAdapter;
 import com.p5m.me.data.ExploreDataList;
 import com.p5m.me.data.ExploreDataModel;
 import com.p5m.me.data.ExploreRatedClassModel;
-import com.p5m.me.data.ExploreTrainerModel;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LanguageUtils;
 
