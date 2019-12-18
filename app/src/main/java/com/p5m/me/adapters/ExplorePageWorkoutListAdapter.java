@@ -32,18 +32,15 @@ public class ExplorePageWorkoutListAdapter extends RecyclerView.Adapter<Recycler
     private Context context;
 
     private int shownInScreen;
-    private boolean showLoader;
+    private boolean isShowCompleteList;
     private ListLoader listLoader;
-    private boolean isShowAllWorkouts;
 
 
-    public ExplorePageWorkoutListAdapter(Context context, int shownInScreen, List<WorkoutModel> list, Boolean isShowAllWorkouts, AdapterCallbacks<Object> adapterCallbacks) {
+    public ExplorePageWorkoutListAdapter(Context context, int shownInScreen, List<WorkoutModel> list, AdapterCallbacks<Object> adapterCallbacks) {
         this.adapterCallbacks = adapterCallbacks;
         this.context = context;
         this.list = list;
         this.shownInScreen = shownInScreen;
-        this.showLoader = showLoader;
-        listLoader = new ListLoader(true, context.getString(R.string.no_more_gyms));
     }
 
     public List<WorkoutModel> getList() {
@@ -63,31 +60,11 @@ public class ExplorePageWorkoutListAdapter extends RecyclerView.Adapter<Recycler
         list.clear();
     }
 
-    private void addLoader() {
-        if (showLoader) {
-            list.remove(listLoader);
-        }
+
+    public void isShowList(boolean isShowCompleteList) {
+        this.isShowCompleteList = isShowCompleteList;
+        notifyDataSetChanged();
     }
-
-    public void showAllWorkout(Boolean b) {
-       this.isShowAllWorkouts = b;
-    }
-
-
-    public void loaderDone() {
-        listLoader.setFinish(true);
-        try {
-            notifyItemChanged(list.indexOf(listLoader));
-        } catch (Exception e) {
-            e.printStackTrace();
-            LogUtils.exception(e);
-        }
-    }
-
-    public void loaderReset() {
-        listLoader.setFinish(false);
-    }
-
 
     @Override
     public int getItemViewType(int position) {
@@ -126,7 +103,7 @@ public class ExplorePageWorkoutListAdapter extends RecyclerView.Adapter<Recycler
 
     @Override
     public int getItemCount() {
-        if (list.size() > 4 && !isShowAllWorkouts)
+        if (list.size() > 4 && !isShowCompleteList)
             return 4;
         else
             return list.size();

@@ -20,6 +20,7 @@ import com.p5m.me.data.ExploreDataList;
 import com.p5m.me.data.ExploreDataModel;
 import com.p5m.me.data.PriceModel;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.LanguageUtils;
 
 import java.util.List;
 
@@ -70,17 +71,30 @@ public class ExplorePagePriceModelViewHolder extends RecyclerView.ViewHolder {
             }
             itemView.setVisibility(View.VISIBLE);
             if (model.getHeader() != null) {
-                if (!TextUtils.isEmpty(model.getHeader().getTitle()))
-                    textViewHeader.setText(model.getHeader().getTitle());
-                else
-                    textViewHeader.setVisibility(View.GONE);
-                if (!TextUtils.isEmpty(model.getHeader().getSubTitle()))
-                    textViewSubHeader.setText(model.getHeader().getSubTitle());
-                else
-                    textViewSubHeader.setVisibility(View.GONE);
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+                    if (!TextUtils.isEmpty(model.getHeader().getTitleAr()))
+                        textViewHeader.setText(model.getHeader().getTitleAr());
+                    else
+                        textViewHeader.setVisibility(View.GONE);
+                } else {
+                    if (!TextUtils.isEmpty(model.getHeader().getTitle()))
+                        textViewHeader.setText(model.getHeader().getTitle());
+                    else
+                        textViewHeader.setVisibility(View.GONE);
 
+                }
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+                    if (!TextUtils.isEmpty(model.getHeader().getSubTitleAr()))
+                        textViewSubHeader.setText(model.getHeader().getSubTitleAr());
+                    else
+                        textViewSubHeader.setVisibility(View.GONE);
+                } else {
+                    if (!TextUtils.isEmpty(model.getHeader().getSubTitle()))
+                        textViewSubHeader.setText(model.getHeader().getSubTitle());
+                    else
+                        textViewSubHeader.setVisibility(View.GONE);
+                }
             }
-
             if (model.isShowDivider()) {
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layout.getLayoutParams();
                 params.topMargin = 10;

@@ -217,7 +217,7 @@ public class ExplorePageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         if (viewType == CATEGORY_CAROUSEL_VIEW_VALUE) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_gyms, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_workout, parent, false);
             return new ExplorePageWorkoutViewHolder(view);
         }
         if (viewType == TRAINER_CAROUSAL_VIEW_VALUE) {

@@ -73,15 +73,29 @@ public class ExplorePageGymListViewHolder extends RecyclerView.ViewHolder {
             }
             itemView.setVisibility(View.VISIBLE);
             if (model.getHeader() != null) {
-                if (!TextUtils.isEmpty(model.getHeader().getTitle()))
-                    textViewHeader.setText(model.getHeader().getTitle());
-                else
-                    textViewHeader.setVisibility(View.GONE);
-                if (!TextUtils.isEmpty(model.getHeader().getSubTitle()))
-                    textViewSubHeader.setText(model.getHeader().getSubTitle());
-                else
-                    textViewSubHeader.setVisibility(View.GONE);
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+                    if (!TextUtils.isEmpty(model.getHeader().getTitleAr()))
+                        textViewHeader.setText(model.getHeader().getTitleAr());
+                    else
+                        textViewHeader.setVisibility(View.GONE);
+                } else {
+                    if (!TextUtils.isEmpty(model.getHeader().getTitle()))
+                        textViewHeader.setText(model.getHeader().getTitle());
+                    else
+                        textViewHeader.setVisibility(View.GONE);
 
+                }
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+                    if (!TextUtils.isEmpty(model.getHeader().getSubTitleAr()))
+                        textViewSubHeader.setText(model.getHeader().getSubTitleAr());
+                    else
+                        textViewSubHeader.setVisibility(View.GONE);
+                } else {
+                    if (!TextUtils.isEmpty(model.getHeader().getSubTitle()))
+                        textViewSubHeader.setText(model.getHeader().getSubTitle());
+                    else
+                        textViewSubHeader.setVisibility(View.GONE);
+                }
             }
             if (model.isShowDivider()) {
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layout.getLayoutParams();
@@ -90,7 +104,7 @@ public class ExplorePageGymListViewHolder extends RecyclerView.ViewHolder {
             if (model.getMaxItemNumber() > 10) {
                 int count = model.getMaxItemNumber() - 10;
                 String s = String.valueOf(LanguageUtils.numberConverter(count));
-                textViewMore.setText(String.format("+"+context.getResources().getString(R.string.more_gyms), s));
+                textViewMore.setText(Html.fromHtml(String.format( context.getResources().getString(R.string.more_gyms),"<b>"+"+"+ s+"</b>")));
             }
             if (list != null) {
                 recyclerView.setVisibility(View.VISIBLE);

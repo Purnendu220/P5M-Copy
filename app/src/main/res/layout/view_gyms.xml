@@ -12,14 +12,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp" />
+        app:layout_constraintGuide_begin="16dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="20dp" />
+        app:layout_constraintGuide_end="16dp" />
 
     <View
         android:id="@+id/view3"
@@ -42,7 +42,7 @@
         android:textColor="@color/theme_dark_text"
         android:textSize="@dimen/text_extra_large"
         app:layout_constraintLeft_toLeftOf="@id/guidelineLeft"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintRight_toRightOf="@id/guidelineRight"
         app:layout_constraintTop_toBottomOf="@id/view3" />
     <TextView
         android:id="@+id/textViewSubHeader"
@@ -58,10 +58,11 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="@dimen/margin_16"
+        android:paddingLeft="8dp"
+        android:paddingRight="12dp"
         android:layout_marginTop="@dimen/margin_10"
         android:layout_marginBottom="@dimen/margin_10"
         android:paddingBottom="@dimen/margin_10"

@@ -1,6 +1,7 @@
 package com.p5m.me.adapters.viewholder;
 
 import android.content.Context;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,6 @@ public class ExplorePageWorkoutViewHolder extends RecyclerView.ViewHolder {
     RecyclerView recyclerView;
     private Gson gson;
     private List<WorkoutModel> list;
-    private Boolean isShowAllWorkouts = false;
 
 
     public ExplorePageWorkoutViewHolder(View itemView) {
@@ -71,14 +71,29 @@ public class ExplorePageWorkoutViewHolder extends RecyclerView.ViewHolder {
             }
             itemView.setVisibility(View.VISIBLE);
             if (model.getHeader() != null) {
-                if (!TextUtils.isEmpty(model.getHeader().getTitle()))
-                    textViewHeader.setText(model.getHeader().getTitle());
-                else
-                    textViewHeader.setVisibility(View.GONE);
-                if (!TextUtils.isEmpty(model.getHeader().getSubTitle()))
-                    textViewSubHeader.setText(model.getHeader().getSubTitle());
-                else
-                    textViewSubHeader.setVisibility(View.GONE);
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+                    if (!TextUtils.isEmpty(model.getHeader().getTitleAr()))
+                        textViewHeader.setText(model.getHeader().getTitleAr());
+                    else
+                        textViewHeader.setVisibility(View.GONE);
+                } else {
+                    if (!TextUtils.isEmpty(model.getHeader().getTitle()))
+                        textViewHeader.setText(model.getHeader().getTitle());
+                    else
+                        textViewHeader.setVisibility(View.GONE);
+
+                }
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+                    if (!TextUtils.isEmpty(model.getHeader().getSubTitleAr()))
+                        textViewSubHeader.setText(model.getHeader().getSubTitleAr());
+                    else
+                        textViewSubHeader.setVisibility(View.GONE);
+                } else {
+                    if (!TextUtils.isEmpty(model.getHeader().getSubTitle()))
+                        textViewSubHeader.setText(model.getHeader().getSubTitle());
+                    else
+                        textViewSubHeader.setVisibility(View.GONE);
+                }
             }
             if (model.isShowDivider()) {
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layout.getLayoutParams();
@@ -87,22 +102,32 @@ public class ExplorePageWorkoutViewHolder extends RecyclerView.ViewHolder {
 
             if (list != null) {
                 recyclerView.setVisibility(View.VISIBLE);
-                ExplorePageWorkoutListAdapter adapter = new ExplorePageWorkoutListAdapter(context, AppConstants.AppNavigation.SHOWN_IN_EXPLORE_PAGE, list, isShowAllWorkouts, adapterCallbacks);
+                ExplorePageWorkoutListAdapter adapter = new ExplorePageWorkoutListAdapter(context, AppConstants.AppNavigation.SHOWN_IN_EXPLORE_PAGE, list, adapterCallbacks);
                 recyclerView.setAdapter(adapter);
+
                 recyclerView.setHasFixedSize(true);
                 GridLayoutManager layoutManager = new GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false);
                 recyclerView.setLayoutManager(layoutManager);
-                if (list.size() > 4) {
-                    int s = list.size() - 4;
-                    String message = String.format("+"+context.getResources().getString(R.string.more_workouts), String.valueOf(LanguageUtils.numberConverter(s)));
-                    textViewMore.setText(message);
+                if (model.isMoreActivityShow()) {
+                    textViewMore.setVisibility(View.INVISIBLE);
                 }
+                if (list.size() > 4) {
+                    int count = list.size() - 4;
+                    String s = String.valueOf(LanguageUtils.numberConverter(count));
+//                    textViewMore.setText(String.format("+"+context.getResources().getString(R.string.more_workouts),  s));
+                    textViewMore.setText(Html.fromHtml(String.format( context.getResources().getString(R.string.more_workouts),"<b>"+"+"+ s+"</b>")));
 
+
+                    model.setMoreActivityShow(true);
+                    textViewMore.setVisibility(View.VISIBLE);
+                } else {
+                    textViewMore.setVisibility(View.INVISIBLE);
+                }
+                adapter.isShowList(false);
                 textViewMore.setOnClickListener(v -> {
                     textViewMore.setVisibility(View.GONE);
-                    adapter.showAllWorkout(true);
-                    isShowAllWorkouts = true;
-                    adapter.notifyDataSetChanged();
+                    adapter.isShowList(true);
+//                    adapterCallbacks.onAdapterItemClick(ExplorePageWorkoutViewHolder.this,textViewMore,model,position);
                 });
                 adapter.notifyDataSetChanged();
 

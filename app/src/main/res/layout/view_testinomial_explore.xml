@@ -4,7 +4,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="@dimen/margin_20"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 
@@ -14,6 +13,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
             android:textColor="@color/theme_dark_text"
+            android:layout_marginTop="@dimen/margin_5"
             android:textSize="@dimen/text_medium"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewProfile"

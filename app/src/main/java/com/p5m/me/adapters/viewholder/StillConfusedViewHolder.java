@@ -15,6 +15,7 @@ import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.ClassRatingListData;
 import com.p5m.me.data.ExploreDataModel;
 import com.p5m.me.utils.DateUtils;
+import com.p5m.me.utils.LanguageUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,15 +52,30 @@ public class StillConfusedViewHolder extends RecyclerView.ViewHolder {
 
         if (data != null && data instanceof ExploreDataModel) {
             final ExploreDataModel model = (ExploreDataModel) data;
-            if(model.getHeader()!=null) {
-                if (!TextUtils.isEmpty(model.getHeader().getTitle()))
-                    textViewHeader.setText(model.getHeader().getTitle());
-                else
-                    textViewHeader.setVisibility(View.GONE);
-                if (!TextUtils.isEmpty(model.getHeader().getSubTitle()))
-                    textViewSubHeader.setText(model.getHeader().getSubTitle());
-                else
-                    textViewSubHeader.setVisibility(View.GONE);
+            if (model.getHeader() != null) {
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+                    if (!TextUtils.isEmpty(model.getHeader().getTitleAr()))
+                        textViewHeader.setText(model.getHeader().getTitleAr());
+                    else
+                        textViewHeader.setVisibility(View.GONE);
+                } else {
+                    if (!TextUtils.isEmpty(model.getHeader().getTitle()))
+                        textViewHeader.setText(model.getHeader().getTitle());
+                    else
+                        textViewHeader.setVisibility(View.GONE);
+
+                }
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+                    if (!TextUtils.isEmpty(model.getHeader().getSubTitleAr()))
+                        textViewSubHeader.setText(model.getHeader().getSubTitleAr());
+                    else
+                        textViewSubHeader.setVisibility(View.GONE);
+                } else {
+                    if (!TextUtils.isEmpty(model.getHeader().getSubTitle()))
+                        textViewSubHeader.setText(model.getHeader().getSubTitle());
+                    else
+                        textViewSubHeader.setVisibility(View.GONE);
+                }
             }
             buttonContactUs.setOnClickListener(v -> {
                 adapterCallbacks.onAdapterItemClick(StillConfusedViewHolder.this, buttonContactUs, model, position);

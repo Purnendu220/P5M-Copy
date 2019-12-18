@@ -19,6 +19,7 @@ public class ExploreDataModel {
     private HeaderBean header;
     private List<Object> data;
     private int maxItemNumber;
+    private boolean isMoreActivityShow;
 
     public String getWidgetType() {
         return widgetType;
@@ -68,15 +69,28 @@ public class ExploreDataModel {
         this.maxItemNumber = maxItemNumber;
     }
 
+    public boolean isMoreActivityShow() {
+        return isMoreActivityShow;
+    }
+
+    public void setMoreActivityShow(boolean moreActivityShow) {
+        isMoreActivityShow = moreActivityShow;
+    }
+
 
     public static class HeaderBean {
+
         /**
-         * title : Try P5M
-         * subTitle :
+         * title : Activities
+         * subTitle : What workout are you in the mood for today?
+         * titleAr : null
+         * subTitleAr : null
          */
 
         private String title;
         private String subTitle;
+        private String titleAr;
+        private String subTitleAr;
 
         public String getTitle() {
             return title;
@@ -92,6 +106,22 @@ public class ExploreDataModel {
 
         public void setSubTitle(String subTitle) {
             this.subTitle = subTitle;
+        }
+
+        public String getTitleAr() {
+            return titleAr;
+        }
+
+        public void setTitleAr(String titleAr) {
+            this.titleAr = titleAr;
+        }
+
+        public String getSubTitleAr() {
+            return subTitleAr;
+        }
+
+        public void setSubTitleAr(String subTitleAr) {
+            this.subTitleAr = subTitleAr;
         }
     }
 

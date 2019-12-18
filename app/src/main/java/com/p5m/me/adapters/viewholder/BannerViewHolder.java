@@ -49,12 +49,20 @@ public class BannerViewHolder extends RecyclerView.ViewHolder implements ViewPag
 //            final List<Object> model = ((ExploreDataList) data).getdataList();
 
             itemView.setVisibility(View.VISIBLE);
+            layoutIndicator.setVisibility(View.VISIBLE);
+            layoutIndicator.removeAllViews();
              // Pager Setup..
-            BannerAdapter bannerAdapter = new BannerAdapter(context,data);
+            BannerAdapter bannerAdapter = new BannerAdapter(context,data,adapterCallbacks);
             viewPager.setAdapter(bannerAdapter);
 
             // Indicator setup..
-            new ViewPagerIndicator(context, ViewPagerIndicator.STYLE_NORMAL).setup(viewPager, layoutIndicator, R.drawable.circle_black, R.drawable.circle_grey);
+            new ViewPagerIndicator(context, ViewPagerIndicator.STYLE_NORMAL).setup(viewPager, layoutIndicator, R.drawable.circle_white, R.drawable.circle_grey);
+
+        }else{
+            itemView.setVisibility(View.GONE);
+
+            layoutIndicator.setVisibility(View.GONE);
+
 
         }
     }

@@ -1,6 +1,7 @@
 package com.p5m.me.adapters.viewholder;
 
 import android.content.Context;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,15 +71,29 @@ public class ExplorePageTrainerListViewHolder extends RecyclerView.ViewHolder {
             }
             itemView.setVisibility(View.VISIBLE);
             if (model.getHeader() != null) {
-                if (!TextUtils.isEmpty(model.getHeader().getTitle()))
-                    textViewHeader.setText(model.getHeader().getTitle());
-                else
-                    textViewHeader.setVisibility(View.GONE);
-                if (!TextUtils.isEmpty(model.getHeader().getSubTitle()))
-                    textViewSubHeader.setText(model.getHeader().getSubTitle());
-                else
-                    textViewSubHeader.setVisibility(View.GONE);
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+                    if (!TextUtils.isEmpty(model.getHeader().getTitleAr()))
+                        textViewHeader.setText(model.getHeader().getTitleAr());
+                    else
+                        textViewHeader.setVisibility(View.GONE);
+                } else {
+                    if (!TextUtils.isEmpty(model.getHeader().getTitle()))
+                        textViewHeader.setText(model.getHeader().getTitle());
+                    else
+                        textViewHeader.setVisibility(View.GONE);
 
+                }
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+                    if (!TextUtils.isEmpty(model.getHeader().getSubTitleAr()))
+                        textViewSubHeader.setText(model.getHeader().getSubTitleAr());
+                    else
+                        textViewSubHeader.setVisibility(View.GONE);
+                } else {
+                    if (!TextUtils.isEmpty(model.getHeader().getSubTitle()))
+                        textViewSubHeader.setText(model.getHeader().getSubTitle());
+                    else
+                        textViewSubHeader.setVisibility(View.GONE);
+                }
             }
             if (model.isShowDivider()) {
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layout.getLayoutParams();
@@ -95,7 +110,7 @@ public class ExplorePageTrainerListViewHolder extends RecyclerView.ViewHolder {
                 if (model.getMaxItemNumber() > 10) {
                     int count = model.getMaxItemNumber() - 10;
                     String s = String.valueOf(LanguageUtils.numberConverter(count));
-                    textViewMore.setText(String.format("+"+context.getResources().getString(R.string.more_trainers), s));
+                    textViewMore.setText(Html.fromHtml(String.format( context.getResources().getString(R.string.more_trainers),"<b>"+"+"+ s+"</b>")));
                 }
             } else {
                 recyclerView.setVisibility(View.GONE);

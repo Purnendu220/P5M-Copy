@@ -123,6 +123,9 @@ public class ExplorePageTrainerListAdapter extends RecyclerView.Adapter<Recycler
 
     @Override
     public int getItemCount() {
+        if(list.size()>10)
+            return 10;
+        else
             return list.size();
     }
 

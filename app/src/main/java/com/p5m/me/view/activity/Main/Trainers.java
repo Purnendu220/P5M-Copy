@@ -45,8 +45,6 @@ public class Trainers extends BaseActivity implements ViewPagerFragmentSelection
     }
     public static void open(Context context) {
         Intent intent = new Intent(context, Trainers.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(intent);
     }
 
@@ -135,12 +133,7 @@ public class Trainers extends BaseActivity implements ViewPagerFragmentSelection
 
     }
 
-    @Override
-    public void onBackPressed() {
-        this.finish();
-        HomeActivity.show(context, TAB_EXPLORE_PAGE, AppConstants.AppNavigation.SHOWN_IN_HOME_TRAINERS);
 
-    }
 
     @Override
     public void onClick(View view) {

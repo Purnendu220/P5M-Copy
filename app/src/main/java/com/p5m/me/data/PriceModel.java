@@ -3,12 +3,14 @@ package com.p5m.me.data;
 public class PriceModel {
 
     /**
-     * name : Group
+     * name : Group Classes
+     * arName : فعاليات وورش
      * value : CHARGABLE
      * imageUrl : http://d1zfy71n00v47t.cloudfront.net/explore/categories/group.jpg
      */
 
     private String name;
+    private String arName;
     private String value;
     private String imageUrl;
 
@@ -18,6 +20,14 @@ public class PriceModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getArName() {
+        return arName;
+    }
+
+    public void setArName(String arName) {
+        this.arName = arName;
     }
 
     public String getValue() {

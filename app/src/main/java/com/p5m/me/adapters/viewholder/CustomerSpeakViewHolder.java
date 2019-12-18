@@ -1,6 +1,7 @@
 package com.p5m.me.adapters.viewholder;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.p5m.me.data.CustomerSpeaksData;
 import com.p5m.me.data.ExploreDataList;
 import com.p5m.me.data.ExploreDataModel;
 import com.p5m.me.utils.DateUtils;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.ViewPagerIndicator;
 
 import java.util.ArrayList;
@@ -47,7 +49,7 @@ public class CustomerSpeakViewHolder extends RecyclerView.ViewHolder implements 
     @BindView(R.id.viewPager)
     ViewPager viewPager;
     @BindView(R.id.textViewCustomerSpeaks)
-    TextView textViewCustomerSpeaks;
+    TextView textViewHeader;
     @BindView(R.id.layoutIndicator)
     public LinearLayout layoutIndicator;
     @BindView(R.id.layoutTestinomials)
@@ -77,9 +79,24 @@ public class CustomerSpeakViewHolder extends RecyclerView.ViewHolder implements 
             itemView.setVisibility(View.VISIBLE);
             CustomerSpeakAdapter customerSpeakAdapter = new CustomerSpeakAdapter(context, testominalList);
             viewPager.setAdapter(customerSpeakAdapter);
-            textViewCustomerSpeaks.setText(model.getHeader().getTitle());
+            if (model.getHeader() != null) {
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+                    if (!TextUtils.isEmpty(model.getHeader().getTitleAr()))
+                        textViewHeader.setText(model.getHeader().getTitleAr());
+                    else
+                        textViewHeader.setVisibility(View.GONE);
+                } else {
+                    if (!TextUtils.isEmpty(model.getHeader().getTitle()))
+                        textViewHeader.setText(model.getHeader().getTitle());
+                    else
+                        textViewHeader.setVisibility(View.GONE);
+
+                }
+
+            }
+            layoutIndicator.removeAllViews();
             // Indicator setup..
-            new ViewPagerIndicator(context, ViewPagerIndicator.STYLE_NORMAL).setup(viewPager, layoutIndicator, R.drawable.circle_black, R.drawable.circle_grey);
+            new ViewPagerIndicator(context, ViewPagerIndicator.STYLE_NORMAL).setup(viewPager, layoutIndicator, R.drawable.circle_black, R.drawable.circle_white);
             if(model.isShowDivider()){
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layoutTestinomials.getLayoutParams();
                params.topMargin = 10;

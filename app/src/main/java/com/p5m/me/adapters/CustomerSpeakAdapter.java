@@ -42,18 +42,27 @@ public class CustomerSpeakAdapter extends PagerAdapter {
         TextView textViewName = view.findViewById(R.id.textViewName);
         TextView textViewComment = view.findViewById(R.id.textViewComment);
         CustomerSpeaksData customerSpeak = customerSpeaksData.get(position);
+               textViewName.setText(customerSpeak.getName());
 
-            textViewName.setText(customerSpeak.getName());
-        if (!TextUtils.isEmpty(customerSpeak.getMessage_eng())) {
-            if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en"))
-                textViewComment.setText(customerSpeak.getMessage_eng());
-            else
+        if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+            if (!TextUtils.isEmpty(customerSpeak.getMessage_ar())) {
                 textViewComment.setText(customerSpeak.getMessage_ar());
-
+                textViewComment.setVisibility(View.VISIBLE);
+            }
+            else
+                textViewComment.setVisibility(View.GONE);
+        } else {
+            if (!TextUtils.isEmpty(customerSpeak.getMessage_eng())) {
+                textViewComment.setText(customerSpeak.getMessage_eng());
+                textViewComment.setVisibility(View.VISIBLE);
+            }
+            else
+                textViewComment.setVisibility(View.GONE);
         }
 
         return view;
     }
+
 
     @Override
     public int getCount() {

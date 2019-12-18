@@ -21,6 +21,7 @@ import com.p5m.me.data.ExploreDataModel;
 import com.p5m.me.data.PriceModel;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.ImageUtils;
+import com.p5m.me.utils.LanguageUtils;
 
 import java.util.List;
 
@@ -69,9 +70,13 @@ public class PriceModelViewHolder extends RecyclerView.ViewHolder {
             textViewWorkoutType.setVisibility(View.GONE);
             if (model.getImageUrl() != null)
                 ImageUtils.setImage(context, model.getImageUrl(), imageViewClass);
-            textViewPriceModel.setText(model.getName());
-            itemView.setOnClickListener(v->{
-                adapterCallbacks.onAdapterItemClick(PriceModelViewHolder.this,imageViewClass,model,position);
+            if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar"))
+                textViewPriceModel.setText(model.getArName());
+            else
+                textViewPriceModel.setText(model.getName());
+
+            itemView.setOnClickListener(v -> {
+                adapterCallbacks.onAdapterItemClick(PriceModelViewHolder.this, imageViewClass, model, position);
             });
         } else {
             itemView.setVisibility(View.GONE);
