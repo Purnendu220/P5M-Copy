@@ -47,8 +47,9 @@
         android:textColor="@color/theme_dark_text"
         android:textSize="@dimen/text_extra_large"
         android:textStyle="normal"
-        app:layout_constraintLeft_toLeftOf="@id/guidelineLeft"
+        android:gravity="left"
         app:layout_constraintRight_toRightOf="@id/guidelineRight"
+        app:layout_constraintLeft_toLeftOf="@id/guidelineLeft"
         app:layout_constraintTop_toBottomOf="@id/view2" />
 
     <TextView
@@ -62,8 +63,9 @@
         android:text="@string/desc_workout"
         android:textColor="@color/theme_dark_text"
         android:textSize="@dimen/text_medium"
-        app:layout_constraintLeft_toLeftOf="@id/guidelineLeft"
+        android:gravity="left"
         app:layout_constraintRight_toRightOf="@id/guidelineRight"
+        app:layout_constraintLeft_toLeftOf="@id/guidelineLeft"
         app:layout_constraintTop_toBottomOf="@id/textViewHeader" />
 
     <androidx.recyclerview.widget.RecyclerView

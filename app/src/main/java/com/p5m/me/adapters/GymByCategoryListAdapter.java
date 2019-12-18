@@ -22,7 +22,7 @@ import java.util.List;
 
 
 public class GymByCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static final int VIEW_TYPE_TRAINER_LIST = 1;
+    private static final int VIEW_TYPE_GYM_LIST = 1;
     private static final int VIEW_TYPE_LOADER = 2;
     private static final int VIEW_TYPE_UNKNOWN = 3;
 
@@ -96,7 +96,7 @@ public class GymByCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.
 
         Object item = getItem(position);
         if (item instanceof GymModel) {
-            itemViewType = VIEW_TYPE_TRAINER_LIST;
+            itemViewType = VIEW_TYPE_GYM_LIST;
         } else if (item instanceof ListLoader) {
             itemViewType = VIEW_TYPE_LOADER;
         }
@@ -106,7 +106,7 @@ public class GymByCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == VIEW_TYPE_TRAINER_LIST) {
+        if (viewType == VIEW_TYPE_GYM_LIST) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_gym_list, parent, false);
             return new GymListByCategoryViewHolder(view, shownInScreen);
         } else if (viewType == VIEW_TYPE_LOADER) {

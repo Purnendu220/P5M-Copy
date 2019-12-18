@@ -108,6 +108,7 @@ public class ExplorePageTrainerListViewHolder extends RecyclerView.ViewHolder {
                 LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
                 recyclerView.setLayoutManager(layoutManager);
                 adapter.notifyDataSetChanged();
+
                 if (model.getMaxItemNumber() > 10) {
                     int count = model.getMaxItemNumber() - 10;
                     String s = String.valueOf(LanguageUtils.numberConverter(count));
