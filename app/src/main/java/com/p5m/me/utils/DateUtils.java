@@ -143,6 +143,18 @@ public class DateUtils {
         }
         return 0;
     }
+    public static boolean isDateisPast(String date,String date1){
+        try {
+            Date dateObjectOne = classDate.parse(date);
+            Date dateObjectTwo = classDate.parse(date1);
+
+            return dateObjectOne.before(dateObjectTwo);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
 
     public static String getExtendedExpiryDate(String date, int days) {
         try {

@@ -309,7 +309,23 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
             // show general, ready, and owned packages
             if (userPackageInfo.havePackages) {
-                memberShipAdapter.addAllOwnedPackages(userPackageInfo.userPackageReady);
+                if(userPackageInfo.userPackageReady!=null&&userPackageInfo.userPackageReady.size()>0){
+                    if(classModel==null){
+                        if(mFriendsData!=null){
+                            for (UserPackage dropInPackage:userPackageInfo.userPackageReady) {
+                                if(dropInPackage.getBalanceClass()>=mNumberOfPackagesToBuy){
+                                    memberShipAdapter.addOwnedPackages(dropInPackage);
+
+                                }
+                            }
+                        }
+                        else{
+                            memberShipAdapter.addAllOwnedPackages(userPackageInfo.userPackageReady);
+
+                        }
+                    }
+
+                }
 
                 if (userPackageInfo.haveGeneralPackage && !user.isBuyMembership()) {
                     // User have General package and may be also have dropins..

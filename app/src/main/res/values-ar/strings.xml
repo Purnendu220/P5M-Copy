@@ -974,5 +974,6 @@
     <string name="more_trainers">%1$s المزيد من</string>
     <string name="more_workouts">%1$s المزيد من الأنشطة </string>
     <string name="less_workouts">show less</string>
+    <string name="you_cant_use_package">You can\'t use this package</string>
 
 </resources>
