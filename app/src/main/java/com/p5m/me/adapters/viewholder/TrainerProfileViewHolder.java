@@ -110,7 +110,7 @@ public class TrainerProfileViewHolder extends RecyclerView.ViewHolder {
 
             if (model.getMediaResponseDtoList() != null && !model.getMediaResponseDtoList().isEmpty()) {
                 layoutGallery.setVisibility(View.VISIBLE);
-                textViewGallery.setText(Html.fromHtml(context.getString(R.string.gallery) + " <b>(" + model.getMediaResponseDtoList().size() + ")</b>"));
+                textViewGallery.setText(Html.fromHtml(context.getString(R.string.gallery) + " <b>(" + LanguageUtils.numberConverter(model.getMediaResponseDtoList().size()) + ")</b>"));
 
                 ImageListAdapter adapter = new ImageListAdapter(context, AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE, model.getMediaResponseDtoList());
                 recyclerViewGallery.setAdapter(adapter);

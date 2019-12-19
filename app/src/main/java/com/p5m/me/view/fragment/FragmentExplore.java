@@ -179,7 +179,7 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
                     PriceModel data = (PriceModel)model;
                     classesFilters = new ArrayList<>();
 
-                    ClassesFilter filter = new ClassesFilter<Filter.PriceModel>("", true, "PriceModel", data.getName(), 0, ClassesFilter.TYPE_ITEM);
+                    ClassesFilter filter = new ClassesFilter<Filter.PriceModel>("", true, "PriceModel", data.getName(), R.drawable.multiple_users_silhouette, ClassesFilter.TYPE_HEADER);
                     filter.setObject(data);
 
                     classesFilters.add(filter);
@@ -194,7 +194,7 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
                 if (model != null && model instanceof WorkoutModel) {
                     classesFilters = new ArrayList<>();
                     WorkoutModel data = (WorkoutModel) model;
-                    ClassesFilter classesFilter = new ClassesFilter(data.getId() + "", true, "ClassActivity", data.getName(), 0, ClassesFilter.TYPE_ITEM);
+                    ClassesFilter classesFilter = new ClassesFilter(data.getId() + "", true, "ClassActivity", data.getName(), R.drawable.filter_activity, ClassesFilter.TYPE_ITEM);
 
                     classesFilter.setObject(data);
 

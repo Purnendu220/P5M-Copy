@@ -9,7 +9,7 @@
     app:cardPreventCornerOverlap="false"
     app:cardElevation="@dimen/margin_4"
     app:cardCornerRadius="@dimen/margin_4"
-    android:layout_margin="@dimen/margin_4"
+    android:layout_margin="@dimen/margin_2"
     >
     <RelativeLayout
         android:layout_width="match_parent"

@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layout"
-    android:layout_marginLeft="@dimen/margin_8"
-    android:layout_marginTop="@dimen/margin_8"
+    android:layout_marginLeft="@dimen/margin_4"
+    android:layout_marginTop="@dimen/margin_4"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 

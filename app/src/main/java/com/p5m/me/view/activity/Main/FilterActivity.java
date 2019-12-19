@@ -34,6 +34,8 @@ import com.p5m.me.data.CityLocality;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.Filter;
 import com.p5m.me.data.Nationality;
+import com.p5m.me.data.PriceModel;
+import com.p5m.me.data.WorkoutModel;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
@@ -170,6 +172,10 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
             imageLeft.setImageResource(R.drawable.multiple_users_grey_fill);
         } else if (classesFilter.getObject() instanceof Filter.FitnessLevel) {
             imageLeft.setImageResource(R.drawable.outline_gray);
+        }  else if (classesFilter.getObject() instanceof PriceModel) {
+            imageLeft.setImageResource(R.drawable.multiple_users_silhouette);
+        }  else if (classesFilter.getObject() instanceof WorkoutModel) {
+            imageLeft.setImageResource(R.drawable.filter_activity);
         } else {
             imageLeft.setImageResource(R.drawable.filter_activity);
         }
