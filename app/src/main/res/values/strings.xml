@@ -609,6 +609,7 @@ Would you like to view your balance? </string>
     <string name="more_gyms">%s more gyms</string>
     <string name="more_trainers">%s more trainers</string>
     <string name="less_workouts">show less</string>
+    <string name="you_cant_use_package">You can\'t use this package</string>
 
 
 </resources>
