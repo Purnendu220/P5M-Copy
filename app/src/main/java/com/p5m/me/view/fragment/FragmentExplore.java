@@ -38,6 +38,7 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DividerItemDecoration;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.ClassProfileActivity;
@@ -152,7 +153,6 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
 
         v.findViewById(R.id.imageViewOptions).setVisibility(View.GONE);
         ((TextView) (v.findViewById(R.id.textViewTitle))).setText(getActivity().getResources().getString(R.string.explore_page));
-
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT));
         activity.getSupportActionBar().setDisplayShowCustomEnabled(true);

@@ -170,7 +170,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     mainLayoutUserPakages.setVisibility(View.VISIBLE);
                     layoutMainOfferedPackage.setVisibility(View.GONE);
                     packageTitle.setText(model.getPackageName());
-                    packageUsage.setText(String.format(context.getResources().getString(R.string.classess_remaining), model.getBalanceClass(), model.getTotalNumberOfClass()));
+                    packageUsage.setText(String.format(context.getResources().getString(R.string.classess_remaining), Integer.parseInt(LanguageUtils.numberConverter(model.getBalanceClass())), Integer.parseInt(LanguageUtils.numberConverter(model.getTotalNumberOfClass()))));
                     packageValidForOwn.setText(context.getString(R.string.valid_till) + " " + DateUtils.getPackageClassDate(model.getExpiryDate()));
                     setPackageTags(model.getPackageId()
                     );
