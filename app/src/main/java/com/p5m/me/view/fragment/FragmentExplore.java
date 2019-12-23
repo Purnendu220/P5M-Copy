@@ -100,12 +100,14 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
     }
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         return inflater.inflate(R.layout.fragment_explore_page, container, false);
     }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -123,8 +125,6 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
         explorePageAdapter.notifyDataSetChanges();
         callApi();
         setToolBar();
-
-
     }
 
     private void callApi() {
@@ -134,9 +134,9 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
 
     @Override
     public void onRefresh() {
-        networkCommunicator.getExploreData(this, false);
-
+        callApi();
     }
+
 
 
     private void setToolBar() {
@@ -181,13 +181,12 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
                     PriceModel data = (PriceModel) model;
                     classesFilters = new ArrayList<>();
                     if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar"))
-                        filter = new ClassesFilter<PriceModel>("", true, "PriceModel", data.getArName(), R.drawable.multiple_users_grey_fill, ClassesFilter.TYPE_ITEM);
+                        filter = new ClassesFilter("", true, "PriceModel", data.getArName(), R.drawable.multiple_users_grey_fill, ClassesFilter.TYPE_ITEM);
                     else
-                        filter = new ClassesFilter<PriceModel>("", true, "PriceModel", data.getName(), R.drawable.multiple_users_grey_fill, ClassesFilter.TYPE_ITEM);
-                    filter.setSelected(true);
+                        filter = new ClassesFilter("", true, "PriceModel", data.getName(), R.drawable.multiple_users_grey_fill, ClassesFilter.TYPE_ITEM);
                     filter.setObject(data);
 
-
+                    filter.setSelected(true);
                     classesFilters.add(filter);
                     TempStorage.setFilterList(classesFilters);
                     EventBroadcastHelper.sendNewFilterSet();

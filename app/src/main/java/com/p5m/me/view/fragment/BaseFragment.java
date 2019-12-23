@@ -10,9 +10,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.p5m.me.R;
 import com.p5m.me.restapi.NetworkCommunicator;
 
 public class BaseFragment extends Fragment {

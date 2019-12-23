@@ -60,7 +60,7 @@ public class GymListByCategoryViewHolder extends RecyclerView.ViewHolder {
             if (model.getProfileImageThumbnail() != null) {
                 ImageUtils.setImage(context,
                         model.getProfileImage(),
-                        R.color.white,R.drawable.profile_holder, imageViewProfile);
+                        R.drawable.profile_holder, imageViewProfile);
             }
             textViewTrainerName.setText(model.getGymNames());
 
