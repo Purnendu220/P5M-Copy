@@ -38,6 +38,7 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DividerItemDecoration;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.ClassProfileActivity;
@@ -62,6 +63,8 @@ import static com.p5m.me.utils.AppConstants.Tab.TAB_MY_MEMBERSHIP;
 
 public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Object>, MyRecyclerView.LoaderCallbacks, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
     private int pageSizeLimit = AppConstants.Limit.PAGE_LIMIT_EXPLORE_PAGE;
+    private ClassesFilter<PriceModel> filter;
+    private ClassesFilter<WorkoutModel> classesFilter;
 
     public static Fragment createExploreFragment() {
         Fragment tabFragment = new FragmentExplore();
@@ -152,7 +155,6 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
 
         v.findViewById(R.id.imageViewOptions).setVisibility(View.GONE);
         ((TextView) (v.findViewById(R.id.textViewTitle))).setText(getActivity().getResources().getString(R.string.explore_page));
-
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT));
         activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
@@ -176,14 +178,17 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
                     TrainerProfileActivity.open(context, data.getTrainerId(), AppConstants.AppNavigation.NAVIGATION_FROM_EXPLORE);
                 }
                 if (model != null && model instanceof PriceModel) {
-                    PriceModel data = (PriceModel)model;
+                    PriceModel data = (PriceModel) model;
                     classesFilters = new ArrayList<>();
-
-                    ClassesFilter filter = new ClassesFilter<Filter.PriceModel>("", true, "PriceModel", data.getName(), 0, ClassesFilter.TYPE_ITEM);
+                    if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar"))
+                        filter = new ClassesFilter<PriceModel>("", true, "PriceModel", data.getArName(), R.drawable.multiple_users_grey_fill, ClassesFilter.TYPE_ITEM);
+                    else
+                        filter = new ClassesFilter<PriceModel>("", true, "PriceModel", data.getName(), R.drawable.multiple_users_grey_fill, ClassesFilter.TYPE_ITEM);
+                    filter.setSelected(true);
                     filter.setObject(data);
 
-                    classesFilters.add(filter);
 
+                    classesFilters.add(filter);
                     TempStorage.setFilterList(classesFilters);
                     EventBroadcastHelper.sendNewFilterSet();
                     MixPanel.trackFilters(TempStorage.getFilters());
@@ -194,7 +199,11 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
                 if (model != null && model instanceof WorkoutModel) {
                     classesFilters = new ArrayList<>();
                     WorkoutModel data = (WorkoutModel) model;
-                    ClassesFilter classesFilter = new ClassesFilter(data.getId() + "", true, "ClassActivity", data.getName(), 0, ClassesFilter.TYPE_ITEM);
+
+                    if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar"))
+                        classesFilter = new ClassesFilter(data.getId() + "", true, "ClassActivity", data.getArName(), R.drawable.filter_activity, ClassesFilter.TYPE_ITEM);
+                    else
+                        classesFilter = new ClassesFilter(data.getId() + "", true, "ClassActivity", data.getName(), R.drawable.filter_activity, ClassesFilter.TYPE_ITEM);
 
                     classesFilter.setObject(data);
 
@@ -214,17 +223,17 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
                         Gym.open(context);
                     } else if (data.getViewType().equalsIgnoreCase(AppConstants.ExploreViewType.TRAINER_VIEW)) {
                         Trainers.open(context);
-                    }else if(data.getViewType().equalsIgnoreCase(AppConstants.ExploreViewType.CATEGORY_CAROUSEL_VIEW)){
+                    } else if (data.getViewType().equalsIgnoreCase(AppConstants.ExploreViewType.CATEGORY_CAROUSEL_VIEW)) {
                         try {
                             int index = explorePageAdapter.getList().indexOf(data);
                             if (index != -1) {
                                 Object obj = explorePageAdapter.getList().get(index);
                                 if (obj instanceof ExploreDataModel) {
-                                    ExploreDataModel exploreData  = (ExploreDataModel) obj;
-                                    if(exploreData.isMoreActivityShow()){
+                                    ExploreDataModel exploreData = (ExploreDataModel) obj;
+                                    if (exploreData.isMoreActivityShow()) {
                                         exploreData.setMoreActivityShow(false);
 
-                                    }else{
+                                    } else {
                                         exploreData.setMoreActivityShow(true);
 
                                     }

@@ -21,8 +21,9 @@ import com.p5m.me.data.ExploreDataModel;
 import com.p5m.me.data.PriceModel;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LanguageUtils;
-import com.p5m.me.utils.SpaceItemDecoration;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -103,14 +104,18 @@ public class ExplorePagePriceModelViewHolder extends RecyclerView.ViewHolder {
 
             textViewMore.setVisibility(View.GONE);
             if (list != null) {
+                Collections.sort(list, new Comparator<PriceModel>() {
+                    @Override
+                    public int compare(PriceModel u1, PriceModel u2) {
+                        return u1.getOrder().compareTo(u2.getOrder());
+                    }
+                });
                 recyclerView.setVisibility(View.VISIBLE);
                 ExplorePagePriceListAdapter adapter = new ExplorePagePriceListAdapter(context, AppConstants.AppNavigation.SHOWN_IN_EXPLORE_PAGE, list, adapterCallbacks);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setHasFixedSize(true);
                 LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
                 recyclerView.setLayoutManager(layoutManager);
-                SpaceItemDecoration dividerItemDecoration = new SpaceItemDecoration(10);
-                recyclerView.addItemDecoration(dividerItemDecoration);
                 adapter.notifyDataSetChanged();
 
             } else {

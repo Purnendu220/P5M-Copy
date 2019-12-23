@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_4">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewClass"
@@ -18,47 +20,40 @@
             android:id="@+id/imageViewClass"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
             android:background="@drawable/image_holder"
-            />
+            android:scaleType="centerCrop" />
     </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/textViewGymName"
+    <LinearLayout
         android:layout_width="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/set_icon_size"
-        android:drawableTint="@color/theme_dark_text"
-        android:ellipsize="end"
-        android:gravity="center_vertical"
-        android:maxLines="2"
-        android:padding="@dimen/margin_5"
-        android:maxWidth="@dimen/margin_100"
-        android:drawablePadding="@dimen/margin_5"
-        android:text="Dratasbxj"
-        android:textColor="@color/theme_dark_text"
-        android:textSize="@dimen/text_small"
-        android:visibility="visible"
+        android:gravity="center_horizontal"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cardViewClass" />
+        app:layout_constraintTop_toBottomOf="@id/cardViewClass">
 
-    <TextView
-        android:id="@+id/trainerName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableTint="@color/theme_dark_text"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:maxWidth="@dimen/margin_100"
+        <ImageView
+            android:id="@+id/gym_location_icon"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginRight="@dimen/margin_4"
+            android:src="@drawable/map_location_ic" />
 
-        android:maxLines="2"
-        android:padding="@dimen/margin_5"
-        android:textColor="@color/theme_dark_text"
-        android:textSize="@dimen/text_small"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cardViewClass" />
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTint="@color/theme_dark_text"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxWidth="@dimen/margin_80"
+            android:maxLines="2"
+            tools:text="Tra"
+            android:textColor="@color/theme_dark_text"
+            android:textSize="@dimen/text_small" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textViewPriceModel"
@@ -70,7 +65,6 @@
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"
-
         android:padding="@dimen/margin_8"
         android:text="Yasmeen"
         android:textColor="@color/white"

@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,14 +17,11 @@ import com.google.gson.internal.LinkedTreeMap;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.ExplorePageGymListAdapter;
-import com.p5m.me.adapters.ExplorePagePriceListAdapter;
 import com.p5m.me.data.ExploreDataList;
 import com.p5m.me.data.ExploreDataModel;
 import com.p5m.me.data.ExploreGymModel;
-import com.p5m.me.data.PriceModel;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LanguageUtils;
-import com.p5m.me.utils.SpaceItemDecoration;
 
 import java.util.List;
 
@@ -115,8 +111,8 @@ public class ExplorePageGymListViewHolder extends RecyclerView.ViewHolder {
                 recyclerView.setHasFixedSize(true);
                 LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
                 recyclerView.setLayoutManager(layoutManager);
-                SpaceItemDecoration dividerItemDecoration = new SpaceItemDecoration(10);
-                recyclerView.addItemDecoration(dividerItemDecoration);
+//                SpaceItemDecoration dividerItemDecoration = new SpaceItemDecoration(5);
+//                recyclerView.addItemDecoration(dividerItemDecoration);
 
                 adapter.notifyDataSetChanged();
 
@@ -132,6 +128,7 @@ public class ExplorePageGymListViewHolder extends RecyclerView.ViewHolder {
 
         }
 
+
     }
 
     private String convertToModelClassList(ExploreDataList exploreDataList) {
@@ -140,4 +137,6 @@ public class ExplorePageGymListViewHolder extends RecyclerView.ViewHolder {
                 new TypeToken<List<LinkedTreeMap>>() {
                 }.getType());
     }
+
+
 }

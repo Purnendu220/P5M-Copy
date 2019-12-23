@@ -23,6 +23,7 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.ImageUtils;
 import com.p5m.me.utils.LanguageUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -61,6 +62,7 @@ public class PriceModelViewHolder extends RecyclerView.ViewHolder {
 
         if (data != null && data instanceof PriceModel) {
             final PriceModel model = (PriceModel) data;
+
             itemView.setVisibility(View.VISIBLE);
 
             imageViewClass.setVisibility(View.VISIBLE);

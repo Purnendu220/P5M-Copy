@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.p5m.me.R;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 
 import java.util.ArrayList;
@@ -125,7 +126,7 @@ public class GalleryActivity extends BaseActivity implements ViewPager.OnPageCha
             textViewCounter.setVisibility(View.GONE);
         } else {
             textViewCounter.setVisibility(View.VISIBLE);
-            textViewCounter.setText(viewPager.getCurrentItem() + 1 + "/" + images.size());
+            textViewCounter.setText( LanguageUtils.numberConverter(viewPager.getCurrentItem() +1) + "/" + LanguageUtils.numberConverter(images.size()));
         }
     }
 

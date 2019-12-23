@@ -2,6 +2,7 @@ package com.p5m.me.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,7 @@ public class BannerAdapter extends PagerAdapter {
         BannerData bannerData = (BannerData) bannerDataList.get(position);
         ImageView image = view.findViewById(R.id.image);
         image.setOnClickListener(v -> {
-            if (bannerDataList.get(position).getUrl() != null)
+            if (bannerDataList.get(position).getUrl() != null && !TextUtils.isEmpty(bannerDataList.get(position).getUrl()))
                 onBannerClick(position);
         });
         if (bannerData.getImagePath() != null)

@@ -34,6 +34,8 @@ import com.p5m.me.data.CityLocality;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.Filter;
 import com.p5m.me.data.Nationality;
+import com.p5m.me.data.PriceModel;
+import com.p5m.me.data.WorkoutModel;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
@@ -170,6 +172,10 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
             imageLeft.setImageResource(R.drawable.multiple_users_grey_fill);
         } else if (classesFilter.getObject() instanceof Filter.FitnessLevel) {
             imageLeft.setImageResource(R.drawable.outline_gray);
+        }  else if (classesFilter.getObject() instanceof PriceModel) {
+            imageLeft.setImageResource(R.drawable.multiple_users_grey_fill);
+        }  else if (classesFilter.getObject() instanceof WorkoutModel) {
+            imageLeft.setImageResource(R.drawable.filter_activity);
         } else {
             imageLeft.setImageResource(R.drawable.filter_activity);
         }
@@ -422,9 +428,9 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
             for (Filter.PriceModel priceModel : priceModelList) {
                 ClassesFilter classesFilter;
                 if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar"))
-                    classesFilter = new ClassesFilter(priceModel.getId() + "", true, "PriceModel", priceModel.getName_ar(), 0, ClassesFilter.TYPE_ITEM);
+                    classesFilter = new ClassesFilter(priceModel.getId() + "", true, "PriceModel", priceModel.getName_ar(), R.drawable.multiple_users_grey_fill, ClassesFilter.TYPE_ITEM);
                 else
-                    classesFilter = new ClassesFilter(priceModel.getId() + "", true, "PriceModel", priceModel.getName(), 0, ClassesFilter.TYPE_ITEM);
+                    classesFilter = new ClassesFilter(priceModel.getId() + "", true, "PriceModel", priceModel.getName(),  R.drawable.multiple_users_grey_fill, ClassesFilter.TYPE_ITEM);
                 classesFilter.setObject(priceModel);
                 classesFilters.add(classesFilter);
             }
@@ -453,16 +459,6 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
                 filterAdapter.refreshList();
 
                 filterAdapter.notifyDataSetChanged();
-
-//                int index = filterAdapter.getList().indexOf(classesFilter);
-//
-//                if (index == -1) {
-//                    filterAdapter.notifyDataSetChanged();
-//                } else {
-//                    filterAdapter.notifyItemChanged(index);
-//                    filterAdapter.notifyItemRangeRemoved(index + 1, index + classesFilter.getList().size() - 1);
-//                }
-//                LogUtils.debug("FilterActivity onAdapterItemClick " + (index + 1) + " " + (index + classesFilter.getList().size()));
 
             } else {
                 classesFilter.setExpanded(!classesFilter.isExpanded());

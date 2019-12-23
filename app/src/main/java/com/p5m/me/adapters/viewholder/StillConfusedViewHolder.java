@@ -10,12 +10,20 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.ClassRatingListData;
+import com.p5m.me.data.ExploreDataList;
 import com.p5m.me.data.ExploreDataModel;
+import com.p5m.me.data.TryP5MData;
 import com.p5m.me.utils.DateUtils;
+import com.p5m.me.utils.JsonUtils;
 import com.p5m.me.utils.LanguageUtils;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,13 +45,15 @@ public class StillConfusedViewHolder extends RecyclerView.ViewHolder {
     TextView textViewHeader;
     @BindView(R.id.textViewSubHeader)
     TextView textViewSubHeader;
+    private Gson gson;
+    private List<TryP5MData> list;
 
 
     public StillConfusedViewHolder(View itemView) {
         super(itemView);
 
         context = itemView.getContext();
-
+        gson = new Gson();
         ButterKnife.bind(this, itemView);
         this.shownInScreen = shownInScreen;
     }
@@ -77,6 +87,18 @@ public class StillConfusedViewHolder extends RecyclerView.ViewHolder {
                         textViewSubHeader.setVisibility(View.GONE);
                 }
             }
+            if (model.getData() != null) {
+                ExploreDataList exploreDataList = new ExploreDataList(model.getData());
+                String listString = convertorToModelClassList(exploreDataList);
+                list = gson.fromJson(listString, new TypeToken<List<TryP5MData>>() {
+                }.getType());
+            }
+            if (list != null) {
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar"))
+                    buttonContactUs.setText(list.get(0).getButtonTitleAr());
+                else
+                    buttonContactUs.setText(list.get(0).getButtonTitle());
+            }
             buttonContactUs.setOnClickListener(v -> {
                 adapterCallbacks.onAdapterItemClick(StillConfusedViewHolder.this, buttonContactUs, model, position);
             });
@@ -85,5 +107,12 @@ public class StillConfusedViewHolder extends RecyclerView.ViewHolder {
                 params.topMargin = 10;
             }
         }
+    }
+
+    private String convertorToModelClassList(ExploreDataList exploreDataList) {
+        return gson.toJson(
+                exploreDataList.getexploreDataList(),
+                new TypeToken<List<LinkedTreeMap>>() {
+                }.getType());
     }
 }

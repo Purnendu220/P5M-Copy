@@ -46,8 +46,6 @@ public class BannerViewHolder extends RecyclerView.ViewHolder implements ViewPag
     public void bind(final List<BannerData> data, int shownInScreen, final AdapterCallbacks adapterCallbacks, final int position) {
 
         if (data != null  ) {
-//            final List<Object> model = ((ExploreDataList) data).getdataList();
-
             itemView.setVisibility(View.VISIBLE);
             layoutIndicator.setVisibility(View.VISIBLE);
             layoutIndicator.removeAllViews();

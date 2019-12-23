@@ -28,14 +28,16 @@ public class TrainerViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.imageViewClass)
     ImageView imageViewClass;
-    @BindView(R.id.textViewGymName)
-    TextView textViewGymName;
-    @BindView(R.id.trainerName)
+    @BindView(R.id.name)
     TextView trainerName;
     @BindView(R.id.textViewPriceModel)
     TextView textViewPriceModel;
     @BindView(R.id.textViewWorkoutType)
     TextView textViewWorkoutType;
+    @BindView(R.id.gym_location_icon)
+    ImageView gym_location_icon;
+
+
 
 
     public TrainerViewHolder(View itemView) {
@@ -43,6 +45,8 @@ public class TrainerViewHolder extends RecyclerView.ViewHolder {
 
         context = itemView.getContext();
         ButterKnife.bind(this, itemView);
+        gym_location_icon.setVisibility(View.GONE);
+
     }
 
     public void bind(final Object data, final AdapterCallbacks adapterCallbacks, final int position) {
@@ -53,8 +57,6 @@ public class TrainerViewHolder extends RecyclerView.ViewHolder {
 
             imageViewClass.setVisibility(View.VISIBLE);
             textViewPriceModel.setVisibility(View.GONE);
-            textViewGymName.setVisibility(View.GONE);
-            trainerName.setVisibility(View.VISIBLE);
             textViewWorkoutType.setVisibility(View.GONE);
             trainerName.setText(model.getTrainerName());
             if (model.getProfileImage() != null)

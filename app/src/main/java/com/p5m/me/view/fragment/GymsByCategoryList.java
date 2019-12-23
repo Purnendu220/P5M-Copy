@@ -51,7 +51,6 @@ public class GymsByCategoryList extends BaseFragment implements ViewPagerFragmen
     }
 
 
-
     @BindView(R.id.recyclerViewClass)
     public RecyclerView recyclerViewTrainers;
     @BindView(R.id.swipeRefreshLayout)
@@ -108,7 +107,7 @@ public class GymsByCategoryList extends BaseFragment implements ViewPagerFragmen
         recyclerViewTrainers.setAdapter(gymByCategoryListAdapter);
 
 
-     if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_HOME_GYM) {
+        if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_HOME_GYM) {
             onRefresh();
         }
     }
@@ -171,7 +170,7 @@ public class GymsByCategoryList extends BaseFragment implements ViewPagerFragmen
     }
 
     private void callApiGym() {
-          networkCommunicator.getGymList(activityId, page, pageSizeLimit, this, false);
+        networkCommunicator.getGymList(activityId, page, pageSizeLimit, this, false);
 
     }
 
@@ -237,13 +236,9 @@ public class GymsByCategoryList extends BaseFragment implements ViewPagerFragmen
     private void checkListData() {
         if (gymByCategoryListAdapter.getList().isEmpty()) {
             layoutNoData.setVisibility(View.VISIBLE);
-            if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
-                textViewEmptyLayoutText.setText(R.string.no_data_search_trainer_list);
-                imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_search);
-            } else {
-                textViewEmptyLayoutText.setText(R.string.no_data_trainer_list_main);
-                imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_trainer);
-            }
+            textViewEmptyLayoutText.setText(R.string.no_data_search_gym_list);
+            imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_trainer);
+
         } else {
             layoutNoData.setVisibility(View.GONE);
         }

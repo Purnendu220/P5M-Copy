@@ -11,6 +11,8 @@ import com.p5m.me.R;
 import com.p5m.me.adapters.viewholder.PriceModelViewHolder;
 import com.p5m.me.data.PriceModel;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -44,6 +46,7 @@ public class ExplorePagePriceListAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     public void addAllClass(List<PriceModel> models) {
+
         list.addAll(models);
         notifyDataSetChanged();
     }
