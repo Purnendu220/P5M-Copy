@@ -368,8 +368,10 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
             memberShipAdapter.setClassModel(null);
 
             if (userPackageInfo.havePackages) {
+                if(classModel==null){
+                    memberShipAdapter.addAllOwnedPackages(userPackageInfo.userPackageReady);
 
-                memberShipAdapter.addAllOwnedPackages(userPackageInfo.userPackageReady);
+                }
 
                 if (!userPackageInfo.haveGeneralPackage) {
                     // User don't have General package..
@@ -547,7 +549,8 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                             memberShipAdapter.addAllOfferedPackages(packagesWithVisitLimit);
 
 
-                        } else {
+                        }
+                        else {
                             memberShipAdapter.addAllOfferedPackages(packages);
 
                         }
