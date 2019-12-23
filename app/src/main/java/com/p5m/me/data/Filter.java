@@ -80,15 +80,20 @@ public class Filter implements Serializable {
         }
     }
 
-    public static class PriceModel {
+   /* public static class PriceModel {
 
-        /**
+        *//**
          * id : 4
          * name : Group
          * name_ar : مجموعة
          * priceModel : CHARGABLE
          * status : false
-         */
+         *//*
+
+        public PriceModel(String id, String name) {
+            this.id = id;
+            this.name = name;
+        }
 
         private String id;
         private String name;
@@ -135,7 +140,7 @@ public class Filter implements Serializable {
         public void setStatus(boolean status) {
             this.status = status;
         }
-    }
+    }*/
 
     public static class Gender implements Serializable {
         public String id;

@@ -325,8 +325,8 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                 activities.add(String.valueOf(((ClassActivity) classesFilter.getObject()).getId()));
             } else if (classesFilter.getObject() instanceof GymDataModel) {
                 gymList.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getId()));
-            } else if (classesFilter.getObject() instanceof Filter.PriceModel) {
-                priceModelList.add(String.valueOf(((Filter.PriceModel) classesFilter.getObject()).getPriceModel()));
+            } else if (classesFilter.getObject() instanceof PriceModel) {
+                priceModelList.add(String.valueOf(((PriceModel) classesFilter.getObject()).getValue()));
             } else if (classesFilter.getObject() instanceof Filter.FitnessLevel) {
                 fitnessLevelList.add(String.valueOf(((Filter.FitnessLevel) classesFilter.getObject()).getLevel()));
             }
@@ -389,8 +389,6 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                 activities.add(String.valueOf(((ClassActivity) classesFilter.getObject()).getId()));
             } else if (classesFilter.getObject() instanceof GymDataModel) {
                 gymList.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getId()));
-            } else if (classesFilter.getObject() instanceof Filter.PriceModel) {
-                priceModelList.add(String.valueOf(((Filter.PriceModel) classesFilter.getObject()).getPriceModel()));
             } else if (classesFilter.getObject() instanceof Filter.FitnessLevel) {
                 fitnessLevelList.add(String.valueOf(((Filter.FitnessLevel) classesFilter.getObject()).getLevel()));
             } else if (classesFilter.getObject() instanceof PriceModel) {
