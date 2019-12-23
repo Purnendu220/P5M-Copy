@@ -33,6 +33,8 @@ import com.p5m.me.data.WorkoutModel;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.GymModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
+import com.p5m.me.eventbus.Events;
+import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -49,6 +51,9 @@ import com.p5m.me.view.activity.Main.TrainerProfileActivity;
 import com.p5m.me.view.activity.Main.Trainers;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.activity.custom.MyRecyclerView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,13 +95,13 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        GlobalBus.getBus().register(this);
+        GlobalBus.getBus().register(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        GlobalBus.getBus().unregister(this);
+        GlobalBus.getBus().unregister(this);
     }
 
 
@@ -131,13 +136,21 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
         networkCommunicator.getExploreData(this, false);
 
     }
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updatePackage(Events.UpdatePackage data) {
+        callApi();
+    }
     @Override
     public void onRefresh() {
         callApi();
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        callApi();
+    }
 
     private void setToolBar() {
 
@@ -306,7 +319,6 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
     public void onApiFailure(String errorMessage, int requestCode) {
         swipeRefreshLayout.setRefreshing(false);
         switch (requestCode) {
-
             case NetworkCommunicator.RequestCode.GET_EXPLORE_DATA:
                 break;
         }
