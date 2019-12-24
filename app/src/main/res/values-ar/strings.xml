@@ -953,5 +953,27 @@
     <string name="male_small">ذكر</string>
     <string name="female_small">أنثى</string>
     <string name="no_class_available">No Class Available</string>
+    <string name="try_p5m">Try P5M</string>
+    <string name="desc_try_p5m">Your most flexible membership. Book classes for any workout and discover a healthy you.</string>
+    <string name="explore_plans">Explore plans</string>
+    <string name="customer_speaks">Customer Speaks</string>
+    <string name="what_can_we_help">What can we help you find, %s</string>
+    <string name="workouts">Workouts</string>
+    <string name="desc_workout">Variety of workout formats for one and all</string>
+    <string name="our_gym">Our gyms</string>
+    <string name="desc_gym">Access the best gyms in Kuwait with P5M trust seal</string>
+    <string name="view_more">View more</string>
+    <string name="our_trainer">Our trainers</string>
+    <string name="desc_trainer">Train with real life athletes and experienced professionals</string>
+    <string name="top_rated_classes">Top rated classes</string>
+    <string name="desc_top_rated_classes">Book trusted classes  loved by our members</string>
+    <string name="still_confused">Still confused?</string>
+    <string name="desc_still_confused">Get advice from our expert and start your fitness journey.</string>
+    <string name="explore_page">اكتشف</string>
+    <string name="more_gyms">%1$s المزيد من الأندية </string>
+    <string name="more_trainers">%1$s المزيد من</string>
+    <string name="more_workouts">%1$s المزيد من الأنشطة </string>
+    <string name="less_workouts">show less</string>
+    <string name="you_cant_use_package">You can\'t use this package</string>
 
 </resources>

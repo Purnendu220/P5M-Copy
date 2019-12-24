@@ -14,6 +14,7 @@ import com.p5m.me.view.activity.Main.PackageLimitsActivity;
 import com.p5m.me.view.activity.Main.SettingActivity;
 import com.p5m.me.view.activity.Main.SettingNotification;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
+import com.p5m.me.view.activity.Main.Trainers;
 import com.p5m.me.view.activity.Main.TransactionHistoryActivity;
 
 import static com.p5m.me.utils.AppConstants.Tab.TAB_MY_MEMBERSHIP;
@@ -75,7 +76,8 @@ public class HandleNotificationDeepLink {
 
 
             } else if (url.contains("/trainers")) {
-                navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_TRAINER, 0);
+//                navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_TRAINER, 0);
+                navigationIntent = Trainers.createIntent(context);
 
 
             } else if (url.contains("/userschedule")) {

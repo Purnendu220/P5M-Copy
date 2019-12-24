@@ -35,11 +35,15 @@ import com.p5m.me.adapters.viewholder.ClassViewHolder;
 import com.p5m.me.data.CityLocality;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.Filter;
+import com.p5m.me.data.PriceModel;
 import com.p5m.me.data.RecomendedClassData;
 import com.p5m.me.data.WishListResponse;
+import com.p5m.me.data.WorkoutModel;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.GymDataModel;
+import com.p5m.me.data.main.GymModel;
+import com.p5m.me.data.main.TrainerModel;
 import com.p5m.me.data.request.ClassListRequest;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.eventbus.Events;
@@ -321,8 +325,8 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                 activities.add(String.valueOf(((ClassActivity) classesFilter.getObject()).getId()));
             } else if (classesFilter.getObject() instanceof GymDataModel) {
                 gymList.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getId()));
-            } else if (classesFilter.getObject() instanceof Filter.PriceModel) {
-                priceModelList.add(String.valueOf(((Filter.PriceModel) classesFilter.getObject()).getPriceModel()));
+            } else if (classesFilter.getObject() instanceof PriceModel) {
+                priceModelList.add(String.valueOf(((PriceModel) classesFilter.getObject()).getValue()));
             } else if (classesFilter.getObject() instanceof Filter.FitnessLevel) {
                 fitnessLevelList.add(String.valueOf(((Filter.FitnessLevel) classesFilter.getObject()).getLevel()));
             }
@@ -385,10 +389,12 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                 activities.add(String.valueOf(((ClassActivity) classesFilter.getObject()).getId()));
             } else if (classesFilter.getObject() instanceof GymDataModel) {
                 gymList.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getId()));
-            } else if (classesFilter.getObject() instanceof Filter.PriceModel) {
-                priceModelList.add(String.valueOf(((Filter.PriceModel) classesFilter.getObject()).getPriceModel()));
             } else if (classesFilter.getObject() instanceof Filter.FitnessLevel) {
                 fitnessLevelList.add(String.valueOf(((Filter.FitnessLevel) classesFilter.getObject()).getLevel()));
+            } else if (classesFilter.getObject() instanceof PriceModel) {
+                priceModelList.add(String.valueOf(((PriceModel) classesFilter.getObject()).getValue()));
+            } else if (classesFilter.getObject() instanceof WorkoutModel) {
+                activities.add(String.valueOf(((WorkoutModel) classesFilter.getObject()).getId()));
             }
         }
 

@@ -170,7 +170,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     mainLayoutUserPakages.setVisibility(View.VISIBLE);
                     layoutMainOfferedPackage.setVisibility(View.GONE);
                     packageTitle.setText(model.getPackageName());
-                    packageUsage.setText(String.format(context.getResources().getString(R.string.classess_remaining), model.getBalanceClass(), model.getTotalNumberOfClass()));
+                    packageUsage.setText(String.format(context.getResources().getString(R.string.classess_remaining), Integer.parseInt(LanguageUtils.numberConverter(model.getBalanceClass())), Integer.parseInt(LanguageUtils.numberConverter(model.getTotalNumberOfClass()))));
                     packageValidForOwn.setText(context.getString(R.string.valid_till) + " " + DateUtils.getPackageClassDate(model.getExpiryDate()));
                     setPackageTags(model.getPackageId()
                     );
@@ -190,11 +190,23 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                         else
                             textViewActiveDropIn.setText(String.format(context.getResources().getString(R.string.drop_in_text), model.getGymName(), DateUtils.getPackageClassDate(model.getExpiryDate())));
                     }
+                    if (classModel!=null&&model.getExpiryDate()!=null&&DateUtils.isDateisPast(model.getExpiryDate(),classModel.getClassDate())) {
+                        mainLayoutActivePackageDropin.setAlpha(0.5f);
 
-                    button.setOnClickListener(new View.OnClickListener() {
+
+                    }else{
+                        mainLayoutActivePackageDropin.setAlpha(1.0f);
+
+                    }
+                        button.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            GymProfileActivity.open(context, model.getGymId(), AppConstants.AppNavigation.NAVIGATION_FROM_MEMBERSHIP);
+                            if (classModel!=null&&model.getExpiryDate()!=null&&DateUtils.isDateisPast(model.getExpiryDate(),classModel.getClassDate())) {
+                                 ToastUtils.show(context,context.getResources().getString(R.string.you_cant_use_package));
+                            }else{
+                                GymProfileActivity.open(context, model.getGymId(), AppConstants.AppNavigation.NAVIGATION_FROM_MEMBERSHIP);
+
+                            }
                         }
                     });
                 }
@@ -329,6 +341,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
             layoutNotApplicable.setVisibility(View.GONE);
         }
     }
+
 
     private void setClassPromo(Package model) {
         if (model.getPromoResponseDto().getPromoDesc() != null) {

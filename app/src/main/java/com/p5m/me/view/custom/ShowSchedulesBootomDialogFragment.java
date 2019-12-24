@@ -20,6 +20,7 @@ import com.p5m.me.adapters.ShowScheduleAdapter;
 import com.p5m.me.data.CityLocality;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.Filter;
+import com.p5m.me.data.PriceModel;
 import com.p5m.me.data.main.BranchModel;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.GymDataModel;
@@ -139,8 +140,8 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
                 gymList.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getId()));
             }else if (classesFilter.getObject() instanceof Filter.FitnessLevel) {
                 fitnessLevel.add(String.valueOf(((Filter.FitnessLevel) classesFilter.getObject()).getLevel()));
-            }else if (classesFilter.getObject() instanceof Filter.PriceModel) {
-                priceModel.add(String.valueOf(((Filter.PriceModel) classesFilter.getObject()).getPriceModel()));
+            }else if (classesFilter.getObject() instanceof PriceModel) {
+                priceModel.add(String.valueOf(((PriceModel) classesFilter.getObject()).getValue()));
             }
         }
 

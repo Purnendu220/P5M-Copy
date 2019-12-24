@@ -23,17 +23,16 @@ import com.p5m.me.MyApp;
 import com.p5m.me.R;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.helper.Helper;
-import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.remote_config.RemoteConfigure;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
-import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.PermissionUtility;
 import com.p5m.me.view.activity.Main.ForceUpdateActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
+import com.p5m.me.view.activity.Main.Trainers;
 import com.p5m.me.view.activity.base.BaseActivity;
 
 import butterknife.BindView;
@@ -111,9 +110,7 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
 
                 if (MyPreferences.getInstance().isLogin()) {
                     /////////// HomeActivity Screen ////////////
-
                     HomeActivity.open(context);
-
                 } else {
 
                     Helper.handleLogin(context);

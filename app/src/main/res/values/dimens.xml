@@ -133,6 +133,9 @@
 
     <dimen name="membership_img_height">158dp</dimen>
     <dimen name="membership_icon">60dp</dimen>
+    <dimen name="button_width">150dp</dimen>
+    <dimen name="margin_13">13dp</dimen>
+    <dimen name="margin_90">90dp</dimen>
 
 
 </resources>

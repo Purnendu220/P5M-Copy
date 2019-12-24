@@ -6,15 +6,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
-
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -258,7 +256,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             e.printStackTrace();
         }
         openRateAlertDialog();
-
+        networkCommunicator.getActivities(this, true);
         networkCommunicator.getRatingParameters(this, true);
         checkFacebookSessionStatus();
 
@@ -323,9 +321,10 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_FIND_CLASS, R.drawable.find_a_class, R.drawable.find_a_class,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
                 context.getString(R.string.find_class), context.getString(R.string.find_class)));
-        tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_TRAINER, R.drawable.trainers, R.drawable.trainers,
+        tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_EXPLORE_PAGE, R.drawable.explore, R.drawable.explore,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
-                context.getString(R.string.trainer), context.getString(R.string.trainers)));
+                context.getString(R.string.explore_page), context.getString(R.string.explore_page)));
+
         tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_SCHEDULE, R.drawable.schedule, R.drawable.schedule,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
                 context.getString(R.string.schedule), context.getString(R.string.schedule)));
@@ -380,7 +379,6 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         }
         handleTabChangeForMembership(position);
         currentTab = position;
-
     }
 
     @Override
@@ -483,6 +481,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         FirebaseAnalysic.viewHomePage();
         if (currentTab == AppConstants.Tab.TAB_FIND_CLASS) {
             handleBuyClassesButton();
+            buyClassesLayout.setVisibility(View.GONE);
         } else {
             buyClassesLayout.setVisibility(View.GONE);
 
@@ -677,6 +676,15 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
               e.printStackTrace();
           }
       }
+      else if(position == TAB_MY_MEMBERSHIP && currentTab == position && NAVIGATED_FROM_INT == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS ){
+          try {
+              MembershipFragment fragment = ((MembershipFragment) homeAdapter.getFragments().get(TAB_MY_MEMBERSHIP));
+              fragment.refreshFragment(NAVIGATED_FROM_INT,CLASS_OBJECT,BOOK_WITH_FRIEND_DATA,NUMBER_OF_PACKAGES_TO_BUY);
+
+          } catch (Exception e) {
+              e.printStackTrace();
+          }
+      }
   }
 
     private void handleMembershipInfoState(User user){
@@ -691,6 +699,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         }
 
     }
+
 }
 
 

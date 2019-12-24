@@ -14,12 +14,15 @@ import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.viewholder.TrainerListViewHolder;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.FollowResponse;
+import com.p5m.me.data.main.GymModel;
 import com.p5m.me.data.main.TrainerModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
+import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.ToastUtils;
+import com.p5m.me.view.activity.Main.GymProfileActivity;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 
@@ -63,14 +66,17 @@ public class TrainerListListenerHelper implements AdapterCallbacks, NetworkCommu
                 }
                 break;
             default:
-                TrainerProfileActivity.open(context, (TrainerModel) model, shownInScreen);
+                if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_GYM)
+                    GymProfileActivity.open(context, ((GymModel) model).getId(), shownInScreen);
+                else
+                    TrainerProfileActivity.open(context, (TrainerModel) model, shownInScreen);
                 break;
         }
     }
 
     private void dialogUnFollow(final RecyclerView.ViewHolder viewHolder, final TrainerModel trainerModel) {
 
-        DialogUtils.showBasic(context, context.getString(R.string.are_you_sure_you_want_to_remove)+" " + trainerModel.getFirstName() + "?", context.getString(R.string.yes), new MaterialDialog.SingleButtonCallback() {
+        DialogUtils.showBasic(context, context.getString(R.string.are_you_sure_you_want_to_remove) + " " + trainerModel.getFirstName() + "?", context.getString(R.string.yes), new MaterialDialog.SingleButtonCallback() {
             @Override
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                 ((BaseActivity) activity).networkCommunicator.followUnFollow(!trainerModel.isIsfollow(), trainerModel, TrainerListListenerHelper.this, false);

@@ -450,7 +450,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 //********************MEMBERSHIP********************//
                 case "onPackageExpired":
-                    navigationIntent =  HomeActivity.showMembership(context,TAB_MY_MEMBERSHIP,AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
+                    navigationIntent = HomeActivity.showMembership(context, TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
                     break;
                 case "OnFinishedPackage":
                 case "OnLowBalance":
@@ -462,7 +462,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             break;
                         case "OnFinishedPackage":
                             title = "Finished Package";
-                            if(TempStorage.isOpenMembershipInfo()!=2){
+                            if (TempStorage.isOpenMembershipInfo() != 2) {
                                 TempStorage.setOpenMembershipInfo(MEMBERSHIP_INFO_STATE_NO_PACKAGE);
                             }
 
@@ -475,7 +475,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             break;
                     }
 
-                    navigationIntent =  HomeActivity.showMembership(context,TAB_MY_MEMBERSHIP,AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
+                    navigationIntent = HomeActivity.showMembership(context, TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
                     break;
 
                 ////////////////////////////////////////////////////
@@ -521,11 +521,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 /////////////////////////////////////////////////////////////
             }
 
-            if (navigationIntent == null) {
-                navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
-            }
-
-            handleNotification(navigationIntent, title, message);
+//            if (navigationIntent == null) {
+//                navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
+//            }
+            if (navigationIntent != null)
+                handleNotification(navigationIntent, title, message);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -589,7 +589,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         }
     }
-
 
 
     private void setPushDetail(String type, String message, String url) {

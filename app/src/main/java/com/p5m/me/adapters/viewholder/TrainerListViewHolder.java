@@ -67,11 +67,7 @@ public class TrainerListViewHolder extends RecyclerView.ViewHolder {
             if (model.getProfileImageThumbnail() != null) {
                 ImageUtils.setImage(context,
                         model.getProfileImageThumbnail(),
-                        R.color.white,R.drawable.profile_holder, imageViewProfile);
-            } else {
-                ImageUtils.setImage(context,
-                        model.getProfileImageThumbnail(),
-                        R.drawable.profile_holder, imageViewProfile);
+                       R.drawable.profile_holder, imageViewProfile);
             }
             Helper.setFavButton(context, buttonFav, model);
 
@@ -103,7 +99,7 @@ public class TrainerListViewHolder extends RecyclerView.ViewHolder {
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FAV_TRAINERS ||
                     shownInScreen == AppConstants.AppNavigation.SHOWN_IN_GYM_PROFILE_TRAINERS||
                     shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SEARCH||
-                    shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SEARCH_RESULTS) {
+                    shownInScreen == AppConstants.AppNavigation. SHOWN_IN_SEARCH_RESULTS) {
 
                 String categoryList = Helper.getCategoryList(model.getCategoryList());
 

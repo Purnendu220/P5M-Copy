@@ -13,6 +13,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,6 +31,7 @@ import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
+import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.custom.MyRecyclerView;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -72,6 +74,8 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
     public View layoutNoData;
     @BindView(R.id.imageViewEmptyLayoutImage)
     public ImageView imageViewEmptyLayoutImage;
+    @BindView(R.id.buttonBook)
+    public Button buttonBook;
     @BindView(R.id.textViewEmptyLayoutText)
     public TextView textViewEmptyLayoutText;
 
@@ -160,6 +164,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
             checkListData();
         }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void waitlistJoin(Events.WaitlistJoin data) {
         handleWaitlistJoined(data.data);
@@ -193,11 +198,11 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
             onTabSelection(fragmentPositionInViewPager);
             classListAdapter.clearAll();
             classListAdapter.notifyDataSetChanged();
-        }
-        else {
+        } else {
             handleWaitlistItemRemoved(data.data);
         }
     }
+
     private void handleWaitlistItemRemoved(ClassModel data) {
         try {
             int index = classListAdapter.getList().indexOf(data);
@@ -275,7 +280,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
             networkCommunicator.getClassDetail(model.getClassSessionId(), new NetworkCommunicator.RequestListener() {
                 @Override
                 public void onApiSuccess(Object response, int requestCode) {
-                    ClassModel  data = ((ResponseModel<ClassModel>) response).data;
+                    ClassModel data = ((ResponseModel<ClassModel>) response).data;
                     int index = classListAdapter.getList().indexOf(model);
                     if (index != -1) {
                         Object obj = classListAdapter.getList().get(index);
@@ -292,7 +297,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
                 public void onApiFailure(String errorMessage, int requestCode) {
 //                    ToastUtils.show(this);
                 }
-            },false);
+            }, false);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -440,6 +445,19 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
                 swipeRefreshLayout.setRefreshing(false);
                 List<ClassModel> classModels = ((ResponseModel<List<ClassModel>>) response).data;
 
+               /* if (!classModels.isEmpty()) {
+                    classListAdapter.addAllClass(classModels);
+                    if (classModels.size() < pageSizeLimit) {
+                        classListAdapter.loaderDone();
+                    }
+                    classListAdapter.notifyDataSetChanged();
+                } else {
+                    classListAdapter.loaderDone();
+
+                }
+
+                checkListData();*/
+
                 if (page == 0) {
                     classListAdapter.clearAll();
                 }
@@ -453,7 +471,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
                     }
 
                     classListAdapter.addAllClass(classModels);
-
+                    classListAdapter.notifyDataSetChanged();
                     if (classModels.size() < pageSizeLimit) {
                         classListAdapter.loaderDone();
                     }
@@ -463,11 +481,6 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
                 }
 
                 checkListData();
-
-                classListAdapter.notifyDataSetChanged();
-                // filterList(classModels);
-
-
                 break;
         }
     }
@@ -496,6 +509,10 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
                 textViewEmptyLayoutText.setText(R.string.no_data_schedule_upcoming_list);
                 imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_class);
+                buttonBook.setVisibility(View.VISIBLE);
+                buttonBook.setOnClickListener(v -> {
+                    HomeActivity.show(context, AppConstants.Tab.TAB_FIND_CLASS);
+                });
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SEARCH_RESULTS) {
                 textViewEmptyLayoutText.setText(R.string.no_data_search_class_list);
                 imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_class);
@@ -508,7 +525,6 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
             layoutNoData.setVisibility(View.GONE);
         }
     }
-
 
 
 }

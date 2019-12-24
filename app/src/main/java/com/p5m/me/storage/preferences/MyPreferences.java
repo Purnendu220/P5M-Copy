@@ -1,6 +1,7 @@
 package com.p5m.me.storage.preferences;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -9,6 +10,7 @@ import com.p5m.me.data.CityLocality;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.Filter;
 import com.p5m.me.data.Join5MinModel;
+import com.p5m.me.data.PriceModel;
 import com.p5m.me.data.RatingParamModel;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
@@ -270,18 +272,19 @@ public class MyPreferences {
                     Filter.Gym model = new Filter.Gym(object.getInt("id") + "", object.getString("name"));
                     classesFilter.setObject(model);
 
-                }
-
-                else if (classesFilter.getObjectClassName().equals("FitnessLevel")) {
+                } else if (classesFilter.getObjectClassName().equals("FitnessLevel")) {
 
                     Filter.Gym model = new Filter.Gym(object.getInt("id") + "", object.getString("name"));
                     classesFilter.setObject(model);
 
-                }
- else if (classesFilter.getObjectClassName().equals("PriceModel")) {
+                } else if (classesFilter.getObjectClassName().equals("PriceModel")) {
 
-                    Filter.Gym model = new Filter.Gym(object.getInt("id") + "", object.getString("name"));
-                    classesFilter.setObject(model);
+                     /*   Filter.PriceModel model = new Filter.PriceModel("", object.getString("name"));
+                        classesFilter.setObject(model);
+*/
+
+                    PriceModel model1 = new PriceModel("", object.getString("name"));
+                    classesFilter.setObject(model1);
 
                 }
 

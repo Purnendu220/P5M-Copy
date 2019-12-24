@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_5"
+    android:background="@color/white"
+    android:elevation="@dimen/margin_5">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="8dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        android:layout_marginTop="@dimen/margin_10"
+        android:background="@color/theme_bg"
+        android:elevation="-10dp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_8"
+        android:layout_marginRight="@dimen/margin_8"
+        android:layout_marginTop="@dimen/margin_8"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/workouts"
+        android:textColor="@color/theme_dark_text"
+        android:textSize="@dimen/text_extra_large"
+        android:textStyle="normal"
+        android:gravity="left"
+        app:layout_constraintRight_toRightOf="@id/guidelineRight"
+        app:layout_constraintLeft_toLeftOf="@id/guidelineLeft"
+        app:layout_constraintTop_toBottomOf="@id/view2" />
+
+    <TextView
+        android:id="@+id/textViewSubHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_8"
+        android:layout_marginRight="@dimen/margin_8"
+        android:layout_marginTop="@dimen/margin_6"
+        android:fontFamily="sans-serif"
+        android:text="@string/desc_workout"
+        android:textColor="@color/theme_dark_text"
+        android:textSize="@dimen/text_medium"
+        android:gravity="left"
+        app:layout_constraintRight_toRightOf="@id/guidelineRight"
+        app:layout_constraintLeft_toLeftOf="@id/guidelineLeft"
+        app:layout_constraintTop_toBottomOf="@id/textViewHeader" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_6"
+        android:paddingBottom="@dimen/margin_10"
+        android:nestedScrollingEnabled="false"
+        app:layout_constraintLeft_toLeftOf="@id/guidelineLeft"
+        app:layout_constraintRight_toRightOf="@id/guidelineRight"
+        app:layout_constraintTop_toBottomOf="@id/textViewSubHeader" />
+
+    <TextView
+        android:id="@+id/textViewMore"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:paddingTop="@dimen/margin_2"
+        android:paddingBottom="@dimen/margin_8"
+        android:textColor="@color/theme_book"
+        android:textSize="@dimen/text_medium"
+        android:textStyle="normal"
+        android:visibility="gone"
+
+        app:layout_constraintLeft_toLeftOf="@id/guidelineLeft"
+        app:layout_constraintRight_toRightOf="@id/guidelineRight"
+        app:layout_constraintTop_toBottomOf="@id/recyclerView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

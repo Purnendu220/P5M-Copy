@@ -1,23 +1,24 @@
-package com.p5m.me.view.fragment;
+package com.p5m.me.view.activity.Main;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.p5m.me.R;
-import com.p5m.me.adapters.TrainersAdapter;
+import com.p5m.me.adapters.GymsAdapter;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
@@ -25,8 +26,8 @@ import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
-import com.p5m.me.view.activity.Main.SearchActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
+import com.p5m.me.view.fragment.ViewPagerFragmentSelection;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -35,7 +36,18 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class Trainers extends BaseFragment implements ViewPagerFragmentSelection, ViewPager.OnPageChangeListener, View.OnClickListener, NetworkCommunicator.RequestListener {
+import static com.p5m.me.utils.AppConstants.Tab.TAB_EXPLORE_PAGE;
+
+public class Gym extends BaseActivity implements ViewPagerFragmentSelection, ViewPager.OnPageChangeListener, View.OnClickListener, NetworkCommunicator.RequestListener {
+
+    public static Intent createIntent(Context context) {
+        Intent intent = new Intent(context, Gym.class);
+        return intent;
+    }
+    public static void open(Context context) {
+        Intent intent = new Intent(context, Gym.class);
+        context.startActivity(intent);
+    }
 
     @BindView(R.id.viewPager)
     public ViewPager viewPager;
@@ -46,25 +58,23 @@ public class Trainers extends BaseFragment implements ViewPagerFragmentSelection
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
 
-    private TrainersAdapter trainersAdapter;
+    private GymsAdapter GymsAdapter;
     private String[] titleTabs = new String[]{"", ""};
 
     private List<ClassActivity> activities;
 
-    public Trainers() {
-    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_trainers, container, false);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_trainers);
+
+        onActivityCreated();
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onActivityCreated() {
 
-        ButterKnife.bind(this, getView());
+        ButterKnife.bind(activity);
 
         setToolBar();
 
@@ -96,14 +106,32 @@ public class Trainers extends BaseFragment implements ViewPagerFragmentSelection
             }
         }
 
-        trainersAdapter = new TrainersAdapter(getChildFragmentManager(), activities);
-        viewPager.setAdapter(trainersAdapter);
+        GymsAdapter = new GymsAdapter(getSupportFragmentManager(), activities);
+        viewPager.setAdapter(GymsAdapter);
+
         viewPager.setOffscreenPageLimit(activities.size());
 
         tabLayout.setTabTextColors(ContextCompat.getColorStateList(context, R.color.date_tabs));
         tabLayout.setupWithViewPager(viewPager);
 
         viewPager.addOnPageChangeListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
+        try {
+            networkCommunicator.getActivities(this, true);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+
+
     }
 
     @Override
@@ -143,6 +171,7 @@ public class Trainers extends BaseFragment implements ViewPagerFragmentSelection
         activity.getSupportActionBar().setDisplayUseLogoEnabled(true);
 
         View v = LayoutInflater.from(context).inflate(R.layout.view_tool_bar_trainers, null);
+        ((TextView)(v.findViewById(R.id.textViewTitle))).setText(getString(R.string.gym));
         v.findViewById(R.id.imageViewSearch).setOnClickListener(this);
 
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
@@ -157,7 +186,7 @@ public class Trainers extends BaseFragment implements ViewPagerFragmentSelection
     @Override
     public void onPageSelected(int position) {
         try {
-            ((ViewPagerFragmentSelection) trainersAdapter.getFragments().get(position)).onTabSelection(position);
+            ((ViewPagerFragmentSelection) GymsAdapter.getFragments().get(position)).onTabSelection(position);
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);

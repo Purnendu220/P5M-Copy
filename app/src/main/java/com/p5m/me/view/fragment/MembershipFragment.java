@@ -309,7 +309,23 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
             // show general, ready, and owned packages
             if (userPackageInfo.havePackages) {
-                memberShipAdapter.addAllOwnedPackages(userPackageInfo.userPackageReady);
+                if(userPackageInfo.userPackageReady!=null&&userPackageInfo.userPackageReady.size()>0){
+                    if(classModel==null){
+                        if(mFriendsData!=null){
+                            for (UserPackage dropInPackage:userPackageInfo.userPackageReady) {
+                                if(dropInPackage.getBalanceClass()>=mNumberOfPackagesToBuy){
+                                    memberShipAdapter.addOwnedPackages(dropInPackage);
+
+                                }
+                            }
+                        }
+                        else{
+                            memberShipAdapter.addAllOwnedPackages(userPackageInfo.userPackageReady);
+
+                        }
+                    }
+
+                }
 
                 if (userPackageInfo.haveGeneralPackage && !user.isBuyMembership()) {
                     // User have General package and may be also have dropins..
@@ -352,8 +368,10 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
             memberShipAdapter.setClassModel(null);
 
             if (userPackageInfo.havePackages) {
+                if(classModel==null){
+                    memberShipAdapter.addAllOwnedPackages(userPackageInfo.userPackageReady);
 
-                memberShipAdapter.addAllOwnedPackages(userPackageInfo.userPackageReady);
+                }
 
                 if (!userPackageInfo.haveGeneralPackage) {
                     // User don't have General package..
@@ -531,7 +549,8 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                             memberShipAdapter.addAllOfferedPackages(packagesWithVisitLimit);
 
 
-                        } else {
+                        }
+                        else {
                             memberShipAdapter.addAllOfferedPackages(packages);
 
                         }

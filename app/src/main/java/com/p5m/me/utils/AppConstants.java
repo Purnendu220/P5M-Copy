@@ -33,8 +33,8 @@ public class AppConstants {
         public static final int REGISTRATION_STEP_GENDER = 3;
         public static final int REGISTRATION_STEP_PASSWORD = 2;
 
+        public static final int TAB_EXPLORE_PAGE = 1;
         public static final int TAB_FIND_CLASS = 0;
-        public static final int TAB_TRAINER = 1;
         public static final int TAB_SCHEDULE = 2;
         public static final int TAB_MY_PROFILE = 4;
         public static final int TAB_MY_PROFILE_FINISHED = 5;
@@ -239,6 +239,7 @@ public class AppConstants {
 
 
         public static final String TRAINER_LIST = "api/v1/user/getTrainerList";
+        public static final String GYM_LIST = "api/v1/user/getGymList";
         public static final String NOTIFICATIONS = "api/v1/notification";
         public static final String WISH_LIST = "api/v1/wish/getWishList";
         public static final String SCHEDULE_LIST = "api/v1/user/upcomingClasses";
@@ -280,6 +281,7 @@ public class AppConstants {
 
         public static final String GET_PAYMENT_DETAIL = "api/v1/payment/package-purchase/{id}";
         public static final String SUPPORT_CONTACT = "api/v1/support/save";
+        public static final String GET_EXPLORE_DETAIL = "api/v1/explore/getDetails";
 
     }
 
@@ -379,6 +381,7 @@ public class AppConstants {
         public static final int SHOWN_IN_TRAINER = 5;
         public static final int SHOWN_IN_HOME_FIND_CLASSES = 6;
         public static final int SHOWN_IN_HOME_TRAINERS = 7;
+        public static final int SHOWN_IN_HOME_GYM = 18;
         public static final int SHOWN_IN_MY_PROFILE_FAV_TRAINERS = 8;
 
         public static final int SHOWN_IN_CLASS_PROFILE = 9;
@@ -389,6 +392,8 @@ public class AppConstants {
         public static final int SHOWN_IN_RATING_LIST = 15;
         public static final int SHOWN_IN_MAP_VIEW = 16;
         public static final int SHOWN_IN_HOME_MAP_CLASSES = 17;
+        public static final int SHOWN_IN_EXPLORE_PAGE = 18;
+        public static final int SHOWN_IN_GYM = 19;
 
         public static final int NAVIGATION_FROM_RESERVE_CLASS = 51;
         public static final int NAVIGATION_FROM_MY_PROFILE = 52;
@@ -405,6 +410,8 @@ public class AppConstants {
         public static final int NAVIGATION_FROM_DEEPLINK_ACTIVITY = 62;
         public static final int NAVIGATION_FROM_MEMBERSHIP = 63;
         public static final int NAVIGATION_FROM_SHOW_SCHEDULER = 64;
+        public static final int NAVIGATION_FROM_EXPLORE = 65;
+
 
     }
 
@@ -414,6 +421,7 @@ public class AppConstants {
         public static final int PAGE_LIMIT_MAIN_TRAINER_LIST = 25;
         public static final int PAGE_LIMIT_INNER_TRAINER_LIST = 25;
         public static final int PAGE_LIMIT_NOTIFICATIONS = 25;
+        public static final int PAGE_LIMIT_EXPLORE_PAGE = 4;
         public static final int PAGE_LIMIT_UNLIMITED = 10000;
 
 
@@ -446,5 +454,12 @@ public class AppConstants {
       public static final String COVER_IMAGE_HOLDER = "COVER_IMAGE_HOLDER";
   }
 
+  public class ExploreViewType{
+      public static final String TRAINER_VIEW = "TRAINER_VIEW";
+      public static final String GYM_VIEW = "GYM_VIEW";
+      public static final String CATEGORY_CAROUSEL_VIEW = "CATEGORY_CAROUSEL_VIEW";
+
+
+  }
 
 }
