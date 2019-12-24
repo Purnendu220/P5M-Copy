@@ -158,6 +158,7 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT));
         activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
+
     }
 
 
