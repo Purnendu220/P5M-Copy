@@ -379,7 +379,6 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         }
         handleTabChangeForMembership(position);
         currentTab = position;
-
     }
 
     @Override
@@ -677,6 +676,19 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
               e.printStackTrace();
           }
       }
+      else if(position == TAB_MY_MEMBERSHIP && currentTab == position && NAVIGATED_FROM_INT == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS ){
+          try {
+              MembershipFragment fragment = ((MembershipFragment) homeAdapter.getFragments().get(TAB_MY_MEMBERSHIP));
+              NAVIGATED_FROM_INT=-1;
+              CLASS_OBJECT=null;
+              BOOK_WITH_FRIEND_DATA=null;
+              NUMBER_OF_PACKAGES_TO_BUY=1;
+              fragment.refreshFragmentBackGroung(NAVIGATED_FROM_INT,CLASS_OBJECT,BOOK_WITH_FRIEND_DATA,NUMBER_OF_PACKAGES_TO_BUY);
+
+          } catch (Exception e) {
+              e.printStackTrace();
+          }
+      }
   }
 
     private void handleMembershipInfoState(User user){
@@ -691,6 +703,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         }
 
     }
+
 }
 
 
