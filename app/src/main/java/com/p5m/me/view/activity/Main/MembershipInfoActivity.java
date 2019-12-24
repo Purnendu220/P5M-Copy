@@ -27,6 +27,7 @@ import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.FAQ;
 import com.p5m.me.data.RemoteConfigValueModel;
 import com.p5m.me.data.Testimonials;
+import com.p5m.me.data.main.User;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.notifications.HandleNotificationDeepLink;
 import com.p5m.me.remote_config.RemoteConfigConst;
@@ -124,6 +125,7 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
         setToolBar();
         setFAQAdapter();
         setValues();
+        handleBuyClassesButton();
     }
 
     private void setValues() {
@@ -318,4 +320,24 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
+
+    private void handleBuyClassesButton() {
+        try {
+            User user = TempStorage.getUser();
+            if (user.isBuyMembership()) {
+                buyClassesLayout.setVisibility(View.VISIBLE);
+//                UpdateBuyClassText update = new UpdateBuyClassText();
+//                update.execute();
+            } else {
+                buyClassesLayout.setVisibility(View.GONE);
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 }
