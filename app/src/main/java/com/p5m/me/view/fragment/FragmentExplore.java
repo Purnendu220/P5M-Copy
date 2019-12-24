@@ -146,12 +146,12 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
     }
 
 
-    @Override
+   /* @Override
     public void onResume() {
         super.onResume();
         callApi();
     }
-
+*/
     private void setToolBar() {
 
         BaseActivity activity = (BaseActivity) this.activity;
