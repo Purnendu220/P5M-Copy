@@ -283,13 +283,15 @@ public class MyPreferences {
                         classesFilter.setObject(model);
 */
 
-                    PriceModel model1 = new PriceModel("", object.getString("name"));
-                    classesFilter.setObject(model1);
+                    PriceModel model = new PriceModel();
+                    model.setOrder(object.getString("order"));
+                    model.setValue(object.getString("value"));
+                    model.setName(object.getString("name"));
+                    model.setArName(object.getString("arName"));
+                    model.setImageUrl(object.getString("imageUrl"));
+                    classesFilter.setObject(model);
 
                 }
-
-
-                // Todo Filter fitnessLevel
 
                 classesFilters.add(classesFilter);
             }
