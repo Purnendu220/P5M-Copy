@@ -52,6 +52,7 @@ import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.Filter;
 import com.p5m.me.data.MapData;
 import com.p5m.me.data.PriceModel;
+import com.p5m.me.data.WorkoutModel;
 import com.p5m.me.data.main.BranchModel;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.GymDataModel;
@@ -245,6 +246,8 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
                 priceModelList.add(String.valueOf(((PriceModel) classesFilter.getObject()).getValue()));
             } else if (classesFilter.getObject() instanceof Filter.FitnessLevel) {
                 fitnessLevelList.add(String.valueOf(((Filter.FitnessLevel) classesFilter.getObject()).getLevel()));
+            } else if (classesFilter.getObject() instanceof WorkoutModel) {
+                activities.add(String.valueOf(((WorkoutModel) classesFilter.getObject()).getId()));
             }
         }
 

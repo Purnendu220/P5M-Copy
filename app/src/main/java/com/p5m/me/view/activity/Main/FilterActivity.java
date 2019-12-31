@@ -425,6 +425,7 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
             List<ClassesFilter> classesFilters = new ArrayList<>();
             for (PriceModel priceModel : priceModelList) {
                 ClassesFilter classesFilter;
+
                 if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar"))
                     classesFilter = new ClassesFilter( "", true, "PriceModel", priceModel.getArName(), R.drawable.multiple_users_grey_fill, ClassesFilter.TYPE_ITEM);
                 else
