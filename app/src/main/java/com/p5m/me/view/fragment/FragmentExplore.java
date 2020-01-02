@@ -105,7 +105,6 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -136,22 +135,20 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
         networkCommunicator.getExploreData(this, false);
 
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updatePackage(Events.UpdatePackage data) {
         callApi();
     }
+
     @Override
     public void onRefresh() {
         callApi();
     }
-
-
-   /* @Override
-    public void onResume() {
-        super.onResume();
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void notificationReceived(Events.NotificationCountUpdated notificationCountUpdated) {
         callApi();
     }
-*/
     private void setToolBar() {
 
         BaseActivity activity = (BaseActivity) this.activity;
@@ -214,6 +211,7 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
                     WorkoutModel data = (WorkoutModel) model;
 
                     if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar"))
+
                         classesFilter = new ClassesFilter(data.getId() + "", true, "ClassActivity", data.getArName(), R.drawable.filter_activity, ClassesFilter.TYPE_ITEM);
                     else
                         classesFilter = new ClassesFilter(data.getId() + "", true, "ClassActivity", data.getName(), R.drawable.filter_activity, ClassesFilter.TYPE_ITEM);

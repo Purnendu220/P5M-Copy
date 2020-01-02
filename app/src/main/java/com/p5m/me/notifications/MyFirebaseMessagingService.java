@@ -121,11 +121,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             switch (type) {
                 case "OnClassRefund":
-                    if (dataID != 0L && dataID > 0) {
-                        TempStorage.removeSavedClass((int) dataID, context);
-                        removeEvent(jsonObject, dataID);
-                    }
-                    break;
                 case "CustomerCancelClass":
                     if (dataID != 0L && dataID > 0) {
                         TempStorage.removeSavedClass((int) dataID, context);
@@ -133,60 +128,33 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     }
                     break;
                 case "OnClassUpdateByGYM":
-                    TempStorage.removeSavedClass((int) dataID, context);
-                    setNotification(jsonObject, dataID);
-                    updateEvent(jsonObject, dataID);
-                    break;
                 case "OnClassUpdateByTrainer":
-                    TempStorage.removeSavedClass((int) dataID, context);
-                    setNotification(jsonObject, dataID);
-                    updateEvent(jsonObject, dataID);
 
-                    break;
                 case "OnSessionUpdateByGYM":
-                    TempStorage.removeSavedClass((int) dataID, context);
-                    setNotification(jsonObject, dataID);
-                    updateEvent(jsonObject, dataID);
 
-                    break;
                 case "OnSessionUpdateByTrainerOfGym":
+                case "OnSessionUpdateByGymOfTrainer":
+
+                case "OnClassUpdateByCms":
+
+                case "OnGroupClassUpdateByCms":
                     TempStorage.removeSavedClass((int) dataID, context);
                     setNotification(jsonObject, dataID);
                     updateEvent(jsonObject, dataID);
-
                     break;
+
                 case "OnSessionUpdateByTrainer":
                     TempStorage.removeSavedClass((int) dataID, context);
                     updateEvent(jsonObject, dataID);
 
                     break;
-                case "OnSessionUpdateByGymOfTrainer":
-                    TempStorage.removeSavedClass((int) dataID, context);
-                    setNotification(jsonObject, dataID);
-                    updateEvent(jsonObject, dataID);
 
-                    break;
-                case "OnClassUpdateByCms":
-                    TempStorage.removeSavedClass((int) dataID, context);
-                    setNotification(jsonObject, dataID);
-                    updateEvent(jsonObject, dataID);
-
-                    break;
-                case "OnGroupClassUpdateByCms":
-                    TempStorage.removeSavedClass((int) dataID, context);
-                    setNotification(jsonObject, dataID);
-                    updateEvent(jsonObject, dataID);
-
-                    break;
                 case "OnJoinClass":
-                    setNotification(jsonObject, dataID);
-                    addEvent(jsonObject, dataID);
-
-                    break;
                 case "OnSeatAvailableForWishlistFromClassUpdate":
                 case "OnSeatAvailableForWishlist":
                     setNotification(jsonObject, dataID);
                     addEvent(jsonObject, dataID);
+
                     break;
             }
         } catch (Exception e) {
