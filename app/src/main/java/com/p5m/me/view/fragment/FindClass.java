@@ -24,6 +24,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.p5m.me.R;
 import com.p5m.me.adapters.FindClassAdapter;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.storage.TempStorage;
@@ -31,6 +32,7 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.FilterActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.Main.SearchActivity;
@@ -77,9 +79,23 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
     private TextView textViewTitle;
     private Fragment mapView;
     private TextView textViewMapOrList;
+    private int navigatedFrom=0;
+
 
     public FindClass() {
     }
+    public static FindClass newInstance(int navigationFrom) {
+        FindClass fragment = new FindClass();
+        Bundle args = new Bundle();
+        args.putInt(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public void refreshFragment(int navigatedFrom) {
+        MixPanel.trackFindClass(navigatedFrom,isFindClass);
+    }
+
     public interface TabClickListener {
 
         void onTabClick(int position, String selectedDate);
@@ -151,7 +167,7 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
         dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
 
         calendarList = new ArrayList<>(TOTAL_DATE_TABS);
-
+        navigatedFrom = getArguments().getInt(AppConstants.DataKey.NAVIGATED_FROM_INT, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
         findClassAdapter = new FindClassAdapter(getChildFragmentManager(), TOTAL_DATE_TABS);
         viewPager.setAdapter(findClassAdapter);
 
@@ -168,8 +184,9 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
         viewPager.addOnPageChangeListener(this);
 
         checkFilterCount();
-
         todayDate = Calendar.getInstance();
+
+//        MixPanel.trackFindClass(navigatedFrom,isFindClass);
     }
 
     private void checkFilterCount() {
@@ -271,7 +288,7 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
                     frameMapView.setVisibility(View.VISIBLE);
 
                     mapView =  MapViewFragment.createFragment(calendarList.get(SELECTED_POSITION), SELECTED_POSITION,
-                            AppConstants.AppNavigation.SHOWN_IN_HOME_MAP_CLASSES);
+                            navigatedFrom);
                     FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                     transaction.add(R.id.frameMapView, mapView).commit();
                     isFindClass=true;

@@ -62,7 +62,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.intercom.android.sdk.Intercom;
 
+import static com.p5m.me.utils.AppConstants.AppNavigation.NAVIGATION_FROM_EXPLORE;
 import static com.p5m.me.utils.AppConstants.AppNavigation.SHOWN_IN_EXPLORE_PAGE;
+import static com.p5m.me.utils.AppConstants.ExploreViewType.BANNER_CAROUSAL_VIEW;
+import static com.p5m.me.utils.AppConstants.ExploreViewType.CATEGORY_CAROUSEL_VIEW;
+import static com.p5m.me.utils.AppConstants.ExploreViewType.GYM_VIEW;
+import static com.p5m.me.utils.AppConstants.ExploreViewType.PRICE_MODEL_CAROUSEL_VIEW;
+import static com.p5m.me.utils.AppConstants.ExploreViewType.TEXT_WITH_BUTTONS;
+import static com.p5m.me.utils.AppConstants.ExploreViewType.TEXT_WITH_BUTTONS_2;
+import static com.p5m.me.utils.AppConstants.ExploreViewType.TOP_RATED_CLASSES;
+import static com.p5m.me.utils.AppConstants.ExploreViewType.TRAINER_CAROUSAL_VIEW;
+import static com.p5m.me.utils.AppConstants.ExploreViewType.TRAINER_VIEW;
 import static com.p5m.me.utils.AppConstants.Tab.TAB_FIND_CLASS;
 import static com.p5m.me.utils.AppConstants.Tab.TAB_MY_MEMBERSHIP;
 
@@ -88,6 +98,8 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
 
     private ExplorePageAdapter explorePageAdapter;
     private List<ClassesFilter> classesFilters;
+    private String mixPannelSection;
+    private String mixPannelValue;
 
     public FragmentExplore() {
     }
@@ -141,14 +153,21 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
         callApi();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updatePackage(Events.UpdateUpcomingClasses data) {
+        callApi();
+    }
+
     @Override
     public void onRefresh() {
         callApi();
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void notificationReceived(Events.NotificationCountUpdated notificationCountUpdated) {
         callApi();
     }
+
     private void setToolBar() {
 
         BaseActivity activity = (BaseActivity) this.activity;
@@ -176,20 +195,28 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
         switch (view.getId()) {
             case R.id.explorePlans:
-                HomeActivity.show(context, TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
+                mixPannelSection = TEXT_WITH_BUTTONS;
+                mixPannelValue = AppConstants.MixPanelValue.MEMBERSHIP;
+                HomeActivity.show(context, TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_EXPLORE);
                 break;
             case R.id.imageViewClass:
                 if (model != null && model instanceof ExploreGymModel) {
                     ExploreGymModel data = (ExploreGymModel) model;
+                    mixPannelSection = GYM_VIEW;
+                    mixPannelValue = data.getStudioName();
                     GymProfileActivity.open(context, Integer.parseInt(data.getGymId()), AppConstants.AppNavigation.NAVIGATION_FROM_EXPLORE);
                 }
 
                 if (model != null && model instanceof ExploreTrainerModel) {
                     ExploreTrainerModel data = (ExploreTrainerModel) model;
+                    mixPannelSection = TRAINER_VIEW;
+                    mixPannelValue = data.getTrainerName();
                     TrainerProfileActivity.open(context, data.getTrainerId(), AppConstants.AppNavigation.NAVIGATION_FROM_EXPLORE);
                 }
                 if (model != null && model instanceof PriceModel) {
                     PriceModel data = (PriceModel) model;
+                    mixPannelSection = PRICE_MODEL_CAROUSEL_VIEW;
+                    mixPannelValue = data.getName();
                     classesFilters = new ArrayList<>();
                     if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar"))
                         filter = new ClassesFilter("", true, "PriceModel", data.getArName(), R.drawable.multiple_users_grey_fill, ClassesFilter.TYPE_ITEM);
@@ -209,6 +236,8 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
                 if (model != null && model instanceof WorkoutModel) {
                     classesFilters = new ArrayList<>();
                     WorkoutModel data = (WorkoutModel) model;
+                    mixPannelValue = data.getName();
+                    mixPannelSection = CATEGORY_CAROUSEL_VIEW;
 
                     if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar"))
 
@@ -228,14 +257,18 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
                 }
                 break;
             case R.id.textViewMore:
+               mixPannelValue = AppConstants.MixPanelValue.LIST;
                 if (model != null && model instanceof ExploreDataModel) {
                     ExploreDataModel data = (ExploreDataModel) model;
-                    if (data.getViewType().equalsIgnoreCase(AppConstants.ExploreViewType.GYM_VIEW)) {
+                    if (data.getViewType().equalsIgnoreCase(GYM_VIEW)) {
                         Gym.open(context);
-                    } else if (data.getViewType().equalsIgnoreCase(AppConstants.ExploreViewType.TRAINER_VIEW)) {
-                        Trainers.open(context);
-                    } else if (data.getViewType().equalsIgnoreCase(AppConstants.ExploreViewType.CATEGORY_CAROUSEL_VIEW)) {
+                        mixPannelSection = GYM_VIEW;
+                    } else if (data.getViewType().equalsIgnoreCase(TRAINER_VIEW)) {
+                        mixPannelSection = TRAINER_VIEW;
+                        Trainers.open(context, NAVIGATION_FROM_EXPLORE);
+                    } else if (data.getViewType().equalsIgnoreCase(CATEGORY_CAROUSEL_VIEW)) {
                         try {
+                            mixPannelSection = CATEGORY_CAROUSEL_VIEW;
                             int index = explorePageAdapter.getList().indexOf(data);
                             if (index != -1) {
                                 Object obj = explorePageAdapter.getList().get(index);
@@ -259,11 +292,16 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
                 }
                 break;
             case R.id.buttonContactUs:
+                mixPannelSection = TEXT_WITH_BUTTONS_2;
+                mixPannelValue = AppConstants.MixPanelValue.INTERCOM;
                 Intercom.client().displayMessenger();
                 break;
             case R.id.textViewTrainerName:
                 if (model != null && model instanceof GymModel) {
+                    mixPannelSection = TRAINER_CAROUSAL_VIEW;
                     GymModel data = (GymModel) model;
+                    mixPannelValue = data.getGymNames();
+
                     GymProfileActivity.open(context, data.getId(), AppConstants.AppNavigation.NAVIGATION_FROM_EXPLORE);
                 }
                 break;
@@ -271,13 +309,18 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
             case R.id.textViewClassName:
                 // Rated Class Clicked
                 if (model != null && model instanceof ExploreRatedClassModel) {
+                    mixPannelSection = TOP_RATED_CLASSES;
                     ExploreRatedClassModel data = (ExploreRatedClassModel) model;
+                    mixPannelValue = data.getTitle();
+
                     ClassProfileActivity.open(context, data.getClassSessionId(), SHOWN_IN_EXPLORE_PAGE);
                 }
                 break;
 
 
         }
+
+        MixPanel.trackExplore(mixPannelSection,mixPannelValue);
     }
 
     @Override
