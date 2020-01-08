@@ -673,7 +673,7 @@ public class MixPanel {
             props.put("action", action);
             props.put("gym", model.getGymName());
 
-            props.put("gym_locality", model.getLatitude() + "," + model.getLongitude());
+            props.put("gym_locality", model.getLocalityName());
 
             trackEvent(props, "MapView");
         } catch (Exception e) {

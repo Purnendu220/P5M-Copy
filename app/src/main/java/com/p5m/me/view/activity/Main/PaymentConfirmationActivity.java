@@ -531,7 +531,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         switch (paymentStatus) {
             case SUCCESS:
                 setConfirmBookingStyle();
-
+                EventBroadcastHelper.exploreApiUpdate();
                 setStyle();
                 if (!CalendarHelper.haveCalendarReadWritePermissions(this)) {
                     CalendarHelper.requestCalendarReadWritePermission(this);

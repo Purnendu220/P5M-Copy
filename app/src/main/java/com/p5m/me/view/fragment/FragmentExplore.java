@@ -147,6 +147,10 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
         networkCommunicator.getExploreData(this, false);
 
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void exploreApiUpdate(Events.ExploreApiUpdate exploreApiUpdate) {
+        callApi();
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updatePackage(Events.UpdatePackage data) {
@@ -154,8 +158,9 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void updatePackage(Events.UpdateUpcomingClasses data) {
+    public void getUser(Events.UserUpdate userUpdate) {
         callApi();
+
     }
 
     @Override
@@ -163,10 +168,6 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
         callApi();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void notificationReceived(Events.NotificationCountUpdated notificationCountUpdated) {
-        callApi();
-    }
 
     private void setToolBar() {
 

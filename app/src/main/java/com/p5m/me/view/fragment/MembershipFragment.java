@@ -361,6 +361,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                 navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION ||
                 navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN ||
                 navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS ||
+                navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_EXPLORE ||
                 navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_DEEPLINK_ACTIVITY ||
                 navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_MEMBERSHIP ||
                 navigatedFrom == -1
@@ -445,6 +446,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                         navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION ||
                         navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN ||
                         navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS ||
+                        navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_EXPLORE ||
                         navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_DEEPLINK_ACTIVITY ||
                         navigatedFrom == -1
                 ) {

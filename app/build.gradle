@@ -118,7 +118,7 @@ android {
             def id = 'com.p5m.me'
             applicationId id
             buildConfigField "boolean", "IS_DEBUG", "true"
-            buildConfigField "boolean", "IS_PRODUCTION", "false"
+            buildConfigField "boolean", "IS_PRODUCTION", "true"
             buildConfigField "String", "MIXPANEL_KEY", '\"705daac4d807e105c1ddc350c9324ca2\"'
             buildConfigField "String", "SENDER_ID", '\"109210713388\"'
             buildConfigField "String", "BASE_URL", '\"http://52.209.64.40:8080\"'
