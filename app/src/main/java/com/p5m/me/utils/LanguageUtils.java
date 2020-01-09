@@ -59,7 +59,7 @@ public class LanguageUtils {
         format.setRoundingMode(RoundingMode.CEILING);
         format.setMinimumFractionDigits(decimalDigits);
         format.setMaximumFractionDigits(decimalDigits);
-        DecimalFormat df = new DecimalFormat("###.#");
+        DecimalFormat df = new DecimalFormat("###.##");
         return df.format(value);
 
     }

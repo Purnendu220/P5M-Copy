@@ -238,7 +238,7 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
             case R.id.layoutScheduler:
                 if (model instanceof ScheduleClassModel) {
                     ScheduleClassModel model1 = (ScheduleClassModel) model;
-                    ClassProfileActivity.open(context, model1.getClassSessionId(), AppConstants.AppNavigation.NAVIGATION_FROM_SHOW_SCHEDULER);
+                    ClassProfileActivity.open(context, model1.getClassSessionId(), AppConstants.AppNavigation.SHOWN_IN_MAP_VIEW);
                     this.dismiss();
                 }
                 break;

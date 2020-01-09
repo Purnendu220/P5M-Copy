@@ -229,7 +229,6 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
                     classesFilters.add(filter);
                     TempStorage.setFilterList(classesFilters);
                     EventBroadcastHelper.sendNewFilterSet();
-                    MixPanel.trackFilters(TempStorage.getFilters());
                     HomeActivity.show(context, TAB_FIND_CLASS, AppConstants.AppNavigation.NAVIGATION_FROM_EXPLORE);
 
                 }
@@ -252,7 +251,6 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
 
                     TempStorage.setFilterList(classesFilters);
                     EventBroadcastHelper.sendNewFilterSet();
-                    MixPanel.trackFilters(TempStorage.getFilters());
                     HomeActivity.show(context, TAB_FIND_CLASS, AppConstants.AppNavigation.NAVIGATION_FROM_EXPLORE);
 
                 }
@@ -314,7 +312,7 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
                     ExploreRatedClassModel data = (ExploreRatedClassModel) model;
                     mixPannelValue = data.getTitle();
 
-                    ClassProfileActivity.open(context, data.getClassSessionId(), SHOWN_IN_EXPLORE_PAGE);
+                    ClassProfileActivity.open(context, data.getClassSessionId(), NAVIGATION_FROM_EXPLORE);
                 }
                 break;
 
