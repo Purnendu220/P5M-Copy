@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+  >
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+   >
 
 
     <FrameLayout
@@ -16,10 +21,9 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/button_margin"
             android:layout_marginRight="@dimen/button_margin"
-            android:gravity="center"
             android:orientation="vertical">
 
             <LinearLayout
@@ -29,14 +33,6 @@
                 android:orientation="vertical"
                 android:visibility="visible">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-medium"
-                    android:gravity="left"
-                    android:text="@string/whats_your_name"
-                    android:textColor="@color/theme_dark_text"
-                    android:textSize="@dimen/registration_title" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInputLayoutName"
@@ -53,8 +49,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
                         android:gravity="left"
-                        android:inputType="textPersonName"
                         android:hint="@string/first_name"
+                        android:inputType="textPersonName"
 
                         android:maxLines="1"
                         android:textSize="@dimen/text_large" />
@@ -75,8 +71,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
                         android:gravity="left"
-                        android:inputType="textPersonName"
                         android:hint="@string/last_name"
+                        android:inputType="textPersonName"
                         android:maxLines="1"
                         android:textSize="@dimen/text_large" />
 
@@ -100,90 +96,49 @@
                         android:textSize="@dimen/text_large" />
 
                 </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/layoutEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayoutEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:fontFamily="sans-serif-medium"
-                        android:gravity="left"
-                        android:text="@string/and_your_email"
-                        android:textColor="@color/theme_dark_text"
-                        android:textSize="@dimen/registration_title" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputLayoutEmail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:gravity="left"
-                        app:errorEnabled="true">
-
-                        <EditText
-                            android:id="@+id/editTextEmail"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif"
-                            android:gravity="left"
-                            android:inputType="textEmailAddress"
-                            android:maxLines="1"
-                            android:textSize="@dimen/text_large"
-
-                            />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="left"
-                        android:visibility="invisible"
-                        app:errorEnabled="true">
-
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif"
-                            android:gravity="left"
-                            android:hint="@string/confirm_your_password"
-                            android:inputType="textPassword"
-                            android:maxLines="1"
-                            android:textSize="@dimen/text_large" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layoutPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:fontFamily="sans-serif-medium"
+                    android:layout_marginTop="12dp"
                     android:gravity="left"
-                    android:text="@string/create_a_password"
-                    android:textColor="@color/theme_dark_text"
-                    android:textSize="@dimen/registration_title" />
+                    app:errorEnabled="true">
+
+                    <EditText
+                        android:id="@+id/editTextEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left"
+                        android:hint="@string/email"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:textSize="@dimen/text_large"
+
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:visibility="gone"
+                    app:errorEnabled="true">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left"
+                        android:hint="@string/confirm_your_password"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:textSize="@dimen/text_large" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInputLayoutPass"
@@ -226,24 +181,6 @@
                         android:textSize="@dimen/text_large" />
 
                 </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layoutGender"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:fontFamily="sans-serif-medium"
-                    android:gravity="left"
-                    android:text="@string/gender_string"
-                    android:textColor="@color/theme_dark_text"
-                    android:textSize="@dimen/registration_title" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -286,23 +223,6 @@
                     android:textColor="@color/theme_error_text"
                     android:visibility="invisible" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="invisible"
-                    app:errorEnabled="true">
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif"
-                        android:gravity="left"
-                        android:hint="@string/confirm_your_password"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:textSize="@dimen/text_large" />
-
-                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <FrameLayout
@@ -376,3 +296,4 @@
         </LinearLayout>
     </FrameLayout>
 </RelativeLayout>
+</ScrollView>

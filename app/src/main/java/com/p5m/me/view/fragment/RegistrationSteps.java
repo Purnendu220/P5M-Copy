@@ -52,14 +52,14 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
         return tabFragment;
     }
 
-    @BindView(R.id.layoutName)
-    public View layoutName;
-    @BindView(R.id.layoutEmail)
-    public View layoutEmail;
-    @BindView(R.id.layoutPassword)
-    public View layoutPassword;
-    @BindView(R.id.layoutGender)
-    public View layoutGender;
+//    @BindView(R.id.layoutName)
+//    public View layoutName;
+//    @BindView(R.id.layoutEmail)
+//    public View layoutEmail;
+//    @BindView(R.id.layoutPassword)
+//    public View layoutPassword;
+//    @BindView(R.id.layoutGender)
+//    public View layoutGender;
 
     @BindView(R.id.textViewLogin)
     public TextView textViewLogin;
@@ -205,27 +205,27 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
     private void checkSteps() {
         switch (stepPosition) {
             case AppConstants.Tab.REGISTRATION_STEP_NAME:
-                viewStep(layoutName);
+//                viewStep(layoutName);
                 break;
-            case AppConstants.Tab.REGISTRATION_STEP_EMAIL:
-                viewStep(layoutEmail);
-                break;
-            case AppConstants.Tab.REGISTRATION_STEP_PASSWORD:
-                viewStep(layoutPassword);
-                break;
-            case AppConstants.Tab.REGISTRATION_STEP_GENDER:
-                viewStep(layoutGender);
-                break;
+//            case AppConstants.Tab.REGISTRATION_STEP_EMAIL:
+//                viewStep(layoutEmail);
+//                break;
+//            case AppConstants.Tab.REGISTRATION_STEP_PASSWORD:
+////                viewStep(layoutPassword);
+//                break;
+//            case AppConstants.Tab.REGISTRATION_STEP_GENDER:
+//                viewStep(layoutGender);
+//                break;
         }
     }
 
     private void viewStep(View view) {
-        layoutName.setVisibility(View.GONE);
-        layoutEmail.setVisibility(View.GONE);
-        layoutGender.setVisibility(View.GONE);
-        layoutPassword.setVisibility(View.GONE);
-
-        view.setVisibility(View.VISIBLE);
+//        layoutName.setVisibility(View.GONE);
+//        layoutEmail.setVisibility(View.GONE);
+//        layoutGender.setVisibility(View.GONE);
+////        layoutPassword.setVisibility(View.GONE);
+//
+//        view.setVisibility(View.VISIBLE);
 
 
     }
@@ -281,10 +281,10 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
                 }
                 registrationActivity.setName(name);
                 registrationActivity.setLastName(lastname);
-                registrationActivity.next();
-                break;
+//                registrationActivity.next();
+//                break;
 
-            case AppConstants.Tab.REGISTRATION_STEP_EMAIL:
+//            case AppConstants.Tab.REGISTRATION_STEP_EMAIL:
                 email = editTextEmail.getText().toString().trim();
                 if (email.isEmpty()) {
                     textInputLayoutEmail.setError(context.getResources().getString(R.string.email_required_error));
@@ -298,11 +298,10 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
 
                 buttonNext.setVisibility(View.INVISIBLE);
                 networkCommunicator.validateEmail(email, this, false);
-                break;
+//                break;
 
-            case AppConstants.Tab.REGISTRATION_STEP_PASSWORD:
+//            case AppConstants.Tab.REGISTRATION_STEP_PASSWORD:
                 String pass = editTextPass.getText().toString();
-                String confirmPass = editTextConfirmPass.getText().toString();
 
                 if (pass.isEmpty()) {
                     textInputLayoutPass.setError(context.getResources().getString(R.string.password_required));
@@ -313,7 +312,7 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
                     textInputLayoutPass.setError(context.getResources().getString(R.string.password_weak));
                     return;
                 }
-
+                String confirmPass = editTextConfirmPass.getText().toString();
                 if (confirmPass.isEmpty()) {
                     textInputLayoutConfirmPass.setError(context.getResources().getString(R.string.password_required));
                     return;
@@ -325,10 +324,10 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
                 }
 
                 registrationActivity.setPass(pass);
-                registrationActivity.next();
-                break;
+//                registrationActivity.next();
+//                break;
 
-            case AppConstants.Tab.REGISTRATION_STEP_GENDER:
+//            case AppConstants.Tab.REGISTRATION_STEP_GENDER:
 
                 if (gender == null) {
                     textViewGenderError.setVisibility(View.VISIBLE);
@@ -339,8 +338,6 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
                 registrationActivity.setGender(gender);
                 registrationActivity.stepsDone();
 
-                buttonNext.setVisibility(View.GONE);
-                networkCommunicator.register(registrationActivity.getRegistrationRequest(), this, false);
                 break;
         }
     }
@@ -355,9 +352,9 @@ public class RegistrationSteps extends BaseFragment implements View.OnClickListe
                 registrationActivity.setEmail(email);
                 registrationActivity.next();
 
-                break;
+//                break;
 
-            case NetworkCommunicator.RequestCode.REGISTER:
+//            case NetworkCommunicator.RequestCode.REGISTER:
                 buttonNext.setVisibility(View.VISIBLE);
 
                 if (response != null) {

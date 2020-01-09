@@ -104,17 +104,15 @@ public class RegistrationActivity extends BaseActivity {
         viewPager.setAdapter(registrationStepsAdapter);
         viewPager.setOffscreenPageLimit(TOTAL_STEPS);
 
-        // Indicator setup..
-        new ViewPagerIndicator(context, ViewPagerIndicator.STYLE_NORMAL).setup(viewPager, layoutIndicator, R.drawable.circle_black, R.drawable.circle_grey);
 
-        // Un-Scrollable
-       viewPager.setPagingEnabled(false);
-        viewPager.post(new Runnable() {
-            @Override
-            public void run() {
-                viewPager.setCurrentItem(INITIAL_STEP);
-            }
-        });
+//        // Un-Scrollable
+//       viewPager.setPagingEnabled(false);
+//        viewPager.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                viewPager.setCurrentItem(INITIAL_STEP);
+//            }
+//        });
     }
 
     public void setName(String name) {
@@ -143,26 +141,26 @@ public class RegistrationActivity extends BaseActivity {
     }
 
     public void next() {
-        if (viewPager.getCurrentItem() != AppConstants.Tab.REGISTRATION_STEP_GENDER) {
-            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
-        }
+//        if (viewPager.getCurrentItem() != AppConstants.Tab.REGISTRATION_STEP_GENDER) {
+//            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+//        }
     }
 
     @OnClick(R.id.imageViewBack)
     public void imageViewBack(View view) {
-        if (viewPager.getCurrentItem() != AppConstants.Tab.REGISTRATION_STEP_NAME) {
-            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
-        } else {
+//        if (viewPager.getCurrentItem() != AppConstants.Tab.REGISTRATION_STEP_NAME) {
+//            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+//        } else {
             onBackPressed();
-        }
+//        }
     }
 
     @Override
     public void onBackPressed() {
-        if (viewPager.getCurrentItem() != AppConstants.Tab.REGISTRATION_STEP_NAME) {
-            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
-        } else {
+//        if (viewPager.getCurrentItem() != AppConstants.Tab.REGISTRATION_STEP_NAME) {
+//            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+//        } else {
             super.onBackPressed();
-        }
+//        }
     }
 }
