@@ -104,6 +104,7 @@
                             android:fontFamily="sans-serif"
                             android:gravity="center"
                             android:text="@string/sign_up_email"
+                            android:visibility="gone"
                             android:textColor="@color/black" />
 
                         <LinearLayout

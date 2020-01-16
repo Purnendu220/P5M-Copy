@@ -975,5 +975,7 @@
     <string name="more_workouts">%1$s المزيد من الأنشطة </string>
     <string name="less_workouts">show less</string>
     <string name="you_cant_use_package">You can\'t use this package</string>
+    <string name="get_started_suggesstion">With a few quick questions, we will suggest the best classes just for you</string>
+    <string name="get_started">Get Started</string>
 
 </resources>

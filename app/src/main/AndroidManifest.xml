@@ -36,7 +36,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:supportsRtl">
-        <activity android:name=".view.activity.Main.GymTrainerListActivity"></activity>
+        <activity android:name=".view.activity.Main.GetStartedActivity"></activity>
+        <activity android:name=".view.activity.Main.GymTrainerListActivity" />
         <activity
             android:name=".view.activity.Main.MembershipInfoActivity"
             android:label="@string/membership_info"
@@ -220,8 +221,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.Main.TransactionHistoryActivity"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.Main.SettingNotification"
             android:screenOrientation="portrait" />
