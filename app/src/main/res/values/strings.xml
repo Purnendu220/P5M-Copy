@@ -612,6 +612,16 @@ Would you like to view your balance? </string>
     <string name="you_cant_use_package">You can\'t use this package</string>
     <string name="get_started_suggesstion">With a few quick questions, we will suggest the best classes just for you!</string>
     <string name="get_started">Get Started</string>
-
+    <string name="want_us_to_expand_in_your_city">Want us to expand in your city?</string>
+    <string name="let_us_know_your_details">Let us know your details:</string>
+    <string name="submit">Submit</string>
+    <string name="your_city">Your city</string>
+    <string name="location_search_for">Where will you be working out?</string>
+    <string name="thank_you_submit_request">We have noted request. We will inform you when P5M is available near you</string>
+    <string-array name="city">
+        <item>Kuwait</item>
+        <item>Riyadh,Saudi Arabia</item>
+        <item>Want us to expand in your city?</item>
+    </string-array>
 
 </resources>

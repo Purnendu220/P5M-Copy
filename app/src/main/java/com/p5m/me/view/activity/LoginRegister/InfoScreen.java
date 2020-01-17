@@ -21,6 +21,7 @@ import com.p5m.me.data.OnBoardingData;
 import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.ViewPagerIndicator;
+import com.p5m.me.view.activity.Main.LocationSelectionActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 
 import java.util.ArrayList;
@@ -137,7 +138,8 @@ public class InfoScreen extends BaseActivity implements ViewPager.OnPageChangeLi
 
     @OnClick(R.id.buttonRegister)
     public void register() {
-        SignUpOptions.open(context);
+
+        LocationSelectionActivity.open(context);
     }
 
     @Override

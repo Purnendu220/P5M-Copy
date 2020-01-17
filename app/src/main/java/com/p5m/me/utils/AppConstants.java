@@ -415,6 +415,7 @@ public class AppConstants {
         public static final int NAVIGATION_FROM_EXPLORE = 65;
 
 
+        public static final int NAVIGATION_FROM_OTHER_USER = 66;
     }
 
     public class Limit {

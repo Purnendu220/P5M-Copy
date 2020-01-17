@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/root"
+    android:background="@color/white"
+    tools:context=".view.activity.Main.LocationSelectionActivity">
+    <TextView
+        android:id="@+id/textViewHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="20dp"
+        android:textColor="@color/theme_dark_text"
+        android:textSize="@dimen/text_extra_extra_large"
+        android:fontFamily="sans-serif-medium"
+        android:lineSpacingExtra="@dimen/margin_5"
+        android:text="@string/location_search_for"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.295"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinnerCity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:entries="@array/city"
+        android:spinnerMode="dropdown"
+        app:layout_constraintEnd_toEndOf="@+id/textViewHeader"
+        app:layout_constraintStart_toStartOf="@+id/textViewHeader"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHeader" />
+
+    <Button
+        android:id="@+id/buttonNext"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height_normal"
+        android:layout_marginTop="76dp"
+        android:background="@drawable/button_white"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+
+        android:text="@string/next"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/textViewHeader"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/textViewHeader"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCity" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="12dp"
+        android:layout_marginTop="@dimen/margin_15"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/textViewHeader"
+        app:layout_constraintStart_toStartOf="@+id/textViewHeader"
+        app:layout_constraintTop_toBottomOf="@+id/buttonNext">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:gravity="left"
+            android:text="@string/already_account"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/textViewLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:fontFamily="sans-serif"
+            android:gravity="left"
+            android:padding="4dp"
+            android:text="@string/login"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

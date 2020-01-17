@@ -1,3 +1,4 @@
+/*
 package com.p5m.me.adapters;
 
 import androidx.fragment.app.Fragment;
@@ -8,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.p5m.me.utils.AppConstants;
-import com.p5m.me.view.fragment.RegistrationSteps;
 
 public class RegistrationStepsAdapter extends FragmentStatePagerAdapter {
 
@@ -63,4 +63,4 @@ public class RegistrationStepsAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return tabsCount;
     }
-}
+}*/
