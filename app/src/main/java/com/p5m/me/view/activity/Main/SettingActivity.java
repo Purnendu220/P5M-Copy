@@ -45,6 +45,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     private String item;
     private int position;
     private boolean isSelectCountry = false;
+    private int userCountryIdPosition;
 
 
     public static void openActivity(Context context) {
@@ -114,6 +115,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         }
         categories = new ArrayList<String>();
         callApi();
+
     }
 
     private void callApi() {
@@ -157,6 +159,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case R.id.layoutChangeCountry:
                 if (categories != null)
                     openCountryChangeDialog();
+
                 break;
         }
     }
@@ -178,11 +181,16 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     private void setSpinnerView() {
         spinnerCity.setOnItemSelectedListener(this);
-//        categories.add("Want us to expand in your city?");
+        int userCountryId = TempStorage.getCountryId();
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+        for (int i = 0; i < countryModel.size(); i++) {
+            if (userCountryId == countryModel.get(i).getId())
+                userCountryIdPosition = i;
 
+        }
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCity.setAdapter(dataAdapter);
+        spinnerCity.setSelection(userCountryIdPosition);
     }
 
     @Override

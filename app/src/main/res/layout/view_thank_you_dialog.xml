@@ -101,7 +101,7 @@
          android:fontFamily="sans-serif"
          android:gravity="center"
          android:letterSpacing="@dimen/button_letter_spacing"
-         android:text="@string/got_it"
+         android:text="@string/ok"
          android:textAllCaps="true"
          android:textSize="@dimen/text_small"
          android:textColor="@color/white"

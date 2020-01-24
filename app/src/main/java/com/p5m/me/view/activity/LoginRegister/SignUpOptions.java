@@ -338,6 +338,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
 
     public void setGender(String gender) {
         registrationRequest.setGender(gender);
+        registrationRequest.setStoreId(TempStorage.getCountryId());
     }
 
     public RegistrationRequest getRegistrationRequest() {
@@ -352,8 +353,16 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
             textInputLayoutName.setError(context.getResources().getString(R.string.name_required_error));
             return;
         }
+        if (name.length()>40) {
+            textInputLayoutName.setError(context.getResources().getString(R.string.name_length_error));
+            return;
+        }
         if (lastname.isEmpty()) {
             textInputLayoutLastName.setError(context.getResources().getString(R.string.last_name_required_error));
+            return;
+        }
+        if (lastname.length()>40) {
+            textInputLayoutName.setError(context.getResources().getString(R.string.name_length_error));
             return;
         }
         setName(name);
@@ -403,6 +412,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
         }
 
         setGender(gender);
+
 
         networkCommunicator.validateEmail(email, this, false);
     }
@@ -503,7 +513,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
 
     private void facebookValidation() {
         String message = "";
-        registrationRequest = new RegistrationRequest(faceBookUser.getId(), faceBookUser.getName(), faceBookUser.getLastName());
+        registrationRequest = new RegistrationRequest(faceBookUser.getId(), faceBookUser.getName(), faceBookUser.getLastName(),TempStorage.getCountryId() );
 
         if (faceBookUser.getEmail().isEmpty()) {
 

@@ -124,7 +124,7 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
                 HomeActivity.open(context);
                 break;
             case R.id.imageViewBack:
-                finish();
+                onBackPressed();
                 break;
         }
     }
@@ -141,6 +141,7 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
                 break;
             case SECOND_STEP:
                 textViewHeader.setText(getString(R.string.activity_selection_suggesstion));
+                imageViewBack.setVisibility(View.VISIBLE);
 
                 buttonBottom.setText(getString(R.string.next));
                 flexBoxLayout.setVisibility(View.VISIBLE);
@@ -148,6 +149,7 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
 
                 break;
             case THIRD_STEP:
+                imageViewBack.setVisibility(View.VISIBLE);
                 textViewHeader.setText(getString(R.string.convenient_time));
                 buttonBottom.setText(getString(R.string.finish));
                 flexBoxLayout.setVisibility(View.GONE);
