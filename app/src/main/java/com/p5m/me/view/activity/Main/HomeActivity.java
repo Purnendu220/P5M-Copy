@@ -23,6 +23,7 @@ import com.p5m.me.R;
 import com.p5m.me.adapters.HomeAdapter;
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
 import com.p5m.me.analytics.FirebaseAnalysic;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.UnratedClassData;
 import com.p5m.me.data.UserPackageInfo;
@@ -49,6 +50,7 @@ import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.activity.custom.BottomTapLayout;
 import com.p5m.me.view.custom.CustomRateAlertDialog;
+import com.p5m.me.view.fragment.FindClass;
 import com.p5m.me.view.fragment.MembershipFragment;
 import com.p5m.me.view.fragment.MySchedule;
 import com.p5m.me.view.fragment.ViewPagerFragmentSelection;
@@ -70,6 +72,7 @@ import io.intercom.android.sdk.identity.Registration;
 import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_DONE;
 import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_HAVE_PACKAGE;
 import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_NO_PACKAGE;
+import static com.p5m.me.utils.AppConstants.Tab.TAB_FIND_CLASS;
 import static com.p5m.me.utils.AppConstants.Tab.TAB_MY_MEMBERSHIP;
 
 
@@ -367,6 +370,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
         if (position == AppConstants.Tab.TAB_FIND_CLASS) {
             handleBuyClassesButton();
+            handleTabChangeForFindClass(position);
         } else {
             buyClassesLayout.setVisibility(View.GONE);
         }
@@ -380,6 +384,18 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         }
         handleTabChangeForMembership(position);
         currentTab = position;
+    }
+
+    private void handleTabChangeForFindClass(int position) {
+        if (position == TAB_FIND_CLASS && currentTab != position) {
+            try {
+                FindClass fragment = ((FindClass) homeAdapter.getFragments().get(position));
+                fragment.refreshFragment(NAVIGATED_FROM_INT);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

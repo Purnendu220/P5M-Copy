@@ -67,7 +67,8 @@ public class HomeAdapter extends FragmentStatePagerAdapter {
 
         Fragment frag = null;
         if (position == AppConstants.Tab.TAB_FIND_CLASS) {
-            frag = new FindClass();
+//            frag = new FindClass();
+            frag = FindClass.newInstance(NAVIGATED_FROM_INT);
 
         } else if (position == AppConstants.Tab.TAB_EXPLORE_PAGE) {
 

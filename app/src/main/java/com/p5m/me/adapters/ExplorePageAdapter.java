@@ -32,6 +32,16 @@ import com.p5m.me.utils.LogUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.p5m.me.utils.AppConstants.ExploreViewType.BANNER_CAROUSAL_VIEW;
+import static com.p5m.me.utils.AppConstants.ExploreViewType.CATEGORY_CAROUSEL_VIEW;
+import static com.p5m.me.utils.AppConstants.ExploreViewType.GYM_VIEW;
+import static com.p5m.me.utils.AppConstants.ExploreViewType.PRICE_MODEL_CAROUSEL_VIEW;
+import static com.p5m.me.utils.AppConstants.ExploreViewType.TEXT_CAROUSAL_VIEW;
+import static com.p5m.me.utils.AppConstants.ExploreViewType.TEXT_WITH_BUTTONS;
+import static com.p5m.me.utils.AppConstants.ExploreViewType.TEXT_WITH_BUTTONS_2;
+import static com.p5m.me.utils.AppConstants.ExploreViewType.TOP_RATED_CLASSES;
+import static com.p5m.me.utils.AppConstants.ExploreViewType.TRAINER_CAROUSAL_VIEW;
+
 
 /**
  * Created by MyU10 on 3/10/2018.
@@ -42,15 +52,6 @@ public class ExplorePageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int VIEW_TYPE_UNKNOWN = -1;
     private static final int VIEW_TYPE_LOADER = 0;
     private static int VIEW_TYPE = -1;
-    private static final String BANNER_CAROUSAL_VIEW = "BANNER_CAROUSEL_VIEW";
-    private static final String TEXT_WITH_BUTTONS = "P5M_BUTTONS";
-    private static final String TEXT_CAROUSAL_VIEW = "TEXT_CAROUSAL_VIEW";
-    private static final String PRICE_MODEL_CAROUSEL_VIEW = "PRICE_MODEL_CAROUSEL_VIEW";
-    private static final String CATEGORY_CAROUSEL_VIEW = "CATEGORY_CAROUSEL_VIEW";
-    private static final String TRAINER_CAROUSAL_VIEW = "TRAINER_VIEW";
-    private static final String GYM_VIEW = "GYM_VIEW";
-    private static final String TOP_RATED_CLASSES = "TOP_RATED_CLASSES";
-    private static final String TEXT_WITH_BUTTONS_2 = "CONFUSED_BUTTONS";
 
     private static final int BANNER_CAROUSAL_VIEW_VALUE = 1;
     private static final int TEXT_WITH_BUTTONS_VALUE = 2;
@@ -247,15 +248,15 @@ public class ExplorePageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         } else if (holder instanceof ExplorePagePriceModelViewHolder) {
             ((ExplorePagePriceModelViewHolder) holder).bind(list.get(position), adapterCallbacksExplore, position);
         } else if (holder instanceof ExplorePageGymListViewHolder) {
-            ((ExplorePageGymListViewHolder) holder).bind(list.get(position),  adapterCallbacksExplore, position);
+            ((ExplorePageGymListViewHolder) holder).bind(list.get(position), adapterCallbacksExplore, position);
         } else if (holder instanceof ExplorePageTrainerListViewHolder) {
-            ((ExplorePageTrainerListViewHolder) holder).bind(list.get(position),  adapterCallbacksExplore, position);
+            ((ExplorePageTrainerListViewHolder) holder).bind(list.get(position), adapterCallbacksExplore, position);
         } else if (holder instanceof ExplorePageWorkoutViewHolder) {
             ((ExplorePageWorkoutViewHolder) holder).bind(list.get(position), adapterCallbacksExplore, position);
         } else if (holder instanceof StillConfusedViewHolder) {
             ((StillConfusedViewHolder) holder).bind(list.get(position), shownInScreen, adapterCallbacksExplore, position);
         } else if (holder instanceof ExplorePageRatingListViewHolder) {
-            ((ExplorePageRatingListViewHolder) holder).bind(list.get(position),  adapterCallbacksExplore, position);
+            ((ExplorePageRatingListViewHolder) holder).bind(list.get(position), adapterCallbacksExplore, position);
         } else if (holder instanceof EmptyViewHolder) {
             ((EmptyViewHolder) holder).bind();
         }
