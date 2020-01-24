@@ -11,11 +11,14 @@ import android.widget.ImageView;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.p5m.me.R;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BannerData;
 import com.p5m.me.notifications.HandleNotificationDeepLink;
 import com.p5m.me.utils.ImageUtils;
 
 import java.util.List;
+
+import static com.p5m.me.utils.AppConstants.ExploreViewType.BANNER_CAROUSAL_VIEW;
 
 /**
  * Created by MyU10 on 3/9/2018.
@@ -44,8 +47,11 @@ public class BannerAdapter extends PagerAdapter {
         BannerData bannerData = (BannerData) bannerDataList.get(position);
         ImageView image = view.findViewById(R.id.image);
         image.setOnClickListener(v -> {
-            if (bannerDataList.get(position).getUrl() != null && !TextUtils.isEmpty(bannerDataList.get(position).getUrl()))
+            if (bannerDataList.get(position).getUrl() != null && !TextUtils.isEmpty(bannerDataList.get(position).getUrl())) {
                 onBannerClick(position);
+                MixPanel.trackExplore(BANNER_CAROUSAL_VIEW, bannerDataList.get(position).getUrl());
+            }
+
         });
         if (bannerData.getImagePath() != null)
             ImageUtils.setImage(context, bannerData.getImagePath(), image);

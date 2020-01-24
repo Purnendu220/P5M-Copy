@@ -43,8 +43,9 @@ public class Trainers extends BaseActivity implements ViewPagerFragmentSelection
         Intent intent = new Intent(context, Trainers.class);
         return intent;
     }
-    public static void open(Context context) {
+    public static void open(Context context, int navigationFromExplore) {
         Intent intent = new Intent(context, Trainers.class);
+        Trainers.navigationFrom = navigationFromExplore;
         context.startActivity(intent);
     }
 
@@ -56,6 +57,7 @@ public class Trainers extends BaseActivity implements ViewPagerFragmentSelection
     public AppBarLayout appBarLayout;
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
+    public static int navigationFrom;
 
     private TrainersAdapter trainersAdapter;
     private String[] titleTabs = new String[]{"", ""};
@@ -92,6 +94,7 @@ public class Trainers extends BaseActivity implements ViewPagerFragmentSelection
         } else {
             setUpPager();
         }
+
     }
 
     private void setUpPager() {

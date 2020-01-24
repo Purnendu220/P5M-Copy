@@ -11,11 +11,6 @@ public class PriceModel {
      * imageUrl : http://d1zfy71n00v47t.cloudfront.net/explore/categories/group.jpg
      */
     private String id;
-    public PriceModel(String id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
 
     private String order;
     private String name;

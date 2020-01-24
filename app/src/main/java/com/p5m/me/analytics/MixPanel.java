@@ -3,6 +3,7 @@ package com.p5m.me.analytics;
 import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.text.TextUtils;
 
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.p5m.me.BuildConfig;
@@ -12,6 +13,7 @@ import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.Filter;
 import com.p5m.me.data.PushDetailModel;
 import com.p5m.me.data.UserPackageInfo;
+import com.p5m.me.data.main.BranchModel;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.GymDataModel;
@@ -22,6 +24,7 @@ import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.ToastUtils;
 
 import org.json.JSONObject;
 
@@ -170,6 +173,7 @@ public class MixPanel {
             LogUtils.exception(e);
         }
     }
+
     public static void trackBottomSheetChoosePackageButton() {
         try {
             JSONObject props = new JSONObject();
@@ -461,6 +465,10 @@ public class MixPanel {
             origin = AppConstants.Tracker.PUSH_NOTIFICATION;
         } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SHARE) {
             origin = AppConstants.Tracker.SHARED_GYM;
+        } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_MAP_VIEW) {
+            origin = AppConstants.Tracker.MAP_VIEW;
+        } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_EXPLORE) {
+            origin = AppConstants.Tracker.EXPLORE;
         }
 
         if (origin.isEmpty()) {
@@ -516,6 +524,8 @@ public class MixPanel {
             origin = AppConstants.Tracker.TRAINER_TAB;
         } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FAV_TRAINERS) {
             origin = AppConstants.Tracker.USER_PROFILE;
+        } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_EXPLORE) {
+            origin = AppConstants.Tracker.EXPLORE;
         }
 
         if (origin.isEmpty()) {
@@ -586,6 +596,8 @@ public class MixPanel {
             origin = AppConstants.Tracker.PUSH_NOTIFICATION;
         } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS) {
             origin = AppConstants.Tracker.FIND_CLASS;
+        } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_EXPLORE) {
+            origin = AppConstants.Tracker.EXPLORE;
         }
 
         if (origin.isEmpty()) {
@@ -616,12 +628,54 @@ public class MixPanel {
         }
     }
 
+    public static void trackFindClass(int navigatedFrom, Boolean isList) {
+        String origin = "";
+
+        if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_EXPLORE) {
+            origin = AppConstants.Tracker.EXPLORE;
+        } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SCHEDULE) {
+            origin = AppConstants.Tracker.FROM_MY_SCHEDULE;
+        }
+
+        String viewType = "";
+
+        if (isList)
+            viewType = "map";
+        else
+            viewType = "list";
+        try {
+            JSONObject props = new JSONObject();
+            props.put("origin", origin);
+            props.put("view_type", viewType);
+            if (!TextUtils.isEmpty(origin))
+                trackEvent(props, "OpenFindClass");
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
     public static void trackPayButtonClick(String packageName) {
         try {
             JSONObject props = new JSONObject();
             props.put("package_name", packageName);
 
             trackEvent(props, "Pay_Clicked");
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
+    public static void trackMapViewClick(String action, BranchModel model) {
+        try {
+            JSONObject props = new JSONObject();
+            props.put("action", action);
+            props.put("gym", model.getGymName());
+
+            props.put("gym_locality", model.getLatitude() + "," + model.getLongitude());
+
+            trackEvent(props, "MapView");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -705,6 +759,8 @@ public class MixPanel {
             origin = AppConstants.Tracker.PUSH_NOTIFICATION;
         } else if (shownIn == AppConstants.AppNavigation.NAVIGATION_FROM_SHARE) {
             origin = AppConstants.Tracker.SHARED_CLASS;
+        } else if (shownIn == AppConstants.AppNavigation.NAVIGATION_FROM_EXPLORE) {
+            origin = AppConstants.Tracker.EXPLORE;
         }
 
         //  trackJoinClass(origin, classModel);
@@ -818,6 +874,19 @@ public class MixPanel {
             props.put("view_limit", packageName);
 
             trackEvent(props, "Open_Membership");
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
+    public static void trackExplore(String mixPannelSection, String mixPannelValue) {
+        try {
+            JSONObject props = new JSONObject();
+            props.put("section", mixPannelSection);
+            props.put("values", mixPannelValue);
+
+            trackEvent(props, "Open_Explore");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);

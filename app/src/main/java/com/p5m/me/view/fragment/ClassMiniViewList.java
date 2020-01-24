@@ -511,7 +511,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
                 imageViewEmptyLayoutImage.setImageResource(R.drawable.stub_class);
                 buttonBook.setVisibility(View.VISIBLE);
                 buttonBook.setOnClickListener(v -> {
-                    HomeActivity.show(context, AppConstants.Tab.TAB_FIND_CLASS);
+                    HomeActivity.show(context, AppConstants.Tab.TAB_FIND_CLASS,AppConstants.AppNavigation.NAVIGATION_FROM_SCHEDULE);
                 });
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SEARCH_RESULTS) {
                 textViewEmptyLayoutText.setText(R.string.no_data_search_class_list);

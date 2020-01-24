@@ -183,7 +183,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         onRefresh();
 
 
-        MixPanel.trackMembershipVisit(navigatedFrom);
+//        MixPanel.trackMembershipVisit(navigatedFrom);
         //  onTrackingNotification();
         FirebaseAnalysic.trackMembershipVisit(navigatedFrom);
         if(RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE!=null && !RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE.isEmpty()){

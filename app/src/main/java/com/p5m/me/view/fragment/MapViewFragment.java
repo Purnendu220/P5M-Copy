@@ -47,11 +47,13 @@ import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.MapGymAdapter;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.CityLocality;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.Filter;
 import com.p5m.me.data.MapData;
 import com.p5m.me.data.PriceModel;
+import com.p5m.me.data.WorkoutModel;
 import com.p5m.me.data.main.BranchModel;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.GymDataModel;
@@ -122,7 +124,6 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     private boolean isMarkerClick = false;
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
     private static final long MIN_TIME_BW_UPDATES = 1000 * 10 * 1; // 1 minute
-    private boolean isLocationPermissionGranted = false;
 
     public static Fragment createFragment(String date, int position, int shownIn) {
         Fragment tabFragment = new MapViewFragment();
@@ -156,7 +157,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         fragmentPositionInViewPager = getArguments().getInt(AppConstants.DataKey.TAB_POSITION_INT);
         position = RefrenceWrapper.getRefrenceWrapper(context).getLatLng();
         setNearerGymView();
-
+        MixPanel.trackFindClass(showInScreen,false);
     }
 
     private void checkLocation() {
@@ -245,6 +246,8 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
                 priceModelList.add(String.valueOf(((PriceModel) classesFilter.getObject()).getValue()));
             } else if (classesFilter.getObject() instanceof Filter.FitnessLevel) {
                 fitnessLevelList.add(String.valueOf(((Filter.FitnessLevel) classesFilter.getObject()).getLevel()));
+            } else if (classesFilter.getObject() instanceof WorkoutModel) {
+                activities.add(String.valueOf(((WorkoutModel) classesFilter.getObject()).getId()));
             }
         }
 
@@ -321,6 +324,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
         switch (view.getId()) {
             case R.id.textViewShowSchedule:
+                MixPanel.trackMapViewClick("schedule",branchModel.get(position));
                 ShowSchedulesBootomDialogFragment showSchedulesBootomDialogFragment =
                         ShowSchedulesBootomDialogFragment.newInstance(context, date, Collections.singletonList(branchModel.get(position).getBranchId()), branchModel.get(position), this);
                 showSchedulesBootomDialogFragment.show(((HomeActivity) context).getSupportFragmentManager(),
@@ -332,6 +336,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
             case R.id.textViewGymName:
                 if (model instanceof BranchModel) {
                     BranchModel branchModel = (BranchModel) model;
+                    MixPanel.trackMapViewClick("visit_gym_profile",branchModel);
                     GymProfileActivity.open(context, branchModel.getGymId(), AppConstants.AppNavigation.SHOWN_IN_MAP_VIEW);
                 }
                 break;
@@ -656,6 +661,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     public void onProviderDisabled(String provider) {
 
     }
+
 
 
     private class CustomClusterRenderer extends DefaultClusterRenderer<MapData> {

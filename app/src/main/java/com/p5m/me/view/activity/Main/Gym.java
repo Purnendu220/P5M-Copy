@@ -171,7 +171,7 @@ public class Gym extends BaseActivity implements ViewPagerFragmentSelection, Vie
         activity.getSupportActionBar().setDisplayUseLogoEnabled(true);
 
         View v = LayoutInflater.from(context).inflate(R.layout.view_tool_bar_trainers, null);
-        ((TextView)(v.findViewById(R.id.textViewTitle))).setText(getString(R.string.gym));
+        ((TextView)(v.findViewById(R.id.textViewTitle))).setText(getString(R.string.gyms));
         v.findViewById(R.id.imageViewSearch).setOnClickListener(this);
 
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,

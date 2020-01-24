@@ -53,18 +53,13 @@ public class MapGymViewHolder extends RecyclerView.ViewHolder {
             if (model.getMediaUrl() != null) {
                 ImageUtils.setImage(context,
                         model.getMediaUrl(),
-                        R.color.white,R.drawable.profile_holder, imageViewOfGym);
+                        R.drawable.profile_holder, R.drawable.profile_holder, imageViewOfGym);
             } else {
                 ImageUtils.setImage(context,
                         model.getMediaUrl(),
                         R.drawable.profile_holder, imageViewOfGym);
             }
 
-
-           /* ImageUtils.setImage(context,
-                    model.getMediaUrl(),
-                    R.drawable.profile_holder, imageViewOfGym);
-*/
             textViewShowSchedule.setOnClickListener(v -> {
                 adapterCallbacks.onAdapterItemClick(MapGymViewHolder.this, textViewShowSchedule, model, position);
             });

@@ -128,6 +128,8 @@ public class AppConstants {
         public static final String NO_ACTION = "no_action";
         public static final String UP_COMING = "UpComing";
         public static final String PURCHASE_PLAN = "purchase_plan";
+        public static final String EXPLORE = "explore";
+        public static final String MAP_VIEW = "map_view";
     }
 
     public static class Pref {
@@ -459,7 +461,22 @@ public class AppConstants {
       public static final String GYM_VIEW = "GYM_VIEW";
       public static final String CATEGORY_CAROUSEL_VIEW = "CATEGORY_CAROUSEL_VIEW";
 
+      public static final String BANNER_CAROUSAL_VIEW = "BANNER_CAROUSEL_VIEW";
+      public static final String TEXT_WITH_BUTTONS = "P5M_BUTTONS";
+      public static final String TEXT_CAROUSAL_VIEW = "TEXT_CAROUSAL_VIEW";
+      public static final String PRICE_MODEL_CAROUSEL_VIEW = "PRICE_MODEL_CAROUSEL_VIEW";
+      public static final String TRAINER_CAROUSAL_VIEW = "TRAINER_VIEW";
+      public static final String TOP_RATED_CLASSES = "TOP_RATED_CLASSES";
+      public static final String TEXT_WITH_BUTTONS_2 = "CONFUSED_BUTTONS";
 
+
+  }
+
+  public class MixPanelValue{
+      public static final String MEMBERSHIP = "membership";
+
+      public static final String INTERCOM = "intercom";
+      public static final String LIST = "list";
   }
 
 }

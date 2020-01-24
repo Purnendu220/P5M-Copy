@@ -21,17 +21,23 @@ import com.p5m.me.data.CityLocality;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.Filter;
 import com.p5m.me.data.PriceModel;
+import com.p5m.me.data.WorkoutModel;
 import com.p5m.me.data.main.BranchModel;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.data.main.ScheduleClassModel;
 import com.p5m.me.data.request.ScheduleRequest;
+import com.p5m.me.eventbus.Events;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.ClassProfileActivity;
+import com.p5m.me.view.fragment.FindClass;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +58,7 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
     private ScheduleRequest scheduleRequest;
     private int pageSizeLimit = AppConstants.Limit.PAGE_LIMIT_UNLIMITED;
 
-    public static ShowSchedulesBootomDialogFragment newInstance(Context context,  String date,List<Integer> branchList,BranchModel branchModel,AdapterCallbacks<BranchModel> adapterCallbacks) {
+    public static ShowSchedulesBootomDialogFragment newInstance(Context context, String date, List<Integer> branchList, BranchModel branchModel, AdapterCallbacks<BranchModel> adapterCallbacks) {
 
         ShowSchedulesBootomDialogFragment bottomSheetFragment = new ShowSchedulesBootomDialogFragment();
         ShowSchedulesBootomDialogFragment.context = context;
@@ -65,15 +71,15 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
     }
 
 
-   @BindView(R.id.recycleViewShowSchedule)
-   public RecyclerView recycleViewShowSchedule;
+    @BindView(R.id.recycleViewShowSchedule)
+    public RecyclerView recycleViewShowSchedule;
     @BindView(R.id.layoutBottomSheet)
     public ConstraintLayout layoutBottomSheet;
     @BindView(R.id.progressBar)
     public ProgressBar progressBar;
     @BindView(R.id.textViewGymBranch)
     public TextView textViewGymBranch;
-  @BindView(R.id.textViewNoClass)
+    @BindView(R.id.textViewNoClass)
     public TextView textViewNoClass;
 
     @Nullable
@@ -92,9 +98,14 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
         return view;
 
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void newFilter(Events.RefreshClassList refreshClassList) {
+            showScheduleAdapter.clearAll();
+            showScheduleAdapter.notifyDataSetChanged();
 
+    }
     private void setGymAndBranchName() {
-        String gymAndBranchName=branchModel.getGymName().toUpperCase()+" - "+branchModel.getBranchName();
+        String gymAndBranchName = branchModel.getGymName().toUpperCase() + " - " + branchModel.getBranchName();
         textViewGymBranch.setText(gymAndBranchName);
     }
 
@@ -138,10 +149,13 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
                 activities.add(String.valueOf(((ClassActivity) classesFilter.getObject()).getId()));
             } else if (classesFilter.getObject() instanceof GymDataModel) {
                 gymList.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getId()));
-            }else if (classesFilter.getObject() instanceof Filter.FitnessLevel) {
+            } else if (classesFilter.getObject() instanceof Filter.FitnessLevel) {
                 fitnessLevel.add(String.valueOf(((Filter.FitnessLevel) classesFilter.getObject()).getLevel()));
-            }else if (classesFilter.getObject() instanceof PriceModel) {
+            } else if (classesFilter.getObject() instanceof PriceModel) {
                 priceModel.add(String.valueOf(((PriceModel) classesFilter.getObject()).getValue()));
+            }
+            else if (classesFilter.getObject() instanceof WorkoutModel) {
+                activities.add(String.valueOf(((WorkoutModel) classesFilter.getObject()).getId()));
             }
         }
 
@@ -161,16 +175,15 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
         scheduleRequest.setBranchList(branchList);
 
 
-
         return scheduleRequest;
     }
+
     private void setShowScheduleView() {
         recycleViewShowSchedule.setLayoutManager(new LinearLayoutManager(context));
         recycleViewShowSchedule.setHasFixedSize(true);
-        showScheduleAdapter = new ShowScheduleAdapter(context, 2,true, this);
+        showScheduleAdapter = new ShowScheduleAdapter(context, 2, true, this);
         recycleViewShowSchedule.setAdapter(showScheduleAdapter);
     }
-
 
 
     @Override
@@ -194,8 +207,7 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
                         showScheduleAdapter.loaderDone();
                     }
                     showScheduleAdapter.notifyDataSetChanged();
-                }
-                else {
+                } else {
                     showScheduleAdapter.loaderDone();
                     textViewNoClass.setVisibility(View.VISIBLE);
 //                    this.dismiss();
@@ -224,7 +236,7 @@ public class ShowSchedulesBootomDialogFragment extends BottomSheetDialogFragment
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
         switch (view.getId()) {
             case R.id.layoutScheduler:
-                if(model instanceof ScheduleClassModel) {
+                if (model instanceof ScheduleClassModel) {
                     ScheduleClassModel model1 = (ScheduleClassModel) model;
                     ClassProfileActivity.open(context, model1.getClassSessionId(), AppConstants.AppNavigation.NAVIGATION_FROM_SHOW_SCHEDULER);
                     this.dismiss();
