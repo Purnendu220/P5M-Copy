@@ -212,6 +212,10 @@ public class EventBroadcastHelper {
         GlobalBus.getBus().post(new Events.NotificationCountUpdated());
     }
 
+     public static void exploreApiUpdate() {
+        GlobalBus.getBus().post(new Events.ExploreApiUpdate());
+    }
+
     public static void sendDeviceUpdate(Context context) {
 
         try {

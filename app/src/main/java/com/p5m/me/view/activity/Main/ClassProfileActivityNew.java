@@ -306,7 +306,7 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
 //            }
 //        }
 
-        MixPanel.trackClassDetails();
+        MixPanel.trackClassDetails(navigationFrom);
         onTrackingNotification();
         networkCommunicator.getMyUser(this, false);
     }
