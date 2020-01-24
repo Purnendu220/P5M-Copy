@@ -21,6 +21,7 @@ import com.p5m.me.data.OnBoardingData;
 import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.ViewPagerIndicator;
+import com.p5m.me.view.activity.Main.GetStartedActivity;
 import com.p5m.me.view.activity.Main.LocationSelectionActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 
@@ -45,7 +46,11 @@ public class InfoScreen extends BaseActivity implements ViewPager.OnPageChangeLi
     private List<OnBoardingData> onBoardingDataList;
 
     public static void open(Context context) {
-        context.startActivity(new Intent(context, InfoScreen.class));
+        Intent intent = new Intent(context, InfoScreen.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(intent);
+//        context.startActivity(new Intent(context, InfoScreen.class));
     }
 
     @Override

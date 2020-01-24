@@ -12,6 +12,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.p5m.me.R;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.view.activity.LoginRegister.InfoScreen;
 import com.p5m.me.view.activity.LoginRegister.LoginActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomDialogThankYou;
@@ -23,8 +24,8 @@ public class ExpandCityActivity extends BaseActivity implements View.OnClickList
 
     public static void open(Context context) {
         Intent intent = new Intent(context, ExpandCityActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(intent);
     }
 
@@ -85,4 +86,5 @@ public class ExpandCityActivity extends BaseActivity implements View.OnClickList
             e.printStackTrace();
         }
     }
+
 }

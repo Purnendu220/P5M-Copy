@@ -132,6 +132,7 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
     private void setView() {
         switch (STEP) {
             case FIRST_STEP:
+                imageViewBack.setVisibility(View.INVISIBLE);
                 textViewHeader.setText(getString(R.string.get_started_suggesstion));
                 buttonBottom.setText(getString(R.string.get_started));
                 flexBoxLayout.setVisibility(View.GONE);

@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import com.p5m.me.R;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.RefrenceWrapper;
+import com.p5m.me.view.activity.LoginRegister.InfoScreen;
 
 
 import butterknife.BindView;
@@ -101,7 +102,7 @@ public class CustomDialogThankYou extends Dialog implements OnClickListener {
             case R.id.textViewNotNow:
             case R.id.textViewIWillDoLater:
                 if (navigatinFrom == AppConstants.AppNavigation.NAVIGATION_FROM_OTHER_USER) {
-                    ((Activity) mContext).finish();
+                    InfoScreen.open(mContext);
                 } else
                     dismiss();
 

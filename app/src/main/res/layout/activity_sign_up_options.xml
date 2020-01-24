@@ -124,7 +124,7 @@
                                     android:layout_weight="1.0"
                                     android:layout_below="@+id/txt_name_title"
                                     android:gravity="left"
-                                    android:layout_margin="@dimen/margin_5"
+                                    android:layout_marginRight="@dimen/margin_4"
                                     app:errorEnabled="true">
 
                                     <EditText
@@ -146,7 +146,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1.0"
-                                    android:layout_margin="@dimen/margin_5"
+                                    android:layout_marginLeft="@dimen/margin_4"
                                     android:layout_below="@+id/txt_name_title"
                                     android:gravity="left"
                                     app:errorEnabled="true">

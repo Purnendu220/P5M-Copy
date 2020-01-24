@@ -103,8 +103,8 @@
         android:text="@string/get_started"
         android:textColor="@color/theme_dark_text"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textViewSkip"
-        app:layout_constraintStart_toEndOf="@+id/imageViewBack" />
+        app:layout_constraintEnd_toEndOf="@+id/textViewSkip"
+        app:layout_constraintStart_toStartOf="@+id/imageViewBack" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

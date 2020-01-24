@@ -3,6 +3,7 @@ package com.p5m.me.view.activity.Main;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -14,6 +15,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.p5m.me.R;
@@ -73,9 +76,11 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
         buttonNext.setOnClickListener(this);
         textViewLogin.setOnClickListener(this);
         textInputLayoutCity.setVisibility(View.GONE);
+        categories.add(getString(R.string.select_city));
+
         Helper.setupErrorWatcher(textViewCountryName, textInputLayoutCity);
-        categories.add(getResources().getString(R.string.select_city));
-//        spinnerCity.setBackground(getResources().getDrawable(R.drawable.ic_arrow_up));
+//        categories.add(getResources().getString(R.string.select_city));
+      //        spinnerCity.setBackground(getResources().getDrawable(R.drawable.ic_arrow_up));
         callApi();
 
     }
@@ -143,16 +148,17 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
     public void onNothingSelected(AdapterView<?> parent) {
         textInputLayoutCity.setVisibility(View.GONE);
         isSelectCountry = false;
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonNext:
-                if (other) {
+                if (!other) {
                     textInputLayoutCity.setVisibility(View.GONE);
-                    TempStorage.setCountryId(model.get(position).getId());
-                    TempStorage.setCountryName(model.get(position).getName());
+                    TempStorage.setCountryId(model.get(position-1).getId());
+                    TempStorage.setCountryName(model.get(position-1).getName());
                     SignUpOptions.open(context);
                 } else {
                     textInputLayoutCity.setVisibility(View.VISIBLE);
