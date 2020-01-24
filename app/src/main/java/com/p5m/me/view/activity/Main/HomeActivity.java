@@ -660,11 +660,13 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
                     .withName(user.getFirstName() + " " + user.getLastName())
                     .withEmail(user.getEmail())
                     .withCustomAttribute("Gender",user.getGender())
+                    .withCustomAttribute("Location",TempStorage.getCountryName())
                     .withCustomAttribute("wallet balance",balanceWallet)
                     .withCustomAttribute("Registration date", user.getDateOfJoining() == 0 ?
                             "" : DateUtils.getDateFormatter(new Date(user.getDateOfJoining())))
                     .withCustomAttribute("",userPackageInfo.haveGeneralPackage ?
                             userPackageInfo.userPackageGeneral.getPackageName() : "")
+
                     .build();
             Intercom.client().updateUser(userAttributes);
         }

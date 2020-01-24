@@ -355,12 +355,12 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
 
         }
     }
-
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
         swipeRefreshLayout.setRefreshing(false);
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.GET_EXPLORE_DATA:
+                ToastUtils.show(context,errorMessage);
                 break;
         }
 

@@ -36,6 +36,8 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.KeyboardUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.Main.HomeActivity;
+import com.p5m.me.view.activity.Main.LocationActivity;
+import com.p5m.me.view.activity.Main.LocationSelectionActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 
 import org.json.JSONException;
@@ -148,7 +150,7 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
 
     @OnClick(R.id.textViewSignUp)
     public void textViewSignUp(View view) {
-        SignUpOptions.open(context);
+        LocationSelectionActivity.open(context);
         finish();
     }
 

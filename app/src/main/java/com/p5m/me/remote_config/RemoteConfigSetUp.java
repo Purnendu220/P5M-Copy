@@ -82,6 +82,8 @@ import static com.p5m.me.remote_config.RemoteConfigConst.SELECT_PLAN_TEXT_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.SESSION_EXPIRED_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.SHOW_SELECTION_OPTIONS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.TESTIMONIALS_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.TESTIMONIALS_RIYADH_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.TESTIMONIALS_RIYADH_VALUE;
 import static com.p5m.me.remote_config.RemoteConfigConst.WAITLISTED_BUTTON_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.WAITLIST_BUTTON_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.WAITLIST_BUTTON_KEY;
@@ -273,6 +275,9 @@ public class RemoteConfigSetUp {
 
                 case TESTIMONIALS_KEY:
                     RemoteConfigConst.TESTIMONIALS_VALUE = keyValue;
+                    break;
+                 case TESTIMONIALS_RIYADH_KEY:
+                    RemoteConfigConst.TESTIMONIALS_RIYADH_VALUE = keyValue;
                     break;
                 case FAQ_KEY:
                     RemoteConfigConst.FAQ_VALUE = keyValue;

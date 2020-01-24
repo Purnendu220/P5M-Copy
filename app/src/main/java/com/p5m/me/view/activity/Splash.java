@@ -31,6 +31,7 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.PermissionUtility;
 import com.p5m.me.view.activity.Main.ForceUpdateActivity;
+import com.p5m.me.view.activity.Main.GetStartedActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.Main.Trainers;
 import com.p5m.me.view.activity.base.BaseActivity;

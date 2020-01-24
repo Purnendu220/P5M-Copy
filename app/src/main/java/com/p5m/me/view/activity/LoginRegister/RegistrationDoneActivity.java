@@ -9,6 +9,7 @@ import android.widget.Button;
 import com.p5m.me.R;
 import com.p5m.me.data.main.User;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.view.activity.Main.GetStartedActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 
@@ -42,7 +43,7 @@ public class RegistrationDoneActivity extends BaseActivity {
 
     @OnClick(R.id.buttonDone)
     public void buttonDone(View view) {
-        HomeActivity.open(context);
+        GetStartedActivity.open(context);
         finish();
     }
 

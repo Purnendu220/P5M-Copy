@@ -31,6 +31,7 @@ import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.PaymentUrl;
 import com.p5m.me.data.main.ScheduleClassModel;
 import com.p5m.me.data.main.SearchResults;
+import com.p5m.me.data.main.StoreApiModel;
 import com.p5m.me.data.main.TrainerDetailModel;
 import com.p5m.me.data.main.TrainerModel;
 import com.p5m.me.data.main.Transaction;
@@ -159,6 +160,7 @@ public class NetworkCommunicator {
         public static final int PAYMENT_CONFIRMATION_DETAIL = 150;
         public static final int SUPPORT_RESPONSE_CONTACT = 160;
 
+        public static final int GET_STORE_DATA = 161;
     }
 
     private Context context;
@@ -1670,6 +1672,28 @@ public class NetworkCommunicator {
 
             @Override
             public void onResponse(Call<ResponseModel<List<ExploreDataModel>>> call, Response<ResponseModel<List<ExploreDataModel>>> restResponse, ResponseModel<List<ExploreDataModel>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator User onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call getStoreData(final RequestListener requestListener, final boolean useCache) {
+        final int requestCode = RequestCode.GET_STORE_DATA;
+        Call<ResponseModel<List<StoreApiModel>>> call = apiService.getStoreData();
+        LogUtils.debug("NetworkCommunicator hitting Explore Detail");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<StoreApiModel>>>(context) {
+
+            @Override
+            public void onFailure(Call<ResponseModel<List<StoreApiModel>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator User onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<StoreApiModel>>> call, Response<ResponseModel<List<StoreApiModel>>> restResponse, ResponseModel<List<StoreApiModel>> response) {
                 LogUtils.networkSuccess("NetworkCommunicator User onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
             }

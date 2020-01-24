@@ -71,6 +71,7 @@ public class MixPanel {
             mixPanel.identify(String.valueOf(TempStorage.getUser().getId()));
             JSONObject props = new JSONObject();
             props.put("Source", "Android");
+            props.put("Location", TempStorage.getCountryName());
             mixPanel.registerSuperProperties(props);
             isSetupDone = true;
             LogUtils.debug("MixPanel setup done");

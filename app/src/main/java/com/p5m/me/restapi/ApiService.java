@@ -21,6 +21,7 @@ import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.data.main.GymModel;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.ScheduleClassModel;
+import com.p5m.me.data.main.StoreApiModel;
 import com.p5m.me.data.main.TrainerDetailModel;
 import com.p5m.me.data.main.TrainerModel;
 import com.p5m.me.data.main.Transaction;
@@ -391,5 +392,9 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.GET_EXPLORE_DETAIL)
     Call<ResponseModel<List<ExploreDataModel>>> getExploreData(  @Query(AppConstants.ApiParamKey.USER_ID) long userId);
+
+ @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.GET_STORE_DATA)
+    Call<ResponseModel<List<StoreApiModel>>> getStoreData();
 
 }

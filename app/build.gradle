@@ -71,7 +71,7 @@ android {
             buildConfigField "boolean", "IS_PRODUCTION", "false"
             buildConfigField "String", "MIXPANEL_KEY", '\"705daac4d807e105c1ddc350c9324ca2\"'
             buildConfigField "String", "SENDER_ID", '\"109210713388\"'
-            buildConfigField "String", "BASE_URL", '\"http://192.168.0.15:8080\"'
+            buildConfigField "String", "BASE_URL", '\"http://192.168.0.15:6080\"'
             buildConfigField "String", "BASE_URL_HTTPS", '\"https://192.168.0.15:8080\"'
             buildConfigField "boolean", "FIREBASE_IS_PRODUCTION", "false"
             buildConfigField "String", "BASE_URL_MIDL", '\"/profive-midl/\"'
@@ -190,7 +190,8 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:commons:0.9.4.3'
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
     implementation 'com.robertlevonyan.components:Picker:1.1.1'
-    implementation 'com.google.android:flexbox:0.3.2'
+//    implementation 'com.google.android:flexbox:0.3.2'
+    implementation 'com.google.android:flexbox:2.0.1'
     implementation 'com.google.firebase:firebase-core:17.0.0'
     implementation 'com.google.firebase:firebase-messaging:19.0.0'
     implementation 'com.google.firebase:firebase-config:18.0.0'

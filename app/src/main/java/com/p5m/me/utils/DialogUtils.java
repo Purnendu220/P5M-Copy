@@ -1,6 +1,7 @@
 package com.p5m.me.utils;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,12 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.Window;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
+import com.p5m.me.view.activity.Main.SettingActivity;
 
 import java.util.List;
 

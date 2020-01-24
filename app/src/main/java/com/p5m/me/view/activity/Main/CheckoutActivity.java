@@ -315,9 +315,14 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         FirebaseAnalysic.trackCheckoutVisit(aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName());
         IntercomEvents.trackCheckoutVisit(aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName());
         onTrackingNotification();
-        setTestimonialAdapter();
+//        if(country == riyadh)  TODO RIYADH
+        setTestimonialAdapter( RemoteConfigConst.TESTIMONIALS_RIYADH_VALUE);
+//        else
+        setTestimonialAdapter( RemoteConfigConst.TESTIMONIALS_VALUE);
 
     }
+
+
 
     private void checkUserCredits() {
         user = TempStorage.getUser();
@@ -1096,9 +1101,9 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     }
 
 
-    private void setTestimonialAdapter() {
+    private void setTestimonialAdapter(String testimonialsValue) {
         try {
-            String testimonial = RemoteConfigConst.TESTIMONIALS_VALUE;
+            String testimonial = testimonialsValue;
             if (testimonial != null && !testimonial.isEmpty()) {
                 Gson g = new Gson();
                 List<Testimonials> p = g.fromJson(testimonial, new TypeToken<List<Testimonials>>() {

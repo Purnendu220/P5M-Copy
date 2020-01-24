@@ -27,6 +27,9 @@ public class TempStorage {
     private static List<ClassActivity> activities;
     private static List<City> cities;
     private static User user;
+    private static int countryId;
+    private static  String countryName;
+
     private static DefaultSettingServer defaultSettingServer;
 
     private static List<ClassesFilter> filterList;
@@ -247,4 +250,19 @@ e.printStackTrace();
     }
 
 
+    public static int getCountryId() {
+        return countryId;
+    }
+
+    public static void setCountryId(int countryId) {
+        TempStorage.countryId = countryId;
+    }
+
+    public static String getCountryName() {
+        return countryName;
+    }
+
+    public static void setCountryName(String countryName) {
+        TempStorage.countryName = countryName;
+    }
 }

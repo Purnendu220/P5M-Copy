@@ -1,6 +1,7 @@
 package com.p5m.me.view.custom;
 
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -99,7 +100,11 @@ public class CustomDialogThankYou extends Dialog implements OnClickListener {
             case R.id.textViewGotIt:
             case R.id.textViewNotNow:
             case R.id.textViewIWillDoLater:
-                dismiss();
+                if (navigatinFrom == AppConstants.AppNavigation.NAVIGATION_FROM_OTHER_USER) {
+                    ((Activity) mContext).finish();
+                } else
+                    dismiss();
+
                 break;
 
             case R.id.textViewRatePrevious: {

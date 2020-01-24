@@ -43,6 +43,7 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
+import com.p5m.me.view.activity.Main.GetStartedActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 
@@ -270,7 +271,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                     } else
                         MixPanel.trackLogin(AppConstants.Tracker.FB, TempStorage.getUser());
 
-                    HomeActivity.open(context);
+                    GetStartedActivity.open(context);
                     finish();
                 }
                 layoutProgress.setVisibility(View.GONE);
@@ -286,8 +287,8 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                     EventBroadcastHelper.sendLogin(context, user);
                     MixPanel.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
                     FirebaseAnalysic.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
-                    successfulLoginIntercom(user.getFirstName() + " " + user.getLastName(), user.getEmail());
-                    RegistrationDoneActivity.open(context);
+//                    successfulLoginIntercom(user.getFirstName() + " " + user.getLastName(), user.getEmail());
+                    GetStartedActivity.open(context);
                 }
 
                 break;

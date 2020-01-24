@@ -285,6 +285,7 @@ public class AppConstants {
         public static final String SUPPORT_CONTACT = "api/v1/support/save";
         public static final String GET_EXPLORE_DETAIL = "api/v1/explore/getDetails";
 
+        public static final String GET_STORE_DATA = "api/v1/store/getAllStore";
     }
 
     public class ApiParamValue {
@@ -355,6 +356,7 @@ public class AppConstants {
         public static final String NUMBEROFCLASS = "NUMBEROFCLASS";
         public static final String PERCENTAGE = "PERCENTAGE";
         public static final String WAITLIST = "WAITLIST";
+        public static final String APP_STORE_ID = "Store-Id";
     }
 
     public static final class Notification {
@@ -416,6 +418,7 @@ public class AppConstants {
 
 
         public static final int NAVIGATION_FROM_OTHER_USER = 66;
+        public static final int SHOWN_IN_GET_STARTED = 67;
     }
 
     public class Limit {

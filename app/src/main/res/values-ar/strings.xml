@@ -983,6 +983,15 @@
     <string name="your_city">Your city</string>
     <string name="location_search_for">Where will you be working out?</string>
     <string name="thank_you_submit_request">We have noted request. We will inform you when P5M is available near you</string>
+    <string name="convenient_time">What time is it convenient for you to train?</string>
+    <string name="finish">Finish</string>
+    <string name="activity_selection_suggesstion">What do you want to focused on?</string>
+    <string name="country_name">Country Name</string>
+    <string name="country_required">Country required</string>
+    <string name="change_country">Change Country</string>
+    <string name="where_working_out">Where will you be working out?</string>
+    <string name="other_country">Want us to expand in your city?</string>
+    <string name="select_city">Select City</string>
     <string-array name="city">
         <item>Kuwait</item>
         <item>Riyadh,Saudi Arabia</item>

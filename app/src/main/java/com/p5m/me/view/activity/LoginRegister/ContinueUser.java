@@ -13,6 +13,7 @@ import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.ImageUtils;
+import com.p5m.me.view.activity.Main.LocationSelectionActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 
 import butterknife.BindView;
@@ -76,7 +77,7 @@ public class ContinueUser extends BaseActivity implements View.OnClickListener {
             case R.id.buttonRegister:
 
                 MixPanel.trackPastLogin(AppConstants.Tracker.REGISTER);
-                SignUpOptions.open(context);
+                LocationSelectionActivity.open(context);
 
                 break;
             case R.id.textViewSwitch:

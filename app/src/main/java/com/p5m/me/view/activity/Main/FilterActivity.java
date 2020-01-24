@@ -358,7 +358,6 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
                         if (activity.getStatus()) {
                             ClassesFilter classesFilter = new ClassesFilter(activity.getId() + "", true, "ClassActivity", activity.getName(), 0, ClassesFilter.TYPE_ITEM);
                             classesFilter.setObject(activity);
-
                             classesFilters.add(classesFilter);
                         }
                     }

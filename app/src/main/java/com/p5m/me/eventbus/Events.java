@@ -129,5 +129,12 @@ public class Events {
 
     public static class ExploreApiUpdate {
     }
+  public static class BannerUrlHandler {
+      public int innerTab;
+
+      public BannerUrlHandler(int data) {
+          this.innerTab = data;
+      }
+    }
 
 }

@@ -130,16 +130,6 @@ public class FilterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-//        TextView view = new TextView(context);
-//        view.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-//        view.setPadding(16 * dp, 12 * dp, 16 * dp, 12 * dp);
-//        view.setTextColor(ContextCompat.getColor(context, R.color.theme_medium_text));
-//        view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-//        view.setCompoundDrawablePadding(DP * 16);
-//        view.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
-//
-//        return new FilterListItemViewHolder(view);
-
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_list_filter, parent, false);
         return new FilterListItemViewHolder(view);
     }

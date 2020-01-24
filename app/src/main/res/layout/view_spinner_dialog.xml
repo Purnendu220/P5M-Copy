@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/root"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:background="@color/white"
+    android:padding="@dimen/margin_20"
+    android:paddingBottom="@dimen/dp_40"
+    tools:context=".view.activity.Main.LocationSelectionActivity">
+    <TextView
+        android:id="@+id/textViewHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/theme_dark_text"
+        android:textSize="@dimen/text_large"
+        android:fontFamily="sans-serif-medium"
+        android:lineSpacingExtra="@dimen/margin_5"
+        android:text="@string/where_working_out"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.295"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinnerCity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:spinnerMode="dropdown"
+        android:overlapAnchor="false"
+        app:layout_constraintEnd_toEndOf="@+id/textViewHeader"
+        app:layout_constraintStart_toStartOf="@+id/textViewHeader"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHeader" />
+
+
+    <Button
+        android:id="@+id/buttonSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height_normal"
+        android:layout_marginTop="@dimen/margin_20"
+        android:background="@drawable/button_blue"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:text="@string/submit"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/textViewHeader"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/textViewHeader"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCity" />
+
+</LinearLayout>

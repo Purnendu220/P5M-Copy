@@ -1,18 +1,27 @@
 package com.p5m.me.view.activity.Main;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.p5m.me.FAQAdapter;
 import com.p5m.me.R;
+import com.p5m.me.data.main.StoreApiModel;
 import com.p5m.me.data.request.LogoutRequest;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.firebase_dynamic_link.FirebaseDynamicLinnk;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
+import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
@@ -27,14 +36,22 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.intercom.android.sdk.Intercom;
 
-public class SettingActivity extends BaseActivity implements View.OnClickListener, NetworkCommunicator.RequestListener {
+public class SettingActivity extends BaseActivity implements View.OnClickListener, NetworkCommunicator.RequestListener, AdapterView.OnItemSelectedListener {
 
     private int pageToOpen;
+    private List<StoreApiModel> countryModel;
+    private ArrayList<String> categories;
+    private Spinner spinnerCity;
+    private String item;
+    private int position;
+    private boolean isSelectCountry = false;
+
 
     public static void openActivity(Context context) {
         context.startActivity(new Intent(context, SettingActivity.class));
     }
-    public static Intent createIntent(Context context,int pageToOpen) {
+
+    public static Intent createIntent(Context context, int pageToOpen) {
         return new Intent(context, SettingActivity.class)
                 .putExtra(AppConstants.DataKey.PAGES_TO_OPEN, pageToOpen);
     }
@@ -49,13 +66,14 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     @BindView(R.id.layoutContactUs)
     public View layoutContactUs;
+    @BindView(R.id.layoutChangeCountry)
+    public View layoutChangeCountry;
     @BindView(R.id.layoutPrivacyPolicy)
     public View layoutPrivacyPolicy;
     @BindView(R.id.layoutTermsCondition)
     public View layoutTermsCondition;
     @BindView(R.id.layoutAboutUs)
     public View layoutAboutUs;
-
     @BindView(R.id.layoutLogout)
     public View layoutLogout;
 
@@ -72,29 +90,35 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
         ButterKnife.bind(activity);
         pageToOpen = getIntent().getIntExtra(AppConstants.DataKey.PAGES_TO_OPEN, -1);
-        FirebaseDynamicLinnk.getDynamicLink(this,getIntent());
+        FirebaseDynamicLinnk.getDynamicLink(this, getIntent());
         layoutNotification.setOnClickListener(this);
         layoutMembership.setOnClickListener(this);
         layoutTransHistory.setOnClickListener(this);
         layoutContactUs.setOnClickListener(this);
+        layoutChangeCountry.setOnClickListener(this);
         layoutPrivacyPolicy.setOnClickListener(this);
         layoutTermsCondition.setOnClickListener(this);
         layoutAboutUs.setOnClickListener(this);
         layoutLogout.setOnClickListener(this);
-        if(pageToOpen == AppConstants.Tab.OPEN_ABOUT_US){
+        if (pageToOpen == AppConstants.Tab.OPEN_ABOUT_US) {
             Helper.openWebPage(context, AppConstants.Url.WEBSITE + "aboutus");
 
         }
-        if(pageToOpen == AppConstants.Tab.OPEN_PRIVACY){
+        if (pageToOpen == AppConstants.Tab.OPEN_PRIVACY) {
             Helper.openWebPage(context, AppConstants.Url.WEBSITE + "privacy");
 
-        }if(pageToOpen == AppConstants.Tab.OPEN_TERMS){
+        }
+        if (pageToOpen == AppConstants.Tab.OPEN_TERMS) {
             Helper.openWebPage(context, AppConstants.Url.WEBSITE + "terms");
 
         }
+        categories = new ArrayList<String>();
+        callApi();
     }
 
-
+    private void callApi() {
+        networkCommunicator.getStoreData(this, false);
+    }
 
     @OnClick(R.id.imageViewBack)
     public void imageViewBack(View view) {
@@ -108,15 +132,13 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 SettingNotification.openActivity(context);
                 break;
             case R.id.layoutMembership:
-              //  MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_SETTING);
-                HomeActivity.show(context,AppConstants.Tab.TAB_MY_MEMBERSHIP,AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN);
+                HomeActivity.show(context, AppConstants.Tab.TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN);
                 break;
             case R.id.layoutTransHistory:
                 TransactionHistoryActivity.openActivity(context);
                 break;
             case R.id.layoutContactUs:
                 dialogContactUs();
-//                mailUs();
                 break;
             case R.id.layoutPrivacyPolicy:
                 Helper.openWebPage(context, AppConstants.Url.WEBSITE + "privacy");
@@ -132,7 +154,47 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 progressBarLogout.setVisibility(View.VISIBLE);
                 networkCommunicator.logout(new LogoutRequest(TempStorage.getUser().getId()), this, false);
                 break;
+            case R.id.layoutChangeCountry:
+                if (categories != null)
+                    openCountryChangeDialog();
+                break;
         }
+    }
+
+    private void openCountryChangeDialog() {
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.view_spinner_dialog);
+        spinnerCity = (Spinner) dialog.findViewById(R.id.spinnerCity);
+        setSpinnerView();
+        dialog.show();
+        (dialog.findViewById(R.id.buttonSubmit)).setOnClickListener(v -> {
+            TempStorage.setCountryId(countryModel.get(position).getId());
+            dialog.dismiss();
+        });
+
+    }
+
+    private void setSpinnerView() {
+        spinnerCity.setOnItemSelectedListener(this);
+//        categories.add("Want us to expand in your city?");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCity.setAdapter(dataAdapter);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        item = parent.getItemAtPosition(position).toString();
+        this.position = position;
+        isSelectCountry = true;
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        isSelectCountry = false;
     }
 
     private void dialogContactUs() {
@@ -177,6 +239,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 progressBarLogout.setVisibility(View.GONE);
                 EventBroadcastHelper.logout(context);
                 break;
+            case NetworkCommunicator.RequestCode.GET_STORE_DATA:
+                countryModel = ((ResponseModel<List<StoreApiModel>>) response).data;
+                for (StoreApiModel data : countryModel) {
+                    categories.add(data.getName());
+                }
+                break;
         }
     }
 
@@ -186,9 +254,16 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case NetworkCommunicator.RequestCode.LOGOUT:
                 imageViewLogout.setVisibility(View.VISIBLE);
                 progressBarLogout.setVisibility(View.GONE);
-
                 ToastUtils.showLong(context, errorMessage);
                 break;
+            case NetworkCommunicator.RequestCode.GET_STORE_DATA:
+                ToastUtils.show(context, errorMessage);
+                break;
         }
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
     }
 }

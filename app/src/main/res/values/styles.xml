@@ -9,7 +9,8 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorControlHighlight">@color/highlight</item>
-
+        <item name="spinnerStyle">@style/Widget.App.Spinner</item>
+        <item name="android:spinnerStyle">@style/Widget.App.Spinner</item>
         <item name="md_positive_color">@color/colorAccent</item>
         <item name="md_neutral_color">@color/colorAccent</item>
         <item name="md_negative_color">@color/colorAccent</item>
@@ -354,6 +355,9 @@
         <item name="android:windowExitAnimation">@anim/slide_down</item>
     </style>
 
-
+    <style name="Widget.App.Spinner" parent="@style/Widget.AppCompat.Spinner">
+        <item name="overlapAnchor">false</item>
+        <item name="android:background">@drawable/spinner_background</item>
+    </style>
 
 </resources>

@@ -215,6 +215,9 @@ public class EventBroadcastHelper {
      public static void exploreApiUpdate() {
         GlobalBus.getBus().post(new Events.ExploreApiUpdate());
     }
+  public static void bannerUrlHandler(int innerTab) {
+        GlobalBus.getBus().post(new Events.BannerUrlHandler(innerTab));
+    }
 
     public static void sendDeviceUpdate(Context context) {
 

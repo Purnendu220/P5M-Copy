@@ -66,29 +66,6 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayoutCity"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            app:errorEnabled="true"
-            android:layout_marginTop="@dimen/margin_15"
-            app:layout_constraintEnd_toEndOf="@+id/textViewHeader"
-            app:layout_constraintStart_toStartOf="@+id/textViewHeader"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutEmail">
-
-            <EditText
-                android:id="@+id/editTextCity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:gravity="left"
-                android:hint="@string/your_city"
-                android:inputType="textPersonName"
-                android:maxLines="1"
-                android:textSize="@dimen/text_large" />
-
-        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/buttonSubmit"
@@ -102,7 +79,7 @@
             android:layout_marginTop="@dimen/margin_15"
             app:layout_constraintEnd_toEndOf="@+id/textViewHeader"
             app:layout_constraintStart_toStartOf="@+id/textViewHeader"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutCity"/>
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutEmail"/>
 
         <LinearLayout
             android:layout_width="match_parent"

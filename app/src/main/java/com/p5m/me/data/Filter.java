@@ -11,7 +11,15 @@ public class Filter implements Serializable {
     public static class Time {
         public String id;
         public String name;
+        public Boolean status;
 
+        public Boolean getStatus() {
+            return status;
+        }
+
+        public void setStatus(Boolean status) {
+            this.status = status;
+        }
         public Time(String id, String name) {
             this.id = id;
             this.name = name;
@@ -32,6 +40,8 @@ public class Filter implements Serializable {
         public void setName(String name) {
             this.name = name;
         }
+
+
     }
 
     public static class FitnessLevel {

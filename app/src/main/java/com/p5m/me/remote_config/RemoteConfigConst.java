@@ -36,6 +36,7 @@ public class RemoteConfigConst {
     public static final String GYM_VISIT_LIMIT_DETAIL_TEXT = "GYM_VISIT_LIMIT_DETAIL_TEXT";
     public static final String MEMBERSHIP_OFFER_COLOR = "MEMBERSHIP_OFFER_COLOR";
     public static final String TESTIMONIALS = "testimonials";
+    public static final String TESTIMONIALS_RIYADH = "testimonials_riyadh";
     public static final String FAQ = "faqs";
     public static final String PACKAGE_TAGS = "package_tags";
     public static final String WELCOME_P5M = "Welcome_title";
@@ -130,6 +131,7 @@ public class RemoteConfigConst {
     public static final int SHOW_SELECTION_OPTIONS_KEY = 985;
     public static final int PLAN_DESCRIPTION_DROP_IN_KEY = 986;
     public static final int ON_BOARDING_DATA_KEY = 987;
+    public static final int TESTIMONIALS_RIYADH_KEY = 988;
 
 
     /* ------VALUES---------*/
@@ -167,6 +169,7 @@ public class RemoteConfigConst {
     public static String GYM_VISIT_LIMIT_DETAIL_TEXT_VALUE = "Under each plan, there are limits to the number of times you can visit each gym. Check below for the number of time you can visit a gym per plan. Once the limit is reached, you may still visit your favorite gym by purchasing a single visit pass.";
     public static String MEMBERSHIP_OFFER_COLOR_VALUE = "#1FB257";
     public static String TESTIMONIALS_VALUE = "";
+    public static String TESTIMONIALS_RIYADH_VALUE = "";
     public static String PACKAGE_TAGS_VALUE = "";
     public static String FAQ_VALUE = "";
     public static String WELCOME_P5M_VALUE = "Welcome to P5M";
