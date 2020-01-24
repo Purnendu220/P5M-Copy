@@ -246,7 +246,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
         getDynamicLink();
         networkCommunicator.getMyUser(this, false);
-        MixPanel.trackClassDetails();
+        MixPanel.trackClassDetails(navigationFrom);
         onTrackingNotification();
         if (RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE != null && !RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE.isEmpty()) {
             showChoosePackageOption = Boolean.valueOf(RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE);

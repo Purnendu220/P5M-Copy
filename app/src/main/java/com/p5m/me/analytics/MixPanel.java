@@ -11,6 +11,7 @@ import com.p5m.me.MyApp;
 import com.p5m.me.data.CityLocality;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.Filter;
+import com.p5m.me.data.PriceModel;
 import com.p5m.me.data.PushDetailModel;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.BranchModel;
@@ -342,10 +343,12 @@ public class MixPanel {
         }
     }
 
-    public static void trackClassDetails() {
+    public static void trackClassDetails(int navigationFrom) {
         try {
+            String origin = trackOrigin(navigationFrom);
             JSONObject props = new JSONObject();
             props.put("view", "Viewed");
+            props.put("origin", origin);
 
             trackEvent(props, "Class_Details");
         } catch (Exception e) {
@@ -383,6 +386,9 @@ public class MixPanel {
                             List<String> genders = new ArrayList<>();
                             List<String> gymList = new ArrayList<>();
                             List<String> gymNames = new ArrayList<>();
+                            List<String> priceModel = new ArrayList<>();
+                            List<String> level = new ArrayList<>();
+
 
                             List<CityLocality> cityLocalities = new ArrayList<>();
 
@@ -399,6 +405,10 @@ public class MixPanel {
                                 } else if (classesFilter.getObject() instanceof GymDataModel) {
                                     gymList.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getId()));
                                     gymNames.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getStudioName()));
+                                } else if (classesFilter.getObject() instanceof PriceModel) {
+                                    priceModel.add(((PriceModel) classesFilter.getObject()).getName());
+                                } else if (classesFilter.getObject() instanceof Filter.FitnessLevel) {
+                                    level.add(((Filter.FitnessLevel) classesFilter.getObject()).getName());
                                 }
                             }
 
@@ -422,7 +432,12 @@ public class MixPanel {
 
                                 props.put("using_Location", locations);
                             }
-
+                            if (!level.isEmpty()) {
+                                props.put("using_FitnessLevel", level);
+                            }
+                            if (!priceModel.isEmpty()) {
+                                props.put("using_PriceModel", priceModel);
+                            }
                             trackEvent(props, "Filter");
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -443,6 +458,37 @@ public class MixPanel {
             e.printStackTrace();
             LogUtils.exception(e);
         }
+    }
+
+    private static String trackOrigin(int navigatedFrom){
+        String origin = "";
+
+        if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_SEARCH) {
+            origin = AppConstants.Tracker.SEARCH;
+        } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_SEARCH_RESULTS) {
+            origin = AppConstants.Tracker.SEARCH_GYM;
+        } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_HOME_FIND_CLASSES) {
+            origin = AppConstants.Tracker.CLASS_CARD;
+        } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE) {
+            origin = AppConstants.Tracker.CLASS_DETAILS;
+        } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE) {
+            origin = AppConstants.Tracker.TRAINER_PROFILE;
+        } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION_SCREEN) {
+            origin = AppConstants.Tracker.NOTIFICATION;
+        } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION) {
+            origin = AppConstants.Tracker.PUSH_NOTIFICATION;
+        } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_SHARE) {
+            origin = AppConstants.Tracker.SHARED_GYM;
+        } else if (navigatedFrom == AppConstants.AppNavigation.SHOWN_IN_MAP_VIEW) {
+            origin = AppConstants.Tracker.MAP_VIEW;
+        } else if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_EXPLORE) {
+            origin = AppConstants.Tracker.EXPLORE;
+        }
+
+        if (origin.isEmpty()) {
+            return "";
+        }
+        else return origin;
     }
 
     public static void trackGymVisit(int navigatedFrom) {
@@ -673,7 +719,7 @@ public class MixPanel {
             props.put("action", action);
             props.put("gym", model.getGymName());
 
-            props.put("gym_locality", model.getLatitude() + "," + model.getLongitude());
+            props.put("gym_locality", model.getLocalityName());
 
             trackEvent(props, "MapView");
         } catch (Exception e) {

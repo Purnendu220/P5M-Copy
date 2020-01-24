@@ -91,6 +91,7 @@
 
         ></View>
     <TextView
+        android:id="@+id/textViewSoFarYouVisited"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/so_far_you_visited"

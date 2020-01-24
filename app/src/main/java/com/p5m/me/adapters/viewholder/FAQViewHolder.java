@@ -99,10 +99,13 @@ public class FAQViewHolder extends RecyclerView.ViewHolder {
                     if(model.getSelected()) {
                         model.setSelected(false);
                         textViewAnswer.setVisibility(View.VISIBLE);
+                        textViewQuestion.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.grey_arrow_up,0);
                     }
                     else {
                         model.setSelected(true);
                         textViewAnswer.setVisibility(View.GONE);
+                        textViewQuestion.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.grey_arrow_down,0);
+
                     }
                     adapterCallbacks.onAdapterItemClick(FAQViewHolder.this, textViewQuestion, model, position);
                 }

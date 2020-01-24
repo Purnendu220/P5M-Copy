@@ -147,6 +147,10 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
         networkCommunicator.getExploreData(this, false);
 
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void exploreApiUpdate(Events.ExploreApiUpdate exploreApiUpdate) {
+        callApi();
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updatePackage(Events.UpdatePackage data) {
@@ -154,8 +158,9 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void updatePackage(Events.UpdateUpcomingClasses data) {
+    public void getUser(Events.UserUpdate userUpdate) {
         callApi();
+
     }
 
     @Override
@@ -163,10 +168,6 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
         callApi();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void notificationReceived(Events.NotificationCountUpdated notificationCountUpdated) {
-        callApi();
-    }
 
     private void setToolBar() {
 
@@ -228,7 +229,6 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
                     classesFilters.add(filter);
                     TempStorage.setFilterList(classesFilters);
                     EventBroadcastHelper.sendNewFilterSet();
-                    MixPanel.trackFilters(TempStorage.getFilters());
                     HomeActivity.show(context, TAB_FIND_CLASS, AppConstants.AppNavigation.NAVIGATION_FROM_EXPLORE);
 
                 }
@@ -251,7 +251,6 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
 
                     TempStorage.setFilterList(classesFilters);
                     EventBroadcastHelper.sendNewFilterSet();
-                    MixPanel.trackFilters(TempStorage.getFilters());
                     HomeActivity.show(context, TAB_FIND_CLASS, AppConstants.AppNavigation.NAVIGATION_FROM_EXPLORE);
 
                 }
@@ -313,7 +312,7 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
                     ExploreRatedClassModel data = (ExploreRatedClassModel) model;
                     mixPannelValue = data.getTitle();
 
-                    ClassProfileActivity.open(context, data.getClassSessionId(), SHOWN_IN_EXPLORE_PAGE);
+                    ClassProfileActivity.open(context, data.getClassSessionId(), NAVIGATION_FROM_EXPLORE);
                 }
                 break;
 

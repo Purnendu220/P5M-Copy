@@ -64,6 +64,9 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.packageUsage)
     TextView packageUsage;
 
+    @BindView(R.id.textViewSoFarYouVisited)
+    TextView textViewSoFarYouVisited;
+
     @BindView(R.id.layoutSoFarYouVisited)
     LinearLayout layoutSoFarYouVisited;
 
