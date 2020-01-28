@@ -135,29 +135,23 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
 
         ButterKnife.bind(activity);
 
-        runnableEmailValidation = new Runnable() {
-            @Override
-            public void run() {
-                if (editTextEmail.getText().toString().isEmpty() || Helper.validateEmail(editTextEmail.getText().toString())) {
-                    editTextEmail.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
-                    editTextEmail.setTypeface(Typeface.SANS_SERIF, Typeface.NORMAL);
-                } else {
-                    editTextEmail.setTextColor(ContextCompat.getColor(context, R.color.theme_error_text));
-                    editTextEmail.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD);
-                }
+        runnableEmailValidation = () -> {
+            if (editTextEmail.getText().toString().isEmpty() || Helper.validateEmail(editTextEmail.getText().toString())) {
+                editTextEmail.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
+                editTextEmail.setTypeface(Typeface.SANS_SERIF, Typeface.NORMAL);
+            } else {
+                editTextEmail.setTextColor(ContextCompat.getColor(context, R.color.theme_error_text));
+                editTextEmail.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD);
             }
         };
 
-        runnablePhoneValidation = new Runnable() {
-            @Override
-            public void run() {
-                if (editTextMobile.getText().toString().isEmpty() || Helper.validatePhone(editTextMobile.getText().toString())) {
-                    editTextMobile.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
-                    editTextMobile.setTypeface(Typeface.SANS_SERIF, Typeface.NORMAL);
-                } else {
-                    editTextMobile.setTextColor(ContextCompat.getColor(context, R.color.theme_error_text));
-                    editTextMobile.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD);
-                }
+        runnablePhoneValidation = () -> {
+            if (editTextMobile.getText().toString().isEmpty() || Helper.validatePhone(editTextMobile.getText().toString())) {
+                editTextMobile.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
+                editTextMobile.setTypeface(Typeface.SANS_SERIF, Typeface.NORMAL);
+            } else {
+                editTextMobile.setTextColor(ContextCompat.getColor(context, R.color.theme_error_text));
+                editTextMobile.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD);
             }
         };
 

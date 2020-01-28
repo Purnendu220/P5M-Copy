@@ -3,6 +3,7 @@ package com.p5m.me.view.activity.Main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +25,7 @@ import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.Filter;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.request.ChooseFocusRequest;
+import com.p5m.me.data.request.UserInfoUpdate;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
@@ -66,6 +68,8 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
     private ClassesFilter<ClassActivity> classesFilter;
     private List<ClassesFilter> classesFilters;
     private List<ClassActivity> activities;
+    private StringBuffer selectedTimeList;
+    private UserInfoUpdate userInfoUpdate;
 
 
     public static void open(Context context) {
@@ -89,6 +93,7 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
         buttonBottom.setText(getString(R.string.get_started));
         classesFilters = new ArrayList<>();
         activities = new ArrayList<>();
+        selectedTimeList = new StringBuffer();
         networkCommunicator.getActivities(this, true);
 
         setClickEvents();
@@ -146,7 +151,6 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
                 buttonBottom.setText(getString(R.string.next));
                 flexBoxLayout.setVisibility(View.VISIBLE);
                 flexBoxLayoutTime.setVisibility(View.GONE);
-
                 break;
             case THIRD_STEP:
                 imageViewBack.setVisibility(View.VISIBLE);
@@ -156,8 +160,6 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
                 flexBoxLayoutTime.setVisibility(View.VISIBLE);
                 break;
             default:
-//                TempStorage.setFilterList(classesFilters);
-//                EventBroadcastHelper.sendNewFilterSet();
                 callApi(activities);
                 HomeActivity.show(context, TAB_FIND_CLASS, AppConstants.AppNavigation.NAVIGATION_FROM_EXPLORE);
                 break;
@@ -167,8 +169,11 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
     private void addTagClassActivity(ClassActivity classActivity) {
         final View view = LayoutInflater.from(context).inflate(R.layout.view_tiles, flexBoxLayout, false);
         TextView textView = view.findViewById(R.id.textViewTiles);
-        textView.setText(classActivity.getName());
-        flexBoxLayout.addView(view);
+        if (!TextUtils.isEmpty(classActivity.getName())) {
+            String name = classActivity.getName();
+            textView.setText(name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase());
+            flexBoxLayout.addView(view);
+        }
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View imageRight) {
@@ -181,8 +186,13 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
     private void addTimeTag(Filter.Time time) {
         final View view = LayoutInflater.from(context).inflate(R.layout.view_tiles, flexBoxLayout, false);
         TextView textView = view.findViewById(R.id.textViewTiles);
-        textView.setText(time.getName());
-        flexBoxLayoutTime.addView(view);
+        if (!TextUtils.isEmpty(time.getName())) {
+            String name = time.getName();
+            textView.setText(name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase());
+
+//        textView.setText();
+            flexBoxLayoutTime.addView(view);
+        }
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View imageRight) {
@@ -218,16 +228,17 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
 
         if (classActivity.getSelected()) {
             classActivity.setSelected(false);
+            activities.remove(classActivity);
 //            cardView.setCardBackgroundColor(getResources().getColor(R.color.white));
             textView.setTextColor(getResources().getColor(R.color.theme_dark_text));
             textView.setBackground(getResources().getDrawable(R.drawable.button_white));
 
-          } else {
+        } else {
             classActivity.setSelected(true);
             classesFilter = new ClassesFilter(classActivity.getId() + "", true, "ClassActivity", classActivity.getName(), R.drawable.filter_activity, ClassesFilter.TYPE_ITEM);
             classesFilter.setObject(classActivity);
             classesFilter.setSelected(true);
-//            activities.add(classActivity);
+            activities.add(classActivity);
             classesFilters.add(classesFilter);
             textView.setBackground(getResources().getDrawable(R.drawable.theme_bottom_text_button_book));
 //            cardView.setCardBackgroundColor(getResources().getColor(R.color.blue_light));
@@ -235,8 +246,20 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
 
         }
     }
-    private void callApi( List<ClassActivity> selectedNow) {
+
+    private void callApi(List<ClassActivity> selectedNow) {
         networkCommunicator.updateUserFocus(TempStorage.getUser().getId(), new ChooseFocusRequest(selectedNow, null), this, false);
+        userInfoUpdate = new UserInfoUpdate(TempStorage.getUser().getId());
+        for (Filter.Time ft : timeList) {
+            if (ft.getStatus()) {
+                if (TextUtils.isEmpty(selectedTimeList)) {
+                    selectedTimeList.append(ft.getName());
+                } else
+                    selectedTimeList.append(",").append(ft.getName());
+            }
+        }
+        userInfoUpdate.setTimePreference(String.valueOf(selectedTimeList));
+        networkCommunicator.userInfoUpdate(TempStorage.getUser().getId(), userInfoUpdate, this, false);
     }
 
     @Override
@@ -263,9 +286,7 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
 
                 if (model != null && model instanceof ClassActivity) {
                     ClassActivity data = (ClassActivity) model;
-
                     classesFilter = new ClassesFilter(data.getId() + "", true, "ClassActivity", data.getName(), R.drawable.filter_activity, ClassesFilter.TYPE_ITEM);
-
                     classesFilter.setObject(data);
                     classesFilter.setSelected(true);
                     classesFilters.add(classesFilter);

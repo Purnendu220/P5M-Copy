@@ -2,6 +2,7 @@ package com.p5m.me.restapi;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -32,6 +33,7 @@ import com.p5m.me.data.main.PaymentUrl;
 import com.p5m.me.data.main.ScheduleClassModel;
 import com.p5m.me.data.main.SearchResults;
 import com.p5m.me.data.main.StoreApiModel;
+import com.p5m.me.data.main.StoreModel;
 import com.p5m.me.data.main.TrainerDetailModel;
 import com.p5m.me.data.main.TrainerModel;
 import com.p5m.me.data.main.Transaction;
@@ -64,6 +66,7 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CommonUtillity;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
+import com.p5m.me.view.activity.LoginRegister.SignUpOptions;
 
 import java.io.File;
 import java.util.List;
@@ -161,6 +164,7 @@ public class NetworkCommunicator {
         public static final int SUPPORT_RESPONSE_CONTACT = 160;
 
         public static final int GET_STORE_DATA = 161;
+        public static final int UPDATE_STORE_ID = 162;
     }
 
     private Context context;
@@ -1367,6 +1371,27 @@ public class NetworkCommunicator {
 
             @Override
             public void onResponse(Call<ResponseModel<RatingResponseModel>> call, Response<ResponseModel<RatingResponseModel>> restResponse, ResponseModel<RatingResponseModel> response) {
+                LogUtils.networkSuccess("NetworkCommunicator changePass onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call updateStoreId(final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.UPDATE_STORE_ID;
+        Call<ResponseModel<List<StoreModel>>> call = apiService.updateStoreId(TempStorage.getUser().getId(), TempStorage.getCountryId());
+        LogUtils.debug("NetworkCommunicator hitting changePass");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<StoreModel>>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<List<StoreModel>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator changePass onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<StoreModel>>> call, Response<ResponseModel<List<StoreModel>>> restResponse, ResponseModel<List<StoreModel>> response) {
                 LogUtils.networkSuccess("NetworkCommunicator changePass onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
             }

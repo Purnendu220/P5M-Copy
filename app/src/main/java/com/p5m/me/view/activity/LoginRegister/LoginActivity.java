@@ -3,6 +3,7 @@ package com.p5m.me.view.activity.LoginRegister;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -109,7 +110,8 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
         navigatedFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
 
         if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_CONTINUE_USER) {
-            editTextEmail.setText(TempStorage.getUser().getEmail());
+            if (!TextUtils.isEmpty(TempStorage.getUser().getEmail()))
+                editTextEmail.setText(TempStorage.getUser().getEmail());
         }
 
         setEditWatcher();

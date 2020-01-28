@@ -263,7 +263,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.Main.LocationActivity"
-            android:theme="@style/AppThemeGallery" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
 
         <receiver
             android:name=".ratemanager.RateAlarmReceiver"

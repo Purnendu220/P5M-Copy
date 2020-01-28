@@ -3,6 +3,7 @@ package com.p5m.me.view.activity.Main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,10 +23,11 @@ import butterknife.ButterKnife;
 
 public class ExpandCityActivity extends BaseActivity implements View.OnClickListener {
 
-    public static void open(Context context) {
+    public static void open(Context context, String countryName) {
         Intent intent = new Intent(context, ExpandCityActivity.class);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        ExpandCityActivity.countryName = countryName;
         context.startActivity(intent);
     }
 
@@ -33,10 +35,13 @@ public class ExpandCityActivity extends BaseActivity implements View.OnClickList
     public Button buttonSubmit;
     @BindView(R.id.textViewLogin)
     public TextView textViewLogin;
+    @BindView(R.id.textViewHeader)
+    public TextView textViewHeader;
     @BindView(R.id.editTextEmail)
     public EditText editTextEmail;
     @BindView(R.id.textInputLayoutEmail)
     public TextInputLayout textInputLayoutEmail;
+    public static String countryName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +51,7 @@ public class ExpandCityActivity extends BaseActivity implements View.OnClickList
         buttonSubmit.setOnClickListener(this);
         textViewLogin.setOnClickListener(this);
         Helper.setupErrorWatcher(editTextEmail, textInputLayoutEmail);
-
+        textViewHeader.setText(Html.fromHtml(String.format(mContext.getString(R.string.want_us_to_expand_in_your_city),  countryName )));
     }
 
     @Override

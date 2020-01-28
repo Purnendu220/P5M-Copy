@@ -977,7 +977,7 @@
     <string name="you_cant_use_package">You can\'t use this package</string>
     <string name="get_started_suggesstion">With a few quick questions, we will suggest the best classes just for you</string>
     <string name="get_started">Get Started</string>
-    <string name="want_us_to_expand_in_your_city">Want us to expand in your city?</string>
+    <string name="want_us_to_expand_in_your_city">Want us to expand in %s yet...</string>
     <string name="let_us_know_your_details">Let us know your details:</string>
     <string name="submit">Submit</string>
     <string name="your_city">Your city</string>

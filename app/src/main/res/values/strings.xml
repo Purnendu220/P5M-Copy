@@ -86,7 +86,7 @@
     <string name="expired">Session Expired</string>
 
 
-    <string name="email"><font size="10">E-mail</font></string>
+    <string name="email"><font size="10">Email</font></string>
     <string name="password"><font size="5">Password</font></string>
 
     <string name="reserve_class">BOOK CLASS</string>
@@ -612,11 +612,11 @@ Would you like to view your balance? </string>
     <string name="you_cant_use_package">You can\'t use this package</string>
     <string name="get_started_suggesstion">To see the classes that are perfect for you, tell us a little about yourself.</string>
     <string name="get_started">Get Started</string>
-    <string name="want_us_to_expand_in_your_city">We\'re not in your city yet....</string>
+    <string name="want_us_to_expand_in_your_city">We\'re not in %s yet....</string>
     <string name="let_us_know_your_details">If you want us to email you once we are available in your city, and get special offers, share your email with us.</string>
     <string name="submit">Submit</string>
     <string name="your_city">Your city</string>
-    <string name="location_search_for">Where will you be working out?</string>
+    <string name="location_search_for">In what city are you working out? </string>
     <string name="thank_you_submit_request">You will be in the know! We will inform you when P5M is available near you.</string>
     <string name="convenient_time">What time do you prefer to workout?</string>
     <string name="finish">Let\'s Get Fit</string>
@@ -626,7 +626,7 @@ Would you like to view your balance? </string>
     <string name="change_country">Change Country</string>
     <string name="where_working_out">In what city are you working out? </string>
     <string name="other_country">Other</string>
-    <string name="select_city">Select City</string>
+    <string name="select_city">Select city</string>
     <string name="name_length_error">Max length is not more than 40</string>
     <string name="keep_me_up_to_date">Keep me up to date</string>
     <string-array name="city">

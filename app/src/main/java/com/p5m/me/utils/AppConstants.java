@@ -286,6 +286,7 @@ public class AppConstants {
         public static final String GET_EXPLORE_DETAIL = "api/v1/explore/getDetails";
 
         public static final String GET_STORE_DATA = "api/v1/store/getAllStore";
+        public static final String USER_UPDATE_STORE = "api/v1/user/updateUserStore";
     }
 
     public class ApiParamValue {
@@ -357,6 +358,7 @@ public class AppConstants {
         public static final String PERCENTAGE = "PERCENTAGE";
         public static final String WAITLIST = "WAITLIST";
         public static final String APP_STORE_ID = "Store-Id";
+        public static final String STORE_ID = "storeId";
     }
 
     public static final class Notification {
@@ -419,6 +421,7 @@ public class AppConstants {
 
         public static final int NAVIGATION_FROM_OTHER_USER = 66;
         public static final int SHOWN_IN_GET_STARTED = 67;
+        public static final int NAVIGATION_FROM_FACEBOOK_SIGNUP = 68;
     }
 
     public class Limit {

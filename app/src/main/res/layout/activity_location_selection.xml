@@ -24,16 +24,52 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutCountry"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        app:errorEnabled="true"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/margin_15"
+        app:layout_constraintEnd_toEndOf="@+id/textViewHeader"
+        app:layout_constraintStart_toStartOf="@+id/textViewHeader"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHeader" >
+
+        <EditText
+            android:id="@+id/textViewCountry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:gravity="left"
+            android:hint="@string/select_city"
+            android:inputType="textPersonName"
+            android:maxLines="1"
+            android:textSize="@dimen/text_large" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+    <TextView
+        android:id="@+id/textViewSelectCity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_small"
+        android:hint="@string/select_city"
+        android:layout_marginTop="15dp"
+        android:paddingLeft="@dimen/margin_7"
+        app:layout_constraintEnd_toEndOf="@+id/textViewHeader"
+        app:layout_constraintStart_toStartOf="@+id/textViewHeader"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHeader" />
+
+
+
     <Spinner
         android:id="@+id/spinnerCity"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:spinnerMode="dropdown"
-        android:prompt="@string/select_city"
         app:layout_constraintEnd_toEndOf="@+id/textViewHeader"
         app:layout_constraintStart_toStartOf="@+id/textViewHeader"
-        app:layout_constraintTop_toBottomOf="@+id/textViewHeader" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewSelectCity" />
     <View
         android:id="@+id/view"
         android:layout_width="0dp"
@@ -51,7 +87,7 @@
         android:gravity="left"
         app:errorEnabled="true"
         android:visibility="visible"
-        android:layout_marginTop="@dimen/margin_15"
+        android:layout_marginTop="@dimen/margin_10"
         app:layout_constraintEnd_toEndOf="@+id/textViewHeader"
         app:layout_constraintStart_toStartOf="@+id/textViewHeader"
         app:layout_constraintTop_toBottomOf="@+id/view" >
@@ -63,7 +99,8 @@
             android:fontFamily="sans-serif"
             android:gravity="left"
             android:hint="@string/your_city"
-            android:inputType="textPersonName"
+
+            android:inputType="textCapSentences"
             android:maxLines="1"
             android:textSize="@dimen/text_large" />
 

@@ -26,6 +26,7 @@ import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.LoginRegister.LoginActivity;
 import com.p5m.me.view.activity.LoginRegister.SignUpOptions;
@@ -49,6 +50,11 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
         context.startActivity(new Intent(context, LocationSelectionActivity.class));
     }
 
+    public static void open(Context context, int navigationFromFacebookSignup) {
+        LocationSelectionActivity.navigateFrom = navigationFromFacebookSignup;
+        context.startActivity(new Intent(context, LocationSelectionActivity.class));
+    }
+
     @BindView(R.id.spinnerCity)
     public Spinner spinnerCity;
 
@@ -57,6 +63,8 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
 
     @BindView(R.id.textViewCountryName)
     public EditText textViewCountryName;
+//    @BindView(R.id.editTextCountry)
+//    public EditText editTextCountry;
 
     @BindView(R.id.textInputLayoutCity)
     public TextInputLayout textInputLayoutCity;
@@ -65,6 +73,8 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
     public TextView textViewLogin;
     Boolean isSelectCountry = false;
     private String item;
+
+    public static int navigateFrom;
 
 
     @Override
@@ -76,11 +86,9 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
         buttonNext.setOnClickListener(this);
         textViewLogin.setOnClickListener(this);
         textInputLayoutCity.setVisibility(View.GONE);
-        categories.add(getString(R.string.select_city));
-
+//        editTextCountry.setText(getString(R.string.select_city));
         Helper.setupErrorWatcher(textViewCountryName, textInputLayoutCity);
 //        categories.add(getResources().getString(R.string.select_city));
-      //        spinnerCity.setBackground(getResources().getDrawable(R.drawable.ic_arrow_up));
         callApi();
 
     }
@@ -93,9 +101,9 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
         spinnerCity.setOnItemSelectedListener(this);
         categories.add(getString(R.string.other_country));
 
-//        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_spinner_dropdown_item, categories) {
+                this, android.R.layout.simple_spinner_dropdown_item, categories);
+/*{
             @Override
             public boolean isEnabled(int position) {
                 if (position == 0) {
@@ -119,33 +127,33 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
                 }
                 return view;
             }
-        };
+        };*/
 //        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
 //        spinner.setAdapter(spinnerArrayAdapter);
-        spinnerArrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item
-        );
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinnerCity.setAdapter(spinnerArrayAdapter);
+        spinnerCity.setSelection(0);
+
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if(position>0) {
-            item = parent.getItemAtPosition(position).toString();
-            this.position = position;
-            isSelectCountry = true;
-//            spinnerCity.setBackground(getResources().getDrawable(R.drawable.ic_arrow_down));
-
-            other = false;
-            textInputLayoutCity.setVisibility(View.GONE);
-            if (position > model.size()) {
-                other = true;
-                textInputLayoutCity.setVisibility(View.VISIBLE);
-            }
+        item = parent.getItemAtPosition(position).toString();
+        this.position = position;
+        isSelectCountry = true;
+        textInputLayoutCity.setVisibility(View.GONE);
+//            editTextCountry.setText(item);
+        other = false;
+        textInputLayoutCity.setVisibility(View.GONE);
+        if (position >= model.size()) {
+            other = true;
+            textInputLayoutCity.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
+        textInputLayoutCity.setVisibility(View.GONE);
         textInputLayoutCity.setVisibility(View.GONE);
         isSelectCountry = false;
 
@@ -155,21 +163,31 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonNext:
-                if (!other) {
-                    textInputLayoutCity.setVisibility(View.GONE);
-                    TempStorage.setCountryId(model.get(position-1).getId());
-                    TempStorage.setCountryName(model.get(position-1).getName());
-                    SignUpOptions.open(context);
-                } else {
-                    textInputLayoutCity.setVisibility(View.VISIBLE);
-                    if (!isError()) {
-                        ExpandCityActivity.open(context);
+
+                if (isSelectCountry && model != null) {
+                    if (!other) {
+                        textInputLayoutCity.setVisibility(View.GONE);
+                        TempStorage.setCountryId(model.get(position).getId());
+                        TempStorage.setCountryName(model.get(position).getName());
+                        if (navigateFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FACEBOOK_SIGNUP) {
+                            GetStartedActivity.open(context);
+                            finish();
+                        } else {
+                            SignUpOptions.open(context);
+                            finish();
+                        }
+                    } else {
+                        textInputLayoutCity.setVisibility(View.VISIBLE);
+                        if (!isError()) {
+                            ExpandCityActivity.open(context, textViewCountryName.getText().toString());
+                        }
                     }
                 }
 
                 break;
             case R.id.textViewLogin:
                 LoginActivity.open(context);
+                finish();
                 break;
         }
     }

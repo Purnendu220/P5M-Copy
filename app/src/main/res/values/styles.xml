@@ -355,9 +355,17 @@
         <item name="android:windowExitAnimation">@anim/slide_down</item>
     </style>
 
-    <style name="Widget.App.Spinner" parent="@style/Widget.AppCompat.Spinner">
+    <style name="Widget.App.Spinner" parent="@style/Base.Widget.AppCompat.Spinner.Underlined">
         <item name="overlapAnchor">false</item>
         <item name="android:background">@drawable/spinner_background</item>
+        <item name="colorAccent">#ffa000</item>
+        <!-- Default color for the dropdown arrow and line -->
+        <item name="colorControlNormal">#ffc107</item>
     </style>
-
+    <style name="TextView.InputLabel" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textColor">?android:textColorHint</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:paddingRight">4dp</item>
+    </style>
 </resources>

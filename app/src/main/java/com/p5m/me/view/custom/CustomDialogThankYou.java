@@ -80,6 +80,7 @@ public class CustomDialogThankYou extends Dialog implements OnClickListener {
         if (navigatinFrom == AppConstants.AppNavigation.NAVIGATION_FROM_OTHER_USER) {
             layoutButtons.setVisibility(View.GONE);
             textViewGotIt.setVisibility(View.VISIBLE);
+            textViewNotNow.setText(context.getString(R.string.ok));
             textViewReveiwSubmitted.setText(context.getString(R.string.thank_you_submit_request));
         } else {
             layoutButtons.setVisibility(View.VISIBLE);

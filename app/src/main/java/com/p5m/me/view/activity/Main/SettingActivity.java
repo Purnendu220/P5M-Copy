@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +18,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.FAQAdapter;
 import com.p5m.me.R;
 import com.p5m.me.data.main.StoreApiModel;
+import com.p5m.me.data.main.StoreModel;
 import com.p5m.me.data.request.LogoutRequest;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.firebase_dynamic_link.FirebaseDynamicLinnk;
@@ -159,7 +162,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case R.id.layoutChangeCountry:
                 if (categories != null)
                     openCountryChangeDialog();
-
                 break;
         }
     }
@@ -167,13 +169,14 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     private void openCountryChangeDialog() {
         final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.black_transparent)));
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.view_spinner_dialog);
         spinnerCity = (Spinner) dialog.findViewById(R.id.spinnerCity);
         setSpinnerView();
         dialog.show();
         (dialog.findViewById(R.id.buttonSubmit)).setOnClickListener(v -> {
-            TempStorage.setCountryId(countryModel.get(position).getId());
+            networkCommunicator.updateStoreId(this, false);
             dialog.dismiss();
         });
 
@@ -183,14 +186,16 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         spinnerCity.setOnItemSelectedListener(this);
         int userCountryId = TempStorage.getCountryId();
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
-        for (int i = 0; i < countryModel.size(); i++) {
-            if (userCountryId == countryModel.get(i).getId())
-                userCountryIdPosition = i;
+        if (countryModel != null) {
+            for (int i = 0; i < countryModel.size(); i++) {
+                if (userCountryId == countryModel.get(i).getId())
+                    userCountryIdPosition = i;
 
+            }
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerCity.setAdapter(dataAdapter);
+            spinnerCity.setSelection(userCountryIdPosition);
         }
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCity.setAdapter(dataAdapter);
-        spinnerCity.setSelection(userCountryIdPosition);
     }
 
     @Override
@@ -253,6 +258,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     categories.add(data.getName());
                 }
                 break;
+            case NetworkCommunicator.RequestCode.UPDATE_STORE_ID:
+                List<StoreModel> model = ((ResponseModel<List<StoreModel>>) response).data;
+                TempStorage.setCountryId(model.get(position).getId());
+
         }
     }
 
@@ -263,6 +272,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 imageViewLogout.setVisibility(View.VISIBLE);
                 progressBarLogout.setVisibility(View.GONE);
                 ToastUtils.showLong(context, errorMessage);
+                break;
+            case NetworkCommunicator.RequestCode.UPDATE_STORE_ID:
+                ToastUtils.show(context, errorMessage);
                 break;
             case NetworkCommunicator.RequestCode.GET_STORE_DATA:
                 ToastUtils.show(context, errorMessage);

@@ -29,6 +29,7 @@ import com.p5m.me.R;
 import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.FaceBookUser;
+import com.p5m.me.data.main.StoreModel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.request.LoginRequest;
 import com.p5m.me.data.request.RegistrationRequest;
@@ -45,12 +46,14 @@ import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.GetStartedActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
+import com.p5m.me.view.activity.Main.LocationSelectionActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -197,7 +200,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                                         faceBookUser = new FaceBookUser(id, first_name, last_name, gender, email);
 
                                         networkCommunicator.loginFb(new LoginRequest(id, first_name, last_name, email, gender), SignUpOptions.this, false);
-                                    }
+                                      }
                                 });
                         Bundle parameters = new Bundle();
                         parameters.putString("fields", "id,name,first_name,last_name,birthday,gender,email,location");
@@ -262,16 +265,15 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                 if (response != null) {
                     User user = ((ResponseModel<User>) response).data;
                     successfulLoginIntercom(user.getFirstName() + " " + user.getLastName());
-
                     EventBroadcastHelper.sendLogin(context, user);
 
+                    networkCommunicator.updateStoreId(SignUpOptions.this, false);
                     if (user.getDateOfJoining() >= loginTime) {
                         MixPanel.trackRegister(AppConstants.Tracker.FB, TempStorage.getUser());
                         FirebaseAnalysic.trackRegister(AppConstants.Tracker.FB, TempStorage.getUser());
                     } else
                         MixPanel.trackLogin(AppConstants.Tracker.FB, TempStorage.getUser());
 
-                    GetStartedActivity.open(context);
                     finish();
                 }
                 layoutProgress.setVisibility(View.GONE);
@@ -290,8 +292,12 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
 //                    successfulLoginIntercom(user.getFirstName() + " " + user.getLastName(), user.getEmail());
                     GetStartedActivity.open(context);
                 }
-
                 break;
+
+            case NetworkCommunicator.RequestCode.UPDATE_STORE_ID:
+                List<StoreModel> model = ((ResponseModel<List<StoreModel>>) response).data;
+                TempStorage.setCountryId(model.get(0).getId());
+
         }
 
     }
@@ -307,9 +313,11 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
             case NetworkCommunicator.RequestCode.VALIDATE_EMAIL:
                 textInputLayoutEmail.setError(errorMessage);
                 break;
+            case NetworkCommunicator.RequestCode.UPDATE_STORE_ID:
             case NetworkCommunicator.RequestCode.REGISTER:
                 ToastUtils.showFailureResponse(context, errorMessage);
                 break;
+
         }
         layoutProgress.setVisibility(View.GONE);
     }
@@ -449,6 +457,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
     @OnClick(R.id.textViewLogin)
     public void textViewLogin(View view) {
         LoginActivity.open(context);
+        finish();
     }
 
     private void setupViews() {
