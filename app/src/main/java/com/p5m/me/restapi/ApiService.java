@@ -398,7 +398,7 @@ public interface ApiService {
 
     @Headers("Content-type: application/json")
     @PUT(AppConstants.Url.USER_UPDATE_STORE )
-    Call<ResponseModel<List<StoreModel>>> updateStoreId(@Query(AppConstants.ApiParamKey.USER_ID) int userId,
+    Call<ResponseModel<StoreModel>>updateStoreId(@Query(AppConstants.ApiParamKey.USER_ID) int userId,
                                                   @Query(AppConstants.ApiParamKey.STORE_ID) int storeId);
 
 

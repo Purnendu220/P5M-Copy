@@ -2,7 +2,6 @@ package com.p5m.me.restapi;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.text.TextUtils;
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -66,7 +65,6 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CommonUtillity;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
-import com.p5m.me.view.activity.LoginRegister.SignUpOptions;
 
 import java.io.File;
 import java.util.List;
@@ -1378,20 +1376,20 @@ public class NetworkCommunicator {
         return call;
     }
 
-    public Call updateStoreId(final RequestListener requestListener, boolean useCache) {
+    public Call updateStoreId(int id, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.UPDATE_STORE_ID;
-        Call<ResponseModel<List<StoreModel>>> call = apiService.updateStoreId(TempStorage.getUser().getId(), TempStorage.getCountryId());
+        Call<ResponseModel<StoreModel>> call = apiService.updateStoreId(TempStorage.getUser().getId(), id);
         LogUtils.debug("NetworkCommunicator hitting changePass");
 
-        call.enqueue(new RestCallBack<ResponseModel<List<StoreModel>>>(context) {
+        call.enqueue(new RestCallBack<ResponseModel<StoreModel>>(context) {
             @Override
-            public void onFailure(Call<ResponseModel<List<StoreModel>>> call, String message) {
+            public void onFailure(Call<ResponseModel<StoreModel>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator changePass onFailure " + message);
                 requestListener.onApiFailure(message, requestCode);
             }
 
             @Override
-            public void onResponse(Call<ResponseModel<List<StoreModel>>> call, Response<ResponseModel<List<StoreModel>>> restResponse, ResponseModel<List<StoreModel>> response) {
+            public void onResponse(Call<ResponseModel<StoreModel>> call, Response<ResponseModel<StoreModel>> restResponse, ResponseModel<StoreModel> response) {
                 LogUtils.networkSuccess("NetworkCommunicator changePass onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
             }

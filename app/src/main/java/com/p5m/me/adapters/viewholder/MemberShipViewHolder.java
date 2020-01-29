@@ -225,7 +225,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                         txtPackageName.setText(model.getName());
                         txtPackageOffredClasses.setText(numberConverter(model.getNoOfClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs_one), model.getNoOfClass()) + " " + context.getString(R.string.at_any_gym));
                         setTextValidityPeriod(model);
-                        txtPriceAfterOffer.setText(LanguageUtils.numberConverter(model.getCost(), 2) + " " + context.getString(R.string.currency).toUpperCase());
+                        txtPriceAfterOffer.setText(LanguageUtils.numberConverter(model.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()).toUpperCase());
                         setPackageTags(model.getId());
 
 
@@ -247,7 +247,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                             txtPackageOffredClasses.setText(LanguageUtils.numberConverter(model.getNoOfClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass()) + " " + context.getString(R.string.at) + " " + model.getGymName());
 
                         packageValidFor.setText(context.getString(R.string.valid_for) + " " + DateUtils.getPackageClassDate(classModel.getClassDate()) + " -" + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()));
-                        txtPriceAfterOffer.setText(LanguageUtils.numberConverter(model.getCost(), 2) + " " + context.getString(R.string.currency).toUpperCase());
+                        txtPriceAfterOffer.setText(LanguageUtils.numberConverter(model.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()).toUpperCase());
 
 
                     }
@@ -402,8 +402,8 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
         }
 
-        textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getPriceAfterDiscount(), 2) + " " + context.getString(R.string.currency).toUpperCase());
-        textViewPackagePriceStrike.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getPrice(), 2) + " " + context.getString(R.string.currency).toUpperCase());
+        textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getPriceAfterDiscount(), 2) + " " + (TempStorage.getUser().getCurrencyCode()).toUpperCase());
+        textViewPackagePriceStrike.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getPrice(), 2) + " " + (TempStorage.getUser().getCurrencyCode()).toUpperCase());
         textViewPackagePriceStrike.setPaintFlags(textViewPackagePriceStrike.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
 

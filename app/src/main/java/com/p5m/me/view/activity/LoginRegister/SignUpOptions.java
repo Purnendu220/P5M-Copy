@@ -10,9 +10,7 @@ import android.os.Handler;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -39,14 +37,11 @@ import com.p5m.me.helper.MyClickSpan;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
-import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.GetStartedActivity;
-import com.p5m.me.view.activity.Main.HomeActivity;
-import com.p5m.me.view.activity.Main.LocationSelectionActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 
 import org.json.JSONException;
@@ -267,7 +262,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                     successfulLoginIntercom(user.getFirstName() + " " + user.getLastName());
                     EventBroadcastHelper.sendLogin(context, user);
 
-                    networkCommunicator.updateStoreId(SignUpOptions.this, false);
+                    networkCommunicator.updateStoreId(TempStorage.getCountryId(), SignUpOptions.this, false);
                     if (user.getDateOfJoining() >= loginTime) {
                         MixPanel.trackRegister(AppConstants.Tracker.FB, TempStorage.getUser());
                         FirebaseAnalysic.trackRegister(AppConstants.Tracker.FB, TempStorage.getUser());
@@ -297,6 +292,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
             case NetworkCommunicator.RequestCode.UPDATE_STORE_ID:
                 List<StoreModel> model = ((ResponseModel<List<StoreModel>>) response).data;
                 TempStorage.setCountryId(model.get(0).getId());
+                TempStorage.setCurrency(model.get(0).getCurrencyCode());
 
         }
 

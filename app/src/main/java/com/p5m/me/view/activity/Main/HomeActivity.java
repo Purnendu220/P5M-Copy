@@ -264,7 +264,6 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         checkFacebookSessionStatus();
         TempStorage.setFilterList(null);
 
-//        RemoteConfigSetUp.getValues();
         onTrackingNotification();
         networkCommunicator.getMyUser(this, false);
         handleMembershipInfoState(TempStorage.getUser());

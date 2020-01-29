@@ -15,6 +15,7 @@ import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.data.main.StoreModel;
 import com.p5m.me.data.main.TrainerModel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.request.DeviceUpdate;
@@ -111,6 +112,7 @@ public class EventBroadcastHelper {
 
         GlobalBus.getBus().post(new Events.UserUpdate(user));
     }
+
 
     /********************** CLASS JOINED OR PURCHASED ******************************/
 
@@ -217,6 +219,10 @@ public class EventBroadcastHelper {
     }
   public static void bannerUrlHandler(int innerTab) {
         GlobalBus.getBus().post(new Events.BannerUrlHandler(innerTab));
+    }
+
+    public static void changeCountry() {
+        GlobalBus.getBus().post(new Events.ChangeCountry());
     }
 
     public static void sendDeviceUpdate(Context context) {

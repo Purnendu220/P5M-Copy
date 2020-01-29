@@ -56,8 +56,6 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
     public FlexboxLayout flexBoxLayout;
     @BindView(R.id.flexBoxLayoutTime)
     public FlexboxLayout flexBoxLayoutTime;
-//    @BindView(R.id.scrollView)
-//    public ScrollView scrollView;
 
     final int FIRST_STEP = 1;
     final int SECOND_STEP = 2;
@@ -229,7 +227,6 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
         if (classActivity.getSelected()) {
             classActivity.setSelected(false);
             activities.remove(classActivity);
-//            cardView.setCardBackgroundColor(getResources().getColor(R.color.white));
             textView.setTextColor(getResources().getColor(R.color.theme_dark_text));
             textView.setBackground(getResources().getDrawable(R.drawable.button_white));
 
@@ -241,7 +238,6 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
             activities.add(classActivity);
             classesFilters.add(classesFilter);
             textView.setBackground(getResources().getDrawable(R.drawable.theme_bottom_text_button_book));
-//            cardView.setCardBackgroundColor(getResources().getColor(R.color.blue_light));
             textView.setTextColor(getResources().getColor(R.color.white));
 
         }
@@ -268,7 +264,7 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
             STEP--;
             setView();
         } else
-            super.onBackPressed();
+           HomeActivity.open(context);
     }
 
     @Override
@@ -322,7 +318,6 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
                 }
             }
             break;
-
         }
     }
 

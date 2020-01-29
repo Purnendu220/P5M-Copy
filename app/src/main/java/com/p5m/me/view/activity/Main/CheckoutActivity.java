@@ -368,7 +368,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 }
 
 //                textViewPackageName.setText(Html.fromHtml(numberConverter(mNumberOfClasses) + "X <b>" + aPackage.getName() + "</b>"));
-                textViewPrice.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + context.getString(R.string.currency));
+                textViewPrice.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
 
                 textViewPackageInfo.setVisibility(aPackage.getDescription().isEmpty() ? View.GONE : View.VISIBLE);
                 textViewPackageInfo.setText(aPackage.getDescription());
@@ -388,10 +388,10 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
                 textViewPackageName.setText(Html.fromHtml("<b>" + classModel.getTitle() + "</b>"));
                 if (mNumberOfPackagesToBuy > 1) {
-                    textViewPrice.setText(numberConverter(mNumberOfPackagesToBuy) + "x " + LanguageUtils.numberConverter(classModel.getPrice(), 2) + " " + context.getString(R.string.currency));
+                    textViewPrice.setText(numberConverter(mNumberOfPackagesToBuy) + "x " + LanguageUtils.numberConverter(classModel.getPrice(), 2) + " " + (TempStorage.getUser().getCurrencyCode()).toUpperCase());
 
                 } else {
-                    textViewPrice.setText(LanguageUtils.numberConverter(classModel.getPrice(), 2) + " " + context.getString(R.string.currency));
+                    textViewPrice.setText(LanguageUtils.numberConverter(classModel.getPrice(), 2) + " " + (TempStorage.getUser().getCurrencyCode()).toUpperCase());
 
                 }
 
@@ -415,7 +415,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 textViewPackageName.setText(R.string.add_more_time);
                 textViewCancellationPolicyToggle.setText(R.string.extention_policy);
 
-                textViewPrice.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost(), 2) + " " + context.getString(R.string.currency));
+                textViewPrice.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()).toUpperCase());
                 int remainigExtension;
                 if (userPackage.getTotalRemainingWeeks() != null) {
                     remainigExtension = userPackage.getTotalRemainingWeeks() - selectedPacakageFromList.getDuration();
@@ -523,8 +523,8 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
     private void setNumberOfDaysPromo() {
         roundFigureOfDays(promoCode.getExtraNumberOfDays());
-        textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + context.getString(R.string.currency));
-        textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + context.getString(R.string.currency));
+        textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()).toUpperCase());
+        textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " +(TempStorage.getUser().getCurrencyCode()));
         if (promoCode.getExtraNumberOfDays() != 0) {
             textViewPackageExtendNoOfDays.setVisibility(View.VISIBLE);
             textViewPlus.setVisibility(View.VISIBLE);
@@ -589,13 +589,13 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                         textViewPromoCodeText.setText(getResources().getString(R.string.discount_promo_applied));
                         textViewPackageExtendNoOfDays.setVisibility(View.GONE);
                         textViewPlus.setVisibility(View.GONE);
-                        textViewTotal.setText(LanguageUtils.numberConverter(promoCode.getPriceAfterDiscount(), 2) + " " + context.getString(R.string.currency));
-                        textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(promoCode.getPriceAfterDiscount(), 2) + " " + context.getString(R.string.currency));
+                        textViewTotal.setText(LanguageUtils.numberConverter(promoCode.getPriceAfterDiscount(), 2) + " " +(TempStorage.getUser().getCurrencyCode()));
+                        textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(promoCode.getPriceAfterDiscount(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
                         if (promoCode.getDiscount() != 0) {
                             layoutPromoCode.setVisibility(View.VISIBLE);
                             double discountedPrice = promoCode.getPrice() - promoCode.getPriceAfterDiscount();
                             textViewPromoCodePrice.setVisibility(View.VISIBLE);
-                            textViewPromoCodePrice.setText("- " + (LanguageUtils.numberConverter(discountedPrice, 2)) + " " + context.getString(R.string.currency));
+                            textViewPromoCodePrice.setText("- " + (LanguageUtils.numberConverter(discountedPrice, 2)) + " " + (TempStorage.getUser().getCurrencyCode()));
                             buttonPromoCode.setText(context.getString(R.string.remove_promo_code));
                         } else {
                             layoutPromoCode.setVisibility(View.GONE);
@@ -620,8 +620,8 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                         textViewPackageClasses.setText(LanguageUtils.numberConverter(mNumberOfClasses) + " " + AppConstants.pluralES(context.getString(R.string.classs), mNumberOfClasses) + " " + context.getString(R.string.at) + " " + classModel.getGymBranchDetail().getGymName());
                     }
-                    textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + context.getString(R.string.currency));
-                    textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + context.getString(R.string.currency));
+                    textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
+                    textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
                     buttonPromoCode.setText(context.getString(R.string.apply_promo_code));
                 }
 
@@ -629,14 +629,14 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 break;
 
             case SPECIAL_CLASS:
-                textViewTotal.setText(LanguageUtils.numberConverter(mNumberOfPackagesToBuy * classModel.getPrice(), 2) + " " + context.getString(R.string.currency));
-                textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(mNumberOfPackagesToBuy * classModel.getPrice(), 2) + " " + context.getString(R.string.currency));
+                textViewTotal.setText(LanguageUtils.numberConverter(mNumberOfPackagesToBuy * classModel.getPrice(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
+                textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(mNumberOfPackagesToBuy * classModel.getPrice(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
                 applyCredit();
 
                 break;
             case EXTENSION:
-                textViewTotal.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost(), 2) + " " + context.getString(R.string.currency));
-                textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(selectedPacakageFromList.getCost(), 2) + " " + context.getString(R.string.currency));
+                textViewTotal.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
+                textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(selectedPacakageFromList.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
 
                 applyCredit();
 
@@ -647,8 +647,8 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void setNumberOfClassPromo() {
-        textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + context.getString(R.string.currency));
-        textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + context.getString(R.string.currency));
+        textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
+        textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
         if (promoCode.getExtraNumberOfClass() != 0) {
             textViewPackageClasses.setVisibility(View.VISIBLE);
             layoutPromoCode.setVisibility(View.VISIBLE);
@@ -729,11 +729,11 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     break;
 
             }
-            textViewTotal.setText(LanguageUtils.numberConverter(costAfterCreditApply, 2) + " " + context.getString(R.string.currency));
-            textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(costAfterCreditApply, 2) + " " + context.getString(R.string.currency));
+            textViewTotal.setText(LanguageUtils.numberConverter(costAfterCreditApply, 2) + " " + (TempStorage.getUser().getCurrencyCode()));
+            textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(costAfterCreditApply, 2) + " " + (TempStorage.getUser().getCurrencyCode()));
 
             if (appliedCreditCost > 0) {
-                textViewWalletCreditPrice.setText("- " + LanguageUtils.numberConverter(appliedCreditCost, 2) + " " + context.getString(R.string.currency));
+                textViewWalletCreditPrice.setText("- " + LanguageUtils.numberConverter(appliedCreditCost, 2) + " " + (TempStorage.getUser().getCurrencyCode()));
                 //mTextViewWalletAmount.setText((LanguageUtils.numberConverter(((mWalletCredit.getBalance()-appliedCreditCost))))+" "+context.getString(R.string.currency));
 
 

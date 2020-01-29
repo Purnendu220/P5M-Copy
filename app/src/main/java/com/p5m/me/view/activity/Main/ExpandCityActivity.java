@@ -70,7 +70,7 @@ public class ExpandCityActivity extends BaseActivity implements View.OnClickList
     private boolean isError() {
         String email = editTextEmail.getText().toString().trim();
         if (email.isEmpty()) {
-            textInputLayoutEmail.setError(context.getResources().getString(R.string.email_required_error));
+            textInputLayoutEmail.setError(context.getResources().getString(R.string.email_required));
             return true;
         }
 

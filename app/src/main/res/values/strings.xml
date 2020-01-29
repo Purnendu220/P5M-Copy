@@ -622,13 +622,14 @@ Would you like to view your balance? </string>
     <string name="finish">Let\'s Get Fit</string>
     <string name="activity_selection_suggesstion">What are your favorite activities?</string>
     <string name="country_name">Country Name</string>
-    <string name="country_required">Country required</string>
+    <string name="country_required">Please  enter your location</string>
     <string name="change_country">Change Country</string>
     <string name="where_working_out">In what city are you working out? </string>
     <string name="other_country">Other</string>
     <string name="select_city">Select city</string>
     <string name="name_length_error">Max length is not more than 40</string>
     <string name="keep_me_up_to_date">Keep me up to date</string>
+    <string name="email_required">Please enter your email</string>
     <string-array name="city">
         <item>Kuwait</item>
         <item>Riyadh,Saudi Arabia</item>

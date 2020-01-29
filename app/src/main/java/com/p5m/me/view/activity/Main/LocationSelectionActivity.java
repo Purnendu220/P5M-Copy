@@ -86,9 +86,7 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
         buttonNext.setOnClickListener(this);
         textViewLogin.setOnClickListener(this);
         textInputLayoutCity.setVisibility(View.GONE);
-//        editTextCountry.setText(getString(R.string.select_city));
         Helper.setupErrorWatcher(textViewCountryName, textInputLayoutCity);
-//        categories.add(getResources().getString(R.string.select_city));
         callApi();
 
     }
@@ -102,7 +100,7 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
         categories.add(getString(R.string.other_country));
 
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_spinner_dropdown_item, categories);
+                this, R.layout.view_spinner_item, categories);
 /*{
             @Override
             public boolean isEnabled(int position) {
@@ -130,7 +128,7 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
         };*/
 //        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
 //        spinner.setAdapter(spinnerArrayAdapter);
-        spinnerArrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+//        spinnerArrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinnerCity.setAdapter(spinnerArrayAdapter);
         spinnerCity.setSelection(0);
 
@@ -174,7 +172,6 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
                             finish();
                         } else {
                             SignUpOptions.open(context);
-                            finish();
                         }
                     } else {
                         textInputLayoutCity.setVisibility(View.VISIBLE);

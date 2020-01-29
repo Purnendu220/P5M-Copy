@@ -29,6 +29,7 @@ public class TempStorage {
     private static User user;
     private static int countryId;
     private static  String countryName;
+    private static  String currency;
 
     private static DefaultSettingServer defaultSettingServer;
 
@@ -231,6 +232,8 @@ e.printStackTrace();
 
     public static void setUser(Context context, User user) {
         TempStorage.user = user;
+        TempStorage.setCurrency(user.getCurrencyCode());
+        TempStorage.setCountryId(user.getStoreId());
         MyPreferences.getInstance().saveUser(user);
     }
     public static List<ClassModel> filterclassList(List<ClassModel> classList,ClassModel classModel){
@@ -264,5 +267,13 @@ e.printStackTrace();
 
     public static void setCountryName(String countryName) {
         TempStorage.countryName = countryName;
+    }
+
+    public static String getCurrency() {
+        return currency;
+    }
+
+    public static void setCurrency(String currency) {
+        TempStorage.currency = currency;
     }
 }

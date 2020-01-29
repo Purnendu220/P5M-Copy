@@ -19,6 +19,7 @@ import com.p5m.me.FAQAdapter;
 import com.p5m.me.R;
 import com.p5m.me.data.main.StoreApiModel;
 import com.p5m.me.data.main.StoreModel;
+import com.p5m.me.data.main.User;
 import com.p5m.me.data.request.LogoutRequest;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.firebase_dynamic_link.FirebaseDynamicLinnk;
@@ -176,7 +177,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         setSpinnerView();
         dialog.show();
         (dialog.findViewById(R.id.buttonSubmit)).setOnClickListener(v -> {
-            networkCommunicator.updateStoreId(this, false);
+            networkCommunicator.updateStoreId(countryModel.get(position).getId(),this, false);
             dialog.dismiss();
         });
 
@@ -259,9 +260,15 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 }
                 break;
             case NetworkCommunicator.RequestCode.UPDATE_STORE_ID:
-                List<StoreModel> model = ((ResponseModel<List<StoreModel>>) response).data;
-                TempStorage.setCountryId(model.get(position).getId());
-
+                StoreModel model = ((ResponseModel<StoreModel>) response).data;
+                User user = TempStorage.getUser();
+                TempStorage.setCountryId(model.getId());
+                user.setStoreId(model.getId());
+                user.setCurrencyCode(model.getCurrencyCode());
+                user.setStoreName(model.getName());
+                EventBroadcastHelper.sendUserUpdate(context, user);
+                EventBroadcastHelper.changeCountry();
+                HomeActivity.open(context);
         }
     }
 

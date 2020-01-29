@@ -994,6 +994,7 @@
     <string name="select_city">Select City</string>
     <string name="name_length_error">Max length is not more than 40</string>
     <string name="keep_me_up_to_date">Keep me up to date</string>
+    <string name="email_required">Please enter your email</string>
     <string-array name="city">
         <item>Kuwait</item>
         <item>Riyadh,Saudi Arabia</item>

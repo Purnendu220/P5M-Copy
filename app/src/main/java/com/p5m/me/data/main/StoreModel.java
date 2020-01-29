@@ -3,8 +3,15 @@ package com.p5m.me.data.main;
 public class StoreModel {
 
 
+    /**
+     * id : 1
+     * name : Kuwait
+     * currencyCode : KWD
+     */
+
     private int id;
     private String name;
+    private String currencyCode;
 
     public int getId() {
         return id;
@@ -22,4 +29,11 @@ public class StoreModel {
         this.name = name;
     }
 
+    public String getCurrencyCode() {
+        return currencyCode;
+    }
+
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
+    }
 }

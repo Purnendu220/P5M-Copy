@@ -36,6 +36,8 @@ public class User implements java.io.Serializable {
     private boolean buyMembership;
     private WalletDto walletDto;
     private int storeId;
+    private String currencyCode;
+    private String storeName;
 
     Integer gymId;
     Integer numberOfWeek;
@@ -319,6 +321,22 @@ public class User implements java.io.Serializable {
     public void setStoreId(int storeId) {
         this.storeId = storeId;
         TempStorage.setCountryId(storeId);
+    }
+
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
+
+    public String getCurrencyCode() {
+        return currencyCode;
+    }
+
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
     }
 
 
