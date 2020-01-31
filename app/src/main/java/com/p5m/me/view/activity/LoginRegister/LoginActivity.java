@@ -23,10 +23,12 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.p5m.me.R;
 import com.p5m.me.analytics.FirebaseAnalysic;
+import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.FaceBookUser;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.request.LoginRequest;
+import com.p5m.me.data.request.RegistrationRequest;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
@@ -53,11 +55,15 @@ import io.intercom.android.sdk.Intercom;
 import io.intercom.android.sdk.UserAttributes;
 import io.intercom.android.sdk.identity.Registration;
 
+import static com.p5m.me.analytics.IntercomEvents.successfulLoginIntercom;
 import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_HAVE_PACKAGE;
 import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_NO_PACKAGE;
 
 public class LoginActivity extends BaseActivity implements NetworkCommunicator.RequestListener {
 
+
+    private String email;
+    private RegistrationRequest registrationRequest;
 
     public static void open(Context context, int navigationFrom) {
         context.startActivity(new Intent(context, LoginActivity.class)
@@ -187,9 +193,11 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
     }
 
     private void SetupFBLogin() {
+
         callbackManager = CallbackManager.Factory.create();
 
         LoginManager.getInstance().registerCallback(callbackManager,
+
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(final LoginResult loginResult) {
@@ -206,7 +214,7 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                                         String first_name = "";
                                         String last_name = "";
                                         String gender = "";
-                                        String email = "";
+                                        email = "";
                                         String id = "";
 
                                         try {
@@ -222,8 +230,13 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                                         }
 
                                         faceBookUser = new FaceBookUser(id, first_name, last_name, gender, email);
+                                        registrationRequest = new RegistrationRequest(faceBookUser.getId(), faceBookUser.getName(), faceBookUser.getLastName(), -1);
+                                        registrationRequest.setGender(gender);
+                                        if (email!=null && !TextUtils.isEmpty(email))
+                                            networkCommunicator.validateEmail(email, LoginActivity.this, false);
+                                        else
+                                            LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_FACEBOOK_LOGIN);
 
-                                        networkCommunicator.loginFb(new LoginRequest(id, first_name, last_name, email, gender), LoginActivity.this, false);
                                     }
                                 });
                         Bundle parameters = new Bundle();
@@ -251,6 +264,7 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                 loginTime = System.currentTimeMillis() - 5 * 1000;
                 LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile", "email", "user_gender"));
                 layoutProgressRoot.setVisibility(View.VISIBLE);
+
             }
         });
     }
@@ -280,7 +294,12 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                 buttonLogin.setVisibility(View.VISIBLE);
             }
             break;
+            case NetworkCommunicator.RequestCode.VALIDATE_EMAIL:
+                registrationRequest.setEmail(email);
+                layoutProgressRoot.setVisibility(View.GONE);
 
+                LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_FACEBOOK_LOGIN);
+                break;
             case NetworkCommunicator.RequestCode.LOGIN_FB:
 
                 if (response != null) {
@@ -310,7 +329,6 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
         switch (requestCode) {
 
             case NetworkCommunicator.RequestCode.LOGIN:
-
                 buttonLogin.setVisibility(View.VISIBLE);
                 textInputLayoutPassword.setError(errorMessage);
 
@@ -318,19 +336,17 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
 
             case NetworkCommunicator.RequestCode.LOGIN_FB:
 
-                RegistrationActivity.open(context, faceBookUser);
+                SignUpOptions.open(context,registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_FB_LOGIN);
                 layoutProgressRoot.setVisibility(View.GONE);
 
                 break;
-        }
-    }
+            case NetworkCommunicator.RequestCode.VALIDATE_EMAIL:
 
-    private void successfulLoginIntercom() {
-        if (TempStorage.getUser() != null) {
-            User user = TempStorage.getUser();
-            Registration registration = Registration.create().withUserId(String.valueOf(user.getId()));
-            Intercom.client().registerIdentifiedUser(registration);
-            LogUtils.debug("Intercom Working");
+                if (faceBookUser != null)
+                    networkCommunicator.loginFb(new LoginRequest(faceBookUser.getId(), faceBookUser.getName(), faceBookUser.getLastName(), email, faceBookUser.getGender()), LoginActivity.this, false);
+
+                break;
+
         }
     }
 

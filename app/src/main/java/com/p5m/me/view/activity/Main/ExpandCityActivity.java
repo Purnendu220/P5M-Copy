@@ -7,6 +7,7 @@ import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -22,6 +23,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ExpandCityActivity extends BaseActivity implements View.OnClickListener {
+
+    private CustomDialogThankYou mCustomThankyouDialog;
 
     public static void open(Context context, String countryName) {
         Intent intent = new Intent(context, ExpandCityActivity.class);
@@ -39,6 +42,10 @@ public class ExpandCityActivity extends BaseActivity implements View.OnClickList
     public TextView textViewHeader;
     @BindView(R.id.editTextEmail)
     public EditText editTextEmail;
+    @BindView(R.id.imageViewBack)
+    public ImageView imageViewBack;
+    @BindView(R.id.textViewSkip)
+    public TextView textViewSkip;
     @BindView(R.id.textInputLayoutEmail)
     public TextInputLayout textInputLayoutEmail;
     public static String countryName;
@@ -50,8 +57,10 @@ public class ExpandCityActivity extends BaseActivity implements View.OnClickList
         ButterKnife.bind(activity);
         buttonSubmit.setOnClickListener(this);
         textViewLogin.setOnClickListener(this);
+        textViewSkip.setOnClickListener(this);
+        imageViewBack.setOnClickListener(this);
         Helper.setupErrorWatcher(editTextEmail, textInputLayoutEmail);
-        textViewHeader.setText(Html.fromHtml(String.format(mContext.getString(R.string.want_us_to_expand_in_your_city),  countryName )));
+        textViewHeader.setText(Html.fromHtml(String.format(mContext.getString(R.string.want_us_to_expand_in_your_city), countryName)));
     }
 
     @Override
@@ -63,6 +72,13 @@ public class ExpandCityActivity extends BaseActivity implements View.OnClickList
             case R.id.buttonSubmit:
                 if (!isError())
                     showThankYou();
+                break;
+            case R.id.imageViewBack:
+                onBackPressed();
+                break;
+            case R.id.textViewSkip:
+                InfoScreen.open(context);
+                finish();
                 break;
         }
     }
@@ -84,12 +100,25 @@ public class ExpandCityActivity extends BaseActivity implements View.OnClickList
 
     private void showThankYou() {
 
-        CustomDialogThankYou mCustomThankyouDialog = new CustomDialogThankYou(context, false, AppConstants.AppNavigation.NAVIGATION_FROM_OTHER_USER);
+        mCustomThankyouDialog = new CustomDialogThankYou(context, false, AppConstants.AppNavigation.NAVIGATION_FROM_OTHER_USER);
         try {
             mCustomThankyouDialog.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onPause() {
+        if (mCustomThankyouDialog != null)
+            mCustomThankyouDialog.dismiss();
+        super.onPause();
+
     }
 
 }

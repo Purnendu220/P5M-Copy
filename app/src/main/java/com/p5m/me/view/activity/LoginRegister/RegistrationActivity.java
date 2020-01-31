@@ -40,7 +40,6 @@ public class RegistrationActivity extends BaseActivity {
     private int TOTAL_STEPS = AppConstants.Tab.COUNT_NORMAL_REGISTRATION;
     private int INITIAL_STEP = 0;
 
-//    private RegistrationStepsAdapter registrationStepsAdapter;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -63,34 +62,8 @@ public class RegistrationActivity extends BaseActivity {
             TOTAL_STEPS = AppConstants.Tab.COUNT_NORMAL_REGISTRATION;
         }
 
-//        setViewPagerAdapter();
     }
 
-    private void setViewPagerAdapter() {
-        // Pager Setup..
-//        registrationStepsAdapter = new RegistrationStepsAdapter(getSupportFragmentManager(), TOTAL_STEPS);
-//        viewPager.setAdapter(registrationStepsAdapter);
-//        viewPager.setOffscreenPageLimit(TOTAL_STEPS);
-
-
-//        // Un-Scrollable
-       viewPager.setPagingEnabled(false);
-        viewPager.post(new Runnable() {
-            @Override
-            public void run() {
-                viewPager.setCurrentItem(INITIAL_STEP);
-            }
-        });
-    }
-
-    public void stepsDone() {
-    }
-
-    public void next() {
-        if (viewPager.getCurrentItem() != AppConstants.Tab.REGISTRATION_STEP_GENDER) {
-            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
-        }
-    }
 
     @OnClick(R.id.imageViewBack)
     public void imageViewBack(View view) {

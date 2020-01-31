@@ -493,39 +493,20 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 break;
             case NetworkCommunicator.RequestCode.ME_USER:
                 user = TempStorage.getUser();
-                mWalletCredit = user.getWalletDto();
+               /* mWalletCredit = user.getWalletDto();
                 if (mWalletCredit != null && mWalletCredit.getBalance() > 0) {
                     mLayoutUserWallet.setVisibility(View.VISIBLE);
-                    mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(), 2) + " " + context.getResources().getString(R.string.wallet_currency));
-                } else {
+                    mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(), 2) + " " + TempStorage.getUser().getCurrencyCode());
+                } else {*/
                     mLayoutUserWallet.setVisibility(View.GONE);
 
-                }
-                updateIntercomWallet();
+//                }
+                IntercomEvents.updateIntercomWallet(mWalletCredit,user);
                 break;
         }
     }
 
-    private void updateIntercomWallet() {
-        String balanceWallet = "0";
 
-        Registration registration = Registration.create().withUserId(user.getFirstName() + " " + user.getLastName());
-        Intercom.client().registerIdentifiedUser(registration);
-        if (mWalletCredit != null) {
-            balanceWallet = String.valueOf(mWalletCredit.getBalance());
-        }
-
-      /*  UserAttributes userAttributes = new UserAttributes.Builder()
-                .withName(user.getFirstName() + " " + user.getLastName())
-                .withEmail(user.getEmail())
-                .withCustomAttribute("Gender",user.getGender())
-                .withCustomAttribute("wallet balance",balanceWallet)
-                .withCustomAttribute("Registration date", user.getDateOfJoining() == 0 ?
-                        "" : DateUtils.getDateFormatter(new Date(user.getDateOfJoining())) + "")
-                .build();
-        Intercom.client().updateUser(userAttributes);*/
-
-    }
 
     private void setData(PaymentStatus paymentStatus) {
         switch (paymentStatus) {

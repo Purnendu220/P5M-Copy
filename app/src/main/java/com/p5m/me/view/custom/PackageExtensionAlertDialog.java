@@ -154,7 +154,7 @@ public class PackageExtensionAlertDialog extends Dialog implements View.OnClickL
                 }
             }
             if (selectedPacakageFromList != null) {
-                textViewCost.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost()) + " KWD");
+                textViewCost.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost()) + " "+TempStorage.getUser().getCurrencyCode());
                 if (selectedPacakageFromList.getDuration() == 1)
                     textViewWeekValue.setText(getContext().getString(R.string.a_week));
                 else{

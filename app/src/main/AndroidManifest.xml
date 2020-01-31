@@ -36,7 +36,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:supportsRtl">
-        <activity android:name=".view.activity.Main.ExpandCityActivity"></activity>
+        <activity android:name=".view.activity.Main.PaymentOptionActivity"></activity>
+        <activity android:name=".view.activity.Main.ExpandCityActivity" />
         <activity android:name=".view.activity.Main.LocationSelectionActivity" />
         <activity android:name=".view.activity.Main.GetStartedActivity" />
         <activity android:name=".view.activity.Main.GymTrainerListActivity" />

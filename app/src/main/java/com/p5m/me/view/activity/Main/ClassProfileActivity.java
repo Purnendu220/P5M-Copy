@@ -805,9 +805,12 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                                 }
                             }
                             if (showChoosePackageOption) {
-                                BottomSheetClassBookingOptions mBottomSheetClassBookingOptions = BottomSheetClassBookingOptions.newInstance(classModel, mBookWithFriendData, aPackage.getNoOfClass(), aPackage);
-                                mBottomSheetClassBookingOptions.show(((ClassProfileActivity) context).getSupportFragmentManager(), "friend_booking");
-                            } else {
+                                try {
+                                    BottomSheetClassBookingOptions mBottomSheetClassBookingOptions = BottomSheetClassBookingOptions.newInstance(classModel, mBookWithFriendData, aPackage.getNoOfClass(), aPackage);
+                                    mBottomSheetClassBookingOptions.show(((ClassProfileActivity) context).getSupportFragmentManager(), "friend_booking");
+                                } catch (IllegalStateException ignored) {
+                                }
+                              } else {
                                 HomeActivity.show(context, AppConstants.Tab.TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
                             }
 
@@ -829,9 +832,12 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             Package aPackage = packages.get(0);
                             textViewBook.setEnabled(true);
                             if (showChoosePackageOption) {
-                                BottomSheetClassBookingOptions mBottomSheetClassBookingOptions = BottomSheetClassBookingOptions.newInstance(classModel, mBookWithFriendData, aPackage.getNoOfClass(), aPackage);
-                                mBottomSheetClassBookingOptions.show(((ClassProfileActivity) activity).getSupportFragmentManager(), "friend_booking");
-                            } else {
+                                try {
+                                    BottomSheetClassBookingOptions mBottomSheetClassBookingOptions = BottomSheetClassBookingOptions.newInstance(classModel, mBookWithFriendData, aPackage.getNoOfClass(), aPackage);
+                                    mBottomSheetClassBookingOptions.show(((ClassProfileActivity) activity).getSupportFragmentManager(), "friend_booking");
+                                } catch (IllegalStateException ignored) {
+                                }
+                              } else {
                                 HomeActivity.show(context, AppConstants.Tab.TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
 
                             }
@@ -848,7 +854,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     mWalletCredit = user.getWalletDto();
                     if (mWalletCredit != null && mWalletCredit.getBalance() > 0) {
                         mLayoutUserWallet.setVisibility(View.VISIBLE);
-                        mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance()) + " " + context.getResources().getString(R.string.wallet_currency));
+                        mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance()) + " " + TempStorage.getUser().getCurrencyCode());
                     } else {
                         mLayoutUserWallet.setVisibility(View.GONE);
 
@@ -1009,7 +1015,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     mWalletCredit = user.getWalletDto();
                     if (mWalletCredit != null && mWalletCredit.getBalance() > 0) {
                         mLayoutUserWallet.setVisibility(View.VISIBLE);
-                        mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance()) + " " + context.getResources().getString(R.string.wallet_currency));
+                        mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance()) + " " + TempStorage.getUser().getCurrencyCode());
                     } else {
                         mLayoutUserWallet.setVisibility(View.GONE);
 

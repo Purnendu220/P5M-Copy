@@ -110,9 +110,9 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
 
         setListAdapter();
 
-        networkCommunicator.getCities(this, true);
-        networkCommunicator.getActivities(this, true);
-        networkCommunicator.getGymsList(this, true);
+        networkCommunicator.getCities(this, false);
+        networkCommunicator.getActivities(this, false);
+        networkCommunicator.getGymsList(this, false);
 
         setToolBar();
         onTrackingNotification();

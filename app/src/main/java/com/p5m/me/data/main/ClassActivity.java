@@ -7,6 +7,7 @@ public class ClassActivity implements java.io.Serializable {
     private Integer classCategoryId;
     private String classCategoryName = "";
     private String name;
+    private String arName;
     private Boolean status;
     private Boolean isSelected=false;
 
@@ -88,5 +89,13 @@ public class ClassActivity implements java.io.Serializable {
 
     public void setSelected(Boolean selected) {
         isSelected = selected;
+    }
+
+    public String getArName() {
+        return arName;
+    }
+
+    public void setArName(String arName) {
+        this.arName = arName;
     }
 }

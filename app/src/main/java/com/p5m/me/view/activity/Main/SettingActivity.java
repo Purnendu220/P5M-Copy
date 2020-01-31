@@ -118,7 +118,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
         }
         categories = new ArrayList<String>();
-        callApi();
+        countryModel = TempStorage.getCountries();
+        if (countryModel == null)
+            callApi();
 
     }
 
@@ -177,13 +179,17 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         setSpinnerView();
         dialog.show();
         (dialog.findViewById(R.id.buttonSubmit)).setOnClickListener(v -> {
-            networkCommunicator.updateStoreId(countryModel.get(position).getId(),this, false);
+            networkCommunicator.updateStoreId(countryModel.get(position).getId(), this, false);
             dialog.dismiss();
         });
 
     }
 
     private void setSpinnerView() {
+        categories.clear();
+        for (StoreApiModel data : countryModel) {
+            categories.add(data.getName());
+        }
         spinnerCity.setOnItemSelectedListener(this);
         int userCountryId = TempStorage.getCountryId();
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
@@ -255,9 +261,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
             case NetworkCommunicator.RequestCode.GET_STORE_DATA:
                 countryModel = ((ResponseModel<List<StoreApiModel>>) response).data;
-                for (StoreApiModel data : countryModel) {
-                    categories.add(data.getName());
-                }
+
                 break;
             case NetworkCommunicator.RequestCode.UPDATE_STORE_ID:
                 StoreModel model = ((ResponseModel<StoreModel>) response).data;

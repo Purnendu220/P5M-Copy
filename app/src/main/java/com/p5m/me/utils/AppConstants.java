@@ -164,6 +164,7 @@ public class AppConstants {
 
 
         public static final String CLASS_BOOKING_TIME = "Class_booking_time";
+        public static final String COUNTRIES = "CountryList";
     }
 
     public class DataKey {
@@ -422,6 +423,7 @@ public class AppConstants {
         public static final int NAVIGATION_FROM_OTHER_USER = 66;
         public static final int SHOWN_IN_GET_STARTED = 67;
         public static final int NAVIGATION_FROM_FACEBOOK_SIGNUP = 68;
+        public static final int NAVIGATION_FROM_FACEBOOK_LOGIN = 69;
     }
 
     public class Limit {

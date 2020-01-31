@@ -15,6 +15,8 @@ import com.p5m.me.data.RatingParamModel;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.DefaultSettingServer;
+import com.p5m.me.data.main.StoreApiModel;
+import com.p5m.me.data.main.StoreModel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.utils.AppConstants;
@@ -172,6 +174,7 @@ public class MyPreferences {
         }
         return new ArrayList<>();
     }
+
 
     public void saveActivities(List<ClassActivity> activities) {
         try {
@@ -408,6 +411,24 @@ public class MyPreferences {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public List<StoreApiModel> getCountries() {
+        try {
+            return gson.fromJson(PreferencesManager.getString(AppConstants.Pref.COUNTRIES), new TypeToken<List<StoreApiModel>>() {
+            }.getType());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+    public void saveCountries(List<StoreApiModel> countries) {
+        try {
+            PreferencesManager.putString(AppConstants.Pref.COUNTRIES, gson.toJson(countries));
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
     }
 
 }

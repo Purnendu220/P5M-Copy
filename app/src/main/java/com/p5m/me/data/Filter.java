@@ -11,6 +11,7 @@ public class Filter implements Serializable {
     public static class Time {
         public String id;
         public String name;
+        public String name_ar;
         public Boolean status;
 
         public Boolean getStatus() {
@@ -39,6 +40,14 @@ public class Filter implements Serializable {
 
         public void setName(String name) {
             this.name = name;
+        }
+
+        public String getName_ar() {
+            return name_ar;
+        }
+
+        public void setName_ar(String name_ar) {
+            this.name_ar = name_ar;
         }
 
 

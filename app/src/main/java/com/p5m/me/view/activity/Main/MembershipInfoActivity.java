@@ -134,6 +134,7 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
         textViewMembershipFeatures.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_TITLE_VALUE,getString(R.string.with_the_p5m_membership_you_can)));
         textViewVarietyActivity.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_ONE_VALUE,getString(R.string.variety_of_activities)));
         textViewVarietyActivityDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_ONE_CONTAIN_VALUE,getString(R.string.variety_of_activity_details)));
+
         textViewVisitGym.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_TWO_VALUE,getString(R.string.visit_gym_feature)));
         textViewVisitGymDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_TWO_CONTAIN_VALUE,getString(R.string.visit_gym_detail)));
         textViewSave.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_THREE_VALUE,getString(R.string.save_percent)));
@@ -155,7 +156,6 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
     private String getValueFromConfig(String remoteConfigValue,String defaultValue){
         try {
             String value = remoteConfigValue;
-
             if (value != null && !value.isEmpty()) {
                 Gson g = new Gson();
                 RemoteConfigValueModel p = g.fromJson(value, new com.google.gson.reflect.TypeToken<RemoteConfigValueModel>() {
@@ -170,6 +170,7 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
         if (remoteConfigdata == null) {
             return defaultValue;
         } else {
+
             if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
                 return remoteConfigdata.getAr();
             } else  {

@@ -234,6 +234,7 @@
     <string name="profile_changes_saved">Changes to your profile have been saved!</string>
     <string name="package_offer_percentage">% off </string>
     <string name="package_offer_kwd">KWD off </string>
+    <string name="sar_off">SAR off </string>
     <string name="local_service_stopped">Service destroy</string>
     <string name="rate_class_message">Your class %1s is finished.Rate this class for better experience on next visit.</string>
     <string name="what_was_good_here">What was good here?</string>
@@ -355,7 +356,7 @@
     <string name="gender_females_only_error">This is a Females only class</string>
     <string name="gender_males_only_error">This is a Males only class</string>
     <string name="contact_us">Contact Us</string>
-    <string name="privacy_policy">privacy policy</string>
+    <string name="privacy_policy">Privacy Policy</string>
     <string name="terms_n_condition"><![CDATA[Terms & Condition]]></string>
     <string name="mail_us">Mail Us</string>
     <string name="make_a_call">Make a Call</string>
@@ -567,7 +568,7 @@ Would you like to view your balance? </string>
     <string name="select_an_option">Select an option</string>
     <string name="drop_in_package_desc">This is drop in package description</string>
     <string name="buy_membership_description">This is P5M package description</string>
-    <string name="one_class_entry">1 class entry (%s KWD)</string>
+    <string name="one_class_entry">1 class entry (%s)</string>
     <string name="one_class_entry_without_price">1 class entry</string>
 
     <string name="book_with_p5m_membership">Book with P5M Membership</string>
@@ -622,14 +623,17 @@ Would you like to view your balance? </string>
     <string name="finish">Let\'s Get Fit</string>
     <string name="activity_selection_suggesstion">What are your favorite activities?</string>
     <string name="country_name">Country Name</string>
-    <string name="country_required">Please  enter your location</string>
-    <string name="change_country">Change Country</string>
+    <string name="country_required">Please enter your city</string>
+    <string name="change_country">Change City</string>
     <string name="where_working_out">In what city are you working out? </string>
     <string name="other_country">Other</string>
     <string name="select_city">Select city</string>
     <string name="name_length_error">Max length is not more than 40</string>
     <string name="keep_me_up_to_date">Keep me up to date</string>
     <string name="email_required">Please enter your email</string>
+    <string name="amount_sar">Amount(SAR)</string>
+    <string name="please_select_city">Please select city</string>
+    <string name="payment_options">Payment Options</string>
     <string-array name="city">
         <item>Kuwait</item>
         <item>Riyadh,Saudi Arabia</item>

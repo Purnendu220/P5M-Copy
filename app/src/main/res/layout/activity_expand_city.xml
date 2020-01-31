@@ -9,7 +9,35 @@
 
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <TextView
+
+    <ImageView
+        android:id="@+id/imageViewBack"
+        android:layout_width="@dimen/margin_20"
+        android:layout_height="@dimen/margin_20"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:tint="@color/theme_dark_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/intercom_back" />
+
+    <TextView
+        android:id="@+id/textViewSkip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center_vertical"
+        android:text="@string/skip"
+        android:textAllCaps="true"
+        android:textColor="@color/theme_dark_text"
+        android:textSize="@dimen/text_small"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageViewBack"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
             android:id="@+id/textViewHeader"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -100,7 +128,7 @@
             android:gravity="center"
             android:text="@string/keep_me_up_to_date"
             android:textColor="@color/black"
-            android:layout_marginTop="@dimen/margin_15"
+            android:layout_marginTop="@dimen/margin_50"
             app:layout_constraintEnd_toEndOf="@+id/textViewHeader"
             app:layout_constraintStart_toStartOf="@+id/textViewHeader"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayoutCity"/>

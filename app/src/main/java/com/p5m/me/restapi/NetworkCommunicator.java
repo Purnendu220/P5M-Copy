@@ -304,7 +304,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<List<City>>> call = apiService.getCityList();
         LogUtils.debug("NetworkCommunicator hitting getCities");
 
-        if (useCache) {
+      /*  if (useCache) {
             List<City> cities = TempStorage.getCities();
 
             if (cities != null) {
@@ -314,7 +314,7 @@ public class NetworkCommunicator {
                 return null;
             }
         }
-
+*/
         call.enqueue(new RestCallBack<ResponseModel<List<City>>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<List<City>>> call, String message) {
@@ -337,16 +337,16 @@ public class NetworkCommunicator {
         Call<ResponseModel<List<ClassActivity>>> call = apiService.getClassCategoryList();
         LogUtils.debug("NetworkCommunicator hitting getActivities");
 
-        if (useCache) {
-            List<ClassActivity> activities = TempStorage.getActivities();
-
-            if (activities != null) {
-                ResponseModel<List<ClassActivity>> responseModel = new ResponseModel<>();
-                responseModel.data = activities;
-                requestListener.onApiSuccess(responseModel, requestCode);
-                return null;
-            }
-        }
+//        if (useCache) {
+//            List<ClassActivity> activities = TempStorage.getActivities();
+//
+//            if (activities != null) {
+//                ResponseModel<List<ClassActivity>> responseModel = new ResponseModel<>();
+//                responseModel.data = activities;
+//                requestListener.onApiSuccess(responseModel, requestCode);
+//                return null;
+//            }
+//        }
 
         call.enqueue(new RestCallBack<ResponseModel<List<ClassActivity>>>(context) {
             @Override

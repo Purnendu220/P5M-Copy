@@ -931,7 +931,7 @@
     <string name="flexible_timing">Flexible timings</string>
     <string name="membership_info">معلومات عن الاشتراكات</string>
     <string name="buy_membership_description">This is P5M package description</string>
-    <string name="one_class_entry">دخول كلاس واحد (KWD %s)</string>
+    <string name="one_class_entry">دخول كلاس واحد (%s)</string>
     <string name="one_class_entry_without_price">دخول كلاس واحد</string>
 
     <string name="book_with_p5m_membership">سجل في الكلاس مع اشتراك P5M</string>
@@ -978,23 +978,27 @@
     <string name="get_started_suggesstion">With a few quick questions, we will suggest the best classes just for you</string>
     <string name="get_started">Get Started</string>
     <string name="want_us_to_expand_in_your_city">Want us to expand in %s yet...</string>
-    <string name="let_us_know_your_details">Let us know your details:</string>
+    <string name="let_us_know_your_details">If you want us to email you once we are available in your city, and get special offers, share your email with us.</string>
     <string name="submit">Submit</string>
     <string name="your_city">Your city</string>
     <string name="location_search_for">Where will you be working out?</string>
-    <string name="thank_you_submit_request">We have noted request. We will inform you when P5M is available near you</string>
+    <string name="thank_you_submit_request">You will be in the know! We will inform you when P5M is available near you.</string>
     <string name="convenient_time">What time is it convenient for you to train?</string>
     <string name="finish">Finish</string>
     <string name="activity_selection_suggesstion">What do you want to focused on?</string>
     <string name="country_name">Country Name</string>
-    <string name="country_required">Country required</string>
-    <string name="change_country">Change Country</string>
+    <string name="country_required">Please enter your city</string>
+    <string name="change_country">Change city</string>
     <string name="where_working_out">Where will you be working out?</string>
     <string name="other_country">Other</string>
     <string name="select_city">Select City</string>
     <string name="name_length_error">Max length is not more than 40</string>
     <string name="keep_me_up_to_date">Keep me up to date</string>
-    <string name="email_required">Please enter your email</string>
+    <string name="email_required">الرجاء ادخل بريدك الإلكتروني</string>
+    <string name="amount_sar">المبلغ (ريال سعودي)</string>
+    <string name="sar_off">ريال سعودي خصم</string>
+    <string name="please_select_city">Please select city</string>
+    <string name="payment_options">Payment Options</string>
     <string-array name="city">
         <item>Kuwait</item>
         <item>Riyadh,Saudi Arabia</item>

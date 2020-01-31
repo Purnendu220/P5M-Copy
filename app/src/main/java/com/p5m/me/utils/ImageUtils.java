@@ -63,7 +63,8 @@ public class ImageUtils {
     public static void setImage(Context context, String url, ImageView imageView) {
         if (url != null && !url.isEmpty()) {
             GlideApp.with(context)
-                    .load(url).transition(DrawableTransitionOptions.withCrossFade())
+                    .load(url)
+                    .transition(DrawableTransitionOptions.withCrossFade())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(imageView);
         } else {

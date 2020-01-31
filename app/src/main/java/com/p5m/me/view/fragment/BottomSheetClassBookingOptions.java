@@ -23,6 +23,7 @@ import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.view.activity.Main.CheckoutActivity;
@@ -87,7 +88,7 @@ public class BottomSheetClassBookingOptions extends BottomSheetDialogFragment im
         ButterKnife.bind(this, view);
         setRemoteConfigValue();
         if(showDropInPrice){
-            textViewDropIn.setText(String.format(getContext().getResources().getString(R.string.one_class_entry), LanguageUtils.numberConverter(aPackage.getCost(), 2)));
+            textViewDropIn.setText(String.format(getContext().getResources().getString(R.string.one_class_entry), LanguageUtils.numberConverter(aPackage.getCost(), 2)+" "+TempStorage.getUser().getCurrencyCode()));
 
         }else{
             textViewDropIn.setText(getContext().getResources().getString(R.string.one_class_entry_without_price));

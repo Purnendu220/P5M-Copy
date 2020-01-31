@@ -20,8 +20,14 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.p5m.me.R;
+import com.p5m.me.analytics.FirebaseAnalysic;
+import com.p5m.me.analytics.IntercomEvents;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.ExploreDataModel;
 import com.p5m.me.data.main.StoreApiModel;
+import com.p5m.me.data.main.User;
+import com.p5m.me.data.request.RegistrationRequest;
+import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
@@ -29,6 +35,7 @@ import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.LoginRegister.LoginActivity;
+import com.p5m.me.view.activity.LoginRegister.RegistrationActivity;
 import com.p5m.me.view.activity.LoginRegister.SignUpOptions;
 import com.p5m.me.view.activity.base.BaseActivity;
 
@@ -41,10 +48,11 @@ import butterknife.ButterKnife;
 public class LocationSelectionActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener, NetworkCommunicator.RequestListener {
 
 
-    private int position;
+    private int position=-1;
     private ArrayList<String> categories;
     private List<StoreApiModel> model;
     private boolean other = false;
+    private int countryId = 0;
 
     public static void open(Context context) {
         context.startActivity(new Intent(context, LocationSelectionActivity.class));
@@ -52,6 +60,12 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
 
     public static void open(Context context, int navigationFromFacebookSignup) {
         LocationSelectionActivity.navigateFrom = navigationFromFacebookSignup;
+        context.startActivity(new Intent(context, LocationSelectionActivity.class));
+    }
+
+    public static void open(Context context, RegistrationRequest registrationRequest, int navigationFromFacebookLogin) {
+        LocationSelectionActivity.navigateFrom = navigationFromFacebookLogin;
+        LocationSelectionActivity.registrationRequest = registrationRequest;
         context.startActivity(new Intent(context, LocationSelectionActivity.class));
     }
 
@@ -63,8 +77,6 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
 
     @BindView(R.id.textViewCountryName)
     public EditText textViewCountryName;
-//    @BindView(R.id.editTextCountry)
-//    public EditText editTextCountry;
 
     @BindView(R.id.textInputLayoutCity)
     public TextInputLayout textInputLayoutCity;
@@ -73,7 +85,7 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
     public TextView textViewLogin;
     Boolean isSelectCountry = false;
     private String item;
-
+    public static RegistrationRequest registrationRequest;
     public static int navigateFrom;
 
 
@@ -87,7 +99,12 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
         textViewLogin.setOnClickListener(this);
         textInputLayoutCity.setVisibility(View.GONE);
         Helper.setupErrorWatcher(textViewCountryName, textInputLayoutCity);
-        callApi();
+        if (TempStorage.getCountries() == null)
+            callApi();
+        else {
+            model = TempStorage.getCountries();
+            setSpinnerView();
+        }
 
     }
 
@@ -96,12 +113,16 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
     }
 
     private void setSpinnerView() {
+        categories.clear();
+        categories.add(getString(R.string.select_city));
+        for (StoreApiModel data : model) {
+            categories.add(data.getName());
+        }
         spinnerCity.setOnItemSelectedListener(this);
         categories.add(getString(R.string.other_country));
 
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
-                this, R.layout.view_spinner_item, categories);
-/*{
+                this, R.layout.view_spinner_item, categories) {
             @Override
             public boolean isEnabled(int position) {
                 if (position == 0) {
@@ -125,10 +146,7 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
                 }
                 return view;
             }
-        };*/
-//        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
-//        spinner.setAdapter(spinnerArrayAdapter);
-//        spinnerArrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        };
         spinnerCity.setAdapter(spinnerArrayAdapter);
         spinnerCity.setSelection(0);
 
@@ -137,15 +155,16 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         item = parent.getItemAtPosition(position).toString();
-        this.position = position;
-        isSelectCountry = true;
-        textInputLayoutCity.setVisibility(View.GONE);
-//            editTextCountry.setText(item);
-        other = false;
-        textInputLayoutCity.setVisibility(View.GONE);
-        if (position >= model.size()) {
-            other = true;
-            textInputLayoutCity.setVisibility(View.VISIBLE);
+        if (position > 0) {
+            this.position = position - 1;
+            isSelectCountry = true;
+            textInputLayoutCity.setVisibility(View.GONE);
+            other = false;
+            textInputLayoutCity.setVisibility(View.GONE);
+            if (position > model.size()) {
+                other = true;
+                textInputLayoutCity.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -161,17 +180,22 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonNext:
-
-                if (isSelectCountry && model != null) {
+                if (position < 0) {
+                    ToastUtils.show(context, getString(R.string.please_select_city));
+                } else if (navigateFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FACEBOOK_LOGIN) {
+                    if (registrationRequest != null) {
+                        registrationRequest.setStoreId(model.get(position).getId());
+                        networkCommunicator.register(registrationRequest, this, false);
+                    }
+                } else if (isSelectCountry && model != null) {
                     if (!other) {
                         textInputLayoutCity.setVisibility(View.GONE);
-                        TempStorage.setCountryId(model.get(position).getId());
-                        TempStorage.setCountryName(model.get(position).getName());
+                        countryId = model.get(position).getId();
                         if (navigateFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FACEBOOK_SIGNUP) {
                             GetStartedActivity.open(context);
                             finish();
                         } else {
-                            SignUpOptions.open(context);
+                            SignUpOptions.open(context, countryId);
                         }
                     } else {
                         textInputLayoutCity.setVisibility(View.VISIBLE);
@@ -179,6 +203,7 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
                             ExpandCityActivity.open(context, textViewCountryName.getText().toString());
                         }
                     }
+
                 }
 
                 break;
@@ -203,10 +228,19 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.GET_STORE_DATA:
                 model = ((ResponseModel<List<StoreApiModel>>) response).data;
-                for (StoreApiModel data : model) {
-                    categories.add(data.getName());
-                }
                 setSpinnerView();
+                break;
+            case NetworkCommunicator.RequestCode.REGISTER:
+                if (response != null) {
+                    User user = ((ResponseModel<User>) response).data;
+                    TempStorage.setCountryId(user.getId());
+                    TempStorage.setCurrency(user.getCurrencyCode());
+                    EventBroadcastHelper.sendLogin(context, user);
+                    MixPanel.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
+                    FirebaseAnalysic.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
+                    IntercomEvents.successfulLoginIntercom(user.getFirstName() + " " + user.getLastName(), user.getEmail());
+                    GetStartedActivity.open(context);
+                }
                 break;
         }
     }
@@ -216,6 +250,10 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.GET_STORE_DATA:
                 ToastUtils.show(context, errorMessage);
+                break;
+            case NetworkCommunicator.RequestCode.REGISTER:
+//                SignUpOptions.open(context);
+                SignUpOptions.open(context,registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_FB_LOGIN);
                 break;
         }
     }

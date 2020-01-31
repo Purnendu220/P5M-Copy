@@ -38,6 +38,7 @@ public class User implements java.io.Serializable {
     private int storeId;
     private String currencyCode;
     private String storeName;
+    private String timePreference;
 
     Integer gymId;
     Integer numberOfWeek;
@@ -360,6 +361,12 @@ public class User implements java.io.Serializable {
             this.balance = balance;
         }
     }
+    public String getTimePreference() {
+        return timePreference;
+    }
 
+    public void setTimePreference(String timePreference) {
+        this.timePreference = timePreference;
+    }
 
 }

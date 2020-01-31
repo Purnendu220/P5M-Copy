@@ -78,6 +78,7 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
             networkCommunicator.getMyUser(Splash.this, false);
             EventBroadcastHelper.sendDeviceUpdate(context);
         }
+
         networkCommunicator.getActivities(this, false);
             (new RemoteConfigure()).fetchRemoteConfig(context);
 //        RemoteConfigSetUp.getValues();

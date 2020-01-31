@@ -10,7 +10,9 @@ import android.os.Handler;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -25,6 +27,7 @@ import com.facebook.login.LoginResult;
 import com.google.android.material.textfield.TextInputLayout;
 import com.p5m.me.R;
 import com.p5m.me.analytics.FirebaseAnalysic;
+import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.FaceBookUser;
 import com.p5m.me.data.main.StoreModel;
@@ -42,6 +45,7 @@ import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.GetStartedActivity;
+import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 
 import org.json.JSONException;
@@ -61,6 +65,18 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
 
     public static void open(Context context) {
         context.startActivity(new Intent(context, SignUpOptions.class));
+    }
+
+    public static void open(Context context, int countryId) {
+        SignUpOptions.countryId = countryId;
+        context.startActivity(new Intent(context, SignUpOptions.class));
+    }
+
+    public static void open(Context context, RegistrationRequest registrationRequest, int navigationFromFbLogin) {
+        SignUpOptions.registrationRequest = registrationRequest;
+        SignUpOptions.navigationFrom = navigationFromFbLogin;
+        context.startActivity(new Intent(context, SignUpOptions.class));
+
     }
 
     @BindView(R.id.textViewBottom)
@@ -112,7 +128,10 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
     private CallbackManager callbackManager;
     private FaceBookUser faceBookUser;
     private long loginTime;
-    private RegistrationRequest registrationRequest = new RegistrationRequest();
+    private static RegistrationRequest registrationRequest = new RegistrationRequest();
+    private static int countryId;
+    private static int navigationFrom;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +167,10 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
 
         SetupFBLogin();
         setupViews();
+       /* if (navigationFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FACEBOOK_LOGIN
+                && registrationRequest != null){
+            setUp
+        }*/
     }
 
     @Override
@@ -195,7 +218,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                                         faceBookUser = new FaceBookUser(id, first_name, last_name, gender, email);
 
                                         networkCommunicator.loginFb(new LoginRequest(id, first_name, last_name, email, gender), SignUpOptions.this, false);
-                                      }
+                                    }
                                 });
                         Bundle parameters = new Bundle();
                         parameters.putString("fields", "id,name,first_name,last_name,birthday,gender,email,location");
@@ -259,17 +282,17 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
 
                 if (response != null) {
                     User user = ((ResponseModel<User>) response).data;
-                    successfulLoginIntercom(user.getFirstName() + " " + user.getLastName());
+                    IntercomEvents.successfulLoginIntercom(user.getFirstName() + " " + user.getLastName());
                     EventBroadcastHelper.sendLogin(context, user);
 
-                    networkCommunicator.updateStoreId(TempStorage.getCountryId(), SignUpOptions.this, false);
+                    networkCommunicator.updateStoreId(countryId, SignUpOptions.this, false);
                     if (user.getDateOfJoining() >= loginTime) {
                         MixPanel.trackRegister(AppConstants.Tracker.FB, TempStorage.getUser());
                         FirebaseAnalysic.trackRegister(AppConstants.Tracker.FB, TempStorage.getUser());
                     } else
                         MixPanel.trackLogin(AppConstants.Tracker.FB, TempStorage.getUser());
 
-                    finish();
+                    HomeActivity.open(context);
                 }
                 layoutProgress.setVisibility(View.GONE);
 
@@ -281,10 +304,12 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
             case NetworkCommunicator.RequestCode.REGISTER:
                 if (response != null) {
                     User user = ((ResponseModel<User>) response).data;
+                    TempStorage.setCountryId(user.getId());
+                    TempStorage.setCurrency(user.getCurrencyCode());
                     EventBroadcastHelper.sendLogin(context, user);
                     MixPanel.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
                     FirebaseAnalysic.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
-//                    successfulLoginIntercom(user.getFirstName() + " " + user.getLastName(), user.getEmail());
+                    IntercomEvents.successfulLoginIntercom(user.getFirstName() + " " + user.getLastName(), user.getEmail());
                     GetStartedActivity.open(context);
                 }
                 break;
@@ -318,11 +343,6 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
         layoutProgress.setVisibility(View.GONE);
     }
 
-    private void successfulLoginIntercom(String name) {
-        Registration registration = Registration.create().withUserId(name);
-        Intercom.client().registerIdentifiedUser(registration);
-        LogUtils.debug("Intercom Working");
-    }
 
     public void setName(String name) {
         registrationRequest.setFirstName(name);
@@ -357,7 +377,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
             textInputLayoutName.setError(context.getResources().getString(R.string.name_required_error));
             return;
         }
-        if (name.length()>40) {
+        if (name.length() > 40) {
             textInputLayoutName.setError(context.getResources().getString(R.string.name_length_error));
             return;
         }
@@ -365,7 +385,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
             textInputLayoutLastName.setError(context.getResources().getString(R.string.last_name_required_error));
             return;
         }
-        if (lastname.length()>40) {
+        if (lastname.length() > 40) {
             textInputLayoutName.setError(context.getResources().getString(R.string.name_length_error));
             return;
         }
@@ -416,8 +436,6 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
         }
 
         setGender(gender);
-
-
         networkCommunicator.validateEmail(email, this, false);
     }
 
@@ -488,7 +506,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
             }
         }
 
-        /*editTextLastName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        editTextLastName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                     onClick(buttonNext);
@@ -513,12 +531,12 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                 }
                 return false;
             }
-        });*/
+        });
     }
 
     private void facebookValidation() {
         String message = "";
-        registrationRequest = new RegistrationRequest(faceBookUser.getId(), faceBookUser.getName(), faceBookUser.getLastName(),TempStorage.getCountryId() );
+        registrationRequest = new RegistrationRequest(faceBookUser.getId(), faceBookUser.getName(), faceBookUser.getLastName(), TempStorage.getCountryId());
 
         if (faceBookUser.getEmail().isEmpty()) {
 
@@ -542,12 +560,6 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
         if (!message.isEmpty()) {
             DialogUtils.showBasicMessage(context, context.getString(R.string.app_name), getString(R.string.ok), message);
         }
-    }
-
-    private void successfulLoginIntercom(String name, String email) {
-
-        Registration registration = Registration.create().withUserId(name).withEmail(email);
-        Intercom.client().registerIdentifiedUser(registration);
     }
 
 

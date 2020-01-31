@@ -31,6 +31,7 @@ import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.activity.custom.MaxHeightScrollView;
 
@@ -92,7 +93,7 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
         classesFilters = new ArrayList<>();
         activities = new ArrayList<>();
         selectedTimeList = new StringBuffer();
-        networkCommunicator.getActivities(this, true);
+        networkCommunicator.getActivities(this, false);
 
         setClickEvents();
         getTime();
@@ -167,11 +168,16 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
     private void addTagClassActivity(ClassActivity classActivity) {
         final View view = LayoutInflater.from(context).inflate(R.layout.view_tiles, flexBoxLayout, false);
         TextView textView = view.findViewById(R.id.textViewTiles);
-        if (!TextUtils.isEmpty(classActivity.getName())) {
-            String name = classActivity.getName();
-            textView.setText(name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase());
+
+            if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+                String name = classActivity.getArName();
+                textView.setText(name);
+            } else {
+                String name = classActivity.getName();
+                textView.setText(name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase());
+            }
             flexBoxLayout.addView(view);
-        }
+
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View imageRight) {
@@ -184,13 +190,14 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
     private void addTimeTag(Filter.Time time) {
         final View view = LayoutInflater.from(context).inflate(R.layout.view_tiles, flexBoxLayout, false);
         TextView textView = view.findViewById(R.id.textViewTiles);
-        if (!TextUtils.isEmpty(time.getName())) {
-            String name = time.getName();
-            textView.setText(name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase());
-
-//        textView.setText();
+            if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+                String name = time.getName_ar();
+                textView.setText(name);
+            } else {
+                String name = time.getName();
+                textView.setText(name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase());
+            }
             flexBoxLayoutTime.addView(view);
-        }
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View imageRight) {
@@ -264,7 +271,7 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
             STEP--;
             setView();
         } else
-           HomeActivity.open(context);
+            HomeActivity.open(context);
     }
 
     @Override
