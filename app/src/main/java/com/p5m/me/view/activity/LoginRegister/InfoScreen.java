@@ -3,6 +3,7 @@ package com.p5m.me.view.activity.LoginRegister;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
@@ -18,9 +19,16 @@ import com.p5m.me.adapters.InfoScreenAdapter;
 import com.p5m.me.data.FAQ;
 import com.p5m.me.data.InfoScreenData;
 import com.p5m.me.data.OnBoardingData;
+import com.p5m.me.data.main.StoreApiModel;
 import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.restapi.NetworkCommunicator;
+import com.p5m.me.restapi.ResponseModel;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.LanguageUtils;
+import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.utils.ViewPagerIndicator;
+import com.p5m.me.view.activity.Main.GetStartedActivity;
+import com.p5m.me.view.activity.Main.LocationSelectionActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 
 import java.util.ArrayList;
@@ -30,7 +38,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class InfoScreen extends BaseActivity implements ViewPager.OnPageChangeListener {
+public class InfoScreen extends BaseActivity implements ViewPager.OnPageChangeListener, NetworkCommunicator.RequestListener {
 
     @BindView(R.id.viewPager)
     public ViewPager viewPager;
@@ -44,7 +52,11 @@ public class InfoScreen extends BaseActivity implements ViewPager.OnPageChangeLi
     private List<OnBoardingData> onBoardingDataList;
 
     public static void open(Context context) {
-        context.startActivity(new Intent(context, InfoScreen.class));
+        Intent intent = new Intent(context, InfoScreen.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(intent);
+//        context.startActivity(new Intent(context, InfoScreen.class));
     }
 
     @Override
@@ -57,9 +69,10 @@ public class InfoScreen extends BaseActivity implements ViewPager.OnPageChangeLi
 
         setViewPagerAdapter();
 //        setDefaultViewPagerAdapter();
-
+        callApi();
         viewPager.addOnPageChangeListener(this);
     }
+
     private void setViewPagerAdapter() {
         try {
 
@@ -85,21 +98,22 @@ public class InfoScreen extends BaseActivity implements ViewPager.OnPageChangeLi
                     !TextUtils.isEmpty(onBoardingDataList.get(0).getText_en())) {
                 setViewPager();
             } else {
-               setDefaultViewPagerAdapter();
-
+                setDefaultViewPagerAdapter();
             }
-
         }
+    }
+
+    private void callApi() {
+        networkCommunicator.getStoreData(this, false);
     }
 
     private void setViewPager() {
         List<InfoScreenData> infoScreenDataList = new ArrayList<InfoScreenData>();
-        if(LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+        if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
             for (OnBoardingData data : onBoardingDataList) {
                 infoScreenDataList.add(new InfoScreenData(data.getText_ar(), data.getImage()));
             }
-        }
-        else {
+        } else {
             for (OnBoardingData data : onBoardingDataList) {
                 infoScreenDataList.add(new InfoScreenData(data.getText_en(), data.getImage()));
             }
@@ -137,7 +151,8 @@ public class InfoScreen extends BaseActivity implements ViewPager.OnPageChangeLi
 
     @OnClick(R.id.buttonRegister)
     public void register() {
-        SignUpOptions.open(context);
+
+        LocationSelectionActivity.open(context);
     }
 
     @Override
@@ -160,4 +175,24 @@ public class InfoScreen extends BaseActivity implements ViewPager.OnPageChangeLi
     public void onPageScrollStateChanged(int state) {
 
     }
+
+
+    @Override
+    public void onApiSuccess(Object response, int requestCode) {
+        switch (requestCode) {
+            case NetworkCommunicator.RequestCode.GET_STORE_DATA:
+                List<StoreApiModel> model = ((ResponseModel<List<StoreApiModel>>) response).data;
+                TempStorage.setCountries(model);
+                break;
+        }
+    }
+
+    @Override
+    public void onApiFailure(String errorMessage, int requestCode) {
+        switch (requestCode) {
+            case NetworkCommunicator.RequestCode.GET_STORE_DATA:
+                break;
+        }
+    }
+
 }

@@ -13,6 +13,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import com.p5m.me.R;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BannerData;
+import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.notifications.HandleNotificationDeepLink;
 import com.p5m.me.utils.ImageUtils;
 
@@ -28,7 +29,7 @@ public class BannerAdapter extends PagerAdapter {
     private final List<BannerData> bannerDataList;
     private final AdapterCallbacks adapterCallbacks;
     private LayoutInflater layoutInflater;
-
+    String urlRegex = "\\b(https?|http|www)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
     private Context context;
 
 
@@ -44,10 +45,11 @@ public class BannerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         View view = layoutInflater.inflate(R.layout.view_banner_screens, container, false);
         container.addView(view);
-        BannerData bannerData = (BannerData) bannerDataList.get(position);
+        BannerData bannerData = bannerDataList.get(position);
         ImageView image = view.findViewById(R.id.image);
         image.setOnClickListener(v -> {
-            if (bannerDataList.get(position).getUrl() != null && !TextUtils.isEmpty(bannerDataList.get(position).getUrl())) {
+            if (bannerDataList.get(position).getUrl() != null && !TextUtils.isEmpty(bannerDataList.get(position).getUrl()) &&
+                    bannerDataList.get(position).getUrl().matches(urlRegex)) {
                 onBannerClick(position);
                 MixPanel.trackExplore(BANNER_CAROUSAL_VIEW, bannerDataList.get(position).getUrl());
             }
@@ -60,8 +62,10 @@ public class BannerAdapter extends PagerAdapter {
     }
 
     private void onBannerClick(int position) {
+
         Intent navigationIntent = HandleNotificationDeepLink.handleNotificationDeeplinking(context, bannerDataList.get(position).getUrl());
         context.startActivity(navigationIntent);
+
 
     }
 

@@ -31,6 +31,7 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.PermissionUtility;
 import com.p5m.me.view.activity.Main.ForceUpdateActivity;
+import com.p5m.me.view.activity.Main.GetStartedActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.Main.Trainers;
 import com.p5m.me.view.activity.base.BaseActivity;
@@ -77,6 +78,7 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
             networkCommunicator.getMyUser(Splash.this, false);
             EventBroadcastHelper.sendDeviceUpdate(context);
         }
+
         networkCommunicator.getActivities(this, false);
             (new RemoteConfigure()).fetchRemoteConfig(context);
 //        RemoteConfigSetUp.getValues();
@@ -111,6 +113,7 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
                 if (MyPreferences.getInstance().isLogin()) {
                     /////////// HomeActivity Screen ////////////
                     HomeActivity.open(context);
+//                    GetStartedActivity.open(context);
                 } else {
 
                     Helper.handleLogin(context);

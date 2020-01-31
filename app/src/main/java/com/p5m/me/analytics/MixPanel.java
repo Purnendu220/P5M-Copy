@@ -71,6 +71,7 @@ public class MixPanel {
             mixPanel.identify(String.valueOf(TempStorage.getUser().getId()));
             JSONObject props = new JSONObject();
             props.put("Source", "Android");
+            props.put("Location", TempStorage.getCountryName());
             mixPanel.registerSuperProperties(props);
             isSetupDone = true;
             LogUtils.debug("MixPanel setup done");
@@ -932,7 +933,7 @@ public class MixPanel {
             props.put("section", mixPannelSection);
             props.put("values", mixPannelValue);
 
-            trackEvent(props, "Open_Explore");
+            trackEvent(props, "Explore");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);

@@ -21,6 +21,8 @@ import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.data.main.GymModel;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.ScheduleClassModel;
+import com.p5m.me.data.main.StoreApiModel;
+import com.p5m.me.data.main.StoreModel;
 import com.p5m.me.data.main.TrainerDetailModel;
 import com.p5m.me.data.main.TrainerModel;
 import com.p5m.me.data.main.Transaction;
@@ -111,14 +113,14 @@ public interface ApiService {
     Call<ResponseModel<List<RatingParamModel>>> getClassRatingPArameters();
 
     @Headers("Content-type: application/json")
-    @GET(AppConstants.Url.GET_USER_LIST +"/{" + AppConstants.ApiParamKey.USER_CATEGORY_ID + "}")
+    @GET(AppConstants.Url.GET_USER_LIST + "/{" + AppConstants.ApiParamKey.USER_CATEGORY_ID + "}")
     Call<ResponseModel<List<GymDataModel>>> getGymList(@Path(AppConstants.ApiParamKey.USER_CATEGORY_ID) int userCategoryId);
 
     @Headers("Content-type: application/json")
     @POST(AppConstants.Url.CLASS_LIST)
     Call<ResponseModel<List<ClassModel>>> getClassList(@Body ClassListRequest classListRequest);
 
-   @Headers("Content-type: application/json")
+    @Headers("Content-type: application/json")
     @POST(AppConstants.Url.BRANCH_LIST)
     Call<ResponseModel<List<BranchModel>>> getBranchList(@Body BranchListRequest branchListRequest);
 
@@ -128,7 +130,6 @@ public interface ApiService {
                                                                  @Query(AppConstants.ApiParamKey.LONGITUDE) Double longitude,
                                                                  @Query(AppConstants.ApiParamKey.LATITUDE) Double latitude,
                                                                  @Query(AppConstants.ApiParamKey.USER_ID) long userId);
-
 
 
     @Headers("Content-type: application/json")
@@ -278,14 +279,13 @@ public interface ApiService {
     Call<ResponseModel<RatingResponseModel>> submitClassRating(@Body ClassRatingRequest classRatingRequest);
 
     @Headers("Content-type: application/json")
-    @PUT(AppConstants.Url.CLASS_RATING+ "/{" + AppConstants.ApiParamKey.RATING_ID + "}")
-    Call<ResponseModel<RatingResponseModel>> updateClassRating(@Path(AppConstants.ApiParamKey.RATING_ID) long ratingId,@Body ClassRatingRequest classRatingRequest);
-
+    @PUT(AppConstants.Url.CLASS_RATING + "/{" + AppConstants.ApiParamKey.RATING_ID + "}")
+    Call<ResponseModel<RatingResponseModel>> updateClassRating(@Path(AppConstants.ApiParamKey.RATING_ID) long ratingId, @Body ClassRatingRequest classRatingRequest);
 
 
     @Headers("Content-type: application/json")
     @PATCH(AppConstants.Url.CLASS_RATING_PATCH)
-    Call<ResponseModel<RatingResponseModel>> publishClassRating(@Path("id") long id,@Body PublishRequest classRatingRequest);
+    Call<ResponseModel<RatingResponseModel>> publishClassRating(@Path("id") long id, @Body PublishRequest classRatingRequest);
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.CLASS_UNRATED)
@@ -311,7 +311,7 @@ public interface ApiService {
                                                         @Query(AppConstants.ApiParamKey.PAGE) int page,
                                                         @Query(AppConstants.ApiParamKey.SIZE) int size);
 
- @Headers("Content-type: application/json")
+    @Headers("Content-type: application/json")
     @GET(AppConstants.Url.GYM_LIST)
     Call<ResponseModel<List<GymModel>>> getGyms(@Query(AppConstants.ApiParamKey.CATEGORY_ID) int categoryId,
                                                 @Query(AppConstants.ApiParamKey.PAGE) int page,
@@ -376,11 +376,11 @@ public interface ApiService {
                                                         @Query(AppConstants.ApiParamKey.UNIQUE_CHAR) String uniqueChar);
 
     @Headers("Content-type: application/json")
-    @GET(AppConstants.Url.GET_PAYMENT_DETAIL )
+    @GET(AppConstants.Url.GET_PAYMENT_DETAIL)
     Call<ResponseModel<PaymentConfirmationResponse>> getPaymentDetail(@Path("id") long id);
 
     @Headers("Content-type: application/json")
-    @POST(AppConstants.Url.SUPPORT_CONTACT )
+    @POST(AppConstants.Url.SUPPORT_CONTACT)
     Call<ResponseModel<Object>> getContactResponse(@Body ContactRequestModel contactRequestModel);
 
     @Headers("Content-type: application/json")
@@ -390,6 +390,16 @@ public interface ApiService {
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.GET_EXPLORE_DETAIL)
-    Call<ResponseModel<List<ExploreDataModel>>> getExploreData(  @Query(AppConstants.ApiParamKey.USER_ID) long userId);
+    Call<ResponseModel<List<ExploreDataModel>>> getExploreData(@Query(AppConstants.ApiParamKey.USER_ID) long userId);
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.GET_STORE_DATA)
+    Call<ResponseModel<List<StoreApiModel>>> getStoreData();
+
+    @Headers("Content-type: application/json")
+    @PUT(AppConstants.Url.USER_UPDATE_STORE )
+    Call<ResponseModel<StoreModel>>updateStoreId(@Query(AppConstants.ApiParamKey.USER_ID) int userId,
+                                                  @Query(AppConstants.ApiParamKey.STORE_ID) int storeId);
+
 
 }

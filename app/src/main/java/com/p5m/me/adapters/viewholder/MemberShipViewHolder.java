@@ -136,7 +136,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
     /* User Offered Pakages   Layout Declaration*/
 
 
-    public  MemberShipViewHolder(View itemView, int shownInScreen) {
+    public MemberShipViewHolder(View itemView, int shownInScreen) {
         super(itemView);
 
         context = itemView.getContext();
@@ -193,20 +193,20 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                         else
                             textViewActiveDropIn.setText(String.format(context.getResources().getString(R.string.drop_in_text), model.getGymName(), DateUtils.getPackageClassDate(model.getExpiryDate())));
                     }
-                    if (classModel!=null&&model.getExpiryDate()!=null&&DateUtils.isDateisPast(model.getExpiryDate(),classModel.getClassDate())) {
+                    if (classModel != null && model.getExpiryDate() != null && DateUtils.isDateisPast(model.getExpiryDate(), classModel.getClassDate())) {
                         mainLayoutActivePackageDropin.setAlpha(0.5f);
 
 
-                    }else{
+                    } else {
                         mainLayoutActivePackageDropin.setAlpha(1.0f);
 
                     }
-                        button.setOnClickListener(new View.OnClickListener() {
+                    button.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if (classModel!=null&&model.getExpiryDate()!=null&&DateUtils.isDateisPast(model.getExpiryDate(),classModel.getClassDate())) {
-                                 ToastUtils.show(context,context.getResources().getString(R.string.you_cant_use_package));
-                            }else{
+                            if (classModel != null && model.getExpiryDate() != null && DateUtils.isDateisPast(model.getExpiryDate(), classModel.getClassDate())) {
+                                ToastUtils.show(context, context.getResources().getString(R.string.you_cant_use_package));
+                            } else {
                                 GymProfileActivity.open(context, model.getGymId(), AppConstants.AppNavigation.NAVIGATION_FROM_MEMBERSHIP);
 
                             }
@@ -225,7 +225,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                         txtPackageName.setText(model.getName());
                         txtPackageOffredClasses.setText(numberConverter(model.getNoOfClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs_one), model.getNoOfClass()) + " " + context.getString(R.string.at_any_gym));
                         setTextValidityPeriod(model);
-                        txtPriceAfterOffer.setText(LanguageUtils.numberConverter(model.getCost(), 2) + " " + context.getString(R.string.currency).toUpperCase());
+                        txtPriceAfterOffer.setText(LanguageUtils.numberConverter(model.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()).toUpperCase());
                         setPackageTags(model.getId());
 
 
@@ -247,12 +247,12 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                             txtPackageOffredClasses.setText(LanguageUtils.numberConverter(model.getNoOfClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs), model.getNoOfClass()) + " " + context.getString(R.string.at) + " " + model.getGymName());
 
                         packageValidFor.setText(context.getString(R.string.valid_for) + " " + DateUtils.getPackageClassDate(classModel.getClassDate()) + " -" + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()));
-                        txtPriceAfterOffer.setText(LanguageUtils.numberConverter(model.getCost(), 2) + " " + context.getString(R.string.currency).toUpperCase());
+                        txtPriceAfterOffer.setText(LanguageUtils.numberConverter(model.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()).toUpperCase());
 
 
                     }
 
-                    manageViews(classModel,model);
+                    manageViews(classModel, model);
                     if (model.getPromoResponseDto() != null) {
                         if (model.getPromoResponseDto().getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFCLASS))
                             setClassPromo(model);
@@ -269,8 +269,8 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     layoutMainOfferedPackage.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)&&
-                                classModel != null && DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays) {
+                            if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL) &&
+                                    classModel != null && DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays) {
 
                             } else
                                 adapterCallbacks.onAdapterItemClick(MemberShipViewHolder.this, layoutMainOfferedPackage, data, position);
@@ -295,10 +295,10 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    private void manageViews(ClassModel classModel,Package model) {
+    private void manageViews(ClassModel classModel, Package model) {
 
         if (classModel != null) {
-                numberOfDays = model.getDuration();
+            numberOfDays = model.getDuration();
 
 
             switch (model.getValidityPeriod()) {
@@ -316,7 +316,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     break;
             }
 
-            if (numberOfDays>0&&DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays) {
+            if (numberOfDays > 0 && DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays) {
                 mainLayoutActivePackageDropin.setVisibility(View.GONE);
                 mainLayoutUserPakages.setVisibility(View.GONE);
                 layoutMainOfferedPackage.setVisibility(View.VISIBLE);
@@ -335,7 +335,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 //                                packageLayout.setBackgroundColor(context.getResources().getColor(R.color.white));
 
             }
-        }else{
+        } else {
             mainLayoutActivePackageDropin.setVisibility(View.GONE);
             mainLayoutUserPakages.setVisibility(View.GONE);
             layoutMainOfferedPackage.setVisibility(View.VISIBLE);
@@ -386,7 +386,10 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
         if (model.getPromoResponseDto().getDiscountType().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_OFFER_PERCENTAGE)) {
             offerText = context.getString(R.string.package_offer_percentage);
         } else {
-            offerText = context.getString(R.string.package_offer_kwd);
+            if (TempStorage.getUser().getCurrencyCode().equalsIgnoreCase("SAR"))
+                offerText = context.getString(R.string.sar_off);
+            else
+                offerText = context.getString(R.string.package_offer_kwd);
 
         }
         try {
@@ -402,8 +405,8 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
         }
 
-        textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getPriceAfterDiscount(), 2) + " " + context.getString(R.string.currency).toUpperCase());
-        textViewPackagePriceStrike.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getPrice(), 2) + " " + context.getString(R.string.currency).toUpperCase());
+        textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getPriceAfterDiscount(), 2) + " " + (TempStorage.getUser().getCurrencyCode()).toUpperCase());
+        textViewPackagePriceStrike.setText(LanguageUtils.numberConverter(model.getPromoResponseDto().getPrice(), 2) + " " + (TempStorage.getUser().getCurrencyCode()).toUpperCase());
         textViewPackagePriceStrike.setPaintFlags(textViewPackagePriceStrike.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
 

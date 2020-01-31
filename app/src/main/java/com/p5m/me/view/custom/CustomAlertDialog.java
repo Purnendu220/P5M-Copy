@@ -19,25 +19,23 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-
-
 public class CustomAlertDialog extends Dialog implements View.OnClickListener {
 
     public interface OnAlertButtonAction {
 
-        void onOkClick(int requestCode,Object data);
+        void onOkClick(int requestCode, Object data);
 
-        void onCancelClick(int requestCode,Object data);
+        void onCancelClick(int requestCode, Object data);
     }
 
 
     private Context mContext;
     private String title;
-    private int SUCCESS=1;
-    private int FAIL=0;
-    private int WARNING=2;
+    private int SUCCESS = 1;
+    private int FAIL = 0;
+    private int WARNING = 2;
     String message;
-    int alertType=1;
+    int alertType = 1;
     String buttonCancelText;
     String buttonOkText;
     int callFor;
@@ -66,18 +64,19 @@ public class CustomAlertDialog extends Dialog implements View.OnClickListener {
 
     public CustomAlertDialog(@NonNull Context context, String title, String message, int alertType, String buttonCancelText, String buttonOkText, int callFor, Object data, boolean isCancelable, OnAlertButtonAction alertButtonListener) {
         super(context, R.style.AdvanceDialogTheme);
-        this.mContext=context;
-        this.title=title;
-        this.message=message;
-        this.alertType=alertType;
-        this.buttonCancelText=buttonCancelText;
-        this.buttonOkText=buttonOkText;
-        this.callFor=callFor;
-        this.alertButtonListener=alertButtonListener;
-        this.data=data;
-        this.isCancelable=isCancelable;
+        this.mContext = context;
+        this.title = title;
+        this.message = message;
+        this.alertType = alertType;
+        this.buttonCancelText = buttonCancelText;
+        this.buttonOkText = buttonOkText;
+        this.callFor = callFor;
+        this.alertButtonListener = alertButtonListener;
+        this.data = data;
+        this.isCancelable = isCancelable;
         init(context);
     }
+
     private void init(Context context) {
         setContentView(R.layout.view_custom_alert);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -88,25 +87,25 @@ public class CustomAlertDialog extends Dialog implements View.OnClickListener {
         lp.width = (int) (mContext.getResources().getDisplayMetrics().widthPixels * 0.90);
         lp.gravity = Gravity.CENTER;
         getWindow().setAttributes(lp);
-        if(title!=null&&title.length()>0) {
+        if (title != null && title.length() > 0) {
             textViewTitle.setText(title);
         }
-        if(message!=null&&message.length()>0) {
+        if (message != null && message.length() > 0) {
             textViewMessage.setText(message);
 
         }
 
-        if(buttonCancelText!=null&&buttonCancelText.length()>0){
+        if (buttonCancelText != null && buttonCancelText.length() > 0) {
             textViewCancel.setVisibility(View.VISIBLE);
             textViewCancel.setText(buttonCancelText);
-        }else{
+        } else {
             textViewCancel.setVisibility(View.GONE);
         }
-        if(buttonOkText!=null&&buttonOkText.length()>0){
+        if (buttonOkText != null && buttonOkText.length() > 0) {
             textViewOk.setVisibility(View.VISIBLE);
             textViewOk.setText(buttonOkText);
 
-        }else{
+        } else {
             textViewOk.setVisibility(View.GONE);
         }
 
@@ -116,28 +115,26 @@ public class CustomAlertDialog extends Dialog implements View.OnClickListener {
 
     }
 
-    private void setListeners(){
+    private void setListeners() {
         textViewCancel.setOnClickListener(this);
         textViewOk.setOnClickListener(this);
 
 
-
     }
+
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.textViewOk:{
+        switch (view.getId()) {
+            case R.id.textViewOk: {
                 dismiss();
-                if(alertButtonListener!=null)
-                alertButtonListener.onOkClick(callFor,data);
+                if (alertButtonListener != null)
+                    alertButtonListener.onOkClick(callFor, data);
             }
             break;
-            case R.id.textViewCancel:{
+            case R.id.textViewCancel: {
                 dismiss();
-                if(alertButtonListener!=null)
-                    alertButtonListener.onCancelClick(callFor,data);
-
-
+                if (alertButtonListener != null)
+                    alertButtonListener.onCancelClick(callFor, data);
             }
             break;
 
@@ -145,11 +142,12 @@ public class CustomAlertDialog extends Dialog implements View.OnClickListener {
         }
 
     }
-public  interface AlertRequestCodes{
-        int ALERT_REQUEST_SUCCESSFULL_UNJOIN=1;
-    int ALERT_REQUEST_WALLET_INFO=2;
+
+    public interface AlertRequestCodes {
+        int ALERT_REQUEST_SUCCESSFULL_UNJOIN = 1;
+        int ALERT_REQUEST_WALLET_INFO = 2;
 
 
-}
+    }
 
 }

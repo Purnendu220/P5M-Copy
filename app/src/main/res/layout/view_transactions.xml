@@ -101,6 +101,7 @@
                     android:paddingBottom="12dp">
 
                     <TextView
+                        android:id="@+id/textViewAmount"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/view_padding_edit_profile"

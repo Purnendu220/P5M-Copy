@@ -1,6 +1,7 @@
 package com.p5m.me.data.main;
 
 import com.p5m.me.data.BookWithFriendData;
+import com.p5m.me.storage.TempStorage;
 
 import java.util.List;
 
@@ -34,6 +35,10 @@ public class User implements java.io.Serializable {
     private List<ClassActivity> classCategoryList;
     private boolean buyMembership;
     private WalletDto walletDto;
+    private int storeId;
+    private String currencyCode;
+    private String storeName;
+    private String timePreference;
 
     Integer gymId;
     Integer numberOfWeek;
@@ -310,6 +315,31 @@ public class User implements java.io.Serializable {
         this.walletDto = walletDto;
     }
 
+    public int getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(int storeId) {
+        this.storeId = storeId;
+        TempStorage.setCountryId(storeId);
+    }
+
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
+
+    public String getCurrencyCode() {
+        return currencyCode;
+    }
+
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
+    }
+
 
     public class WalletDto implements java.io.Serializable {
        int id;
@@ -331,6 +361,12 @@ public class User implements java.io.Serializable {
             this.balance = balance;
         }
     }
+    public String getTimePreference() {
+        return timePreference;
+    }
 
+    public void setTimePreference(String timePreference) {
+        this.timePreference = timePreference;
+    }
 
 }

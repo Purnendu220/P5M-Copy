@@ -118,6 +118,12 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void BannerUrlHandler(Events.BannerUrlHandler bannerTab) {
+        tabPosition = bannerTab.innerTab;
+        myProfileAdapter.onTabSelection(tabPosition);
+        myProfileAdapter.notifyDataSetChanges();
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void trainerFollowed(Events.TrainerFollowed trainerFollowed) {
 
         try {

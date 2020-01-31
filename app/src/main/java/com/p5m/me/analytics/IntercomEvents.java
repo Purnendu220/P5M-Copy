@@ -1,20 +1,29 @@
 package com.p5m.me.analytics;
 
+import android.os.Build;
+
+import com.p5m.me.BuildConfig;
 import com.p5m.me.data.PaymentConfirmationResponse;
+import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.ValidityPackageList;
 import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.data.request.ClassRatingRequest;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LogUtils;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import io.intercom.android.sdk.Intercom;
+import io.intercom.android.sdk.UserAttributes;
+import io.intercom.android.sdk.identity.Registration;
 
 public class IntercomEvents {
 
@@ -22,8 +31,8 @@ public class IntercomEvents {
         Timestamp timeStampDate = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
         Map<String, Object> eventData = new HashMap<>();
-        eventData.put("plan", plan!=null?plan.getPackageName():"");
-        eventData.put("coupon", coupon!=null?coupon:"");
+        eventData.put("plan", plan != null ? plan.getPackageName() : "");
+        eventData.put("coupon", coupon != null ? coupon : "");
         eventData.put("purchase_date", timeStampDate);
         Intercom.client().logEvent("Purchase_Plan", eventData);
     }
@@ -39,7 +48,7 @@ public class IntercomEvents {
     }
 
     public static void purchase_drop_in(ClassModel classModel) {
-        if(classModel!=null) {
+        if (classModel != null) {
             Map<String, Object> eventData = new HashMap<>();
             eventData.put("gym_name", classModel.getGymBranchDetail() != null ? classModel.getGymBranchDetail().getGymName() : "");
             Intercom.client().logEvent("Purchase_Drop_In", eventData);
@@ -169,4 +178,73 @@ public class IntercomEvents {
         }
     }
 
+    public static void successfulLoginIntercom() {
+        if (BuildConfig.FIREBASE_IS_PRODUCTION) {
+            if (TempStorage.getUser() != null) {
+                User user = TempStorage.getUser();
+                Registration registration = Registration.create().withUserId(String.valueOf(user.getId()));
+                Intercom.client().registerIdentifiedUser(registration);
+                LogUtils.debug("Intercom Working");
+            }
+        }
+    }
+
+    public static void updateIntercom() {
+        if (BuildConfig.FIREBASE_IS_PRODUCTION) {
+            if (TempStorage.getUser() != null) {
+                User user = TempStorage.getUser();
+                UserPackageInfo userPackageInfo = new UserPackageInfo(user);
+
+                String balanceWallet = "0";
+
+                Registration registration = Registration.create().withUserId(String.valueOf(user.getId()));
+                Intercom.client().registerIdentifiedUser(registration);
+                if (user.getWalletDto() != null) {
+                    balanceWallet = String.valueOf(user.getWalletDto().getBalance());
+                }
+
+                UserAttributes userAttributes = new UserAttributes.Builder()
+                        .withName(user.getFirstName() + " " + user.getLastName())
+                        .withEmail(user.getEmail())
+                        .withCustomAttribute("Gender", user.getGender())
+                        .withCustomAttribute("Location", TempStorage.getCountryName())
+                        .withCustomAttribute("wallet balance", balanceWallet)
+                        .withCustomAttribute("Registration date", user.getDateOfJoining() == 0 ?
+                                "" : DateUtils.getDateFormatter(new Date(user.getDateOfJoining())))
+                        .withCustomAttribute("", userPackageInfo.haveGeneralPackage ?
+                                userPackageInfo.userPackageGeneral.getPackageName() : "")
+
+                        .build();
+                Intercom.client().updateUser(userAttributes);
+            }
+        }
+    }
+
+    public static void updateIntercomWallet(User.WalletDto mWalletCredit, User user) {
+           if(BuildConfig.FIREBASE_IS_PRODUCTION) {
+               String balanceWallet = "0";
+
+               Registration registration = Registration.create().withUserId(user.getFirstName() + " " + user.getLastName());
+               Intercom.client().registerIdentifiedUser(registration);
+               if (mWalletCredit != null) {
+                   balanceWallet = String.valueOf(mWalletCredit.getBalance());
+               }
+           }
+    }
+
+    public static void successfulLoginIntercom(String name) {
+        if(BuildConfig.IS_PRODUCTION) {
+            Registration registration = Registration.create().withUserId(name);
+            Intercom.client().registerIdentifiedUser(registration);
+            LogUtils.debug("Intercom Working");
+        }
+    }
+
+    public static void successfulLoginIntercom(String name, String email) {
+        if(BuildConfig.IS_PRODUCTION){
+            Registration registration = Registration.create().withUserId(name).withEmail(email);
+            Intercom.client().registerIdentifiedUser(registration);
+        }
+
+    }
 }

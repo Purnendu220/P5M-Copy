@@ -89,7 +89,7 @@ public class Gym extends BaseActivity implements ViewPagerFragmentSelection, Vie
 
         if (activities == null) {
             activities = new ArrayList<>();
-            networkCommunicator.getActivities(this, true);
+            networkCommunicator.getActivities(this, false);
         } else {
             setUpPager();
         }

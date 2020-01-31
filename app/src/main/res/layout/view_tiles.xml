@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardViewTiles"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_5"
+    android:layout_marginBottom="@dimen/margin_5"
+    android:layout_marginRight="@dimen/margin_6"
+    android:layout_marginLeft="@dimen/margin_1"
+    android:layout_gravity="center"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/margin_4"
+    android:elevation="@dimen/margin_2"
+    >
+<TextView
+    android:id="@+id/textViewTiles"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:text="TextView"
+    android:gravity="center"
+    android:textSize="@dimen/text_large"
+    android:paddingLeft="@dimen/margin_10"
+    android:paddingRight="@dimen/margin_10"
+    android:background="@drawable/button_white"
+    android:paddingTop="@dimen/margin_6"
+    android:paddingBottom="@dimen/margin_6"
+    android:textColor="@color/theme_dark_text"
+    />
+</androidx.cardview.widget.CardView>

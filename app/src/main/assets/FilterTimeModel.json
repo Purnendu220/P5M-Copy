@@ -1,0 +1,20 @@
+[
+    {
+        "id" : "MORNING",
+        "name" : "MORNING",
+        "name_ar" : "الصباح",
+        "status" : false
+    },
+    {
+        "id" : "AFTERNOON",
+        "name" : "AFTERNOON",
+        "name_ar" : "بعد الظهر",
+        "status" : false
+    },
+    {
+        "id" : "EVENING",
+        "name" : "EVENING",
+        "name_ar" : "بعد العصر",
+        "status" : false
+    }
+]

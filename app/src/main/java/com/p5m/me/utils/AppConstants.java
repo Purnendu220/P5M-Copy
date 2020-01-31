@@ -46,7 +46,7 @@ public class AppConstants {
         public static final int TAB_MY_SCHEDULE_WISH_LIST = 1;
 
         public static final int COUNT_FB_REGISTRATION = 3;
-        public static final int COUNT_NORMAL_REGISTRATION = 4;
+        public static final int COUNT_NORMAL_REGISTRATION = 1;
         public static final int OPEN_ABOUT_US = 100;
         public static final int OPEN_PRIVACY = 101;
         public static final int OPEN_TERMS = 102;
@@ -164,6 +164,7 @@ public class AppConstants {
 
 
         public static final String CLASS_BOOKING_TIME = "Class_booking_time";
+        public static final String COUNTRIES = "CountryList";
     }
 
     public class DataKey {
@@ -285,6 +286,8 @@ public class AppConstants {
         public static final String SUPPORT_CONTACT = "api/v1/support/save";
         public static final String GET_EXPLORE_DETAIL = "api/v1/explore/getDetails";
 
+        public static final String GET_STORE_DATA = "api/v1/store/getAllStore";
+        public static final String USER_UPDATE_STORE = "api/v1/user/updateUserStore";
     }
 
     public class ApiParamValue {
@@ -355,6 +358,8 @@ public class AppConstants {
         public static final String NUMBEROFCLASS = "NUMBEROFCLASS";
         public static final String PERCENTAGE = "PERCENTAGE";
         public static final String WAITLIST = "WAITLIST";
+        public static final String APP_STORE_ID = "Store-Id";
+        public static final String STORE_ID = "storeId";
     }
 
     public static final class Notification {
@@ -415,6 +420,10 @@ public class AppConstants {
         public static final int NAVIGATION_FROM_EXPLORE = 65;
 
 
+        public static final int NAVIGATION_FROM_OTHER_USER = 66;
+        public static final int SHOWN_IN_GET_STARTED = 67;
+        public static final int NAVIGATION_FROM_FACEBOOK_SIGNUP = 68;
+        public static final int NAVIGATION_FROM_FACEBOOK_LOGIN = 69;
     }
 
     public class Limit {

@@ -110,9 +110,9 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
 
         setListAdapter();
 
-        networkCommunicator.getCities(this, true);
-        networkCommunicator.getActivities(this, true);
-        networkCommunicator.getGymsList(this, true);
+        networkCommunicator.getCities(this, false);
+        networkCommunicator.getActivities(this, false);
+        networkCommunicator.getGymsList(this, false);
 
         setToolBar();
         onTrackingNotification();
@@ -358,7 +358,6 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
                         if (activity.getStatus()) {
                             ClassesFilter classesFilter = new ClassesFilter(activity.getId() + "", true, "ClassActivity", activity.getName(), 0, ClassesFilter.TYPE_ITEM);
                             classesFilter.setObject(activity);
-
                             classesFilters.add(classesFilter);
                         }
                     }

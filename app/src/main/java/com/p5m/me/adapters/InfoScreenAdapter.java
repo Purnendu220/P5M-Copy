@@ -10,8 +10,11 @@ import android.widget.TextView;
 
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.p5m.me.R;
 import com.p5m.me.data.InfoScreenData;
+import com.p5m.me.helper.GlideApp;
 import com.p5m.me.utils.ImageUtils;
 import com.squareup.picasso.Picasso;
 
@@ -41,8 +44,14 @@ public class InfoScreenAdapter extends PagerAdapter {
         TextView text = view.findViewById(R.id.text);
         InfoScreenData infoScreenData = infoScreenDataList.get(position);
 
-        if (infoScreenData.image != null)
-            ImageUtils.setImage(context, infoScreenData.image, image);
+        if (infoScreenData.image != null){
+            GlideApp.with(context)
+                    .load( infoScreenData.image)
+//                    .transition(DrawableTransitionOptions.withCrossFade())
+//                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(image);
+        }
+//            ImageUtils.setImage(context, infoScreenData.image, image);
         else
             image.setImageResource(infoScreenData.resource);
 

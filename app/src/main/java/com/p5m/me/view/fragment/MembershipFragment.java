@@ -237,6 +237,11 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getUser(Events.UserUpdate userUpdate) {
+
+
+    }
 
     public void refreshFragment(int navigatedFrom, ClassModel classModel, BookWithFriendData mFriendsData, int mNumberOfPackagesToBuy) {
         if (!swipeRefreshLayout.isRefreshing()) {
@@ -404,7 +409,6 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                 }
 
             } else {
-//                constraintLayout.setVisibility(View.GONE);
                 textGymVisitLimits.setVisibility(View.VISIBLE);
             }
             memberShipAdapter.notifyDataSetChanges();
@@ -601,7 +605,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
             mWalletCredit = user.getWalletDto();
             if (mWalletCredit != null && mWalletCredit.getBalance() > 0) {
                 mLayoutUserWallet.setVisibility(View.VISIBLE);
-                mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(), 2) + " " + context.getResources().getString(R.string.wallet_currency));
+                mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(), 2) + " " + TempStorage.getUser().getCurrencyCode());
             } else {
                 mLayoutUserWallet.setVisibility(View.GONE);
 
