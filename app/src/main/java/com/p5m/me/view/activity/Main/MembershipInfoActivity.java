@@ -172,8 +172,14 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
         } else {
 
             if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+                if(TempStorage.getUser().getStoreId()==4){
+                    return (remoteConfigdata.getAr_ksa()==null ?  remoteConfigdata.getAr():  remoteConfigdata.getAr_ksa());
+                }
                 return remoteConfigdata.getAr();
             } else  {
+                if(TempStorage.getUser().getStoreId()==4){
+                    return (remoteConfigdata.getEn_ksa()==null ?  remoteConfigdata.getEn():  remoteConfigdata.getEn_ksa());
+                }
                 return remoteConfigdata.getEn();
             }
 
