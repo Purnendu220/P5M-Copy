@@ -2,6 +2,7 @@ package com.p5m.me.data.main;
 
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.utils.AppConstants;
 
 import java.util.List;
 
@@ -333,7 +334,10 @@ public class User implements java.io.Serializable {
     }
 
     public String getCurrencyCode() {
-        return currencyCode;
+        if(currencyCode!=null)
+            return currencyCode;
+        else
+            return AppConstants.Currency.KUWAIT_CURRENCY;
     }
 
     public void setCurrencyCode(String currencyCode) {

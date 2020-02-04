@@ -195,6 +195,7 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
                             GetStartedActivity.open(context);
                             finish();
                         } else {
+                            TempStorage.setCountryId(countryId);
                             SignUpOptions.open(context, countryId);
                         }
                     } else {
@@ -234,7 +235,6 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
                 if (response != null) {
                     User user = ((ResponseModel<User>) response).data;
                     TempStorage.setCountryId(user.getId());
-                    TempStorage.setCurrency(user.getCurrencyCode());
                     EventBroadcastHelper.sendLogin(context, user);
                     MixPanel.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
                     FirebaseAnalysic.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());

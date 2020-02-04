@@ -73,7 +73,7 @@
     <string name="activity">Activity</string>
     <string name="find_classes">FIND CLASSES</string>
     <string name="morning">Morning</string>
-    <string name="after_Noon">After Noon</string>
+    <string name="after_Noon">Afternoon</string>
     <string name="evening">Evening</string>
     <string name="login_facebook">ENTER WITH FACEBOOK</string>
     <string name="login">"<b><u>Log in</u></b>"</string>
@@ -356,7 +356,7 @@
     <string name="gender_females_only_error">This is a Females only class</string>
     <string name="gender_males_only_error">This is a Males only class</string>
     <string name="contact_us">Contact Us</string>
-    <string name="privacy_policy">Privacy Policy</string>
+    <string name="privacy_policy">privacy policy</string>
     <string name="terms_n_condition"><![CDATA[Terms & Condition]]></string>
     <string name="mail_us">Mail Us</string>
     <string name="make_a_call">Make a Call</string>

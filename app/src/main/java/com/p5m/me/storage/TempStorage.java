@@ -255,7 +255,6 @@ public class TempStorage {
     public static void setUser(Context context, User user) {
         if (user != null) {
             TempStorage.user = user;
-            TempStorage.setCurrency(user.getCurrencyCode());
             TempStorage.setCountryId(user.getStoreId());
             MyPreferences.getInstance().saveUser(user);
 
@@ -295,11 +294,4 @@ public class TempStorage {
         TempStorage.countryName = countryName;
     }
 
-    public static String getCurrency() {
-        return currency;
-    }
-
-    public static void setCurrency(String currency) {
-        TempStorage.currency = currency;
-    }
-}
+  }

@@ -10,12 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.p5m.me.R;
 import com.p5m.me.adapters.viewholder.EmptyViewHolder;
-import com.p5m.me.adapters.viewholder.LoaderViewHolder;
-import com.p5m.me.adapters.viewholder.NotificationsViewHolder;
 import com.p5m.me.adapters.viewholder.PaymentOptionViewHolder;
-import com.p5m.me.data.ListLoader;
-import com.p5m.me.data.main.NotificationModel;
-import com.p5m.me.utils.LogUtils;
+import com.p5m.me.data.main.PaymentInitiateModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,12 +39,14 @@ public class PaymentOptionAdapter extends RecyclerView.Adapter<RecyclerView.View
         list.remove(index);
     }
 
-    public void add(NotificationModel model) {
+    public void add(PaymentInitiateModel.DataBean.PaymentMethodsBean model) {
         list.add(model);
     }
 
-    public void addAll(List<NotificationModel> models) {
+    public void addAll(List<PaymentInitiateModel.DataBean.PaymentMethodsBean> models) {
+        list.clear();
         list.addAll(models);
+        notifyDataSetChanged();
     }
 
     public void clearAll() {
@@ -61,7 +59,7 @@ public class PaymentOptionAdapter extends RecyclerView.Adapter<RecyclerView.View
         int itemViewType = VIEW_TYPE_UNKNOWN;
 
         Object item = getItem(position);
-        if (item instanceof NotificationModel) {
+        if (item instanceof PaymentInitiateModel.DataBean.PaymentMethodsBean) {
             itemViewType = VIEW_TYPE_PAYMENT_OPTION_LIST;
         }
 
@@ -75,6 +73,7 @@ public class PaymentOptionAdapter extends RecyclerView.Adapter<RecyclerView.View
             return new PaymentOptionViewHolder(view);
         }
         return new EmptyViewHolder(new LinearLayout(context));
+
     }
 
     @Override
@@ -92,9 +91,9 @@ public class PaymentOptionAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     public Object getItem(int position) {
-       /* if (list != null && list.size() > 0)
+        if (list != null && list.size() > 0)
             return list.get(position);
-        else*/
-            return 5;
+        else
+            return null;
     }
 }

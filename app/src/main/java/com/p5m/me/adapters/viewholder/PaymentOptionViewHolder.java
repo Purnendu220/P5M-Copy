@@ -2,6 +2,7 @@ package com.p5m.me.adapters.viewholder;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,6 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.Nationality;
+import com.p5m.me.data.main.PaymentInitiateModel;
+import com.p5m.me.utils.ImageUtils;
+import com.p5m.me.utils.LanguageUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +27,8 @@ public class PaymentOptionViewHolder extends RecyclerView.ViewHolder {
     public TextView textView;
     @BindView(R.id.layoutItem)
     public View layoutItem;
+    @BindView(R.id.imageView)
+    public ImageView imageView;
 
     private final Context context;
 
@@ -38,13 +44,17 @@ public class PaymentOptionViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(final Object data, final AdapterCallbacks adapterCallbacks, final int position) {
 
-       /* if (data != null && data instanceof Nationality) {
+        if (data != null && data instanceof PaymentInitiateModel.DataBean.PaymentMethodsBean) {
             itemView.setVisibility(View.VISIBLE);
 
-            Nationality model = (Nationality) data;
+            PaymentInitiateModel.DataBean.PaymentMethodsBean model = (PaymentInitiateModel.DataBean.PaymentMethodsBean) data;
 
-            textView.setText(model.getNationality());
+            if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar"))
+                textView.setText(model.getPaymentMethodAr());
+            else
+                textView.setText(model.getPaymentMethodEn());
 
+            ImageUtils.setImage(context,model.getImageUrl(),imageView);
             layoutItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -53,6 +63,6 @@ public class PaymentOptionViewHolder extends RecyclerView.ViewHolder {
             });
         } else {
             itemView.setVisibility(View.GONE);
-        }*/
+        }
     }
 }

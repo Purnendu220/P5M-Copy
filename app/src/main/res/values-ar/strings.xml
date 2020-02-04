@@ -19,7 +19,7 @@
 
     <string name="setting_notification_fac_details">استقبل الاشعار عندما يقوم مدربك المفضل بإضافة كلاس</string>
 
-    <string name="skip">تخطى</string>
+    <string name="skipskip">تخطى</string>
 
     <string name="start">مفهوم</string>
 
@@ -975,23 +975,23 @@
     <string name="more_workouts">%1$s المزيد من الأنشطة </string>
     <string name="less_workouts">show less</string>
     <string name="you_cant_use_package">You can\'t use this package</string>
-    <string name="get_started_suggesstion">With a few quick questions, we will suggest the best classes just for you</string>
+    <string name="get_started_suggesstion">لاكتشاف الصفوف المثالية لك ، أخبرنا قليلاً عن نفسك.</string>
     <string name="get_started">Get Started</string>
-    <string name="want_us_to_expand_in_your_city">Want us to expand in %s yet...</string>
-    <string name="let_us_know_your_details">If you want us to email you once we are available in your city, and get special offers, share your email with us.</string>
+    <string name="want_us_to_expand_in_your_city">  نحن لسنا في %s حتى الآن</string>
+    <string name="let_us_know_your_details">إذا كنت تريد منا أن نرسل لك بريدًا إلكترونيًا بمجرد وجودنا في مدينتك ، والحصول على عروض خاصة ، أدخل بريدك الإلكتروني هنا.</string>
     <string name="submit">Submit</string>
-    <string name="your_city">Your city</string>
-    <string name="location_search_for">Where will you be working out?</string>
-    <string name="thank_you_submit_request">You will be in the know! We will inform you when P5M is available near you.</string>
-    <string name="convenient_time">What time is it convenient for you to train?</string>
-    <string name="finish">Finish</string>
-    <string name="activity_selection_suggesstion">What do you want to focused on?</string>
+    <string name="your_city">مدينة</string>
+    <string name="location_search_for">في أي مدينة تتدريب</string>
+    <string name="thank_you_submit_request">سنخبرك عندما نوفر P5M بالقرب منك.</string>
+    <string name="convenient_time">في أي وقت تفضل التمرين؟</string>
+    <string name="finish">هيا بنا نصبح أقوى</string>
+    <string name="activity_selection_suggesstion">ما هي الأنشطة المفضلة لديك؟</string>
     <string name="country_name">Country Name</string>
-    <string name="country_required">Please enter your city</string>
-    <string name="change_country">Change city</string>
-    <string name="where_working_out">Where will you be working out?</string>
-    <string name="other_country">Other</string>
-    <string name="select_city">Select City</string>
+    <string name="country_required">الرجاء إدخال مدينتك</string>
+    <string name="change_country">تغيير المدينة</string>
+    <string name="where_working_out">في أي مدينة تتدريب</string>
+    <string name="other_country">آخر</string>
+    <string name="select_city">اختر المدينة</string>
     <string name="name_length_error">Max length is not more than 40</string>
     <string name="keep_me_up_to_date">Keep me up to date</string>
     <string name="email_required">الرجاء ادخل بريدك الإلكتروني</string>
@@ -1000,8 +1000,8 @@
     <string name="please_select_city">Please select city</string>
     <string name="payment_options">Payment Options</string>
     <string-array name="city">
-        <item>Kuwait</item>
-        <item>Riyadh,Saudi Arabia</item>
-        <item>Other</item>
+        <item>الكويت</item>
+        <item>الرياض، المملكة العربية السعودية</item>
+        <item>آخر </item>
     </string-array>
 </resources>
