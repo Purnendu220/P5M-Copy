@@ -48,7 +48,7 @@ import butterknife.ButterKnife;
 public class LocationSelectionActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener, NetworkCommunicator.RequestListener {
 
 
-    private int position=-1;
+    private int position = -1;
     private ArrayList<String> categories;
     private List<StoreApiModel> model;
     private boolean other = false;
@@ -182,11 +182,10 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
             case R.id.buttonNext:
                 if (position < 0) {
                     ToastUtils.show(context, getString(R.string.please_select_city));
-                } else if (navigateFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FACEBOOK_LOGIN) {
-                    if (registrationRequest != null) {
-                        registrationRequest.setStoreId(model.get(position).getId());
-                        networkCommunicator.register(registrationRequest, this, false);
-                    }
+                } else if (navigateFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FACEBOOK_LOGIN
+                        && registrationRequest != null && !other) {
+                    registrationRequest.setStoreId(model.get(position).getId());
+                    networkCommunicator.register(registrationRequest, this, false);
                 } else if (isSelectCountry && model != null) {
                     if (!other) {
                         textInputLayoutCity.setVisibility(View.GONE);
@@ -253,7 +252,7 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
                 break;
             case NetworkCommunicator.RequestCode.REGISTER:
 //                SignUpOptions.open(context);
-                SignUpOptions.open(context,registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_FB_LOGIN);
+                SignUpOptions.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_FB_LOGIN);
                 break;
         }
     }
