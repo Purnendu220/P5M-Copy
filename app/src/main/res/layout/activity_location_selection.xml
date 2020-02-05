@@ -23,6 +23,7 @@
         android:layout_marginEnd="20dp"
         android:textColor="@color/theme_dark_text"
         android:textSize="@dimen/text_extra_extra_large"
+        android:gravity="left"
         android:fontFamily="sans-serif-medium"
         android:lineSpacingExtra="@dimen/margin_5"
         android:text="@string/location_search_for"
