@@ -19,7 +19,7 @@
 
     <string name="setting_notification_fac_details">استقبل الاشعار عندما يقوم مدربك المفضل بإضافة كلاس</string>
 
-    <string name="skipskip">تخطى</string>
+    <string name="skip">تخطى</string>
 
     <string name="start">مفهوم</string>
 
@@ -976,7 +976,7 @@
     <string name="less_workouts">show less</string>
     <string name="you_cant_use_package">You can\'t use this package</string>
     <string name="get_started_suggesstion">لاكتشاف الصفوف المثالية لك ، أخبرنا قليلاً عن نفسك.</string>
-    <string name="get_started">Get Started</string>
+    <string name="get_started">ابدأ الآن</string>
     <string name="want_us_to_expand_in_your_city">  نحن لسنا في %s حتى الآن</string>
     <string name="let_us_know_your_details">إذا كنت تريد منا أن نرسل لك بريدًا إلكترونيًا بمجرد وجودنا في مدينتك ، والحصول على عروض خاصة ، أدخل بريدك الإلكتروني هنا.</string>
     <string name="submit">Submit</string>

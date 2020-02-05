@@ -170,7 +170,7 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
         TextView textView = view.findViewById(R.id.textViewTiles);
 
             if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
-                String name = classActivity.getArName();
+                String name = classActivity.getName();
                 textView.setText(name);
             } else {
                 String name = classActivity.getName();
