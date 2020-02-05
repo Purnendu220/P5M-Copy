@@ -55,9 +55,9 @@ public class RestServiceFactory {
                             .addHeader(AppConstants.ApiParamKey.USER_AGENT, AppConstants.ApiParamValue.USER_AGENT_ANDROID)
                             .addHeader(AppConstants.ApiParamKey.APP_VERSION, BuildConfig.VERSION_NAME_API)
                             .addHeader(AppConstants.ApiParamKey.APP_Language, language)
-                            .addHeader(AppConstants.ApiParamKey.APP_STORE_ID, String.valueOf(TempStorage.getUser().getStoreId()))
+                            .addHeader(AppConstants.ApiParamKey.APP_STORE_ID, String.valueOf(TempStorage.getCountryId()))
                             .build();
-                    LogUtils.debug("Store-Id"+String.valueOf(TempStorage.getUser().getStoreId()));
+                    LogUtils.debug("Store-Id"+String.valueOf(TempStorage.getCountryId()));
                     return chain.proceed(request);
                 }
             });

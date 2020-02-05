@@ -159,13 +159,12 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
             public void onSpanClicked() {
                 Helper.openWebPage(context, AppConstants.Url.WEBSITE + "privacy");
             }
-        }, spanText.indexOf(policy), spanText.indexOf(policy)+ policy.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }, spanText.indexOf(policy), spanText.indexOf(policy) + policy.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         textViewBottom.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
         textViewBottom.setMovementMethod(LinkMovementMethod.getInstance());
         textViewBottom.setText(span);
-//        if (navigationFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FB_LOGIN)
-            SetupFBLogin();
+        SetupFBLogin();
         setupViews();
        /* if (navigationFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FACEBOOK_LOGIN
                 && registrationRequest != null){
@@ -284,8 +283,8 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                     User user = ((ResponseModel<User>) response).data;
                     IntercomEvents.successfulLoginIntercom(user.getFirstName() + " " + user.getLastName());
                     EventBroadcastHelper.sendLogin(context, user);
-
-                    networkCommunicator.updateStoreId(countryId, SignUpOptions.this, false);
+                    if (countryId != 0)
+                        networkCommunicator.updateStoreId(countryId, SignUpOptions.this, false);
                     if (user.getDateOfJoining() >= loginTime) {
                         MixPanel.trackRegister(AppConstants.Tracker.FB, TempStorage.getUser());
                         FirebaseAnalysic.trackRegister(AppConstants.Tracker.FB, TempStorage.getUser());
@@ -314,9 +313,8 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                 break;
 
             case NetworkCommunicator.RequestCode.UPDATE_STORE_ID:
-                List<StoreModel> model = ((ResponseModel<List<StoreModel>>) response).data;
-                TempStorage.setCountryId(model.get(0).getId());
-
+                StoreModel model = ((ResponseModel<StoreModel>) response).data;
+                TempStorage.setCountryId(model.getId());
         }
 
     }
@@ -332,7 +330,6 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
             case NetworkCommunicator.RequestCode.VALIDATE_EMAIL:
                 textInputLayoutEmail.setError(errorMessage);
                 break;
-            case NetworkCommunicator.RequestCode.UPDATE_STORE_ID:
             case NetworkCommunicator.RequestCode.REGISTER:
                 ToastUtils.showFailureResponse(context, errorMessage);
                 break;
