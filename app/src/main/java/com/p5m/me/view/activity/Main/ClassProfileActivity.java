@@ -222,14 +222,14 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(classProfileAdapter);
         message = activity.getString(R.string.non_refundable_warning_msg);
-
+        networkCommunicator.getMyUser(this, false);
         if (classModel != null) {
             classSessionId = classModel.getClassSessionId();
             classProfileAdapter.setClass(classModel);
             classProfileAdapter.notifyDataSetChanged();
             IntercomEvents.trackClassVisit(classModel.getTitle());
             Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
-        } else {
+             } else {
             layoutButton.setVisibility(View.VISIBLE);
         }
         user = TempStorage.getUser();
@@ -245,12 +245,12 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         setToolBar();
 
         getDynamicLink();
-        networkCommunicator.getMyUser(this, false);
         MixPanel.trackClassDetails(navigationFrom);
         onTrackingNotification();
         if (RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE != null && !RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE.isEmpty()) {
             showChoosePackageOption = Boolean.valueOf(RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE);
         }
+
 
     }
 
@@ -589,7 +589,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         mLayoutUserWallet.setOnClickListener(this);
         imageViewOptions.setOnClickListener(this);
         ((TextView) (v.findViewById(R.id.textViewTitle))).setText(RemoteConfigConst.CLASS_CARD_TEXT_VALUE);
-
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT));
         activity.getSupportActionBar().setDisplayShowCustomEnabled(true);
@@ -764,7 +763,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     }
 
                 }
-
+                handleWalletOfSpecialAndFreeClass();
                 break;
             case NetworkCommunicator.RequestCode.CLASS_RATING_LIST:
                 ratingData = ((ResponseModel<ClassRatingUserData>) response).data;
@@ -848,22 +847,26 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 }
                 break;
             case NetworkCommunicator.RequestCode.ME_USER:
-                if (Helper.isSpecialClass(classModel) &&
-                        !Helper.isFreeClass(classModel)) {
-                    user = TempStorage.getUser();
-                    mWalletCredit = user.getWalletDto();
-                    if (mWalletCredit != null && mWalletCredit.getBalance() > 0) {
-                        mLayoutUserWallet.setVisibility(View.VISIBLE);
-                        mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance()) + " " + TempStorage.getUser().getCurrencyCode());
-                    } else {
-                        mLayoutUserWallet.setVisibility(View.GONE);
-
-                    }
-                }
+               handleWalletOfSpecialAndFreeClass();
                 break;
 
         }
 
+    }
+
+    private void handleWalletOfSpecialAndFreeClass() {
+        if (Helper.isSpecialClass(classModel) &&
+                !Helper.isFreeClass(classModel)) {
+            user = TempStorage.getUser();
+            mWalletCredit = user.getWalletDto();
+            if (mWalletCredit != null && mWalletCredit.getBalance() > 0) {
+                mLayoutUserWallet.setVisibility(View.VISIBLE);
+                mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance()) + " " + TempStorage.getUser().getCurrencyCode());
+            } else {
+                mLayoutUserWallet.setVisibility(View.GONE);
+
+            }
+        }
     }
 
     private void saved5MinClass(ClassModel classModel) {
