@@ -469,7 +469,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
     @OnClick(R.id.imageViewBack)
     public void imageViewBack(View view) {
-//        dialogBackPress();
+       dialogBackPress();
     }
 
     @Override
@@ -769,19 +769,10 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     private void dialogBackPress() {
         DialogUtils.showBasicMessage(context, "", context.getResources().getString(R.string.are_you_sure_leave_page),
                 context.getResources().getString(R.string.ok),
-                new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.dismiss();
-                        CheckoutActivity.super.onBackPressed();
-                    }
-                }, context.getString(R.string.cancel), new MaterialDialog.SingleButtonCallback() {
-
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.dismiss();
-                    }
-                });
+                (dialog, which) -> {
+                    dialog.dismiss();
+                    CheckoutActivity.super.onBackPressed();
+                }, context.getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
     }
 
     private void dialogPromoCode() {
@@ -814,43 +805,35 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
             }
         });
 
-        textViewCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                materialDialog.dismiss();
+        textViewCancel.setOnClickListener(view -> materialDialog.dismiss());
+
+        textViewOk.setOnClickListener(view -> {
+            String promoCodeText = editTextPromoCode.getText().toString();
+
+            if (promoCodeText.isEmpty()) {
+                textViewError.setText(context.getString(R.string.promo_code_required));
+                return;
             }
-        });
-
-        textViewOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String promoCodeText = editTextPromoCode.getText().toString();
-
-                if (promoCodeText.isEmpty()) {
-                    textViewError.setText(context.getString(R.string.promo_code_required));
-                    return;
-                }
-                switch (checkoutFor) {
-                    case PACKAGE:
-                        textViewOk.setVisibility(View.INVISIBLE);
+            switch (checkoutFor) {
+                case PACKAGE:
+                    textViewOk.setVisibility(View.INVISIBLE);
+                    networkCommunicator.applyPromoCode(
+                            new PromoCodeRequest(promoCodeText, aPackage.getId(), TempStorage.getUser().getId(), mNumberOfClasses),
+                            CheckoutActivity.this, false);
+                    break;
+                case CLASS_PURCHASE_WITH_PACKAGE:
+                    textViewOk.setVisibility(View.INVISIBLE);
+                    if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                         networkCommunicator.applyPromoCode(
-                                new PromoCodeRequest(promoCodeText, aPackage.getId(), TempStorage.getUser().getId(), mNumberOfClasses),
+                                new PromoCodeRequest(classModel.getGymBranchDetail().getGymId(), promoCodeText, aPackage.getId(), TempStorage.getUser().getId(), mNumberOfClasses),
                                 CheckoutActivity.this, false);
-                        break;
-                    case CLASS_PURCHASE_WITH_PACKAGE:
-                        textViewOk.setVisibility(View.INVISIBLE);
-                        if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
-                            networkCommunicator.applyPromoCode(
-                                    new PromoCodeRequest(classModel.getGymBranchDetail().getGymId(), promoCodeText, aPackage.getId(), TempStorage.getUser().getId(), mNumberOfClasses),
-                                    CheckoutActivity.this, false);
-                        } else {
-                            networkCommunicator.applyPromoCode(
-                                    new PromoCodeRequest(classModel.getGymBranchDetail().getGymId(), promoCodeText, aPackage.getId(), TempStorage.getUser().getId()),
-                                    CheckoutActivity.this, false);
-                        }
+                    } else {
+                        networkCommunicator.applyPromoCode(
+                                new PromoCodeRequest(classModel.getGymBranchDetail().getGymId(), promoCodeText, aPackage.getId(), TempStorage.getUser().getId()),
+                                CheckoutActivity.this, false);
+                    }
 
-                        break;
-                }
+                    break;
             }
         });
     }
