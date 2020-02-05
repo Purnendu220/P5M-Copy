@@ -159,6 +159,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
             onTabSelection(fragmentPositionInViewPager);
             classListAdapter.clearAll();
             classListAdapter.notifyDataSetChanged();
+            onRefresh();
         } else {
             handleClassJoined(data.data);
             checkListData();

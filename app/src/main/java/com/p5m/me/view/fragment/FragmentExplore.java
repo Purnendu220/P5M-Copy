@@ -76,7 +76,7 @@ import static com.p5m.me.utils.AppConstants.ExploreViewType.TRAINER_VIEW;
 import static com.p5m.me.utils.AppConstants.Tab.TAB_FIND_CLASS;
 import static com.p5m.me.utils.AppConstants.Tab.TAB_MY_MEMBERSHIP;
 
-public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Object>, MyRecyclerView.LoaderCallbacks, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
+public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks<Object>, MyRecyclerView.LoaderCallbacks, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener {
     private int pageSizeLimit = AppConstants.Limit.PAGE_LIMIT_EXPLORE_PAGE;
     private ClassesFilter<PriceModel> filter;
     private ClassesFilter<WorkoutModel> classesFilter;
@@ -377,5 +377,10 @@ public class FragmentExplore extends BaseFragment implements AdapterCallbacks<Ob
             layoutNoData.setVisibility(View.GONE);
 
         }*/
+    }
+
+    @Override
+    public void onTabSelection(int position) {
+
     }
 }
