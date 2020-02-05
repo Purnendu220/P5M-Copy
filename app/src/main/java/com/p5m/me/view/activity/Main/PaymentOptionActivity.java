@@ -1,5 +1,6 @@
 package com.p5m.me.view.activity.Main;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -17,19 +19,33 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.gson.Gson;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.NotificationsAdapter;
 import com.p5m.me.adapters.PaymentOptionAdapter;
 import com.p5m.me.adapters.TrainerProfileAdapter;
 import com.p5m.me.adapters.viewholder.PaymentOptionViewHolder;
+import com.p5m.me.data.main.NotificationModel;
+import com.p5m.me.data.main.PaymentInitiateModel;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
+import com.p5m.me.restapi.ResponseModel;
+import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.p5m.me.utils.AppConstants.DataKey.REFERENCE_ID;
 
 public class PaymentOptionActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, NetworkCommunicator.RequestListener, AdapterCallbacks {
 
@@ -43,8 +59,9 @@ public class PaymentOptionActivity extends BaseActivity implements SwipeRefreshL
 
     private PaymentOptionAdapter paymentOptionAdapter;
 
-    public static void open(Context context) {
-        context.startActivity(new Intent(context,PaymentOptionActivity.class));
+    public static void open(Activity activity) {
+        activity.startActivityForResult(new Intent(activity, PaymentOptionActivity.class), AppConstants.ResultCode.PAYMENT_OPTIONS);
+
     }
 
     @Override
@@ -54,13 +71,16 @@ public class PaymentOptionActivity extends BaseActivity implements SwipeRefreshL
         ButterKnife.bind(activity);
         swipeRefreshLayout.setOnRefreshListener(this);
         setToolBar();
+        callApi();
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setHasFixedSize(false);
 
         paymentOptionAdapter = new PaymentOptionAdapter(context, true, this);
         recyclerView.setAdapter(paymentOptionAdapter);
+    }
 
-
+    private void callApi() {
+        networkCommunicator.getPaymentInitiate(this, false);
     }
 
     private void setToolBar() {
@@ -98,7 +118,17 @@ public class PaymentOptionActivity extends BaseActivity implements SwipeRefreshL
 
     @Override
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
-
+        switch (view.getId()) {
+            default:
+                if (model instanceof PaymentInitiateModel.DataBean.PaymentMethodsBean) {
+                    PaymentInitiateModel.DataBean.PaymentMethodsBean data = (PaymentInitiateModel.DataBean.PaymentMethodsBean) model;
+                    Intent returnIntent = getIntent();
+                    returnIntent.putExtra(AppConstants.DataKey.PAYMENT_OPTION_ID, data.getPaymentMethodId());
+                    setResult(RESULT_OK, returnIntent);
+                    finish();
+                }
+                break;
+        }
     }
 
     @Override
@@ -113,11 +143,52 @@ public class PaymentOptionActivity extends BaseActivity implements SwipeRefreshL
 
     @Override
     public void onApiSuccess(Object response, int requestCode) {
-
+        switch (requestCode) {
+            case NetworkCommunicator.RequestCode.GET_PAYMENT_INITIATE:
+                String model = ((ResponseModel<String>) response).data;
+                try {
+                    JSONObject jsonObject = new JSONObject(model);
+                    Gson g = new Gson();
+                    PaymentInitiateModel paymentInitiateModel = g.fromJson(jsonObject.toString(), PaymentInitiateModel.class);
+                    if (paymentInitiateModel != null && paymentInitiateModel.getData() != null)
+                        paymentOptionAdapter.addAll(paymentInitiateModel.getData().getPaymentMethods());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
     }
 
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
-
+        switch (requestCode) {
+            case NetworkCommunicator.RequestCode.GET_PAYMENT_INITIATE:
+                ToastUtils.show(context, "" + errorMessage);
+                break;
+        }
     }
+
+    private void dialogBackPress() {
+        DialogUtils.showBasicMessage(context, "", context.getResources().getString(R.string.are_you_sure_leave_page),
+                context.getResources().getString(R.string.ok),
+                new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                        PaymentOptionActivity.super.onBackPressed();
+                    }
+                }, context.getString(R.string.cancel), new MaterialDialog.SingleButtonCallback() {
+
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                });
+    }
+
+    @Override
+    public void onBackPressed() {
+        dialogBackPress();
+    }
+
 }

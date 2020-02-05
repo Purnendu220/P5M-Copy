@@ -6,6 +6,7 @@
     android:background="@color/white">
 
     <LinearLayout
+        android:id="@+id/layoutItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
@@ -21,18 +22,18 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewProfile"
-                style="@style/CardViewCircularProfile"
+                android:layout_width="@dimen/margin_100"
+                android:layout_height="@dimen/margin_40"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="10dp">
 
                 <ImageView
-                    android:id="@+id/imageViewProfile"
+                    android:id="@+id/imageView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/profile_holder" />
+                    android:scaleType="fitXY" />
             </androidx.cardview.widget.CardView>
 
             <LinearLayout
@@ -48,14 +49,14 @@
                 android:paddingBottom="12dp">
 
                 <TextView
-                    android:id="@+id/textViewPayment"
+                    android:id="@+id/textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center_vertical|left"
-                    android:text="Payment"
                     android:letterSpacing="@dimen/button_letter_spacing_very_little"
+                    android:text="Payment"
                     android:textColor="@color/theme_dark_text"
                     android:textSize="@dimen/text_large" />
 
@@ -67,8 +68,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:background="@color/separator" />
     </LinearLayout>
 

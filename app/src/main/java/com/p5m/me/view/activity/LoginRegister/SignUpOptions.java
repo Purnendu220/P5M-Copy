@@ -159,13 +159,13 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
             public void onSpanClicked() {
                 Helper.openWebPage(context, AppConstants.Url.WEBSITE + "privacy");
             }
-        }, spanText.indexOf(policy), spanText.indexOf(policy) + policy.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }, spanText.indexOf(policy), spanText.indexOf(policy)+ policy.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         textViewBottom.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
         textViewBottom.setMovementMethod(LinkMovementMethod.getInstance());
         textViewBottom.setText(span);
-
-        SetupFBLogin();
+//        if (navigationFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FB_LOGIN)
+            SetupFBLogin();
         setupViews();
        /* if (navigationFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FACEBOOK_LOGIN
                 && registrationRequest != null){
@@ -305,7 +305,6 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                 if (response != null) {
                     User user = ((ResponseModel<User>) response).data;
                     TempStorage.setCountryId(user.getId());
-                    TempStorage.setCurrency(user.getCurrencyCode());
                     EventBroadcastHelper.sendLogin(context, user);
                     MixPanel.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
                     FirebaseAnalysic.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
@@ -317,7 +316,6 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
             case NetworkCommunicator.RequestCode.UPDATE_STORE_ID:
                 List<StoreModel> model = ((ResponseModel<List<StoreModel>>) response).data;
                 TempStorage.setCountryId(model.get(0).getId());
-                TempStorage.setCurrency(model.get(0).getCurrencyCode());
 
         }
 

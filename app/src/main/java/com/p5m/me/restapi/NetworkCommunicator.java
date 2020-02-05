@@ -28,6 +28,7 @@ import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.data.main.GymModel;
 import com.p5m.me.data.main.NotificationModel;
 import com.p5m.me.data.main.Package;
+import com.p5m.me.data.main.PaymentInitiateModel;
 import com.p5m.me.data.main.PaymentUrl;
 import com.p5m.me.data.main.ScheduleClassModel;
 import com.p5m.me.data.main.SearchResults;
@@ -163,6 +164,7 @@ public class NetworkCommunicator {
 
         public static final int GET_STORE_DATA = 161;
         public static final int UPDATE_STORE_ID = 162;
+        public static final int GET_PAYMENT_INITIATE = 163;
     }
 
     private Context context;
@@ -1662,7 +1664,7 @@ public class NetworkCommunicator {
     public Call getScheduleClassList(ScheduleRequest scheduleRequest, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.SCHEDULE_LIST;
         Call<ResponseModel<List<ScheduleClassModel>>> call = apiService.getScheduleClass(scheduleRequest);
-        LogUtils.debug("NetworkCommunicator hitting getClassList");
+        LogUtils.debug("NetworkCommunicator hitting getScheduleClassList");
 
         call.enqueue(new RestCallBack<ResponseModel<List<ScheduleClassModel>>>(context) {
             @Override
@@ -1702,10 +1704,11 @@ public class NetworkCommunicator {
         return call;
     }
 
+
     public Call getStoreData(final RequestListener requestListener, final boolean useCache) {
         final int requestCode = RequestCode.GET_STORE_DATA;
         Call<ResponseModel<List<StoreApiModel>>> call = apiService.getStoreData();
-        LogUtils.debug("NetworkCommunicator hitting Explore Detail");
+        LogUtils.debug("NetworkCommunicator hitting Store Data");
 
         call.enqueue(new RestCallBack<ResponseModel<List<StoreApiModel>>>(context) {
 
@@ -1723,5 +1726,27 @@ public class NetworkCommunicator {
         });
         return call;
     }
+
+    public Call getPaymentInitiate(final RequestListener requestListener, final boolean useCache) {
+        final int requestCode = RequestCode.GET_PAYMENT_INITIATE;
+        Call<ResponseModel<String>> call = apiService.getPaymentInitiate();
+        LogUtils.debug("NetworkCommunicator hitting Payment Initiate");
+
+        call.enqueue(new RestCallBack<ResponseModel<String>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<String>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator User onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<String>> call, Response<ResponseModel<String>> restResponse, ResponseModel<String> response) {
+                LogUtils.networkSuccess("NetworkCommunicator User onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
 }
 

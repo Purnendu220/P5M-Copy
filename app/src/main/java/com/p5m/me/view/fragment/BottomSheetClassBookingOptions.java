@@ -1,6 +1,5 @@
 package com.p5m.me.view.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,20 +16,15 @@ import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
-import com.p5m.me.data.PackageTags;
 import com.p5m.me.data.RemoteConfigDataModel;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
-import com.p5m.me.eventbus.Events;
 import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.view.activity.Main.CheckoutActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
-import com.p5m.me.view.activity.base.BaseActivity;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,9 +66,9 @@ public class BottomSheetClassBookingOptions extends BottomSheetDialogFragment im
     private static BookWithFriendData bookWithFriendData;
     private static Package aPackage;
     private static int noOfClasses;
-    private static boolean showDropInPrice=true;
-    private static String mPackageDescription="";
-    private static String mPackageDescriptionDropIn="";
+    private static boolean showDropInPrice = true;
+    private static String mPackageDescription = "";
+    private static String mPackageDescriptionDropIn = "";
 
 
     @Nullable
@@ -87,27 +81,27 @@ public class BottomSheetClassBookingOptions extends BottomSheetDialogFragment im
                 false);
         ButterKnife.bind(this, view);
         setRemoteConfigValue();
-        if(showDropInPrice){
-            textViewDropIn.setText(String.format(getContext().getResources().getString(R.string.one_class_entry), LanguageUtils.numberConverter(aPackage.getCost(), 2)+" "+TempStorage.getUser().getCurrencyCode()));
+        if (showDropInPrice) {
+            textViewDropIn.setText(String.format(getContext().getResources().getString(R.string.one_class_entry), LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + TempStorage.getUser().getCurrencyCode()));
 
-        }else{
+        } else {
             textViewDropIn.setText(getContext().getResources().getString(R.string.one_class_entry_without_price));
 
         }
-            handleClickEvent();
+        handleClickEvent();
 
-        if(mPackageDescription!=null&&!mPackageDescription.isEmpty()){
+        if (mPackageDescription != null && !mPackageDescription.isEmpty()) {
             textViewBuyMembershipDesc.setVisibility(View.VISIBLE);
             textViewBuyMembershipDesc.setText(mPackageDescription);
-        }else{
+        } else {
             textViewDropInDesc.setVisibility(View.GONE);
 
         }
 
-        if(mPackageDescriptionDropIn!=null&&!mPackageDescriptionDropIn.isEmpty()){
+        if (mPackageDescriptionDropIn != null && !mPackageDescriptionDropIn.isEmpty()) {
             textViewDropInDesc.setVisibility(View.VISIBLE);
             textViewDropInDesc.setText(mPackageDescriptionDropIn);
-        }else{
+        } else {
             textViewDropInDesc.setVisibility(View.GONE);
 
         }
@@ -115,41 +109,53 @@ public class BottomSheetClassBookingOptions extends BottomSheetDialogFragment im
         return view;
 
     }
-    private void setRemoteConfigValue(){
+
+    private void setRemoteConfigValue() {
         String PLAN_DESCRIPTION_DROP_IN_VALUE = RemoteConfigConst.PLAN_DESCRIPTION_DROP_IN_VALUE;
         String PLAN_DESCRIPTION_VALUE = RemoteConfigConst.PLAN_DESCRIPTION_VALUE;
 
-        try{
-            if(RemoteConfigConst.DROP_IN_COST_VALUE!=null && !RemoteConfigConst.DROP_IN_COST_VALUE.isEmpty()){
-                showDropInPrice=Boolean.valueOf(RemoteConfigConst.DROP_IN_COST_VALUE);
+        try {
+            if (RemoteConfigConst.DROP_IN_COST_VALUE != null && !RemoteConfigConst.DROP_IN_COST_VALUE.isEmpty()) {
+                showDropInPrice = Boolean.valueOf(RemoteConfigConst.DROP_IN_COST_VALUE);
             }
 
-            if(PLAN_DESCRIPTION_DROP_IN_VALUE!=null && !PLAN_DESCRIPTION_DROP_IN_VALUE.isEmpty()){
+            if (PLAN_DESCRIPTION_DROP_IN_VALUE != null && !PLAN_DESCRIPTION_DROP_IN_VALUE.isEmpty()) {
                 Gson g = new Gson();
-                RemoteConfigDataModel p = g.fromJson(PLAN_DESCRIPTION_DROP_IN_VALUE, new TypeToken<RemoteConfigDataModel>() {}.getType());
-                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en") && !p.getEn().isEmpty()){
-                    mPackageDescriptionDropIn =p.getEn();
+                RemoteConfigDataModel p = g.fromJson(PLAN_DESCRIPTION_DROP_IN_VALUE, new TypeToken<RemoteConfigDataModel>() {
+                }.getType());
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en") && !p.getEn().isEmpty()) {
+                    mPackageDescriptionDropIn = p.getEn();
 
-                }
-                else  if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar") && !p.getAr().isEmpty()){
-                    mPackageDescriptionDropIn =p.getAr();
+                } else if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar") && !p.getAr().isEmpty()) {
+                    mPackageDescriptionDropIn = p.getAr();
 
                 }
             }
-            if(PLAN_DESCRIPTION_VALUE != null && !PLAN_DESCRIPTION_VALUE.isEmpty()){
-                    Gson g = new Gson();
-                    RemoteConfigDataModel p = g.fromJson(PLAN_DESCRIPTION_VALUE, new TypeToken<RemoteConfigDataModel>() {}.getType());
-                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en") && !p.getEn().isEmpty()){
-                    mPackageDescription =p.getEn();
+            if (PLAN_DESCRIPTION_VALUE != null && !PLAN_DESCRIPTION_VALUE.isEmpty()) {
+                Gson g = new Gson();
+                RemoteConfigDataModel p = g.fromJson(PLAN_DESCRIPTION_VALUE, new TypeToken<RemoteConfigDataModel>() {
+                }.getType());
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en") && !p.getEn().isEmpty()) {
+                    if (TempStorage.getUser().getCurrencyCode() != null &&
+                            TempStorage.getUser().getCurrencyCode() == AppConstants.Currency.SAUDI_CURRENCY ||
+                            TempStorage.getUser().getCurrencyCode() == AppConstants.Currency.SAUDI_CURRENCY_SHORT
+                    )
+                        mPackageDescription = p.getEn_ksa();
+                    else
+                        mPackageDescription = p.getEn();
 
-                }
-              else  if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar") && !p.getAr().isEmpty()){
-                    mPackageDescription =p.getAr();
+                } else if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar") && !p.getAr().isEmpty()) {
+                    if (TempStorage.getUser().getCurrencyCode() != null &&
+                            TempStorage.getUser().getCurrencyCode() == AppConstants.Currency.SAUDI_CURRENCY ||
+                            TempStorage.getUser().getCurrencyCode() == AppConstants.Currency.SAUDI_CURRENCY_SHORT
+                    ) mPackageDescription = p.getAr_ksa();
+                    else
+                        mPackageDescription = p.getAr();
 
                 }
 
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

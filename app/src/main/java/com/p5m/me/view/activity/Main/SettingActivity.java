@@ -191,7 +191,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             categories.add(data.getName());
         }
         spinnerCity.setOnItemSelectedListener(this);
-        int userCountryId = TempStorage.getCountryId();
+        int userCountryId = TempStorage.getUser().getStoreId();
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
         if (countryModel != null) {
             for (int i = 0; i < countryModel.size(); i++) {
@@ -261,12 +261,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
             case NetworkCommunicator.RequestCode.GET_STORE_DATA:
                 countryModel = ((ResponseModel<List<StoreApiModel>>) response).data;
-
                 break;
             case NetworkCommunicator.RequestCode.UPDATE_STORE_ID:
                 StoreModel model = ((ResponseModel<StoreModel>) response).data;
                 User user = TempStorage.getUser();
-                TempStorage.setCountryId(model.getId());
                 user.setStoreId(model.getId());
                 user.setCurrencyCode(model.getCurrencyCode());
                 user.setStoreName(model.getName());
@@ -285,7 +283,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 ToastUtils.showLong(context, errorMessage);
                 break;
             case NetworkCommunicator.RequestCode.UPDATE_STORE_ID:
-                ToastUtils.show(context, errorMessage);
+//                ToastUtils.show(context, errorMessage);
                 break;
             case NetworkCommunicator.RequestCode.GET_STORE_DATA:
                 ToastUtils.show(context, errorMessage);

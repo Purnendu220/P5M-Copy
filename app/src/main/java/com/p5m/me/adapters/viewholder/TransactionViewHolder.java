@@ -11,6 +11,7 @@ import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.main.Transaction;
 import com.p5m.me.fxn.utility.Constants;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LanguageUtils;
 
@@ -54,7 +55,8 @@ public class TransactionViewHolder extends RecyclerView.ViewHolder {
 
         if (data != null && data instanceof Transaction) {
             itemView.setVisibility(View.VISIBLE);
-            if (TempStorage.getUser().getCurrencyCode().equalsIgnoreCase("SAR")) {
+            if (TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.SAUDI_CURRENCY) ||
+                    TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.SAUDI_CURRENCY_SHORT)) {
                 textViewAmount.setText(context.getString(R.string.amount_sar));
             } else {
                 textViewAmount.setText(context.getString(R.string.amount_kd));

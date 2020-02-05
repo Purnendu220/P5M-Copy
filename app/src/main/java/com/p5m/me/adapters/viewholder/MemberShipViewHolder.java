@@ -386,7 +386,8 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
         if (model.getPromoResponseDto().getDiscountType().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_OFFER_PERCENTAGE)) {
             offerText = context.getString(R.string.package_offer_percentage);
         } else {
-            if (TempStorage.getUser().getCurrencyCode().equalsIgnoreCase("SAR"))
+            if (TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.SAUDI_CURRENCY)||
+                    TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.SAUDI_CURRENCY_SHORT))
                 offerText = context.getString(R.string.sar_off);
             else
                 offerText = context.getString(R.string.package_offer_kwd);

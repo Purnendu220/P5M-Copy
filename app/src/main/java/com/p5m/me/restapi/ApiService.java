@@ -20,6 +20,7 @@ import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.data.main.GymModel;
 import com.p5m.me.data.main.Package;
+import com.p5m.me.data.main.PaymentInitiateModel;
 import com.p5m.me.data.main.ScheduleClassModel;
 import com.p5m.me.data.main.StoreApiModel;
 import com.p5m.me.data.main.StoreModel;
@@ -397,9 +398,13 @@ public interface ApiService {
     Call<ResponseModel<List<StoreApiModel>>> getStoreData();
 
     @Headers("Content-type: application/json")
-    @PUT(AppConstants.Url.USER_UPDATE_STORE )
-    Call<ResponseModel<StoreModel>>updateStoreId(@Query(AppConstants.ApiParamKey.USER_ID) int userId,
+    @PUT(AppConstants.Url.USER_UPDATE_STORE)
+    Call<ResponseModel<StoreModel>> updateStoreId(@Query(AppConstants.ApiParamKey.USER_ID) int userId,
                                                   @Query(AppConstants.ApiParamKey.STORE_ID) int storeId);
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.PAYMENT_INITIATE)
+    Call<ResponseModel<String>> getPaymentInitiate();
 
 
 }
