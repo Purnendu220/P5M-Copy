@@ -2,10 +2,14 @@ package com.p5m.me.view.activity.Main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.transition.TransitionManager;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -53,6 +57,8 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
     TextView textViewHeader;
     @BindView(R.id.buttonBottom)
     Button buttonBottom;
+    @BindView(R.id.scrollView)
+    MaxHeightScrollView scrollView;
     @BindView(R.id.flexBoxLayout)
     public FlexboxLayout flexBoxLayout;
     @BindView(R.id.flexBoxLayoutTime)
@@ -83,8 +89,7 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_started);
         ButterKnife.bind(activity);
-
-        flexBoxLayout.setFlexDirection(FlexDirection.ROW);
+       flexBoxLayout.setFlexDirection(FlexDirection.ROW);
         flexBoxLayoutTime.setFlexDirection(FlexDirection.ROW);
         flexBoxLayout.setVisibility(View.GONE);
         flexBoxLayoutTime.setVisibility(View.GONE);
@@ -94,9 +99,18 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
         activities = new ArrayList<>();
         selectedTimeList = new StringBuffer();
         networkCommunicator.getActivities(this, false);
-
         setClickEvents();
         getTime();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            TransitionManager.beginDelayedTransition(scrollView);
+        }
+         scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(View.FOCUS_DOWN);
+            }
+        });
+
     }
 
     private void setClickEvents() {

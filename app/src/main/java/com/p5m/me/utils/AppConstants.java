@@ -294,6 +294,7 @@ public class AppConstants {
         public static final String GET_STORE_DATA = "api/v1/store/getAllStore";
         public static final String USER_UPDATE_STORE = "api/v1/user/updateUserStore";
         public static final String PAYMENT_INITIATE = "api/v1/payment/initiate";
+        public static final String INTERESTED_CITY = "api/v1/interested/city";
     }
 
     public class ApiParamValue {

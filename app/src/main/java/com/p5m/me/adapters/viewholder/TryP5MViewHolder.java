@@ -69,54 +69,63 @@ public class TryP5MViewHolder extends RecyclerView.ViewHolder {
         if (data != null && data instanceof ExploreDataModel) {
             final ExploreDataModel model = (ExploreDataModel) data;
 
-            if (model.getHeader() != null) {
-                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
-                    if (!TextUtils.isEmpty(model.getHeader().getTitleAr()))
-                        textViewHeader.setText(model.getHeader().getTitleAr());
-                    else
-                        textViewHeader.setVisibility(View.GONE);
-                } else {
-                    if (!TextUtils.isEmpty(model.getHeader().getTitle()))
-                        textViewHeader.setText(model.getHeader().getTitle());
-                    else
-                        textViewHeader.setVisibility(View.GONE);
-
-                }
-                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
-                    if (!TextUtils.isEmpty(model.getHeader().getSubTitleAr()))
-                        textViewSubHeader.setText(model.getHeader().getSubTitleAr());
-                    else
-                        textViewSubHeader.setVisibility(View.GONE);
-                } else {
-                    if (!TextUtils.isEmpty(model.getHeader().getSubTitle()))
-                        textViewSubHeader.setText(model.getHeader().getSubTitle());
-                    else
-                        textViewSubHeader.setVisibility(View.GONE);
-                }
-            }
             if (model.getData() != null) {
                 ExploreDataList exploreDataList = new ExploreDataList(model.getData());
                 String listString = convertorToModelClassList(exploreDataList);
                 list = gson.fromJson(listString, new TypeToken<List<TryP5MData>>() {
                 }.getType());
             }
-            if (list != null) {
+            if (list != null && list.size() > 0) {
+                itemView.setVisibility(View.VISIBLE);
+                itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar"))
                     explorePlans.setText(list.get(0).getButtonTitleAr());
                 else
                     explorePlans.setText(list.get(0).getButtonTitle());
-            }
-            explorePlans.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    adapterCallbacks.onAdapterItemClick(TryP5MViewHolder.this, explorePlans, data, position);
-                }
-            });
-            if (model.isShowDivider()) {
-                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layout.getLayoutParams();
-                params.topMargin = 10;
-            }
+                if (model.getHeader() != null) {
+                    if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+                        if (!TextUtils.isEmpty(model.getHeader().getTitleAr()))
+                            textViewHeader.setText(model.getHeader().getTitleAr());
+                        else
+                            textViewHeader.setVisibility(View.GONE);
+                    } else {
+                        if (!TextUtils.isEmpty(model.getHeader().getTitle()))
+                            textViewHeader.setText(model.getHeader().getTitle());
+                        else
+                            textViewHeader.setVisibility(View.GONE);
 
+                    }
+                    if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+                        if (!TextUtils.isEmpty(model.getHeader().getSubTitleAr()))
+                            textViewSubHeader.setText(model.getHeader().getSubTitleAr());
+                        else
+                            textViewSubHeader.setVisibility(View.GONE);
+                    } else {
+                        if (!TextUtils.isEmpty(model.getHeader().getSubTitle()))
+                            textViewSubHeader.setText(model.getHeader().getSubTitle());
+                        else
+                            textViewSubHeader.setVisibility(View.GONE);
+                    }
+                }
+
+
+                explorePlans.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        adapterCallbacks.onAdapterItemClick(TryP5MViewHolder.this, explorePlans, data, position);
+                    }
+                });
+                if (model.isShowDivider()) {
+                    ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layout.getLayoutParams();
+                    params.topMargin = 10;
+                }
+            } else {
+                itemView.setVisibility(View.GONE);
+                itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+            }
+        } else {
+            itemView.setVisibility(View.GONE);
+            itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
         }
     }
 

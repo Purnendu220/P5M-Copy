@@ -137,8 +137,8 @@ public class BottomSheetClassBookingOptions extends BottomSheetDialogFragment im
                 }.getType());
                 if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en") && !p.getEn().isEmpty()) {
                     if (TempStorage.getUser().getCurrencyCode() != null &&
-                            TempStorage.getUser().getCurrencyCode() == AppConstants.Currency.SAUDI_CURRENCY ||
-                            TempStorage.getUser().getCurrencyCode() == AppConstants.Currency.SAUDI_CURRENCY_SHORT
+                            (TempStorage.getUser().getCurrencyCode().equalsIgnoreCase( AppConstants.Currency.SAUDI_CURRENCY) ||
+                                    TempStorage.getUser().getCurrencyCode().equalsIgnoreCase( AppConstants.Currency.SAUDI_CURRENCY_SHORT))
                     )
                         mPackageDescription = p.getEn_ksa();
                     else
@@ -146,8 +146,8 @@ public class BottomSheetClassBookingOptions extends BottomSheetDialogFragment im
 
                 } else if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar") && !p.getAr().isEmpty()) {
                     if (TempStorage.getUser().getCurrencyCode() != null &&
-                            TempStorage.getUser().getCurrencyCode() == AppConstants.Currency.SAUDI_CURRENCY ||
-                            TempStorage.getUser().getCurrencyCode() == AppConstants.Currency.SAUDI_CURRENCY_SHORT
+                            (TempStorage.getUser().getCurrencyCode().equalsIgnoreCase( AppConstants.Currency.SAUDI_CURRENCY) ||
+                                    TempStorage.getUser().getCurrencyCode().equalsIgnoreCase( AppConstants.Currency.SAUDI_CURRENCY_SHORT))
                     ) mPackageDescription = p.getAr_ksa();
                     else
                         mPackageDescription = p.getAr();

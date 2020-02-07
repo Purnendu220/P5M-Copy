@@ -619,4 +619,26 @@ public class Helper {
     public static void wishlistItemRemoved(ClassModel classModel, ClassModel data) {
 
     }
+
+    public static List<String> getCategoryListStringFromList(List<ClassActivity> list) {
+        List<String> nameList = new ArrayList<>();
+
+        if (list != null && !list.isEmpty()) {
+
+            try {
+                for (int index = 0; index < list.size(); index++) {
+                    String value = list.get(index).getName();
+                    nameList.add(value);
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                LogUtils.exception(e);
+            }
+        }
+
+
+
+        return nameList;
+    }
 }

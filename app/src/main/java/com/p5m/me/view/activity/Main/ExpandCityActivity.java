@@ -12,25 +12,40 @@ import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.p5m.me.R;
+import com.p5m.me.analytics.FirebaseAnalysic;
+import com.p5m.me.analytics.IntercomEvents;
+import com.p5m.me.analytics.MixPanel;
+import com.p5m.me.data.main.InterestedCityModel;
+import com.p5m.me.data.main.InterestedCityRequestModel;
+import com.p5m.me.data.main.StoreApiModel;
+import com.p5m.me.data.main.User;
+import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.restapi.NetworkCommunicator;
+import com.p5m.me.restapi.ResponseModel;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.LoginRegister.InfoScreen;
 import com.p5m.me.view.activity.LoginRegister.LoginActivity;
+import com.p5m.me.view.activity.LoginRegister.SignUpOptions;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomDialogThankYou;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ExpandCityActivity extends BaseActivity implements View.OnClickListener {
+public class ExpandCityActivity extends BaseActivity implements View.OnClickListener, NetworkCommunicator.RequestListener {
 
-    private CustomDialogThankYou mCustomThankyouDialog;
 
-    public static void open(Context context, String countryName) {
+    public static void open(Context context, String countryName, int id, InterestedCityRequestModel interestedCityRequestModel) {
         Intent intent = new Intent(context, ExpandCityActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         ExpandCityActivity.countryName = countryName;
+        ExpandCityActivity.id = id;
+        ExpandCityActivity.interestedCityRequestModel = interestedCityRequestModel;
+
         context.startActivity(intent);
     }
 
@@ -49,6 +64,9 @@ public class ExpandCityActivity extends BaseActivity implements View.OnClickList
     @BindView(R.id.textInputLayoutEmail)
     public TextInputLayout textInputLayoutEmail;
     public static String countryName;
+    private static int id;
+    private CustomDialogThankYou mCustomThankyouDialog;
+    private static InterestedCityRequestModel interestedCityRequestModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +88,9 @@ public class ExpandCityActivity extends BaseActivity implements View.OnClickList
                 LoginActivity.open(context);
                 break;
             case R.id.buttonSubmit:
-                if (!isError())
-                    showThankYou();
+                if (!isError()) {
+                    callInterestedCityApi();
+                }
                 break;
             case R.id.imageViewBack:
                 onBackPressed();
@@ -82,6 +101,7 @@ public class ExpandCityActivity extends BaseActivity implements View.OnClickList
                 break;
         }
     }
+
 
     private boolean isError() {
         String email = editTextEmail.getText().toString().trim();
@@ -94,7 +114,7 @@ public class ExpandCityActivity extends BaseActivity implements View.OnClickList
             textInputLayoutEmail.setError(context.getResources().getString(R.string.email_required_validate));
             return true;
         }
-
+        interestedCityRequestModel.setUserEmail(email);
         return false;
     }
 
@@ -106,6 +126,9 @@ public class ExpandCityActivity extends BaseActivity implements View.OnClickList
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    private void callInterestedCityApi() {
+        networkCommunicator.uploadInsterestedCity(id ,interestedCityRequestModel,this,false);
     }
 
     @Override
@@ -120,5 +143,23 @@ public class ExpandCityActivity extends BaseActivity implements View.OnClickList
         super.onPause();
 
     }
+    @Override
+    public void onApiSuccess(Object response, int requestCode) {
+        switch (requestCode) {
+            case NetworkCommunicator.RequestCode.INERESTED_CITY:
+                InterestedCityModel interestedCityModel = ((ResponseModel<InterestedCityModel>)response).data;
+                showThankYou();
+                break;
+        }
+    }
 
+    @Override
+    public void onApiFailure(String errorMessage, int requestCode) {
+        switch (requestCode) {
+            case NetworkCommunicator.RequestCode.INERESTED_CITY:
+                ToastUtils.show(context, errorMessage);
+                break;
+
+        }
+    }
 }

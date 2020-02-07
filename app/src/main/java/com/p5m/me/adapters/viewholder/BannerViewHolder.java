@@ -46,6 +46,7 @@ public class BannerViewHolder extends RecyclerView.ViewHolder implements ViewPag
     public void bind(final List<BannerData> data, int shownInScreen, final AdapterCallbacks adapterCallbacks, final int position) {
         if (data != null  && data.size()>0) {
             itemView.setVisibility(View.VISIBLE);
+            viewPager.setVisibility(View.VISIBLE);
             layoutIndicator.setVisibility(View.VISIBLE);
             layoutIndicator.removeAllViews();
              // Pager Setup..

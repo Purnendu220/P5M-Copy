@@ -19,6 +19,8 @@ import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.data.main.GymModel;
+import com.p5m.me.data.main.InterestedCityModel;
+import com.p5m.me.data.main.InterestedCityRequestModel;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.PaymentInitiateModel;
 import com.p5m.me.data.main.ScheduleClassModel;
@@ -405,6 +407,15 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.PAYMENT_INITIATE)
     Call<ResponseModel<String>> getPaymentInitiate();
+
+    @Headers("Content-type: application/json")
+    @POST(AppConstants.Url.INTERESTED_CITY)
+    Call<ResponseModel<InterestedCityModel>> uploadInterestedCity(@Body InterestedCityRequestModel interestedCityModel);
+
+    @Headers("Content-type: application/json")
+    @PUT(AppConstants.Url.INTERESTED_CITY)
+    Call<ResponseModel<InterestedCityModel>> uploadInterestedCity(@Query(AppConstants.ApiParamKey.ID) int id,
+                                                                  @Body InterestedCityRequestModel interestedCityModel);
 
 
 }

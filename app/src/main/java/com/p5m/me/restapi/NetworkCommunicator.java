@@ -26,6 +26,8 @@ import com.p5m.me.data.main.DefaultSettingServer;
 import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.data.main.GymModel;
+import com.p5m.me.data.main.InterestedCityModel;
+import com.p5m.me.data.main.InterestedCityRequestModel;
 import com.p5m.me.data.main.NotificationModel;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.PaymentInitiateModel;
@@ -165,6 +167,7 @@ public class NetworkCommunicator {
         public static final int GET_STORE_DATA = 161;
         public static final int UPDATE_STORE_ID = 162;
         public static final int GET_PAYMENT_INITIATE = 163;
+        public static final int INERESTED_CITY = 164;
     }
 
     private Context context;
@@ -1741,6 +1744,48 @@ public class NetworkCommunicator {
 
             @Override
             public void onResponse(Call<ResponseModel<String>> call, Response<ResponseModel<String>> restResponse, ResponseModel<String> response) {
+                LogUtils.networkSuccess("NetworkCommunicator User onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call uploadInsterestedCity(InterestedCityRequestModel interestedCityModel, final RequestListener requestListener, final boolean useCache) {
+        final int requestCode = RequestCode.INERESTED_CITY;
+        Call<ResponseModel<InterestedCityModel>> call = apiService.uploadInterestedCity(interestedCityModel);
+        LogUtils.debug("NetworkCommunicator hitting Interested City");
+
+        call.enqueue(new RestCallBack<ResponseModel<InterestedCityModel>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<InterestedCityModel>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator User onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<InterestedCityModel>> call, Response<ResponseModel<InterestedCityModel>> restResponse, ResponseModel<InterestedCityModel> response) {
+                LogUtils.networkSuccess("NetworkCommunicator User onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call uploadInsterestedCity(int id,InterestedCityRequestModel interestedCityModel, final RequestListener requestListener, final boolean useCache) {
+        final int requestCode = RequestCode.INERESTED_CITY;
+        Call<ResponseModel<InterestedCityModel>> call = apiService.uploadInterestedCity(id,interestedCityModel);
+        LogUtils.debug("NetworkCommunicator hitting Interested City");
+
+        call.enqueue(new RestCallBack<ResponseModel<InterestedCityModel>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<InterestedCityModel>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator User onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<InterestedCityModel>> call, Response<ResponseModel<InterestedCityModel>> restResponse, ResponseModel<InterestedCityModel> response) {
                 LogUtils.networkSuccess("NetworkCommunicator User onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
             }

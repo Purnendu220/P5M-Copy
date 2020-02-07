@@ -71,39 +71,40 @@ public class ExplorePagePriceModelViewHolder extends RecyclerView.ViewHolder {
                 list = gson.fromJson(listString, new TypeToken<List<PriceModel>>() {
                 }.getType());
             }
-            itemView.setVisibility(View.VISIBLE);
-            if (model.getHeader() != null) {
-                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
-                    if (!TextUtils.isEmpty(model.getHeader().getTitleAr()))
-                        textViewHeader.setText(model.getHeader().getTitleAr());
-                    else
-                        textViewHeader.setVisibility(View.GONE);
-                } else {
-                    if (!TextUtils.isEmpty(model.getHeader().getTitle()))
-                        textViewHeader.setText(model.getHeader().getTitle());
-                    else
-                        textViewHeader.setVisibility(View.GONE);
+            if (list != null && list.size() > 0) {
+                itemView.setVisibility(View.VISIBLE);
+                itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                if (model.getHeader() != null) {
+                    if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+                        if (!TextUtils.isEmpty(model.getHeader().getTitleAr()))
+                            textViewHeader.setText(model.getHeader().getTitleAr());
+                        else
+                            textViewHeader.setVisibility(View.GONE);
+                    } else {
+                        if (!TextUtils.isEmpty(model.getHeader().getTitle()))
+                            textViewHeader.setText(model.getHeader().getTitle());
+                        else
+                            textViewHeader.setVisibility(View.GONE);
 
+                    }
+                    if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+                        if (!TextUtils.isEmpty(model.getHeader().getSubTitleAr()))
+                            textViewSubHeader.setText(model.getHeader().getSubTitleAr());
+                        else
+                            textViewSubHeader.setVisibility(View.GONE);
+                    } else {
+                        if (!TextUtils.isEmpty(model.getHeader().getSubTitle()))
+                            textViewSubHeader.setText(model.getHeader().getSubTitle());
+                        else
+                            textViewSubHeader.setVisibility(View.GONE);
+                    }
                 }
-                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
-                    if (!TextUtils.isEmpty(model.getHeader().getSubTitleAr()))
-                        textViewSubHeader.setText(model.getHeader().getSubTitleAr());
-                    else
-                        textViewSubHeader.setVisibility(View.GONE);
-                } else {
-                    if (!TextUtils.isEmpty(model.getHeader().getSubTitle()))
-                        textViewSubHeader.setText(model.getHeader().getSubTitle());
-                    else
-                        textViewSubHeader.setVisibility(View.GONE);
+                if (model.isShowDivider()) {
+                    ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layout.getLayoutParams();
+                    params.topMargin = 10;
                 }
-            }
-            if (model.isShowDivider()) {
-                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layout.getLayoutParams();
-                params.topMargin = 10;
-            }
 
-            textViewMore.setVisibility(View.GONE);
-            if (list != null) {
+                textViewMore.setVisibility(View.GONE);
                 Collections.sort(list, new Comparator<PriceModel>() {
                     @Override
                     public int compare(PriceModel u1, PriceModel u2) {
@@ -117,13 +118,15 @@ public class ExplorePagePriceModelViewHolder extends RecyclerView.ViewHolder {
                 LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
                 recyclerView.setLayoutManager(layoutManager);
                 adapter.notifyDataSetChanged();
-
             } else {
-                recyclerView.setVisibility(View.GONE);
-            }
+                itemView.setVisibility(View.GONE);
+                itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
 
+            }
         } else {
             itemView.setVisibility(View.GONE);
+            itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+
 
         }
     }
