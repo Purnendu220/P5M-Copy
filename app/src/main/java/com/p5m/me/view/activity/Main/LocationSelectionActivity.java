@@ -3,9 +3,7 @@ package com.p5m.me.view.activity.Main;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -14,16 +12,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.p5m.me.R;
 import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.analytics.MixPanel;
-import com.p5m.me.data.ExploreDataModel;
+import com.p5m.me.data.main.InterestedCityModel;
+import com.p5m.me.data.main.InterestedCityRequestModel;
 import com.p5m.me.data.main.StoreApiModel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.request.RegistrationRequest;
@@ -35,7 +31,6 @@ import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.LoginRegister.LoginActivity;
-import com.p5m.me.view.activity.LoginRegister.RegistrationActivity;
 import com.p5m.me.view.activity.LoginRegister.SignUpOptions;
 import com.p5m.me.view.activity.base.BaseActivity;
 
@@ -45,8 +40,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.view.View.LAYOUT_DIRECTION_RTL;
-
 public class LocationSelectionActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener, NetworkCommunicator.RequestListener {
 
 
@@ -55,6 +48,7 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
     private List<StoreApiModel> model;
     private boolean other = false;
     private int countryId = 0;
+    private InterestedCityRequestModel interestedCityRequestModel;
 
     public static void open(Context context) {
         context.startActivity(new Intent(context, LocationSelectionActivity.class));
@@ -202,7 +196,7 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
                     } else {
                         textInputLayoutCity.setVisibility(View.VISIBLE);
                         if (!isError()) {
-                            ExpandCityActivity.open(context, textViewCountryName.getText().toString());
+                            callInterestedCityApi();
                         }
                     }
 
@@ -216,12 +210,18 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
         }
     }
 
+    private void callInterestedCityApi() {
+        networkCommunicator.uploadInsterestedCity(interestedCityRequestModel,this,false);
+    }
+
     private boolean isError() {
         String country = textViewCountryName.getText().toString().trim();
         if (country.isEmpty()) {
             textInputLayoutCity.setError(context.getResources().getString(R.string.country_required));
             return true;
         }
+        interestedCityRequestModel = new InterestedCityRequestModel();
+        interestedCityRequestModel.setCityName(country);
         return false;
     }
 
@@ -243,12 +243,17 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
                     GetStartedActivity.open(context);
                 }
                 break;
+            case NetworkCommunicator.RequestCode.INERESTED_CITY:
+                InterestedCityModel interestedCityModel = ((ResponseModel<InterestedCityModel>)response).data;
+                ExpandCityActivity.open(context, textViewCountryName.getText().toString() , interestedCityModel.getId(),interestedCityRequestModel);
+                break;
         }
     }
 
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
         switch (requestCode) {
+            case NetworkCommunicator.RequestCode.INERESTED_CITY:
             case NetworkCommunicator.RequestCode.GET_STORE_DATA:
                 ToastUtils.show(context, errorMessage);
                 break;
@@ -256,6 +261,7 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
 //                SignUpOptions.open(context);
                 SignUpOptions.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_FB_LOGIN);
                 break;
+
         }
     }
 

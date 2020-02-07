@@ -200,7 +200,7 @@
                                             android:layout_height="wrap_content"
                                             android:fontFamily="sans-serif"
                                             android:gravity="left"
-                                            android:hint="@string/email"
+                                            android:hint="@string/email_sign_up"
                                             android:inputType="textEmailAddress"
                                             android:maxLines="1"
                                             android:textSize="@dimen/text_large"

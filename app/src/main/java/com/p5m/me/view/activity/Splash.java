@@ -113,7 +113,6 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
                 if (MyPreferences.getInstance().isLogin()) {
                     /////////// HomeActivity Screen ////////////
                     HomeActivity.open(context);
-//                    GetStartedActivity.open(context);
                 } else {
 
                     Helper.handleLogin(context);

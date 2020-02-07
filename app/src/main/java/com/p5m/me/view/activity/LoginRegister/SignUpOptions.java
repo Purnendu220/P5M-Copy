@@ -166,10 +166,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
         textViewBottom.setText(span);
         SetupFBLogin();
         setupViews();
-       /* if (navigationFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FACEBOOK_LOGIN
-                && registrationRequest != null){
-            setUp
-        }*/
+
     }
 
     @Override
@@ -303,6 +300,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
             case NetworkCommunicator.RequestCode.REGISTER:
                 if (response != null) {
                     User user = ((ResponseModel<User>) response).data;
+                    registrationRequest=null;
                     TempStorage.setCountryId(user.getId());
                     EventBroadcastHelper.sendLogin(context, user);
                     MixPanel.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
@@ -469,6 +467,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
         finish();
     }
 
+
     private void setupViews() {
         buttonMale.setOnClickListener(this);
         buttonFemale.setOnClickListener(this);
@@ -479,12 +478,12 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
         Helper.setupErrorWatcher(editTextPass, textInputLayoutPass);
         Helper.setupErrorWatcher(editTextConfirmPass, textInputLayoutConfirmPass);
 
-//        Helper.setupEditTextFocusHideKeyboard(editTextName);
-//        Helper.setupEditTextFocusHideKeyboard(editTextEmail);
-//        Helper.setupEditTextFocusHideKeyboard(editTextPass);
-//        Helper.setupEditTextFocusHideKeyboard(editTextConfirmPass);
+        Helper.setupEditTextFocusHideKeyboard(editTextName);
+        Helper.setupEditTextFocusHideKeyboard(editTextEmail);
+        Helper.setupEditTextFocusHideKeyboard(editTextPass);
+        Helper.setupEditTextFocusHideKeyboard(editTextConfirmPass);
 
-        if (!getRegistrationRequest().getFirstName().isEmpty()) {
+      /*  if (!getRegistrationRequest().getFirstName().isEmpty()) {
             editTextName.setText(getRegistrationRequest().getFirstName());
         }
         if (!getRegistrationRequest().getLastName().isEmpty()) {
@@ -526,7 +525,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                 }
                 return false;
             }
-        });
+        });*/
     }
 
     private void facebookValidation() {

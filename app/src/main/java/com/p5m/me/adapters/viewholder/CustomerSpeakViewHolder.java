@@ -76,31 +76,40 @@ public class CustomerSpeakViewHolder extends RecyclerView.ViewHolder implements 
                 testominalList = gson.fromJson(listString, new TypeToken<List<CustomerSpeaksData>>() {
                 }.getType());
             }
-            itemView.setVisibility(View.VISIBLE);
-            CustomerSpeakAdapter customerSpeakAdapter = new CustomerSpeakAdapter(context, testominalList);
-            viewPager.setAdapter(customerSpeakAdapter);
-            if (model.getHeader() != null) {
-                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
-                    if (!TextUtils.isEmpty(model.getHeader().getTitleAr()))
-                        textViewHeader.setText(model.getHeader().getTitleAr());
-                    else
-                        textViewHeader.setVisibility(View.GONE);
-                } else {
-                    if (!TextUtils.isEmpty(model.getHeader().getTitle()))
-                        textViewHeader.setText(model.getHeader().getTitle());
-                    else
-                        textViewHeader.setVisibility(View.GONE);
+            if (testominalList != null && testominalList.size() > 0) {
+                itemView.setVisibility(View.VISIBLE);
+                itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                CustomerSpeakAdapter customerSpeakAdapter = new CustomerSpeakAdapter(context, testominalList);
+                viewPager.setAdapter(customerSpeakAdapter);
+                if (model.getHeader() != null) {
+                    if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+                        if (!TextUtils.isEmpty(model.getHeader().getTitleAr()))
+                            textViewHeader.setText(model.getHeader().getTitleAr());
+                        else
+                            textViewHeader.setVisibility(View.GONE);
+                    } else {
+                        if (!TextUtils.isEmpty(model.getHeader().getTitle()))
+                            textViewHeader.setText(model.getHeader().getTitle());
+                        else
+                            textViewHeader.setVisibility(View.GONE);
+
+                    }
 
                 }
-
+                layoutIndicator.removeAllViews();
+                // Indicator setup..
+                new ViewPagerIndicator(context, ViewPagerIndicator.STYLE_NORMAL).setup(viewPager, layoutIndicator, R.drawable.circle_black, R.drawable.circle_white);
+                if (model.isShowDivider()) {
+                    ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layoutTestinomials.getLayoutParams();
+                    params.topMargin = 10;
+                }
+            } else {
+                itemView.setVisibility(View.GONE);
+                itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
             }
-            layoutIndicator.removeAllViews();
-            // Indicator setup..
-            new ViewPagerIndicator(context, ViewPagerIndicator.STYLE_NORMAL).setup(viewPager, layoutIndicator, R.drawable.circle_black, R.drawable.circle_white);
-            if(model.isShowDivider()){
-                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layoutTestinomials.getLayoutParams();
-               params.topMargin = 10;
-            }
+        } else {
+            itemView.setVisibility(View.GONE);
+            itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
         }
 
     }

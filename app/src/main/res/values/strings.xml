@@ -634,6 +634,7 @@ Would you like to view your balance? </string>
     <string name="amount_sar">Amount(SAR)</string>
     <string name="please_select_city">Please select city</string>
     <string name="payment_options">Payment Options</string>
+    <string name="email_sign_up">Email</string>
     <string-array name="city">
         <item>Kuwait</item>
         <item>Riyadh,Saudi Arabia</item>

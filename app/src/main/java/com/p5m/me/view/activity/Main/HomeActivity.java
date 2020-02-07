@@ -35,6 +35,7 @@ import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.firebase_dynamic_link.FirebaseDynamicLinnk;
 import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.remote_config.RemoteConfigSetUp;
+import com.p5m.me.remote_config.RemoteConfigure;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -234,6 +235,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         FirebaseDynamicLinnk.getDynamicLink(this, getIntent());
         handler = new Handler(Looper.getMainLooper());
         setupBottomTabs();
+        (new RemoteConfigure()).fetchRemoteConfig(context);
         homeAdapter = new HomeAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_TABS, PROFILE_TAB_POSITION, SCHEDULE_TAB_POSITION,NAVIGATED_FROM_INT,NUMBER_OF_PACKAGES_TO_BUY,CLASS_OBJECT,BOOK_WITH_FRIEND_DATA);
         viewPager.setAdapter(homeAdapter);
         viewPager.addOnPageChangeListener(this);

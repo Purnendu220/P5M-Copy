@@ -174,16 +174,16 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
 
             if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
                 if (TempStorage.getUser().getCurrencyCode() != null &&
-                        TempStorage.getUser().getCurrencyCode() == AppConstants.Currency.SAUDI_CURRENCY ||
-                        TempStorage.getUser().getCurrencyCode() == AppConstants.Currency.SAUDI_CURRENCY_SHORT
+                        (TempStorage.getUser().getCurrencyCode().equalsIgnoreCase( AppConstants.Currency.SAUDI_CURRENCY) ||
+                                TempStorage.getUser().getCurrencyCode().equalsIgnoreCase( AppConstants.Currency.SAUDI_CURRENCY_SHORT))
                 ) {
                     return (remoteConfigdata.getAr_ksa() == null ? remoteConfigdata.getAr() : remoteConfigdata.getAr_ksa());
                 }
                 return remoteConfigdata.getAr();
             } else {
                 if (TempStorage.getUser().getCurrencyCode() != null &&
-                        TempStorage.getUser().getCurrencyCode() == AppConstants.Currency.SAUDI_CURRENCY ||
-                        TempStorage.getUser().getCurrencyCode() == AppConstants.Currency.SAUDI_CURRENCY_SHORT
+                        (TempStorage.getUser().getCurrencyCode().equalsIgnoreCase( AppConstants.Currency.SAUDI_CURRENCY) ||
+                        TempStorage.getUser().getCurrencyCode().equalsIgnoreCase( AppConstants.Currency.SAUDI_CURRENCY_SHORT))
                 ) {
                     return (remoteConfigdata.getEn_ksa() == null ? remoteConfigdata.getEn() : remoteConfigdata.getEn_ksa());
                 }

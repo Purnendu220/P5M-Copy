@@ -163,7 +163,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 networkCommunicator.logout(new LogoutRequest(TempStorage.getUser().getId()), this, false);
                 break;
             case R.id.layoutChangeCountry:
-                if (categories != null)
+                if (categories != null && countryModel!=null)
                     openCountryChangeDialog();
                 break;
         }
