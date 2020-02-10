@@ -58,7 +58,7 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
     @BindView(R.id.buttonBottom)
     Button buttonBottom;
     @BindView(R.id.scrollView)
-    MaxHeightScrollView scrollView;
+    ScrollView scrollView;
     @BindView(R.id.flexBoxLayout)
     public FlexboxLayout flexBoxLayout;
     @BindView(R.id.flexBoxLayoutTime)
@@ -101,15 +101,15 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
         networkCommunicator.getActivities(this, false);
         setClickEvents();
         getTime();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            TransitionManager.beginDelayedTransition(scrollView);
-        }
-         scrollView.post(new Runnable() {
-            @Override
-            public void run() {
-                scrollView.fullScroll(View.FOCUS_DOWN);
-            }
-        });
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            TransitionManager.beginDelayedTransition(scrollView);
+//        }
+//         scrollView.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                scrollView.fullScroll(View.FOCUS_DOWN);
+//            }
+//        });
 
     }
 

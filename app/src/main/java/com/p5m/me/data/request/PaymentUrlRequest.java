@@ -57,6 +57,7 @@ public class PaymentUrlRequest {
         this.packageId = packageId;
         this.sessionId = sessionId;
         this.gymId = gymId;
+        this.paymentMethodId = paymentMethodId;
     }
     public PaymentUrlRequest(Integer userId, Integer packageId, Integer sessionId, Integer gymId,List<BookWithFriendData> userList,Integer numOfClass,Integer paymentMethodId) {
         this.userId = userId;
