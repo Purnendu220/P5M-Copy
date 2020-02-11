@@ -118,7 +118,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
         }
         categories = new ArrayList<String>();
-        countryModel = TempStorage.getCountries();
         if (countryModel == null)
             callApi();
 

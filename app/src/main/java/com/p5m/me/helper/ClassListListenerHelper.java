@@ -5,18 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -48,6 +47,7 @@ import com.p5m.me.view.activity.Main.FullRatingActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
+import com.p5m.me.view.custom.CustomDialogCancelBooking;
 import com.p5m.me.view.custom.CustomRateAlertDialog;
 
 import java.util.Calendar;
@@ -57,7 +57,7 @@ import java.util.List;
  * Created by Varun John on 4/19/2018.
  */
 
-public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommunicator.RequestListener, CustomAlertDialog.OnAlertButtonAction {
+public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommunicator.RequestListener, CustomAlertDialog.OnAlertButtonAction, CustomDialogCancelBooking.OnCancelBooking {
 
     public Context context;
     public Activity activity;
@@ -445,8 +445,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
     public void dialogConfirmUnJoin(final Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, final int unJoinClassId) {
 
+        Boolean showCustomDialog = false;
         String message = context.getString(R.string.sure_unjoin);
-
         String serverMessageNormalClass = message;
         String serverMessageSpecialClass = message;
         String serverMessage5MinPolicy = context.getString(R.string.sure_unjoin);
@@ -472,8 +472,10 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model)) {
             if (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) <= cancelTime) {
                 message = serverMessageSpecialClass;
+                showCustomDialog = true;
                 if (checkFor5MinDifference(model)) {
                     message = serverMessage5MinPolicy;
+                    showCustomDialog = false;
                 }
             } else {
                 message = context.getString(R.string.sure_unjoin);
@@ -486,85 +488,101 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         } else if (DateUtils.hoursLeft(
                 model.getClassDate() + " " + model.getFromTime()) <= cancelTime) {
             message = serverMessageNormalClass;
+            showCustomDialog = true;
             if (checkFor5MinDifference(model)) {
                 message = serverMessage5MinPolicy;
+                showCustomDialog = false;
             }
         }
 
-        final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
-                .cancelable(false)
-                .customView(R.layout.dialog_unjoin_class, false)
-                .build();
-        materialDialog.show();
+        if (!showCustomDialog) {
+            final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
+                    .cancelable(false)
+                    .customView(R.layout.dialog_unjoin_class, false)
+                    .build();
+            materialDialog.show();
 
-        final TextView textViewMessage = (TextView) materialDialog.findViewById(R.id.textViewMessage);
-        final TextView textViewUnJoin = (TextView) materialDialog.findViewById(R.id.textViewOk);
-        final TextView textViewClose = (TextView) materialDialog.findViewById(R.id.textViewCancel);
+            final TextView textViewMessage = (TextView) materialDialog.findViewById(R.id.textViewMessage);
+            final TextView textViewUnJoin = (TextView) materialDialog.findViewById(R.id.textViewOk);
+            final TextView textViewClose = (TextView) materialDialog.findViewById(R.id.textViewCancel);
 
-        textViewMessage.setText(message);
+            textViewMessage.setText(message);
 
-        textViewClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                materialDialog.dismiss();
-            }
-        });
+            textViewClose.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    materialDialog.dismiss();
+                }
+            });
 
-        textViewUnJoin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            textViewUnJoin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-                textViewUnJoin.setVisibility(View.GONE);
-                networkCommunicator.unJoinClass(model, unJoinClassId, new NetworkCommunicator.RequestListener() {
-                    @Override
-                    public void onApiSuccess(Object response, int requestCode) {
+                    textViewUnJoin.setVisibility(View.GONE);
+                    networkCommunicator.unJoinClass(model, unJoinClassId, new NetworkCommunicator.RequestListener() {
+                        @Override
+                        public void onApiSuccess(Object response, int requestCode) {
 
-                        try {
-                            model.setUserJoinStatus(false);
-                            TempStorage.setUser(context, ((ResponseModel<User>) response).data);
-                            EventBroadcastHelper.sendUserUpdate(context, ((ResponseModel<User>) response).data);
-                            EventBroadcastHelper.sendClassJoin(context, model, AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS);
-                            MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
-                            FirebaseAnalysic.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
-                            IntercomEvents.trackUnJoinClass(model);
+                            try {
+                                model.setUserJoinStatus(false);
+                                TempStorage.setUser(context, ((ResponseModel<User>) response).data);
+                                EventBroadcastHelper.sendUserUpdate(context, ((ResponseModel<User>) response).data);
+                                EventBroadcastHelper.sendClassJoin(context, model, AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS);
+                                MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
+                                FirebaseAnalysic.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
+                                IntercomEvents.trackUnJoinClass(model);
 //
+                                materialDialog.dismiss();
+                                openAlertForRefund(model);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                LogUtils.exception(e);
+                            }
+
+                            textViewUnJoin.setVisibility(View.VISIBLE);
                             materialDialog.dismiss();
-                            openAlertForRefund(model);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            LogUtils.exception(e);
                         }
 
-                        textViewUnJoin.setVisibility(View.VISIBLE);
-                        materialDialog.dismiss();
-                    }
+                        @Override
+                        public void onApiFailure(String errorMessage, int requestCode) {
+                            textViewUnJoin.setVisibility(View.VISIBLE);
 
-                    @Override
-                    public void onApiFailure(String errorMessage, int requestCode) {
-                        textViewUnJoin.setVisibility(View.VISIBLE);
+                            ToastUtils.showLong(context, errorMessage);
+                            materialDialog.dismiss();
+                        }
+                    });
+                }
+            });
+        } else {
+            handleCustomDialog(message, model);
+        }
+    }
 
-                        ToastUtils.showLong(context, errorMessage);
-                        materialDialog.dismiss();
-                    }
-                });
-            }
-        });
+    private void handleCustomDialog(String message, ClassModel model) {
+        CustomDialogCancelBooking customDialogCancelBooking = new CustomDialogCancelBooking(context, this::onCancelBooking,message,model, AppConstants.AppNavigation.NAVIGATION_FROM_OTHER_USER);
+        try {
+            customDialogCancelBooking.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean checkFor5MinDifference(ClassModel model) {
 
-        double cancel5min =5;
+        double cancel5min = 5;
         Boolean isClassBookedIn5Min = false;
         List<Join5MinModel> bookedList = MyPreferences.getInstance().getBookingTime();
-        if(bookedList !=null){
-        for (Join5MinModel bookedClass : bookedList) {
-            if (bookedClass.getGetClassSessionId() == model.getClassSessionId()) {
-                if ((DateUtils.find5MinDifference(bookedClass.getJoiningTime(), Calendar.getInstance().getTime())) <= cancel5min) {
-                    isClassBookedIn5Min = true;
-                }
+        if (bookedList != null) {
+            for (Join5MinModel bookedClass : bookedList) {
+                if (bookedClass.getGetClassSessionId() == model.getClassSessionId()) {
+                    if ((DateUtils.find5MinDifference(bookedClass.getJoiningTime(), Calendar.getInstance().getTime())) <= cancel5min) {
+                        isClassBookedIn5Min = true;
+                    }
 
+                }
             }
-        }}
+        }
         return isClassBookedIn5Min;
 
     }
@@ -796,4 +814,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
     }
 
 
+    @Override
+    public void onCancelBooking(ClassModel model) {
+        ToastUtils.show(context, "Hello");
+    }
 }

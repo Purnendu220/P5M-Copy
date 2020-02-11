@@ -1000,6 +1000,7 @@
     <string name="please_select_city">Please select city</string>
     <string name="payment_options">Payment Options</string>
     <string name="email_sign_up">بريدك الإلكتروني</string>
+    <string name="no_refund">no_refund</string>
     <string-array name="city">
         <item>الكويت</item>
         <item>الرياض، المملكة العربية السعودية</item>

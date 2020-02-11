@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/float_transparent"
+    android:gravity="center">
+
+
+    <LinearLayout
+        android:id="@+id/linearlayoutTopPart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical|center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewNoRefund"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="@string/no_refund"
+            android:textColor="@color/black"
+            android:textSize="@dimen/margin_16" />
+
+
+        <TextView
+            android:id="@+id/textViewCancelBookingMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="@dimen/margin_20"
+            android:gravity="center"
+            android:text="@string/your_review_has_been_submitted"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_extra_large" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/linearLayoutRatePast"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearlayoutTopPart"
+        android:background="@color/white"
+        android:visibility="visible"
+
+        >
+
+
+        <LinearLayout
+            android:id="@+id/layoutButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_15"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/textViewNoThanks"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bottom_text_button_height"
+                android:layout_marginRight="@dimen/margin_10"
+                android:layout_weight="1"
+                android:background="@drawable/theme_bottom_text_button_light_grey"
+                android:clickable="true"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:letterSpacing="@dimen/button_letter_spacing"
+                android:text="@string/no_thanks"
+                android:textAllCaps="true"
+                android:textColor="@color/rating_blank"
+                android:textSize="@dimen/text_small"
+
+                />
+
+            <TextView
+                android:id="@+id/textViewCancelBooking"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bottom_text_button_height"
+                android:layout_weight="1"
+                android:background="@drawable/theme_bottom_text_button_book"
+                android:clickable="true"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:letterSpacing="@dimen/button_letter_spacing"
+                android:text="@string/cancel"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_small"
+
+                />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
+
