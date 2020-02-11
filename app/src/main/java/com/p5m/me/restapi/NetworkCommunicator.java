@@ -168,6 +168,7 @@ public class NetworkCommunicator {
         public static final int UPDATE_STORE_ID = 162;
         public static final int GET_PAYMENT_INITIATE = 163;
         public static final int INERESTED_CITY = 164;
+        public static final int UNJOIN_CLASS = 165;
     }
 
     private Context context;
@@ -1519,7 +1520,7 @@ public class NetworkCommunicator {
 
     public Call unJoinClass(final ClassModel classModel, int joinClassId, final RequestListener requestListener) {
 
-        final int requestCode = RequestCode.ADD_TO_WISH_LIST;
+        final int requestCode = RequestCode.UNJOIN_CLASS;
         Call<ResponseModel<User>> call = apiService.unJoinClass(joinClassId);
         LogUtils.debug("NetworkCommunicator hitting unJoinClass");
 

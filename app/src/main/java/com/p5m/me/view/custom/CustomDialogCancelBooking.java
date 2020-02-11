@@ -9,27 +9,45 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
 import com.p5m.me.R;
+import com.p5m.me.analytics.FirebaseAnalysic;
+import com.p5m.me.analytics.IntercomEvents;
+import com.p5m.me.analytics.MixPanel;
+import com.p5m.me.data.Join5MinModel;
 import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.data.main.DefaultSettingServer;
+import com.p5m.me.data.main.User;
+import com.p5m.me.eventbus.EventBroadcastHelper;
+import com.p5m.me.helper.ClassListListenerHelper;
+import com.p5m.me.helper.Helper;
+import com.p5m.me.restapi.NetworkCommunicator;
+import com.p5m.me.restapi.ResponseModel;
+import com.p5m.me.storage.TempStorage;
+import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
-import com.p5m.me.utils.RefrenceWrapper;
-import com.p5m.me.view.activity.LoginRegister.InfoScreen;
+import com.p5m.me.utils.DateUtils;
+import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.ToastUtils;
+
+import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class CustomDialogCancelBooking extends Dialog implements OnClickListener {
+public class CustomDialogCancelBooking extends Dialog implements OnClickListener, NetworkCommunicator.RequestListener {
 
 
     private final int navigatinFrom;
-    private final OnCancelBooking listener;
+    private final int unJoinClassId;
+    private final int unJoinType;
     private final String message;
+    private final NetworkCommunicator networkCommunicator;
     private ClassModel classModel;
     private Context mContext;
     @BindView(R.id.textViewCancelBookingMessage)
@@ -44,12 +62,15 @@ public class CustomDialogCancelBooking extends Dialog implements OnClickListener
     @BindView(R.id.textViewCancelBooking)
     TextView textViewCancelBooking;
 
-    public CustomDialogCancelBooking(@NonNull Context context, OnCancelBooking listener, String message, ClassModel classModel,  int navigatinFrom) {
+    public CustomDialogCancelBooking(@NonNull Context context, String message, ClassModel classModel, int unJoinClassId, int unJoinType, NetworkCommunicator networkCommunicator, int navigatinFrom) {
         super(context, R.style.AdvanceDialogTheme);
         this.mContext = context;
         this.navigatinFrom = navigatinFrom;
-        this.listener = listener;
+        this.classModel = classModel;
+        this.unJoinClassId = unJoinClassId;
+        this.unJoinType = unJoinType;
         this.message = message;
+        this.networkCommunicator = networkCommunicator;
         init(context);
     }
 
@@ -80,15 +101,115 @@ public class CustomDialogCancelBooking extends Dialog implements OnClickListener
                 dismiss();
                 break;
 
-            case R.id.textViewCancelBooking: {
-                listener.onCancelBooking(classModel);
+            case R.id.textViewCancelBooking:
+                if (unJoinType == -1)
+                    networkCommunicator.unJoinClass(classModel, unJoinClassId, this);
+                else
+                    networkCommunicator.unJoinClass(classModel, unJoinClassId, this);
                 dismiss();
-            }
-            break;
+                break;
         }
     }
 
-    public interface OnCancelBooking {
-        void onCancelBooking(ClassModel classModel);
+    @Override
+    public void onApiSuccess(Object response, int requestCode) {
+        switch (requestCode) {
+            case NetworkCommunicator.RequestCode.UNJOIN_CLASS:
+                if(unJoinType == -1) {
+                    ToastUtils.showLong(mContext, "UNJOIN");
+                    try {
+                        classModel.setUserJoinStatus(false);
+                        TempStorage.setUser(mContext, ((ResponseModel<User>) response).data);
+                        EventBroadcastHelper.sendUserUpdate(mContext, ((ResponseModel<User>) response).data);
+                        EventBroadcastHelper.sendClassJoin(mContext, classModel, AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS);
+                        MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, classModel);
+                        FirebaseAnalysic.trackUnJoinClass(AppConstants.Tracker.UP_COMING, classModel);
+                        IntercomEvents.trackUnJoinClass(classModel);
+
+                    openAlertForRefund(classModel);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        LogUtils.exception(e);
+                    }
+                }
+                else{
+                    try {
+                        ToastUtils.showLong(mContext, "UNJOIN WITH FRIEND");
+
+                        if (unJoinType == AppConstants.Values.UNJOIN_BOTH_CLASS)
+                            classModel.setUserJoinStatus(false);
+                        else if (unJoinType == AppConstants.Values.UNJOIN_FRIEND_CLASS) {
+                            classModel.setUserJoinStatus(true);
+                            classModel.setRefBookingId(null);
+                        }
+
+                        if (unJoinType == AppConstants.Values.UNJOIN_BOTH_CLASS)
+                            EventBroadcastHelper.sendClassJoin(mContext, classModel, AppConstants.Values.UNJOIN_BOTH_CLASS);
+                        else if (unJoinType == AppConstants.Values.UNJOIN_FRIEND_CLASS)
+                            EventBroadcastHelper.sendClassJoin(mContext, classModel, AppConstants.Values.UNJOIN_FRIEND_CLASS);
+                        else
+                            EventBroadcastHelper.sendClassJoin(mContext, classModel, AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS);
+                        EventBroadcastHelper.sendUserUpdate(mContext, ((ResponseModel<User>) response).data);
+
+                        MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, classModel);
+                        FirebaseAnalysic.trackUnJoinClass(AppConstants.Tracker.UP_COMING, classModel);
+                        IntercomEvents.trackUnJoinClass(classModel);
+                        openAlertForRefund(classModel);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        LogUtils.exception(e);
+                    }
+                }
+                break;
+        }
     }
+
+    @Override
+    public void onApiFailure(String errorMessage, int requestCode) {
+        switch (requestCode) {
+            case NetworkCommunicator.RequestCode.UNJOIN_CLASS:
+                ToastUtils.showLong(mContext, errorMessage);
+
+                break;
+        }
+    }
+
+    private void openAlertForRefund(ClassModel model) {
+        DefaultSettingServer defaultSettingServer = MyPreferences.getInstance().getDefaultSettingServer();
+        float cancelTime = 2;
+        if (defaultSettingServer != null) {
+            cancelTime = defaultSettingServer.getRefundAllowedbeforeForSpecial();
+
+        }
+        if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model) && (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) > cancelTime ||
+                checkFor5MinDifference(model))) {
+            CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(mContext, "", mContext.getString(R.string.successfull_refund_message), 1, mContext.getString(R.string.not_now), mContext.getString(R.string.yes), CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_SUCCESSFULL_UNJOIN, null, false, ClassListListenerHelper.this);
+            try {
+                mCustomAlertDialog.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private boolean checkFor5MinDifference(ClassModel model) {
+
+        double cancel5min = 5;
+        Boolean isClassBookedIn5Min = false;
+        List<Join5MinModel> bookedList = MyPreferences.getInstance().getBookingTime();
+        if (bookedList != null) {
+            for (Join5MinModel bookedClass : bookedList) {
+                if (bookedClass.getGetClassSessionId() == model.getClassSessionId()) {
+                    if ((DateUtils.find5MinDifference(bookedClass.getJoiningTime(), Calendar.getInstance().getTime())) <= cancel5min) {
+                        isClassBookedIn5Min = true;
+                    }
+
+                }
+            }
+        }
+        return isClassBookedIn5Min;
+
+    }
+
 }
