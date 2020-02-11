@@ -227,7 +227,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
             networkCommunicator.getClassDetail(model.getClassSessionId(), new NetworkCommunicator.RequestListener() {
                 @Override
                 public void onApiSuccess(Object response, int requestCode) {
-                    ClassModel  data = ((ResponseModel<ClassModel>) response).data;
+                    ClassModel data = ((ResponseModel<ClassModel>) response).data;
                     int index = classListAdapter.getList().indexOf(model);
                     if (index != -1) {
                         Object obj = classListAdapter.getList().get(index);
@@ -244,7 +244,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                 public void onApiFailure(String errorMessage, int requestCode) {
 //                    ToastUtils.show(this);
                 }
-            },false);
+            }, false);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -544,17 +544,17 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
             if (loc != null) {
                 lat = loc.getLatitude();
                 lang = loc.getLongitude();
-                TempStorage.setLat(lat+"");
-                TempStorage.setLng(lang+"");
+                TempStorage.setLat(lat + "");
+                TempStorage.setLng(lang + "");
 
-            }else{
-               if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-                   if(!TempStorage.getLat().isEmpty()&&TempStorage.getLat()!=null&&TempStorage.getLat()!=""){
-                       lat = Double.valueOf(TempStorage.getLat());
-                       lang = Double.valueOf(TempStorage.getLng());
+            } else {
+                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    if (!TempStorage.getLat().isEmpty() && TempStorage.getLat() != null && TempStorage.getLat() != "") {
+                        lat = Double.valueOf(TempStorage.getLat());
+                        lang = Double.valueOf(TempStorage.getLng());
 
-                   }
-               }
+                    }
+                }
             }
 
 
@@ -562,7 +562,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
             e.printStackTrace();
 
         }
-        if(lat!=null&&lang!=null){
+        if (lat != null && lang != null) {
             RefrenceWrapper.getRefrenceWrapper(context).setLatLng(new LatLng(lat, lang));
         }
         callRecomendedClassApi(lat, lang);
@@ -584,7 +584,8 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
             case NetworkCommunicator.RequestCode.CLASS_LIST:
                 swipeRefreshLayout.setRefreshing(false);
                 List<ClassModel> classModels = ((ResponseModel<List<ClassModel>>) response).data;
-
+                if (page == 0)
+                    classListAdapter.clearAll();
                 if (!classModels.isEmpty()) {
                     classListAdapter.addAllClass(classModels);
                     if (classModels.size() < pageSizeLimit) {
