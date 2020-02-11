@@ -38,7 +38,8 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/margin_100"
         android:layout_marginTop="100dp"
         android:orientation="vertical"
         android:paddingBottom="@dimen/margin_10"
@@ -63,11 +64,10 @@
 
             />
 
-        <com.p5m.me.view.activity.custom.MaxHeightScrollView
+        <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:scrollHeight="350"
             app:layout_constraintBottom_toTopOf="@id/buttonBottom"
             app:layout_constraintEnd_toEndOf="@id/textViewSkip"
             app:layout_constraintStart_toStartOf="@+id/imageViewBack"
@@ -83,7 +83,7 @@
                 app:alignItems="flex_start"
                 app:flexDirection="row"
                 app:flexWrap="wrap" />
-        </com.p5m.me.view.activity.custom.MaxHeightScrollView>>
+        </ScrollView>>
 
         <com.google.android.flexbox.FlexboxLayout
             android:id="@+id/flexBoxLayoutTime"
