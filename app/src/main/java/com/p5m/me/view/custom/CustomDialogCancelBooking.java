@@ -32,6 +32,7 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
+import com.p5m.me.view.activity.Main.HomeActivity;
 
 import java.util.Calendar;
 import java.util.List;
@@ -40,7 +41,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class CustomDialogCancelBooking extends Dialog implements OnClickListener, NetworkCommunicator.RequestListener {
+public class CustomDialogCancelBooking extends Dialog implements OnClickListener, NetworkCommunicator.RequestListener, CustomAlertDialog.OnAlertButtonAction {
 
 
     private final int navigatinFrom;
@@ -115,52 +116,7 @@ public class CustomDialogCancelBooking extends Dialog implements OnClickListener
     public void onApiSuccess(Object response, int requestCode) {
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.UNJOIN_CLASS:
-                if(unJoinType == -1) {
-                    ToastUtils.showLong(mContext, "UNJOIN");
-                    try {
-                        classModel.setUserJoinStatus(false);
-                        TempStorage.setUser(mContext, ((ResponseModel<User>) response).data);
-                        EventBroadcastHelper.sendUserUpdate(mContext, ((ResponseModel<User>) response).data);
-                        EventBroadcastHelper.sendClassJoin(mContext, classModel, AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS);
-                        MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, classModel);
-                        FirebaseAnalysic.trackUnJoinClass(AppConstants.Tracker.UP_COMING, classModel);
-                        IntercomEvents.trackUnJoinClass(classModel);
-
-                    openAlertForRefund(classModel);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        LogUtils.exception(e);
-                    }
-                }
-                else{
-                    try {
-                        ToastUtils.showLong(mContext, "UNJOIN WITH FRIEND");
-
-                        if (unJoinType == AppConstants.Values.UNJOIN_BOTH_CLASS)
-                            classModel.setUserJoinStatus(false);
-                        else if (unJoinType == AppConstants.Values.UNJOIN_FRIEND_CLASS) {
-                            classModel.setUserJoinStatus(true);
-                            classModel.setRefBookingId(null);
-                        }
-
-                        if (unJoinType == AppConstants.Values.UNJOIN_BOTH_CLASS)
-                            EventBroadcastHelper.sendClassJoin(mContext, classModel, AppConstants.Values.UNJOIN_BOTH_CLASS);
-                        else if (unJoinType == AppConstants.Values.UNJOIN_FRIEND_CLASS)
-                            EventBroadcastHelper.sendClassJoin(mContext, classModel, AppConstants.Values.UNJOIN_FRIEND_CLASS);
-                        else
-                            EventBroadcastHelper.sendClassJoin(mContext, classModel, AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS);
-                        EventBroadcastHelper.sendUserUpdate(mContext, ((ResponseModel<User>) response).data);
-
-                        MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, classModel);
-                        FirebaseAnalysic.trackUnJoinClass(AppConstants.Tracker.UP_COMING, classModel);
-                        IntercomEvents.trackUnJoinClass(classModel);
-                        openAlertForRefund(classModel);
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        LogUtils.exception(e);
-                    }
-                }
+                handleUnjoinClass(response);
                 break;
         }
     }
@@ -175,6 +131,58 @@ public class CustomDialogCancelBooking extends Dialog implements OnClickListener
         }
     }
 
+    private void handleUnjoinClass(Object response) {
+
+       if (unJoinType == -1) {
+           onUnjoinSelfBooking(response);
+       } else {
+           onUnjoinFriendBooking(response);
+       }
+   }
+
+   private void onUnjoinFriendBooking(Object response) {
+       try {
+           if (unJoinType == AppConstants.Values.UNJOIN_BOTH_CLASS)
+               classModel.setUserJoinStatus(false);
+           else if (unJoinType == AppConstants.Values.UNJOIN_FRIEND_CLASS) {
+               classModel.setUserJoinStatus(true);
+               classModel.setRefBookingId(null);
+           }
+
+           if (unJoinType == AppConstants.Values.UNJOIN_BOTH_CLASS)
+               EventBroadcastHelper.sendClassJoin(mContext, classModel, AppConstants.Values.UNJOIN_BOTH_CLASS);
+           else if (unJoinType == AppConstants.Values.UNJOIN_FRIEND_CLASS)
+               EventBroadcastHelper.sendClassJoin(mContext, classModel, AppConstants.Values.UNJOIN_FRIEND_CLASS);
+           else
+               EventBroadcastHelper.sendClassJoin(mContext, classModel, AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS);
+           EventBroadcastHelper.sendUserUpdate(mContext, ((ResponseModel<User>) response).data);
+           MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, classModel);
+           FirebaseAnalysic.trackUnJoinClass(AppConstants.Tracker.UP_COMING, classModel);
+           IntercomEvents.trackUnJoinClass(classModel);
+           openAlertForRefund(classModel);
+
+       } catch (Exception e) {
+           e.printStackTrace();
+           LogUtils.exception(e);
+       }
+   }
+
+   private void onUnjoinSelfBooking(Object response) {
+       try {
+           classModel.setUserJoinStatus(false);
+           TempStorage.setUser(mContext, ((ResponseModel<User>) response).data);
+           EventBroadcastHelper.sendUserUpdate(mContext, ((ResponseModel<User>) response).data);
+           EventBroadcastHelper.sendClassJoin(mContext, classModel, AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS);
+           MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, classModel);
+           FirebaseAnalysic.trackUnJoinClass(AppConstants.Tracker.UP_COMING, classModel);
+           IntercomEvents.trackUnJoinClass(classModel);
+
+           openAlertForRefund(classModel);
+       } catch (Exception e) {
+           e.printStackTrace();
+           LogUtils.exception(e);
+       }
+   }
     private void openAlertForRefund(ClassModel model) {
         DefaultSettingServer defaultSettingServer = MyPreferences.getInstance().getDefaultSettingServer();
         float cancelTime = 2;
@@ -184,7 +192,7 @@ public class CustomDialogCancelBooking extends Dialog implements OnClickListener
         }
         if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model) && (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) > cancelTime ||
                 checkFor5MinDifference(model))) {
-            CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(mContext, "", mContext.getString(R.string.successfull_refund_message), 1, mContext.getString(R.string.not_now), mContext.getString(R.string.yes), CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_SUCCESSFULL_UNJOIN, null, false, ClassListListenerHelper.this);
+            CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(mContext, "", mContext.getString(R.string.successfull_refund_message), 1, mContext.getString(R.string.not_now), mContext.getString(R.string.yes), CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_SUCCESSFULL_UNJOIN, null, false, CustomDialogCancelBooking.this);
             try {
                 mCustomAlertDialog.show();
             } catch (Exception e) {
@@ -212,4 +220,22 @@ public class CustomDialogCancelBooking extends Dialog implements OnClickListener
 
     }
 
+    @Override
+    public void onOkClick(int requestCode, Object data) {
+        switch (requestCode) {
+            case CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_SUCCESSFULL_UNJOIN:
+                HomeActivity.show(mContext, AppConstants.Tab.TAB_MY_PROFILE);
+                break;
+
+        }
+    }
+
+    @Override
+    public void onCancelClick(int requestCode, Object data) {
+        switch (requestCode) {
+            case CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_SUCCESSFULL_UNJOIN:
+                break;
+
+        }
+    }
 }

@@ -31,6 +31,7 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
+import com.p5m.me.view.custom.CustomFeedbackFormDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -162,8 +163,11 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 networkCommunicator.logout(new LogoutRequest(TempStorage.getUser().getId()), this, false);
                 break;
             case R.id.layoutChangeCountry:
-                if (categories != null && countryModel!=null)
-                    openCountryChangeDialog();
+                CustomFeedbackFormDialog customFeedbackFormDialog=
+                        new CustomFeedbackFormDialog(context,networkCommunicator,1);
+                customFeedbackFormDialog.show();
+//                if (categories != null && countryModel!=null)
+//                    openCountryChangeDialog();
                 break;
         }
     }
