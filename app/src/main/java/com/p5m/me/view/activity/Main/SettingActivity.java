@@ -260,9 +260,11 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
             case NetworkCommunicator.RequestCode.GET_STORE_DATA:
                 countryModel = ((ResponseModel<List<StoreApiModel>>) response).data;
+
                 break;
             case NetworkCommunicator.RequestCode.UPDATE_STORE_ID:
                 StoreModel model = ((ResponseModel<StoreModel>) response).data;
+                NetworkCommunicator.getInstance(context).getDefault();
                 User user = TempStorage.getUser();
                 user.setStoreId(model.getId());
                 user.setCurrencyCode(model.getCurrencyCode());
