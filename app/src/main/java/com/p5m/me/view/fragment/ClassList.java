@@ -78,6 +78,7 @@ import butterknife.ButterKnife;
 public class ClassList extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks<ClassModel>, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener, LocationListener {
 
     private LocationManager locationManager;
+    private List<ClassModel> recomendedClassModels;
 
     public static Fragment createFragment(String date, int position, int shownIn) {
         Fragment tabFragment = new ClassList();
@@ -584,8 +585,10 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
             case NetworkCommunicator.RequestCode.CLASS_LIST:
                 swipeRefreshLayout.setRefreshing(false);
                 List<ClassModel> classModels = ((ResponseModel<List<ClassModel>>) response).data;
-                if (page == 0)
+                if (page == 0) {
                     classListAdapter.clearAll();
+                    classListAdapter.addRecomendedClasses(new RecomendedClassData(recomendedClassModels));
+                }
                 if (!classModels.isEmpty()) {
                     classListAdapter.addAllClass(classModels);
                     if (classModels.size() < pageSizeLimit) {
@@ -602,11 +605,11 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                 break;
 
             case NetworkCommunicator.RequestCode.RCOMENDED_CLASS_LIST:
-                classListAdapter.clearAll();
-                List<ClassModel> recomendedClassModels = ((ResponseModel<List<ClassModel>>) response).data;
-                if (!recomendedClassModels.isEmpty()) {
-                    classListAdapter.addRecomendedClasses(new RecomendedClassData(recomendedClassModels));
-                }
+
+                 recomendedClassModels = ((ResponseModel<List<ClassModel>>) response).data;
+//                if (!recomendedClassModels.isEmpty()) {
+//                    classListAdapter.addRecomendedClasses(new RecomendedClassData(recomendedClassModels));
+//                }
                 callApiClassList();
 //                checkListData();
                 break;
