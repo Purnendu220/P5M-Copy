@@ -417,5 +417,7 @@ public interface ApiService {
     Call<ResponseModel<InterestedCityModel>> uploadInterestedCity(@Query(AppConstants.ApiParamKey.ID) int id,
                                                                   @Body InterestedCityRequestModel interestedCityModel);
 
-
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.GET_CANCELLATION_REASON)
+    Call<ResponseModel<List<StoreApiModel>>> getCancellationReason();
 }

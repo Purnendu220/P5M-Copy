@@ -169,6 +169,7 @@ public class NetworkCommunicator {
         public static final int GET_PAYMENT_INITIATE = 163;
         public static final int INERESTED_CITY = 164;
         public static final int UNJOIN_CLASS = 165;
+        public static final int GET_CANCELLATION_REASON = 166;
     }
 
     private Context context;
@@ -1712,6 +1713,28 @@ public class NetworkCommunicator {
     public Call getStoreData(final RequestListener requestListener, final boolean useCache) {
         final int requestCode = RequestCode.GET_STORE_DATA;
         Call<ResponseModel<List<StoreApiModel>>> call = apiService.getStoreData();
+        LogUtils.debug("NetworkCommunicator hitting Store Data");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<StoreApiModel>>>(context) {
+
+            @Override
+            public void onFailure(Call<ResponseModel<List<StoreApiModel>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator User onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<StoreApiModel>>> call, Response<ResponseModel<List<StoreApiModel>>> restResponse, ResponseModel<List<StoreApiModel>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator User onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call getCancellationReason(final RequestListener requestListener, final boolean useCache) {
+        final int requestCode = RequestCode.GET_CANCELLATION_REASON;
+        Call<ResponseModel<List<StoreApiModel>>> call = apiService.getCancellationReason();
         LogUtils.debug("NetworkCommunicator hitting Store Data");
 
         call.enqueue(new RestCallBack<ResponseModel<List<StoreApiModel>>>(context) {
