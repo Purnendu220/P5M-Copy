@@ -104,9 +104,9 @@ public class CustomDialogCancelBooking extends Dialog implements OnClickListener
 
             case R.id.textViewCancelBooking:
                 if (unJoinType == -1)
-                    networkCommunicator.unJoinClass(classModel, unJoinClassId, this);
+                    networkCommunicator.unJoinClass(classModel, unJoinClassId,0,"", this);
                 else
-                    networkCommunicator.unJoinClass(classModel, unJoinClassId, this);
+                    networkCommunicator.unJoinClass(classModel, unJoinClassId, 0,"",this);
                 dismiss();
                 break;
         }
@@ -117,6 +117,7 @@ public class CustomDialogCancelBooking extends Dialog implements OnClickListener
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.UNJOIN_CLASS:
                 handleUnjoinClass(response);
+
                 break;
         }
     }

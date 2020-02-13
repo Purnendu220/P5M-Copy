@@ -19,6 +19,7 @@ import com.p5m.me.data.RatingResponseModel;
 import com.p5m.me.data.UnratedClassData;
 import com.p5m.me.data.UserPackageDetail;
 import com.p5m.me.data.WishListResponse;
+import com.p5m.me.data.main.BookingCancellationResponse;
 import com.p5m.me.data.main.BranchModel;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
@@ -1519,10 +1520,10 @@ public class NetworkCommunicator {
         return call;
     }
 
-    public Call unJoinClass(final ClassModel classModel, int joinClassId, final RequestListener requestListener) {
+    public Call unJoinClass(final ClassModel classModel, int joinClassId,int cancellationId,String remark, final RequestListener requestListener) {
 
         final int requestCode = RequestCode.UNJOIN_CLASS;
-        Call<ResponseModel<User>> call = apiService.unJoinClass(joinClassId);
+        Call<ResponseModel<User>> call = apiService.unJoinClass(joinClassId,cancellationId,remark);
         LogUtils.debug("NetworkCommunicator hitting unJoinClass");
 
         call.enqueue(new RestCallBack<ResponseModel<User>>(context) {
@@ -1732,27 +1733,6 @@ public class NetworkCommunicator {
         return call;
     }
 
-    public Call getCancellationReason(final RequestListener requestListener, final boolean useCache) {
-        final int requestCode = RequestCode.GET_CANCELLATION_REASON;
-        Call<ResponseModel<List<StoreApiModel>>> call = apiService.getCancellationReason();
-        LogUtils.debug("NetworkCommunicator hitting Store Data");
-
-        call.enqueue(new RestCallBack<ResponseModel<List<StoreApiModel>>>(context) {
-
-            @Override
-            public void onFailure(Call<ResponseModel<List<StoreApiModel>>> call, String message) {
-                LogUtils.networkError("NetworkCommunicator User onFailure " + message);
-                requestListener.onApiFailure(message, requestCode);
-            }
-
-            @Override
-            public void onResponse(Call<ResponseModel<List<StoreApiModel>>> call, Response<ResponseModel<List<StoreApiModel>>> restResponse, ResponseModel<List<StoreApiModel>> response) {
-                LogUtils.networkSuccess("NetworkCommunicator User onResponse data " + response);
-                requestListener.onApiSuccess(response, requestCode);
-            }
-        });
-        return call;
-    }
 
     public Call getPaymentInitiate(final RequestListener requestListener, final boolean useCache) {
         final int requestCode = RequestCode.GET_PAYMENT_INITIATE;
@@ -1816,6 +1796,29 @@ public class NetworkCommunicator {
         });
         return call;
     }
+
+    public Call getCancellationReason(final RequestListener requestListener, final boolean useCache) {
+        final int requestCode = RequestCode.GET_CANCELLATION_REASON;
+        Call<ResponseModel<List<BookingCancellationResponse>>> call = apiService.getCancellationReason();
+        LogUtils.debug("NetworkCommunicator hitting Store Data");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<BookingCancellationResponse>>>(context) {
+
+            @Override
+            public void onFailure(Call<ResponseModel<List<BookingCancellationResponse>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator User onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<BookingCancellationResponse>>> call, Response<ResponseModel<List<BookingCancellationResponse>>> restResponse, ResponseModel<List<BookingCancellationResponse>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator User onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
 
 }
 

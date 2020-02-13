@@ -48,6 +48,7 @@ import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.custom.CustomDialogCancelBooking;
+import com.p5m.me.view.custom.CustomFeedbackFormDialog;
 import com.p5m.me.view.custom.CustomRateAlertDialog;
 
 import java.util.Calendar;
@@ -496,7 +497,12 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         }
 
         if (!showCustomDialog) {
-            final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
+
+            CustomFeedbackFormDialog customFeedbackFormDialog=
+                    new CustomFeedbackFormDialog(context,model, unJoinClassId,-1,networkCommunicator,1);
+            customFeedbackFormDialog.show();
+
+           /* final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
                     .cancelable(false)
                     .customView(R.layout.dialog_unjoin_class, false)
                     .build();
@@ -553,7 +559,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                         }
                     });
                 }
-            });
+            });*/
         } else {
             handleCustomDialog(message, model, unJoinClassId, -1, networkCommunicator);
         }
@@ -647,7 +653,9 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
         }
 
         if (!showCustomDialog) {
-            final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
+            CustomFeedbackFormDialog customFeedbackFormDialog =   new CustomFeedbackFormDialog(context,model, unJoinClassId,-1,networkCommunicator,1);
+            customFeedbackFormDialog.show();
+         /*   final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
                     .cancelable(false)
                     .customView(R.layout.dialog_unjoin_class, false)
                     .build();
@@ -716,7 +724,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                         }
                     });
                 }
-            });
+            });*/
 
         } else {
             handleCustomDialog(message, model, unJoinClassId, unJoinType, networkCommunicator);

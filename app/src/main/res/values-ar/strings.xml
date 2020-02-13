@@ -1003,6 +1003,7 @@
     <string name="no_refund">no_refund</string>
     <string name="feedback_header">FeedBack Form</string>
     <string name="Comment">Comment</string>
+    <string name="select_reason">Select Reason</string>
     <string-array name="city">
         <item>الكويت</item>
         <item>الرياض، المملكة العربية السعودية</item>

@@ -377,7 +377,7 @@
         <LinearLayout
             android:id="@+id/layoutDiscount"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:orientation="vertical"
@@ -404,8 +404,6 @@
                 android:id="@+id/textViewTrainDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingBottom="@dimen/margin_5"
                 android:text="@string/workout_any_gym"
                 android:textColor="@color/theme_dark_text"
                 android:textSize="@dimen/text_medium" />
@@ -477,6 +475,7 @@
             android:layout_height="wrap_content"
             android:letterSpacing="@dimen/text_medium_letter_spacing"
             android:lineSpacingExtra="@dimen/line_spacing_extra"
+            android:layout_marginEnd="@dimen/margin_16"
             android:paddingTop="@dimen/margin_10"
             android:paddingBottom="@dimen/margin_10"
             android:text="@string/frequently_asked_question"

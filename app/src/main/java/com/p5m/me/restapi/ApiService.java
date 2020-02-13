@@ -13,6 +13,7 @@ import com.p5m.me.data.RatingResponseModel;
 import com.p5m.me.data.UnratedClassData;
 import com.p5m.me.data.UserPackageDetail;
 import com.p5m.me.data.WishListResponse;
+import com.p5m.me.data.main.BookingCancellationResponse;
 import com.p5m.me.data.main.BranchModel;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
@@ -349,7 +350,9 @@ public interface ApiService {
 
     @Headers("Content-type: application/json")
     @DELETE(AppConstants.Url.UN_JOIN_CLASS + "/{" + AppConstants.ApiParamKey.ID + "}")
-    Call<ResponseModel<User>> unJoinClass(@Path(AppConstants.ApiParamKey.ID) int classSessionId);
+    Call<ResponseModel<User>> unJoinClass(@Path(AppConstants.ApiParamKey.ID) int classSessionId,
+                                          @Query(AppConstants.ApiParamKey.CANCELLATION_ID) int cancellationId,
+                                          @Query(AppConstants.ApiParamKey.REMARK) String remark);
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.SEARCH)
@@ -419,5 +422,5 @@ public interface ApiService {
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.GET_CANCELLATION_REASON)
-    Call<ResponseModel<List<StoreApiModel>>> getCancellationReason();
+    Call<ResponseModel<List<BookingCancellationResponse>>> getCancellationReason();
 }

@@ -368,6 +368,8 @@ public class AppConstants {
         public static final String WAITLIST = "WAITLIST";
         public static final String APP_STORE_ID = "Store-Id";
         public static final String STORE_ID = "storeId";
+        public static final String CANCELLATION_ID = "cancellationId";
+        public static final String REMARK = "remark";
     }
 
     public static final class Notification {
