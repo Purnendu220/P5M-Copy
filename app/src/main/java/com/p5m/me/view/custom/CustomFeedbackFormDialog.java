@@ -90,7 +90,7 @@ public class CustomFeedbackFormDialog extends Dialog implements OnClickListener,
         setContentView(R.layout.view_feedback_dialog);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         ButterKnife.bind(this);
-        setCancelable(true);
+        setCancelable(false);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(getWindow().getAttributes());
         lp.width = (int) (mContext.getResources().getDisplayMetrics().widthPixels * 0.90);
@@ -114,6 +114,9 @@ public class CustomFeedbackFormDialog extends Dialog implements OnClickListener,
 
             case R.id.textViewCancelBooking:
                 if (unJoinType == -1)
+                    if(position!=0)
+                    networkCommunicator.unJoinClass(classModel, unJoinClassId,feedbackModel.get(position).getId(),"", this);
+                    else
                     networkCommunicator.unJoinClass(classModel, unJoinClassId,0,"", this);
                 else
                     networkCommunicator.unJoinClass(classModel, unJoinClassId, 0,"",this);
@@ -160,7 +163,6 @@ public class CustomFeedbackFormDialog extends Dialog implements OnClickListener,
             cancelBookingReasons.add(data.getCancellationReason());
         }
         spinner.setOnItemSelectedListener(this);
-//        cancelBookingReasons.add(mContext.getString(R.string.other_country));
 
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
                 mContext, R.layout.view_spinner_item, cancelBookingReasons) {

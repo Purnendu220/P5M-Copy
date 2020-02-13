@@ -36,7 +36,6 @@
             style="@style/Widget.AppCompat.DropDownItem.Spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_5"
             android:background="@drawable/button_grey_rectangle"
             android:paddingRight="@dimen/margin_5"
             android:spinnerMode="dropdown" />
