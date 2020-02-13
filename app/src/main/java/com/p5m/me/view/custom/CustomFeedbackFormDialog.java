@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -66,6 +67,8 @@ public class CustomFeedbackFormDialog extends Dialog implements OnClickListener,
 
     @BindView(R.id.textViewCancelBooking)
     TextView textViewCancelBooking;
+    @BindView(R.id.editTextComment)
+    EditText editTextComment;
 
     @BindView(R.id.spinner)
     public Spinner spinner;
@@ -74,7 +77,7 @@ public class CustomFeedbackFormDialog extends Dialog implements OnClickListener,
     private List<BookingCancellationResponse> feedbackModel;
 
 
-    public CustomFeedbackFormDialog(@NonNull Context context, ClassModel model, int unJoinClassId,int unJoinType, NetworkCommunicator networkCommunicator, int navigatinFrom) {
+    public CustomFeedbackFormDialog(@NonNull Context context, ClassModel model, int unJoinClassId, int unJoinType, NetworkCommunicator networkCommunicator, int navigatinFrom) {
         super(context, R.style.AdvanceDialogTheme);
         this.mContext = context;
         this.navigatinFrom = navigatinFrom;
@@ -113,13 +116,17 @@ public class CustomFeedbackFormDialog extends Dialog implements OnClickListener,
                 break;
 
             case R.id.textViewCancelBooking:
-                if (unJoinType == -1)
-                    if(position!=0)
-                    networkCommunicator.unJoinClass(classModel, unJoinClassId,feedbackModel.get(position).getId(),"", this);
+                if (unJoinType == -1) {
+                    if (position != 0)
+                        networkCommunicator.unJoinClass(classModel, unJoinClassId, feedbackModel.get(position).getId(), editTextComment.getText().toString(), this);
                     else
-                    networkCommunicator.unJoinClass(classModel, unJoinClassId,0,"", this);
-                else
-                    networkCommunicator.unJoinClass(classModel, unJoinClassId, 0,"",this);
+                        networkCommunicator.unJoinClass(classModel, unJoinClassId, 0, editTextComment.getText().toString(), this);
+                } else {
+                    if (position != 0)
+                        networkCommunicator.unJoinClass(classModel, unJoinClassId, feedbackModel.get(position).getId(), editTextComment.getText().toString(), this);
+                    else
+                        networkCommunicator.unJoinClass(classModel, unJoinClassId, 0, editTextComment.getText().toString(), this);
+                }
                 dismiss();
                 break;
         }
@@ -196,7 +203,6 @@ public class CustomFeedbackFormDialog extends Dialog implements OnClickListener,
     }
 
 
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = parent.getItemAtPosition(position).toString();
@@ -263,6 +269,7 @@ public class CustomFeedbackFormDialog extends Dialog implements OnClickListener,
             LogUtils.exception(e);
         }
     }
+
     private void openAlertForRefund(ClassModel model) {
         DefaultSettingServer defaultSettingServer = MyPreferences.getInstance().getDefaultSettingServer();
         float cancelTime = 2;

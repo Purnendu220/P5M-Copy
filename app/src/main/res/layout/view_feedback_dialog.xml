@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/margin_10"
+    android:padding="@dimen/margin_20"
     android:background="@color/float_transparent"
     android:gravity="center">
 
@@ -42,7 +42,7 @@
 
 
         <EditText
-            android:id="@+id/textViewCountryName"
+            android:id="@+id/editTextComment"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_marginTop="@dimen/margin_20"
@@ -51,7 +51,6 @@
             android:hint="@string/Comment"
             android:background="@drawable/button_grey_rectangle"
             android:inputType="textCapSentences"
-            android:padding="@dimen/margin_5"
             android:textSize="@dimen/text_large" />
 
 
@@ -70,8 +69,9 @@
             android:id="@+id/layoutButtons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_15"
             android:orientation="horizontal"
+            android:layout_marginTop="@dimen/margin_15"
+
             android:visibility="visible"
             android:weightSum="2">
 

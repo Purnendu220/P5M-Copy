@@ -1520,10 +1520,10 @@ public class NetworkCommunicator {
         return call;
     }
 
-    public Call unJoinClass(final ClassModel classModel, int joinClassId,int cancellationId,String remark, final RequestListener requestListener) {
+    public Call unJoinClass(final ClassModel classModel, int joinClassId, int cancellationId, String remark, final RequestListener requestListener) {
 
         final int requestCode = RequestCode.UNJOIN_CLASS;
-        Call<ResponseModel<User>> call = apiService.unJoinClass(joinClassId,cancellationId,remark);
+        Call<ResponseModel<User>> call = apiService.unJoinClass(joinClassId, cancellationId, remark);
         LogUtils.debug("NetworkCommunicator hitting unJoinClass");
 
         call.enqueue(new RestCallBack<ResponseModel<User>>(context) {
@@ -1776,9 +1776,9 @@ public class NetworkCommunicator {
         return call;
     }
 
-    public Call uploadInsterestedCity(int id,InterestedCityRequestModel interestedCityModel, final RequestListener requestListener, final boolean useCache) {
+    public Call uploadInsterestedCity(int id, InterestedCityRequestModel interestedCityModel, final RequestListener requestListener, final boolean useCache) {
         final int requestCode = RequestCode.INERESTED_CITY;
-        Call<ResponseModel<InterestedCityModel>> call = apiService.uploadInterestedCity(id,interestedCityModel);
+        Call<ResponseModel<InterestedCityModel>> call = apiService.uploadInterestedCity(id, interestedCityModel);
         LogUtils.debug("NetworkCommunicator hitting Interested City");
 
         call.enqueue(new RestCallBack<ResponseModel<InterestedCityModel>>(context) {
