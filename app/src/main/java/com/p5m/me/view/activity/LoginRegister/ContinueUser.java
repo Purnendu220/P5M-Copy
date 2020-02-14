@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.p5m.me.R;
 import com.p5m.me.analytics.MixPanel;
+import com.p5m.me.data.main.BookingCancellationResponse;
 import com.p5m.me.data.main.StoreApiModel;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
@@ -56,18 +57,17 @@ public class ContinueUser extends BaseActivity implements View.OnClickListener, 
         buttonLogin.setOnClickListener(this);
         buttonRegister.setOnClickListener(this);
         textViewSwitch.setOnClickListener(this);
-        if(TempStorage.getCountries()==null)
-            callApi();
+        if (TempStorage.getCountries() == null)
+            networkCommunicator.getStoreData(this, false);
+
         try {
             ImageUtils.setImage(context, TempStorage.getUser().getProfileImage(), R.drawable.profile_holder, imageView);
-            buttonContinue.setText(getString(R.string.continue_as)+" " + TempStorage.getUser().getFirstName());
+            buttonContinue.setText(getString(R.string.continue_as) + " " + TempStorage.getUser().getFirstName());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    private void callApi() {
-        networkCommunicator.getStoreData(this, false);
-    }
+
 
     @Override
     public void onClick(View view) {
@@ -106,6 +106,7 @@ public class ContinueUser extends BaseActivity implements View.OnClickListener, 
                 List<StoreApiModel> model = ((ResponseModel<List<StoreApiModel>>) response).data;
                 TempStorage.setCountries(model);
                 break;
+
         }
     }
 

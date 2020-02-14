@@ -26,7 +26,7 @@
             android:gravity="center"
             android:text="@string/no_refund"
             android:textColor="@color/black"
-            android:textSize="@dimen/margin_16" />
+            android:textSize="@dimen/text_large" />
 
 
         <TextView
@@ -36,9 +36,10 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="@dimen/margin_20"
             android:gravity="center"
+            android:fontFamily="sans-serif"
             tools:text="No refund message"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_extra_large" />
+            android:textSize="@dimen/text_medium" />
     </LinearLayout>
 
 
@@ -68,14 +69,14 @@
                 android:layout_height="@dimen/bottom_text_button_height"
                 android:layout_marginRight="@dimen/margin_10"
                 android:layout_weight="1"
-                android:background="@drawable/theme_bottom_text_button_light_grey"
+                android:background="@drawable/button_grey_rounded_border"
                 android:clickable="true"
                 android:fontFamily="sans-serif"
                 android:gravity="center"
                 android:letterSpacing="@dimen/button_letter_spacing"
                 android:text="@string/no_thanks"
                 android:textAllCaps="true"
-                android:textColor="@color/rating_blank"
+                android:textColor="@color/theme_dark_text"
                 android:textSize="@dimen/text_small"
 
                 />
@@ -85,7 +86,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/bottom_text_button_height"
                 android:layout_weight="1"
-                android:background="@drawable/theme_bottom_text_button_book"
+                android:background="@drawable/join_rect"
+                android:backgroundTint="@color/red"
                 android:clickable="true"
                 android:fontFamily="sans-serif"
                 android:gravity="center"

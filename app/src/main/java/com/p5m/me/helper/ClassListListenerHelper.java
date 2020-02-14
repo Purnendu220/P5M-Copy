@@ -500,7 +500,11 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
             CustomFeedbackFormDialog customFeedbackFormDialog=
                     new CustomFeedbackFormDialog(context,model, unJoinClassId,-1,networkCommunicator,1);
-            customFeedbackFormDialog.show();
+            try {
+                customFeedbackFormDialog.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
            /* final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
                     .cancelable(false)
@@ -654,7 +658,11 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
         if (!showCustomDialog) {
             CustomFeedbackFormDialog customFeedbackFormDialog =   new CustomFeedbackFormDialog(context,model, unJoinClassId,-1,networkCommunicator,1);
-            customFeedbackFormDialog.show();
+            try {
+                customFeedbackFormDialog.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
          /*   final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
                     .cancelable(false)
                     .customView(R.layout.dialog_unjoin_class, false)

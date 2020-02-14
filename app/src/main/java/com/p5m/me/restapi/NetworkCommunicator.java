@@ -1520,7 +1520,7 @@ public class NetworkCommunicator {
         return call;
     }
 
-    public Call unJoinClass(final ClassModel classModel, int joinClassId, int cancellationId, String remark, final RequestListener requestListener) {
+    public Call unJoinClass(final ClassModel classModel, int joinClassId, Integer cancellationId, String remark, final RequestListener requestListener) {
 
         final int requestCode = RequestCode.UNJOIN_CLASS;
         Call<ResponseModel<User>> call = apiService.unJoinClass(joinClassId, cancellationId, remark);

@@ -26,6 +26,7 @@ import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.UnratedClassData;
+import com.p5m.me.data.main.BookingCancellationResponse;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.request.LogoutRequest;
@@ -263,6 +264,8 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         onTrackingNotification();
         networkCommunicator.getMyUser(this, false);
         handleMembershipInfoState(TempStorage.getUser());
+        if (TempStorage.getReasons() == null)
+            networkCommunicator.getCancellationReason(this, false);
 
     }
 
@@ -563,6 +566,10 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             case NetworkCommunicator.RequestCode.LOGOUT:
                 EventBroadcastHelper.logout(context);
                 break;
+            case NetworkCommunicator.RequestCode.GET_CANCELLATION_REASON:
+                List<BookingCancellationResponse> reasonsModel = ((ResponseModel<List<BookingCancellationResponse>>) response).data;
+                TempStorage.setCancellationReasons(reasonsModel);
+                break;
 
         }
     }
@@ -573,6 +580,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             case NetworkCommunicator.RequestCode.RATING_PARAMS:
 
                 break;
+            case NetworkCommunicator.RequestCode.GET_CANCELLATION_REASON:
             case NetworkCommunicator.RequestCode.UNRATED_CLASS_COUNT:
                 break;
 

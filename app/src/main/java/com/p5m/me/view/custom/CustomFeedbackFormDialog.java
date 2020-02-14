@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -69,6 +70,8 @@ public class CustomFeedbackFormDialog extends Dialog implements OnClickListener,
     TextView textViewCancelBooking;
     @BindView(R.id.editTextComment)
     EditText editTextComment;
+    @BindView(R.id.layout)
+    LinearLayout layout;
 
     @BindView(R.id.spinner)
     public Spinner spinner;
@@ -100,7 +103,13 @@ public class CustomFeedbackFormDialog extends Dialog implements OnClickListener,
         lp.gravity = Gravity.CENTER;
         getWindow().setAttributes(lp);
         setListeners();
-        callApi();
+        layout.setVisibility(View.GONE);
+        if (TempStorage.getReasons() == null)
+            callApi();
+        else {
+            feedbackModel = TempStorage.getReasons();
+            setSpinnerView();
+        }
     }
 
     private void setListeners() {
@@ -120,12 +129,12 @@ public class CustomFeedbackFormDialog extends Dialog implements OnClickListener,
                     if (position != 0)
                         networkCommunicator.unJoinClass(classModel, unJoinClassId, feedbackModel.get(position).getId(), editTextComment.getText().toString(), this);
                     else
-                        networkCommunicator.unJoinClass(classModel, unJoinClassId, 0, editTextComment.getText().toString(), this);
+                        networkCommunicator.unJoinClass(classModel, unJoinClassId, null, editTextComment.getText().toString(), this);
                 } else {
                     if (position != 0)
                         networkCommunicator.unJoinClass(classModel, unJoinClassId, feedbackModel.get(position).getId(), editTextComment.getText().toString(), this);
                     else
-                        networkCommunicator.unJoinClass(classModel, unJoinClassId, 0, editTextComment.getText().toString(), this);
+                        networkCommunicator.unJoinClass(classModel, unJoinClassId, null, editTextComment.getText().toString(), this);
                 }
                 dismiss();
                 break;
@@ -166,8 +175,13 @@ public class CustomFeedbackFormDialog extends Dialog implements OnClickListener,
     private void setSpinnerView() {
         cancelBookingReasons.clear();
         cancelBookingReasons.add(mContext.getString(R.string.select_reason));
-        for (BookingCancellationResponse data : feedbackModel) {
-            cancelBookingReasons.add(data.getCancellationReason());
+        if (feedbackModel.size() > 1) {
+            for (BookingCancellationResponse data : feedbackModel) {
+                cancelBookingReasons.add(data.getCancellationReason());
+            }
+            layout.setVisibility(View.VISIBLE);
+        } else {
+            layout.setVisibility(View.GONE);
         }
         spinner.setOnItemSelectedListener(this);
 

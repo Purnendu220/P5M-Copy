@@ -169,6 +169,7 @@ public class AppConstants {
 
         public static final String CLASS_BOOKING_TIME = "Class_booking_time";
         public static final String COUNTRIES = "CountryList";
+        public static final String CANCELLATION_REASONS = "CancellationReasonsList";
     }
 
     public class DataKey {

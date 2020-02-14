@@ -104,9 +104,9 @@ public class CustomDialogCancelBooking extends Dialog implements OnClickListener
 
             case R.id.textViewCancelBooking:
                 if (unJoinType == -1)
-                    networkCommunicator.unJoinClass(classModel, unJoinClassId,0,"", this);
+                    networkCommunicator.unJoinClass(classModel, unJoinClassId,null,null, this);
                 else
-                    networkCommunicator.unJoinClass(classModel, unJoinClassId, 0,"",this);
+                    networkCommunicator.unJoinClass(classModel, unJoinClassId, null,null,this);
                 dismiss();
                 break;
         }

@@ -5,6 +5,7 @@ import android.content.Context;
 import com.p5m.me.data.City;
 import com.p5m.me.data.ClassesFilter;
 import com.p5m.me.data.RatingParamModel;
+import com.p5m.me.data.main.BookingCancellationResponse;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.DefaultSettingServer;
@@ -38,6 +39,7 @@ public class TempStorage {
     private static DefaultSettingServer defaultSettingServer;
 
     private static List<ClassesFilter> filterList;
+    private static List<BookingCancellationResponse> reasons;
 
 
     public static List<City> getCities() {
@@ -73,6 +75,18 @@ public class TempStorage {
     public static void setCountries(List<StoreApiModel> countries) {
         TempStorage.countries = countries;
         MyPreferences.getInstance().saveCountries(countries);
+    }
+
+    public static List<BookingCancellationResponse> getReasons() {
+        if (reasons == null) {
+            reasons = MyPreferences.getInstance().getReasons();
+        }
+        return reasons;
+    }
+
+    public static void setCancellationReasons(List<BookingCancellationResponse> reasons) {
+        TempStorage.reasons = reasons;
+        MyPreferences.getInstance().saveCancellationReason(reasons);
     }
 
     public static void setRatingParams(List<RatingParamModel> ratingParamList) {

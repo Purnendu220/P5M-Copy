@@ -351,7 +351,7 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @DELETE(AppConstants.Url.UN_JOIN_CLASS + "/{" + AppConstants.ApiParamKey.ID + "}")
     Call<ResponseModel<User>> unJoinClass(@Path(AppConstants.ApiParamKey.ID) int classSessionId,
-                                          @Query(AppConstants.ApiParamKey.CANCELLATION_ID) int cancellationId,
+                                          @Query(AppConstants.ApiParamKey.CANCELLATION_ID) Integer cancellationId,
                                           @Query(AppConstants.ApiParamKey.REMARK) String remark);
 
     @Headers("Content-type: application/json")

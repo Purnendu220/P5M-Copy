@@ -17,6 +17,6 @@
         </shape>
     </item>
     <item
-        android:drawable="@drawable/ic_unfold_more_black_24dp"
+        android:drawable="@drawable/ic_unfold_more"
         android:gravity="center|right" />
 </layer-list>

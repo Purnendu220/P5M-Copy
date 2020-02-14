@@ -12,6 +12,7 @@ import com.p5m.me.data.Filter;
 import com.p5m.me.data.Join5MinModel;
 import com.p5m.me.data.PriceModel;
 import com.p5m.me.data.RatingParamModel;
+import com.p5m.me.data.main.BookingCancellationResponse;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.DefaultSettingServer;
@@ -422,6 +423,15 @@ public class MyPreferences {
         }
         return new ArrayList<>();
     }
+    public List<BookingCancellationResponse> getReasons() {
+        try {
+            return gson.fromJson(PreferencesManager.getString(AppConstants.Pref.CANCELLATION_REASONS), new TypeToken<List<BookingCancellationResponse>>() {
+            }.getType());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
     public void saveCountries(List<StoreApiModel> countries) {
         try {
             PreferencesManager.putString(AppConstants.Pref.COUNTRIES, gson.toJson(countries));
@@ -430,5 +440,16 @@ public class MyPreferences {
             LogUtils.exception(e);
         }
     }
+
+ public void saveCancellationReason(List<BookingCancellationResponse> reasons) {
+        try {
+            PreferencesManager.putString(AppConstants.Pref.CANCELLATION_REASONS, gson.toJson(reasons));
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
+
 
 }
