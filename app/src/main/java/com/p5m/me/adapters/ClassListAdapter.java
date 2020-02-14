@@ -63,8 +63,10 @@ public class ClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public void addRecomendedClasses(RecomendedClassData recomendedClass) {
-        list.add(0, recomendedClass);
-        notifyDataSetChanged();
+        if(!recomendedClass.getRecomendedClassesList().isEmpty()) {
+            list.add(0, recomendedClass);
+            notifyDataSetChanged();
+        }
     }
 
     public void clearAll() {

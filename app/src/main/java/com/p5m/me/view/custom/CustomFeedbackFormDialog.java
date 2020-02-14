@@ -5,6 +5,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.KeyboardShortcutGroup;
 import android.view.Menu;
@@ -68,6 +71,8 @@ public class CustomFeedbackFormDialog extends Dialog implements OnClickListener,
 
     @BindView(R.id.textViewCancelBooking)
     TextView textViewCancelBooking;
+    @BindView(R.id.textViewCharLimit)
+    TextView textViewCharLimit;
     @BindView(R.id.editTextComment)
     EditText editTextComment;
     @BindView(R.id.layout)
@@ -110,6 +115,33 @@ public class CustomFeedbackFormDialog extends Dialog implements OnClickListener,
             feedbackModel = TempStorage.getReasons();
             setSpinnerView();
         }
+        setMaxCharLimit();
+    }
+
+    private void setMaxCharLimit() {
+
+        int maximum_character = 250;
+      /*  editTextComment.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maximum_character)});
+
+        editTextComment.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    textViewCharLimit.setText(s.length()+"/250");
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+
+            }
+        });*/
     }
 
     private void setListeners() {
@@ -175,7 +207,7 @@ public class CustomFeedbackFormDialog extends Dialog implements OnClickListener,
     private void setSpinnerView() {
         cancelBookingReasons.clear();
         cancelBookingReasons.add(mContext.getString(R.string.select_reason));
-        if (feedbackModel.size() > 1) {
+        if (feedbackModel!=null && feedbackModel.size() > 1) {
             for (BookingCancellationResponse data : feedbackModel) {
                 cancelBookingReasons.add(data.getCancellationReason());
             }

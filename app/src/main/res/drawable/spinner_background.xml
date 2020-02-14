@@ -14,7 +14,7 @@
 
                 <bitmap
                     android:gravity="center_vertical|right"
-                    android:src="@drawable/ic_arrow_down"
+                    android:src="@drawable/unfold_more_grey_18x18"
                     />
 
             </item>
