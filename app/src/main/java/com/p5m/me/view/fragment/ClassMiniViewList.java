@@ -423,7 +423,6 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
         if ((fragmentPositionInViewPager == position && isShownFirstTime) || shouldRefresh) {
             isShownFirstTime = false;
             shouldRefresh = false;
-
             onRefresh();
         } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST ||
                 shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {

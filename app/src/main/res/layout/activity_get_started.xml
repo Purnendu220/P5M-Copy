@@ -43,6 +43,8 @@
         android:layout_marginTop="100dp"
         android:orientation="vertical"
         android:paddingBottom="@dimen/margin_10"
+        app:layout_constraintBottom_toTopOf="@id/buttonBottom"
+
         app:layout_constraintEnd_toEndOf="@+id/textViewSkip"
         app:layout_constraintStart_toStartOf="@+id/imageViewBack"
         app:layout_constraintTop_toBottomOf="@id/textViewSkip">

@@ -87,4 +87,12 @@ public class RegistrationRequest implements java.io.Serializable {
     public void setStoreId(int storeId) {
         this.storeId = storeId;
     }
+
+    public String getFacebookId() {
+        return facebookId;
+    }
+
+    public void setFacebookId(String facebookId) {
+        this.facebookId = facebookId;
+    }
 }
