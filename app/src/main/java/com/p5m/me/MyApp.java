@@ -45,7 +45,7 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
 
     public static Context context;
 
-    public final static boolean USE_CRASH_ANALYTICS = BuildConfig.IS_PRODUCTION;
+    public final static boolean USE_CRASH_ANALYTICS = BuildConfig.IS_CRASH_REPORT;
     public final static boolean USE_MIX_PANEL = BuildConfig.IS_PRODUCTION;
 
     public final static boolean SHOW_LOG = BuildConfig.IS_DEBUG;
