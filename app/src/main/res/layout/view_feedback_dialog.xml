@@ -128,7 +128,7 @@
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center"
                 android:letterSpacing="@dimen/button_letter_spacing"
-                android:text="@string/no_thanks"
+                android:text="@string/no_thank"
                 android:textAllCaps="true"
                 android:textColor="@color/theme_dark_text"
                 android:textSize="@dimen/text_small"

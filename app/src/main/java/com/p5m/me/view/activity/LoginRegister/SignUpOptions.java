@@ -300,7 +300,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
             case NetworkCommunicator.RequestCode.REGISTER:
                 if (response != null) {
                     User user = ((ResponseModel<User>) response).data;
-                    registrationRequest=null;
+                    registrationRequest=new RegistrationRequest();
                     TempStorage.setCountryId(user.getId());
                     EventBroadcastHelper.sendLogin(context, user);
                     MixPanel.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());

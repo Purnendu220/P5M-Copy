@@ -118,7 +118,7 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
     @Override
     public void onResume() {
         super.onResume();
-
+        appBarLayout.setExpanded(true);
         boolean shouldRefreshPage = false;
 
         try {
@@ -316,6 +316,7 @@ public class FindClass extends BaseFragment implements ViewPagerFragmentSelectio
     @Override
     public void onPageSelected(int position) {
         markSelectedTab(position);
+        appBarLayout.setExpanded(true);
         SELECTED_POSITION = position;
         if(mapView!=null)
             ((MapViewFragment)mapView).onTabClick(position,calendarList.get(SELECTED_POSITION));

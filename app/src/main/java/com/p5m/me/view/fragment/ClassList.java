@@ -584,7 +584,6 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
             case NetworkCommunicator.RequestCode.CLASS_LIST:
                 swipeRefreshLayout.setRefreshing(false);
                 List<ClassModel> classModels = ((ResponseModel<List<ClassModel>>) response).data;
-
                 if (!classModels.isEmpty()) {
                     classListAdapter.addAllClass(classModels);
                     if (classModels.size() < pageSizeLimit) {
