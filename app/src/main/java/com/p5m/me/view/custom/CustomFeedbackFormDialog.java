@@ -115,34 +115,8 @@ public class CustomFeedbackFormDialog extends Dialog implements OnClickListener,
             feedbackModel = TempStorage.getReasons();
             setSpinnerView();
         }
-        setMaxCharLimit();
     }
 
-    private void setMaxCharLimit() {
-
-        int maximum_character = 250;
-      /*  editTextComment.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maximum_character)});
-
-        editTextComment.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    textViewCharLimit.setText(s.length()+"/250");
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
-                // TODO Auto-generated method stub
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                // TODO Auto-generated method stub
-
-            }
-        });*/
-    }
 
     private void setListeners() {
         textViewCancelBooking.setOnClickListener(this);
@@ -157,16 +131,32 @@ public class CustomFeedbackFormDialog extends Dialog implements OnClickListener,
                 break;
 
             case R.id.textViewCancelBooking:
-                if (unJoinType == -1) {
-                    if (position != 0)
-                        networkCommunicator.unJoinClass(classModel, unJoinClassId, feedbackModel.get(position).getId(), editTextComment.getText().toString(), this);
-                    else
-                        networkCommunicator.unJoinClass(classModel, unJoinClassId, null, editTextComment.getText().toString(), this);
+                if (cancelBookingReasons != null && cancelBookingReasons.size() > 1) {
+                    if (unJoinType == -1) {
+                        if (position != 0)
+                            networkCommunicator.unJoinClass(classModel, unJoinClassId, feedbackModel.get(position).getId(), editTextComment.getText().toString(), this);
+                        else
+                            ToastUtils.show(mContext, mContext.getString(R.string.cancel_reason));
+//                            networkCommunicator.unJoinClass(classModel, unJoinClassId, null, editTextComment.getText().toString(), this);
+                    } else {
+                        if (position != 0)
+                            networkCommunicator.unJoinClass(classModel, unJoinClassId, feedbackModel.get(position).getId(), editTextComment.getText().toString(), this);
+                        else
+                            ToastUtils.show(mContext, mContext.getString(R.string.cancel_reason));
+//                        networkCommunicator.unJoinClass(classModel, unJoinClassId, null, editTextComment.getText().toString(), this);
+                    }
                 } else {
-                    if (position != 0)
-                        networkCommunicator.unJoinClass(classModel, unJoinClassId, feedbackModel.get(position).getId(), editTextComment.getText().toString(), this);
-                    else
-                        networkCommunicator.unJoinClass(classModel, unJoinClassId, null, editTextComment.getText().toString(), this);
+                    if (unJoinType == -1) {
+                        if (position != 0)
+                            networkCommunicator.unJoinClass(classModel, unJoinClassId, feedbackModel.get(position).getId(), editTextComment.getText().toString(), this);
+                        else
+                            networkCommunicator.unJoinClass(classModel, unJoinClassId, null, editTextComment.getText().toString(), this);
+                    } else {
+                        if (position != 0)
+                            networkCommunicator.unJoinClass(classModel, unJoinClassId, feedbackModel.get(position).getId(), editTextComment.getText().toString(), this);
+                        else
+                            networkCommunicator.unJoinClass(classModel, unJoinClassId, null, editTextComment.getText().toString(), this);
+                    }
                 }
                 dismiss();
                 break;
@@ -207,7 +197,7 @@ public class CustomFeedbackFormDialog extends Dialog implements OnClickListener,
     private void setSpinnerView() {
         cancelBookingReasons.clear();
         cancelBookingReasons.add(mContext.getString(R.string.select_reason));
-        if (feedbackModel!=null && feedbackModel.size() > 1) {
+        if (feedbackModel != null && feedbackModel.size() > 1) {
             for (BookingCancellationResponse data : feedbackModel) {
                 cancelBookingReasons.add(data.getCancellationReason());
             }
