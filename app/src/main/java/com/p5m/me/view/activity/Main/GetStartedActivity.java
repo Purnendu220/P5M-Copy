@@ -89,7 +89,7 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_started);
         ButterKnife.bind(activity);
-       flexBoxLayout.setFlexDirection(FlexDirection.ROW);
+        flexBoxLayout.setFlexDirection(FlexDirection.ROW);
         flexBoxLayoutTime.setFlexDirection(FlexDirection.ROW);
         flexBoxLayout.setVisibility(View.GONE);
         flexBoxLayoutTime.setVisibility(View.GONE);
@@ -174,7 +174,6 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
                 break;
             default:
                 callApi(activities);
-                HomeActivity.show(context, TAB_FIND_CLASS, AppConstants.AppNavigation.NAVIGATION_FROM_EXPLORE);
                 break;
         }
     }
@@ -183,14 +182,14 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
         final View view = LayoutInflater.from(context).inflate(R.layout.view_tiles, flexBoxLayout, false);
         TextView textView = view.findViewById(R.id.textViewTiles);
 
-            if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
-                String name = classActivity.getName();
-                textView.setText(name);
-            } else {
-                String name = classActivity.getName();
-                textView.setText(name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase());
-            }
-            flexBoxLayout.addView(view);
+        if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+            String name = classActivity.getName();
+            textView.setText(name);
+        } else {
+            String name = classActivity.getName();
+            textView.setText(name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase());
+        }
+        flexBoxLayout.addView(view);
 
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,14 +203,14 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
     private void addTimeTag(Filter.Time time) {
         final View view = LayoutInflater.from(context).inflate(R.layout.view_tiles, flexBoxLayout, false);
         TextView textView = view.findViewById(R.id.textViewTiles);
-            if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
-                String name = time.getName_ar();
-                textView.setText(name);
-            } else {
-                String name = time.getName();
-                textView.setText(name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase());
-            }
-            flexBoxLayoutTime.addView(view);
+        if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+            String name = time.getName_ar();
+            textView.setText(name);
+        } else {
+            String name = time.getName();
+            textView.setText(name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase());
+        }
+        flexBoxLayoutTime.addView(view);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View imageRight) {
@@ -277,6 +276,7 @@ public class GetStartedActivity extends BaseActivity implements View.OnClickList
         }
         userInfoUpdate.setTimePreference(String.valueOf(selectedTimeList));
         networkCommunicator.userInfoUpdate(TempStorage.getUser().getId(), userInfoUpdate, this, false);
+        HomeActivity.open(context);
     }
 
     @Override
