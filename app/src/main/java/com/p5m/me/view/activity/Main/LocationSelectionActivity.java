@@ -99,6 +99,8 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
         buttonNext.setOnClickListener(this);
         textViewLogin.setOnClickListener(this);
         textInputLayoutCity.setVisibility(View.GONE);
+        buttonNext.setEnabled(true);
+        buttonNext.setText(context.getResources().getString(R.string.next));
         Helper.setupErrorWatcher(textViewCountryName, textInputLayoutCity);
         if (TempStorage.getCountries() == null)
             callApi();
@@ -182,7 +184,7 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
         switch (v.getId()) {
             case R.id.buttonNext:
                 if (position < 0) {
-                    ToastUtils.show(context, getString(R.string.please_select_city));
+                    ToastUtils.show(context, getString(R.string.select_city));
                 } else if (navigateFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FACEBOOK_LOGIN
                         && registrationRequest != null && !other) {
                     loginTime = System.currentTimeMillis() - 5 * 1000;
@@ -204,6 +206,8 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
                         textInputLayoutCity.setVisibility(View.VISIBLE);
                         if (!isError()) {
                             callInterestedCityApi();
+                            buttonNext.setEnabled(false);
+                            buttonNext.setText(context.getResources().getString(R.string.please_wait));
                         }
                     }
 
@@ -284,6 +288,9 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
                 break;
 
             case NetworkCommunicator.RequestCode.INERESTED_CITY:
+                buttonNext.setEnabled(true);
+                buttonNext.setText(context.getResources().getString(R.string.next));
+
                 InterestedCityModel interestedCityModel = ((ResponseModel<InterestedCityModel>) response).data;
                 ExpandCityActivity.open(context, textViewCountryName.getText().toString(), interestedCityModel.getId(), interestedCityRequestModel);
                 break;
@@ -296,6 +303,11 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
     public void onApiFailure(String errorMessage, int requestCode) {
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.INERESTED_CITY:
+                ToastUtils.show(context, errorMessage);
+
+                buttonNext.setEnabled(true);
+                buttonNext.setText(context.getResources().getString(R.string.next));
+                break;
             case NetworkCommunicator.RequestCode.GET_STORE_DATA:
                 ToastUtils.show(context, errorMessage);
                 break;

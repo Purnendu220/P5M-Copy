@@ -1005,7 +1005,7 @@
     <string name="Comment">شاركنا بأسبابك أو تعليقاتك </string>
     <string name="select_reason">اختار السبب</string>
     <string name="cancel_reason">Please provide cancellation reason</string>
-    <string name="no_thank">لا شكرا</string>
+    <string name="no_thank">احتفظ بحجزي </string>
     <string-array name="city">
         <item>الكويت</item>
         <item>الرياض، المملكة العربية السعودية</item>

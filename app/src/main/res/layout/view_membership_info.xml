@@ -417,7 +417,7 @@
             android:layout_marginEnd="16dp"
             android:orientation="vertical"
             android:padding="15dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageViewWorkout"
+            android:minHeight="@dimen/margin_150"
             app:layout_constraintEnd_toStartOf="@+id/imageViewWorkout"
             app:layout_constraintStart_toStartOf="@+id/imageViewDiscount"
             app:layout_constraintTop_toTopOf="@+id/imageViewWorkout">
@@ -439,9 +439,7 @@
                 android:id="@+id/textViewDiscountDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:paddingTop="8dp"
-                android:paddingBottom="@dimen/margin_10"
                 android:text="@string/go_to_different_gym"
                 android:textColor="@color/theme_dark_text"
                 android:textSize="@dimen/text_medium" />
@@ -457,6 +455,7 @@
             app:layout_constraintEnd_toEndOf="@id/layoutDiscount"
             app:layout_constraintStart_toEndOf="@id/imageViewDiscount"
             app:layout_constraintTop_toBottomOf="@+id/imageViewDiscount"
+            app:layout_constraintBottom_toBottomOf="@+id/layout"
             app:srcCompat="@drawable/get_a_illustration" />
 
         <View
@@ -467,7 +466,7 @@
             android:background="#DFDDDD"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageViewWorkout" />
+            app:layout_constraintTop_toBottomOf="@+id/layout" />
 
         <TextView
             android:id="@+id/textViewFrequentlyAskedQuestions"

@@ -204,7 +204,7 @@
     <string name="current_pass_new_pass_same">Your new password and current password is same</string>
     <string name="unjoin_class">Cancel My Registration</string>
     <string name="no_thanks">No, Thanks</string>
-    <string name="no_thank">No Thanks</string>
+    <string name="no_thank">Keep my booking </string>
     <string name="please_wait_no_dots">Please Wait</string>
     <string name="no_data_class_list_main">No classes are available. Try a different date to join your class.</string>
     <string name="no_data_trainer_list_main">No trainers are available that match your search.</string>
