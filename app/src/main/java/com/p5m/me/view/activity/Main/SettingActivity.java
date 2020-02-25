@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.FAQAdapter;
 import com.p5m.me.R;
+import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.data.main.StoreApiModel;
 import com.p5m.me.data.main.StoreModel;
 import com.p5m.me.data.main.User;
@@ -270,6 +271,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 user.setStoreId(model.getId());
                 user.setCurrencyCode(model.getCurrencyCode());
                 user.setStoreName(model.getName());
+                IntercomEvents.updateStoreId();
                 EventBroadcastHelper.sendUserUpdate(context, user);
                 EventBroadcastHelper.changeCountry();
                 HomeActivity.open(context);

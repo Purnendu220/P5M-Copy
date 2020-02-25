@@ -264,8 +264,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         onTrackingNotification();
         networkCommunicator.getMyUser(this, false);
         handleMembershipInfoState(TempStorage.getUser());
-        if (TempStorage.getReasons() == null)
-            networkCommunicator.getCancellationReason(this, false);
+        networkCommunicator.getCancellationReason(this, false);
 
     }
 

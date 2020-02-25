@@ -331,6 +331,7 @@ public class User implements java.io.Serializable {
 
     public void setStoreName(String storeName) {
         this.storeName = storeName;
+        TempStorage.setCountryName(storeName);
     }
 
     public String getCurrencyCode() {

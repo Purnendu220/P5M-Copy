@@ -200,6 +200,7 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
                             finish();
                         } else {
                             TempStorage.setCountryId(countryId);
+                            TempStorage.setCountryName(model.get(position).getName());
                             SignUpOptions.open(context, countryId);
                         }
                     } else {
@@ -247,6 +248,7 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
                 if (response != null) {
                     User user = ((ResponseModel<User>) response).data;
                     TempStorage.setCountryId(user.getId());
+                    TempStorage.setCountryName(user.getStoreName());
                     EventBroadcastHelper.sendLogin(context, user);
                     MixPanel.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
                     FirebaseAnalysic.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());

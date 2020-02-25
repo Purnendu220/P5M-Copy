@@ -143,7 +143,6 @@ public class CustomFeedbackFormDialog extends Dialog implements OnClickListener,
                             dismiss();
                         } else
                             ToastUtils.show(mContext, mContext.getString(R.string.select_reason));
-//                            networkCommunicator.unJoinClass(classModel, unJoinClassId, null, editTextComment.getText().toString(), this);
                     } else {
                         if (position != -1) {
                             networkCommunicator.unJoinClass(classModel, unJoinClassId, feedbackModel.get(position).getId(), editTextComment.getText().toString(), this);
@@ -151,18 +150,11 @@ public class CustomFeedbackFormDialog extends Dialog implements OnClickListener,
                         } else {
                             ToastUtils.show(mContext, mContext.getString(R.string.select_reason));
                       }
-//                      networkCommunicator.unJoinClass(classModel, unJoinClassId, null, editTextComment.getText().toString(), this);
                     }
                 } else {
                     if (unJoinType == -1) {
-//                        if (position != -1)
-//                            networkCommunicator.unJoinClass(classModel, unJoinClassId, feedbackModel.get(position).getId(), editTextComment.getText().toString(), this);
-//                        else
                         networkCommunicator.unJoinClass(classModel, unJoinClassId, null, editTextComment.getText().toString(), this);
                     } else {
-//                        if (position != -1)
-//                            networkCommunicator.unJoinClass(classModel, unJoinClassId, feedbackModel.get(position).getId(), editTextComment.getText().toString(), this);
-//                        else
                         networkCommunicator.unJoinClass(classModel, unJoinClassId, null, editTextComment.getText().toString(), this);
                     }
                     dismiss();
@@ -207,7 +199,7 @@ public class CustomFeedbackFormDialog extends Dialog implements OnClickListener,
     private void setSpinnerView() {
         cancelBookingReasons.clear();
         cancelBookingReasons.add(mContext.getString(R.string.select_reason));
-        if (feedbackModel != null && feedbackModel.size() > 1) {
+        if (feedbackModel != null && !feedbackModel.isEmpty()) {
             for (BookingCancellationResponse data : feedbackModel) {
                 cancelBookingReasons.add(data.getCancellationReason());
             }

@@ -185,22 +185,23 @@ public class CustomDialogCancelBooking extends Dialog implements OnClickListener
        }
    }
     private void openAlertForRefund(ClassModel model) {
-        DefaultSettingServer defaultSettingServer = MyPreferences.getInstance().getDefaultSettingServer();
-        float cancelTime = 2;
-        if (defaultSettingServer != null) {
-            cancelTime = defaultSettingServer.getRefundAllowedbeforeForSpecial();
+
+                DefaultSettingServer defaultSettingServer = MyPreferences.getInstance().getDefaultSettingServer();
+                float cancelTime = 2;
+                if (defaultSettingServer != null) {
+                    cancelTime = defaultSettingServer.getRefundAllowedbeforeForSpecial();
+
+                }
+                if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model) && (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) > cancelTime || checkFor5MinDifference(model))) {
+                    CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(mContext, "", mContext.getString(R.string.successfull_refund_message), 1, mContext.getString(R.string.not_now), mContext.getString(R.string.yes), CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_SUCCESSFULL_UNJOIN, null, false, CustomDialogCancelBooking.this);
+                    try {
+                        mCustomAlertDialog.show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
 
         }
-        if (Helper.isSpecialClass(model) && !Helper.isFreeClass(model) && (DateUtils.hoursLeft(model.getClassDate() + " " + model.getFromTime()) > cancelTime ||
-                checkFor5MinDifference(model))) {
-            CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(mContext, "", mContext.getString(R.string.successfull_refund_message), 1, mContext.getString(R.string.not_now), mContext.getString(R.string.yes), CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_SUCCESSFULL_UNJOIN, null, false, CustomDialogCancelBooking.this);
-            try {
-                mCustomAlertDialog.show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     private boolean checkFor5MinDifference(ClassModel model) {
 

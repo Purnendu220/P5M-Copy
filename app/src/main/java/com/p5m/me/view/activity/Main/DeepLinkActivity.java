@@ -65,6 +65,11 @@ public class DeepLinkActivity extends BaseActivity {
                     if (url.contains("/aboutus")) {
                         forwardToBrowser(getIntent());
                     }
+                    else if (url.contains("/privacy")) {
+                        forwardToBrowser(getIntent());
+                    } else if (url.contains("/terms")) {
+                        forwardToBrowser(getIntent());
+                    }
                     else{
                         navigationIntent = HandleNotificationDeepLink.handleNotificationDeeplinking(context, url);
 

@@ -302,6 +302,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                     User user = ((ResponseModel<User>) response).data;
                     registrationRequest=new RegistrationRequest();
                     TempStorage.setCountryId(user.getId());
+                    TempStorage.setCountryName(user.getStoreName());
                     EventBroadcastHelper.sendLogin(context, user);
                     MixPanel.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
                     FirebaseAnalysic.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
@@ -313,6 +314,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
             case NetworkCommunicator.RequestCode.UPDATE_STORE_ID:
                 StoreModel model = ((ResponseModel<StoreModel>) response).data;
                 TempStorage.setCountryId(model.getId());
+                TempStorage.setCountryName(model.getName());
         }
 
     }

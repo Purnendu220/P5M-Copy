@@ -52,7 +52,7 @@
             android:gravity="center"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="@dimen/margin_20"
-            android:textSize="@dimen/text_extra_large"
+            android:textSize="@dimen/text_large"
             android:text="@string/your_review_has_been_submitted"
             android:textColor="@color/black"
             />
@@ -67,7 +67,7 @@
     <TextView
         android:id="@+id/textViewNotNow"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/bottom_text_button_height"
+        android:layout_height="@dimen/button_height_normal"
         android:background="@drawable/theme_bottom_text_button_book"
         android:clickable="true"
         android:fontFamily="sans-serif"
@@ -95,8 +95,8 @@
      <TextView
          android:id="@+id/textViewGotIt"
          android:layout_width="match_parent"
-         android:layout_height="@dimen/bottom_text_button_height"
-         android:background="@drawable/theme_bottom_text_button_book"
+         android:layout_height="@dimen/button_height_normal"
+         android:background="@drawable/join_rect"
          android:clickable="true"
          android:fontFamily="sans-serif"
          android:gravity="center"
@@ -120,7 +120,7 @@
     <TextView
         android:id="@+id/textViewIWillDoLater"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/bottom_text_button_height"
+        android:layout_height="@dimen/button_height_normal"
         android:background="@drawable/theme_bottom_text_button_light_grey"
         android:clickable="true"
         android:fontFamily="sans-serif"
@@ -137,7 +137,7 @@
     <TextView
         android:id="@+id/textViewRatePrevious"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/bottom_text_button_height"
+        android:layout_height="@dimen/button_height_normal"
         android:background="@drawable/theme_bottom_text_button_book"
         android:clickable="true"
         android:fontFamily="sans-serif"

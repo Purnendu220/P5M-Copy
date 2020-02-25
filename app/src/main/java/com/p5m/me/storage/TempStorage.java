@@ -270,6 +270,7 @@ public class TempStorage {
         if (user != null) {
             TempStorage.user = user;
             TempStorage.setCountryId(user.getStoreId());
+            TempStorage.setCountryName(user.getStoreName());
             MyPreferences.getInstance().saveUser(user);
 
         }

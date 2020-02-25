@@ -495,87 +495,53 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                 showCustomDialog = false;
             }
         }
-
+        int unJoinType = -1;
         if (!showCustomDialog) {
+           handleFeedbackForm( model, unJoinClassId, unJoinType, networkCommunicator);
 
-            CustomFeedbackFormDialog customFeedbackFormDialog=
-                    new CustomFeedbackFormDialog(context,model, unJoinClassId,-1,networkCommunicator,1);
+        } else {
+            handleCustomDialog(message, model, unJoinClassId, unJoinType, networkCommunicator);
+
+        }
+    }
+
+    private void handleFeedbackForm(ClassModel model, int unJoinClassId, int unJoinType, NetworkCommunicator networkCommunicator) {
+
+        if (model != null && model.getClassDate() != null && !DateUtils.isTimePassed(model.getClassDate(), model.getFromTime())) {
+
+            CustomFeedbackFormDialog customFeedbackFormDialog =
+                    new CustomFeedbackFormDialog(context, model, unJoinClassId, unJoinType, networkCommunicator, 1);
             try {
                 customFeedbackFormDialog.show();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-           /* final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
-                    .cancelable(false)
-                    .customView(R.layout.dialog_unjoin_class, false)
-                    .build();
-            materialDialog.show();
-
-            final TextView textViewMessage = (TextView) materialDialog.findViewById(R.id.textViewMessage);
-            final TextView textViewUnJoin = (TextView) materialDialog.findViewById(R.id.textViewOk);
-            final TextView textViewClose = (TextView) materialDialog.findViewById(R.id.textViewCancel);
-
-            textViewMessage.setText(message);
-
-            textViewClose.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    materialDialog.dismiss();
-                }
-            });
-
-            textViewUnJoin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    textViewUnJoin.setVisibility(View.GONE);
-                    networkCommunicator.unJoinClass(model, unJoinClassId, new NetworkCommunicator.RequestListener() {
-                        @Override
-                        public void onApiSuccess(Object response, int requestCode) {
-
-                            try {
-                                model.setUserJoinStatus(false);
-                                TempStorage.setUser(context, ((ResponseModel<User>) response).data);
-                                EventBroadcastHelper.sendUserUpdate(context, ((ResponseModel<User>) response).data);
-                                EventBroadcastHelper.sendClassJoin(context, model, AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS);
-                                MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
-                                FirebaseAnalysic.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
-                                IntercomEvents.trackUnJoinClass(model);
-//
-                                materialDialog.dismiss();
-                                openAlertForRefund(model);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                LogUtils.exception(e);
-                            }
-
-                            textViewUnJoin.setVisibility(View.VISIBLE);
-                            materialDialog.dismiss();
-                        }
-
-                        @Override
-                        public void onApiFailure(String errorMessage, int requestCode) {
-                            textViewUnJoin.setVisibility(View.VISIBLE);
-
-                            ToastUtils.showLong(context, errorMessage);
-                            materialDialog.dismiss();
-                        }
-                    });
-                }
-            });*/
-        } else {
-            handleCustomDialog(message, model, unJoinClassId, -1, networkCommunicator);
+        }
+        else{
+            callCancelApi(model,unJoinClassId,unJoinType,networkCommunicator);
         }
     }
 
     private void handleCustomDialog(String message, ClassModel model, int unJoinClassId, int unJoinType, NetworkCommunicator networkCommunicator) {
-        CustomDialogCancelBooking customDialogCancelBooking = new CustomDialogCancelBooking(context, message, model, unJoinClassId, unJoinType, networkCommunicator, AppConstants.AppNavigation.NAVIGATION_FROM_OTHER_USER);
-        try {
-            customDialogCancelBooking.show();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (model != null && model.getClassDate() != null && !DateUtils.isTimePassed(model.getClassDate(), model.getFromTime())) {
+            CustomDialogCancelBooking customDialogCancelBooking = new CustomDialogCancelBooking(context, message, model, unJoinClassId, unJoinType, networkCommunicator, AppConstants.AppNavigation.NAVIGATION_FROM_OTHER_USER);
+            try {
+                customDialogCancelBooking.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        else{
+           callCancelApi(model,unJoinClassId,unJoinType,networkCommunicator);
+        }
+    }
+
+    private void callCancelApi( ClassModel classModel, int unJoinClassId, int unJoinType, NetworkCommunicator networkCommunicator) {
+        if (unJoinType == -1)
+            networkCommunicator.unJoinClass(classModel, unJoinClassId,null,null, this);
+        else
+            networkCommunicator.unJoinClass(classModel, unJoinClassId, null,null,this);
+
     }
 
     private boolean checkFor5MinDifference(ClassModel model) {
@@ -655,88 +621,26 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             message = context.getString(R.string.sure_unjoin_friend);
 
         }
-
         if (!showCustomDialog) {
-            CustomFeedbackFormDialog customFeedbackFormDialog =   new CustomFeedbackFormDialog(context,model, unJoinClassId,-1,networkCommunicator,1);
-            try {
-                customFeedbackFormDialog.show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-         /*   final MaterialDialog materialDialog = new MaterialDialog.Builder(context)
-                    .cancelable(false)
-                    .customView(R.layout.dialog_unjoin_class, false)
-                    .build();
-            materialDialog.show();
-
-            final TextView textViewMessage = (TextView) materialDialog.findViewById(R.id.textViewMessage);
-            final TextView textViewUnJoin = (TextView) materialDialog.findViewById(R.id.textViewOk);
-            final TextView textViewClose = (TextView) materialDialog.findViewById(R.id.textViewCancel);
-
-            textViewMessage.setText(message);
-
-            textViewClose.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    materialDialog.dismiss();
-                }
-            });
-
-            textViewUnJoin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    textViewUnJoin.setVisibility(View.GONE);
-                    networkCommunicator.unJoinClass(model, unJoinClassId, new NetworkCommunicator.RequestListener() {
-                        @Override
-                        public void onApiSuccess(Object response, int requestCode) {
-
-                            try {
-
-                                if (unJoinType == AppConstants.Values.UNJOIN_BOTH_CLASS)
-                                    model.setUserJoinStatus(false);
-                                else if (unJoinType == AppConstants.Values.UNJOIN_FRIEND_CLASS) {
-                                    model.setUserJoinStatus(true);
-                                    model.setRefBookingId(null);
-                                }
-
-                                if (unJoinType == AppConstants.Values.UNJOIN_BOTH_CLASS)
-                                    EventBroadcastHelper.sendClassJoin(context, model, AppConstants.Values.UNJOIN_BOTH_CLASS);
-                                else if (unJoinType == AppConstants.Values.UNJOIN_FRIEND_CLASS)
-                                    EventBroadcastHelper.sendClassJoin(context, model, AppConstants.Values.UNJOIN_FRIEND_CLASS);
-                                else
-                                    EventBroadcastHelper.sendClassJoin(context, model, AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS);
-                                EventBroadcastHelper.sendUserUpdate(context, ((ResponseModel<User>) response).data);
-
-                                MixPanel.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
-                                FirebaseAnalysic.trackUnJoinClass(AppConstants.Tracker.UP_COMING, model);
-                                IntercomEvents.trackUnJoinClass(model);
-                                materialDialog.dismiss();
-                                openAlertForRefund(model);
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                LogUtils.exception(e);
-                            }
-
-                            textViewUnJoin.setVisibility(View.VISIBLE);
-                            materialDialog.dismiss();
-                        }
-
-                        @Override
-                        public void onApiFailure(String errorMessage, int requestCode) {
-                            textViewUnJoin.setVisibility(View.VISIBLE);
-
-                            ToastUtils.showLong(context, errorMessage);
-                            materialDialog.dismiss();
-                        }
-                    });
-                }
-            });*/
+            handleFeedbackForm( model, unJoinClassId, -1, networkCommunicator);
 
         } else {
             handleCustomDialog(message, model, unJoinClassId, unJoinType, networkCommunicator);
+
         }
+       /* if (!showCustomDialog) {
+            if (model != null && model.getClassDate() != null && !DateUtils.isTimePassed(model.getClassDate(), model.getFromTime())) {
+
+                CustomFeedbackFormDialog customFeedbackFormDialog = new CustomFeedbackFormDialog(context, model, unJoinClassId, -1, networkCommunicator, 1);
+                try {
+                    customFeedbackFormDialog.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            handleCustomDialog(message, model, unJoinClassId, unJoinType, networkCommunicator);
+        }*/
     }
 
     private static void dialogConfirmDelete(Context context, final NetworkCommunicator networkCommunicator, final ClassModel model, int shownIn) {
@@ -762,16 +666,23 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
     @Override
     public void onApiSuccess(Object response, int requestCode) {
         switch (requestCode) {
+            case NetworkCommunicator.RequestCode.UNJOIN_CLASS:
+//                handleUnjoinClass(response);
 
+                break;
         }
     }
 
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
         switch (requestCode) {
+            case NetworkCommunicator.RequestCode.UNJOIN_CLASS:
+                ToastUtils.show(context, errorMessage);
 
+                break;
         }
     }
+
 
     private void openRateAlertDialog(ClassModel model) {
         if (model != null) {

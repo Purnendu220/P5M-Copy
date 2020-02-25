@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:background="@color/float_transparent"
+        android:background="@color/white"
         >
 
 
@@ -22,7 +22,6 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical|center"
             android:orientation="vertical"
-            android:background="@drawable/rounded_topcorner"
             >
             <TextView
                 android:id="@+id/textViewthank_you"
@@ -30,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_marginTop="30dp"
-                android:textSize="@dimen/margin_16"
+                android:textSize="@dimen/text_large"
                 android:text="@string/add_more_time"
                 android:textColor="@color/black"
                 android:fontFamily="sans-serif-medium"
@@ -48,7 +47,8 @@
                 android:layout_marginBottom="@dimen/margin_20"
                 android:layout_marginLeft="@dimen/margin_10"
                 android:layout_marginRight="@dimen/margin_10"
-                android:textSize="@dimen/text_large"
+                android:textSize="@dimen/text_medium"
+                android:fontFamily="sans-serif"
                 android:text="@string/extend_message"
                 android:textColor="@color/black"
                 />
@@ -179,7 +179,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/linearlayoutTopPart"
-            android:background="@drawable/rounded_bottomcorner"
             android:visibility="visible"
 
             >
@@ -193,8 +192,9 @@
                 <TextView
                     android:id="@+id/textViewCancel"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/bottom_text_button_height"
-                    android:background="@drawable/theme_bottom_text_button_light_grey"
+                    android:layout_height="@dimen/button_height_normal"
+                    android:background="@drawable/join_rect"
+                    android:backgroundTint="@color/grey_bg"
                     android:clickable="true"
                     android:fontFamily="sans-serif"
                     android:gravity="center"
@@ -210,8 +210,8 @@
                 <TextView
                     android:id="@+id/textViewProceed"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/bottom_text_button_height"
-                    android:background="@drawable/theme_bottom_text_button_book"
+                    android:layout_height="@dimen/button_height_normal"
+                    android:background="@drawable/join_rect"
                     android:clickable="true"
                     android:fontFamily="sans-serif"
                     android:gravity="center"
