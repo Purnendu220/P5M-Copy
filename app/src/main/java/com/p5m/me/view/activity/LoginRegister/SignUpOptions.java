@@ -40,6 +40,7 @@ import com.p5m.me.helper.MyClickSpan;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
@@ -307,6 +308,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                     MixPanel.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
                     FirebaseAnalysic.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
                     IntercomEvents.successfulLoginIntercom(user.getFirstName() + " " + user.getLastName(), user.getEmail());
+                    MyPreferences.getInstance().saveMembershipIcon(true);
                     GetStartedActivity.open(context);
                 }
                 break;

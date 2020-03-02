@@ -84,7 +84,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     }
 
 
-    public static void show(Context context, int tabPosition,int navigationFrom) {
+    public static void show(Context context, int tabPosition, int navigationFrom) {
         Intent intent = new Intent(context, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -93,7 +93,8 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         context.startActivity(intent);
 
     }
-    public static void show(Context context, int tabPosition,int navigationFrom, ClassModel classModel) {
+
+    public static void show(Context context, int tabPosition, int navigationFrom, ClassModel classModel) {
         Intent intent = new Intent(context, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -103,6 +104,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         context.startActivity(intent);
 
     }
+
     public static void show(Context context, int tabPosition, int navigationFrom, ClassModel classModel, BookWithFriendData friendData, int numberOfPackagesToBuy) {
         Intent intent = new Intent(context, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
@@ -110,8 +112,8 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         intent.putExtra(AppConstants.DataKey.HOME_TAB_POSITION, tabPosition);
         intent.putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom);
         intent.putExtra(AppConstants.DataKey.CLASS_OBJECT, classModel);
-        intent.putExtra(AppConstants.DataKey.BOOK_WITH_FRIEND_DATA,friendData);
-        intent.putExtra(AppConstants.DataKey.NUMBER_OF_PACKAGES_TO_BUY,numberOfPackagesToBuy);
+        intent.putExtra(AppConstants.DataKey.BOOK_WITH_FRIEND_DATA, friendData);
+        intent.putExtra(AppConstants.DataKey.NUMBER_OF_PACKAGES_TO_BUY, numberOfPackagesToBuy);
         context.startActivity(intent);
 
     }
@@ -125,6 +127,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         context.startActivity(intent);
 
     }
+
     public static Intent createIntent(Context context, int tabPosition, int innerTabPosition) {
         Intent intent = new Intent(context, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
@@ -156,7 +159,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         return intent;
     }
 
-    public static Intent showMembership(Context context, int tabPosition,int navigationFrom) {
+    public static Intent showMembership(Context context, int tabPosition, int navigationFrom) {
         Intent intent = new Intent(context, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -190,8 +193,8 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     private int SCHEDULE_TAB_POSITION;
     private int NAVIGATED_FROM_INT = -1;
     private int NUMBER_OF_PACKAGES_TO_BUY = -1;
-    private BookWithFriendData BOOK_WITH_FRIEND_DATA ;
-    private ClassModel CLASS_OBJECT ;
+    private BookWithFriendData BOOK_WITH_FRIEND_DATA;
+    private ClassModel CLASS_OBJECT;
 
 
     private Handler handler;
@@ -237,7 +240,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         handler = new Handler(Looper.getMainLooper());
         setupBottomTabs();
         (new RemoteConfigure()).fetchRemoteConfig(context);
-        homeAdapter = new HomeAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_TABS, PROFILE_TAB_POSITION, SCHEDULE_TAB_POSITION,NAVIGATED_FROM_INT,NUMBER_OF_PACKAGES_TO_BUY,CLASS_OBJECT,BOOK_WITH_FRIEND_DATA);
+        homeAdapter = new HomeAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_TABS, PROFILE_TAB_POSITION, SCHEDULE_TAB_POSITION, NAVIGATED_FROM_INT, NUMBER_OF_PACKAGES_TO_BUY, CLASS_OBJECT, BOOK_WITH_FRIEND_DATA);
         viewPager.setAdapter(homeAdapter);
         viewPager.addOnPageChangeListener(this);
         viewPager.setOffscreenPageLimit(TOTAL_TABS);
@@ -249,6 +252,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         });
 
         setNotificationIcon();
+        setMembershipIcon();
         IntercomEvents.updateIntercom();
         try {
             List<ClassModel> classList = TempStorage.getSavedClasses();
@@ -282,6 +286,10 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
 
     private void setNotificationIcon() {
         bottomTapLayout.getTabViewNotification(AppConstants.Tab.TAB_SCHEDULE, MyPreferences.initialize(context).getNotificationCount());
+    }
+
+    private void setMembershipIcon() {
+        bottomTapLayout.getTabViewMembership(TAB_MY_MEMBERSHIP, MyPreferences.initialize(context).getMembershipIcon());
     }
 
     @Override
@@ -322,6 +330,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_FIND_CLASS, R.drawable.find_a_class, R.drawable.find_a_class,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
                 context.getString(R.string.find_class), context.getString(R.string.find_class)));
+
         tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_EXPLORE_PAGE, R.drawable.explore, R.drawable.explore,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
                 context.getString(R.string.explore_page), context.getString(R.string.explore_page)));
@@ -329,9 +338,11 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_SCHEDULE, R.drawable.schedule, R.drawable.schedule,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
                 context.getString(R.string.schedule), context.getString(R.string.schedule)));
+
         tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_MY_MEMBERSHIP, R.drawable.membership_tab_icon, R.drawable.membership_tab_icon,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
                 context.getString(R.string.membership), context.getString(R.string.membership)));
+
         tabList.add(new BottomTapLayout.Tab(AppConstants.Tab.TAB_MY_PROFILE, R.drawable.profile, R.drawable.profile,
                 ContextCompat.getColor(context, R.color.theme_accent_text), ContextCompat.getColor(context, R.color.theme_light_text),
                 context.getString(R.string.profile), context.getString(R.string.profile)));
@@ -516,8 +527,8 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.buyClassesLayout: {
-               // MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
-                HomeActivity.show(context, TAB_MY_MEMBERSHIP,AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
+                // MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
+                HomeActivity.show(context, TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
 
             }
             break;
@@ -646,47 +657,47 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     }
 
 
+    private void handleTabChangeForMembership(int position) {
+        if (position == TAB_MY_MEMBERSHIP && currentTab != position) {
+            try {
+                MyPreferences.getInstance().saveMembershipIcon(false);
+                setMembershipIcon();
+                MembershipFragment fragment = ((MembershipFragment) homeAdapter.getFragments().get(position));
+                fragment.refreshFragment(NAVIGATED_FROM_INT, CLASS_OBJECT, BOOK_WITH_FRIEND_DATA, NUMBER_OF_PACKAGES_TO_BUY);
 
-  private void handleTabChangeForMembership(int position){
-      if (position == TAB_MY_MEMBERSHIP && currentTab != position) {
-          try {
-              MembershipFragment fragment = ((MembershipFragment) homeAdapter.getFragments().get(position));
-              fragment.refreshFragment(NAVIGATED_FROM_INT,CLASS_OBJECT,BOOK_WITH_FRIEND_DATA,NUMBER_OF_PACKAGES_TO_BUY);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if (position != TAB_MY_MEMBERSHIP) {
+            try {
+                MembershipFragment fragment = ((MembershipFragment) homeAdapter.getFragments().get(TAB_MY_MEMBERSHIP));
+                NAVIGATED_FROM_INT = -1;
+                CLASS_OBJECT = null;
+                BOOK_WITH_FRIEND_DATA = null;
+                NUMBER_OF_PACKAGES_TO_BUY = 1;
+                fragment.refreshFragmentBackGroung(NAVIGATED_FROM_INT, CLASS_OBJECT, BOOK_WITH_FRIEND_DATA, NUMBER_OF_PACKAGES_TO_BUY);
 
-          } catch (Exception e) {
-              e.printStackTrace();
-          }
-      }
-      if (position != TAB_MY_MEMBERSHIP ) {
-          try {
-              MembershipFragment fragment = ((MembershipFragment) homeAdapter.getFragments().get(TAB_MY_MEMBERSHIP));
-              NAVIGATED_FROM_INT=-1;
-              CLASS_OBJECT=null;
-              BOOK_WITH_FRIEND_DATA=null;
-              NUMBER_OF_PACKAGES_TO_BUY=1;
-              fragment.refreshFragmentBackGroung(NAVIGATED_FROM_INT,CLASS_OBJECT,BOOK_WITH_FRIEND_DATA,NUMBER_OF_PACKAGES_TO_BUY);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (position == TAB_MY_MEMBERSHIP && currentTab == position && NAVIGATED_FROM_INT == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS) {
+            try {
+                MembershipFragment fragment = ((MembershipFragment) homeAdapter.getFragments().get(TAB_MY_MEMBERSHIP));
+                fragment.refreshFragment(NAVIGATED_FROM_INT, CLASS_OBJECT, BOOK_WITH_FRIEND_DATA, NUMBER_OF_PACKAGES_TO_BUY);
 
-          } catch (Exception e) {
-              e.printStackTrace();
-          }
-      }
-      else if(position == TAB_MY_MEMBERSHIP && currentTab == position && NAVIGATED_FROM_INT == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS ){
-          try {
-              MembershipFragment fragment = ((MembershipFragment) homeAdapter.getFragments().get(TAB_MY_MEMBERSHIP));
-              fragment.refreshFragment(NAVIGATED_FROM_INT,CLASS_OBJECT,BOOK_WITH_FRIEND_DATA,NUMBER_OF_PACKAGES_TO_BUY);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
-          } catch (Exception e) {
-              e.printStackTrace();
-          }
-      }
-  }
-
-    private void handleMembershipInfoState(User user){
-        if(TempStorage.isOpenMembershipInfo() != MEMBERSHIP_INFO_STATE_DONE){
+    private void handleMembershipInfoState(User user) {
+        if (TempStorage.isOpenMembershipInfo() != MEMBERSHIP_INFO_STATE_DONE) {
             if (user.isBuyMembership()) {
                 TempStorage.setOpenMembershipInfo(MEMBERSHIP_INFO_STATE_NO_PACKAGE);
 
-            }else{
+            } else {
                 TempStorage.setOpenMembershipInfo(MEMBERSHIP_INFO_STATE_HAVE_PACKAGE);
 
             }

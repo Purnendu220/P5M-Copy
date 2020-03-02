@@ -1,7 +1,6 @@
 package com.p5m.me.storage.preferences;
 
 import android.content.Context;
-import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -17,7 +16,6 @@ import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.DefaultSettingServer;
 import com.p5m.me.data.main.StoreApiModel;
-import com.p5m.me.data.main.StoreModel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.utils.AppConstants;
@@ -29,7 +27,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -145,6 +142,14 @@ public class MyPreferences {
     public void saveNotificationCount(int notificationCount) {
         PreferencesManager.putInt(AppConstants.Pref.NOTIFICATION_COUNT, notificationCount);
         LogUtils.debug("Notification saveNotificationCount" + getNotificationCount());
+    }
+
+    public boolean getMembershipIcon() {
+        return PreferencesManager.getBoolean(AppConstants.Pref.IS_SHOW_MEMBERSHIP_ICON, false);
+    }
+
+    public void saveMembershipIcon(boolean isShown) {
+        PreferencesManager.putBoolean(AppConstants.Pref.IS_SHOW_MEMBERSHIP_ICON, isShown);
     }
 
     public List<City> getCities() {
@@ -423,6 +428,7 @@ public class MyPreferences {
         }
         return new ArrayList<>();
     }
+
     public List<BookingCancellationResponse> getReasons() {
         try {
             return gson.fromJson(PreferencesManager.getString(AppConstants.Pref.CANCELLATION_REASONS), new TypeToken<List<BookingCancellationResponse>>() {
@@ -432,6 +438,7 @@ public class MyPreferences {
         }
         return new ArrayList<>();
     }
+
     public void saveCountries(List<StoreApiModel> countries) {
         try {
             PreferencesManager.putString(AppConstants.Pref.COUNTRIES, gson.toJson(countries));
@@ -441,7 +448,7 @@ public class MyPreferences {
         }
     }
 
- public void saveCancellationReason(List<BookingCancellationResponse> reasons) {
+    public void saveCancellationReason(List<BookingCancellationResponse> reasons) {
         try {
             PreferencesManager.putString(AppConstants.Pref.CANCELLATION_REASONS, gson.toJson(reasons));
         } catch (Exception e) {
@@ -449,7 +456,6 @@ public class MyPreferences {
             LogUtils.exception(e);
         }
     }
-
 
 
 }

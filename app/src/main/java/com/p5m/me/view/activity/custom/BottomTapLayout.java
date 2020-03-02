@@ -111,13 +111,13 @@ public class BottomTapLayout implements View.OnClickListener {
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
             TextView textViewNotificationCounter = new TextView(context);
-            textViewNotificationCounter.setLayoutParams(new FrameLayout.LayoutParams(15 * dp, 15 * dp, Gravity.RIGHT));
+            textViewNotificationCounter.setLayoutParams(new FrameLayout.LayoutParams(13 * dp, 13 * dp, Gravity.RIGHT));
             textViewNotificationCounter.setBackgroundResource(R.drawable.notification_counter);
             textViewNotificationCounter.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 8);
             textViewNotificationCounter.setTextColor(Color.WHITE);
             textViewNotificationCounter.setGravity(Gravity.CENTER);
             textViewNotificationCounter.setVisibility(View.INVISIBLE);
-            textViewNotificationCounter.setText("99");
+            textViewNotificationCounter.setText("");
 
             FrameLayout frameLayout = new FrameLayout(context);
             frameLayout.setLayoutParams(new FrameLayout.LayoutParams(iconSize + dp * 8, iconSize));
@@ -174,6 +174,16 @@ public class BottomTapLayout implements View.OnClickListener {
             if (tabView.tab.id == id) {
                 tabView.textViewNotificationCounter.setVisibility(count == 0 ? View.GONE : View.VISIBLE);
                 tabView.textViewNotificationCounter.setText(LanguageUtils.numberConverter(count));
+            }
+        }
+    }
+ public void getTabViewMembership(int id,boolean isShowIcon) {
+        for (int index = 0; index < tabViewList.size(); index++) {
+            TabView tabView = tabViewList.get(index);
+
+            if (tabView.tab.id == id) {
+                tabView.textViewNotificationCounter.setVisibility(isShowIcon ? View.VISIBLE : View.GONE);
+                tabView.textViewNotificationCounter.setText("");
             }
         }
     }
