@@ -45,7 +45,8 @@ public class RecommendedClassAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     public void addAllClass(List<ClassModel> models) {
-        list.addAll(models);
+        if (models != null)
+            list.addAll(models);
     }
 
     public void clearAll() {
@@ -53,12 +54,10 @@ public class RecommendedClassAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
 
-
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_recommended, parent, false);
-            return new RecommendedClassViewHolder(view, shownInScreen);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_recommended, parent, false);
+        return new RecommendedClassViewHolder(view, shownInScreen);
 
     }
 

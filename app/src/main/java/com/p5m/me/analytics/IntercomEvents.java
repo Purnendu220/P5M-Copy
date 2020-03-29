@@ -221,19 +221,19 @@ public class IntercomEvents {
     }
 
     public static void updateIntercomWallet(User.WalletDto mWalletCredit, User user) {
-           if(BuildConfig.FIREBASE_IS_PRODUCTION) {
-               String balanceWallet = "0";
+        if (BuildConfig.FIREBASE_IS_PRODUCTION) {
+            String balanceWallet = "0";
 
-               Registration registration = Registration.create().withUserId(user.getFirstName() + " " + user.getLastName());
-               Intercom.client().registerIdentifiedUser(registration);
-               if (mWalletCredit != null) {
-                   balanceWallet = String.valueOf(mWalletCredit.getBalance());
-               }
-           }
+            Registration registration = Registration.create().withUserId(user.getFirstName() + " " + user.getLastName());
+            Intercom.client().registerIdentifiedUser(registration);
+            if (mWalletCredit != null) {
+                balanceWallet = String.valueOf(mWalletCredit.getBalance());
+            }
+        }
     }
 
     public static void successfulLoginIntercom(String name) {
-        if(BuildConfig.IS_PRODUCTION) {
+        if (BuildConfig.IS_PRODUCTION) {
             Registration registration = Registration.create().withUserId(name);
             Intercom.client().registerIdentifiedUser(registration);
             LogUtils.debug("Intercom Working");
@@ -241,10 +241,23 @@ public class IntercomEvents {
     }
 
     public static void successfulLoginIntercom(String name, String email) {
-        if(BuildConfig.IS_PRODUCTION){
+        if (BuildConfig.IS_PRODUCTION) {
             Registration registration = Registration.create().withUserId(name).withEmail(email);
             Intercom.client().registerIdentifiedUser(registration);
+            updateStoreId();
         }
+    }
 
+    public static void updateStoreId() {
+        if (TempStorage.getCountryName() != null)
+            try {
+                Map<String, Object> eventData = new HashMap<>();
+                eventData.put("store_id", TempStorage.getCountryName());
+
+                Intercom.client().logEvent("Store_Id", eventData);
+            } catch (Exception e) {
+                e.printStackTrace();
+                LogUtils.exception(e);
+            }
     }
 }

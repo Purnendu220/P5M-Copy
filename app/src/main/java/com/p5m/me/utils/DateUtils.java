@@ -143,7 +143,8 @@ public class DateUtils {
         }
         return 0;
     }
-    public static boolean isDateisPast(String date,String date1){
+
+    public static boolean isDateisPast(String date, String date1) {
         try {
             Date dateObjectOne = classDate.parse(date);
             Date dateObjectTwo = classDate.parse(date1);
@@ -469,9 +470,9 @@ public class DateUtils {
 
             long mills = endDate.getTime() - startDate.getTime();
             long hours = mills / (1000 * 60 * 60);
-            long mins = (mills/(1000*60)) % 60;
+            long mins = (mills / (1000 * 60)) % 60;
 //            long diffMinutes = diff / (60 * 1000) % 60;
-            if(hours<1)
+            if (hours < 1)
                 return mins;
             else
                 return 10;
@@ -479,6 +480,22 @@ public class DateUtils {
             e.printStackTrace();
         }
         return 10;
+
+    }
+
+    public static boolean isTimePassed(String date, String fromTime) {
+        try {
+            date = date + " " + fromTime;
+            Date endDate = classDateExpiry.parse(date);
+            Date startDate = Calendar.getInstance().getTime();
+            if (startDate.after(endDate)) {
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
 
     }
 

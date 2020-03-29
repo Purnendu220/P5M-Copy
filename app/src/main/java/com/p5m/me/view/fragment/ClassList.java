@@ -78,6 +78,7 @@ import butterknife.ButterKnife;
 public class ClassList extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks<ClassModel>, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener, LocationListener {
 
     private LocationManager locationManager;
+    private List<ClassModel> recomendedClassModels;
 
     public static Fragment createFragment(String date, int position, int shownIn) {
         Fragment tabFragment = new ClassList();
@@ -227,7 +228,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
             networkCommunicator.getClassDetail(model.getClassSessionId(), new NetworkCommunicator.RequestListener() {
                 @Override
                 public void onApiSuccess(Object response, int requestCode) {
-                    ClassModel  data = ((ResponseModel<ClassModel>) response).data;
+                    ClassModel data = ((ResponseModel<ClassModel>) response).data;
                     int index = classListAdapter.getList().indexOf(model);
                     if (index != -1) {
                         Object obj = classListAdapter.getList().get(index);

@@ -1000,6 +1000,12 @@
     <string name="please_select_city">Please select city</string>
     <string name="payment_options">Payment Options</string>
     <string name="email_sign_up">بريدك الإلكتروني</string>
+    <string name="no_refund">غيرقابل للرجوع</string>
+    <string name="feedback_header">هل يمكنك أن تشاركنا في سبب رغبتك في إلغاء حجزك؟</string>
+    <string name="Comment">شاركنا بأسبابك أو تعليقاتك </string>
+    <string name="select_reason">اختار السبب</string>
+    <string name="cancel_reason">Please provide cancellation reason</string>
+    <string name="no_thank">احتفظ بحجزي </string>
     <string-array name="city">
         <item>الكويت</item>
         <item>الرياض، المملكة العربية السعودية</item>

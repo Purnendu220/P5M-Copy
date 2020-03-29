@@ -45,7 +45,6 @@ public class ExpandCityActivity extends BaseActivity implements View.OnClickList
         ExpandCityActivity.countryName = countryName;
         ExpandCityActivity.id = id;
         ExpandCityActivity.interestedCityRequestModel = interestedCityRequestModel;
-
         context.startActivity(intent);
     }
 
@@ -78,6 +77,9 @@ public class ExpandCityActivity extends BaseActivity implements View.OnClickList
         textViewSkip.setOnClickListener(this);
         imageViewBack.setOnClickListener(this);
         Helper.setupErrorWatcher(editTextEmail, textInputLayoutEmail);
+        buttonSubmit.setEnabled(true);
+        buttonSubmit.setText(context.getResources().getString(R.string.keep_me_up_to_date));
+
         textViewHeader.setText(Html.fromHtml(String.format(mContext.getString(R.string.want_us_to_expand_in_your_city), countryName)));
     }
 
@@ -89,6 +91,8 @@ public class ExpandCityActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.buttonSubmit:
                 if (!isError()) {
+                    buttonSubmit.setEnabled(false);
+                    buttonSubmit.setText(context.getResources().getString(R.string.please_wait));
                     callInterestedCityApi();
                 }
                 break;
@@ -149,6 +153,8 @@ public class ExpandCityActivity extends BaseActivity implements View.OnClickList
             case NetworkCommunicator.RequestCode.INERESTED_CITY:
                 InterestedCityModel interestedCityModel = ((ResponseModel<InterestedCityModel>)response).data;
                 showThankYou();
+                buttonSubmit.setEnabled(true);
+                buttonSubmit.setText(context.getResources().getString(R.string.keep_me_up_to_date));
                 break;
         }
     }
@@ -158,6 +164,8 @@ public class ExpandCityActivity extends BaseActivity implements View.OnClickList
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.INERESTED_CITY:
                 ToastUtils.show(context, errorMessage);
+                buttonSubmit.setEnabled(true);
+                buttonSubmit.setText(context.getResources().getString(R.string.keep_me_up_to_date));
                 break;
 
         }

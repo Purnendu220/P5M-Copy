@@ -169,6 +169,8 @@ public class AppConstants {
 
         public static final String CLASS_BOOKING_TIME = "Class_booking_time";
         public static final String COUNTRIES = "CountryList";
+        public static final String CANCELLATION_REASONS = "CancellationReasonsList";
+        public static final String IS_SHOW_MEMBERSHIP_ICON = "IsShowMembershipIcon";
     }
 
     public class DataKey {
@@ -295,6 +297,7 @@ public class AppConstants {
         public static final String USER_UPDATE_STORE = "api/v1/user/updateUserStore";
         public static final String PAYMENT_INITIATE = "api/v1/payment/initiate";
         public static final String INTERESTED_CITY = "api/v1/interested/city";
+        public static final String GET_CANCELLATION_REASON = "api/v1/cancellation/getCancellationReasons";
     }
 
     public class ApiParamValue {
@@ -367,6 +370,8 @@ public class AppConstants {
         public static final String WAITLIST = "WAITLIST";
         public static final String APP_STORE_ID = "Store-Id";
         public static final String STORE_ID = "storeId";
+        public static final String CANCELLATION_ID = "cancellationId";
+        public static final String REMARK = "remark";
     }
 
     public static final class Notification {

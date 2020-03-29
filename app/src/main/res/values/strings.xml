@@ -204,6 +204,7 @@
     <string name="current_pass_new_pass_same">Your new password and current password is same</string>
     <string name="unjoin_class">Cancel My Registration</string>
     <string name="no_thanks">No, Thanks</string>
+    <string name="no_thank">Keep my booking </string>
     <string name="please_wait_no_dots">Please Wait</string>
     <string name="no_data_class_list_main">No classes are available. Try a different date to join your class.</string>
     <string name="no_data_trainer_list_main">No trainers are available that match your search.</string>
@@ -635,6 +636,11 @@ Would you like to view your balance? </string>
     <string name="please_select_city">Please select city</string>
     <string name="payment_options">Payment Options</string>
     <string name="email_sign_up">Email</string>
+    <string name="no_refund">No Refund</string>
+    <string name="feedback_header">Can you share with us the reason you want to cancel your class booking? </string>
+    <string name="Comment">Share your reasons or comments with us </string>
+    <string name="select_reason">Select Reason</string>
+    <string name="cancel_reason">Please provide cancellation reason</string>
     <string-array name="city">
         <item>Kuwait</item>
         <item>Riyadh,Saudi Arabia</item>

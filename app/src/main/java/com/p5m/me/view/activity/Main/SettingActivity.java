@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.FAQAdapter;
 import com.p5m.me.R;
+import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.data.main.StoreApiModel;
 import com.p5m.me.data.main.StoreModel;
 import com.p5m.me.data.main.User;
@@ -31,6 +32,7 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
+import com.p5m.me.view.custom.CustomFeedbackFormDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,7 +120,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
         }
         categories = new ArrayList<String>();
-        countryModel = TempStorage.getCountries();
         if (countryModel == null)
             callApi();
 
@@ -163,7 +164,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 networkCommunicator.logout(new LogoutRequest(TempStorage.getUser().getId()), this, false);
                 break;
             case R.id.layoutChangeCountry:
-                if (categories != null && countryModel!=null)
+                if (categories != null && countryModel != null)
                     openCountryChangeDialog();
                 break;
         }
@@ -192,14 +193,14 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         }
         spinnerCity.setOnItemSelectedListener(this);
         int userCountryId = TempStorage.getUser().getStoreId();
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.view_spinner_item, categories);
         if (countryModel != null) {
             for (int i = 0; i < countryModel.size(); i++) {
                 if (userCountryId == countryModel.get(i).getId())
                     userCountryIdPosition = i;
 
             }
-            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            dataAdapter.setDropDownViewResource(R.layout.view_spinner_item);
             spinnerCity.setAdapter(dataAdapter);
             spinnerCity.setSelection(userCountryIdPosition);
         }
@@ -261,13 +262,16 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
             case NetworkCommunicator.RequestCode.GET_STORE_DATA:
                 countryModel = ((ResponseModel<List<StoreApiModel>>) response).data;
+
                 break;
             case NetworkCommunicator.RequestCode.UPDATE_STORE_ID:
                 StoreModel model = ((ResponseModel<StoreModel>) response).data;
+                NetworkCommunicator.getInstance(context).getDefault();
                 User user = TempStorage.getUser();
                 user.setStoreId(model.getId());
                 user.setCurrencyCode(model.getCurrencyCode());
                 user.setStoreName(model.getName());
+                IntercomEvents.updateStoreId();
                 EventBroadcastHelper.sendUserUpdate(context, user);
                 EventBroadcastHelper.changeCountry();
                 HomeActivity.open(context);

@@ -297,7 +297,6 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
             case NetworkCommunicator.RequestCode.VALIDATE_EMAIL:
                 registrationRequest.setEmail(email);
                 layoutProgressRoot.setVisibility(View.GONE);
-
                 LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_FACEBOOK_LOGIN);
                 break;
             case NetworkCommunicator.RequestCode.LOGIN_FB:
@@ -342,9 +341,9 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                 break;
             case NetworkCommunicator.RequestCode.VALIDATE_EMAIL:
 
-                if (faceBookUser != null)
+                if (faceBookUser != null) {
                     networkCommunicator.loginFb(new LoginRequest(faceBookUser.getId(), faceBookUser.getName(), faceBookUser.getLastName(), email, faceBookUser.getGender()), LoginActivity.this, false);
-
+                }
                 break;
 
         }

@@ -92,7 +92,7 @@
                 <TextView
                     android:id="@+id/textViewCancel"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/bottom_text_button_height"
+                    android:layout_height="@dimen/button_height_normal"
                     android:background="@drawable/theme_bottom_text_button_light_grey"
                     android:clickable="true"
                     android:fontFamily="sans-serif"
@@ -110,8 +110,8 @@
                 <TextView
                     android:id="@+id/textViewOk"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/bottom_text_button_height"
-                    android:background="@drawable/theme_bottom_text_button_book"
+                    android:layout_height="@dimen/button_height_normal"
+                    android:background="@drawable/join_rect"
                     android:clickable="true"
                     android:fontFamily="sans-serif"
                     android:gravity="center"

@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="@dimen/text_extra_large"
+                android:textSize="@dimen/text_large"
                 android:text="@string/whojoiningyou"
                 android:textColor="@color/black"
                 android:fontFamily="sans-serif-medium"
@@ -56,7 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="@dimen/text_small"
+                android:textSize="@dimen/text_medium"
                 android:text="@string/by_making_this_booking_2_classes_will_be_deducted_from_your_balance_book_with_a_friend"
                 android:textColor="@color/black"
                 android:fontFamily="sans-serif"
@@ -82,7 +82,7 @@
                     android:inputType="textPersonName"
                     android:hint="@string/yourfriendsname"
                     android:maxLines="1"
-                    android:textSize="@dimen/text_large"
+                    android:textSize="@dimen/text_medium"
                     android:maxLength="70"
                     />
 
@@ -107,7 +107,7 @@
                     android:inputType="textEmailAddress"
                     android:hint="@string/friendsemail"
                     android:maxLines="1"
-                    android:textSize="@dimen/text_large"
+                    android:textSize="@dimen/text_medium"
                     android:maxLength="70"
 
                     />
@@ -128,10 +128,11 @@
                     android:layout_height="@dimen/button_height_normal"
                     android:layout_marginRight="12dp"
                     android:layout_weight="1"
-                    android:background="@drawable/button_white"
+                    android:background="@drawable/button_grey_rounded_border"
                     android:fontFamily="sans-serif"
                     android:gravity="center"
                     android:text="@string/male"
+                    android:textSize="@dimen/text_small"
                     android:textColor="@color/black" />
 
                 <Button
@@ -140,10 +141,11 @@
                     android:layout_height="@dimen/button_height_normal"
                     android:layout_marginLeft="12dp"
                     android:layout_weight="1"
-                    android:background="@drawable/button_white"
+                    android:background="@drawable/button_grey_rounded_border"
                     android:fontFamily="sans-serif"
                     android:gravity="center"
                     android:text="@string/female"
+                    android:textSize="@dimen/text_small"
                     android:textColor="@color/black" />
 
             </LinearLayout>
@@ -207,15 +209,15 @@
                 <TextView
                     android:id="@+id/textViewBookWithFriend"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/bottom_text_button_height"
-                    android:background="@drawable/theme_bottom_text_button_book"
+                    android:layout_height="@dimen/button_height_normal"
+                    android:background="@drawable/join_rect"
                     android:clickable="true"
                     android:fontFamily="sans-serif"
                     android:gravity="center"
                     android:letterSpacing="@dimen/button_letter_spacing"
                     android:text="@string/bookWithFriend"
                     android:textAllCaps="true"
-                    android:textSize="@dimen/text_large"
+                    android:textSize="@dimen/text_medium"
                     android:textColor="@color/white"
                     android:layout_weight="1"
 

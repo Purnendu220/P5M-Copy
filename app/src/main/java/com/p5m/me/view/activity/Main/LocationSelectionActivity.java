@@ -21,7 +21,9 @@ import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.InterestedCityModel;
 import com.p5m.me.data.main.InterestedCityRequestModel;
 import com.p5m.me.data.main.StoreApiModel;
+import com.p5m.me.data.main.StoreModel;
 import com.p5m.me.data.main.User;
+import com.p5m.me.data.request.LoginRequest;
 import com.p5m.me.data.request.RegistrationRequest;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.helper.Helper;
@@ -40,6 +42,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.p5m.me.analytics.IntercomEvents.successfulLoginIntercom;
+
 public class LocationSelectionActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener, NetworkCommunicator.RequestListener {
 
 
@@ -49,6 +53,7 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
     private boolean other = false;
     private int countryId = 0;
     private InterestedCityRequestModel interestedCityRequestModel;
+    private long loginTime;
 
     public static void open(Context context) {
         context.startActivity(new Intent(context, LocationSelectionActivity.class));
@@ -94,6 +99,8 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
         buttonNext.setOnClickListener(this);
         textViewLogin.setOnClickListener(this);
         textInputLayoutCity.setVisibility(View.GONE);
+        buttonNext.setEnabled(true);
+        buttonNext.setText(context.getResources().getString(R.string.next));
         Helper.setupErrorWatcher(textViewCountryName, textInputLayoutCity);
         if (TempStorage.getCountries() == null)
             callApi();
@@ -177,11 +184,13 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
         switch (v.getId()) {
             case R.id.buttonNext:
                 if (position < 0) {
-                    ToastUtils.show(context, getString(R.string.please_select_city));
+                    ToastUtils.show(context, getString(R.string.select_city));
                 } else if (navigateFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FACEBOOK_LOGIN
                         && registrationRequest != null && !other) {
-                    registrationRequest.setStoreId(model.get(position).getId());
-                    networkCommunicator.register(registrationRequest, this, false);
+                    loginTime = System.currentTimeMillis() - 5 * 1000;
+
+                    networkCommunicator.loginFb(new LoginRequest(registrationRequest.getFacebookId(), registrationRequest.getFirstName(), registrationRequest.getLastName(), registrationRequest.getEmail(), registrationRequest.getGender()), LocationSelectionActivity.this, false);
+
                 } else if (isSelectCountry && model != null) {
                     if (!other) {
                         textInputLayoutCity.setVisibility(View.GONE);
@@ -191,12 +200,15 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
                             finish();
                         } else {
                             TempStorage.setCountryId(countryId);
+                            TempStorage.setCountryName(model.get(position).getName());
                             SignUpOptions.open(context, countryId);
                         }
                     } else {
                         textInputLayoutCity.setVisibility(View.VISIBLE);
                         if (!isError()) {
                             callInterestedCityApi();
+                            buttonNext.setEnabled(false);
+                            buttonNext.setText(context.getResources().getString(R.string.please_wait));
                         }
                     }
 
@@ -211,7 +223,7 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
     }
 
     private void callInterestedCityApi() {
-        networkCommunicator.uploadInsterestedCity(interestedCityRequestModel,this,false);
+        networkCommunicator.uploadInsterestedCity(interestedCityRequestModel, this, false);
     }
 
     private boolean isError() {
@@ -236,6 +248,7 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
                 if (response != null) {
                     User user = ((ResponseModel<User>) response).data;
                     TempStorage.setCountryId(user.getId());
+                    TempStorage.setCountryName(user.getStoreName());
                     EventBroadcastHelper.sendLogin(context, user);
                     MixPanel.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
                     FirebaseAnalysic.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
@@ -243,10 +256,48 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
                     GetStartedActivity.open(context);
                 }
                 break;
-            case NetworkCommunicator.RequestCode.INERESTED_CITY:
-                InterestedCityModel interestedCityModel = ((ResponseModel<InterestedCityModel>)response).data;
-                ExpandCityActivity.open(context, textViewCountryName.getText().toString() , interestedCityModel.getId(),interestedCityRequestModel);
+            case NetworkCommunicator.RequestCode.LOGIN_FB:
+
+                if (response != null) {
+                    User user = ((ResponseModel<User>) response).data;
+                    successfulLoginIntercom();
+                    EventBroadcastHelper.sendLogin(context, user);
+
+                    if (user.getDateOfJoining() >= loginTime) {
+                        MixPanel.trackRegister(AppConstants.Tracker.FB, TempStorage.getUser());
+                        FirebaseAnalysic.trackRegister(AppConstants.Tracker.FB, TempStorage.getUser());
+                    } else
+                        MixPanel.trackLogin(AppConstants.Tracker.FB, TempStorage.getUser());
+                    if (countryId != 0)
+                        networkCommunicator.updateStoreId(countryId, this, false);
+                    else
+                        HomeActivity.open(context);
+
+                    finish();
+                }
+
+
                 break;
+            case NetworkCommunicator.RequestCode.UPDATE_STORE_ID:
+                StoreModel model = ((ResponseModel<StoreModel>) response).data;
+                User user = TempStorage.getUser();
+                user.setStoreId(model.getId());
+                user.setCurrencyCode(model.getCurrencyCode());
+                user.setStoreName(model.getName());
+                EventBroadcastHelper.sendUserUpdate(context, user);
+                EventBroadcastHelper.changeCountry();
+                HomeActivity.open(context);
+                break;
+
+            case NetworkCommunicator.RequestCode.INERESTED_CITY:
+                buttonNext.setEnabled(true);
+                buttonNext.setText(context.getResources().getString(R.string.next));
+
+                InterestedCityModel interestedCityModel = ((ResponseModel<InterestedCityModel>) response).data;
+                ExpandCityActivity.open(context, textViewCountryName.getText().toString(), interestedCityModel.getId(), interestedCityRequestModel);
+                break;
+
+
         }
     }
 
@@ -254,14 +305,20 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
     public void onApiFailure(String errorMessage, int requestCode) {
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.INERESTED_CITY:
+                ToastUtils.show(context, errorMessage);
+
+                buttonNext.setEnabled(true);
+                buttonNext.setText(context.getResources().getString(R.string.next));
+                break;
             case NetworkCommunicator.RequestCode.GET_STORE_DATA:
                 ToastUtils.show(context, errorMessage);
                 break;
-            case NetworkCommunicator.RequestCode.REGISTER:
-//                SignUpOptions.open(context);
-                SignUpOptions.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_FB_LOGIN);
-                break;
 
+            case NetworkCommunicator.RequestCode.LOGIN_FB:
+
+                SignUpOptions.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_FB_LOGIN);
+
+                break;
         }
     }
 

@@ -46,17 +46,31 @@ public class DeepLinkActivity extends BaseActivity {
                 if (!MyPreferences.initialize(context).isLogin()) {
 
                     DeepLinkActivity.url = url;
-
-                    finish();
-                    Helper.handleLogin(context);
-                    return;
+                    final Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse(url));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    if (url.contains("/privacy")) {
+                        forwardToBrowser(intent);
+                    } else if (url.contains("/terms")) {
+                        forwardToBrowser(intent);
+                    }
+                    else {
+                        finish();
+                        Helper.handleLogin(context);
+                        return;
+                    }
 
                 } else {
 
                     DeepLinkActivity.url = null;
                     if (url.contains("/aboutus")) {
                         forwardToBrowser(getIntent());
-                    } else {
+                    }
+                    else if (url.contains("/privacy")) {
+                        forwardToBrowser(getIntent());
+                    } else if (url.contains("/terms")) {
+                        forwardToBrowser(getIntent());
+                    }
+                    else{
                         navigationIntent = HandleNotificationDeepLink.handleNotificationDeeplinking(context, url);
 
 

@@ -19,6 +19,7 @@ import com.p5m.me.data.RatingResponseModel;
 import com.p5m.me.data.UnratedClassData;
 import com.p5m.me.data.UserPackageDetail;
 import com.p5m.me.data.WishListResponse;
+import com.p5m.me.data.main.BookingCancellationResponse;
 import com.p5m.me.data.main.BranchModel;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
@@ -168,6 +169,8 @@ public class NetworkCommunicator {
         public static final int UPDATE_STORE_ID = 162;
         public static final int GET_PAYMENT_INITIATE = 163;
         public static final int INERESTED_CITY = 164;
+        public static final int UNJOIN_CLASS = 165;
+        public static final int GET_CANCELLATION_REASON = 166;
     }
 
     private Context context;
@@ -1517,10 +1520,10 @@ public class NetworkCommunicator {
         return call;
     }
 
-    public Call unJoinClass(final ClassModel classModel, int joinClassId, final RequestListener requestListener) {
+    public Call unJoinClass(final ClassModel classModel, int joinClassId, Integer cancellationId, String remark, final RequestListener requestListener) {
 
-        final int requestCode = RequestCode.ADD_TO_WISH_LIST;
-        Call<ResponseModel<User>> call = apiService.unJoinClass(joinClassId);
+        final int requestCode = RequestCode.UNJOIN_CLASS;
+        Call<ResponseModel<User>> call = apiService.unJoinClass(joinClassId, cancellationId, remark);
         LogUtils.debug("NetworkCommunicator hitting unJoinClass");
 
         call.enqueue(new RestCallBack<ResponseModel<User>>(context) {
@@ -1730,6 +1733,7 @@ public class NetworkCommunicator {
         return call;
     }
 
+
     public Call getPaymentInitiate(final RequestListener requestListener, final boolean useCache) {
         final int requestCode = RequestCode.GET_PAYMENT_INITIATE;
         Call<ResponseModel<String>> call = apiService.getPaymentInitiate();
@@ -1772,9 +1776,9 @@ public class NetworkCommunicator {
         return call;
     }
 
-    public Call uploadInsterestedCity(int id,InterestedCityRequestModel interestedCityModel, final RequestListener requestListener, final boolean useCache) {
+    public Call uploadInsterestedCity(int id, InterestedCityRequestModel interestedCityModel, final RequestListener requestListener, final boolean useCache) {
         final int requestCode = RequestCode.INERESTED_CITY;
-        Call<ResponseModel<InterestedCityModel>> call = apiService.uploadInterestedCity(id,interestedCityModel);
+        Call<ResponseModel<InterestedCityModel>> call = apiService.uploadInterestedCity(id, interestedCityModel);
         LogUtils.debug("NetworkCommunicator hitting Interested City");
 
         call.enqueue(new RestCallBack<ResponseModel<InterestedCityModel>>(context) {
@@ -1792,6 +1796,29 @@ public class NetworkCommunicator {
         });
         return call;
     }
+
+    public Call getCancellationReason(final RequestListener requestListener, final boolean useCache) {
+        final int requestCode = RequestCode.GET_CANCELLATION_REASON;
+        Call<ResponseModel<List<BookingCancellationResponse>>> call = apiService.getCancellationReason();
+        LogUtils.debug("NetworkCommunicator hitting Store Data");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<BookingCancellationResponse>>>(context) {
+
+            @Override
+            public void onFailure(Call<ResponseModel<List<BookingCancellationResponse>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator User onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<BookingCancellationResponse>>> call, Response<ResponseModel<List<BookingCancellationResponse>>> restResponse, ResponseModel<List<BookingCancellationResponse>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator User onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
 
 }
 

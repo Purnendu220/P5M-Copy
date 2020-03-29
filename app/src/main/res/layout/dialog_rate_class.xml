@@ -102,16 +102,16 @@
     <TextView
         android:id="@+id/textViewNotNow"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/bottom_text_button_height"
+        android:layout_height="@dimen/button_height_normal"
         android:background="@drawable/theme_bottom_text_button_light_grey"
         android:clickable="true"
-        android:fontFamily="sans-serif-medium"
+        android:fontFamily="sans-serif"
         android:gravity="center"
         android:letterSpacing="@dimen/button_letter_spacing"
         android:text="@string/skip"
         android:textColor="@color/black"
         android:textAllCaps="true"
-        android:textSize="@dimen/text_large"
+        android:textSize="@dimen/text_medium"
         android:layout_below="@+id/linearlayoutTopPart"
 
         />
