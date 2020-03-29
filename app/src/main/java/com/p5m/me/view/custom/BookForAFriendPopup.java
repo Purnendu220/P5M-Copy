@@ -110,7 +110,7 @@ public class BookForAFriendPopup extends Dialog implements View.OnClickListener 
                 String email = editTextFriendsEmail.getText().toString().trim();
                 textInputLayoutFriendsName.setError(null);
                 textInputLayoutFriendsEmail.setError(null);
-                textViewGenderError.setVisibility(View.GONE);
+                textViewGenderError.setVisibility(View.INVISIBLE);
 
                 if (name.isEmpty()) {
                     textInputLayoutFriendsName.setError(mContext.getResources().getString(R.string.name_required_error));

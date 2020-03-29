@@ -32,6 +32,7 @@ import com.p5m.me.helper.Helper;
 import com.p5m.me.notifications.HandleNotificationDeepLink;
 import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 
@@ -110,7 +111,7 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
     public TextView textViewDiscount;
     @BindView(R.id.textViewDiscountDetail)
     public TextView textViewDiscountDetail;
-   @BindView(R.id.buyClasses)
+    @BindView(R.id.buyClasses)
     public TextView buyClasses;
 
 
@@ -129,33 +130,33 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
     }
 
     private void setValues() {
-        textViewWelcome.setText(getValueFromConfig(RemoteConfigConst.WELCOME_P5M_VALUE,context.getResources().getString(R.string.welcome_to_p5m)));
-        textViewWelcomeDetail.setText(getValueFromConfig(RemoteConfigConst.WELCOME_P5M_CONTAIN_VALUE,getString(R.string.on_p5m_you)));
-        textViewMembershipFeatures.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_TITLE_VALUE,getString(R.string.with_the_p5m_membership_you_can)));
-        textViewVarietyActivity.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_ONE_VALUE,getString(R.string.variety_of_activities)));
-        textViewVarietyActivityDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_ONE_CONTAIN_VALUE,getString(R.string.variety_of_activity_details)));
-        textViewVisitGym.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_TWO_VALUE,getString(R.string.visit_gym_feature)));
-        textViewVisitGymDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_TWO_CONTAIN_VALUE,getString(R.string.visit_gym_detail)));
-        textViewSave.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_THREE_VALUE,getString(R.string.save_percent)));
-        textViewSaveDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_THREE_DETAIL_VALUE,getString(R.string.save_detail)));
-        textViewInstantBooking.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_FOUR_VALUE,getString(R.string.instant_booking)));
-        textViewInstantBookingDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_FOUR_DETAIL_VALUE,getString(R.string.instant_booking_detail)));
-        textViewHowItWorks.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_TITLE_VALUE,getString(R.string.how_its_work)));
-        textViewExplore.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_ONE_VALUE,getString(R.string.explore)));
-        textViewExploreDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_ONE_DETAIL_VALUE,getString(R.string.exploreDetail)));
-        textViewPickPlan.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_TWO_VALUE,getString(R.string.pick_a_plan)));
-        textViewPickPlanDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_TWO_DETAIL_VALUE,getString(R.string.that_work_for_you)));
-        textViewTrain.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_THREE_VALUE,getString(R.string.train)));
-        textViewTrainDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_THREE_DETAIL_VALUE,getString(R.string.workout_any_gym)));
-        textViewDiscount.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_FOUR_VALUE,getString(R.string.get_discount)));
-        textViewDiscountDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_FOUR_DETAIL_VALUE,getString(R.string.go_to_different_gym)));
+        textViewWelcome.setText(getValueFromConfig(RemoteConfigConst.WELCOME_P5M_VALUE, context.getResources().getString(R.string.welcome_to_p5m)));
+        textViewWelcomeDetail.setText(getValueFromConfig(RemoteConfigConst.WELCOME_P5M_CONTAIN_VALUE, getString(R.string.on_p5m_you)));
+        textViewMembershipFeatures.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_TITLE_VALUE, getString(R.string.with_the_p5m_membership_you_can)));
+        textViewVarietyActivity.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_ONE_VALUE, getString(R.string.variety_of_activities)));
+        textViewVarietyActivityDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_ONE_CONTAIN_VALUE, getString(R.string.variety_of_activity_details)));
+
+        textViewVisitGym.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_TWO_VALUE, getString(R.string.visit_gym_feature)));
+        textViewVisitGymDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_TWO_CONTAIN_VALUE, getString(R.string.visit_gym_detail)));
+        textViewSave.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_THREE_VALUE, getString(R.string.save_percent)));
+        textViewSaveDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_THREE_DETAIL_VALUE, getString(R.string.save_detail)));
+        textViewInstantBooking.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_FOUR_VALUE, getString(R.string.instant_booking)));
+        textViewInstantBookingDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_ONE_SUB_FOUR_DETAIL_VALUE, getString(R.string.instant_booking_detail)));
+        textViewHowItWorks.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_TITLE_VALUE, getString(R.string.how_its_work)));
+        textViewExplore.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_ONE_VALUE, getString(R.string.explore)));
+        textViewExploreDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_ONE_DETAIL_VALUE, getString(R.string.exploreDetail)));
+        textViewPickPlan.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_TWO_VALUE, getString(R.string.pick_a_plan)));
+        textViewPickPlanDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_TWO_DETAIL_VALUE, getString(R.string.that_work_for_you)));
+        textViewTrain.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_THREE_VALUE, getString(R.string.train)));
+        textViewTrainDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_THREE_DETAIL_VALUE, getString(R.string.workout_any_gym)));
+        textViewDiscount.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_FOUR_VALUE, getString(R.string.get_discount)));
+        textViewDiscountDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_FOUR_DETAIL_VALUE, getString(R.string.go_to_different_gym)));
 
     }
 
-    private String getValueFromConfig(String remoteConfigValue,String defaultValue){
+    private String getValueFromConfig(String remoteConfigValue, String defaultValue) {
         try {
             String value = remoteConfigValue;
-
             if (value != null && !value.isEmpty()) {
                 Gson g = new Gson();
                 RemoteConfigValueModel p = g.fromJson(value, new com.google.gson.reflect.TypeToken<RemoteConfigValueModel>() {
@@ -170,9 +171,22 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
         if (remoteConfigdata == null) {
             return defaultValue;
         } else {
+
             if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+                if (TempStorage.getUser().getCurrencyCode() != null &&
+                        (TempStorage.getUser().getCurrencyCode().equalsIgnoreCase( AppConstants.Currency.SAUDI_CURRENCY) ||
+                                TempStorage.getUser().getCurrencyCode().equalsIgnoreCase( AppConstants.Currency.SAUDI_CURRENCY_SHORT))
+                ) {
+                    return (remoteConfigdata.getAr_ksa() == null ? remoteConfigdata.getAr() : remoteConfigdata.getAr_ksa());
+                }
                 return remoteConfigdata.getAr();
-            } else  {
+            } else {
+                if (TempStorage.getUser().getCurrencyCode() != null &&
+                        (TempStorage.getUser().getCurrencyCode().equalsIgnoreCase( AppConstants.Currency.SAUDI_CURRENCY) ||
+                        TempStorage.getUser().getCurrencyCode().equalsIgnoreCase( AppConstants.Currency.SAUDI_CURRENCY_SHORT))
+                ) {
+                    return (remoteConfigdata.getEn_ksa() == null ? remoteConfigdata.getEn() : remoteConfigdata.getEn_ksa());
+                }
                 return remoteConfigdata.getEn();
             }
 
@@ -194,7 +208,6 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
 
         BaseActivity activity = (BaseActivity) this.activity;
         activity.setSupportActionBar(toolbar);
-
         activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(context, R.color.colorPrimaryDark)));
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);

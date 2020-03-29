@@ -1,7 +1,6 @@
 package com.p5m.me.storage.preferences;
 
 import android.content.Context;
-import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -12,9 +11,11 @@ import com.p5m.me.data.Filter;
 import com.p5m.me.data.Join5MinModel;
 import com.p5m.me.data.PriceModel;
 import com.p5m.me.data.RatingParamModel;
+import com.p5m.me.data.main.BookingCancellationResponse;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.DefaultSettingServer;
+import com.p5m.me.data.main.StoreApiModel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.utils.AppConstants;
@@ -26,7 +27,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -144,6 +144,14 @@ public class MyPreferences {
         LogUtils.debug("Notification saveNotificationCount" + getNotificationCount());
     }
 
+    public boolean getMembershipIcon() {
+        return PreferencesManager.getBoolean(AppConstants.Pref.IS_SHOW_MEMBERSHIP_ICON, false);
+    }
+
+    public void saveMembershipIcon(boolean isShown) {
+        PreferencesManager.putBoolean(AppConstants.Pref.IS_SHOW_MEMBERSHIP_ICON, isShown);
+    }
+
     public List<City> getCities() {
         try {
             return gson.fromJson(PreferencesManager.getString(AppConstants.Pref.CITIES), new TypeToken<List<City>>() {
@@ -172,6 +180,7 @@ public class MyPreferences {
         }
         return new ArrayList<>();
     }
+
 
     public void saveActivities(List<ClassActivity> activities) {
         try {
@@ -409,5 +418,44 @@ public class MyPreferences {
         }
         return null;
     }
+
+    public List<StoreApiModel> getCountries() {
+        try {
+            return gson.fromJson(PreferencesManager.getString(AppConstants.Pref.COUNTRIES), new TypeToken<List<StoreApiModel>>() {
+            }.getType());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+    public List<BookingCancellationResponse> getReasons() {
+        try {
+            return gson.fromJson(PreferencesManager.getString(AppConstants.Pref.CANCELLATION_REASONS), new TypeToken<List<BookingCancellationResponse>>() {
+            }.getType());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+    public void saveCountries(List<StoreApiModel> countries) {
+        try {
+            PreferencesManager.putString(AppConstants.Pref.COUNTRIES, gson.toJson(countries));
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
+    public void saveCancellationReason(List<BookingCancellationResponse> reasons) {
+        try {
+            PreferencesManager.putString(AppConstants.Pref.CANCELLATION_REASONS, gson.toJson(reasons));
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
 
 }

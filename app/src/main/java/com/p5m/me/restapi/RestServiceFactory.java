@@ -35,6 +35,7 @@ public class RestServiceFactory {
             if (MyApp.RETROFIT_SHOW_LOG) {
                 HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
                 logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+                //logging.setLevel(HttpLoggingInterceptor.Level.HEADERS);
                 httpClient.addInterceptor(logging);
             }
 
@@ -54,7 +55,9 @@ public class RestServiceFactory {
                             .addHeader(AppConstants.ApiParamKey.USER_AGENT, AppConstants.ApiParamValue.USER_AGENT_ANDROID)
                             .addHeader(AppConstants.ApiParamKey.APP_VERSION, BuildConfig.VERSION_NAME_API)
                             .addHeader(AppConstants.ApiParamKey.APP_Language, language)
+                            .addHeader(AppConstants.ApiParamKey.APP_STORE_ID, String.valueOf(TempStorage.getCountryId()))
                             .build();
+                    LogUtils.debug("Store-Id"+String.valueOf(TempStorage.getCountryId()));
                     return chain.proceed(request);
                 }
             });

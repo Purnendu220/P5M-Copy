@@ -1,6 +1,7 @@
 package com.p5m.me.view.custom;
 
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -18,6 +19,7 @@ import androidx.annotation.NonNull;
 import com.p5m.me.R;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.RefrenceWrapper;
+import com.p5m.me.view.activity.LoginRegister.InfoScreen;
 
 
 import butterknife.BindView;
@@ -28,8 +30,8 @@ public class CustomDialogThankYou extends Dialog implements OnClickListener {
 
 
     private final int navigatinFrom;
-    private  boolean isThereOtherClassToRate;
-    private  Context mContext;
+    private boolean isThereOtherClassToRate;
+    private Context mContext;
     @BindView(R.id.textViewNotNow)
     TextView textViewNotNow;
 
@@ -41,14 +43,21 @@ public class CustomDialogThankYou extends Dialog implements OnClickListener {
 
     @BindView(R.id.linearLayoutRatePast)
     LinearLayout linearLayoutRatePast;
+    @BindView(R.id.layoutButtons)
+    LinearLayout layoutButtons;
+    @BindView(R.id.textViewGotIt)
+    TextView textViewGotIt;
+    @BindView(R.id.textViewReveiwSubmitted)
+    TextView textViewReveiwSubmitted;
 
     public CustomDialogThankYou(@NonNull Context context, boolean isThereOtherClassToRate, int navigatinFrom) {
         super(context, R.style.AdvanceDialogTheme);
-        this.mContext=context;
-        this.isThereOtherClassToRate=isThereOtherClassToRate;
-        this.navigatinFrom=navigatinFrom;
+        this.mContext = context;
+        this.isThereOtherClassToRate = isThereOtherClassToRate;
+        this.navigatinFrom = navigatinFrom;
         init(context);
     }
+
     private void init(Context context) {
         setContentView(R.layout.view_thank_you_dialog);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -60,38 +69,48 @@ public class CustomDialogThankYou extends Dialog implements OnClickListener {
         lp.gravity = Gravity.CENTER;
         getWindow().setAttributes(lp);
         setListeners();
-        if(isThereOtherClassToRate){
+        if (isThereOtherClassToRate) {
             linearLayoutRatePast.setVisibility(View.VISIBLE);
             textViewNotNow.setVisibility(View.GONE);
-        }else{
+        } else {
             linearLayoutRatePast.setVisibility(View.GONE);
             textViewNotNow.setVisibility(View.VISIBLE);
         }
 
+        if (navigatinFrom == AppConstants.AppNavigation.NAVIGATION_FROM_OTHER_USER) {
+            layoutButtons.setVisibility(View.GONE);
+            textViewGotIt.setVisibility(View.VISIBLE);
+            textViewNotNow.setText(context.getString(R.string.ok));
+            textViewReveiwSubmitted.setText(context.getString(R.string.thank_you_submit_request));
+        } else {
+            layoutButtons.setVisibility(View.VISIBLE);
+            textViewGotIt.setVisibility(View.GONE);
+        }
     }
 
-    private void setListeners(){
+    private void setListeners() {
         textViewNotNow.setOnClickListener(this);
         textViewIWillDoLater.setOnClickListener(this);
         textViewRatePrevious.setOnClickListener(this);
-
-
+        textViewGotIt.setOnClickListener(this);
 
     }
+
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.textViewNotNow:{
-                dismiss();
-                }
-            break;
-            case R.id.textViewIWillDoLater:{
-                dismiss();
+        switch (view.getId()) {
+            case R.id.textViewGotIt:
+            case R.id.textViewNotNow:
+            case R.id.textViewIWillDoLater:
+                if (navigatinFrom == AppConstants.AppNavigation.NAVIGATION_FROM_OTHER_USER) {
+                    InfoScreen.open(mContext);
+                } else
+                    dismiss();
 
-            }
-            break;
-            case R.id.textViewRatePrevious:{
-                if(navigatinFrom== AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS){
+                break;
+
+            case R.id.textViewRatePrevious: {
+                if (navigatinFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS) {
                     RefrenceWrapper.getRefrenceWrapper(mContext).getActivity().navigateToMyProfile();
                 }
                 dismiss();

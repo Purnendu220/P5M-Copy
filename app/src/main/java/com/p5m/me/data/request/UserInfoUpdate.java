@@ -12,6 +12,7 @@ public class UserInfoUpdate implements java.io.Serializable {
     private String mobile;
     private String location;
     private String email;
+    private String timePreference;
 
     public UserInfoUpdate(int id) {
         this.id = id;
@@ -87,5 +88,13 @@ public class UserInfoUpdate implements java.io.Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getTimePreference() {
+        return timePreference;
+    }
+
+    public void setTimePreference(String timePreference) {
+        this.timePreference = timePreference;
     }
 }

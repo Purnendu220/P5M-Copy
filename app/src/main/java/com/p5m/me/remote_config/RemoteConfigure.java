@@ -110,6 +110,7 @@ public class RemoteConfigure {
         RemoteConfigConst.GYM_VISIT_LIMIT_DETAIL_TEXT_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.GYM_VISIT_LIMIT_DETAIL_TEXT);
         RemoteConfigConst.MEMBERSHIP_OFFER_COLOR_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.MEMBERSHIP_OFFER_COLOR);
         RemoteConfigConst.TESTIMONIALS_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.TESTIMONIALS);
+        RemoteConfigConst.TESTIMONIALS_RIYADH_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.TESTIMONIALS_RIYADH);
         RemoteConfigConst.FAQ_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.FAQ);
         RemoteConfigConst.PACKAGE_TAGS_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.PACKAGE_TAGS);
         RemoteConfigConst.WELCOME_P5M_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.WELCOME_P5M);
@@ -168,6 +169,7 @@ public class RemoteConfigure {
 
 
         RemoteConfigConst.TESTIMONIALS_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.TESTIMONIALS);
+        RemoteConfigConst.TESTIMONIALS_RIYADH_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.TESTIMONIALS_RIYADH);
         RemoteConfigConst.FAQ_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.FAQ);
         RemoteConfigConst.PACKAGE_TAGS_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.PACKAGE_TAGS);
         RemoteConfigConst.WELCOME_P5M_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.WELCOME_P5M);

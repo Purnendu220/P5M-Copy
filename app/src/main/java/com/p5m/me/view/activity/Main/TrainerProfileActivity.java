@@ -110,6 +110,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
             LogUtils.exception(e);
         }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void waitlistJoin(Events.WaitlistJoin data) {
         handleWaitlistJoined(data.data);
@@ -172,7 +173,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
             networkCommunicator.getClassDetail(model.getClassSessionId(), new NetworkCommunicator.RequestListener() {
                 @Override
                 public void onApiSuccess(Object response, int requestCode) {
-                    ClassModel  data = ((ResponseModel<ClassModel>) response).data;
+                    ClassModel data = ((ResponseModel<ClassModel>) response).data;
                     int index = trainerProfileAdapter.getList().indexOf(model);
                     if (index != -1) {
                         Object obj = trainerProfileAdapter.getList().get(index);
@@ -187,9 +188,9 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
 
                 @Override
                 public void onApiFailure(String errorMessage, int requestCode) {
-                    ToastUtils.show(TrainerProfileActivity.this,errorMessage);
+                    ToastUtils.show(TrainerProfileActivity.this, errorMessage);
                 }
-            },false);
+            }, false);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -205,7 +206,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
 
         ButterKnife.bind(activity);
         GlobalBus.getBus().register(this);
-        FirebaseDynamicLinnk.getDynamicLink(this,getIntent());
+        FirebaseDynamicLinnk.getDynamicLink(this, getIntent());
         trainerModel = (TrainerModel) getIntent().getSerializableExtra(AppConstants.DataKey.TRAINER_OBJECT);
         trainerId = getIntent().getIntExtra(AppConstants.DataKey.TRAINER_ID_INT, -1);
         navigatedFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
@@ -319,13 +320,13 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
         switch (view.getId()) {
             case R.id.imageViewProfile:
-                if (trainerDetailModel != null &&trainerDetailModel.getProfileImage() != null&& !trainerDetailModel.getProfileImage().isEmpty()) {
-                    Helper.openImageViewer(context, activity, view, trainerDetailModel.getProfileImage(),AppConstants.ImageViewHolderType.PROFILE_IMAGE_HOLDER);
+                if (trainerDetailModel != null && trainerDetailModel.getProfileImage() != null && !trainerDetailModel.getProfileImage().isEmpty()) {
+                    Helper.openImageViewer(context, activity, view, trainerDetailModel.getProfileImage(), AppConstants.ImageViewHolderType.PROFILE_IMAGE_HOLDER);
                 }
                 break;
             case R.id.imageViewCover:
-                if (trainerDetailModel != null &&trainerDetailModel.getCoverImage() != null&& !trainerDetailModel.getCoverImage().isEmpty()) {
-                    Helper.openImageViewer(context, activity, view, trainerDetailModel.getCoverImage(),AppConstants.ImageViewHolderType.COVER_IMAGE_HOLDER);
+                if (trainerDetailModel != null && trainerDetailModel.getCoverImage() != null && !trainerDetailModel.getCoverImage().isEmpty()) {
+                    Helper.openImageViewer(context, activity, view, trainerDetailModel.getCoverImage(), AppConstants.ImageViewHolderType.COVER_IMAGE_HOLDER);
                 }
                 break;
 
@@ -350,7 +351,7 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
 
     private void dialogUnFollow(final RecyclerView.ViewHolder viewHolder, final TrainerModel trainerModel) {
 
-        DialogUtils.showBasic(context, getString(R.string.are_you_sure_you_want_to_remove)+" " + trainerModel.getFirstName() + "?", context.getString(R.string.yes), new MaterialDialog.SingleButtonCallback() {
+        DialogUtils.showBasic(context, getString(R.string.are_you_sure_you_want_to_remove) + " " + trainerModel.getFirstName() + "?", context.getString(R.string.yes), new MaterialDialog.SingleButtonCallback() {
             @Override
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                 networkCommunicator.followUnFollow(!trainerModel.isIsfollow(), trainerModel, TrainerProfileActivity.this, false);
@@ -414,6 +415,9 @@ public class TrainerProfileActivity extends BaseActivity implements AdapterCallb
                 callApiClasses();
                 swipeRefreshLayout.setRefreshing(false);
                 trainerDetailModel = ((ResponseModel<TrainerDetailModel>) response).data;
+                if (trainerDetailModel.getCategoryList() == null || trainerDetailModel.getCategoryList().size() == 0) {
+                    trainerDetailModel.setCategoryList(Helper.getCategoryListStringFromList(trainerDetailModel.getClassCategoryList()));
+                }
                 trainerModel = trainerDetailModel.getTrainer();
 
                 trainerProfileAdapter.setTrainerModel(trainerDetailModel);

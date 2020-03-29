@@ -21,19 +21,24 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.p5m.me.MyApp;
 import com.p5m.me.R;
+import com.p5m.me.data.main.StoreApiModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigure;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.PermissionUtility;
 import com.p5m.me.view.activity.Main.ForceUpdateActivity;
+import com.p5m.me.view.activity.Main.GetStartedActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.Main.Trainers;
 import com.p5m.me.view.activity.base.BaseActivity;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,6 +74,7 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
 
         ButterKnife.bind(activity);
 
+        callApi();
         handler = new Handler();
 
         imageViewImage.animate().scaleXBy(0.3f).scaleYBy(0.3f).setDuration(1000).setInterpolator(new BounceInterpolator()).start();
@@ -77,6 +83,7 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
             networkCommunicator.getMyUser(Splash.this, false);
             EventBroadcastHelper.sendDeviceUpdate(context);
         }
+
         networkCommunicator.getActivities(this, false);
             (new RemoteConfigure()).fetchRemoteConfig(context);
 //        RemoteConfigSetUp.getValues();
@@ -140,6 +147,10 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
                 }
 
                 break;
+            case NetworkCommunicator.RequestCode.GET_STORE_DATA:
+                List<StoreApiModel> model = ((ResponseModel<List<StoreApiModel>>) response).data;
+                TempStorage.setCountries(model);
+                break;
         }
     }
 
@@ -194,5 +205,8 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
                         startTimerForGoToNextScreen();
                     }
                 });
+    }
+    private void callApi() {
+        networkCommunicator.getStoreData(this, false);
     }
 }

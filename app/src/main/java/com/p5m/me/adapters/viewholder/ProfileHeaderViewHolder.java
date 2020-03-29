@@ -14,6 +14,7 @@ import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
@@ -79,7 +80,7 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                     R.drawable.profile_holder_big, imageView);
             if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
                 linearLayoutUserWallet.setVisibility(View.VISIBLE);
-                textViewWalletBalance.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(),2)+" "+context.getResources().getString(R.string.wallet_currency));
+                textViewWalletBalance.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(),2)+" "+ TempStorage.getUser().getCurrencyCode());
 
             }
             else{

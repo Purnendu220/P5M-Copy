@@ -13,6 +13,7 @@ public class Events {
         public UserUpdate(User data) {
             this.data = data;
         }
+
     }
 
     public static class ClassJoin {
@@ -66,6 +67,7 @@ public class Events {
 
     public static class UpdatePackage {
     }
+
     public static class refreshMembershipFragment {
     }
 
@@ -130,4 +132,17 @@ public class Events {
     public static class ExploreApiUpdate {
     }
 
+    public static class BannerUrlHandler {
+        public int innerTab;
+
+        public BannerUrlHandler(int data) {
+            this.innerTab = data;
+        }
+    }
+    public static class ChangeCountry {
+
+        public ChangeCountry() {
+        }
+
+    }
 }

@@ -39,6 +39,7 @@
     <color name="theme_booked">#FF8C00</color>
     <color name="theme_booked_highlight">#CCFF8C00</color>
     <color name="theme_book">#3d85ea</color>
+    <color name="theme_book_opacity">#5DAAE4</color>
     <color name="theme_select_disable">#f5f9fc</color>
     <color name="layer">#80000000</color>
     <color name="red">#f22229</color>

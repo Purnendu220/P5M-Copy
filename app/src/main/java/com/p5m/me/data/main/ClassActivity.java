@@ -7,7 +7,9 @@ public class ClassActivity implements java.io.Serializable {
     private Integer classCategoryId;
     private String classCategoryName = "";
     private String name;
+    private String arName;
     private Boolean status;
+    private Boolean isSelected=false;
 
     public ClassActivity(String name, int id) {
         this.name = name;
@@ -79,5 +81,21 @@ public class ClassActivity implements java.io.Serializable {
     @Override
     public String toString() {
         return name;
+    }
+
+    public Boolean getSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(Boolean selected) {
+        isSelected = selected;
+    }
+
+    public String getArName() {
+        return arName;
+    }
+
+    public void setArName(String arName) {
+        this.arName = arName;
     }
 }

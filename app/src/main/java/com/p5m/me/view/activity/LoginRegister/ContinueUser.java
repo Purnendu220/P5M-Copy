@@ -10,15 +10,23 @@ import android.widget.TextView;
 
 import com.p5m.me.R;
 import com.p5m.me.analytics.MixPanel;
+import com.p5m.me.data.main.BookingCancellationResponse;
+import com.p5m.me.data.main.StoreApiModel;
+import com.p5m.me.restapi.NetworkCommunicator;
+import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.ImageUtils;
+import com.p5m.me.utils.ToastUtils;
+import com.p5m.me.view.activity.Main.LocationSelectionActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ContinueUser extends BaseActivity implements View.OnClickListener {
+public class ContinueUser extends BaseActivity implements View.OnClickListener, NetworkCommunicator.RequestListener {
 
     public static void open(Context context) {
         Intent intent = new Intent(context, ContinueUser.class);
@@ -49,14 +57,17 @@ public class ContinueUser extends BaseActivity implements View.OnClickListener {
         buttonLogin.setOnClickListener(this);
         buttonRegister.setOnClickListener(this);
         textViewSwitch.setOnClickListener(this);
+        if (TempStorage.getCountries() == null)
+            networkCommunicator.getStoreData(this, false);
 
         try {
             ImageUtils.setImage(context, TempStorage.getUser().getProfileImage(), R.drawable.profile_holder, imageView);
-            buttonContinue.setText(getString(R.string.continue_as)+" " + TempStorage.getUser().getFirstName());
+            buttonContinue.setText(getString(R.string.continue_as) + " " + TempStorage.getUser().getFirstName());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     @Override
     public void onClick(View view) {
@@ -76,7 +87,7 @@ public class ContinueUser extends BaseActivity implements View.OnClickListener {
             case R.id.buttonRegister:
 
                 MixPanel.trackPastLogin(AppConstants.Tracker.REGISTER);
-                SignUpOptions.open(context);
+                LocationSelectionActivity.open(context);
 
                 break;
             case R.id.textViewSwitch:
@@ -84,6 +95,26 @@ public class ContinueUser extends BaseActivity implements View.OnClickListener {
                 MixPanel.trackPastLogin(AppConstants.Tracker.SWITCH_ACCOUNT_ACTION);
                 LoginActivity.open(context);
 
+                break;
+        }
+    }
+
+    @Override
+    public void onApiSuccess(Object response, int requestCode) {
+        switch (requestCode) {
+            case NetworkCommunicator.RequestCode.GET_STORE_DATA:
+                List<StoreApiModel> model = ((ResponseModel<List<StoreApiModel>>) response).data;
+                TempStorage.setCountries(model);
+                break;
+
+        }
+    }
+
+    @Override
+    public void onApiFailure(String errorMessage, int requestCode) {
+        switch (requestCode) {
+            case NetworkCommunicator.RequestCode.GET_STORE_DATA:
+                ToastUtils.show(context, errorMessage);
                 break;
         }
     }

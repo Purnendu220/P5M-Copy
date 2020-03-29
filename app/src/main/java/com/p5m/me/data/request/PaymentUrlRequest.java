@@ -18,61 +18,76 @@ public class PaymentUrlRequest {
     private Long id;
     private List<BookWithFriendData> userList;
     private Integer numOfClass;
+    private Integer paymentMethodId;
 
-    public PaymentUrlRequest(Integer userId, Integer packageId) {
+    public PaymentUrlRequest(Integer userId, Integer packageId,Integer paymentMethodId) {
         this.userId = userId;
         this.packageId = packageId;
+        this.paymentMethodId = paymentMethodId;
     }
-    public PaymentUrlRequest(Integer userId, Integer sessionId, Integer gymId) {
+    public PaymentUrlRequest(Integer userId, Integer sessionId, Integer gymId,Integer paymentMethodId) {
         this.userId = userId;
         this.sessionId = sessionId;
         this.gymId = gymId;
+        this.paymentMethodId = paymentMethodId;
+
     }
-    public PaymentUrlRequest(Integer userId, Integer sessionId, Integer gymId,List<BookWithFriendData> userList,Integer numOfClass) {
+    public PaymentUrlRequest(Integer userId, Integer sessionId, Integer gymId,List<BookWithFriendData> userList,Integer numOfClass,Integer paymentMethodId) {
         this.userId = userId;
         this.sessionId = sessionId;
         this.gymId = gymId;
         this.userList=userList;
         this.numOfClass=numOfClass;
+        this.paymentMethodId = paymentMethodId;
+
     }
 
 
 
-    public PaymentUrlRequest(Integer userId,Integer packageId,Long userPacakageId,String type) {
+    public PaymentUrlRequest(Integer userId,Integer packageId,Long userPacakageId,String type,Integer paymentMethodId) {
         this.userId = userId;
         this.packageId = packageId;
         this.id = userPacakageId;
+        this.paymentMethodId = paymentMethodId;
+
     }
 
-    public PaymentUrlRequest(Integer userId, Integer packageId, Integer sessionId, Integer gymId) {
+    public PaymentUrlRequest(Integer userId, Integer packageId, Integer sessionId, Integer gymId,Integer paymentMethodId) {
         this.userId = userId;
         this.packageId = packageId;
         this.sessionId = sessionId;
         this.gymId = gymId;
+        this.paymentMethodId = paymentMethodId;
     }
-    public PaymentUrlRequest(Integer userId, Integer packageId, Integer sessionId, Integer gymId,List<BookWithFriendData> userList,Integer numOfClass) {
+    public PaymentUrlRequest(Integer userId, Integer packageId, Integer sessionId, Integer gymId,List<BookWithFriendData> userList,Integer numOfClass,Integer paymentMethodId) {
         this.userId = userId;
         this.packageId = packageId;
         this.sessionId = sessionId;
         this.gymId = gymId;
         this.userList=userList;
         this.numOfClass=numOfClass;
+        this.paymentMethodId = paymentMethodId;
+
     }
-    public PaymentUrlRequest(Integer userId, Integer packageId, Integer sessionId, Integer gymId,List<BookWithFriendData> userList) {
+    public PaymentUrlRequest(Integer userId, Integer packageId, Integer sessionId, Integer gymId,List<BookWithFriendData> userList,Integer paymentMethodId) {
         this.userId = userId;
         this.packageId = packageId;
         this.sessionId = sessionId;
         this.gymId = gymId;
         this.userList=userList;
+        this.paymentMethodId = paymentMethodId;
+
     }
 
 
-    public PaymentUrlRequest(Integer userId, Integer packageId, Integer sessionId, Integer gymId, Integer promoId) {
+    public PaymentUrlRequest(Integer userId, Integer packageId, Integer sessionId, Integer gymId, Integer promoId,Integer paymentMethodId) {
         this.userId = userId;
         this.packageId = packageId;
         this.sessionId = sessionId;
         this.gymId = gymId;
         this.promoId = promoId;
+        this.paymentMethodId = paymentMethodId;
+
     }
 
     public Integer getUserId() {

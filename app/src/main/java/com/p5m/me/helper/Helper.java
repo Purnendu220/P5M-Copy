@@ -449,6 +449,21 @@ public class Helper {
         }
         return json;
     }
+    public static String getTimeFromAsset(Context context) {
+        String json = null;
+        try {
+            InputStream is = context.getAssets().open("FilterTimeModel.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, StandardCharsets.UTF_8);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return "";
+        }
+        return json;
+    }
     public static String getPriceModelFromAsset(Context context) {
         String json = null;
         try {
@@ -464,6 +479,8 @@ public class Helper {
         }
         return json;
     }
+
+
     public static boolean isSpecialClass(ClassModel model) {
         return model!=null && model.getPriceModel()!=null
                 && ((model.getPriceModel().equals("SPECIAL")
@@ -601,5 +618,27 @@ public class Helper {
 
     public static void wishlistItemRemoved(ClassModel classModel, ClassModel data) {
 
+    }
+
+    public static List<String> getCategoryListStringFromList(List<ClassActivity> list) {
+        List<String> nameList = new ArrayList<>();
+
+        if (list != null && !list.isEmpty()) {
+
+            try {
+                for (int index = 0; index < list.size(); index++) {
+                    String value = list.get(index).getName();
+                    nameList.add(value);
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                LogUtils.exception(e);
+            }
+        }
+
+
+
+        return nameList;
     }
 }

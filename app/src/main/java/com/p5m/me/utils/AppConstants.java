@@ -26,6 +26,13 @@ public class AppConstants {
 
     }
 
+    public static class Currency {
+        public static final String SAUDI_CURRENCY = "SAR";
+        public static final String SAUDI_CURRENCY_SHORT ="SR";
+
+        public static final String KUWAIT_CURRENCY = "KWD";
+    }
+
     public static class Tab {
 
         public static final int REGISTRATION_STEP_NAME = 0;
@@ -46,7 +53,7 @@ public class AppConstants {
         public static final int TAB_MY_SCHEDULE_WISH_LIST = 1;
 
         public static final int COUNT_FB_REGISTRATION = 3;
-        public static final int COUNT_NORMAL_REGISTRATION = 4;
+        public static final int COUNT_NORMAL_REGISTRATION = 1;
         public static final int OPEN_ABOUT_US = 100;
         public static final int OPEN_PRIVACY = 101;
         public static final int OPEN_TERMS = 102;
@@ -63,9 +70,6 @@ public class AppConstants {
         public static final int UNJOIN_BOTH_CLASS = 1000;
         public static final int UNJOIN_FRIEND_CLASS = 1001;
         public static final int CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS = 1002;
-
-
-
     }
 
     public static class Tracker {
@@ -164,6 +168,9 @@ public class AppConstants {
 
 
         public static final String CLASS_BOOKING_TIME = "Class_booking_time";
+        public static final String COUNTRIES = "CountryList";
+        public static final String CANCELLATION_REASONS = "CancellationReasonsList";
+        public static final String IS_SHOW_MEMBERSHIP_ICON = "IsShowMembershipIcon";
     }
 
     public class DataKey {
@@ -201,6 +208,7 @@ public class AppConstants {
 
 
         public static final String REFERENCE_ID = "Reference_Id";
+        public static final String PAYMENT_OPTION_ID = "payment_option_id";
     }
 
     public class Url {
@@ -285,6 +293,11 @@ public class AppConstants {
         public static final String SUPPORT_CONTACT = "api/v1/support/save";
         public static final String GET_EXPLORE_DETAIL = "api/v1/explore/getDetails";
 
+        public static final String GET_STORE_DATA = "api/v1/store/getAllStore";
+        public static final String USER_UPDATE_STORE = "api/v1/user/updateUserStore";
+        public static final String PAYMENT_INITIATE = "api/v1/payment/initiate";
+        public static final String INTERESTED_CITY = "api/v1/interested/city";
+        public static final String GET_CANCELLATION_REASON = "api/v1/cancellation/getCancellationReasons";
     }
 
     public class ApiParamValue {
@@ -355,6 +368,10 @@ public class AppConstants {
         public static final String NUMBEROFCLASS = "NUMBEROFCLASS";
         public static final String PERCENTAGE = "PERCENTAGE";
         public static final String WAITLIST = "WAITLIST";
+        public static final String APP_STORE_ID = "Store-Id";
+        public static final String STORE_ID = "storeId";
+        public static final String CANCELLATION_ID = "cancellationId";
+        public static final String REMARK = "remark";
     }
 
     public static final class Notification {
@@ -415,6 +432,10 @@ public class AppConstants {
         public static final int NAVIGATION_FROM_EXPLORE = 65;
 
 
+        public static final int NAVIGATION_FROM_OTHER_USER = 66;
+        public static final int SHOWN_IN_GET_STARTED = 67;
+        public static final int NAVIGATION_FROM_FACEBOOK_SIGNUP = 68;
+        public static final int NAVIGATION_FROM_FACEBOOK_LOGIN = 69;
     }
 
     public class Limit {
@@ -435,6 +456,9 @@ public class AppConstants {
         public static final int CHOOSE_NATIONALITY = 1002;
         public static final int CHOOSE_LOCATION = 1003;
         public static final int IMAGE_PICKER = 1003;
+        public static final int PAYMENT_OPTIONS = 1004;
+
+
 
     }
 

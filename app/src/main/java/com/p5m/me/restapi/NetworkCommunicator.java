@@ -19,6 +19,7 @@ import com.p5m.me.data.RatingResponseModel;
 import com.p5m.me.data.UnratedClassData;
 import com.p5m.me.data.UserPackageDetail;
 import com.p5m.me.data.WishListResponse;
+import com.p5m.me.data.main.BookingCancellationResponse;
 import com.p5m.me.data.main.BranchModel;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
@@ -26,11 +27,16 @@ import com.p5m.me.data.main.DefaultSettingServer;
 import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.data.main.GymModel;
+import com.p5m.me.data.main.InterestedCityModel;
+import com.p5m.me.data.main.InterestedCityRequestModel;
 import com.p5m.me.data.main.NotificationModel;
 import com.p5m.me.data.main.Package;
+import com.p5m.me.data.main.PaymentInitiateModel;
 import com.p5m.me.data.main.PaymentUrl;
 import com.p5m.me.data.main.ScheduleClassModel;
 import com.p5m.me.data.main.SearchResults;
+import com.p5m.me.data.main.StoreApiModel;
+import com.p5m.me.data.main.StoreModel;
 import com.p5m.me.data.main.TrainerDetailModel;
 import com.p5m.me.data.main.TrainerModel;
 import com.p5m.me.data.main.Transaction;
@@ -159,6 +165,12 @@ public class NetworkCommunicator {
         public static final int PAYMENT_CONFIRMATION_DETAIL = 150;
         public static final int SUPPORT_RESPONSE_CONTACT = 160;
 
+        public static final int GET_STORE_DATA = 161;
+        public static final int UPDATE_STORE_ID = 162;
+        public static final int GET_PAYMENT_INITIATE = 163;
+        public static final int INERESTED_CITY = 164;
+        public static final int UNJOIN_CLASS = 165;
+        public static final int GET_CANCELLATION_REASON = 166;
     }
 
     private Context context;
@@ -300,7 +312,7 @@ public class NetworkCommunicator {
         Call<ResponseModel<List<City>>> call = apiService.getCityList();
         LogUtils.debug("NetworkCommunicator hitting getCities");
 
-        if (useCache) {
+      /*  if (useCache) {
             List<City> cities = TempStorage.getCities();
 
             if (cities != null) {
@@ -310,7 +322,7 @@ public class NetworkCommunicator {
                 return null;
             }
         }
-
+*/
         call.enqueue(new RestCallBack<ResponseModel<List<City>>>(context) {
             @Override
             public void onFailure(Call<ResponseModel<List<City>>> call, String message) {
@@ -333,16 +345,16 @@ public class NetworkCommunicator {
         Call<ResponseModel<List<ClassActivity>>> call = apiService.getClassCategoryList();
         LogUtils.debug("NetworkCommunicator hitting getActivities");
 
-        if (useCache) {
-            List<ClassActivity> activities = TempStorage.getActivities();
-
-            if (activities != null) {
-                ResponseModel<List<ClassActivity>> responseModel = new ResponseModel<>();
-                responseModel.data = activities;
-                requestListener.onApiSuccess(responseModel, requestCode);
-                return null;
-            }
-        }
+//        if (useCache) {
+//            List<ClassActivity> activities = TempStorage.getActivities();
+//
+//            if (activities != null) {
+//                ResponseModel<List<ClassActivity>> responseModel = new ResponseModel<>();
+//                responseModel.data = activities;
+//                requestListener.onApiSuccess(responseModel, requestCode);
+//                return null;
+//            }
+//        }
 
         call.enqueue(new RestCallBack<ResponseModel<List<ClassActivity>>>(context) {
             @Override
@@ -1372,6 +1384,27 @@ public class NetworkCommunicator {
         return call;
     }
 
+    public Call updateStoreId(int id, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.UPDATE_STORE_ID;
+        Call<ResponseModel<StoreModel>> call = apiService.updateStoreId(TempStorage.getUser().getId(), id);
+        LogUtils.debug("NetworkCommunicator hitting changePass");
+
+        call.enqueue(new RestCallBack<ResponseModel<StoreModel>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<StoreModel>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator changePass onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<StoreModel>> call, Response<ResponseModel<StoreModel>> restResponse, ResponseModel<StoreModel> response) {
+                LogUtils.networkSuccess("NetworkCommunicator changePass onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
     public Call deleteMedia(long mediaId, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.MEDIA_DELETE;
         Call<ResponseModel<User>> call = apiService.deleteMedia(mediaId);
@@ -1487,10 +1520,10 @@ public class NetworkCommunicator {
         return call;
     }
 
-    public Call unJoinClass(final ClassModel classModel, int joinClassId, final RequestListener requestListener) {
+    public Call unJoinClass(final ClassModel classModel, int joinClassId, Integer cancellationId, String remark, final RequestListener requestListener) {
 
-        final int requestCode = RequestCode.ADD_TO_WISH_LIST;
-        Call<ResponseModel<User>> call = apiService.unJoinClass(joinClassId);
+        final int requestCode = RequestCode.UNJOIN_CLASS;
+        Call<ResponseModel<User>> call = apiService.unJoinClass(joinClassId, cancellationId, remark);
         LogUtils.debug("NetworkCommunicator hitting unJoinClass");
 
         call.enqueue(new RestCallBack<ResponseModel<User>>(context) {
@@ -1637,7 +1670,7 @@ public class NetworkCommunicator {
     public Call getScheduleClassList(ScheduleRequest scheduleRequest, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.SCHEDULE_LIST;
         Call<ResponseModel<List<ScheduleClassModel>>> call = apiService.getScheduleClass(scheduleRequest);
-        LogUtils.debug("NetworkCommunicator hitting getClassList");
+        LogUtils.debug("NetworkCommunicator hitting getScheduleClassList");
 
         call.enqueue(new RestCallBack<ResponseModel<List<ScheduleClassModel>>>(context) {
             @Override
@@ -1676,5 +1709,116 @@ public class NetworkCommunicator {
         });
         return call;
     }
+
+
+    public Call getStoreData(final RequestListener requestListener, final boolean useCache) {
+        final int requestCode = RequestCode.GET_STORE_DATA;
+        Call<ResponseModel<List<StoreApiModel>>> call = apiService.getStoreData();
+        LogUtils.debug("NetworkCommunicator hitting Store Data");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<StoreApiModel>>>(context) {
+
+            @Override
+            public void onFailure(Call<ResponseModel<List<StoreApiModel>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator User onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<StoreApiModel>>> call, Response<ResponseModel<List<StoreApiModel>>> restResponse, ResponseModel<List<StoreApiModel>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator User onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+
+    public Call getPaymentInitiate(final RequestListener requestListener, final boolean useCache) {
+        final int requestCode = RequestCode.GET_PAYMENT_INITIATE;
+        Call<ResponseModel<String>> call = apiService.getPaymentInitiate();
+        LogUtils.debug("NetworkCommunicator hitting Payment Initiate");
+
+        call.enqueue(new RestCallBack<ResponseModel<String>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<String>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator User onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<String>> call, Response<ResponseModel<String>> restResponse, ResponseModel<String> response) {
+                LogUtils.networkSuccess("NetworkCommunicator User onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call uploadInsterestedCity(InterestedCityRequestModel interestedCityModel, final RequestListener requestListener, final boolean useCache) {
+        final int requestCode = RequestCode.INERESTED_CITY;
+        Call<ResponseModel<InterestedCityModel>> call = apiService.uploadInterestedCity(interestedCityModel);
+        LogUtils.debug("NetworkCommunicator hitting Interested City");
+
+        call.enqueue(new RestCallBack<ResponseModel<InterestedCityModel>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<InterestedCityModel>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator User onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<InterestedCityModel>> call, Response<ResponseModel<InterestedCityModel>> restResponse, ResponseModel<InterestedCityModel> response) {
+                LogUtils.networkSuccess("NetworkCommunicator User onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call uploadInsterestedCity(int id, InterestedCityRequestModel interestedCityModel, final RequestListener requestListener, final boolean useCache) {
+        final int requestCode = RequestCode.INERESTED_CITY;
+        Call<ResponseModel<InterestedCityModel>> call = apiService.uploadInterestedCity(id, interestedCityModel);
+        LogUtils.debug("NetworkCommunicator hitting Interested City");
+
+        call.enqueue(new RestCallBack<ResponseModel<InterestedCityModel>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<InterestedCityModel>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator User onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<InterestedCityModel>> call, Response<ResponseModel<InterestedCityModel>> restResponse, ResponseModel<InterestedCityModel> response) {
+                LogUtils.networkSuccess("NetworkCommunicator User onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call getCancellationReason(final RequestListener requestListener, final boolean useCache) {
+        final int requestCode = RequestCode.GET_CANCELLATION_REASON;
+        Call<ResponseModel<List<BookingCancellationResponse>>> call = apiService.getCancellationReason();
+        LogUtils.debug("NetworkCommunicator hitting Store Data");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<BookingCancellationResponse>>>(context) {
+
+            @Override
+            public void onFailure(Call<ResponseModel<List<BookingCancellationResponse>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator User onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<BookingCancellationResponse>>> call, Response<ResponseModel<List<BookingCancellationResponse>>> restResponse, ResponseModel<List<BookingCancellationResponse>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator User onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+
 }
 

@@ -191,6 +191,61 @@
                                 android:src="@drawable/arrow_right" />
 
                         </LinearLayout>
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/view_padding_setting"
+                    android:background="@color/theme_bg"
+                    android:elevation="@dimen/view_separator_elevation_edit_setting"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical">
+                    <LinearLayout
+                        android:id="@+id/layoutChangeCountry"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/click_highlight"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/view_padding_setting">
+
+                        <ImageView
+                            style="@style/SettingIcon"
+                            android:padding="2dp"
+                            android:src="@drawable/country"
+                            android:tint="@color/theme_medium_text" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/text_icon_gap_setting"
+                            android:layout_marginRight="12dp"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:fontFamily="sans-serif"
+                            android:letterSpacing="@dimen/text_medium_letter_spacing"
+                            android:text="@string/change_country"
+                            android:textColor="@color/theme_dark_light_text"
+                            android:textSize="@dimen/text_large"
+                            android:textStyle="normal" />
+
+                        <ImageView
+                            style="@style/SettingIcon"
+                            android:paddingBottom="4dp"
+                            android:paddingTop="4dp"
+                            android:src="@drawable/arrow_right" />
+
+                    </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
 

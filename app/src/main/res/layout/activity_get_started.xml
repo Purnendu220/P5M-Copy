@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".view.activity.Main.GetStartedActivity">
+
+    <ImageView
+        android:id="@+id/imageViewBack"
+        android:layout_width="@dimen/margin_20"
+        android:layout_height="@dimen/margin_20"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:tint="@color/theme_dark_text"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/intercom_back" />
+
+    <TextView
+        android:id="@+id/textViewSkip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center_vertical"
+        android:text="@string/skip"
+        android:textAllCaps="true"
+        android:textColor="@color/theme_dark_text"
+        android:textSize="@dimen/text_small"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageViewBack"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/margin_100"
+        android:layout_marginTop="100dp"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/margin_10"
+        app:layout_constraintBottom_toTopOf="@id/buttonBottom"
+
+        app:layout_constraintEnd_toEndOf="@+id/textViewSkip"
+        app:layout_constraintStart_toStartOf="@+id/imageViewBack"
+        app:layout_constraintTop_toBottomOf="@id/textViewSkip">
+
+
+        <TextView
+            android:id="@+id/textViewHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="left"
+            android:lineHeight="@dimen/margin_35"
+            android:lineSpacingExtra="@dimen/margin_5"
+            android:paddingTop="@dimen/margin_15"
+            android:paddingBottom="@dimen/margin_15"
+            android:text="@string/get_started_suggesstion"
+            android:textColor="@color/theme_dark_text"
+            android:textSize="@dimen/text_extra_extra_large"
+
+            />
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/buttonBottom"
+            app:layout_constraintEnd_toEndOf="@id/textViewSkip"
+            app:layout_constraintStart_toStartOf="@+id/imageViewBack"
+            app:layout_constraintTop_toBottomOf="@+id/textViewHeader"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/flexBoxLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/margin_5"
+                app:alignContent="flex_start"
+                app:alignItems="flex_start"
+                app:flexDirection="row"
+                app:flexWrap="wrap" />
+        </ScrollView>>
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/flexBoxLayoutTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:alignContent="flex_start"
+            app:alignItems="flex_start"
+            app:flexWrap="wrap"
+            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/textViewSkip"
+            app:layout_constraintStart_toStartOf="@id/textViewHeader"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonBottom"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/button_white"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/get_started"
+        android:textColor="@color/theme_dark_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textViewSkip"
+        app:layout_constraintStart_toStartOf="@+id/imageViewBack" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

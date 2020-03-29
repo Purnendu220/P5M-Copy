@@ -84,6 +84,9 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     private TestimonialsAdapter testimonialsAdapter;
     private List<Testimonials> default_testimonials;
     private List<Testimonials> testimonials;
+    private double finalCost;
+    private Integer paymentOptionId;
+    private boolean openDialog = true;
 
     /*
             if user is purchasing a package
@@ -304,7 +307,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         handler = new Handler();
         checkUserCredits();
         setData();
-        scrollView.smoothScrollTo(0,0);
+        scrollView.smoothScrollTo(0, 0);
         textViewPay.setOnClickListener(this);
         buttonPromoCode.setOnClickListener(this);
         textViewLimit.setOnClickListener(this);
@@ -315,9 +318,13 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         FirebaseAnalysic.trackCheckoutVisit(aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName());
         IntercomEvents.trackCheckoutVisit(aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName());
         onTrackingNotification();
-        setTestimonialAdapter();
+//        if(country == riyadh)  TODO RIYADH
+        setTestimonialAdapter(RemoteConfigConst.TESTIMONIALS_RIYADH_VALUE);
+//        else
+        setTestimonialAdapter(RemoteConfigConst.TESTIMONIALS_VALUE);
 
     }
+
 
     private void checkUserCredits() {
         user = TempStorage.getUser();
@@ -363,7 +370,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 }
 
 //                textViewPackageName.setText(Html.fromHtml(numberConverter(mNumberOfClasses) + "X <b>" + aPackage.getName() + "</b>"));
-                textViewPrice.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + context.getString(R.string.currency));
+                textViewPrice.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
 
                 textViewPackageInfo.setVisibility(aPackage.getDescription().isEmpty() ? View.GONE : View.VISIBLE);
                 textViewPackageInfo.setText(aPackage.getDescription());
@@ -383,10 +390,10 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
                 textViewPackageName.setText(Html.fromHtml("<b>" + classModel.getTitle() + "</b>"));
                 if (mNumberOfPackagesToBuy > 1) {
-                    textViewPrice.setText(numberConverter(mNumberOfPackagesToBuy) + "x " + LanguageUtils.numberConverter(classModel.getPrice(), 2) + " " + context.getString(R.string.currency));
+                    textViewPrice.setText(numberConverter(mNumberOfPackagesToBuy) + "x " + LanguageUtils.numberConverter(classModel.getPrice(), 2) + " " + (TempStorage.getUser().getCurrencyCode()).toUpperCase());
 
                 } else {
-                    textViewPrice.setText(LanguageUtils.numberConverter(classModel.getPrice(), 2) + " " + context.getString(R.string.currency));
+                    textViewPrice.setText(LanguageUtils.numberConverter(classModel.getPrice(), 2) + " " + (TempStorage.getUser().getCurrencyCode()).toUpperCase());
 
                 }
 
@@ -410,7 +417,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 textViewPackageName.setText(R.string.add_more_time);
                 textViewCancellationPolicyToggle.setText(R.string.extention_policy);
 
-                textViewPrice.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost(), 2) + " " + context.getString(R.string.currency));
+                textViewPrice.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()).toUpperCase());
                 int remainigExtension;
                 if (userPackage.getTotalRemainingWeeks() != null) {
                     remainigExtension = userPackage.getTotalRemainingWeeks() - selectedPacakageFromList.getDuration();
@@ -462,7 +469,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
     @OnClick(R.id.imageViewBack)
     public void imageViewBack(View view) {
-        dialogBackPress();
+       dialogBackPress();
     }
 
     @Override
@@ -494,9 +501,20 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 }
                 break;
             case R.id.textViewPay:
-                handlePayment();
-                MixPanel.trackPayButtonClick(aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName());
+                paymentOptionId = null;
+                if (TempStorage.getUser().getCurrencyCode() != null && (TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.SAUDI_CURRENCY) || TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.SAUDI_CURRENCY_SHORT))) {
+                    if (finalCost > 0) {
+                        openDialog = false;
+                        PaymentOptionActivity.open(CheckoutActivity.this);
+                    } else {
+                        handlePayment();
+                    }
 
+                } else {
+                    handlePayment();
+
+                }
+//                MixPanel.trackPayButtonClick(aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName());
                 break;
             case R.id.buttonPromoCode:
                 if (promoCode == null) {
@@ -518,8 +536,9 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
     private void setNumberOfDaysPromo() {
         roundFigureOfDays(promoCode.getExtraNumberOfDays());
-        textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + context.getString(R.string.currency));
-        textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + context.getString(R.string.currency));
+        textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()).toUpperCase());
+        textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
+        finalCost = aPackage.getCost();
         if (promoCode.getExtraNumberOfDays() != 0) {
             textViewPackageExtendNoOfDays.setVisibility(View.VISIBLE);
             textViewPlus.setVisibility(View.VISIBLE);
@@ -547,23 +566,22 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     private void roundFigureOfDays(int extraNumberOfDays) {
         if (extraNumberOfDays >= 7 && extraNumberOfDays % 7 == 0) {
             if (extraNumberOfDays / 7 == 1)
-                textViewPackageExtendNoOfDays.setText( getString(R.string.a_week));
+                textViewPackageExtendNoOfDays.setText(getString(R.string.a_week));
             else
                 textViewPackageExtendNoOfDays.setText(LanguageUtils.numberConverter(promoCode.getExtraNumberOfDays() / 7) + " " + getString(R.string.weeks));
         } else if (extraNumberOfDays >= 30 && extraNumberOfDays % 30 == 0) {
-            if(extraNumberOfDays /30 ==1)
+            if (extraNumberOfDays / 30 == 1)
                 textViewPackageExtendNoOfDays.setText(LanguageUtils.numberConverter(promoCode.getExtraNumberOfDays() / 30) + " " + getString(R.string.a_month));
             else
                 textViewPackageExtendNoOfDays.setText(LanguageUtils.numberConverter(promoCode.getExtraNumberOfDays() / 30) + " " + getString(R.string.months));
 
         } else {
             String days;
-            if(promoCode.getExtraNumberOfDays()==1){
+            if (promoCode.getExtraNumberOfDays() == 1) {
                 days = LanguageUtils.numberConverter(promoCode.getExtraNumberOfDays()) + " " + getString(R.string.day);
 
-            }
-            else
-            days = LanguageUtils.numberConverter(promoCode.getExtraNumberOfDays()) + " " + getString(R.string.days);
+            } else
+                days = LanguageUtils.numberConverter(promoCode.getExtraNumberOfDays()) + " " + getString(R.string.days);
             textViewPackageExtendNoOfDays.setText(days);
 
         }
@@ -584,13 +602,15 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                         textViewPromoCodeText.setText(getResources().getString(R.string.discount_promo_applied));
                         textViewPackageExtendNoOfDays.setVisibility(View.GONE);
                         textViewPlus.setVisibility(View.GONE);
-                        textViewTotal.setText(LanguageUtils.numberConverter(promoCode.getPriceAfterDiscount(), 2) + " " + context.getString(R.string.currency));
-                        textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(promoCode.getPriceAfterDiscount(), 2) + " " + context.getString(R.string.currency));
+                        textViewTotal.setText(LanguageUtils.numberConverter(promoCode.getPriceAfterDiscount(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
+                        textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(promoCode.getPriceAfterDiscount(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
+                        finalCost = promoCode.getPriceAfterDiscount();
+
                         if (promoCode.getDiscount() != 0) {
                             layoutPromoCode.setVisibility(View.VISIBLE);
                             double discountedPrice = promoCode.getPrice() - promoCode.getPriceAfterDiscount();
                             textViewPromoCodePrice.setVisibility(View.VISIBLE);
-                            textViewPromoCodePrice.setText("- " + (LanguageUtils.numberConverter(discountedPrice, 2)) + " " + context.getString(R.string.currency));
+                            textViewPromoCodePrice.setText("- " + (LanguageUtils.numberConverter(discountedPrice, 2)) + " " + (TempStorage.getUser().getCurrencyCode()));
                             buttonPromoCode.setText(context.getString(R.string.remove_promo_code));
                         } else {
                             layoutPromoCode.setVisibility(View.GONE);
@@ -615,8 +635,10 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                         textViewPackageClasses.setText(LanguageUtils.numberConverter(mNumberOfClasses) + " " + AppConstants.pluralES(context.getString(R.string.classs), mNumberOfClasses) + " " + context.getString(R.string.at) + " " + classModel.getGymBranchDetail().getGymName());
                     }
-                    textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + context.getString(R.string.currency));
-                    textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + context.getString(R.string.currency));
+                    textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
+                    textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
+                    finalCost = aPackage.getCost();
+
                     buttonPromoCode.setText(context.getString(R.string.apply_promo_code));
                 }
 
@@ -624,15 +646,16 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 break;
 
             case SPECIAL_CLASS:
-                textViewTotal.setText(LanguageUtils.numberConverter(mNumberOfPackagesToBuy * classModel.getPrice(), 2) + " " + context.getString(R.string.currency));
-                textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(mNumberOfPackagesToBuy * classModel.getPrice(), 2) + " " + context.getString(R.string.currency));
+                textViewTotal.setText(LanguageUtils.numberConverter(mNumberOfPackagesToBuy * classModel.getPrice(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
+                textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(mNumberOfPackagesToBuy * classModel.getPrice(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
+                finalCost = mNumberOfPackagesToBuy * classModel.getPrice();
                 applyCredit();
 
                 break;
             case EXTENSION:
-                textViewTotal.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost(), 2) + " " + context.getString(R.string.currency));
-                textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(selectedPacakageFromList.getCost(), 2) + " " + context.getString(R.string.currency));
-
+                textViewTotal.setText(LanguageUtils.numberConverter(selectedPacakageFromList.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
+                textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(selectedPacakageFromList.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
+                finalCost = selectedPacakageFromList.getCost();
                 applyCredit();
 
                 break;
@@ -642,8 +665,9 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void setNumberOfClassPromo() {
-        textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + context.getString(R.string.currency));
-        textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + context.getString(R.string.currency));
+        textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
+        textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
+        finalCost = aPackage.getCost();
         if (promoCode.getExtraNumberOfClass() != 0) {
             textViewPackageClasses.setVisibility(View.VISIBLE);
             layoutPromoCode.setVisibility(View.VISIBLE);
@@ -724,11 +748,11 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     break;
 
             }
-            textViewTotal.setText(LanguageUtils.numberConverter(costAfterCreditApply, 2) + " " + context.getString(R.string.currency));
-            textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(costAfterCreditApply, 2) + " " + context.getString(R.string.currency));
-
+            textViewTotal.setText(LanguageUtils.numberConverter(costAfterCreditApply, 2) + " " + (TempStorage.getUser().getCurrencyCode()));
+            textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(costAfterCreditApply, 2) + " " + (TempStorage.getUser().getCurrencyCode()));
+            finalCost = costAfterCreditApply;
             if (appliedCreditCost > 0) {
-                textViewWalletCreditPrice.setText("- " + LanguageUtils.numberConverter(appliedCreditCost, 2) + " " + context.getString(R.string.currency));
+                textViewWalletCreditPrice.setText("- " + LanguageUtils.numberConverter(appliedCreditCost, 2) + " " + (TempStorage.getUser().getCurrencyCode()));
                 //mTextViewWalletAmount.setText((LanguageUtils.numberConverter(((mWalletCredit.getBalance()-appliedCreditCost))))+" "+context.getString(R.string.currency));
 
 
@@ -745,19 +769,10 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     private void dialogBackPress() {
         DialogUtils.showBasicMessage(context, "", context.getResources().getString(R.string.are_you_sure_leave_page),
                 context.getResources().getString(R.string.ok),
-                new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.dismiss();
-                        CheckoutActivity.super.onBackPressed();
-                    }
-                }, context.getString(R.string.cancel), new MaterialDialog.SingleButtonCallback() {
-
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.dismiss();
-                    }
-                });
+                (dialog, which) -> {
+                    dialog.dismiss();
+                    CheckoutActivity.super.onBackPressed();
+                }, context.getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
     }
 
     private void dialogPromoCode() {
@@ -790,43 +805,35 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
             }
         });
 
-        textViewCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                materialDialog.dismiss();
+        textViewCancel.setOnClickListener(view -> materialDialog.dismiss());
+
+        textViewOk.setOnClickListener(view -> {
+            String promoCodeText = editTextPromoCode.getText().toString();
+
+            if (promoCodeText.isEmpty()) {
+                textViewError.setText(context.getString(R.string.promo_code_required));
+                return;
             }
-        });
-
-        textViewOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String promoCodeText = editTextPromoCode.getText().toString();
-
-                if (promoCodeText.isEmpty()) {
-                    textViewError.setText(context.getString(R.string.promo_code_required));
-                    return;
-                }
-                switch (checkoutFor) {
-                    case PACKAGE:
-                        textViewOk.setVisibility(View.INVISIBLE);
+            switch (checkoutFor) {
+                case PACKAGE:
+                    textViewOk.setVisibility(View.INVISIBLE);
+                    networkCommunicator.applyPromoCode(
+                            new PromoCodeRequest(promoCodeText, aPackage.getId(), TempStorage.getUser().getId(), mNumberOfClasses),
+                            CheckoutActivity.this, false);
+                    break;
+                case CLASS_PURCHASE_WITH_PACKAGE:
+                    textViewOk.setVisibility(View.INVISIBLE);
+                    if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                         networkCommunicator.applyPromoCode(
-                                new PromoCodeRequest(promoCodeText, aPackage.getId(), TempStorage.getUser().getId(), mNumberOfClasses),
+                                new PromoCodeRequest(classModel.getGymBranchDetail().getGymId(), promoCodeText, aPackage.getId(), TempStorage.getUser().getId(), mNumberOfClasses),
                                 CheckoutActivity.this, false);
-                        break;
-                    case CLASS_PURCHASE_WITH_PACKAGE:
-                        textViewOk.setVisibility(View.INVISIBLE);
-                        if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
-                            networkCommunicator.applyPromoCode(
-                                    new PromoCodeRequest(classModel.getGymBranchDetail().getGymId(), promoCodeText, aPackage.getId(), TempStorage.getUser().getId(), mNumberOfClasses),
-                                    CheckoutActivity.this, false);
-                        } else {
-                            networkCommunicator.applyPromoCode(
-                                    new PromoCodeRequest(classModel.getGymBranchDetail().getGymId(), promoCodeText, aPackage.getId(), TempStorage.getUser().getId()),
-                                    CheckoutActivity.this, false);
-                        }
+                    } else {
+                        networkCommunicator.applyPromoCode(
+                                new PromoCodeRequest(classModel.getGymBranchDetail().getGymId(), promoCodeText, aPackage.getId(), TempStorage.getUser().getId()),
+                                CheckoutActivity.this, false);
+                    }
 
-                        break;
-                }
+                    break;
             }
         });
     }
@@ -838,7 +845,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 textViewPay.setText(context.getResources().getString(R.string.please_wait));
                 textViewPay.setEnabled(false);
                 PaymentUrlRequest paymentUrlRequest = new PaymentUrlRequest(TempStorage.getUser().getId(),
-                        aPackage.getId());
+                        aPackage.getId(), paymentOptionId);
 
                 if (promoCode != null) {
                     paymentUrlRequest.setPromoId(promoCode.getId());
@@ -858,18 +865,18 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                         paymentUrlRequest = new PaymentUrlRequest(TempStorage.getUser().getId(),
                                 aPackage.getId(), classModel.getClassSessionId(),
-                                classModel.getGymBranchDetail().getGymId(), data, aPackage.getNoOfClass());
+                                classModel.getGymBranchDetail().getGymId(), data, aPackage.getNoOfClass(), paymentOptionId);
                     } else {
                         paymentUrlRequest = new PaymentUrlRequest(TempStorage.getUser().getId(),
                                 aPackage.getId(), classModel.getClassSessionId(),
-                                classModel.getGymBranchDetail().getGymId(), data);
+                                classModel.getGymBranchDetail().getGymId(), data, paymentOptionId);
                     }
 
 
                 } else {
                     paymentUrlRequest = new PaymentUrlRequest(TempStorage.getUser().getId(),
                             aPackage.getId(), classModel.getClassSessionId(),
-                            classModel.getGymBranchDetail().getGymId());
+                            classModel.getGymBranchDetail().getGymId(), paymentOptionId);
                 }
 
 
@@ -888,11 +895,11 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     List<BookWithFriendData> data = new ArrayList<>();
                     data.add(friendsDetail);
                     networkCommunicator.purchasePackageForClass(new PaymentUrlRequest(TempStorage.getUser().getId(),
-                            classModel.getClassSessionId(), classModel.getGymBranchDetail().getGymId(), data, mNumberOfPackagesToBuy), this, false);
+                            classModel.getClassSessionId(), classModel.getGymBranchDetail().getGymId(), data, mNumberOfPackagesToBuy, paymentOptionId), this, false);
 
                 } else {
                     networkCommunicator.purchasePackageForClass(new PaymentUrlRequest(TempStorage.getUser().getId(),
-                            classModel.getClassSessionId(), classModel.getGymBranchDetail().getGymId()), this, false);
+                            classModel.getClassSessionId(), classModel.getGymBranchDetail().getGymId(), paymentOptionId), this, false);
 
                 }
             }
@@ -902,7 +909,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 textViewPay.setText(context.getResources().getString(R.string.please_wait));
                 textViewPay.setEnabled(false);
                 PaymentUrlRequest paymentUrlRequest = new PaymentUrlRequest(TempStorage.getUser().getId(), selectedPacakageFromList.getId(),
-                        userPackage.getId(), "Extension");
+                        userPackage.getId(), "Extension", paymentOptionId);
 
                 networkCommunicator.purchasePackageForClass(paymentUrlRequest, this, false);
             }
@@ -923,7 +930,6 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     redirectOnResult();
                     networkCommunicator.getMyUser(CheckoutActivity.this, false);
                 } else {
-
                     setPrice();
                     textViewPay.setEnabled(true);
                     String packageName = aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName();
@@ -960,7 +966,10 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onBackPressed() {
-        dialogBackPress();
+        if (openDialog)
+            dialogBackPress();
+        else
+            super.onBackPressed();
     }
 
     @Override
@@ -971,12 +980,21 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         if (requestCode == AppConstants.ResultCode.PAYMENT_SUCCESS && resultCode == RESULT_OK) {
 
             refId = data.getStringExtra(AppConstants.DataKey.REFERENCE_ID);
+            openDialog = true;
             if (refId != null && refId.length() > 0) {
                 redirectOnResult1();
 
             } else {
                 redirectOnResult();
 
+            }
+        }
+        if (requestCode == AppConstants.ResultCode.PAYMENT_OPTIONS && resultCode == RESULT_OK) {
+
+            paymentOptionId = data.getIntExtra(AppConstants.DataKey.PAYMENT_OPTION_ID, 0);
+            if (paymentOptionId > 0) {
+                openDialog = false;
+                handlePayment();
             }
         }
     }
@@ -989,22 +1007,22 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
             case PACKAGE:
 
                 PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,
-                        refId, aPackage, null, checkoutFor, null, null, mNumberOfPackagesToBuy,couponCode);
+                        refId, aPackage, null, checkoutFor, null, null, mNumberOfPackagesToBuy, couponCode);
 
                 break;
             case CLASS_PURCHASE_WITH_PACKAGE:
                 PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,
-                        refId, aPackage, classModel, checkoutFor, null, null, mNumberOfPackagesToBuy,couponCode);
+                        refId, aPackage, classModel, checkoutFor, null, null, mNumberOfPackagesToBuy, couponCode);
 
                 break;
             case SPECIAL_CLASS:
                 PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,
-                        refId, null, classModel, checkoutFor, null, selectedPacakageFromList, mNumberOfPackagesToBuy,couponCode);
+                        refId, null, classModel, checkoutFor, null, selectedPacakageFromList, mNumberOfPackagesToBuy, couponCode);
 
                 break;
             case EXTENSION:
                 PaymentConfirmationActivity.openActivity(context, navigatinFrom,
-                        refId, null, null, checkoutFor, userPackage, selectedPacakageFromList, mNumberOfPackagesToBuy,couponCode);
+                        refId, null, null, checkoutFor, userPackage, selectedPacakageFromList, mNumberOfPackagesToBuy, couponCode);
 
                 break;
         }
@@ -1096,9 +1114,9 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     }
 
 
-    private void setTestimonialAdapter() {
+    private void setTestimonialAdapter(String testimonialsValue) {
         try {
-            String testimonial = RemoteConfigConst.TESTIMONIALS_VALUE;
+            String testimonial = testimonialsValue;
             if (testimonial != null && !testimonial.isEmpty()) {
                 Gson g = new Gson();
                 List<Testimonials> p = g.fromJson(testimonial, new TypeToken<List<Testimonials>>() {
@@ -1126,10 +1144,11 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
             }
         }
     }
+
     private void setTestimonialVisible() {
         recyclerView.setVisibility(View.VISIBLE);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity,RecyclerView.HORIZONTAL,false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false));
         recyclerView.setHasFixedSize(false);
 
         testimonialsAdapter = new TestimonialsAdapter(context, this);
@@ -1155,7 +1174,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void saved5MinClass(ClassModel classModel) {
-        Join5MinModel join5MinModel= new Join5MinModel();
+        Join5MinModel join5MinModel = new Join5MinModel();
         join5MinModel.setGetClassSessionId(classModel.getClassSessionId());
         join5MinModel.setJoiningTime(Calendar.getInstance().getTime());
         List<Join5MinModel> bookedClassList = MyPreferences.getInstance().getBookingTime();

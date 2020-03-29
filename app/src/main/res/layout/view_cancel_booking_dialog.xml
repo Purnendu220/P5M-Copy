@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/float_transparent"
+    android:gravity="center">
+
+
+    <LinearLayout
+        android:id="@+id/linearlayoutTopPart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="@dimen/margin_5"
+        android:gravity="center_vertical|center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewNoRefund"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_10"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="@string/no_refund"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_large" />
+
+
+        <TextView
+            android:id="@+id/textViewCancelBookingMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="@dimen/margin_20"
+            android:gravity="center"
+            android:fontFamily="sans-serif"
+            tools:text="No refund message"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_medium" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/linearLayoutRatePast"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearlayoutTopPart"
+        android:background="@color/white"
+        android:visibility="visible"
+
+        >
+
+
+        <LinearLayout
+            android:id="@+id/layoutButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_15"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/textViewNoThanks"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height_normal"
+                android:layout_marginRight="@dimen/margin_10"
+                android:layout_weight="1"
+                android:background="@drawable/button_grey_rounded_border"
+                android:clickable="true"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:letterSpacing="@dimen/button_letter_spacing"
+                android:text="@string/no_thank"
+                android:textAllCaps="true"
+                android:textColor="@color/theme_dark_text"
+                android:textSize="@dimen/text_small"
+
+                />
+
+            <TextView
+                android:id="@+id/textViewCancelBooking"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height_normal"
+                android:layout_weight="1"
+                android:background="@drawable/join_rect"
+                android:backgroundTint="@color/red"
+                android:clickable="true"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:letterSpacing="@dimen/button_letter_spacing"
+                android:text="@string/cancel_class"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_small"
+
+                />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
+

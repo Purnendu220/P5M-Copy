@@ -159,6 +159,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
             onTabSelection(fragmentPositionInViewPager);
             classListAdapter.clearAll();
             classListAdapter.notifyDataSetChanged();
+            onRefresh();
         } else {
             handleClassJoined(data.data);
             checkListData();
@@ -259,7 +260,7 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
             onTabSelection(fragmentPositionInViewPager);
         }
 
-        handleClassJoined(data.data);
+        handleClassJoined(data.data );
         checkListData();
     }
 
@@ -422,7 +423,6 @@ public class ClassMiniViewList extends BaseFragment implements ViewPagerFragment
         if ((fragmentPositionInViewPager == position && isShownFirstTime) || shouldRefresh) {
             isShownFirstTime = false;
             shouldRefresh = false;
-
             onRefresh();
         } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST ||
                 shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
