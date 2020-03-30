@@ -198,6 +198,10 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                 }
                 break;
 
+            case R.id.imageViewVideoClass:
+                ToastUtils.show(context,"Start Class");
+            break;
+
             default:
                 if (shownIn != AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED) {
                     if (model instanceof ClassModel) {

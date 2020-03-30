@@ -52,6 +52,9 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.imageViewChat)
     public ImageView imageViewChat;
 
+    @BindView(R.id.imageViewVideoClass)
+    public ImageView imageViewVideoClass;
+
     @BindView(R.id.layoutGender)
     public View layoutGender;
     @BindView(R.id.textViewClassGender)
@@ -134,6 +137,12 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 buttonJoin.setVisibility(View.VISIBLE);
                 imageViewOptions1.setVisibility(View.GONE);
 //                imageViewOptions2.setVisibility(View.VISIBLE);
+                if(model.isVideoClass()){
+                   imageViewVideoClass.setVisibility(View.VISIBLE);
+                }else{
+                    imageViewVideoClass.setVisibility(View.GONE);
+
+                }
 
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_WISH_LIST) {
                 trainerImage.setVisibility(View.VISIBLE);
@@ -330,6 +339,14 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 @Override
                 public void onClick(View view) {
                     adapterCallbacks.onAdapterItemClick(ClassMiniDetailViewHolder.this, itemView, model, position);
+                }
+            });
+
+            imageViewVideoClass.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    adapterCallbacks.onAdapterItemClick(ClassMiniDetailViewHolder.this, imageViewVideoClass, model, position);
+
                 }
             });
 
