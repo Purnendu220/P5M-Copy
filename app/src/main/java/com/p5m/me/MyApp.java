@@ -7,12 +7,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.widget.Toast;
 
-import com.p5m.me.BuildConfig;
 
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
@@ -21,6 +20,10 @@ import com.crashlytics.android.Crashlytics;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.p5m.me.agorartc.rtc.AgoraEventHandler;
+import com.p5m.me.agorartc.rtc.EngineConfig;
+import com.p5m.me.agorartc.rtc.EventHandler;
+import com.p5m.me.agorartc.stats.StatsManager;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.receivers.NetworkChangeReceiver;
@@ -28,15 +31,16 @@ import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
+import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.RefrenceWrapper;
 
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+import io.agora.rtc.RtcEngine;
 import io.fabric.sdk.android.Fabric;
 import io.intercom.android.sdk.Intercom;
 
@@ -50,18 +54,20 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
 
     public final static boolean SHOW_LOG = BuildConfig.IS_DEBUG;
     public final static boolean RETROFIT_SHOW_LOG = BuildConfig.IS_DEBUG;
+    public final static String AGORA_APP_ID = BuildConfig.AGORA_APP_ID;
 
     public final static List<Activity> ACTIVITIES = new ArrayList<>();
 
-    public final static String MIX_PANEL_TOKEN = "705daac4d807e105c1ddc350c9324ca2";
-    //    public final static String MIX_PANEL_TOKEN = "ac8ac225ea9618bad16a7fe25dfd548e";
-    public final static String GOOGLE_API_PROJECT = "109210713388";
 
     public boolean isAppForeground;
     public long appBackgroundTime;
-    private FirebaseOptions options;
     private boolean hasBeenInitialized;
-    private FirebaseApp finestayApp;
+
+
+    private RtcEngine mRtcEngine;
+    private EngineConfig mGlobalConfig = new EngineConfig();
+    private AgoraEventHandler mHandler = new AgoraEventHandler();
+    private StatsManager mStatsManager = new StatsManager();
 
     private BroadcastReceiver myReceiver = new BroadcastReceiver() {
 
@@ -95,7 +101,7 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         String myVersionName = "not available";
         PackageManager packageManager = getPackageManager();
         String packageName = getPackageName();
-        finestayApp = FirebaseApp.initializeApp(context);
+        FirebaseApp.initializeApp(context);
 
         Intercom.initialize(this, "android_sdk-0220c78a68a8a904e507a85bebd4eed53e4b7602", "qp091xcl");
         try {
@@ -117,7 +123,49 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
             NetworkCommunicator.getInstance(context).getDefault();
         }
 
+        try {
+            mRtcEngine = RtcEngine.create(getApplicationContext(), AGORA_APP_ID, mHandler);
+            mRtcEngine.setChannelProfile(io.agora.rtc.Constants.CHANNEL_PROFILE_LIVE_BROADCASTING);
+            mRtcEngine.enableVideo();
+            //mRtcEngine.setLogFile(FileUtil.initializeLogFile(this));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        initConfig();
+
     }
+
+    private void initConfig() {
+        mGlobalConfig.setVideoDimenIndex(AppConstants.DEFAULT_PROFILE_IDX);
+        mGlobalConfig.setIfShowVideoStats(false);
+        mStatsManager.enableStats(false);
+
+        mGlobalConfig.setMirrorLocalIndex(0);
+        mGlobalConfig.setMirrorRemoteIndex(0);
+        mGlobalConfig.setMirrorEncodeIndex(0);
+    }
+
+    public EngineConfig engineConfig() {
+        return mGlobalConfig;
+    }
+
+    public RtcEngine rtcEngine() {
+        return mRtcEngine;
+    }
+
+    public StatsManager statsManager() {
+        return mStatsManager;
+    }
+
+    public void registerEventHandler(EventHandler handler) {
+        mHandler.addHandler(handler);
+    }
+
+    public void removeEventHandler(EventHandler handler) {
+        mHandler.removeHandler(handler);
+    }
+
 
     @Override
     public void onNetworkChange(boolean isConnected) {
@@ -208,17 +256,11 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
 
     }
 
-    private void firebaseDataSet() {
-        List<FirebaseApp> firebaseApps = FirebaseApp.getApps(context);
-        for (FirebaseApp app : firebaseApps) {
-            if (app.getName().equals(FirebaseApp.DEFAULT_APP_NAME)) {
-                hasBeenInitialized = true;
-                finestayApp = app;
-            }
-        }
 
-        if (!hasBeenInitialized) {
-            finestayApp = FirebaseApp.initializeApp(context, options);
-        }
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        RtcEngine.destroy();
+
     }
 }

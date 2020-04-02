@@ -21,6 +21,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
+import com.p5m.me.agorartc.activities.MainActivity;
 import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.analytics.MixPanel;
@@ -28,6 +29,7 @@ import com.p5m.me.data.Join5MinModel;
 import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.DefaultSettingServer;
+import com.p5m.me.data.main.TokenResponse;
 import com.p5m.me.data.main.User;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.remote_config.RemoteConfigConst;
@@ -199,7 +201,14 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                 break;
 
             case R.id.imageViewVideoClass:
-                ToastUtils.show(context,"Start Class");
+                if(model instanceof ClassModel){
+                    getTokenForClass((ClassModel) model);
+
+                }else{
+                    ToastUtils.show(context,"Start Class");
+
+                }
+
             break;
 
             default:
@@ -211,6 +220,26 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                 }
                 break;
         }
+
+    }
+
+    private void getTokenForClass(ClassModel classModel ) {
+        ((BaseActivity) activity).networkCommunicator.getTokenForClass(classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
+            @Override
+            public void onApiSuccess(Object response, int requestCode) {
+                TokenResponse tokenModel = ((ResponseModel<TokenResponse>) response).data;
+                ToastUtils.show(context,tokenModel.getToken());
+                MainActivity.open(context,classModel.getClassSessionId()+"",tokenModel.getToken());
+
+
+            }
+
+            @Override
+            public void onApiFailure(String errorMessage, int requestCode) {
+                ToastUtils.show(context,errorMessage);
+            }
+        });
+
 
     }
 

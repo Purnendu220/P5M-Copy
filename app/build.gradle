@@ -77,6 +77,7 @@ android {
             buildConfigField "String", "BASE_URL_MIDL", '\"/profive-midl/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://staging.p5m.me\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
+            buildConfigField "String", "AGORA_APP_ID", '\"761c4b2931dc40e6945e41daea2c091d\"'
             manifestPlaceholders = [hostName: "staging.p5m.me", hostName_www: "www.staging.p5m.me", appName: "P5M LOCAL", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
 
         }
@@ -93,6 +94,7 @@ android {
             buildConfigField "String", "BASE_URL_MIDL", '\"/internationlization-midl/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://staging.p5m.me\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
+            buildConfigField "String", "AGORA_APP_ID", '\"761c4b2931dc40e6945e41daea2c091d\"'
             manifestPlaceholders = [hostName: "staging.p5m.me", hostName_www: "www.staging.p5m.me", appName: "P5M LOCAL", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
 
         }
@@ -109,6 +111,7 @@ android {
             buildConfigField "String", "BASE_URL_MIDL", '\"/dev-midl/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://staging.p5m.me\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
+            buildConfigField "String", "AGORA_APP_ID", '\"761c4b2931dc40e6945e41daea2c091d\"'
             manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
 
         }
@@ -125,6 +128,7 @@ android {
             buildConfigField "String", "BASE_URL_MIDL", '\"/profive-midl/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://staging.p5m.me\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
+            buildConfigField "String", "AGORA_APP_ID", '\"e01ebc80704e44e89388d1967bd9ff3e\"'
             manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
 
         }
@@ -142,6 +146,7 @@ android {
             buildConfigField "String", "BASE_URL_SHARE", '\"https://www.p5m.me\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"https://www.p5m.me\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
+            buildConfigField "String", "AGORA_APP_ID", '\"761c4b2931dc40e6945e41daea2c091d\"'
             manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "81e25498c1638dbcb2017cc88dba175c5d44a1a6"]
         }
 
@@ -159,6 +164,7 @@ android {
             buildConfigField "String", "BASE_URL_SHARE", '\"https://www.p5m.me\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"https://www.p5m.me\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
+            buildConfigField "String", "AGORA_APP_ID", '\"761c4b2931dc40e6945e41daea2c091d\"'
             manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "81e25498c1638dbcb2017cc88dba175c5d44a1a6"]
         }
 
@@ -238,6 +244,8 @@ dependencies {
 
     // Intercom Integration
     implementation 'io.intercom.android:intercom-sdk:5.+'
+    implementation 'io.agora.rtc:full-sdk:3.0.0'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

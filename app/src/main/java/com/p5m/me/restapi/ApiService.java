@@ -27,12 +27,14 @@ import com.p5m.me.data.main.PaymentInitiateModel;
 import com.p5m.me.data.main.ScheduleClassModel;
 import com.p5m.me.data.main.StoreApiModel;
 import com.p5m.me.data.main.StoreModel;
+import com.p5m.me.data.main.TokenResponse;
 import com.p5m.me.data.main.TrainerDetailModel;
 import com.p5m.me.data.main.TrainerModel;
 import com.p5m.me.data.main.Transaction;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.request.BranchListRequest;
 import com.p5m.me.data.request.ChangePasswordRequest;
+import com.p5m.me.data.request.ChannelTokenRequest;
 import com.p5m.me.data.request.ChooseFocusRequest;
 import com.p5m.me.data.request.ClassListRequest;
 import com.p5m.me.data.request.ClassRatingRequest;
@@ -423,4 +425,10 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.GET_CANCELLATION_REASON)
     Call<ResponseModel<List<BookingCancellationResponse>>> getCancellationReason();
+
+    @Headers("Content-type: application/json")
+    @POST(AppConstants.Url.GET_CHANNEL_TOKEN)
+    Call<ResponseModel<TokenResponse>> getChannelToken(@Body ChannelTokenRequest mChannelTokenRequest );
+
+
 }

@@ -37,6 +37,7 @@ import com.p5m.me.data.main.ScheduleClassModel;
 import com.p5m.me.data.main.SearchResults;
 import com.p5m.me.data.main.StoreApiModel;
 import com.p5m.me.data.main.StoreModel;
+import com.p5m.me.data.main.TokenResponse;
 import com.p5m.me.data.main.TrainerDetailModel;
 import com.p5m.me.data.main.TrainerModel;
 import com.p5m.me.data.main.Transaction;
@@ -44,6 +45,7 @@ import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.data.request.BranchListRequest;
 import com.p5m.me.data.request.ChangePasswordRequest;
+import com.p5m.me.data.request.ChannelTokenRequest;
 import com.p5m.me.data.request.ChooseFocusRequest;
 import com.p5m.me.data.request.ClassListRequest;
 import com.p5m.me.data.request.ClassRatingRequest;
@@ -87,6 +89,8 @@ import retrofit2.Response;
 public class NetworkCommunicator {
 
     private FirebaseAnalytics mFirebaseAnalytics;
+
+
 
     public interface RequestListener<T> {
 
@@ -171,16 +175,19 @@ public class NetworkCommunicator {
         public static final int INERESTED_CITY = 164;
         public static final int UNJOIN_CLASS = 165;
         public static final int GET_CANCELLATION_REASON = 166;
+        public static final int GET_CAHHNEL_TOKEN = 167;
+
     }
 
     private Context context;
-    private ApiService apiService;
+    private ApiService apiService,apiService2;
     private static NetworkCommunicator networkCommunicator;
     private MyPreferences myPreferences;
 
     private NetworkCommunicator(Context context) {
         this.context = context;
         this.apiService = RestServiceFactory.createService();
+        this.apiService2 = RestServiceFactory.createService2();
         this.myPreferences = MyPreferences.initialize(context);
     }
 
@@ -1817,6 +1824,31 @@ public class NetworkCommunicator {
             }
         });
         return call;
+    }
+
+
+    public Call getTokenForClass(int classSessionId,final RequestListener requestListener) {
+        final int requestCode = RequestCode.GET_CAHHNEL_TOKEN;
+        Call<ResponseModel<TokenResponse>> call = apiService2.getChannelToken(new ChannelTokenRequest(TempStorage.getUser().getId(),classSessionId));
+        LogUtils.debug("NetworkCommunicator hitting Store Data");
+
+        call.enqueue(new RestCallBack<ResponseModel<TokenResponse>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<TokenResponse>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator Token onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<TokenResponse>> call, Response<ResponseModel<TokenResponse>> restResponse, ResponseModel<TokenResponse> response) {
+                LogUtils.networkSuccess("NetworkCommunicator Token onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+
+        return call;
+
     }
 
 
