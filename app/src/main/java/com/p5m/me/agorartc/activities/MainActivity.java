@@ -24,20 +24,31 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.p5m.me.R;
+import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.data.main.TokenResponse;
+import com.p5m.me.restapi.NetworkCommunicator;
+import com.p5m.me.restapi.ResponseModel;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.ToastUtils;
 
 import io.agora.rtc.Constants;
 
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements NetworkCommunicator.RequestListener {
 
-    public static void open(Context context, String channelName, String channelToken) {
+    public static void open(Context context, String channelName, String channelToken,ClassModel classModel) {
         context.startActivity(new Intent(context, MainActivity.class)
                 .putExtra(AppConstants.KEY_CHANNEL_NAME, channelName)
+                .putExtra(AppConstants.DataKey.CLASS_MODEL,classModel)
                 .putExtra(AppConstants.KEY_CHANNEL_TOKEN, channelToken));
     }
 
-
+    public static Intent createIntent(Context context, String classSessionId, String userId) {
+      return new Intent(context, MainActivity.class)
+                .putExtra(AppConstants.DataKey.CLASS_SESSION_ID_INT, classSessionId)
+                .putExtra(AppConstants.DataKey.USER_ID, userId);
+    }
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int MIN_INPUT_METHOD_HEIGHT = 200;
     private static final int ANIM_DURATION = 200;
@@ -59,6 +70,8 @@ public class MainActivity extends BaseActivity {
     private TextView mStartBtn;
     private ImageView mLogo;
     private  String channelName,channelToken;
+    private  String classSessionId,userId;
+    private ClassModel classModel;
 
     private Animator.AnimatorListener mLogoAnimListener = new Animator.AnimatorListener() {
         @Override
@@ -142,7 +155,23 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
          channelName = getIntent().getStringExtra(AppConstants.KEY_CHANNEL_NAME);
          channelToken = getIntent().getStringExtra(AppConstants.KEY_CHANNEL_TOKEN);
+         classModel = (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_MODEL);
          initUI();
+         handleDeeplinkForVideo();
+    }
+
+    private void handleDeeplinkForVideo(){
+        if(channelToken==null||channelName==null){
+            classSessionId = getIntent().getStringExtra(AppConstants.DataKey.CLASS_SESSION_ID_INT);
+            userId = getIntent().getStringExtra(AppConstants.DataKey.USER_ID);
+            if(TempStorage.getUser().getId()!=Integer.parseInt(userId)){
+                ToastUtils.show(context,context.getResources().getString(R.string.this_class_is_not_for_you));
+                finish();
+                return;
+            }
+            networkCommunicator.getClassDetail(Integer.parseInt(classSessionId),this,true);
+
+        }
     }
 
     private void initUI() {
@@ -154,8 +183,6 @@ public class MainActivity extends BaseActivity {
             mTopicEdit.setText(channelName);
         }
         mTopicEdit.addTextChangedListener(mTextWatcher);
-
-
         mStartBtn = findViewById(R.id.start_broadcast_button);
         if (TextUtils.isEmpty(mTopicEdit.getText())) mStartBtn.setEnabled(false);
     }
@@ -309,8 +336,47 @@ public class MainActivity extends BaseActivity {
         intent.putExtra(AppConstants.KEY_CLIENT_ROLE, role);
         intent.putExtra(AppConstants.KEY_CHANNEL_NAME, channelName);
         intent.putExtra(AppConstants.KEY_CHANNEL_TOKEN, channelToken);
+        intent.putExtra(AppConstants.DataKey.CLASS_MODEL,classModel);
 
         intent.setClass(getApplicationContext(), LiveActivity.class);
         startActivity(intent);
+    }
+
+    private void getTokenForClass(ClassModel classModel ) {
+       networkCommunicator.getTokenForClass(classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
+            @Override
+            public void onApiSuccess(Object response, int requestCode) {
+                TokenResponse tokenModel = ((ResponseModel<TokenResponse>) response).data;
+                channelToken = tokenModel.getToken();
+                channelName = classSessionId;
+                if(channelName!=null){
+                    mTopicEdit.setText(channelName);
+                }
+
+            }
+            @Override
+            public void onApiFailure(String errorMessage, int requestCode) {
+                ToastUtils.show(context,errorMessage);
+                finish();
+            }
+        });
+
+
+    }
+
+    @Override
+    public void onApiSuccess(Object response, int requestCode) {
+        switch (requestCode){
+            case NetworkCommunicator.RequestCode.CLASS_DETAIL:
+                 classModel = ((ResponseModel<ClassModel>) response).data;
+                 getTokenForClass(classModel);
+                break;
+        }
+    }
+
+    @Override
+    public void onApiFailure(String errorMessage, int requestCode) {
+        ToastUtils.show(context,errorMessage);
+        finish();
     }
 }

@@ -685,6 +685,7 @@ Would you like to view your balance? </string>
     <string name="select_role_audience">Audience</string>
     <string name="select_role_broadcaster_hint">Join as broadcaster</string>
     <string name="select_role_audience_hint">Join as audience</string>
+    <string name="this_class_is_not_for_you">This class is not for you</string>
 
     <!-- Legal digits for channel names -->
 
