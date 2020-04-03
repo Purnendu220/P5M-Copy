@@ -18,7 +18,9 @@ import com.p5m.me.agorartc.stats.LocalStatsData;
 import com.p5m.me.agorartc.stats.RemoteStatsData;
 import com.p5m.me.agorartc.stats.StatsData;
 import com.p5m.me.agorartc.ui.VideoGridContainer;
+import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.LogUtils;
 
 import io.agora.rtc.Constants;
 import io.agora.rtc.IRtcEngineEventHandler;
@@ -32,6 +34,7 @@ public class LiveActivity extends RtcBaseActivity {
     private ImageView mMuteVideoBtn;
 
     private VideoEncoderConfiguration.VideoDimensions mVideoDimension;
+    private ClassModel classModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,8 @@ public class LiveActivity extends RtcBaseActivity {
 
     private void initUI() {
         TextView roomName = findViewById(R.id.live_room_name);
+        TextView live_room_broadcaster_uid = findViewById(R.id.live_room_broadcaster_uid);
+
         roomName.setText(channelName);
         roomName.setSelected(true);
         
@@ -51,6 +56,13 @@ public class LiveActivity extends RtcBaseActivity {
         int role = getIntent().getIntExtra(
                 AppConstants.KEY_CLIENT_ROLE,
                 Constants.CLIENT_ROLE_AUDIENCE);
+        classModel = (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_MODEL);
+        if(classModel!=null){
+            live_room_broadcaster_uid.setText(classModel.getTitle());
+        }else{
+            live_room_broadcaster_uid.setText("");
+
+        }
         boolean isBroadcaster =  (role == Constants.CLIENT_ROLE_BROADCASTER);
 
         mMuteVideoBtn = findViewById(R.id.live_btn_mute_video);
@@ -139,8 +151,12 @@ public class LiveActivity extends RtcBaseActivity {
     }
 
     private void renderRemoteUser(int uid) {
-        SurfaceView surface = prepareRtcVideo(uid, false);
-        mVideoGridContainer.addUserVideoSurface(uid, surface, false);
+        if(uid == classModel.getGymBranchDetail().getGymId()||(classModel.getTrainerDetail()!=null&&uid == classModel.getTrainerDetail().getId())){
+            LogUtils.debug("Video BROADCAST UID "+uid);
+            SurfaceView surface = prepareRtcVideo(uid, false);
+            mVideoGridContainer.addUserVideoSurface(uid, surface, false);
+        }
+
     }
 
     private void removeRemoteUser(int uid) {

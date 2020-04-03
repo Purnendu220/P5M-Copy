@@ -1,5 +1,6 @@
 package com.p5m.me.agorartc.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.p5m.me.agorartc.rtc.EngineConfig;
 import com.p5m.me.agorartc.rtc.EventHandler;
 import com.p5m.me.agorartc.stats.StatsManager;
 import com.p5m.me.agorartc.utils.WindowUtil;
+import com.p5m.me.restapi.NetworkCommunicator;
 
 import io.agora.rtc.IRtcEngineEventHandler;
 import io.agora.rtc.RtcEngine;
@@ -21,10 +23,14 @@ import io.agora.rtc.RtcEngine;
 public abstract class BaseActivity extends AppCompatActivity implements EventHandler {
     protected DisplayMetrics mDisplayMetrics = new DisplayMetrics();
     protected int mStatusBarHeight;
+    public Context context;
+    public NetworkCommunicator networkCommunicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
+        networkCommunicator = NetworkCommunicator.getInstance(context);
         WindowUtil.hideWindowStatusBar(getWindow());
         setGlobalLayoutListener();
         getDisplayMetrics();

@@ -212,6 +212,7 @@ public class AppConstants {
 
         public static final String REFERENCE_ID = "Reference_Id";
         public static final String PAYMENT_OPTION_ID = "payment_option_id";
+        public static final String USER_ID ="user_id" ;
     }
 
     public class Url {
@@ -545,6 +546,7 @@ public class AppConstants {
     public static final String KEY_CLIENT_ROLE = "key_client_role";
     public static final String KEY_CHANNEL_NAME = "key_channel_name";
     public static final String KEY_CHANNEL_TOKEN = "key_channel_token";
+
 
 
 
