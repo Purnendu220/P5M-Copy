@@ -229,7 +229,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             public void onApiSuccess(Object response, int requestCode) {
                 TokenResponse tokenModel = ((ResponseModel<TokenResponse>) response).data;
                 ToastUtils.show(context,tokenModel.getToken());
-                MainActivity.open(context,classModel.getClassSessionId()+"",tokenModel.getToken());
+                MainActivity.open(context,classModel.getClassSessionId()+"",tokenModel.getToken(),classModel);
 
 
             }

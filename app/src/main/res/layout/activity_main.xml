@@ -81,5 +81,7 @@
         android:layout_marginBottom="@dimen/info_margin_bottom"
         android:text="@string/powered_by_agora"
         android:textSize="@dimen/text_size_small"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        android:visibility="gone"
+        />
 </RelativeLayout>

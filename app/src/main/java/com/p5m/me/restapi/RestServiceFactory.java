@@ -99,6 +99,7 @@ public class RestServiceFactory {
                 LogUtils.debug("Token " + auth);
 
                 Request request = chain.request().newBuilder()
+                        .addHeader(AppConstants.ApiParamKey.MYU_AUTH_TOKEN, auth)
                         .addHeader(AppConstants.ApiParamKey.USER_AGENT, AppConstants.ApiParamValue.USER_AGENT_ANDROID)
                         .addHeader(AppConstants.ApiParamKey.APP_VERSION, BuildConfig.VERSION_NAME_API)
                         .addHeader(AppConstants.ApiParamKey.APP_Language, language)

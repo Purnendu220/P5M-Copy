@@ -427,8 +427,9 @@ public interface ApiService {
     Call<ResponseModel<List<BookingCancellationResponse>>> getCancellationReason();
 
     @Headers("Content-type: application/json")
-    @POST(AppConstants.Url.GET_CHANNEL_TOKEN)
-    Call<ResponseModel<TokenResponse>> getChannelToken(@Body ChannelTokenRequest mChannelTokenRequest );
+    @GET(AppConstants.Url.GET_CHANNEL_TOKEN)
+    Call<ResponseModel<TokenResponse>> getChannelToken(@Query(AppConstants.ApiParamKey.USER_ID) int userId,
+                                                       @Query(AppConstants.ApiParamKey.CLASS_SESSION_ID) int classSessionId );
 
 
 }
