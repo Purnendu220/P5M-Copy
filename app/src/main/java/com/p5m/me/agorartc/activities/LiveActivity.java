@@ -3,27 +3,40 @@ package com.p5m.me.agorartc.activities;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.p5m.me.R;
+import com.p5m.me.agorartc.adapter.SmallVideoViewAdapter;
+import com.p5m.me.agorartc.listeners.OnDoubleTapListener;
+import com.p5m.me.agorartc.listeners.VideoViewEventListener;
 import com.p5m.me.agorartc.stats.LocalStatsData;
 import com.p5m.me.agorartc.stats.RemoteStatsData;
 import com.p5m.me.agorartc.stats.StatsData;
+import com.p5m.me.agorartc.stats.VideoStatusData;
 import com.p5m.me.agorartc.ui.VideoGridContainer;
 import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.ToastUtils;
+
+import java.util.HashMap;
 
 import io.agora.rtc.Constants;
 import io.agora.rtc.IRtcEngineEventHandler;
+import io.agora.rtc.video.VideoCanvas;
 import io.agora.rtc.video.VideoEncoderConfiguration;
 
 public class LiveActivity extends RtcBaseActivity {
@@ -32,14 +45,23 @@ public class LiveActivity extends RtcBaseActivity {
     private VideoGridContainer mVideoGridContainer;
     private ImageView mMuteAudioBtn;
     private ImageView mMuteVideoBtn;
+    private ImageView mSpeakerPhoneButton;
 
     private VideoEncoderConfiguration.VideoDimensions mVideoDimension;
     private ClassModel classModel;
 
+    private final HashMap<Integer, SurfaceView> mUidsList = new HashMap<>(); // uid = 0 || uid == EngineConfig.mUid
+
+    private SmallVideoViewAdapter mSmallVideoViewAdapter;
+    private RecyclerView recycler;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Helper.turnScreenOnThroughKeyguard(this);
         setContentView(R.layout.activity_live_room);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         initUI();
         initData();
     }
@@ -71,6 +93,9 @@ public class LiveActivity extends RtcBaseActivity {
         mMuteAudioBtn = findViewById(R.id.live_btn_mute_audio);
         mMuteAudioBtn.setActivated(isBroadcaster);
 
+        mSpeakerPhoneButton = findViewById(R.id.live_btn_push_stream);
+        mSpeakerPhoneButton.setActivated(true);
+
         ImageView beautyBtn = findViewById(R.id.live_btn_beautification);
         beautyBtn.setActivated(true);
         rtcEngine().setBeautyEffectOptions(beautyBtn.isActivated(),
@@ -78,8 +103,20 @@ public class LiveActivity extends RtcBaseActivity {
 
         mVideoGridContainer = findViewById(R.id.live_video_grid_layout);
         mVideoGridContainer.setStatsManager(statsManager());
+        mVideoGridContainer.setOnTouchListener(new OnDoubleTapListener(context) {
+            @Override
+            public void onDoubleTap(View view, MotionEvent e) {
+
+                switchToSmallView();
+            }
+
+            @Override
+            public void onSingleTapUp() {
+            }
+        });
 
         rtcEngine().setClientRole(role);
+        rtcEngine().setEnableSpeakerphone(true);
         if (isBroadcaster) startBroadcast();
     }
 
@@ -108,16 +145,21 @@ public class LiveActivity extends RtcBaseActivity {
 
     private void startBroadcast() {
         rtcEngine().setClientRole(Constants.CLIENT_ROLE_BROADCASTER);
-        SurfaceView surface = prepareRtcVideo(0, true);
-        mVideoGridContainer.addUserVideoSurface(0, surface, true);
+        SurfaceView surface = prepareRtcVideo(0, true,VideoCanvas.RENDER_MODE_HIDDEN);
+        mUidsList.put(0,surface);
+        bindToSmallVideoView(0);
         mMuteAudioBtn.setActivated(true);
+
     }
 
     private void stopBroadcast() {
         rtcEngine().setClientRole(Constants.CLIENT_ROLE_AUDIENCE);
         removeRtcVideo(0, true);
         mVideoGridContainer.removeUserVideo(0, true);
+        mUidsList.remove(0);
         mMuteAudioBtn.setActivated(false);
+        bindToSmallVideoView(0);
+
     }
 
     @Override
@@ -154,7 +196,11 @@ public class LiveActivity extends RtcBaseActivity {
         if(uid == classModel.getGymBranchDetail().getGymId()||(classModel.getTrainerDetail()!=null&&uid == classModel.getTrainerDetail().getId())){
             LogUtils.debug("Video BROADCAST UID "+uid);
             SurfaceView surface = prepareRtcVideo(uid, false);
-            mVideoGridContainer.addUserVideoSurface(uid, surface, false);
+            switchToLargeView(new VideoStatusData(uid,surface, VideoStatusData.DEFAULT_STATUS, VideoStatusData.DEFAULT_VOLUME));
+        }else{
+            SurfaceView surface = prepareRtcVideo(uid, false,VideoCanvas.RENDER_MODE_HIDDEN);
+            mUidsList.put(uid,surface);
+            bindToSmallVideoView(uid);
         }
 
     }
@@ -162,6 +208,8 @@ public class LiveActivity extends RtcBaseActivity {
     private void removeRemoteUser(int uid) {
         removeRtcVideo(uid, false);
         mVideoGridContainer.removeUserVideo(uid, false);
+        mUidsList.remove(uid);
+        bindToSmallVideoView(uid);
     }
 
     @Override
@@ -256,7 +304,8 @@ public class LiveActivity extends RtcBaseActivity {
     }
 
     public void onPushStreamClicked(View view) {
-        // Do nothing at the moment
+        view.setActivated(!view.isActivated());
+        rtcEngine().setEnableSpeakerphone(view.isActivated());
     }
 
     public void onMuteAudioClicked(View view) {
@@ -264,6 +313,10 @@ public class LiveActivity extends RtcBaseActivity {
 
         rtcEngine().muteLocalAudioStream(view.isActivated());
         view.setActivated(!view.isActivated());
+    }
+
+    public void onSpeakerPhoneEnabled(){
+
     }
 
     public void onMuteVideoClicked(View view) {
@@ -274,4 +327,75 @@ public class LiveActivity extends RtcBaseActivity {
         }
         view.setActivated(!view.isActivated());
     }
+
+    private void bindToSmallVideoView(int exceptUid) {
+
+        recycler = findViewById(R.id.small_video_view_container);
+        if(mUidsList!=null&&mUidsList.size()>0){
+            recycler.setVisibility(View.VISIBLE);
+
+        }else{
+            recycler.setVisibility(View.GONE);
+
+        }
+        boolean create = false;
+
+        if (mSmallVideoViewAdapter == null) {
+            create = true;
+            mSmallVideoViewAdapter = new SmallVideoViewAdapter(this, exceptUid, mUidsList, new VideoViewEventListener() {
+                @Override
+                public void onItemDoubleClick(View v, Object item) {
+                    switchToLargeView((VideoStatusData) item);
+                }
+            },classModel);
+            mSmallVideoViewAdapter.setHasStableIds(true);
+        }
+        recycler.setHasFixedSize(true);
+        LinearLayoutManager horizontalLayoutManagaer
+                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recycler.setLayoutManager(horizontalLayoutManagaer);
+        //recycler.setLayoutManager(new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false));
+        recycler.setAdapter(mSmallVideoViewAdapter);
+
+        recycler.setDrawingCacheEnabled(true);
+        recycler.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_AUTO);
+
+        if (!create) {
+            mSmallVideoViewAdapter.notifyUiChanged(mUidsList, exceptUid, null, null);
+        }
+
+        //  mSmallVideoViewDock.setVisibility(View.VISIBLE);
+    }
+
+    private void switchToLargeView(VideoStatusData data){
+        VideoStatusData largeViewdata = mVideoGridContainer.getSurface();
+        if(largeViewdata!=null){
+            mVideoGridContainer.removeUserVideo(largeViewdata.mUid,largeViewdata.mUid == 0?true:false);
+            mUidsList.remove(data.mUid);
+            SurfaceView surface = prepareRtcVideo(largeViewdata.mUid, largeViewdata.mUid == 0?true:false,VideoCanvas.RENDER_MODE_HIDDEN);
+            mUidsList.put(largeViewdata.mUid,surface);
+            bindToSmallVideoView(largeViewdata.mUid);
+            mVideoGridContainer.addUserVideoSurface(data.mUid,prepareRtcVideo(data.mUid, data.mUid == 0?true:false),data.mUid == 0?true:false);
+        }else{
+            mUidsList.remove(data.mUid);
+            bindToSmallVideoView(data.mUid);
+            SurfaceView surface = prepareRtcVideo(data.mUid, data.mUid == 0?true:false,VideoCanvas.RENDER_MODE_FIT);
+
+            mVideoGridContainer.addUserVideoSurface(data.mUid,surface,data.mUid == 0?true:false);
+        }
+    }
+    private void switchToSmallView(){
+        VideoStatusData largeViewdata = mVideoGridContainer.getSurface();
+          if(largeViewdata!=null){
+              boolean isLocal = largeViewdata.mUid == 0?true:false;
+              mVideoGridContainer.removeUserVideo(largeViewdata.mUid,isLocal);
+              SurfaceView surface = prepareRtcVideo(largeViewdata.mUid, largeViewdata.mUid == 0?true:false,VideoCanvas.RENDER_MODE_HIDDEN);
+              mUidsList.put(largeViewdata.mUid,surface);
+              bindToSmallVideoView(largeViewdata.mUid);
+
+          }
+
+    }
+
+
 }

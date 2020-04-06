@@ -111,7 +111,7 @@ android {
             buildConfigField "String", "BASE_URL_MIDL", '\"/dev-midl/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://staging.p5m.me\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
-            buildConfigField "String", "AGORA_APP_ID", '\"761c4b2931dc40e6945e41daea2c091d\"'
+            buildConfigField "String", "AGORA_APP_ID", '\"37b3c68b87694725b992c9518ede593c\"'
             manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
 
         }
@@ -128,7 +128,7 @@ android {
             buildConfigField "String", "BASE_URL_MIDL", '\"/profive-midl/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://staging.p5m.me\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
-            buildConfigField "String", "AGORA_APP_ID", '\"e01ebc80704e44e89388d1967bd9ff3e\"'
+            buildConfigField "String", "AGORA_APP_ID", '\"37b3c68b87694725b992c9518ede593c\"'
             manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
 
         }
@@ -146,7 +146,7 @@ android {
             buildConfigField "String", "BASE_URL_SHARE", '\"https://www.p5m.me\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"https://www.p5m.me\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
-            buildConfigField "String", "AGORA_APP_ID", '\"761c4b2931dc40e6945e41daea2c091d\"'
+            buildConfigField "String", "AGORA_APP_ID", '\"37b3c68b87694725b992c9518ede593c\"'
             manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "81e25498c1638dbcb2017cc88dba175c5d44a1a6"]
         }
 
@@ -164,7 +164,7 @@ android {
             buildConfigField "String", "BASE_URL_SHARE", '\"https://www.p5m.me\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"https://www.p5m.me\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
-            buildConfigField "String", "AGORA_APP_ID", '\"761c4b2931dc40e6945e41daea2c091d\"'
+            buildConfigField "String", "AGORA_APP_ID", '\"065bcb1063964d0f836d63f5779b0030\"'
             manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "81e25498c1638dbcb2017cc88dba175c5d44a1a6"]
         }
 

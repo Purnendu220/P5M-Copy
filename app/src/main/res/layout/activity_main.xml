@@ -52,7 +52,10 @@
             android:textCursorDrawable="@null"
             android:backgroundTint="@color/blue_alpha"
             android:gravity="center"
-            android:lines="1"/>
+            android:lines="1"
+            android:focusable="false"
+            android:inputType="none"
+            />
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/start_broadcast_button"
             android:layout_width="wrap_content"

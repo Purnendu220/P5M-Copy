@@ -13,8 +13,10 @@ import android.widget.TextView;
 import com.p5m.me.R;
 import com.p5m.me.agorartc.stats.StatsData;
 import com.p5m.me.agorartc.stats.StatsManager;
+import com.p5m.me.agorartc.stats.VideoStatusData;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -30,6 +32,8 @@ public class VideoGridContainer extends RelativeLayout implements Runnable {
     private StatsManager mStatsManager;
     private Handler mHandler;
     private int mStatMarginBottom;
+    private final HashMap<Integer, SurfaceView> mUidsList = new HashMap<>(); // uid = 0 || uid == EngineConfig.mUid
+
 
     public VideoGridContainer(Context context) {
         super(context);
@@ -61,7 +65,7 @@ public class VideoGridContainer extends RelativeLayout implements Runnable {
         if (surface == null) {
             return;
         }
-
+        mUidsList.put(uid,surface);
         int id = -1;
         if (isLocal) {
             if (mUidList.contains(0)) {
@@ -104,6 +108,9 @@ public class VideoGridContainer extends RelativeLayout implements Runnable {
     }
 
     private ViewGroup createVideoView(SurfaceView surface) {
+        if(surface.getParent() != null) {
+            ((ViewGroup)surface.getParent()).removeView(surface); // <- fix
+        }
         RelativeLayout layout = new RelativeLayout(getContext());
 
         layout.setId(surface.hashCode());
@@ -134,9 +141,12 @@ public class VideoGridContainer extends RelativeLayout implements Runnable {
         if (isLocal && mUidList.contains(0)) {
             mUidList.remove((Integer) 0);
             mUserViewList.remove(0);
+            mUidsList.remove(0);
         } else if (mUidList.contains(uid)) {
             mUidList.remove((Integer) uid);
             mUserViewList.remove(uid);
+            mUidsList.remove(uid);
+
         }
 
         mStatsManager.removeUserStats(uid);
@@ -212,6 +222,7 @@ public class VideoGridContainer extends RelativeLayout implements Runnable {
         removeAllViews();
         mUserViewList.clear();
         mUidList.clear();
+        mUidsList.clear();
         mHandler.removeCallbacks(this);
     }
 
@@ -231,5 +242,17 @@ public class VideoGridContainer extends RelativeLayout implements Runnable {
 
             mHandler.postDelayed(this, STATS_REFRESH_INTERVAL);
         }
+    }
+    public VideoStatusData getSurface(){
+        if(mUidsList!=null&&mUidsList.size()>0){
+            SurfaceView view = null;
+            int uid=0;
+            for (HashMap.Entry<Integer, SurfaceView> entry : mUidsList.entrySet()) {
+                uid = entry.getKey();
+                view = entry.getValue();
+            }
+            return new VideoStatusData(uid,view, VideoStatusData.DEFAULT_STATUS, VideoStatusData.DEFAULT_VOLUME);
+        }
+       return null;
     }
 }
