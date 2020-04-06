@@ -228,7 +228,6 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             @Override
             public void onApiSuccess(Object response, int requestCode) {
                 TokenResponse tokenModel = ((ResponseModel<TokenResponse>) response).data;
-                ToastUtils.show(context,tokenModel.getToken());
                 MainActivity.open(context,classModel.getClassSessionId()+"",tokenModel.getToken(),classModel);
 
 

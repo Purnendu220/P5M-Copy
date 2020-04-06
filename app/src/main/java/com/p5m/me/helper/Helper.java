@@ -4,11 +4,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+
+import android.os.Build;
+import android.os.PowerManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -20,6 +27,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.p5m.me.BuildConfig;
 import com.p5m.me.MyApp;
 import com.p5m.me.R;
+import com.p5m.me.agorartc.stats.VideoStatusData;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.GymBranchDetail;
@@ -43,6 +51,7 @@ import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -640,5 +649,42 @@ public class Helper {
 
 
         return nameList;
+    }
+
+    public static void turnScreenOnThroughKeyguard(@NonNull Activity activity) {
+        userPowerManagerWakeup(activity);
+        useWindowFlags(activity);
+        useActivityScreenMethods(activity);
+    }
+
+    private static void useActivityScreenMethods(@NonNull Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            try {
+                activity.setTurnScreenOn(true);
+                activity.setShowWhenLocked(true);
+            } catch (NoSuchMethodError e) {
+                Log.e(e.getMessage(), "Enable setTurnScreenOn and setShowWhenLocked is not present on device!");
+            }
+        }
+    }
+
+    private static void useWindowFlags(@NonNull Activity activity) {
+        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+    }
+
+    private static void userPowerManagerWakeup(@NonNull Activity activity) {
+        PowerManager pm = (PowerManager) activity.getSystemService(Context.POWER_SERVICE);
+        PowerManager.WakeLock wakelock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "p5m:class");
+        wakelock.acquire(TimeUnit.MINUTES.toMillis(30));
+    }
+
+    public static boolean isTrainerOrGym(ClassModel classModel, VideoStatusData user) {
+        if(classModel.getGymBranchDetail().getGymId()==user.mUid||classModel.getTrainerDetail()!=null&&classModel.getTrainerDetail().getId()==user.mUid){
+            return true;
+        }
+            return false;
     }
 }

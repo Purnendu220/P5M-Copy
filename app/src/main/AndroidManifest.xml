@@ -326,7 +326,8 @@
         </activity>
         <activity
             android:name=".agorartc.activities.LiveActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".agorartc.activities.RoleActivity"
             android:screenOrientation="portrait"
