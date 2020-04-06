@@ -2,10 +2,15 @@ package com.p5m.me.notifications;
 
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
+import com.p5m.me.R;
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
+import com.p5m.me.agorartc.activities.MainActivity;
 import com.p5m.me.eventbus.EventBroadcastHelper;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.ClassProfileActivity;
 import com.p5m.me.view.activity.Main.EditProfileActivity;
 import com.p5m.me.view.activity.Main.GymProfileActivity;
@@ -139,7 +144,35 @@ public class HandleNotificationDeepLink {
 
                     }
 
-                } else {
+                }
+                else if (url.contains("/videobroadcast/")) {
+                    String sessionId = null;
+                    String userId = null;
+                    String[] stringlist = url.split("/videobroadcast/");
+                    if (stringlist != null && stringlist.length > 1) {
+                        sessionId = stringlist[1].split("/")[0];
+                        userId = stringlist[1].split("/")[1];
+
+                    }
+                    try {
+                        if(Integer.parseInt(userId) == TempStorage.getUser().getId()){
+                        navigationIntent = MainActivity.createIntent(context,sessionId,userId);
+                        }
+                        else{
+                            ToastUtils.show(context,context.getResources().getString(R.string.this_class_is_not_for_you));
+                            navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
+
+                        }
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
+
+                    }
+
+                }
+                else {
 
                     navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
 

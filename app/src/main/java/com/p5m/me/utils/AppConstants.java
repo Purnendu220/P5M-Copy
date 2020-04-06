@@ -4,6 +4,9 @@ import com.p5m.me.fxn.utility.Constants;
 
 import java.util.Locale;
 
+import io.agora.rtc.video.BeautyOptions;
+import io.agora.rtc.video.VideoEncoderConfiguration;
+
 /**
  * Created by MyU10 on 3/9/2018.
  */
@@ -209,6 +212,7 @@ public class AppConstants {
 
         public static final String REFERENCE_ID = "Reference_Id";
         public static final String PAYMENT_OPTION_ID = "payment_option_id";
+        public static final String USER_ID ="user_id" ;
     }
 
     public class Url {
@@ -298,6 +302,8 @@ public class AppConstants {
         public static final String PAYMENT_INITIATE = "api/v1/payment/initiate";
         public static final String INTERESTED_CITY = "api/v1/interested/city";
         public static final String GET_CANCELLATION_REASON = "api/v1/cancellation/getCancellationReasons";
+        public static final String GET_CHANNEL_TOKEN = "api/v1/user/class/token";
+
     }
 
     public class ApiParamValue {
@@ -502,5 +508,46 @@ public class AppConstants {
       public static final String INTERCOM = "intercom";
       public static final String LIST = "list";
   }
+
+    private static final int BEAUTY_EFFECT_DEFAULT_CONTRAST = BeautyOptions.LIGHTENING_CONTRAST_NORMAL;
+    private static final float BEAUTY_EFFECT_DEFAULT_LIGHTNESS = 0.7f;
+    private static final float BEAUTY_EFFECT_DEFAULT_SMOOTHNESS = 0.5f;
+    private static final float BEAUTY_EFFECT_DEFAULT_REDNESS = 0.1f;
+
+    public static final BeautyOptions DEFAULT_BEAUTY_OPTIONS = new BeautyOptions(
+            BEAUTY_EFFECT_DEFAULT_CONTRAST,
+            BEAUTY_EFFECT_DEFAULT_LIGHTNESS,
+            BEAUTY_EFFECT_DEFAULT_SMOOTHNESS,
+            BEAUTY_EFFECT_DEFAULT_REDNESS);
+
+    public static VideoEncoderConfiguration.VideoDimensions[] VIDEO_DIMENSIONS = new VideoEncoderConfiguration.VideoDimensions[]{
+            VideoEncoderConfiguration.VD_320x240,
+            VideoEncoderConfiguration.VD_480x360,
+            VideoEncoderConfiguration.VD_640x360,
+            VideoEncoderConfiguration.VD_640x480,
+            new VideoEncoderConfiguration.VideoDimensions(960, 540),
+            VideoEncoderConfiguration.VD_1280x720
+    };
+
+    public static int[] VIDEO_MIRROR_MODES = new int[]{
+            io.agora.rtc.Constants.VIDEO_MIRROR_MODE_AUTO,
+            io.agora.rtc.Constants.VIDEO_MIRROR_MODE_ENABLED,
+            io.agora.rtc.Constants.VIDEO_MIRROR_MODE_DISABLED,
+    };
+
+    public static final String PREF_NAME = "io.agora.openlive";
+    public static final int DEFAULT_PROFILE_IDX = 2;
+    public static final String PREF_RESOLUTION_IDX = "pref_profile_index";
+    public static final String PREF_ENABLE_STATS = "pref_enable_stats";
+    public static final String PREF_MIRROR_LOCAL = "pref_mirror_local";
+    public static final String PREF_MIRROR_REMOTE = "pref_mirror_remote";
+    public static final String PREF_MIRROR_ENCODE = "pref_mirror_encode";
+
+    public static final String KEY_CLIENT_ROLE = "key_client_role";
+    public static final String KEY_CHANNEL_NAME = "key_channel_name";
+    public static final String KEY_CHANNEL_TOKEN = "key_channel_token";
+
+
+
 
 }

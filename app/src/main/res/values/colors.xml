@@ -54,7 +54,7 @@
     <color name="grey_line_dark">#c3c5cd</color>
     <color name="text_shadow_color">#66000000</color>
 
-    <color name="blue">#EBF2FC</color>
+    <color name="blue">#007AFF</color>
 
     <color name="wewak">#FCD3D4</color>
 
@@ -77,8 +77,18 @@
     <color name="gray_class">#595F6F</color>
 
 
-    Type a message here
+    <color name="gray_lightest">#DEDEDE</color>
+    <color name="gray_light">#CCCCCC</color>
+    <color name="gray">#989898</color>
+    <color name="gray_dark">#666666</color>
+    <color name="gray_deep_dark">#333333</color>
 
+    <color name="blue_medium">#44A2FC</color>
+    <color name="blue_alpha">#9CD9FF</color>
+
+    <color name="dark_black">#CC262626</color>
+    <color name="black_half_transparent">#66000000</color>
+    <color name="black_full_transparent">#22000000</color>
 
 
 </resources>

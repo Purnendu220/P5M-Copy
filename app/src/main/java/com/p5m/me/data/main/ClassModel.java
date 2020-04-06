@@ -53,6 +53,7 @@ public class ClassModel implements java.io.Serializable {
     private String fitnessLevel;
 
     private boolean isExpired;
+    private boolean videoClass;
 
     public boolean isExpired() {
         return isExpired;
@@ -355,5 +356,11 @@ public class ClassModel implements java.io.Serializable {
         this.wishType = wishType;
     }
 
+    public boolean isVideoClass() {
+        return videoClass;
+    }
 
+    public void setVideoClass(boolean videoClass) {
+        this.videoClass = videoClass;
+    }
 }
