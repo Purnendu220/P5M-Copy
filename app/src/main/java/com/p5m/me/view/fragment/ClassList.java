@@ -586,7 +586,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
                 swipeRefreshLayout.setRefreshing(false);
                 List<ClassModel> classModels = ((ResponseModel<List<ClassModel>>) response).data;
 
-                if (!classModels.isEmpty()) {
+                if (classModels==null||!classModels.isEmpty()) {
                     classListAdapter.addAllClass(classModels);
                     if (classModels.size() < pageSizeLimit) {
                         classListAdapter.loaderDone();
@@ -604,7 +604,7 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
             case NetworkCommunicator.RequestCode.RCOMENDED_CLASS_LIST:
                 classListAdapter.clearAll();
                 List<ClassModel> recomendedClassModels = ((ResponseModel<List<ClassModel>>) response).data;
-                if (!recomendedClassModels.isEmpty()) {
+                if (recomendedClassModels!=null&&!recomendedClassModels.isEmpty()) {
                     classListAdapter.addRecomendedClasses(new RecomendedClassData(recomendedClassModels));
                 }
                 callApiClassList();

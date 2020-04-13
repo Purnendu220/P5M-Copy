@@ -1829,7 +1829,7 @@ public class NetworkCommunicator {
 
     public Call getTokenForClass(int classSessionId,final RequestListener requestListener) {
         final int requestCode = RequestCode.GET_CAHHNEL_TOKEN;
-        Call<ResponseModel<TokenResponse>> call = apiService2.getChannelToken(TempStorage.getUser().getId(),classSessionId);
+        Call<ResponseModel<TokenResponse>> call = apiService.getChannelToken(TempStorage.getUser().getId(),classSessionId);
         LogUtils.debug("NetworkCommunicator hitting Store Data");
 
         call.enqueue(new RestCallBack<ResponseModel<TokenResponse>>(context) {

@@ -66,7 +66,31 @@ public abstract class RtcBaseActivity extends BaseActivity implements EventHandl
             rtcEngine().setupRemoteVideo(
                     new VideoCanvas(
                             surface,
-                            VideoCanvas.RENDER_MODE_HIDDEN,
+                            VideoCanvas.RENDER_MODE_FIT,
+                            uid,
+                            AppConstants.VIDEO_MIRROR_MODES[config().getMirrorRemoteIndex()]
+                    )
+            );
+        }
+        return surface;
+    }
+
+    protected SurfaceView prepareRtcVideo(int uid, boolean local,int renderMode) {
+        SurfaceView surface = RtcEngine.CreateRendererView(getApplicationContext());
+        if (local) {
+            rtcEngine().setupLocalVideo(
+                    new VideoCanvas(
+                            surface,
+                            renderMode,
+                            uid,
+                            AppConstants.VIDEO_MIRROR_MODES[config().getMirrorLocalIndex()]
+                    )
+            );
+        } else {
+            rtcEngine().setupRemoteVideo(
+                    new VideoCanvas(
+                            surface,
+                            renderMode,
                             uid,
                             AppConstants.VIDEO_MIRROR_MODES[config().getMirrorRemoteIndex()]
                     )
