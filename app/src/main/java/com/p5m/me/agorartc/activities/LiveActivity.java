@@ -117,7 +117,7 @@ public class LiveActivity extends RtcBaseActivity {
 
         rtcEngine().setClientRole(role);
         rtcEngine().setEnableSpeakerphone(true);
-        if (isBroadcaster) startBroadcast();
+    if (isBroadcaster) startBroadcast();
     }
 
     private void initUserIcon() {
@@ -155,7 +155,7 @@ public class LiveActivity extends RtcBaseActivity {
     private void stopBroadcast() {
         rtcEngine().setClientRole(Constants.CLIENT_ROLE_AUDIENCE);
         removeRtcVideo(0, true);
-        mVideoGridContainer.removeUserVideo(0, true);
+        mVideoGridContainer.removeUserVideoLayout(0, true);
         mUidsList.remove(0);
         mMuteAudioBtn.setActivated(false);
         bindToSmallVideoView(0);
@@ -207,7 +207,7 @@ public class LiveActivity extends RtcBaseActivity {
 
     private void removeRemoteUser(int uid) {
         removeRtcVideo(uid, false);
-        mVideoGridContainer.removeUserVideo(uid, false);
+        mVideoGridContainer.removeUserVideoLayout(uid, false);
         mUidsList.remove(uid);
         bindToSmallVideoView(uid);
     }
@@ -388,7 +388,7 @@ public class LiveActivity extends RtcBaseActivity {
         VideoStatusData largeViewdata = mVideoGridContainer.getSurface();
           if(largeViewdata!=null){
               boolean isLocal = largeViewdata.mUid == 0?true:false;
-              mVideoGridContainer.removeUserVideo(largeViewdata.mUid,isLocal);
+              mVideoGridContainer.removeUserVideoLayout(largeViewdata.mUid,isLocal);
               SurfaceView surface = prepareRtcVideo(largeViewdata.mUid, largeViewdata.mUid == 0?true:false,VideoCanvas.RENDER_MODE_HIDDEN);
               mUidsList.put(largeViewdata.mUid,surface);
               bindToSmallVideoView(largeViewdata.mUid);
