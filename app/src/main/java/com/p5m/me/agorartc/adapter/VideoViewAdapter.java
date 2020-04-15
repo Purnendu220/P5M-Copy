@@ -76,8 +76,8 @@ public abstract class VideoViewAdapter extends RecyclerView.Adapter<RecyclerView
         Log.d("VideoViewAdapter", "onCreateViewHolder " + viewType);
 
         View v = mInflater.inflate(R.layout.video_view_container, parent, false);
-        v.getLayoutParams().width = 400;
-        v.getLayoutParams().height = 400;
+        v.getLayoutParams().width = mItemWidth;
+        v.getLayoutParams().height = mItemWidth;
         v.setElevation(5);
         v.setBackgroundResource(R.drawable.tags_rounded_corners);
        return new VideoUserStatusHolder(v);
