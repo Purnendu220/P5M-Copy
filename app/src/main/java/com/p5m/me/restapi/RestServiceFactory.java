@@ -56,6 +56,8 @@ public class RestServiceFactory {
                     Request request = chain.request().newBuilder()
                             .addHeader(AppConstants.ApiParamKey.MYU_AUTH_TOKEN, auth)
                             .addHeader(AppConstants.ApiParamKey.USER_AGENT, AppConstants.ApiParamValue.USER_AGENT_ANDROID)
+                            .addHeader(AppConstants.ApiParamKey.DEVICE_TYPE, AppConstants.ApiParamKey.DEVICE_TYPE_VALUE)
+
                             .addHeader(AppConstants.ApiParamKey.APP_VERSION, BuildConfig.VERSION_NAME_API)
                             .addHeader(AppConstants.ApiParamKey.APP_Language, language)
                             .addHeader(AppConstants.ApiParamKey.APP_STORE_ID, String.valueOf(TempStorage.getCountryId()))
