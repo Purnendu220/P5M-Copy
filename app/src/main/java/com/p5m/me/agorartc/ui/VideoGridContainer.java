@@ -65,6 +65,7 @@ public class VideoGridContainer extends RelativeLayout implements Runnable {
         if (surface == null) {
             return;
         }
+        mUidsList.clear();
         mUidsList.put(uid,surface);
         int id = -1;
         if (isLocal) {
@@ -138,6 +139,25 @@ public class VideoGridContainer extends RelativeLayout implements Runnable {
     }
 
     public void removeUserVideo(int uid, boolean isLocal) {
+        if (isLocal && mUidList.contains(0)) {
+            mUidList.remove((Integer) 0);
+            mUserViewList.remove(0);
+            mUidsList.remove(0);
+        } else if (mUidList.contains(uid)) {
+            mUidList.remove((Integer) uid);
+            mUserViewList.remove(uid);
+            mUidsList.remove(uid);
+
+        }
+
+        mStatsManager.removeUserStats(uid);
+        //requestGridLayout();
+
+        if (getChildCount() == 0) {
+            mHandler.removeCallbacks(this);
+        }
+    }
+    public void removeUserVideoLayout(int uid, boolean isLocal) {
         if (isLocal && mUidList.contains(0)) {
             mUidList.remove((Integer) 0);
             mUserViewList.remove(0);

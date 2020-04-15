@@ -108,7 +108,7 @@ android {
             buildConfigField "String", "SENDER_ID", '\"109210713388\"'
             buildConfigField "String", "BASE_URL", '\"http://52.209.64.40:8080\"'
             buildConfigField "String", "BASE_URL_HTTPS", '\"https://52.209.64.40:8080\"'
-            buildConfigField "String", "BASE_URL_MIDL", '\"/dev-midl/\"'
+            buildConfigField "String", "BASE_URL_MIDL", '\"/profive-midl/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://staging.p5m.me\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
             buildConfigField "String", "AGORA_APP_ID", '\"37b3c68b87694725b992c9518ede593c\"'
@@ -122,8 +122,8 @@ android {
             buildConfigField "boolean", "IS_PRODUCTION", "false"
             buildConfigField "String", "MIXPANEL_KEY", '\"705daac4d807e105c1ddc350c9324ca2\"'
             buildConfigField "String", "SENDER_ID", '\"109210713388\"'
-            buildConfigField "String", "BASE_URL", '\"http://52.209.64.40:8080\"'
-            buildConfigField "String", "BASE_URL_HTTPS", '\"https://52.209.64.40:8080\"'
+            buildConfigField "String", "BASE_URL", '\"http://52.209.64.40:9090\"'
+            buildConfigField "String", "BASE_URL_HTTPS", '\"https://52.209.64.40:9090\"'
             buildConfigField "boolean", "FIREBASE_IS_PRODUCTION", "false"
             buildConfigField "String", "BASE_URL_MIDL", '\"/profive-midl/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://staging.p5m.me\"'
