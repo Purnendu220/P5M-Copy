@@ -347,6 +347,8 @@ public class AppConstants {
         public static final String PROMO_ID = "promoId";
         public static final String SESSION_ID = "sessionId";
         public static final String CLASS_SESSION_ID = "classSessionId";
+        public static final String DEVICE_TYPE = "Device-Type";
+        public static final String DEVICE_TYPE_VALUE = "customerApp";
 
         public static final String OBJECT_TYPE = "objectType";
         public static final String OBJECT_DATA_ID = "objectDataId";
