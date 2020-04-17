@@ -19,6 +19,8 @@ import com.p5m.me.data.RatingResponseModel;
 import com.p5m.me.data.UnratedClassData;
 import com.p5m.me.data.UserPackageDetail;
 import com.p5m.me.data.WishListResponse;
+import com.p5m.me.data.main.AgoraUserCount;
+import com.p5m.me.data.main.AgoraUserStatus;
 import com.p5m.me.data.main.BookingCancellationResponse;
 import com.p5m.me.data.main.BranchModel;
 import com.p5m.me.data.main.ClassActivity;
@@ -176,6 +178,8 @@ public class NetworkCommunicator {
         public static final int UNJOIN_CLASS = 165;
         public static final int GET_CANCELLATION_REASON = 166;
         public static final int GET_CAHHNEL_TOKEN = 167;
+        public static final int GET_USER_STATUS_IN_CHANNEL = 176;
+        public static final int GET_USER_COUNT_IN_CHANNEL = 177;
 
     }
 
@@ -1851,6 +1855,51 @@ public class NetworkCommunicator {
 
     }
 
+    public Call getUserStatusInChannel(String appId,String uid,String channelName,boolean showLoader,final RequestListener requestListener) {
+        final int requestCode = RequestCode.GET_USER_STATUS_IN_CHANNEL;
+        Call<ResponseModel<AgoraUserStatus>> call = apiService2.getUserStatusInChannel(appId,uid,channelName);
+        LogUtils.debug("NetworkCommunicator hitting Store Data");
 
+        call.enqueue(new RestCallBack<ResponseModel<AgoraUserStatus>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<AgoraUserStatus>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator Token onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<AgoraUserStatus>> call, Response<ResponseModel<AgoraUserStatus>> restResponse, ResponseModel<AgoraUserStatus> response) {
+                LogUtils.networkSuccess("NetworkCommunicator Token onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+
+        return call;
+
+    }
+    public Call getUserCountInChannel(String appId,String channelName,boolean showLoader,final RequestListener requestListener) {
+        final int requestCode = RequestCode.GET_USER_COUNT_IN_CHANNEL;
+        Call<ResponseModel<AgoraUserCount>> call = apiService2.getUserCountInChannel(appId,channelName);
+        LogUtils.debug("NetworkCommunicator hitting Store Data");
+
+        call.enqueue(new RestCallBack<ResponseModel<AgoraUserCount>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<AgoraUserCount>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator Token onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<AgoraUserCount>> call, Response<ResponseModel<AgoraUserCount>> restResponse, ResponseModel<AgoraUserCount> response) {
+                LogUtils.networkSuccess("NetworkCommunicator Token onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+
+        return call;
+
+    }
 }
 
