@@ -689,6 +689,7 @@ Would you like to view your balance? </string>
     <string name="you">You</string>
     <string name="user_welcome">Welcome, please wait until trainer starts the class</string>
     <string name="online_count">Users Online (%d)</string>
+    <string name="welcome">Welcome</string>
 
     <!-- Legal digits for channel names -->
 

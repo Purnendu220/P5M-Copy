@@ -165,7 +165,6 @@
             android:background="@drawable/rounded_bg_full_transparent"
             android:onClick="onPushStreamClicked"
             android:visibility="visible"
-
             />
         <ImageView
             android:id="@+id/live_btn_mute_audio"
