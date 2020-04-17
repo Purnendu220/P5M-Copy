@@ -188,7 +188,7 @@
     <dimen name="live_leave_btn_size">36dp</dimen>
     <dimen name="live_leave_btn_icon_size">15dp</dimen>
     <dimen name="live_top_layout_margin">22dp</dimen>
-    <dimen name="live_name_board_width">186dp</dimen>
+    <dimen name="live_name_board_width">210dp</dimen>
     <dimen name="live_name_board_height">48dp</dimen>
     <dimen name="live_name_board_icon_size">44dp</dimen>
     <dimen name="live_name_board_icon_margin">2dp</dimen>
@@ -212,5 +212,6 @@
     <dimen name="role_block_content_width">120dp</dimen>
     <dimen name="role_block_content_margin_right">32dp</dimen>
     <dimen name="role_block_hint_margin_top">6dp</dimen>
+    <dimen name="text20size">20sp</dimen>
 
 </resources>

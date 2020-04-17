@@ -1,7 +1,7 @@
 package com.p5m.me.restapi;
 
 public class ResponseModel<T> {
-
+    public String success;
     public String statusCode;
     public String errorMessage;
     public String updateInfoText;

@@ -3,6 +3,7 @@ package com.p5m.me.agorartc.activities;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
@@ -17,6 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.google.android.gms.common.util.ArrayUtils;
+import com.p5m.me.BuildConfig;
 import com.p5m.me.R;
 import com.p5m.me.agorartc.adapter.SmallVideoViewAdapter;
 import com.p5m.me.agorartc.listeners.OnDoubleTapListener;
@@ -26,8 +29,12 @@ import com.p5m.me.agorartc.stats.RemoteStatsData;
 import com.p5m.me.agorartc.stats.StatsData;
 import com.p5m.me.agorartc.stats.VideoStatusData;
 import com.p5m.me.agorartc.ui.VideoGridContainer;
+import com.p5m.me.data.main.AgoraUserCount;
+import com.p5m.me.data.main.AgoraUserStatus;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.restapi.NetworkCommunicator;
+import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
@@ -39,7 +46,7 @@ import io.agora.rtc.IRtcEngineEventHandler;
 import io.agora.rtc.video.VideoCanvas;
 import io.agora.rtc.video.VideoEncoderConfiguration;
 
-public class LiveActivity extends RtcBaseActivity {
+public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator.RequestListener {
     private static final String TAG = LiveActivity.class.getSimpleName();
 
     private VideoGridContainer mVideoGridContainer;
@@ -54,6 +61,15 @@ public class LiveActivity extends RtcBaseActivity {
 
     private SmallVideoViewAdapter mSmallVideoViewAdapter;
     private RecyclerView recycler;
+    private Handler handler;
+    private Runnable nextScreenRunnable;
+    private long DELAY_NAVIGATION = 1000*60; // 1 sec
+    TextView onLineUserCount;
+    ImageView iconView;
+    TextView roomName;
+    TextView textViewAlert;
+    boolean isTrainerJoined;
+    int trainerId;
 
 
     @Override
@@ -62,15 +78,17 @@ public class LiveActivity extends RtcBaseActivity {
         Helper.turnScreenOnThroughKeyguard(this);
         setContentView(R.layout.activity_live_room);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        handler = new Handler();
+
         initUI();
         initData();
     }
 
     private void initUI() {
-        TextView roomName = findViewById(R.id.live_room_name);
-        TextView live_room_broadcaster_uid = findViewById(R.id.live_room_broadcaster_uid);
-
-        roomName.setText(channelName);
+        roomName = findViewById(R.id.live_room_name);
+        textViewAlert = findViewById(R.id.textViewAlert);
+        onLineUserCount = findViewById(R.id.live_room_broadcaster_uid);
+        //roomName.setText(channelName);
         roomName.setSelected(true);
         
         initUserIcon();
@@ -79,12 +97,8 @@ public class LiveActivity extends RtcBaseActivity {
                 AppConstants.KEY_CLIENT_ROLE,
                 Constants.CLIENT_ROLE_AUDIENCE);
         classModel = (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_MODEL);
-        if(classModel!=null){
-            live_room_broadcaster_uid.setText(classModel.getTitle());
-        }else{
-            live_room_broadcaster_uid.setText("");
+        trainerId = classModel.getTrainerDetail()!=null&&classModel.getTrainerDetail().getId()>0?classModel.getTrainerDetail().getId():classModel.getGymBranchDetail().getBranchId();
 
-        }
         boolean isBroadcaster =  (role == Constants.CLIENT_ROLE_BROADCASTER);
 
         mMuteVideoBtn = findViewById(R.id.live_btn_mute_video);
@@ -117,6 +131,11 @@ public class LiveActivity extends RtcBaseActivity {
 
         rtcEngine().setClientRole(role);
         rtcEngine().setEnableSpeakerphone(true);
+        rtcEngine().setDefaultAudioRoutetoSpeakerphone(true);
+        rtcEngine().enableDualStreamMode(true);
+
+        rtcEngine().setLocalPublishFallbackOption(Constants.STREAM_FALLBACK_OPTION_VIDEO_STREAM_LOW);
+        rtcEngine().setRemoteSubscribeFallbackOption(Constants.STREAM_FALLBACK_OPTION_VIDEO_STREAM_LOW);
     if (isBroadcaster) startBroadcast();
     }
 
@@ -126,6 +145,17 @@ public class LiveActivity extends RtcBaseActivity {
         drawable.setCircular(true);
         ImageView iconView = findViewById(R.id.live_name_board_icon);
         iconView.setImageDrawable(drawable);
+    }
+    private void startSignaling() {
+        nextScreenRunnable = () -> {
+            networkCommunicator.getUserCountInChannel(BuildConfig.AGORA_APP_ID,channelName,true,this);
+            if(!isTrainerJoined){
+                int trainerId = classModel.getTrainerDetail()!=null&&classModel.getTrainerDetail().getId()>0?classModel.getTrainerDetail().getId():classModel.getGymBranchDetail().getBranchId();
+                networkCommunicator.getUserStatusInChannel(BuildConfig.AGORA_APP_ID,trainerId+"",channelName,true,this);
+            }
+            startSignaling();
+        };
+        handler.postDelayed(nextScreenRunnable, DELAY_NAVIGATION);
     }
 
     private void initData() {
@@ -164,8 +194,19 @@ public class LiveActivity extends RtcBaseActivity {
 
     @Override
     public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
-        // Do nothing at the moment
-    }
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                networkCommunicator.getUserCountInChannel(BuildConfig.AGORA_APP_ID,channelName,true,LiveActivity.this);
+                if(!isTrainerJoined){
+                    int trainerId = classModel.getTrainerDetail()!=null&&classModel.getTrainerDetail().getId()>0?classModel.getTrainerDetail().getId():classModel.getGymBranchDetail().getBranchId();
+                    networkCommunicator.getUserStatusInChannel(BuildConfig.AGORA_APP_ID,trainerId+"",channelName,true,LiveActivity.this);
+                    textViewAlert.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        startSignaling();    }
 
     @Override
     public void onUserJoined(int uid, int elapsed) {
@@ -197,6 +238,9 @@ public class LiveActivity extends RtcBaseActivity {
             LogUtils.debug("Video BROADCAST UID "+uid);
             SurfaceView surface = prepareRtcVideo(uid, false);
             switchToLargeView(new VideoStatusData(uid,surface, VideoStatusData.DEFAULT_STATUS, VideoStatusData.DEFAULT_VOLUME));
+                isTrainerJoined = true;
+                textViewAlert.setVisibility(View.GONE);
+
         }else{
             SurfaceView surface = prepareRtcVideo(uid, false,VideoCanvas.RENDER_MODE_HIDDEN);
             mUidsList.put(uid,surface);
@@ -244,6 +288,7 @@ public class LiveActivity extends RtcBaseActivity {
 
     @Override
     public void onNetworkQuality(int uid, int txQuality, int rxQuality) {
+        if(uid==0){ roomName.setText(Helper.getNetworkQualityTx(txQuality)); }
         if (!statsManager().isEnabled()) return;
 
         StatsData data = statsManager().getStatsData(uid);
@@ -394,6 +439,65 @@ public class LiveActivity extends RtcBaseActivity {
               bindToSmallVideoView(largeViewdata.mUid);
 
           }
+
+    }
+    @Override
+    public void onApiSuccess(Object response, int requestCode) {
+        switch (requestCode){
+            case NetworkCommunicator.RequestCode.GET_USER_COUNT_IN_CHANNEL:
+                AgoraUserCount  agoraUserCount = ((ResponseModel<AgoraUserCount>) response).data;
+                if(agoraUserCount!=null){
+                    int count = (agoraUserCount.getBroadcasters().length+agoraUserCount.getAudience_total())-1;
+                    boolean isTrainerAvailable = ArrayUtils.contains(agoraUserCount.getBroadcasters(), trainerId);
+                    if(count==0||!isTrainerAvailable){
+                        textViewAlert.setVisibility(View.VISIBLE);
+                    }else{
+                        textViewAlert.setVisibility(View.GONE);
+
+                    }
+                    String countText = String.format(context.getResources().getString(R.string.online_count),count);
+                    onLineUserCount.setText(countText);
+                }else{
+                    onLineUserCount.setText("");
+
+                }
+                break;
+            case NetworkCommunicator.RequestCode.GET_USER_STATUS_IN_CHANNEL:
+                AgoraUserStatus userStatus = ((ResponseModel<AgoraUserStatus>) response).data;
+                if(userStatus.isIn_channel()){
+                    isTrainerJoined = true;
+                    textViewAlert.setVisibility(View.GONE);
+                }else{
+                    textViewAlert.setVisibility(View.VISIBLE);
+
+                }
+
+                break;
+        }
+
+    }
+
+    @Override
+    public void onApiFailure(String errorMessage, int requestCode) {
+        switch (requestCode){
+            case NetworkCommunicator.RequestCode.GET_USER_COUNT_IN_CHANNEL:
+
+                break;
+            case NetworkCommunicator.RequestCode.GET_USER_STATUS_IN_CHANNEL:
+                break;
+        }
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        handler.removeCallbacks(nextScreenRunnable);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(nextScreenRunnable);
 
     }
 

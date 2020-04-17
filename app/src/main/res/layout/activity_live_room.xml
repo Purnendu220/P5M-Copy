@@ -90,7 +90,6 @@
                 android:layout_marginStart="@dimen/live_name_text_margin_left"
                 android:textAlignment="gravity"
                 android:gravity="top"
-                android:text="@string/fake_user_name"
                 android:textColor="@color/gray_lightest"
                 android:ellipsize="end"
                 android:maxLines="1"
@@ -195,4 +194,18 @@
             android:background="@drawable/rounded_bg_full_transparent"
             android:onClick="onMuteVideoClicked"/>
     </RelativeLayout>
+    <TextView
+        android:id="@+id/textViewAlert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/user_welcome"
+        android:layout_marginStart="@dimen/margin_10"
+        android:layout_marginEnd="@dimen/margin_10"
+        android:gravity="center"
+        android:textSize="@dimen/text20size"
+        android:textColor="@color/colorAccent"
+        android:fontFamily="sans-serif-medium"
+        android:visibility="gone"
+        ></TextView>
 </RelativeLayout>
