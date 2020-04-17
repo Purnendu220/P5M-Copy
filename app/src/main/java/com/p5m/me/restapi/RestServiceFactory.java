@@ -14,6 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import com.p5m.me.BuildConfig;
 import com.p5m.me.MyApp;
+import com.p5m.me.helper.Helper;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
@@ -95,23 +96,14 @@ public class RestServiceFactory {
             httpClient2.connectTimeout(30, TimeUnit.SECONDS);
 
             httpClient2.addInterceptor(chain -> {
-                String auth = (TempStorage.getAuthToken() != null && !TempStorage.getAuthToken().isEmpty()) ?
-                        TempStorage.getAuthToken() : AppConstants.ApiParamValue.NO_TOKEN;
-                String language= getLocalLanguage();
-                LogUtils.debug("Token " + auth);
-
                 Request request = chain.request().newBuilder()
-                        .addHeader(AppConstants.ApiParamKey.MYU_AUTH_TOKEN, auth)
-                        .addHeader(AppConstants.ApiParamKey.USER_AGENT, AppConstants.ApiParamValue.USER_AGENT_ANDROID)
-                        .addHeader(AppConstants.ApiParamKey.APP_VERSION, BuildConfig.VERSION_NAME_API)
-                        .addHeader(AppConstants.ApiParamKey.APP_Language, language)
-                        .addHeader(AppConstants.ApiParamKey.APP_STORE_ID, String.valueOf(TempStorage.getCountryId()))
+                        .addHeader(AppConstants.ApiParamKey.AUTHORIZATION, "Basic "+ Helper.getbase64EncodedString(AppConstants.plainCredentials).trim())
+
                         .build();
-                LogUtils.debug("Store-Id"+String.valueOf(TempStorage.getCountryId()));
                 return chain.proceed(request);
             });
 
-            String baseUrl = BuildConfig.BASE_URL+"/dev-p5m/" ;
+            String baseUrl = "https://api.agora.io/dev/v1/";
 
 
 

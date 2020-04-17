@@ -1,5 +1,6 @@
 package com.p5m.me.utils;
 
+import com.p5m.me.BuildConfig;
 import com.p5m.me.fxn.utility.Constants;
 
 import java.util.Locale;
@@ -303,6 +304,8 @@ public class AppConstants {
         public static final String INTERESTED_CITY = "api/v1/interested/city";
         public static final String GET_CANCELLATION_REASON = "api/v1/cancellation/getCancellationReasons";
         public static final String GET_CHANNEL_TOKEN = "api/v1/user/class/token";
+        public static final String GET_CHANNEL_USER_STATUS_IN_CHANNEL = "channel/user/property";
+        public static final String GET_CHANNEL_USER_COUNT = "channel/user";
 
     }
 
@@ -323,6 +326,8 @@ public class AppConstants {
         public static final String GENDER_BOTH = "MIXED";
         public static final String PACKAGE_OFFER_PERCENTAGE = "PERCENTAGE";
         public static final String PACKAGE_TYPE_EXTENSION = "EXTENSION";
+        public static final String SUCCESS_RESPONSE_STATUS = "true";
+
 
     }
 
@@ -348,7 +353,7 @@ public class AppConstants {
         public static final String SESSION_ID = "sessionId";
         public static final String CLASS_SESSION_ID = "classSessionId";
         public static final String DEVICE_TYPE = "Device-Type";
-        public static final String DEVICE_TYPE_VALUE = "customerApp";
+        public static final String DEVICE_TYPE_VALUE = "android/customer";
 
         public static final String OBJECT_TYPE = "objectType";
         public static final String OBJECT_DATA_ID = "objectDataId";
@@ -380,6 +385,11 @@ public class AppConstants {
         public static final String STORE_ID = "storeId";
         public static final String CANCELLATION_ID = "cancellationId";
         public static final String REMARK = "remark";
+        public static final String AUTHORIZATION = "Authorization";
+        public static final String APP_ID = "appid";
+        public static final String U_ID = "uid";
+        public static final String CHANNEL_NAME = "channelName";
+
     }
 
     public static final class Notification {
@@ -549,6 +559,7 @@ public class AppConstants {
     public static final String KEY_CHANNEL_NAME = "key_channel_name";
     public static final String KEY_CHANNEL_TOKEN = "key_channel_token";
 
+    public static final String plainCredentials = BuildConfig.AGORA_APP_CUSTOMER_ID+":"+ BuildConfig.AGORA_APP_CUSTOMER_CERTIFICATE;
 
 
 

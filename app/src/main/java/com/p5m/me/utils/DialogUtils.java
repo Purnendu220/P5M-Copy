@@ -116,7 +116,7 @@ public class DialogUtils {
                                         String buttonText,
                                         String message) {
         if (buttonText == null) {
-            buttonText = context.getString(R.string.cancel);
+            buttonText = context.getString(R.string.ok);
         }
 
         TextView textView = new TextView(context);
