@@ -452,27 +452,37 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
     public void onApiSuccess(Object response, int requestCode) {
         switch (requestCode){
             case NetworkCommunicator.RequestCode.GET_USER_COUNT_IN_CHANNEL:
-                AgoraUserCount  agoraUserCount = ((ResponseModel<AgoraUserCount>) response).data;
-                if(agoraUserCount!=null){
-                    int count = (agoraUserCount.getBroadcasters().length+agoraUserCount.getAudience_total())-1;
-                    boolean isTrainerAvailable = ArrayUtils.contains(agoraUserCount.getBroadcasters(), trainerId);
+                try{
+                    AgoraUserCount  agoraUserCount = ((ResponseModel<AgoraUserCount>) response).data;
+                    if(agoraUserCount!=null){
+                        int count = (agoraUserCount.getBroadcasters().length+agoraUserCount.getAudience_total())-1;
+                        boolean isTrainerAvailable = ArrayUtils.contains(agoraUserCount.getBroadcasters(), trainerId);
 //                    if(count==0||!isTrainerAvailable){
 //                        showAlert();
 //                    }
-                    String countText = String.format(context.getResources().getString(R.string.online_count),count);
-                    onLineUserCount.setText(countText);
-                }else{
-                    onLineUserCount.setText("");
+                        String countText = String.format(context.getResources().getString(R.string.online_count),count);
+                        onLineUserCount.setText(countText);
+                    }else{
+                        onLineUserCount.setText("");
 
+                    }
+                }catch (Exception  e){
+                    e.printStackTrace();
                 }
+
                 break;
             case NetworkCommunicator.RequestCode.GET_USER_STATUS_IN_CHANNEL:
-                AgoraUserStatus userStatus = ((ResponseModel<AgoraUserStatus>) response).data;
-                if(userStatus.isIn_channel()){
-                    isTrainerJoined = true;
-                }else{
-                    showAlert();
+                try{
+                    AgoraUserStatus userStatus = ((ResponseModel<AgoraUserStatus>) response).data;
+                    if(userStatus.isIn_channel()){
+                        isTrainerJoined = true;
+                    }else{
+                        showAlert();
 
+                    }
+
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
 
                 break;
