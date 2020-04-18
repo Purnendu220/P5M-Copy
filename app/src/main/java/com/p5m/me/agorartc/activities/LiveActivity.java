@@ -12,12 +12,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.util.ArrayUtils;
 import com.p5m.me.BuildConfig;
 import com.p5m.me.R;
@@ -36,6 +39,7 @@ import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 
@@ -67,9 +71,10 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
     TextView onLineUserCount;
     ImageView iconView;
     TextView roomName;
-    TextView textViewAlert;
+   // TextView textViewAlert;
     boolean isTrainerJoined;
     int trainerId;
+    boolean isShowingAlert;
 
 
     @Override
@@ -86,7 +91,6 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
 
     private void initUI() {
         roomName = findViewById(R.id.live_room_name);
-        textViewAlert = findViewById(R.id.textViewAlert);
         onLineUserCount = findViewById(R.id.live_room_broadcaster_uid);
         //roomName.setText(channelName);
         roomName.setSelected(true);
@@ -149,10 +153,6 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
     private void startSignaling() {
         nextScreenRunnable = () -> {
             networkCommunicator.getUserCountInChannel(BuildConfig.AGORA_APP_ID,channelName,true,this);
-            if(!isTrainerJoined){
-                int trainerId = classModel.getTrainerDetail()!=null&&classModel.getTrainerDetail().getId()>0?classModel.getTrainerDetail().getId():classModel.getGymBranchDetail().getBranchId();
-                networkCommunicator.getUserStatusInChannel(BuildConfig.AGORA_APP_ID,trainerId+"",channelName,true,this);
-            }
             startSignaling();
         };
         handler.postDelayed(nextScreenRunnable, DELAY_NAVIGATION);
@@ -201,12 +201,14 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
                 if(!isTrainerJoined){
                     int trainerId = classModel.getTrainerDetail()!=null&&classModel.getTrainerDetail().getId()>0?classModel.getTrainerDetail().getId():classModel.getGymBranchDetail().getBranchId();
                     networkCommunicator.getUserStatusInChannel(BuildConfig.AGORA_APP_ID,trainerId+"",channelName,true,LiveActivity.this);
-                    textViewAlert.setVisibility(View.VISIBLE);
                 }
+
+                startSignaling();
+
             }
         });
 
-        startSignaling();    }
+    }
 
     @Override
     public void onUserJoined(int uid, int elapsed) {
@@ -239,7 +241,6 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
             SurfaceView surface = prepareRtcVideo(uid, false);
             switchToLargeView(new VideoStatusData(uid,surface, VideoStatusData.DEFAULT_STATUS, VideoStatusData.DEFAULT_VOLUME));
                 isTrainerJoined = true;
-                textViewAlert.setVisibility(View.GONE);
 
         }else{
             SurfaceView surface = prepareRtcVideo(uid, false,VideoCanvas.RENDER_MODE_HIDDEN);
@@ -288,7 +289,12 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
 
     @Override
     public void onNetworkQuality(int uid, int txQuality, int rxQuality) {
-        if(uid==0){ roomName.setText(Helper.getNetworkQualityTx(txQuality)); }
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                roomName.setText(Helper.getNetworkQualityTx(rxQuality));
+            }
+        });
         if (!statsManager().isEnabled()) return;
 
         StatsData data = statsManager().getStatsData(uid);
@@ -374,6 +380,7 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
     }
 
     private void bindToSmallVideoView(int exceptUid) {
+        LogUtils.networkError("fdgsfdfgfdgfgdfgdfdgfgdf");
 
         recycler = findViewById(R.id.small_video_view_container);
         if(mUidsList!=null&&mUidsList.size()>0){
@@ -449,12 +456,9 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
                 if(agoraUserCount!=null){
                     int count = (agoraUserCount.getBroadcasters().length+agoraUserCount.getAudience_total())-1;
                     boolean isTrainerAvailable = ArrayUtils.contains(agoraUserCount.getBroadcasters(), trainerId);
-                    if(count==0||!isTrainerAvailable){
-                        textViewAlert.setVisibility(View.VISIBLE);
-                    }else{
-                        textViewAlert.setVisibility(View.GONE);
-
-                    }
+//                    if(count==0||!isTrainerAvailable){
+//                        showAlert();
+//                    }
                     String countText = String.format(context.getResources().getString(R.string.online_count),count);
                     onLineUserCount.setText(countText);
                 }else{
@@ -466,9 +470,8 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
                 AgoraUserStatus userStatus = ((ResponseModel<AgoraUserStatus>) response).data;
                 if(userStatus.isIn_channel()){
                     isTrainerJoined = true;
-                    textViewAlert.setVisibility(View.GONE);
                 }else{
-                    textViewAlert.setVisibility(View.VISIBLE);
+                    showAlert();
 
                 }
 
@@ -498,6 +501,23 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
     protected void onDestroy() {
         super.onDestroy();
         handler.removeCallbacks(nextScreenRunnable);
+
+    }
+
+    private void showAlert(){
+        if(!isTrainerJoined&&!isShowingAlert){
+             DialogUtils.showBasicMessage(context, context.getResources().getString(R.string.user_welcome), context.getResources().getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
+                 @Override
+                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                     dialog.dismiss();
+                     isShowingAlert = false;
+
+                 }
+             });
+
+            isShowingAlert = true;
+        }
+
 
     }
 
