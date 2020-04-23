@@ -143,7 +143,7 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
         rtcEngine().setEnableSpeakerphone(true);
         rtcEngine().setDefaultAudioRoutetoSpeakerphone(true);
         rtcEngine().enableDualStreamMode(true);
-        rtcEngine().adjustPlaybackSignalVolume(200);
+        rtcEngine().adjustPlaybackSignalVolume(400);
 
 
         rtcEngine().setLocalPublishFallbackOption(Constants.STREAM_FALLBACK_OPTION_VIDEO_STREAM_LOW);
@@ -228,6 +228,8 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
                 }
 
                 startSignaling();
+                rtcEngine().setEnableSpeakerphone(true);
+                rtcEngine().setDefaultAudioRoutetoSpeakerphone(true);
 
             }
         });
@@ -414,10 +416,10 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
 
     public void onPushStreamClicked(View view) {
         if(view.isActivated()){
-            rtcEngine().adjustPlaybackSignalVolume(100);
+            rtcEngine().adjustPlaybackSignalVolume(200);
 
         }else{
-            rtcEngine().adjustPlaybackSignalVolume(200);
+            rtcEngine().adjustPlaybackSignalVolume(400);
 
         }
         view.setActivated(!view.isActivated());
