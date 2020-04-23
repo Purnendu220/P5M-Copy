@@ -43,7 +43,7 @@ public abstract class VideoViewAdapter extends RecyclerView.Adapter<RecyclerView
 
     protected ClassModel classModel;
 
-    public VideoViewAdapter(Context context, int exceptedUid, HashMap<Integer, SurfaceView> uids, VideoViewEventListener listener,ClassModel classModel) {
+    public VideoViewAdapter(Context context, int exceptedUid, HashMap<Integer, VideoStatusData> uids, VideoViewEventListener listener,ClassModel classModel) {
         mContext = context;
         mInflater = ((Activity) context).getLayoutInflater();
 
@@ -61,15 +61,15 @@ public abstract class VideoViewAdapter extends RecyclerView.Adapter<RecyclerView
     protected int mItemWidth;
     protected int mItemHeight;
 
-    private void init(HashMap<Integer, SurfaceView> uids) {
+    private void init(HashMap<Integer, VideoStatusData> uids) {
         mUsers.clear();
 
         customizedInit(uids, true);
     }
 
-    protected abstract void customizedInit(HashMap<Integer, SurfaceView> uids, boolean force);
+    protected abstract void customizedInit(HashMap<Integer, VideoStatusData> uids, boolean force);
 
-    public abstract void notifyUiChanged(HashMap<Integer, SurfaceView> uids, int uidExcluded, HashMap<Integer, Integer> status, HashMap<Integer, Integer> volume);
+    public abstract void notifyUiChanged(HashMap<Integer, VideoStatusData> uids, int uidExcluded, HashMap<Integer, Integer> status, HashMap<Integer, Integer> volume);
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
