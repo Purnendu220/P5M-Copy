@@ -98,4 +98,35 @@ public class AgoraEventHandler extends IRtcEngineEventHandler {
             handler.onLastmileProbeResult(result);
         }
     }
+
+    public void onRemoteVideoStateChanged(int 	uid, int 	state, int 	reason, int 	elapsed ){
+        for (EventHandler handler : mHandler) {
+            handler.onRemoteVideoStateChanged(uid,state,reason,elapsed);
+        }
+    }
+
+    public void onRemoteAudioStateChanged(int 	uid,
+                                          int 	state,
+                                          int 	reason,
+                                          int 	elapsed ){
+        for (EventHandler handler : mHandler) {
+            handler.onRemoteAudioStateChanged(uid,state,reason,elapsed);
+        }
+    }
+    public void onRemoteSubscribeFallbackToAudioOnly(int 	uid, boolean 	isFallbackOrRecover ){
+        for (EventHandler handler : mHandler) {
+            handler.onRemoteSubscribeFallbackToAudioOnly(uid,isFallbackOrRecover);
+        }
+    }
+
+    public  void  onUserMuteVideo(int uid , boolean muted){
+        for (EventHandler handler : mHandler) {
+            handler.onUserMuteVideo(uid,muted);
+        }
+    }
+
+    public void onLocalVideoStateChanged(int uid,int error){
+        for (EventHandler handler : mHandler) {
+            handler.onLocalVideoStateChanged(uid,error);
+        }    }
 }

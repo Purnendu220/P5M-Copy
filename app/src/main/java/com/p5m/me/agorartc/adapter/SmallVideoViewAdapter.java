@@ -16,15 +16,15 @@ import java.util.HashMap;
 
 public class SmallVideoViewAdapter extends VideoViewAdapter {
 
-    public SmallVideoViewAdapter(Context context, int exceptedUid, HashMap<Integer, SurfaceView> uids, VideoViewEventListener listener, ClassModel classModel) {
+    public SmallVideoViewAdapter(Context context, int exceptedUid, HashMap<Integer, VideoStatusData> uids, VideoViewEventListener listener, ClassModel classModel) {
         super(context, exceptedUid, uids, listener,classModel);
     }
 
     @Override
-    protected void customizedInit(HashMap<Integer, SurfaceView> uids, boolean force) {
-        for (HashMap.Entry<Integer, SurfaceView> entry : uids.entrySet()) {
+    protected void customizedInit(HashMap<Integer, VideoStatusData> uids, boolean force) {
+        for (HashMap.Entry<Integer, VideoStatusData> entry : uids.entrySet()) {
             //if (entry.getKey() != exceptedUid) {
-                mUsers.add(new VideoStatusData(entry.getKey(), entry.getValue(), VideoStatusData.DEFAULT_STATUS, VideoStatusData.DEFAULT_VOLUME));
+                mUsers.add(entry.getValue());
             //}
         }
 
@@ -38,16 +38,13 @@ public class SmallVideoViewAdapter extends VideoViewAdapter {
     }
 
     @Override
-    public void notifyUiChanged(HashMap<Integer, SurfaceView> uids, int uidExcluded, HashMap<Integer, Integer> status, HashMap<Integer, Integer> volume) {
+    public void notifyUiChanged(HashMap<Integer, VideoStatusData> uids, int uidExcluded, HashMap<Integer, Integer> status, HashMap<Integer, Integer> volume) {
         mUsers.clear();
 
-        for (HashMap.Entry<Integer, SurfaceView> entry : uids.entrySet()) {
+        for (HashMap.Entry<Integer, VideoStatusData> entry : uids.entrySet()) {
             LogUtils.debug("notifyUiChanged " + entry.getKey() + " " + uidExcluded);
-
-            entry.getValue().setZOrderMediaOverlay(false);
-           // if (entry.getKey() != uidExcluded) {
-                mUsers.add(new VideoStatusData(entry.getKey(), entry.getValue(), VideoStatusData.DEFAULT_STATUS, VideoStatusData.DEFAULT_VOLUME));
-           // }
+            entry.getValue().mView.setZOrderMediaOverlay(false);
+                mUsers.add(entry.getValue());
         }
 
         notifyDataSetChanged();

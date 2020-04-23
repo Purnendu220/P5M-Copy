@@ -5,7 +5,7 @@ import android.view.SurfaceView;
 public class VideoStatusData {
     public static final int DEFAULT_STATUS = 0;
     public static final int VIDEO_MUTED = 1;
-    public static final int AUDIO_MUTED = VIDEO_MUTED << 1;
+    public static final int AUDIO_MUTED = 2;
 
     public static final int DEFAULT_VOLUME = 0;
 
@@ -15,6 +15,8 @@ public class VideoStatusData {
         this.mStatus = status;
         this.mVolume = volume;
     }
+
+
 
     public int mUid;
 

@@ -50,4 +50,6 @@ public class RoleActivity extends BaseActivity {
     public void onBackArrowPressed(View view) {
         finish();
     }
+
+
 }

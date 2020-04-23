@@ -410,7 +410,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                 }
 
             } else {
-                textGymVisitLimits.setVisibility(View.VISIBLE);
+                textGymVisitLimits.setVisibility(View.GONE);
             }
             memberShipAdapter.notifyDataSetChanges();
 
