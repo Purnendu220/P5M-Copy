@@ -558,9 +558,19 @@ public class AppConstants {
     public static final String KEY_CLIENT_ROLE = "key_client_role";
     public static final String KEY_CHANNEL_NAME = "key_channel_name";
     public static final String KEY_CHANNEL_TOKEN = "key_channel_token";
-
+    public static final int TIME_START_DURATION = 10;
     public static final String plainCredentials = BuildConfig.AGORA_APP_CUSTOMER_ID+":"+ BuildConfig.AGORA_APP_CUSTOMER_CERTIFICATE;
 
+    public interface channelType{
+        String CHANNEL_YOUTUBE = "YOUTUBE";
+        String CHANNEL_FACEBOOK = "FACEBOOK";
+        String CHANNEL_INSTAGRAM = "INSTAGRAM";
+        String CHANNEL_JITSI ="JITSI";
+        String CHANNEL_ZOOM = "ZOOM";
+        String CHANNEL_SKYPE = "SKYPE";
+        String CHANNEL_GOOGLE = "HANGOUT";
+        String CHANNEL_INAPP = "INAPP";
 
+    }
 
 }

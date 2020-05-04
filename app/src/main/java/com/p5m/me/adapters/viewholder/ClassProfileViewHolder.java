@@ -128,6 +128,8 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
 
     @BindView(R.id.relativeLayoutVideoClass)
     RelativeLayout relativeLayoutVideoClass;
+    @BindView(R.id.layoutSeats)
+    RelativeLayout layoutSeats;
 
     private final Context context;
     private int shownInScreen;
@@ -149,6 +151,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
 
             final ClassModel model = (ClassModel) data;
             if(model.isVideoClass()){
+                layoutSeats.setVisibility(View.GONE);
                 mapViewLayout.setVisibility(View.GONE);
                 if(model.isUserJoinStatus()){
                     relativeLayoutVideoClass.setVisibility(View.VISIBLE);
@@ -158,6 +161,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
 
                 }
             }else{
+                layoutSeats.setVisibility(View.VISIBLE);
                 relativeLayoutVideoClass.setVisibility(View.GONE);
                 mapViewLayout.setVisibility(View.VISIBLE);
                 initializeMapView();
@@ -251,7 +255,13 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
             }
 
             if (model.getGymBranchDetail() != null) {
-                textViewLocation.setText(model.getGymBranchDetail().getGymName() + ", " + model.getGymBranchDetail().getBranchName() + ", " + model.getGymBranchDetail().getLocalityName());
+                if(model.isVideoClass()){
+                    textViewLocation.setText(model.getGymBranchDetail().getGymName());
+
+                }else{
+                    textViewLocation.setText(model.getGymBranchDetail().getGymName() + ", " + model.getGymBranchDetail().getBranchName() + ", " + model.getGymBranchDetail().getLocalityName());
+
+                }
             } else {
                 textViewLocation.setText("");
             }

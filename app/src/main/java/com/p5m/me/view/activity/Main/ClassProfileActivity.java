@@ -64,6 +64,7 @@ import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.OpenAppUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.BookForAFriendPopup;
@@ -644,7 +645,17 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 break;
             case R.id.relativeLayoutVideoClass:
                 if (model instanceof ClassModel) {
-                    networkCommunicator.getTokenForClass(((ClassModel) model).getClassSessionId(),this);
+                    ClassModel data = (ClassModel) model;
+                    if(data.getPlatform()==null&&data.getPlatform().equalsIgnoreCase(AppConstants.channelType.CHANNEL_INAPP)){
+                        networkCommunicator.getTokenForClass(((ClassModel) model).getClassSessionId(),this);
+                    }else{
+                        if(data.getLink()!=null){
+                            OpenAppUtils.openExternalApps(context,data.getPlatform(),data.getLink());
+                        }else{
+                            ToastUtils.show(context,context.getResources().getString(R.string.class_not_started_yet));
+
+                        }
+                    }
                 }
                 break;
         }
