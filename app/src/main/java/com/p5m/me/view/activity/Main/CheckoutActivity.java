@@ -430,7 +430,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     validityUnit.setText(getString(R.string.a_week) + message);
                 else
                     validityUnit.setText(String.format(numberConverter(selectedPacakageFromList.getDuration()) + " " + getString(R.string.weeks) + message));
-                textViewPackageValidityExtend.setText(getString(R.string.valid_for) + " " + userPackage.getPackageName() + " " + context.getString(R.string.package_name));
+                    textViewPackageValidityExtend.setText(getString(R.string.valid_for) + " " + userPackage.getPackageName() + " " + context.getString(R.string.package_name));
 
                 Helper.setPackageImage(imageViewPackageImage, AppConstants.Values.SPECIAL_CLASS_ID);
                 setPrice();

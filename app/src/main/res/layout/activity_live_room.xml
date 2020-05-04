@@ -192,6 +192,21 @@
             android:scaleType="centerCrop"
             android:background="@drawable/rounded_bg_full_transparent"
             android:onClick="onMuteVideoClicked"/>
+        <ImageView
+            android:id="@+id/live_btn_mute_video_only"
+            android:layout_width="@dimen/live_bottom_btn_size"
+            android:layout_height="@dimen/live_bottom_btn_size"
+            android:layout_toLeftOf="@id/live_btn_mute_video"
+            android:layout_toStartOf="@id/live_btn_mute_video"
+            android:layout_marginRight="@dimen/live_bottom_btn_margin"
+            android:layout_marginEnd="@dimen/live_bottom_btn_margin"
+            android:layout_centerVertical="true"
+            android:src="@drawable/btn_mute_video"
+            android:scaleType="centerCrop"
+            android:background="@drawable/rounded_bg_full_transparent"
+            android:onClick="onMuteVideoOnlyClicked"
+            android:visibility="gone"
+            />
     </RelativeLayout>
     <TextView
         android:id="@+id/textViewAlert"

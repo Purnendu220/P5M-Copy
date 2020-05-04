@@ -95,6 +95,11 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.classBookedWithFriend)
     public RelativeLayout classBookedWithFriend;
 
+    @BindView(R.id.layoutChannelName)
+    public RelativeLayout layoutChannelName;
+
+    @BindView(R.id.textViewChannelNAme)
+    public TextView textViewChannelNAme;
 
     public ClassMiniDetailViewHolder(View view, int shownInScreen) {
         super(view);
@@ -111,7 +116,7 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
             itemView.setVisibility(View.VISIBLE);
 
             final ClassModel model = (ClassModel) data;
-
+            layoutChannelName.setVisibility(View.GONE);
             layoutGender.setVisibility(View.GONE);
             buttonClassRating.setVisibility(View.GONE);
             if (Helper.isSpecialClass(model)) {
@@ -127,6 +132,13 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 imageViewOptions2.setVisibility(View.GONE);
                 trainerImage.setVisibility(View.VISIBLE);
                 textViewTrainerName.setVisibility(View.VISIBLE);
+                if(model.isVideoClass()&&(model.getPlatform()==null||model.getPlatform().equalsIgnoreCase(AppConstants.channelType.CHANNEL_INAPP))){
+                    layoutChannelName.setVisibility(View.VISIBLE);
+                    textViewChannelNAme.setText(String.format(context.getResources().getString(R.string.channel_name),model.getClassSessionId()+""));
+
+                }else{
+                    layoutChannelName.setVisibility(View.GONE);
+                }
                 if (model.getRefBookingId() != null && model.getRefBookingId() > 0) {
                     classBookedWithFriend.setVisibility(View.VISIBLE);
                 } else {

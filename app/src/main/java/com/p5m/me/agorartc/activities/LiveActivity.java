@@ -41,7 +41,6 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
-import com.p5m.me.utils.ToastUtils;
 
 import java.util.HashMap;
 
@@ -50,18 +49,23 @@ import io.agora.rtc.IRtcEngineEventHandler;
 import io.agora.rtc.video.VideoCanvas;
 import io.agora.rtc.video.VideoEncoderConfiguration;
 
+import static io.agora.rtc.Constants.REMOTE_VIDEO_STATE_DECODING;
+import static io.agora.rtc.Constants.REMOTE_VIDEO_STATE_REASON_REMOTE_MUTED;
+import static io.agora.rtc.Constants.REMOTE_VIDEO_STATE_REASON_REMOTE_UNMUTED;
+import static io.agora.rtc.Constants.REMOTE_VIDEO_STATE_STOPPED;
+
 public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator.RequestListener {
     private static final String TAG = LiveActivity.class.getSimpleName();
 
     private VideoGridContainer mVideoGridContainer;
     private ImageView mMuteAudioBtn;
-    private ImageView mMuteVideoBtn;
+    private ImageView mMuteVideoBtn ,mMuteVideoBtnOnly;
     private ImageView mSpeakerPhoneButton;
 
     private VideoEncoderConfiguration.VideoDimensions mVideoDimension;
     private ClassModel classModel;
 
-    private final HashMap<Integer, SurfaceView> mUidsList = new HashMap<>(); // uid = 0 || uid == EngineConfig.mUid
+    private final HashMap<Integer, VideoStatusData> mUidsList = new HashMap<>(); // uid = 0 || uid == EngineConfig.mUid
 
     private SmallVideoViewAdapter mSmallVideoViewAdapter;
     private RecyclerView recycler;
@@ -75,14 +79,15 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
     boolean isTrainerJoined;
     int trainerId;
     boolean isShowingAlert;
+    boolean muteUnMuteActionPerformed;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Helper.turnScreenOnThroughKeyguard(this);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_live_room);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         handler = new Handler();
 
         initUI();
@@ -90,6 +95,7 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
     }
 
     private void initUI() {
+        mMuteVideoBtnOnly = findViewById(R.id.live_btn_mute_video_only);
         roomName = findViewById(R.id.live_room_name);
         onLineUserCount = findViewById(R.id.live_room_broadcaster_uid);
         //roomName.setText(channelName);
@@ -137,6 +143,8 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
         rtcEngine().setEnableSpeakerphone(true);
         rtcEngine().setDefaultAudioRoutetoSpeakerphone(true);
         rtcEngine().enableDualStreamMode(true);
+        rtcEngine().adjustPlaybackSignalVolume(400);
+
 
         rtcEngine().setLocalPublishFallbackOption(Constants.STREAM_FALLBACK_OPTION_VIDEO_STREAM_LOW);
         rtcEngine().setRemoteSubscribeFallbackOption(Constants.STREAM_FALLBACK_OPTION_VIDEO_STREAM_LOW);
@@ -174,21 +182,46 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
     }
 
     private void startBroadcast() {
-        rtcEngine().setClientRole(Constants.CLIENT_ROLE_BROADCASTER);
+        if(!mMuteAudioBtn.isActivated()){
+            rtcEngine().setClientRole(Constants.CLIENT_ROLE_BROADCASTER);
+        }
         SurfaceView surface = prepareRtcVideo(0, true,VideoCanvas.RENDER_MODE_HIDDEN);
-        mUidsList.put(0,surface);
-        bindToSmallVideoView(0);
-        mMuteAudioBtn.setActivated(true);
+        mUidsList.put(0,new VideoStatusData(0, surface, VideoStatusData.DEFAULT_STATUS, VideoStatusData.DEFAULT_VOLUME));
+        rtcEngine().muteLocalVideoStream(false);
+        if(muteUnMuteActionPerformed){
+           rtcEngine().muteLocalAudioStream(!mMuteAudioBtn.isActivated());
+           mMuteAudioBtn.setActivated(mMuteAudioBtn.isActivated());
+        }else{
+            mMuteAudioBtn.setActivated(true);
+        }
+        if(mSmallVideoViewAdapter!=null){
+            mSmallVideoViewAdapter.notifyUserAdded(new VideoStatusData(0, surface, VideoStatusData.DEFAULT_STATUS, VideoStatusData.DEFAULT_VOLUME));
+        }else{
+            bindToSmallVideoView(0);
+
+        }
 
     }
 
     private void stopBroadcast() {
-        rtcEngine().setClientRole(Constants.CLIENT_ROLE_AUDIENCE);
-        removeRtcVideo(0, true);
-        mVideoGridContainer.removeUserVideoLayout(0, true);
-        mUidsList.remove(0);
-        mMuteAudioBtn.setActivated(false);
-        bindToSmallVideoView(0);
+        if(mMuteAudioBtn.isActivated()){
+            rtcEngine().muteLocalVideoStream(true);
+            removeRtcVideo(0, true);
+            mVideoGridContainer.removeUserVideoLayout(0, true);
+            mUidsList.remove(0);
+        }else{
+            rtcEngine().setClientRole(Constants.CLIENT_ROLE_AUDIENCE);
+            removeRtcVideo(0, true);
+            mVideoGridContainer.removeUserVideoLayout(0, true);
+            mUidsList.remove(0);
+            mMuteAudioBtn.setActivated(false);
+        }
+        if(mSmallVideoViewAdapter!=null){
+            mSmallVideoViewAdapter.notifyUserRemoved(0);
+        }else{
+            bindToSmallVideoView(0);
+
+        }
 
     }
 
@@ -204,6 +237,8 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
                 }
 
                 startSignaling();
+                rtcEngine().setEnableSpeakerphone(true);
+                rtcEngine().setDefaultAudioRoutetoSpeakerphone(true);
 
             }
         });
@@ -240,12 +275,17 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
             LogUtils.debug("Video BROADCAST UID "+uid);
             SurfaceView surface = prepareRtcVideo(uid, false);
             switchToLargeView(new VideoStatusData(uid,surface, VideoStatusData.DEFAULT_STATUS, VideoStatusData.DEFAULT_VOLUME));
-                isTrainerJoined = true;
+            isTrainerJoined = true;
 
         }else{
             SurfaceView surface = prepareRtcVideo(uid, false,VideoCanvas.RENDER_MODE_HIDDEN);
-            mUidsList.put(uid,surface);
-            bindToSmallVideoView(uid);
+            mUidsList.put(uid,new VideoStatusData(uid, surface, VideoStatusData.DEFAULT_STATUS, VideoStatusData.DEFAULT_VOLUME));
+            if(mSmallVideoViewAdapter!=null){
+                mSmallVideoViewAdapter.notifyUserAdded(new VideoStatusData(uid, surface, VideoStatusData.DEFAULT_STATUS, VideoStatusData.DEFAULT_VOLUME));
+            }else{
+                bindToSmallVideoView(0);
+
+            }
         }
 
     }
@@ -254,7 +294,12 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
         removeRtcVideo(uid, false);
         mVideoGridContainer.removeUserVideoLayout(uid, false);
         mUidsList.remove(uid);
-        bindToSmallVideoView(uid);
+        if(mSmallVideoViewAdapter!=null){
+            mSmallVideoViewAdapter.notifyUserRemoved(uid);
+        }else{
+            bindToSmallVideoView(0);
+
+        }
     }
 
     @Override
@@ -331,6 +376,40 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
     }
 
     @Override
+    public void onRemoteVideoStateChanged(int uid, int state, int reason, int elapsed) {
+        LogUtils.networkError(state+" onRemoteVideoStateChanged");
+      switch (reason){
+          case REMOTE_VIDEO_STATE_REASON_REMOTE_MUTED:
+              runOnUiThread(() -> removeRemoteUser(uid));
+              break;
+          case REMOTE_VIDEO_STATE_REASON_REMOTE_UNMUTED:
+              runOnUiThread(() -> renderRemoteUser(uid));
+
+              break;
+      }
+    }
+
+    @Override
+    public void onRemoteAudioStateChanged(int uid, int state, int reason, int elapsed) {
+
+    }
+
+    @Override
+    public void onRemoteSubscribeFallbackToAudioOnly(int uid, boolean isFallbackOrRecover) {
+
+    }
+
+    @Override
+    public void onUserMuteVideo(int uid, boolean muted) {
+
+    }
+
+    @Override
+    public void onLocalVideoStateChanged(int uid, int error) {
+        LogUtils.networkError(error+" onLocalVideoStateChanged");
+    }
+
+    @Override
     public void finish() {
         super.finish();
         statsManager().clearAllData();
@@ -355,13 +434,28 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
     }
 
     public void onPushStreamClicked(View view) {
+        if(view.isActivated()){
+            rtcEngine().adjustPlaybackSignalVolume(200);
+
+        }else{
+            rtcEngine().adjustPlaybackSignalVolume(400);
+
+        }
         view.setActivated(!view.isActivated());
         rtcEngine().setEnableSpeakerphone(view.isActivated());
+
     }
 
     public void onMuteAudioClicked(View view) {
-        if (!mMuteVideoBtn.isActivated()) return;
-
+        muteUnMuteActionPerformed = true;
+        if(!mMuteVideoBtn.isActivated()){
+           if(view.isActivated()){
+               rtcEngine().setClientRole(Constants.CLIENT_ROLE_AUDIENCE);
+           }else{
+               rtcEngine().setClientRole(Constants.CLIENT_ROLE_BROADCASTER);
+               rtcEngine().muteLocalVideoStream(true);
+           }
+        }
         rtcEngine().muteLocalAudioStream(view.isActivated());
         view.setActivated(!view.isActivated());
     }
@@ -379,15 +473,29 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
         view.setActivated(!view.isActivated());
     }
 
+    public void onMuteVideoOnlyClicked(View view){
+        if(view.isActivated()){
+            rtcEngine().muteLocalVideoStream(true);
+
+
+        }else{
+            rtcEngine().muteLocalVideoStream(false);
+
+
+
+        }
+        view.setActivated(!view.isActivated());
+
+    }
+
     private void bindToSmallVideoView(int exceptUid) {
         LogUtils.networkError("fdgsfdfgfdgfgdfgdfdgfgdf");
-
         recycler = findViewById(R.id.small_video_view_container);
         if(mUidsList!=null&&mUidsList.size()>0){
             recycler.setVisibility(View.VISIBLE);
 
         }else{
-            recycler.setVisibility(View.GONE);
+            recycler.setVisibility(View.VISIBLE);
 
         }
         boolean create = false;
@@ -401,7 +509,7 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
                 }
             },classModel);
             mSmallVideoViewAdapter.setHasStableIds(true);
-        }
+
         recycler.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -411,6 +519,7 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
 
         recycler.setDrawingCacheEnabled(true);
         recycler.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_AUTO);
+        }
 
         if (!create) {
             mSmallVideoViewAdapter.notifyUiChanged(mUidsList, exceptUid, null, null);
@@ -424,15 +533,26 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
         if(largeViewdata!=null){
             mVideoGridContainer.removeUserVideo(largeViewdata.mUid,largeViewdata.mUid == 0?true:false);
             mUidsList.remove(data.mUid);
+            if(mSmallVideoViewAdapter!=null){mSmallVideoViewAdapter.notifyUserRemoved(data.mUid);}
             SurfaceView surface = prepareRtcVideo(largeViewdata.mUid, largeViewdata.mUid == 0?true:false,VideoCanvas.RENDER_MODE_HIDDEN);
-            mUidsList.put(largeViewdata.mUid,surface);
-            bindToSmallVideoView(largeViewdata.mUid);
+            if(largeViewdata.mUid==0&&!mMuteVideoBtnOnly.isActivated()){
+                VideoStatusData statusData = new VideoStatusData(largeViewdata.mUid, surface, VideoStatusData.VIDEO_MUTED, VideoStatusData.DEFAULT_VOLUME);
+                mUidsList.put(largeViewdata.mUid,statusData);
+                if(mSmallVideoViewAdapter!=null){mSmallVideoViewAdapter.notifyUserAdded(statusData);}
+
+            }else{
+                VideoStatusData statusData = new VideoStatusData(largeViewdata.mUid, surface, VideoStatusData.DEFAULT_STATUS, VideoStatusData.DEFAULT_VOLUME);
+                mUidsList.put(largeViewdata.mUid,statusData);
+                if(mSmallVideoViewAdapter!=null){mSmallVideoViewAdapter.notifyUserAdded(statusData);}
+
+            }
+            if(mSmallVideoViewAdapter==null){ bindToSmallVideoView(largeViewdata.mUid);}
             mVideoGridContainer.addUserVideoSurface(data.mUid,prepareRtcVideo(data.mUid, data.mUid == 0?true:false),data.mUid == 0?true:false);
         }else{
             mUidsList.remove(data.mUid);
-            bindToSmallVideoView(data.mUid);
-            SurfaceView surface = prepareRtcVideo(data.mUid, data.mUid == 0?true:false,VideoCanvas.RENDER_MODE_FIT);
+            if(mSmallVideoViewAdapter!=null){mSmallVideoViewAdapter.notifyUserRemoved(data.mUid);}else{ bindToSmallVideoView(data.mUid);}
 
+            SurfaceView surface = prepareRtcVideo(data.mUid, data.mUid == 0?true:false,VideoCanvas.RENDER_MODE_FIT);
             mVideoGridContainer.addUserVideoSurface(data.mUid,surface,data.mUid == 0?true:false);
         }
     }
@@ -442,8 +562,20 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
               boolean isLocal = largeViewdata.mUid == 0?true:false;
               mVideoGridContainer.removeUserVideoLayout(largeViewdata.mUid,isLocal);
               SurfaceView surface = prepareRtcVideo(largeViewdata.mUid, largeViewdata.mUid == 0?true:false,VideoCanvas.RENDER_MODE_HIDDEN);
-              mUidsList.put(largeViewdata.mUid,surface);
-              bindToSmallVideoView(largeViewdata.mUid);
+              if(largeViewdata.mUid==0&&!mMuteVideoBtnOnly.isActivated()){
+                  VideoStatusData statusData = new VideoStatusData(largeViewdata.mUid, surface, VideoStatusData.VIDEO_MUTED, VideoStatusData.DEFAULT_VOLUME);
+                  mUidsList.put(largeViewdata.mUid,statusData);
+                  if(mSmallVideoViewAdapter!=null){mSmallVideoViewAdapter.notifyUserAdded(statusData);
+                  }
+
+              }else{
+                      VideoStatusData statusData = new VideoStatusData(largeViewdata.mUid, surface, VideoStatusData.DEFAULT_STATUS, VideoStatusData.DEFAULT_VOLUME);
+                  mUidsList.put(largeViewdata.mUid,statusData);
+                      if(mSmallVideoViewAdapter!=null){mSmallVideoViewAdapter.notifyUserAdded(statusData); }
+                  }
+
+              if(mSmallVideoViewAdapter==null){
+              bindToSmallVideoView(largeViewdata.mUid);}
 
           }
 
@@ -452,27 +584,35 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
     public void onApiSuccess(Object response, int requestCode) {
         switch (requestCode){
             case NetworkCommunicator.RequestCode.GET_USER_COUNT_IN_CHANNEL:
-                AgoraUserCount  agoraUserCount = ((ResponseModel<AgoraUserCount>) response).data;
-                if(agoraUserCount!=null){
-                    int count = (agoraUserCount.getBroadcasters().length+agoraUserCount.getAudience_total())-1;
-                    boolean isTrainerAvailable = ArrayUtils.contains(agoraUserCount.getBroadcasters(), trainerId);
-//                    if(count==0||!isTrainerAvailable){
-//                        showAlert();
-//                    }
-                    String countText = String.format(context.getResources().getString(R.string.online_count),count);
-                    onLineUserCount.setText(countText);
-                }else{
-                    onLineUserCount.setText("");
+                try{
+                    AgoraUserCount  agoraUserCount = ((ResponseModel<AgoraUserCount>) response).data;
+                    if(agoraUserCount!=null){
+                        int count = (agoraUserCount.getBroadcasters().length+agoraUserCount.getAudience_total())-1;
+                        boolean isTrainerAvailable = ArrayUtils.contains(agoraUserCount.getBroadcasters(), trainerId);
+//
+                        String countText = String.format(context.getResources().getString(R.string.online_count),count);
+                        onLineUserCount.setText(countText);
+                    }else{
+                        onLineUserCount.setText("");
 
+                    }
+                }catch (Exception  e){
+                    e.printStackTrace();
                 }
+
                 break;
             case NetworkCommunicator.RequestCode.GET_USER_STATUS_IN_CHANNEL:
-                AgoraUserStatus userStatus = ((ResponseModel<AgoraUserStatus>) response).data;
-                if(userStatus.isIn_channel()){
-                    isTrainerJoined = true;
-                }else{
-                    showAlert();
+                try{
+                    AgoraUserStatus userStatus = ((ResponseModel<AgoraUserStatus>) response).data;
+                    if(userStatus.isIn_channel()){
+                        isTrainerJoined = true;
+                    }else{
+                        showAlert();
 
+                    }
+
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
 
                 break;
@@ -520,6 +660,5 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
 
 
     }
-
 
 }
