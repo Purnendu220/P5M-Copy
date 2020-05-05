@@ -646,7 +646,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             case R.id.relativeLayoutVideoClass:
                 if (model instanceof ClassModel) {
                     ClassModel data = (ClassModel) model;
-                    if(data.getPlatform()==null&&data.getPlatform().equalsIgnoreCase(AppConstants.channelType.CHANNEL_INAPP)){
+                    if(data.getPlatform()==null||data.getPlatform().equalsIgnoreCase(AppConstants.channelType.CHANNEL_INAPP)){
                         networkCommunicator.getTokenForClass(((ClassModel) model).getClassSessionId(),this);
                     }else{
                         if(data.getLink()!=null){
