@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
@@ -687,4 +688,30 @@ public class Helper {
         }
             return false;
     }
+    public static String getbase64EncodedString(String string){
+        return Base64.encodeToString(string.getBytes(),Base64.NO_WRAP);
+    }
+    public static String getNetworkQualityTx(int quality){
+        switch (quality){
+            case 0:
+                return "UNKNOWN";
+            case 1:
+                return "EXCELLENT";
+            case 2:
+                return "GOOD";
+            case 3:
+                return "POOR";
+            case 4:
+                return "BAD";
+            case 5:
+                return "VBAD";
+            case 6:
+                return "DOWN";
+            case 8:
+                return "DETECTING";
+            default:
+                return "";
+        }
+    }
+
 }

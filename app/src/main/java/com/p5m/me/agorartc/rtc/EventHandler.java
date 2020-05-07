@@ -27,4 +27,10 @@ public interface EventHandler {
 
     void onRemoteAudioStats(IRtcEngineEventHandler.RemoteAudioStats stats);
 
+    void onRemoteVideoStateChanged(int 	uid, int 	state, int 	reason, int 	elapsed );
+
+    void onRemoteAudioStateChanged(int 	uid, int 	state, int 	reason, int 	elapsed);
+    void onRemoteSubscribeFallbackToAudioOnly(int 	uid, boolean 	isFallbackOrRecover );
+    void onUserMuteVideo(int 	uid, boolean 	muted );
+    void onLocalVideoStateChanged(int uid, int error );
 }

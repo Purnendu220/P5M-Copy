@@ -41,6 +41,7 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.OpenAppUtils;
 import com.p5m.me.utils.RefrenceWrapper;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.ClassProfileActivity;
@@ -202,10 +203,21 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
             case R.id.imageViewVideoClass:
                 if(model instanceof ClassModel){
-                    getTokenForClass((ClassModel) model);
+                    ClassModel data = (ClassModel) model;
+                    if(data.getPlatform()==null||data.getPlatform().equalsIgnoreCase(AppConstants.channelType.CHANNEL_INAPP)){
+                        getTokenForClass((ClassModel) model);
+                    }else{
+                        if(DateUtils.isTimeCame(data.getClassDate(),data.getFromTime())){
+                            if(data.getLink()!=null){
+                                OpenAppUtils.openExternalApps(context,data.getPlatform(),data.getLink());
+                            }else{
+                                ToastUtils.show(context,context.getResources().getString(R.string.class_not_started_yet));
 
-                }else{
-                    ToastUtils.show(context,"Start Class");
+                            }
+                        }else{
+                            ToastUtils.show(context,String.format(context.getResources().getString(R.string.time_not_came),data.getFromTime(),data.getClassDate(),AppConstants.TIME_START_DURATION+""));
+                        }
+                    }
 
                 }
 

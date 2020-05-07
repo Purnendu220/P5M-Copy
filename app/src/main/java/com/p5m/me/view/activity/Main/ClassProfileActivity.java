@@ -31,6 +31,7 @@ import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.ClassProfileAdapter;
+import com.p5m.me.agorartc.activities.MainActivity;
 import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.analytics.MixPanel;
@@ -41,6 +42,7 @@ import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
+import com.p5m.me.data.main.TokenResponse;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.data.request.JoinClassRequest;
@@ -62,6 +64,7 @@ import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.OpenAppUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.BookForAFriendPopup;
@@ -640,6 +643,21 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     ViewClassRating.open(context, ((ClassModel) model), AppConstants.AppNavigation.SHOWN_IN_CLASS_PROFILE);
                 }
                 break;
+            case R.id.relativeLayoutVideoClass:
+                if (model instanceof ClassModel) {
+                    ClassModel data = (ClassModel) model;
+                    if(data.getPlatform()==null||data.getPlatform().equalsIgnoreCase(AppConstants.channelType.CHANNEL_INAPP)){
+                        networkCommunicator.getTokenForClass(((ClassModel) model).getClassSessionId(),this);
+                    }else{
+                        if(data.getLink()!=null){
+                            OpenAppUtils.openExternalApps(context,data.getPlatform(),data.getLink());
+                        }else{
+                            ToastUtils.show(context,context.getResources().getString(R.string.class_not_started_yet));
+
+                        }
+                    }
+                }
+                break;
         }
     }
 
@@ -849,6 +867,10 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             case NetworkCommunicator.RequestCode.ME_USER:
                handleWalletOfSpecialAndFreeClass();
                 break;
+            case NetworkCommunicator.RequestCode.GET_CAHHNEL_TOKEN:
+                TokenResponse tokenModel = ((ResponseModel<TokenResponse>) response).data;
+                MainActivity.open(context,classModel.getClassSessionId()+"",tokenModel.getToken(),classModel);
+                break;
 
         }
 
@@ -1024,6 +1046,9 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
                     }
                 }
+                break;
+            case NetworkCommunicator.RequestCode.GET_CAHHNEL_TOKEN:
+               ToastUtils.show(context, errorMessage);
                 break;
 
         }

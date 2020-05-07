@@ -150,4 +150,27 @@ public abstract class BaseActivity extends AppCompatActivity implements EventHan
     public void onRemoteAudioStats(IRtcEngineEventHandler.RemoteAudioStats stats) {
 
     }
+    @Override
+    public void onRemoteVideoStateChanged(int uid, int state, int reason, int elapsed) {
+
+    }
+
+    @Override
+    public void onRemoteAudioStateChanged(int uid, int state, int reason, int elapsed) {
+
+    }
+
+    @Override
+    public void onRemoteSubscribeFallbackToAudioOnly(int uid, boolean isFallbackOrRecover) {
+
+    }
+    @Override
+    public void onUserMuteVideo(int uid, boolean muted) {
+
+    }
+
+    @Override
+    public void onLocalVideoStateChanged(int uid, int error) {
+
+    }
 }

@@ -13,6 +13,8 @@ import com.p5m.me.data.RatingResponseModel;
 import com.p5m.me.data.UnratedClassData;
 import com.p5m.me.data.UserPackageDetail;
 import com.p5m.me.data.WishListResponse;
+import com.p5m.me.data.main.AgoraUserCount;
+import com.p5m.me.data.main.AgoraUserStatus;
 import com.p5m.me.data.main.BookingCancellationResponse;
 import com.p5m.me.data.main.BranchModel;
 import com.p5m.me.data.main.ClassActivity;
@@ -430,6 +432,15 @@ public interface ApiService {
     @GET(AppConstants.Url.GET_CHANNEL_TOKEN)
     Call<ResponseModel<TokenResponse>> getChannelToken(@Query(AppConstants.ApiParamKey.USER_ID) int userId,
                                                        @Query(AppConstants.ApiParamKey.CLASS_SESSION_ID) int classSessionId );
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.GET_CHANNEL_USER_STATUS_IN_CHANNEL + "/{" + AppConstants.ApiParamKey.APP_ID + "}"+ "/{" + AppConstants.ApiParamKey.U_ID + "}"+ "/{" + AppConstants.ApiParamKey.CHANNEL_NAME + "}")
+    Call<ResponseModel<AgoraUserStatus>> getUserStatusInChannel(@Path(AppConstants.ApiParamKey.APP_ID) String appId, @Path(AppConstants.ApiParamKey.U_ID) String uid, @Path(AppConstants.ApiParamKey.CHANNEL_NAME) String channelName );
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.GET_CHANNEL_USER_COUNT + "/{" + AppConstants.ApiParamKey.APP_ID + "}"+ "/{" + AppConstants.ApiParamKey.CHANNEL_NAME + "}")
+    Call<ResponseModel<AgoraUserCount>> getUserCountInChannel(@Path(AppConstants.ApiParamKey.APP_ID) String appId, @Path(AppConstants.ApiParamKey.CHANNEL_NAME) String channelName );
+
+
 
 
 }

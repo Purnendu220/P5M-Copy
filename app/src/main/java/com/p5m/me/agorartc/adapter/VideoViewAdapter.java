@@ -43,7 +43,7 @@ public abstract class VideoViewAdapter extends RecyclerView.Adapter<RecyclerView
 
     protected ClassModel classModel;
 
-    public VideoViewAdapter(Context context, int exceptedUid, HashMap<Integer, SurfaceView> uids, VideoViewEventListener listener,ClassModel classModel) {
+    public VideoViewAdapter(Context context, int exceptedUid, HashMap<Integer, VideoStatusData> uids, VideoViewEventListener listener,ClassModel classModel) {
         mContext = context;
         mInflater = ((Activity) context).getLayoutInflater();
 
@@ -61,23 +61,23 @@ public abstract class VideoViewAdapter extends RecyclerView.Adapter<RecyclerView
     protected int mItemWidth;
     protected int mItemHeight;
 
-    private void init(HashMap<Integer, SurfaceView> uids) {
+    private void init(HashMap<Integer, VideoStatusData> uids) {
         mUsers.clear();
 
         customizedInit(uids, true);
     }
 
-    protected abstract void customizedInit(HashMap<Integer, SurfaceView> uids, boolean force);
+    protected abstract void customizedInit(HashMap<Integer, VideoStatusData> uids, boolean force);
 
-    public abstract void notifyUiChanged(HashMap<Integer, SurfaceView> uids, int uidExcluded, HashMap<Integer, Integer> status, HashMap<Integer, Integer> volume);
+    public abstract void notifyUiChanged(HashMap<Integer, VideoStatusData> uids, int uidExcluded, HashMap<Integer, Integer> status, HashMap<Integer, Integer> volume);
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.d("VideoViewAdapter", "onCreateViewHolder " + viewType);
 
         View v = mInflater.inflate(R.layout.video_view_container, parent, false);
-        v.getLayoutParams().width = 400;
-        v.getLayoutParams().height = 400;
+        v.getLayoutParams().width = mItemWidth;
+        v.getLayoutParams().height = mItemWidth;
         v.setElevation(5);
         v.setBackgroundResource(R.drawable.tags_rounded_corners);
        return new VideoUserStatusHolder(v);
@@ -101,8 +101,7 @@ public abstract class VideoViewAdapter extends RecyclerView.Adapter<RecyclerView
         LogUtils.debug("onBindViewHolder " + position + " " + user + " " + myHolder + " " + myHolder.itemView);
 
         FrameLayout holderView = (FrameLayout) myHolder.itemView;
-
-        if (holderView.getChildCount() == 0) {
+           holderView.removeAllViews();
             SurfaceView target = user.mView;
             stripSurfaceView(target);
             target.setZOrderMediaOverlay(true);
@@ -123,7 +122,7 @@ public abstract class VideoViewAdapter extends RecyclerView.Adapter<RecyclerView
                 holderView.addView(txt);
             }
 
-        }
+
 
         holderView.setOnTouchListener(new OnDoubleTapListener(mContext) {
             @Override

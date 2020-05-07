@@ -14,6 +14,7 @@ import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.CommonUtillity;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
 
@@ -95,6 +96,11 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.classBookedWithFriend)
     public RelativeLayout classBookedWithFriend;
 
+    @BindView(R.id.layoutChannelName)
+    public RelativeLayout layoutChannelName;
+
+    @BindView(R.id.textViewChannelNAme)
+    public TextView textViewChannelNAme;
 
     public ClassMiniDetailViewHolder(View view, int shownInScreen) {
         super(view);
@@ -111,7 +117,7 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
             itemView.setVisibility(View.VISIBLE);
 
             final ClassModel model = (ClassModel) data;
-
+            layoutChannelName.setVisibility(View.GONE);
             layoutGender.setVisibility(View.GONE);
             buttonClassRating.setVisibility(View.GONE);
             if (Helper.isSpecialClass(model)) {
@@ -127,6 +133,17 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 imageViewOptions2.setVisibility(View.GONE);
                 trainerImage.setVisibility(View.VISIBLE);
                 textViewTrainerName.setVisibility(View.VISIBLE);
+                if(model.isVideoClass()){
+                    String channelName = CommonUtillity.getChannelName(model.getPlatform());
+                    if(channelName!=null&&!channelName.isEmpty()){
+                        layoutChannelName.setVisibility(View.VISIBLE);
+                        textViewChannelNAme.setText(channelName);
+                    }else{
+                        layoutChannelName.setVisibility(View.GONE);
+                    }
+                }else{
+                    layoutChannelName.setVisibility(View.GONE);
+                }
                 if (model.getRefBookingId() != null && model.getRefBookingId() > 0) {
                     classBookedWithFriend.setVisibility(View.VISIBLE);
                 } else {

@@ -90,7 +90,6 @@
                 android:layout_marginStart="@dimen/live_name_text_margin_left"
                 android:textAlignment="gravity"
                 android:gravity="top"
-                android:text="@string/fake_user_name"
                 android:textColor="@color/gray_lightest"
                 android:ellipsize="end"
                 android:maxLines="1"
@@ -166,7 +165,6 @@
             android:background="@drawable/rounded_bg_full_transparent"
             android:onClick="onPushStreamClicked"
             android:visibility="visible"
-
             />
         <ImageView
             android:id="@+id/live_btn_mute_audio"
@@ -194,5 +192,34 @@
             android:scaleType="centerCrop"
             android:background="@drawable/rounded_bg_full_transparent"
             android:onClick="onMuteVideoClicked"/>
+        <ImageView
+            android:id="@+id/live_btn_mute_video_only"
+            android:layout_width="@dimen/live_bottom_btn_size"
+            android:layout_height="@dimen/live_bottom_btn_size"
+            android:layout_toLeftOf="@id/live_btn_mute_video"
+            android:layout_toStartOf="@id/live_btn_mute_video"
+            android:layout_marginRight="@dimen/live_bottom_btn_margin"
+            android:layout_marginEnd="@dimen/live_bottom_btn_margin"
+            android:layout_centerVertical="true"
+            android:src="@drawable/btn_mute_video"
+            android:scaleType="centerCrop"
+            android:background="@drawable/rounded_bg_full_transparent"
+            android:onClick="onMuteVideoOnlyClicked"
+            android:visibility="gone"
+            />
     </RelativeLayout>
+    <TextView
+        android:id="@+id/textViewAlert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/user_welcome"
+        android:layout_marginStart="@dimen/margin_10"
+        android:layout_marginEnd="@dimen/margin_10"
+        android:gravity="center"
+        android:textSize="@dimen/text20size"
+        android:textColor="@color/colorAccent"
+        android:fontFamily="sans-serif-medium"
+        android:visibility="gone"
+        ></TextView>
 </RelativeLayout>

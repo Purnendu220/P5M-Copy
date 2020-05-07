@@ -79,6 +79,7 @@ public class RemoteConfigure {
     }
 
     public void setValuesConfigValues() {
+        RemoteConfigConst.CHANNEL_LIST = mFirebaseRemoteConfig.getString(RemoteConfigConst.CHANNEL_KEY);
         RemoteConfigConst.SEARCH_BAR_TEXT_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.SEARCH_TEXT);
         RemoteConfigConst.BOOK_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.BOOK_BUTTON);
         RemoteConfigConst.BOOK_IN_CLASS_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.BOOK_IN_CLASS);
