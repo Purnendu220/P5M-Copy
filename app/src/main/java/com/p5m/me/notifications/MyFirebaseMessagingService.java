@@ -442,7 +442,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             title = "Packaged Assigned";
                             break;
                     }
-
                     navigationIntent = HomeActivity.showMembership(context, TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_NOTIFICATION);
                     break;
 
@@ -477,8 +476,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
 
                     }
-
-
                     break;
 
                 //******************** UNUSED **************************//

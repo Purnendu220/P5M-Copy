@@ -58,6 +58,8 @@ public class ClassProfileViewHolder_ViewBinding implements Unbinder {
     target.mapViewLayout = Utils.findRequiredViewAsType(source, R.id.mapView, "field 'mapViewLayout'", FrameLayout.class);
     target.relativeLayoutVideoClass = Utils.findRequiredViewAsType(source, R.id.relativeLayoutVideoClass, "field 'relativeLayoutVideoClass'", RelativeLayout.class);
     target.layoutSeats = Utils.findRequiredViewAsType(source, R.id.layoutSeats, "field 'layoutSeats'", RelativeLayout.class);
+    target.layoutChannelName = Utils.findRequiredViewAsType(source, R.id.layoutChannelName, "field 'layoutChannelName'", RelativeLayout.class);
+    target.textViewChannelNAme = Utils.findRequiredViewAsType(source, R.id.textViewChannelNAme, "field 'textViewChannelNAme'", TextView.class);
   }
 
   @Override
@@ -101,5 +103,7 @@ public class ClassProfileViewHolder_ViewBinding implements Unbinder {
     target.mapViewLayout = null;
     target.relativeLayoutVideoClass = null;
     target.layoutSeats = null;
+    target.layoutChannelName = null;
+    target.textViewChannelNAme = null;
   }
 }
