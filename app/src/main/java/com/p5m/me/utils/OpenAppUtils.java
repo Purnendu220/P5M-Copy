@@ -51,7 +51,7 @@ public class OpenAppUtils {
     }
     public static void openZoom(Context context,String url){
         try{
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url.replace("https","zoomus")));
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             if (intent.resolveActivity(context.getPackageManager()) != null) {
                 context.startActivity(intent);
             }

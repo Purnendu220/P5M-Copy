@@ -64,6 +64,7 @@ public class RemoteConfigConst {
     public static String SHOW_SELECTION_OPTIONS = "show_select_options";
     public static String PLAN_DESCRIPTION_DROP_IN = "drop_in_description";
     public static String ON_BOARDING_DATA = "onboarding";
+    public static String CHANNEL_KEY = "channels";
 
 
 
@@ -198,6 +199,7 @@ public class RemoteConfigConst {
     public static String DROP_IN_COST_VALUE = "true";
     public static String SHOW_SELECTION_OPTIONS_VALUE = "true";
     public static String ON_BOARDING_DATA_VALUE = "";
+    public static String CHANNEL_LIST = "";
 
 
 

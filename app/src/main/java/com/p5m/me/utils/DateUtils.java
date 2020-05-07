@@ -509,11 +509,11 @@ public class DateUtils {
             if(diffMinutes<=AppConstants.TIME_START_DURATION){
                 return true;
             }
-            return false;
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return true;
 
     }
 

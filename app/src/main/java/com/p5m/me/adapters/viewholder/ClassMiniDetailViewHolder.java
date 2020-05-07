@@ -14,6 +14,7 @@ import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.CommonUtillity;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
 
@@ -132,10 +133,14 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 imageViewOptions2.setVisibility(View.GONE);
                 trainerImage.setVisibility(View.VISIBLE);
                 textViewTrainerName.setVisibility(View.VISIBLE);
-                if(model.isVideoClass()&&(model.getPlatform()==null||model.getPlatform().equalsIgnoreCase(AppConstants.channelType.CHANNEL_INAPP))){
-                    layoutChannelName.setVisibility(View.VISIBLE);
-                    textViewChannelNAme.setText(String.format(context.getResources().getString(R.string.channel_name),model.getClassSessionId()+""));
-
+                if(model.isVideoClass()){
+                    String channelName = CommonUtillity.getChannelName(model.getPlatform());
+                    if(channelName!=null&&!channelName.isEmpty()){
+                        layoutChannelName.setVisibility(View.VISIBLE);
+                        textViewChannelNAme.setText(channelName);
+                    }else{
+                        layoutChannelName.setVisibility(View.GONE);
+                    }
                 }else{
                     layoutChannelName.setVisibility(View.GONE);
                 }
