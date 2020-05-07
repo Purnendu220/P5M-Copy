@@ -27,6 +27,7 @@ import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.CommonUtillity;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
 import com.p5m.me.utils.LanguageUtils;
@@ -128,6 +129,14 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
 
     @BindView(R.id.relativeLayoutVideoClass)
     RelativeLayout relativeLayoutVideoClass;
+    @BindView(R.id.layoutSeats)
+    RelativeLayout layoutSeats;
+
+    @BindView(R.id.layoutChannelName)
+    public RelativeLayout layoutChannelName;
+
+    @BindView(R.id.textViewChannelNAme)
+    public TextView textViewChannelNAme;
 
     private final Context context;
     private int shownInScreen;
@@ -149,6 +158,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
 
             final ClassModel model = (ClassModel) data;
             if(model.isVideoClass()){
+                layoutSeats.setVisibility(View.GONE);
                 mapViewLayout.setVisibility(View.GONE);
                 if(model.isUserJoinStatus()){
                     relativeLayoutVideoClass.setVisibility(View.VISIBLE);
@@ -158,6 +168,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
 
                 }
             }else{
+                layoutSeats.setVisibility(View.VISIBLE);
                 relativeLayoutVideoClass.setVisibility(View.GONE);
                 mapViewLayout.setVisibility(View.VISIBLE);
                 initializeMapView();
@@ -251,7 +262,13 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
             }
 
             if (model.getGymBranchDetail() != null) {
-                textViewLocation.setText(model.getGymBranchDetail().getGymName() + ", " + model.getGymBranchDetail().getBranchName() + ", " + model.getGymBranchDetail().getLocalityName());
+                if(model.isVideoClass()){
+                    textViewLocation.setText(model.getGymBranchDetail().getGymName());
+
+                }else{
+                    textViewLocation.setText(model.getGymBranchDetail().getGymName() + ", " + model.getGymBranchDetail().getBranchName() + ", " + model.getGymBranchDetail().getLocalityName());
+
+                }
             } else {
                 textViewLocation.setText("");
             }
@@ -303,6 +320,19 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
 
             textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
             textViewGender.setText(Helper.getClassGenderText(model.getClassType()));
+            if(model.isVideoClass()){
+                String channelName = CommonUtillity.getChannelName(model.getPlatform());
+                if(channelName!=null&&!channelName.isEmpty()){
+                    layoutChannelName.setVisibility(View.VISIBLE);
+                    textViewChannelNAme.setText(channelName);
+                }else{
+                    layoutChannelName.setVisibility(View.GONE);
+                }
+            }else{
+                layoutChannelName.setVisibility(View.GONE);
+            }
+
+
             layoutSeeAllReview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

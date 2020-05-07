@@ -196,6 +196,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/layoutSeats"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
@@ -224,6 +225,38 @@
                         android:textColor="@color/theme_dark_text"
                         android:textSize="@dimen/text_medium"
                         android:textStyle="normal" />
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/layoutChannelName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="48dp"
+                    android:layout_marginBottom="12dp"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/imageViewChannelName"
+                        style="@style/ClassIconSmall"
+                        android:src="@drawable/class_icon" />
+
+                    <TextView
+                        android:id="@+id/textViewChannelNAme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="@dimen/text_icon_gap"
+                        android:layout_marginTop="@dimen/text_drawable_adjustment"
+                        android:layout_toEndOf="@+id/imageViewChannelName"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left|center_vertical"
+                        android:letterSpacing="@dimen/text_medium_letter_spacing"
+                        android:lineSpacingExtra="@dimen/line_spacing_extra"
+                        android:text="Female only"
+                        android:textColor="@color/theme_dark_text"
+                        android:textSize="@dimen/text_medium" />
 
                 </RelativeLayout>
 

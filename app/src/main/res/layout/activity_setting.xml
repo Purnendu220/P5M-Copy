@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/theme_bg"
     android:layoutDirection="ltr"
-    tools:context="www.gymhop.p5m.www.gymhop.me.view.activity.Main.SettingActivity">
+    tools:context=".view.activity.Main.SettingActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -203,7 +203,10 @@
                     android:layout_marginBottom="@dimen/view_padding_setting"
                     android:background="@color/theme_bg"
                     android:elevation="@dimen/view_separator_elevation_edit_setting"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone"
+
+                    >
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -217,7 +220,8 @@
                         android:clickable="true"
                         android:gravity="center"
                         android:orientation="horizontal"
-                        android:padding="@dimen/view_padding_setting">
+                        android:padding="@dimen/view_padding_setting"
+                        >
 
                         <ImageView
                             style="@style/SettingIcon"

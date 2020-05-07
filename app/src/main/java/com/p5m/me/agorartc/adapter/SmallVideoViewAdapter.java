@@ -5,6 +5,9 @@ import android.util.DisplayMetrics;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.p5m.me.agorartc.listeners.VideoViewEventListener;
 import com.p5m.me.agorartc.stats.VideoStatusData;
 import com.p5m.me.data.main.ClassModel;
@@ -49,6 +52,37 @@ public class SmallVideoViewAdapter extends VideoViewAdapter {
 
         notifyDataSetChanged();
     }
+    public void notifyUserAdded(VideoStatusData dataAdded) {
+        boolean isDataAlreadyadded=false;
+        for (VideoStatusData data:mUsers) {
+            if(data.mUid==dataAdded.mUid){
+                isDataAlreadyadded = true;
+            }
+        }
+        if(!isDataAlreadyadded){
+            dataAdded.mView.setZOrderMediaOverlay(false);
+
+            mUsers.add(dataAdded);
+            notifyDataSetChanged();
+        }
+
+        }
+
+
+        public void notifyUserRemoved(int uid) {
+        int indexToBeRemoved = -1;
+        for (VideoStatusData data:mUsers) {
+           if(data.mUid==uid){
+               indexToBeRemoved = mUsers.indexOf(data);
+           }
+        }
+            if(indexToBeRemoved>-1){
+                mUsers.remove(indexToBeRemoved);
+            }
+            notifyDataSetChanged();
+    }
+
+
 
     public int getExceptedUid() {
         return exceptedUid;

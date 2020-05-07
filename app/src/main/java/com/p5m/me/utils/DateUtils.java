@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -496,6 +497,23 @@ public class DateUtils {
             e.printStackTrace();
         }
         return false;
+
+    }
+    public static boolean isTimeCame(String date, String fromTime) {
+        try {
+            date = date + " " + fromTime;
+            Date endDate = classDateExpiry.parse(date);
+            Date startDate = Calendar.getInstance().getTime();
+            long diff = endDate.getTime() - startDate.getTime();
+            long diffMinutes = diff / (60 * 1000) % 60;
+            if(diffMinutes<=AppConstants.TIME_START_DURATION){
+                return true;
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
 
     }
 

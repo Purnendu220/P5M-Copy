@@ -692,6 +692,9 @@ Would you like to view your balance? </string>
     <string name="welcome">Welcome</string>
     <string name="your_home">Your Home</string>
     <string name="start_call">Start</string>
+    <string name="class_not_started_yet">Class not started yet</string>
+    <string name="channel_name" translatable="false">Channel Name (%s)</string>
+    <string name="time_not_came">Your class starts at %s on %s Please try again %s minutes before the class start</string>
 
     <!-- Legal digits for channel names -->
 

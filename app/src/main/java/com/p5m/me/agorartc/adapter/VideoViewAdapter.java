@@ -101,8 +101,7 @@ public abstract class VideoViewAdapter extends RecyclerView.Adapter<RecyclerView
         LogUtils.debug("onBindViewHolder " + position + " " + user + " " + myHolder + " " + myHolder.itemView);
 
         FrameLayout holderView = (FrameLayout) myHolder.itemView;
-
-        if (holderView.getChildCount() == 0) {
+           holderView.removeAllViews();
             SurfaceView target = user.mView;
             stripSurfaceView(target);
             target.setZOrderMediaOverlay(true);
@@ -123,7 +122,7 @@ public abstract class VideoViewAdapter extends RecyclerView.Adapter<RecyclerView
                 holderView.addView(txt);
             }
 
-        }
+
 
         holderView.setOnTouchListener(new OnDoubleTapListener(mContext) {
             @Override
