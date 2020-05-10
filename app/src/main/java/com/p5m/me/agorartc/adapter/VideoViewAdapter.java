@@ -43,6 +43,9 @@ public abstract class VideoViewAdapter extends RecyclerView.Adapter<RecyclerView
 
     protected ClassModel classModel;
 
+    protected boolean showItem;
+
+
     public VideoViewAdapter(Context context, int exceptedUid, HashMap<Integer, VideoStatusData> uids, VideoViewEventListener listener,ClassModel classModel) {
         mContext = context;
         mInflater = ((Activity) context).getLayoutInflater();
@@ -54,6 +57,7 @@ public abstract class VideoViewAdapter extends RecyclerView.Adapter<RecyclerView
         this.exceptedUid = exceptedUid;
 
         this.classModel = classModel;
+        this.showItem = true;
 
         init(uids);
     }
@@ -102,25 +106,33 @@ public abstract class VideoViewAdapter extends RecyclerView.Adapter<RecyclerView
 
         FrameLayout holderView = (FrameLayout) myHolder.itemView;
            holderView.removeAllViews();
-            SurfaceView target = user.mView;
-            stripSurfaceView(target);
-            target.setZOrderMediaOverlay(true);
-            holderView.addView(target, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            if(Helper.isTrainerOrGym(classModel,user)||user.mUid == 0){
-                TextView txt = new TextView(mContext);
-                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                params.setMargins(10,10,0,0);
-                txt.setLayoutParams(params);
-                String textTitle = user.mUid == 0?mContext.getResources().getString(R.string.you):mContext.getResources().getString(R.string.trainer);
-                txt.setText(textTitle);
-                txt.setBackgroundResource(R.drawable.live_name_board_bg);
-                txt.setTextColor(Color.WHITE);
-                int paddingDp = 10;
-                float density = mContext.getResources().getDisplayMetrics().density;
-                int paddingPixel = (int)(paddingDp * density);
-                txt.setPadding(paddingPixel,0,paddingPixel,0);
-                holderView.addView(txt);
-            }
+           if(showItem){
+               holderView.setBackgroundColor(Color.WHITE);
+               SurfaceView target = user.mView;
+               stripSurfaceView(target);
+               target.setZOrderMediaOverlay(showItem);
+               holderView.addView(target, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+               if(Helper.isTrainerOrGym(classModel,user)||user.mUid == 0){
+                   TextView txt = new TextView(mContext);
+                   FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                   params.setMargins(10,10,0,0);
+                   txt.setLayoutParams(params);
+                   String textTitle = user.mUid == 0?mContext.getResources().getString(R.string.you):mContext.getResources().getString(R.string.trainer);
+                   txt.setText(textTitle);
+                   txt.setBackgroundResource(R.drawable.live_name_board_bg);
+                   txt.setTextColor(Color.WHITE);
+                   int paddingDp = 10;
+                   float density = mContext.getResources().getDisplayMetrics().density;
+                   int paddingPixel = (int)(paddingDp * density);
+                   txt.setPadding(paddingPixel,0,paddingPixel,0);
+                   holderView.addView(txt);
+               }
+           }else{
+               holderView.setBackgroundColor(mContext.getResources().getColor(R.color.float_transparent));
+
+           }
+
+
 
 
 
@@ -156,4 +168,6 @@ public abstract class VideoViewAdapter extends RecyclerView.Adapter<RecyclerView
 
         return (String.valueOf(user.mUid) + System.identityHashCode(view)).hashCode();
     }
+
+
 }

@@ -137,6 +137,23 @@ public class TempStorage {
         return MyPreferences.getInstance().getLng();
     }
 
+    public static void setCallStartTime(long time) {
+        MyPreferences.getInstance().setCallStartTime(time);
+    }
+
+    public static void setCallStopTime(long time) {
+        MyPreferences.getInstance().setCallStopTime(time);
+    }
+
+    public static long getCallStartTime() {
+        return MyPreferences.getInstance().getCallStartTime();
+    }
+
+    public static long getCallStopTime() {
+        return MyPreferences.getInstance().getCallStopTime();
+    }
+
+
     public static int isOpenMembershipInfo() {
         return MyPreferences.getInstance().isOpenMembershipInfo();
     }

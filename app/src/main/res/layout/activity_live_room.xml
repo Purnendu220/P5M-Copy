@@ -2,6 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <com.p5m.me.agorartc.ui.VideoGridContainer
         android:id="@+id/live_video_grid_layout"
         android:layout_width="match_parent"
@@ -96,13 +97,27 @@
                 android:textSize="@dimen/text_size_small"/>
         </RelativeLayout>
     </RelativeLayout>
+
+<LinearLayout
+    android:id="@+id/layoutSmallView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_above="@+id/bottom_container"
+    android:layout_marginBottom="@dimen/margin_30"
+    android:padding="@dimen/margin_5"
+    android:visibility="visible"
+    >
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/small_video_view_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_30"
-        android:layout_above="@+id/bottom_container"
+        android:visibility="visible"
+
         />
+
+</LinearLayout>
+
+
 
     <RelativeLayout
         android:id="@+id/bottom_container"
@@ -147,11 +162,14 @@
             android:layout_marginLeft="@dimen/live_bottom_btn_margin"
             android:layout_marginStart="@dimen/live_bottom_btn_margin"
             android:layout_centerVertical="true"
-            android:src="@drawable/btn_more"
+            android:src="@drawable/btn_hide_show"
             android:scaleType="centerCrop"
             android:background="@drawable/rounded_bg_full_transparent"
             android:onClick="onMoreClicked"
             android:visibility="gone"
+            android:tint="@color/white"
+            android:padding="@dimen/margin_15"
+
             />
         <ImageView
             android:id="@+id/live_btn_push_stream"

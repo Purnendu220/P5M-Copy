@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.p5m.me.agorartc.listeners.VideoViewEventListener;
 import com.p5m.me.agorartc.stats.VideoStatusData;
 import com.p5m.me.data.main.ClassModel;
+import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.utils.LogUtils;
 
 
@@ -38,6 +39,8 @@ public class SmallVideoViewAdapter extends VideoViewAdapter {
             mItemWidth = outMetrics.widthPixels / 4;
             mItemHeight = outMetrics.heightPixels / 4;
         }
+        EventBroadcastHelper.onUserCountChange(mUsers.size());
+
     }
 
     @Override
@@ -51,6 +54,8 @@ public class SmallVideoViewAdapter extends VideoViewAdapter {
         }
 
         notifyDataSetChanged();
+        EventBroadcastHelper.onUserCountChange(mUsers.size());
+
     }
     public void notifyUserAdded(VideoStatusData dataAdded) {
         boolean isDataAlreadyadded=false;
@@ -65,6 +70,7 @@ public class SmallVideoViewAdapter extends VideoViewAdapter {
             mUsers.add(dataAdded);
             notifyDataSetChanged();
         }
+        EventBroadcastHelper.onUserCountChange(mUsers.size());
 
         }
 
@@ -80,7 +86,24 @@ public class SmallVideoViewAdapter extends VideoViewAdapter {
                 mUsers.remove(indexToBeRemoved);
             }
             notifyDataSetChanged();
+            EventBroadcastHelper.onUserCountChange(mUsers.size());
+
+        }
+    public void clearAdapter() {
+        mUsers.clear();
+        notifyDataSetChanged();
+
+        EventBroadcastHelper.onUserCountChange(mUsers.size());
+
     }
+    public void refreshAdapter(boolean value) {
+        this.showItem = value;
+
+        notifyDataSetChanged();
+
+
+    }
+
 
 
 

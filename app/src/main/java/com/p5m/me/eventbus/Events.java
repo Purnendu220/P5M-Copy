@@ -145,4 +145,17 @@ public class Events {
         }
 
     }
+
+    public static class OnUserCountChange{
+        public int userCount;
+        public OnUserCountChange(int userCount) {
+            this.userCount=userCount;
+        }
+
+    }
+    public static class OnUserDisconnectedCall{
+        public OnUserDisconnectedCall() {
+        }
+
+    }
 }

@@ -420,7 +420,11 @@
                             <ImageView
                                 android:id="@+id/imageViewChannelName"
                                 style="@style/ClassIconSmall"
-                                android:src="@drawable/class_icon" />
+                                android:src="@drawable/webcam"
+                                android:tint="@color/theme_dark_text"
+                                android:padding="@dimen/margin_3"
+
+                                />
 
                             <TextView
                                 android:id="@+id/textViewChannelNAme"

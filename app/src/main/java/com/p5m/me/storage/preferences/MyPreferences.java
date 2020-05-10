@@ -73,6 +73,19 @@ public class MyPreferences {
         return PreferencesManager.getString(AppConstants.Pref.LONGITUDE, "");
     }
 
+    public long getCallStartTime() {
+        return PreferencesManager.getLong(AppConstants.Pref.CALL_START_TIME, 0);
+    }
+    public void setCallStartTime(long startTime) {
+         PreferencesManager.putLong(AppConstants.Pref.CALL_START_TIME,startTime);
+    }
+
+    public long getCallStopTime() {
+        return PreferencesManager.getLong(AppConstants.Pref.CALL_STOP_TIME, 0);
+    }
+    public void setCallStopTime(long startTime) {
+        PreferencesManager.putLong(AppConstants.Pref.CALL_STOP_TIME,startTime);
+    }
     public void saveAuthToken(String authToken) {
         if (authToken == null) {
             authToken = "";

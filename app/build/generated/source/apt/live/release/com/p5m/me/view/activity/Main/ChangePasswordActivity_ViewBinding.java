@@ -18,9 +18,9 @@ import java.lang.Override;
 public class ChangePasswordActivity_ViewBinding implements Unbinder {
   private ChangePasswordActivity target;
 
-  private View view7f0a017c;
+  private View view7f0a017d;
 
-  private View view7f0a0169;
+  private View view7f0a016a;
 
   @UiThread
   public ChangePasswordActivity_ViewBinding(ChangePasswordActivity target) {
@@ -34,7 +34,7 @@ public class ChangePasswordActivity_ViewBinding implements Unbinder {
     View view;
     view = Utils.findRequiredView(source, R.id.imageViewDone, "field 'imageViewDone' and method 'imageViewDone'");
     target.imageViewDone = Utils.castView(view, R.id.imageViewDone, "field 'imageViewDone'", ImageView.class);
-    view7f0a017c = view;
+    view7f0a017d = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -49,7 +49,7 @@ public class ChangePasswordActivity_ViewBinding implements Unbinder {
     target.editTextNewPass = Utils.findRequiredViewAsType(source, R.id.editTextNewPass, "field 'editTextNewPass'", EditText.class);
     target.editTextCurrPass = Utils.findRequiredViewAsType(source, R.id.editTextCurrPass, "field 'editTextCurrPass'", EditText.class);
     view = Utils.findRequiredView(source, R.id.imageViewBack, "method 'imageViewBack'");
-    view7f0a0169 = view;
+    view7f0a016a = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -74,9 +74,9 @@ public class ChangePasswordActivity_ViewBinding implements Unbinder {
     target.editTextNewPass = null;
     target.editTextCurrPass = null;
 
-    view7f0a017c.setOnClickListener(null);
-    view7f0a017c = null;
-    view7f0a0169.setOnClickListener(null);
-    view7f0a0169 = null;
+    view7f0a017d.setOnClickListener(null);
+    view7f0a017d = null;
+    view7f0a016a.setOnClickListener(null);
+    view7f0a016a = null;
   }
 }

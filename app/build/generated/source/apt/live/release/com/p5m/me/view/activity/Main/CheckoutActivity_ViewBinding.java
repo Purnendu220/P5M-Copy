@@ -21,7 +21,7 @@ import java.lang.Override;
 public class CheckoutActivity_ViewBinding implements Unbinder {
   private CheckoutActivity target;
 
-  private View view7f0a0169;
+  private View view7f0a016a;
 
   @UiThread
   public CheckoutActivity_ViewBinding(CheckoutActivity target) {
@@ -72,7 +72,7 @@ public class CheckoutActivity_ViewBinding implements Unbinder {
     target.recyclerView = Utils.findRequiredViewAsType(source, R.id.recyclerView, "field 'recyclerView'", RecyclerView.class);
     target.scrollView = Utils.findRequiredViewAsType(source, R.id.scrollview, "field 'scrollView'", ScrollView.class);
     view = Utils.findRequiredView(source, R.id.imageViewBack, "method 'imageViewBack'");
-    view7f0a0169 = view;
+    view7f0a016a = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -127,7 +127,7 @@ public class CheckoutActivity_ViewBinding implements Unbinder {
     target.recyclerView = null;
     target.scrollView = null;
 
-    view7f0a0169.setOnClickListener(null);
-    view7f0a0169 = null;
+    view7f0a016a.setOnClickListener(null);
+    view7f0a016a = null;
   }
 }

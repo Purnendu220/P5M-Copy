@@ -18,11 +18,11 @@ import java.lang.Override;
 public class LoginActivity_ViewBinding implements Unbinder {
   private LoginActivity target;
 
-  private View view7f0a03ed;
+  private View view7f0a03f0;
 
-  private View view7f0a0442;
+  private View view7f0a0445;
 
-  private View view7f0a007f;
+  private View view7f0a0080;
 
   @UiThread
   public LoginActivity_ViewBinding(LoginActivity target) {
@@ -36,7 +36,7 @@ public class LoginActivity_ViewBinding implements Unbinder {
     View view;
     view = Utils.findRequiredView(source, R.id.textViewForgetPassword, "field 'textViewForgetPassword' and method 'textViewForgetPassword'");
     target.textViewForgetPassword = Utils.castView(view, R.id.textViewForgetPassword, "field 'textViewForgetPassword'", TextView.class);
-    view7f0a03ed = view;
+    view7f0a03f0 = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -45,7 +45,7 @@ public class LoginActivity_ViewBinding implements Unbinder {
     });
     view = Utils.findRequiredView(source, R.id.textViewSignUp, "field 'textViewSignUp' and method 'textViewSignUp'");
     target.textViewSignUp = Utils.castView(view, R.id.textViewSignUp, "field 'textViewSignUp'", TextView.class);
-    view7f0a0442 = view;
+    view7f0a0445 = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -59,7 +59,7 @@ public class LoginActivity_ViewBinding implements Unbinder {
     target.buttonLoginFacebook = Utils.findRequiredViewAsType(source, R.id.buttonLoginFacebook, "field 'buttonLoginFacebook'", Button.class);
     view = Utils.findRequiredView(source, R.id.buttonLogin, "field 'buttonLogin' and method 'buttonLogin'");
     target.buttonLogin = Utils.castView(view, R.id.buttonLogin, "field 'buttonLogin'", Button.class);
-    view7f0a007f = view;
+    view7f0a0080 = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -88,11 +88,11 @@ public class LoginActivity_ViewBinding implements Unbinder {
     target.layoutProgressRoot = null;
     target.layoutContainer = null;
 
-    view7f0a03ed.setOnClickListener(null);
-    view7f0a03ed = null;
-    view7f0a0442.setOnClickListener(null);
-    view7f0a0442 = null;
-    view7f0a007f.setOnClickListener(null);
-    view7f0a007f = null;
+    view7f0a03f0.setOnClickListener(null);
+    view7f0a03f0 = null;
+    view7f0a0445.setOnClickListener(null);
+    view7f0a0445 = null;
+    view7f0a0080.setOnClickListener(null);
+    view7f0a0080 = null;
   }
 }

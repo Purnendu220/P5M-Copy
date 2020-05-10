@@ -17,9 +17,9 @@ import java.lang.Override;
 public class ChooseFocusActivity_ViewBinding implements Unbinder {
   private ChooseFocusActivity target;
 
-  private View view7f0a017c;
+  private View view7f0a017d;
 
-  private View view7f0a0169;
+  private View view7f0a016a;
 
   @UiThread
   public ChooseFocusActivity_ViewBinding(ChooseFocusActivity target) {
@@ -35,7 +35,7 @@ public class ChooseFocusActivity_ViewBinding implements Unbinder {
     target.progressBarDone = Utils.findRequiredViewAsType(source, R.id.progressBarDone, "field 'progressBarDone'", ProgressBar.class);
     view = Utils.findRequiredView(source, R.id.imageViewDone, "field 'imageViewDone' and method 'imageViewDone'");
     target.imageViewDone = Utils.castView(view, R.id.imageViewDone, "field 'imageViewDone'", ImageView.class);
-    view7f0a017c = view;
+    view7f0a017d = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -43,7 +43,7 @@ public class ChooseFocusActivity_ViewBinding implements Unbinder {
       }
     });
     view = Utils.findRequiredView(source, R.id.imageViewBack, "method 'imageViewBack'");
-    view7f0a0169 = view;
+    view7f0a016a = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -63,9 +63,9 @@ public class ChooseFocusActivity_ViewBinding implements Unbinder {
     target.progressBarDone = null;
     target.imageViewDone = null;
 
-    view7f0a017c.setOnClickListener(null);
-    view7f0a017c = null;
-    view7f0a0169.setOnClickListener(null);
-    view7f0a0169 = null;
+    view7f0a017d.setOnClickListener(null);
+    view7f0a017d = null;
+    view7f0a016a.setOnClickListener(null);
+    view7f0a016a = null;
   }
 }
