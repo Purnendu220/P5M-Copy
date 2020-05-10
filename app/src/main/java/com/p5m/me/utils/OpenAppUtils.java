@@ -27,8 +27,9 @@ public class OpenAppUtils {
                 break;
             case AppConstants.channelType.CHANNEL_SKYPE:
                 openSkype(context,url);
+            case AppConstants.channelType.CHANNEL_INAPP:
                 break;
-            case AppConstants.channelType.CHANNEL_JITSI:
+                case AppConstants.channelType.CHANNEL_JITSI:
             case AppConstants.channelType.CHANNEL_GOOGLE:
             default:
                 openBrowser(context,url);

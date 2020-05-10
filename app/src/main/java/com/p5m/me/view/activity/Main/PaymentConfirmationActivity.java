@@ -611,7 +611,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         layoutValidity.setVisibility(View.GONE);
         viewClass.setVisibility(View.GONE);
         textViewPaymentStatus.setText(R.string.payment_pending);
-        textViewPaymentStatus.setTextColor(getResources().getColor(R.color.theme_book));
+        textViewPaymentStatus.setTextColor(getResources().getColor(R.color.payment_pending));
         buttonContactUs.setVisibility(View.GONE);
         textViewPaymentReference.setVisibility(View.VISIBLE);
 

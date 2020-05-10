@@ -162,6 +162,8 @@ public class AppConstants {
         public static final String RATING_PARAM = "rating_param";
         public static final String LATITUDE = "latitude";
         public static final String LONGITUDE = "longitude";
+        public static final String CALL_START_TIME = "call_start_time";
+        public static final String CALL_STOP_TIME = "call_stop_time";
 
 
         public static final String PAYMENT_ERROR_RESPONSE = "payment_error_response";
@@ -400,6 +402,9 @@ public class AppConstants {
         public static final String NOTIFICATION_TYPE = "notificationCategory";
         public static final String USER_ID_TO_NOTIFY = "userIdToNotify";
         public static final String URL = "url";
+        public static final String PLATFORM = "platform";
+        public static final String LINK = "link";
+
 
         public static final String CLASS_FROM_TIME = "fromTime";
         public static final String CLASS_TO_TIME = "toTime";

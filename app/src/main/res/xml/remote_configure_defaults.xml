@@ -122,6 +122,15 @@
         <value>View Plan</value>
     </entry>
     <entry>
+        <key>call_finish_message</key>
+        <value>Congrats you have completed your workout.Book another class and stayfit.</value>
+    </entry>
+    <entry>
+        <key>call_finish_button_title</key>
+        <value>Book another class </value>
+    </entry>
+
+    <entry>
         <key>SELECT_PLAN_COLOR</key>
         <value>#3d85ea</value>
     </entry>

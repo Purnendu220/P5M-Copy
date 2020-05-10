@@ -85,7 +85,7 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
         }
 
         networkCommunicator.getActivities(this, false);
-            (new RemoteConfigure()).fetchRemoteConfig(context);
+        RemoteConfigure.getFirebaseRemoteConfig(context).fetchRemoteConfig();
 //        RemoteConfigSetUp.getValues();
 
         if (Build.VERSION.SDK_INT >= 23) {

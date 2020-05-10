@@ -42,6 +42,7 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.CommonUtillity;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
@@ -50,6 +51,7 @@ import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.activity.custom.BottomTapLayout;
 import com.p5m.me.view.custom.CustomRateAlertDialog;
+import com.p5m.me.view.custom.WorkoutDurationAlert;
 import com.p5m.me.view.fragment.FindClass;
 import com.p5m.me.view.fragment.MembershipFragment;
 import com.p5m.me.view.fragment.MySchedule;
@@ -239,7 +241,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         FirebaseDynamicLinnk.getDynamicLink(this, getIntent());
         handler = new Handler(Looper.getMainLooper());
         setupBottomTabs();
-        (new RemoteConfigure()).fetchRemoteConfig(context);
+        RemoteConfigure.getFirebaseRemoteConfig(context).fetchRemoteConfig();
         homeAdapter = new HomeAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_TABS, PROFILE_TAB_POSITION, SCHEDULE_TAB_POSITION, NAVIGATED_FROM_INT, NUMBER_OF_PACKAGES_TO_BUY, CLASS_OBJECT, BOOK_WITH_FRIEND_DATA);
         viewPager.setAdapter(homeAdapter);
         viewPager.addOnPageChangeListener(this);
@@ -282,6 +284,10 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void notificationReceived(Events.NotificationCountUpdated notificationCountUpdated) {
         setNotificationIcon();
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onCallDisconnected(Events.OnUserDisconnectedCall onUserDisconnectedCall){
+        showCallDurationAlert();
     }
 
     private void setNotificationIcon() {
@@ -704,7 +710,26 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         }
 
     }
+private void showCallDurationAlert(){
+        try{
+            long start = TempStorage.getCallStartTime();
+            long end = TempStorage.getCallStopTime();
+            long duration = end - start;
+            if(duration>0){
+                String durationString = CommonUtillity.formatDuration(duration);
+                LogUtils.networkSuccess(durationString);
+                String message = RemoteConfigure.getFirebaseRemoteConfig(mContext).getRemoteConfigValue(RemoteConfigConst.CALL_FINISH_MESSAGE);
+                String title = durationString;
+                String buttonTitle =RemoteConfigure.getFirebaseRemoteConfig(mContext).getRemoteConfigValue(RemoteConfigConst.CALL_FINISH_BUTTON_TITLE);
 
+                // new WorkoutDurationAlert(mContext,title,message,buttonTitle).show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+}
 }
 
 

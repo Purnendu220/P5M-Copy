@@ -65,6 +65,9 @@ public class RemoteConfigConst {
     public static String PLAN_DESCRIPTION_DROP_IN = "drop_in_description";
     public static String ON_BOARDING_DATA = "onboarding";
     public static String CHANNEL_KEY = "channels";
+    public static String CALL_FINISH_MESSAGE="call_finish_message";
+    public static String CALL_FINISH_BUTTON_TITLE="call_finish_button_title";
+
 
 
 

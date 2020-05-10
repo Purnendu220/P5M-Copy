@@ -14,7 +14,7 @@ import java.lang.Override;
 public class TrainerListActivity_ViewBinding implements Unbinder {
   private TrainerListActivity target;
 
-  private View view7f0a0169;
+  private View view7f0a016a;
 
   @UiThread
   public TrainerListActivity_ViewBinding(TrainerListActivity target) {
@@ -27,7 +27,7 @@ public class TrainerListActivity_ViewBinding implements Unbinder {
 
     View view;
     view = Utils.findRequiredView(source, R.id.imageViewBack, "method 'imageViewBack'");
-    view7f0a0169 = view;
+    view7f0a016a = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -43,7 +43,7 @@ public class TrainerListActivity_ViewBinding implements Unbinder {
     target = null;
 
 
-    view7f0a0169.setOnClickListener(null);
-    view7f0a0169 = null;
+    view7f0a016a.setOnClickListener(null);
+    view7f0a016a = null;
   }
 }

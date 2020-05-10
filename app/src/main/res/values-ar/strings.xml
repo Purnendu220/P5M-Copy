@@ -1051,6 +1051,7 @@
     <string name="start_call">Start</string>
     <string name="class_not_started_yet">Class not started yet</string>
     <string name="time_not_came">Your class starts at %s on %s Please try again %s minutes before the class start</string>
+    <string name="on_p5m">On P5M</string>
 
     <!-- Legal digits for channel names -->
 

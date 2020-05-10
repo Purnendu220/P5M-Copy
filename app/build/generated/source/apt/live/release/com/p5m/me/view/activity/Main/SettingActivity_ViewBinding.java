@@ -14,7 +14,7 @@ import java.lang.Override;
 public class SettingActivity_ViewBinding implements Unbinder {
   private SettingActivity target;
 
-  private View view7f0a0169;
+  private View view7f0a016a;
 
   @UiThread
   public SettingActivity_ViewBinding(SettingActivity target) {
@@ -38,7 +38,7 @@ public class SettingActivity_ViewBinding implements Unbinder {
     target.imageViewLogout = Utils.findRequiredView(source, R.id.imageViewLogout, "field 'imageViewLogout'");
     target.progressBarLogout = Utils.findRequiredView(source, R.id.progressBarLogout, "field 'progressBarLogout'");
     view = Utils.findRequiredView(source, R.id.imageViewBack, "method 'imageViewBack'");
-    view7f0a0169 = view;
+    view7f0a016a = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -66,7 +66,7 @@ public class SettingActivity_ViewBinding implements Unbinder {
     target.imageViewLogout = null;
     target.progressBarLogout = null;
 
-    view7f0a0169.setOnClickListener(null);
-    view7f0a0169 = null;
+    view7f0a016a.setOnClickListener(null);
+    view7f0a016a = null;
   }
 }
