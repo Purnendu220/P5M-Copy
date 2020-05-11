@@ -406,10 +406,11 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
 
         switch (menuItem.getItemId()) {
             case R.id.actionSettings: {
-//                String url ="https://youtu.be/vM_WO2NJiZU";
-                String url ="https://s3-eu-west-1.amazonaws.com/p5m.prod.media/recording/192003/4678e4dd574b5aaf31b4c6954f2b239f_192003.m3u8";
-                VideoPlayerActivity.openActivity(context,url);
-//                SettingActivity.openActivity(context);
+                SettingActivity.openActivity(context);
+                //                String url ="https://youtu.be/vM_WO2NJiZU";
+//                String url ="https://s3-eu-west-1.amazonaws.com/p5m.prod.media/recording/192003/4678e4dd574b5aaf31b4c6954f2b239f_192003.m3u8";
+//                VideoPlayerActivity.openActivity(context,url);
+
                 return true;
             }
             case R.id.actionEditProfile: {

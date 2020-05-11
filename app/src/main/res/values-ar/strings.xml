@@ -1054,6 +1054,7 @@
     <string name="available_balance">Available Balance</string>
     <string name="add_money">Add Money</string>
     <string name="proceed_add_money">Proceed add money</string>
+    <string name="on_p5m">On P5M</string>
 
     <!-- Legal digits for channel names -->
 

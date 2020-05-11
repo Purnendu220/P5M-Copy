@@ -19,9 +19,9 @@ import java.lang.Override;
 public class EditProfileActivity_ViewBinding implements Unbinder {
   private EditProfileActivity target;
 
-  private View view7f0a0169;
+  private View view7f0a016a;
 
-  private View view7f0a017c;
+  private View view7f0a017d;
 
   @UiThread
   public EditProfileActivity_ViewBinding(EditProfileActivity target) {
@@ -49,7 +49,7 @@ public class EditProfileActivity_ViewBinding implements Unbinder {
     target.imageViewDob = Utils.findRequiredViewAsType(source, R.id.imageViewDob, "field 'imageViewDob'", ImageView.class);
     view = Utils.findRequiredView(source, R.id.imageViewBack, "field 'imageViewBack' and method 'imageViewBack'");
     target.imageViewBack = Utils.castView(view, R.id.imageViewBack, "field 'imageViewBack'", ImageView.class);
-    view7f0a0169 = view;
+    view7f0a016a = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -60,7 +60,7 @@ public class EditProfileActivity_ViewBinding implements Unbinder {
     target.progressBar = Utils.findRequiredView(source, R.id.progressBar, "field 'progressBar'");
     view = Utils.findRequiredView(source, R.id.imageViewDone, "field 'imageViewDone' and method 'imageViewDone'");
     target.imageViewDone = Utils.castView(view, R.id.imageViewDone, "field 'imageViewDone'", ImageView.class);
-    view7f0a017c = view;
+    view7f0a017d = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -97,9 +97,9 @@ public class EditProfileActivity_ViewBinding implements Unbinder {
     target.imageViewDone = null;
     target.progressBarDone = null;
 
-    view7f0a0169.setOnClickListener(null);
-    view7f0a0169 = null;
-    view7f0a017c.setOnClickListener(null);
-    view7f0a017c = null;
+    view7f0a016a.setOnClickListener(null);
+    view7f0a016a = null;
+    view7f0a017d.setOnClickListener(null);
+    view7f0a017d = null;
   }
 }

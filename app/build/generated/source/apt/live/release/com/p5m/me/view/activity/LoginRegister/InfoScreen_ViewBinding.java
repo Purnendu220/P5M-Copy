@@ -17,9 +17,9 @@ import java.lang.Override;
 public class InfoScreen_ViewBinding implements Unbinder {
   private InfoScreen target;
 
-  private View view7f0a0086;
+  private View view7f0a0087;
 
-  private View view7f0a0404;
+  private View view7f0a0407;
 
   @UiThread
   public InfoScreen_ViewBinding(InfoScreen target) {
@@ -35,7 +35,7 @@ public class InfoScreen_ViewBinding implements Unbinder {
     target.layoutIndicator = Utils.findRequiredViewAsType(source, R.id.layoutIndicator, "field 'layoutIndicator'", LinearLayout.class);
     view = Utils.findRequiredView(source, R.id.buttonRegister, "field 'buttonRegister' and method 'register'");
     target.buttonRegister = Utils.castView(view, R.id.buttonRegister, "field 'buttonRegister'", Button.class);
-    view7f0a0086 = view;
+    view7f0a0087 = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -43,7 +43,7 @@ public class InfoScreen_ViewBinding implements Unbinder {
       }
     });
     view = Utils.findRequiredView(source, R.id.textViewLogin, "method 'login'");
-    view7f0a0404 = view;
+    view7f0a0407 = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -63,9 +63,9 @@ public class InfoScreen_ViewBinding implements Unbinder {
     target.layoutIndicator = null;
     target.buttonRegister = null;
 
-    view7f0a0086.setOnClickListener(null);
-    view7f0a0086 = null;
-    view7f0a0404.setOnClickListener(null);
-    view7f0a0404 = null;
+    view7f0a0087.setOnClickListener(null);
+    view7f0a0087 = null;
+    view7f0a0407.setOnClickListener(null);
+    view7f0a0407 = null;
   }
 }

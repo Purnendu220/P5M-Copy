@@ -16,7 +16,7 @@ import java.lang.Override;
 public class LocationListMapActivity_ViewBinding implements Unbinder {
   private LocationListMapActivity target;
 
-  private View view7f0a0169;
+  private View view7f0a016a;
 
   @UiThread
   public LocationListMapActivity_ViewBinding(LocationListMapActivity target) {
@@ -30,7 +30,7 @@ public class LocationListMapActivity_ViewBinding implements Unbinder {
     View view;
     view = Utils.findRequiredView(source, R.id.imageViewBack, "field 'imageViewBack' and method 'imageViewBack'");
     target.imageViewBack = Utils.castView(view, R.id.imageViewBack, "field 'imageViewBack'", ImageView.class);
-    view7f0a0169 = view;
+    view7f0a016a = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -50,7 +50,7 @@ public class LocationListMapActivity_ViewBinding implements Unbinder {
     target.imageViewBack = null;
     target.recyclerView = null;
 
-    view7f0a0169.setOnClickListener(null);
-    view7f0a0169 = null;
+    view7f0a016a.setOnClickListener(null);
+    view7f0a016a = null;
   }
 }

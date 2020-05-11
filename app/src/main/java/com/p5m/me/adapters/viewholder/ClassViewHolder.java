@@ -14,6 +14,7 @@ import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.CommonUtillity;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
 import com.p5m.me.utils.LanguageUtils;
@@ -80,6 +81,9 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.textViewFitnessLevel)
     public TextView textViewFitnessLevel;
 
+    @BindView(R.id.textViewChannelName)
+    public TextView textViewChannelName;
+
     private final Context context;
     private int shownInScreen;
 
@@ -99,11 +103,17 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
 
             final ClassModel model = (ClassModel) data;
 
-//            if (model.isUserJoinStatus()) {
-//                imageViewOptions.setVisibility(View.GONE);
-//            } else {
-//                imageViewOptions.setVisibility(View.VISIBLE);
-//            }
+            if(model.isVideoClass()){
+                textViewChannelName.setVisibility(View.VISIBLE);
+                String channelName = CommonUtillity.getChannelName(model.getPlatform());
+                if(channelName!=null&&!channelName.isEmpty()){
+                    textViewChannelName.setText(channelName);
+                }else{
+                    textViewChannelName.setVisibility(View.GONE);
+                }
+            }else{
+                textViewChannelName.setVisibility(View.GONE);
+            }
 
             if (Helper.isSpecialClass(model)) {
                 textViewSpecialClass.setVisibility(View.VISIBLE);
@@ -120,6 +130,7 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
             } else {
                 ImageUtils.clearImage(context, imageViewClass);
             }
+
 
             if (model.getTrainerDetail() != null) {
 
@@ -190,6 +201,7 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
             } else {
                 layoutFitnessLevel.setVisibility(View.GONE);
             }
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

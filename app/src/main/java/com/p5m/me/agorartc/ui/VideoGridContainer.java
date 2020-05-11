@@ -115,7 +115,6 @@ public class VideoGridContainer extends RelativeLayout implements Runnable {
         RelativeLayout layout = new RelativeLayout(getContext());
 
         layout.setId(surface.hashCode());
-
         RelativeLayout.LayoutParams videoLayoutParams =
                 new RelativeLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,

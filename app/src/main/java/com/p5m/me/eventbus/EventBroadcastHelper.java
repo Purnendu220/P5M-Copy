@@ -225,6 +225,14 @@ public class EventBroadcastHelper {
         GlobalBus.getBus().post(new Events.ChangeCountry());
     }
 
+    public static void onUserCountChange(int count){
+        GlobalBus.getBus().post(new Events.OnUserCountChange(count));
+
+    }
+    public static void onCallDisconnected(){
+        GlobalBus.getBus().post(new Events.OnUserDisconnectedCall());
+    }
+
     public static void sendDeviceUpdate(Context context) {
 
         try {
@@ -282,6 +290,8 @@ public class EventBroadcastHelper {
             LogUtils.exception(e);
         }
     }
+
+
 
 
 }

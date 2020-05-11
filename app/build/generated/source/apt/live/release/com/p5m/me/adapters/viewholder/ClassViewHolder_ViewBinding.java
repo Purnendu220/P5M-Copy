@@ -42,6 +42,7 @@ public class ClassViewHolder_ViewBinding implements Unbinder {
     target.layoutFitnessLevel = Utils.findRequiredViewAsType(source, R.id.layoutFitnessLevel, "field 'layoutFitnessLevel'", LinearLayout.class);
     target.imageViewClassFitnessLevel = Utils.findRequiredViewAsType(source, R.id.imageViewClassFitnessLevel, "field 'imageViewClassFitnessLevel'", ImageView.class);
     target.textViewFitnessLevel = Utils.findRequiredViewAsType(source, R.id.textViewFitnessLevel, "field 'textViewFitnessLevel'", TextView.class);
+    target.textViewChannelName = Utils.findRequiredViewAsType(source, R.id.textViewChannelName, "field 'textViewChannelName'", TextView.class);
   }
 
   @Override
@@ -72,5 +73,6 @@ public class ClassViewHolder_ViewBinding implements Unbinder {
     target.layoutFitnessLevel = null;
     target.imageViewClassFitnessLevel = null;
     target.textViewFitnessLevel = null;
+    target.textViewChannelName = null;
   }
 }

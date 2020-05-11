@@ -15,7 +15,7 @@ import java.lang.Override;
 public class SettingNotification_ViewBinding implements Unbinder {
   private SettingNotification target;
 
-  private View view7f0a0169;
+  private View view7f0a016a;
 
   @UiThread
   public SettingNotification_ViewBinding(SettingNotification target) {
@@ -29,7 +29,7 @@ public class SettingNotification_ViewBinding implements Unbinder {
     View view;
     target.switchCompatNotifyFavClass = Utils.findRequiredViewAsType(source, R.id.switchCompatNotifyFavClass, "field 'switchCompatNotifyFavClass'", SwitchCompat.class);
     view = Utils.findRequiredView(source, R.id.imageViewBack, "method 'imageViewBack'");
-    view7f0a0169 = view;
+    view7f0a016a = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -47,7 +47,7 @@ public class SettingNotification_ViewBinding implements Unbinder {
 
     target.switchCompatNotifyFavClass = null;
 
-    view7f0a0169.setOnClickListener(null);
-    view7f0a0169 = null;
+    view7f0a016a.setOnClickListener(null);
+    view7f0a016a = null;
   }
 }
