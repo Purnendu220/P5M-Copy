@@ -648,7 +648,6 @@ Would you like to view your balance? </string>
     </string-array>
 
 
-
     <!-- Main Activity -->
     <string name="start_broadcast_title">Start Live Broadcast</string>
     <string name="topic_edit_hint">Pick a topic to chat</string>
@@ -695,6 +694,9 @@ Would you like to view your balance? </string>
     <string name="class_not_started_yet">Class not started yet</string>
     <string name="channel_name" translatable="false">Channel Name (%s)</string>
     <string name="time_not_came">Your class starts at %s on %s Please try again %s minutes before the class start</string>
+    <string name="available_balance">Available Balance</string>
+    <string name="add_money">Add Money</string>
+    <string name="proceed_add_money">Proceed add money</string>
 
     <!-- Legal digits for channel names -->
 

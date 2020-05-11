@@ -43,6 +43,7 @@ import com.p5m.me.utils.RefrenceWrapper;
 import com.p5m.me.view.activity.Main.EditProfileActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.Main.SettingActivity;
+import com.p5m.me.view.activity.Main.VideoPlayerActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.activity.custom.MyRecyclerView;
 import com.p5m.me.view.custom.CustomAlertDialog;
@@ -405,7 +406,10 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
 
         switch (menuItem.getItemId()) {
             case R.id.actionSettings: {
-                SettingActivity.openActivity(context);
+//                String url ="https://youtu.be/vM_WO2NJiZU";
+                String url ="https://s3-eu-west-1.amazonaws.com/p5m.prod.media/recording/192003/4678e4dd574b5aaf31b4c6954f2b239f_192003.m3u8";
+                VideoPlayerActivity.openActivity(context,url);
+//                SettingActivity.openActivity(context);
                 return true;
             }
             case R.id.actionEditProfile: {

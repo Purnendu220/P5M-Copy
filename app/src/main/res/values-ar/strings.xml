@@ -1051,6 +1051,9 @@
     <string name="start_call">Start</string>
     <string name="class_not_started_yet">Class not started yet</string>
     <string name="time_not_came">Your class starts at %s on %s Please try again %s minutes before the class start</string>
+    <string name="available_balance">Available Balance</string>
+    <string name="add_money">Add Money</string>
+    <string name="proceed_add_money">Proceed add money</string>
 
     <!-- Legal digits for channel names -->
 
