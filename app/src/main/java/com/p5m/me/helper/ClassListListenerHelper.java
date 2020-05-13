@@ -48,6 +48,7 @@ import com.p5m.me.view.activity.Main.ClassProfileActivity;
 import com.p5m.me.view.activity.Main.ContactActivity;
 import com.p5m.me.view.activity.Main.FullRatingActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
+import com.p5m.me.view.activity.Main.VideoPlayerActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.custom.CustomDialogCancelBooking;
@@ -221,7 +222,8 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
                 }
 
-            break;
+
+                break;
 
             default:
                 if (shownIn != AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED) {
