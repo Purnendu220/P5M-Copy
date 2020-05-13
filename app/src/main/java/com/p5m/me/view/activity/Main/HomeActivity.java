@@ -235,6 +235,10 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             LogUtils.debug("VarunSCHEDULE getIntent " + SCHEDULE_TAB_POSITION);
 
         }
+        if(TempStorage.getDefaultPage()>-1){
+            INITIAL_POSITION = TempStorage.getDefaultPage();
+            TempStorage.setDefaultPage(-1);
+        }
         RefrenceWrapper.getRefrenceWrapper(this).setActivity(this);
         buyClassesLayout.setOnClickListener(this);
         GlobalBus.getBus().register(this);

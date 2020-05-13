@@ -153,6 +153,14 @@ public class TempStorage {
         return MyPreferences.getInstance().getCallStopTime();
     }
 
+    public static int getDefaultPage() {
+        return MyPreferences.getInstance().getDefaultPage();
+    }
+
+    public static void setDefaultPage(int page) {
+        MyPreferences.getInstance().setDefaultPage(page);
+    }
+
 
     public static int isOpenMembershipInfo() {
         return MyPreferences.getInstance().isOpenMembershipInfo();

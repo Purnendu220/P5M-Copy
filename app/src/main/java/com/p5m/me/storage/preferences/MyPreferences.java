@@ -108,6 +108,15 @@ public class MyPreferences {
     }
 
 
+    public void setDefaultPage(int page){
+        PreferencesManager.putInt(AppConstants.Pref.SET_DEFAULT_PAGE, page);
+
+    }
+    public int getDefaultPage(){
+       return PreferencesManager.getInt(AppConstants.Pref.SET_DEFAULT_PAGE, -1);
+
+    }
+
     public void setOpenMembershipInfo(int state) {
         PreferencesManager.putInt(AppConstants.Pref.OPEN_MEMBERSHIP_INFO, state);
 
