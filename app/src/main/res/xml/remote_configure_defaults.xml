@@ -277,7 +277,18 @@
 
         </value>
     </entry>
-
+    <entry>
+        <key>youtube_section_title</key>
+        <value>P5M Youtube</value>
+    </entry>
+    <entry>
+        <key>youtube_section_subtitle</key>
+        <value>Youtube videos</value>
+    </entry>
+    <entry>
+        <key>play_list_id</key>
+        <value>PLyPopszkD3s9KcILzi_GmRYrI4ZijyS3N</value>
+    </entry>
 
 
 </defaultsMap>

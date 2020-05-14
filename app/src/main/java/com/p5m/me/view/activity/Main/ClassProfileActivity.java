@@ -646,16 +646,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             case R.id.relativeLayoutVideoClass:
                 if (model instanceof ClassModel) {
                     ClassModel data = (ClassModel) model;
-                    if(data.getPlatform()==null||data.getPlatform().equalsIgnoreCase(AppConstants.channelType.CHANNEL_INAPP)){
-                        networkCommunicator.getTokenForClass(((ClassModel) model).getClassSessionId(),this);
-                    }else{
-                        if(data.getLink()!=null){
-                            OpenAppUtils.openExternalApps(context,data.getPlatform(),data.getLink());
-                        }else{
-                            ToastUtils.show(context,context.getResources().getString(R.string.class_not_started_yet));
+                    networkCommunicator.getTokenForClass(((ClassModel) model).getClassSessionId(),this);
 
-                        }
-                    }
                 }
                 break;
         }
@@ -869,7 +861,17 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 break;
             case NetworkCommunicator.RequestCode.GET_CAHHNEL_TOKEN:
                 TokenResponse tokenModel = ((ResponseModel<TokenResponse>) response).data;
-                MainActivity.open(context,classModel.getClassSessionId()+"",tokenModel.getToken(),classModel);
+                if(classModel.getPlatform()==null||classModel.getPlatform().equalsIgnoreCase(AppConstants.channelType.CHANNEL_INAPP)){
+                    MainActivity.open(context,classModel.getClassSessionId()+"",tokenModel.getToken(),classModel);
+                }else{
+                    if(classModel.getLink()!=null){
+                        OpenAppUtils.openExternalApps(context,classModel.getPlatform(),classModel.getLink());
+                    }else{
+                        ToastUtils.show(context,context.getResources().getString(R.string.class_not_started_yet));
+
+                    }
+                }
+
                 break;
 
         }

@@ -21,7 +21,6 @@ import butterknife.ButterKnife;
 
 public class VideoPlayerActivity extends YouTubeBaseActivity implements OnPreparedListener, YouTubePlayer.OnInitializedListener {
 
-    private static String url;
     @BindView(R.id.youtubePlayer)
     YouTubePlayerView youTubePlayerView;
     @BindView(R.id.video_view)
@@ -30,10 +29,18 @@ public class VideoPlayerActivity extends YouTubeBaseActivity implements OnPrepar
     private int currentTimeMillis;
     private long currentTimeVideoView;
     static final String CURRENT_PLAY_TIME = "current_play_time";
-    private String VIDEO_ID;
+    private static String VIDEO_ID;
+    private static String url;
+
+
 
     public static void openActivity(Context context, String url) {
         VideoPlayerActivity.url = url;
+        context.startActivity(new Intent(context, VideoPlayerActivity.class));
+
+    }
+    public static void openActivityYoutube(Context context, String id) {
+        VideoPlayerActivity.VIDEO_ID = id;
         context.startActivity(new Intent(context, VideoPlayerActivity.class));
 
     }
@@ -48,7 +55,7 @@ public class VideoPlayerActivity extends YouTubeBaseActivity implements OnPrepar
     }
 
     private void playVideo() {
-        if (url != null) {
+        if (url != null&&!url.isEmpty()) {
             if (url.contains("youtu.be")) {
                 setupYoutubePlayer();
                 youTubePlayerView.setVisibility(View.VISIBLE);
@@ -58,6 +65,11 @@ public class VideoPlayerActivity extends YouTubeBaseActivity implements OnPrepar
                 youTubePlayerView.setVisibility(View.GONE);
                 videoView.setVisibility(View.VISIBLE);
             }
+        }
+        else{
+            setupYoutubePlayer();
+            youTubePlayerView.setVisibility(View.VISIBLE);
+            videoView.setVisibility(View.GONE);
         }
     }
 
@@ -116,7 +128,9 @@ public class VideoPlayerActivity extends YouTubeBaseActivity implements OnPrepar
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
         this.youTubePlayer = youTubePlayer;
         youTubePlayer.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CUSTOM_LAYOUT);
-        VIDEO_ID = url.split("https://youtu.be/")[1];
+        if(url!=null&&!url.isEmpty()){
+            VIDEO_ID = url.split("https://youtu.be/")[1];
+        }
         if (!wasRestored)
             youTubePlayer.loadVideo(VIDEO_ID, currentTimeMillis);
     }

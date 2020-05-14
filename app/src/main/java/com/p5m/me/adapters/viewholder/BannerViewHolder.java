@@ -15,6 +15,7 @@ import com.p5m.me.data.BannerData;
 import com.p5m.me.data.ExploreDataList;
 import com.p5m.me.data.ExploreGymModel;
 import com.p5m.me.utils.ViewPagerIndicator;
+import com.p5m.me.view.activity.custom.AutoScrollViewPager;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class BannerViewHolder extends RecyclerView.ViewHolder implements ViewPag
 
     private final Context context;
     @BindView(R.id.viewPager)
-    ViewPager viewPager;
+    AutoScrollViewPager viewPager;
     @BindView(R.id.layoutIndicator)
     public LinearLayout layoutIndicator;
 
@@ -55,7 +56,7 @@ public class BannerViewHolder extends RecyclerView.ViewHolder implements ViewPag
 
             // Indicator setup..
             new ViewPagerIndicator(context, ViewPagerIndicator.STYLE_NORMAL).setup(viewPager, layoutIndicator, R.drawable.circle_white, R.drawable.circle_grey);
-
+            viewPager.startAutoScroll();
         }else{
             itemView.setVisibility(View.GONE);
             viewPager.setVisibility(View.GONE);
