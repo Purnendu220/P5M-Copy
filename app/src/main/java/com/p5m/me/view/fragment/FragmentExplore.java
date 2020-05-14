@@ -62,6 +62,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -108,6 +109,7 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
     private String mixPannelSection;
     private String mixPannelValue;
     String api_key,platlistId;
+    private int youTubeModel=2;
 
     public FragmentExplore() {
     }
@@ -320,6 +322,7 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
                         }
                     }
                 }
+                recyclerView.smoothScrollToPosition(position);
                 break;
             case R.id.buttonContactUs:
                 mixPannelSection = TEXT_WITH_BUTTONS_2;
@@ -380,9 +383,15 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
             case NetworkCommunicator.RequestCode.GET_EXPLORE_DATA:
                 List<ExploreDataModel> exploreModels = ((ResponseModel<List<ExploreDataModel>>) response).data;
                 if (!exploreModels.isEmpty()) {
+                    Collections.sort(exploreModels);
                     explorePageAdapter.addAll(exploreModels);
-
                     explorePageAdapter.notifyDataSetChanged();
+                    for (int i=0;i<exploreModels.size();i++) {
+                        ExploreDataModel data =exploreModels.get(i);
+                          if(data.getWidgetType().equalsIgnoreCase("PRICE_MODEL_CAROUSEL_WIDGET")){
+                              youTubeModel = i+1;
+                          }
+                    }
                 } else {
                     explorePageAdapter.loaderDone();
                 }
@@ -428,11 +437,19 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
     }
 
     private void setUpYouTubeResponse(){
-        if(explorePageAdapter!=null&&explorePageAdapter.getItemCount()>0&&youTubeResponseModel!=null&&youTubeResponseModel.getItems()!=null&&youTubeResponseModel.getItems().size()>0){
-            explorePageAdapter.addYouTubePlayList(youTubeResponseModel);
-            explorePageAdapter.notifyDataSetChanged();
+        try{
+            if(explorePageAdapter!=null&&explorePageAdapter.getItemCount()>0&&youTubeResponseModel!=null&&youTubeResponseModel.getItems()!=null&&youTubeResponseModel.getItems().size()>0){
+                explorePageAdapter.addYouTubePlayList(youTubeModel,youTubeResponseModel);
+                explorePageAdapter.notifyDataSetChanged();
 
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
 
+
     }
+
+
 }
