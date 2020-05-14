@@ -151,6 +151,7 @@ public class AppConstants {
         public static final String DEFAULT_SETTING_SERVER = "pref_default_setting_server";
         public static final String AUTH_TOKEN = "pref_auth_token";
         public static final String OPEN_MEMBERSHIP_INFO = "open_membership_info";
+        public static final String SET_DEFAULT_PAGE = "set_default_page";
 
 
         public static final String DEVICE_TOKEN = "pref_device_token";
@@ -308,6 +309,8 @@ public class AppConstants {
         public static final String GET_CHANNEL_TOKEN = "api/v1/user/class/token";
         public static final String GET_CHANNEL_USER_STATUS_IN_CHANNEL = "channel/user/property";
         public static final String GET_CHANNEL_USER_COUNT = "channel/user";
+        public static final String GET_YOUTUBE_PLAYLIST = "playlistItems";
+
 
     }
 
@@ -329,6 +332,10 @@ public class AppConstants {
         public static final String PACKAGE_OFFER_PERCENTAGE = "PERCENTAGE";
         public static final String PACKAGE_TYPE_EXTENSION = "EXTENSION";
         public static final String SUCCESS_RESPONSE_STATUS = "true";
+        public static final String SNIPPET = "snippet";
+        public static final int MAX_RESULT_YOUTUBE = 50;
+
+
 
 
     }
@@ -391,6 +398,15 @@ public class AppConstants {
         public static final String APP_ID = "appid";
         public static final String U_ID = "uid";
         public static final String CHANNEL_NAME = "channelName";
+
+        public static final String PART = "part";
+        public static final String PLAYLIST_ID = "playlistId";
+        public static final String API_KEY = "key";
+        public static final String MAX_RESULT="maxResults";
+        public static final String PAGE_TOKEN="pageToken";
+
+
+
 
     }
 

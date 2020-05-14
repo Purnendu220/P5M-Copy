@@ -67,6 +67,9 @@ public class RemoteConfigConst {
     public static String CHANNEL_KEY = "channels";
     public static String CALL_FINISH_MESSAGE="call_finish_message";
     public static String CALL_FINISH_BUTTON_TITLE="call_finish_button_title";
+    public static String YOUTUBE_SECTION_TITLE="youtube_section_title";
+    public static String YOUTUBE_SECTION_SUB_TITLE="youtube_section_subtitle";
+    public static String YOUTUBE_PLAYLIST_ID="play_list_id";
 
 
 
