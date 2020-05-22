@@ -165,6 +165,8 @@ public class AppConstants {
         public static final String LONGITUDE = "longitude";
         public static final String CALL_START_TIME = "call_start_time";
         public static final String CALL_STOP_TIME = "call_stop_time";
+        public static final String USER_TIME_IN_CLASS = "user_time_in_class";
+
 
 
         public static final String PAYMENT_ERROR_RESPONSE = "payment_error_response";
@@ -177,6 +179,9 @@ public class AppConstants {
         public static final String CLASS_BOOKING_TIME = "Class_booking_time";
         public static final String COUNTRIES = "CountryList";
         public static final String CANCELLATION_REASONS = "CancellationReasonsList";
+        public static final String ATTENDED_CLASSES_LIST = "attended_classes_list";
+        public static final String CLASS_FOR_GOOGLE_FORM_REVIEW = "class_for_google_form_review";
+
         public static final String IS_SHOW_MEMBERSHIP_ICON = "IsShowMembershipIcon";
     }
 
@@ -310,6 +315,8 @@ public class AppConstants {
         public static final String GET_CHANNEL_USER_STATUS_IN_CHANNEL = "channel/user/property";
         public static final String GET_CHANNEL_USER_COUNT = "channel/user";
         public static final String GET_YOUTUBE_PLAYLIST = "playlistItems";
+        public static final String ATTEND_CLASS = "api/v1/user/class/attend";
+
 
 
     }

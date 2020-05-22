@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.p5m.me.R;
+import com.p5m.me.utils.OpenAppUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,12 +53,15 @@ public class WorkoutDurationAlert extends Dialog implements View.OnClickListener
     @BindView(R.id.img_alert_type)
     ImageView imgAlertType;
 
-    public WorkoutDurationAlert(@NonNull Context context, String title, String message,String buttonTitle) {
+    String googleFormUrl;
+
+    public WorkoutDurationAlert(@NonNull Context context, String title, String message,String buttonTitle,String googleFormUrl) {
         super(context, R.style.AdvanceDialogTheme);
         this.mContext = context;
         this.title = title;
         this.message = message;
         this.buttonTitle = buttonTitle;
+        this.googleFormUrl = googleFormUrl;
 
         init(context);
     }
@@ -99,7 +103,13 @@ public class WorkoutDurationAlert extends Dialog implements View.OnClickListener
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.textViewOk:
+            case R.id.textViewOk:{
+                if(googleFormUrl!=null){
+                    OpenAppUtils.openExternalApps(mContext,"GOOGLE_FORM",googleFormUrl);
+                }
+                dismiss();
+            }
+            break;
             case R.id.textViewCancel: {
                 dismiss();
 

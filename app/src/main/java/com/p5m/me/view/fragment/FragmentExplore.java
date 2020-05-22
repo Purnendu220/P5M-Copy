@@ -352,6 +352,8 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
             case R.id.constraintViewPlayListItem:
                 if (model != null && model instanceof Item) {
                     Item data = (Item) model;
+                    mixPannelSection = "Recorded video";
+                    mixPannelValue = data.getSnippet().getTitle();
                     VideoPlayerActivity.openActivityYoutube(context,data.getSnippet().getResourceId().getVideoId());
                 }
                 break;

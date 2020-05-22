@@ -70,6 +70,11 @@ public class RemoteConfigConst {
     public static String YOUTUBE_SECTION_TITLE="youtube_section_title";
     public static String YOUTUBE_SECTION_SUB_TITLE="youtube_section_subtitle";
     public static String YOUTUBE_PLAYLIST_ID="play_list_id";
+    public static String LEFT_EARLY_GOOGLE_FORM="left_early_google_form";
+    public static String FINISHED_GOOGLE_FORM="finish_google_form";
+    public static String CALL_FINISHED_TITLE="call_finish_title";
+
+
 
 
 

@@ -257,4 +257,25 @@
         <key>call_finish_button_title</key>
         <value>Book another class </value>
     </entry>
+    <entry>
+        <key>youtube_section_title</key>
+        <value>On-demand workouts</value>
+    </entry>
+    <entry>
+        <key>youtube_section_subtitle</key>
+        <value>Join one of P5M's online workouts at anytime and anywhere.</value>
+    </entry>
+    <entry>
+        <key>left_early_google_form</key>
+        <value>https://forms.gle/kkbK3rpKDzCXwSBa8</value>
+    </entry>
+    <entry>
+        <key>finish_google_form</key>
+        <value>https://forms.gle/vqMdRrdasekodFh89</value>
+    </entry>
+    <entry>
+        <key>call_finish_title</key>
+        <value>Thank You</value>
+    </entry>
+
 </defaultsMap>

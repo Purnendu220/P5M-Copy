@@ -137,20 +137,44 @@ public class TempStorage {
         return MyPreferences.getInstance().getLng();
     }
 
-    public static void setCallStartTime(long time) {
-        MyPreferences.getInstance().setCallStartTime(time);
+    public static void setCallStartTime(int sessionId,long time) {
+        MyPreferences.getInstance().setCallStartTime(sessionId,time);
     }
 
-    public static void setCallStopTime(long time) {
-        MyPreferences.getInstance().setCallStopTime(time);
+    public static void setCallStopTime(int sessionId,long time) {
+        MyPreferences.getInstance().setCallStopTime(sessionId,time);
+    }
+    public static void setUserTimeinSession(int sessionId,long time){
+        MyPreferences.getInstance().setUserTimeInSession(sessionId,time);
     }
 
-    public static long getCallStartTime() {
-        return MyPreferences.getInstance().getCallStartTime();
+    public static long getCallStartTime(int sessionId) {
+        return MyPreferences.getInstance().getCallStartTime(sessionId);
     }
 
-    public static long getCallStopTime() {
-        return MyPreferences.getInstance().getCallStopTime();
+    public static long getCallStopTime(int sessionId) {
+        return MyPreferences.getInstance().getCallStopTime(sessionId);
+    }
+    public static long getUserTimeInSession(int sessionId){
+        return MyPreferences.getInstance().getUserTimeInSession(sessionId);
+    }
+    public static void saveAttendedClasses(ClassModel model){
+        MyPreferences.getInstance().saveAttendedClassesList(model);
+    }
+    public static List<ClassModel> getAttendedClasses(){
+        return MyPreferences.getInstance().getAttendedClassesList();
+    }
+
+    public static void saveClassForGoogleFormReview(ClassModel model){
+       long time = getUserTimeInSession(model.getClassSessionId());
+       if(time>0){
+         MyPreferences.getInstance().saveClassForGoogleFormReview(model);}
+    }
+    public static void clearClassForGoogleFormReview(){
+        MyPreferences.getInstance().clearClassForGoogleFormReview();
+    }
+    public static ClassModel getClassForGoogleFormReview(){
+        return MyPreferences.getInstance().getClassForGoogleFormReview();
     }
 
     public static int getDefaultPage() {

@@ -18,7 +18,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="-30dp"
             android:background="@color/float_transparent"
-            android:src="@drawable/thankyou_popup"
+            android:src="@drawable/popup_star"
             android:elevation="@dimen/margin_14"
             >
         </ImageView>
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:gravity="center"
-                android:text="00:50:55"
+                android:text="@string/thank_you"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_extra_extra_large"
                 android:fontFamily="sans-serif-medium"
@@ -98,13 +98,13 @@
                     android:fontFamily="sans-serif"
                     android:gravity="center"
                     android:letterSpacing="@dimen/button_letter_spacing"
-                    android:text="@string/cancel"
+                    android:text="@string/skip"
                     android:textAllCaps="true"
                     android:textSize="@dimen/text_small"
                     android:textColor="@color/rating_blank"
                     android:layout_weight="1"
                     android:layout_marginRight="@dimen/margin_10"
-                    android:visibility="gone"
+                    android:visibility="visible"
 
 
                     />
@@ -118,10 +118,13 @@
                     android:gravity="center"
                     android:letterSpacing="@dimen/button_letter_spacing"
                     android:text="@string/ok"
+                    android:padding="@dimen/margin_5"
                     android:textAllCaps="true"
                     android:textSize="@dimen/text_small"
                     android:textColor="@color/white"
                     android:layout_weight="1"
+                    android:ellipsize="marquee"
+                    android:singleLine="true"
 
                     />
             </LinearLayout>
