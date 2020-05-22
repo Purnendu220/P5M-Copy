@@ -448,6 +448,10 @@ public interface ApiService {
                                               @Query(AppConstants.ApiParamKey.API_KEY) String apiKey, @Query(AppConstants.ApiParamKey.MAX_RESULT) int maxResult,
                                               @Query(AppConstants.ApiParamKey.PAGE_TOKEN) String pageToken);
 
+    @Headers("Content-type: application/json")
+    @POST(AppConstants.Url.ATTEND_CLASS)
+    Call<ResponseModel<Object>> attendClass(@Query(AppConstants.ApiParamKey.CLASS_SESSION_ID) int classSessionId, @Query(AppConstants.ApiParamKey.USER_ID) int userId);
+
 
 
 

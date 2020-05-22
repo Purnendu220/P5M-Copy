@@ -1,6 +1,7 @@
 package com.p5m.me.view.activity.Main;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -43,6 +44,7 @@ import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CommonUtillity;
+import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
@@ -265,7 +267,9 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         } catch (Exception e) {
             e.printStackTrace();
         }
-        openRateAlertDialog();
+        if(!showAlertForGoogleFormReview()){
+            openRateAlertDialog();
+        }
         networkCommunicator.getActivities(this, true);
         networkCommunicator.getRatingParameters(this, true);
         checkFacebookSessionStatus();
@@ -291,7 +295,6 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onCallDisconnected(Events.OnUserDisconnectedCall onUserDisconnectedCall){
-        showCallDurationAlert();
     }
 
     private void setNotificationIcon() {
@@ -714,26 +717,34 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         }
 
     }
-private void showCallDurationAlert(){
+    private boolean showAlertForGoogleFormReview(){
+        ClassModel classModel;
         try{
-            long start = TempStorage.getCallStartTime();
-            long end = TempStorage.getCallStopTime();
-            long duration = end - start;
-            if(duration>0){
-                String durationString = CommonUtillity.formatDuration(duration);
-                LogUtils.networkSuccess(durationString);
-                String message = RemoteConfigure.getFirebaseRemoteConfig(mContext).getRemoteConfigValue(RemoteConfigConst.CALL_FINISH_MESSAGE);
-                String title = durationString;
-                String buttonTitle =RemoteConfigure.getFirebaseRemoteConfig(mContext).getRemoteConfigValue(RemoteConfigConst.CALL_FINISH_BUTTON_TITLE);
+            classModel = TempStorage.getClassForGoogleFormReview();
+            if(classModel!=null){
+                long timeInClass = TempStorage.getUserTimeInSession(classModel.getClassSessionId());
+                double timePercentage =  DateUtils.getClassCompletionPercentage(classModel,timeInClass);
+                String googleFormUrl;
+                if(timeInClass>0&&timePercentage>75){
+                    googleFormUrl = RemoteConfigure.getFirebaseRemoteConfig(mContext).getRemoteConfigValue(RemoteConfigConst.FINISHED_GOOGLE_FORM);
+                    //String durationString = CommonUtillity.formatDuration(timeInClass*1000);
+                    String message = RemoteConfigure.getFirebaseRemoteConfig(mContext).getRemoteConfigValue(RemoteConfigConst.CALL_FINISH_MESSAGE);
+                    String title =  RemoteConfigure.getFirebaseRemoteConfig(mContext).getRemoteConfigValue(RemoteConfigConst.CALL_FINISHED_TITLE);;
+                    String buttonTitle =RemoteConfigure.getFirebaseRemoteConfig(mContext).getRemoteConfigValue(RemoteConfigConst.CALL_FINISH_BUTTON_TITLE);
 
-                // new WorkoutDurationAlert(mContext,title,message,buttonTitle).show();
+                    WorkoutDurationAlert dialog =  new WorkoutDurationAlert(mContext,title,message,buttonTitle,googleFormUrl);
+                    dialog.show();
+                    dialog.setOnDismissListener(dialog1 -> openRateAlertDialog());
+                }
+                 TempStorage.clearClassForGoogleFormReview();
             }
         }catch (Exception e){
             e.printStackTrace();
+            return false;
         }
 
-
-}
+        return classModel!=null;
+    }
 }
 
 

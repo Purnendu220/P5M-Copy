@@ -2,6 +2,8 @@ package com.p5m.me.utils;
 
 import android.util.Log;
 
+import com.p5m.me.data.main.ClassModel;
+
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
@@ -515,6 +517,33 @@ public class DateUtils {
         }
         return true;
 
+    }
+    public static boolean isTimeCame(ClassModel model){
+        try {
+            String dateStartString= model.getClassDate() + " " + model.getFromTime();
+            Date dateStart = classDateExpiry.parse(dateStartString);
+            Date dateNow = Calendar.getInstance().getTime();
+
+          return dateNow.after(dateStart);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public static double getClassCompletionPercentage(ClassModel model,long timeInClass){
+        try {
+            Date start = classTime.parse(model.getFromTime());
+            Date end = classTime.parse(model.getToTime());
+            long diff = end.getTime()-start.getTime();
+            long classTimeInSeconds = diff/1000;
+            double percentage = ((double) timeInClass/classTimeInSeconds)*100;
+            return percentage;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    return 0;
     }
 
 }

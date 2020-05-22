@@ -279,16 +279,27 @@
     </entry>
     <entry>
         <key>youtube_section_title</key>
-        <value>P5M Youtube</value>
+        <value>On-demand workouts</value>
     </entry>
     <entry>
         <key>youtube_section_subtitle</key>
-        <value>Youtube videos</value>
+        <value>Join one of P5M's online workouts at anytime and anywhere.</value>
     </entry>
     <entry>
         <key>play_list_id</key>
         <value>PLyPopszkD3s9KcILzi_GmRYrI4ZijyS3N</value>
     </entry>
+    <entry>
+        <key>left_early_google_form</key>
+        <value>https://forms.gle/kkbK3rpKDzCXwSBa8</value>
+    </entry>
+    <entry>
+        <key>finish_google_form</key>
+        <value>https://forms.gle/vqMdRrdasekodFh89</value>
+    </entry>
 
-
+    <entry>
+        <key>call_finish_title</key>
+        <value>Thank You</value>
+    </entry>
 </defaultsMap>

@@ -60,6 +60,10 @@ public class ClassFinishNotificationService extends Service {
                 try {
                     TempStorage.removeSavedClassOnly(model.getClassSessionId(), mContext);
                     remove5MinClass(model.getClassSessionId());
+//                    if(checkIfClassIsFirstOrThird(model)){
+//                        TempStorage.saveClassForGoogleFormReview(model);
+//                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -70,6 +74,8 @@ public class ClassFinishNotificationService extends Service {
 
         return START_NOT_STICKY;
     }
+
+
 
     @Override
     public void onDestroy() {

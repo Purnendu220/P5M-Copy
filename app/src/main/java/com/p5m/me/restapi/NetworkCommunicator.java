@@ -183,6 +183,7 @@ public class NetworkCommunicator {
         public static final int GET_USER_STATUS_IN_CHANNEL = 176;
         public static final int GET_USER_COUNT_IN_CHANNEL = 177;
         public static final int GET_YOUTUBE_PLAYLIST = 178;
+        public static final int ATTEND_CLASS_API = 179;
 
 
     }
@@ -1852,6 +1853,29 @@ public class NetworkCommunicator {
             @Override
             public void onResponse(Call<ResponseModel<TokenResponse>> call, Response<ResponseModel<TokenResponse>> restResponse, ResponseModel<TokenResponse> response) {
                 LogUtils.networkSuccess("NetworkCommunicator Token onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+
+        return call;
+
+    }
+    public Call attendClass(int classSessionId,final RequestListener requestListener) {
+        final int requestCode = RequestCode.ATTEND_CLASS_API;
+        Call<ResponseModel<Object>> call = apiService.attendClass(classSessionId,TempStorage.getUser().getId());
+        LogUtils.debug("NetworkCommunicator hitting Attend");
+
+        call.enqueue(new RestCallBack<ResponseModel<Object>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<Object>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator Attend onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<Object>> call, Response<ResponseModel<Object>> restResponse, ResponseModel<Object> response) {
+                LogUtils.networkSuccess("NetworkCommunicator Attend onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
             }
         });

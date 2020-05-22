@@ -7,12 +7,9 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -48,6 +45,7 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CommonUtillity;
+import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
@@ -57,6 +55,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.agora.rtc.Constants;
 import io.agora.rtc.IRtcEngineEventHandler;
@@ -94,6 +94,10 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
     boolean muteUnMuteActionPerformed;
     LinearLayout layoutSmallView;
     RelativeLayout live_room_top_layout,bottom_container;
+    long timeInClassSeconds=0;
+    private boolean classAttended=false;
+    private boolean callingAttendApi;
+    Timer timer;
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -116,7 +120,44 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
 
         initUI();
         initData();
-        TempStorage.setCallStartTime(System.currentTimeMillis());
+        try{
+            if(classModel!=null){
+                if(TempStorage.getCallStartTime(classModel.getClassSessionId())==0)
+                { TempStorage.setCallStartTime(classModel.getClassSessionId(),System.currentTimeMillis());}
+                TempStorage.saveAttendedClasses(classModel);
+                startTimer();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void startTimer(){
+        if(classModel!=null){
+            timeInClassSeconds = TempStorage.getUserTimeInSession(classModel.getClassSessionId());
+        timer= new Timer();
+            timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if(DateUtils.isTimeCame(classModel)){
+                    timeInClassSeconds = 1 + timeInClassSeconds;
+                    TempStorage.setUserTimeinSession(classModel.getClassSessionId(),timeInClassSeconds);
+                    if(DateUtils.getClassCompletionPercentage(classModel,timeInClassSeconds)>75){
+                        callClassComplettionApi();
+                    }
+                }
+            }
+                },
+                0,
+                1000);
+        }
+    }
+
+    private void callClassComplettionApi() {
+        if(!classAttended&&!callingAttendApi){
+        networkCommunicator.attendClass(classModel.getClassSessionId(),this);
+        callingAttendApi =true;
+        }
     }
 
     private void initUI() {
@@ -678,6 +719,10 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
                 }
 
                 break;
+            case NetworkCommunicator.RequestCode.ATTEND_CLASS_API:
+                classAttended =true;
+                saveClassforGoogleForm();
+                break;
         }
 
     }
@@ -689,6 +734,9 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
 
                 break;
             case NetworkCommunicator.RequestCode.GET_USER_STATUS_IN_CHANNEL:
+                break;
+            case NetworkCommunicator.RequestCode.ATTEND_CLASS_API:
+                callingAttendApi =false;
                 break;
         }
     }
@@ -704,8 +752,19 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
         super.onDestroy();
         handler.removeCallbacks(nextScreenRunnable);
         GlobalBus.getBus().unregister(this);
-        TempStorage.setCallStopTime(System.currentTimeMillis());
-        EventBroadcastHelper.onCallDisconnected();
+        try{
+            if(timer!=null){
+                timer.cancel();
+            }
+            if(classModel!=null)
+            {  TempStorage.setCallStopTime(classModel.getClassSessionId(),System.currentTimeMillis());}
+
+
+            EventBroadcastHelper.onCallDisconnected();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
 
     }
@@ -735,6 +794,11 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
 
         }
 
+    }
+    private void saveClassforGoogleForm(){
+                            if(Helper.checkIfClassIsFirstOrThird(classModel)){
+                        TempStorage.saveClassForGoogleFormReview(classModel);
+                    }
     }
 
 

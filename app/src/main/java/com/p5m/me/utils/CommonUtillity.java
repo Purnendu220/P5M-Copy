@@ -71,9 +71,12 @@ public class CommonUtillity {
         long hours = millis / (1000 * 60 * 60);
 
         StringBuilder b = new StringBuilder();
-        b.append(hours == 0 ? "00" : hours < 10 ? String.valueOf("0" + hours) :
-                String.valueOf(hours));
-        b.append(":");
+        if(hours>0){
+            b.append(hours == 0 ? "00" : hours < 10 ? String.valueOf("0" + hours) :
+                    String.valueOf(hours));
+            b.append(":");
+        }
+
         b.append(minutes == 0 ? "00" : minutes < 10 ? String.valueOf("0" + minutes) :
                 String.valueOf(minutes));
         b.append(":");
