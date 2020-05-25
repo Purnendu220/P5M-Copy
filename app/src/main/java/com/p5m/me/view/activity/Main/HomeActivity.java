@@ -727,7 +727,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
                 String googleFormUrl;
                 if(timeInClass>0&&timePercentage>75){
                     googleFormUrl = RemoteConfigure.getFirebaseRemoteConfig(mContext).getRemoteConfigValue(RemoteConfigConst.FINISHED_GOOGLE_FORM);
-                    //String durationString = CommonUtillity.formatDuration(timeInClass*1000);
+                    String durationString = CommonUtillity.formatDuration(timeInClass*1000);
                     String message = RemoteConfigure.getFirebaseRemoteConfig(mContext).getRemoteConfigValue(RemoteConfigConst.CALL_FINISH_MESSAGE);
                     String title =  RemoteConfigure.getFirebaseRemoteConfig(mContext).getRemoteConfigValue(RemoteConfigConst.CALL_FINISHED_TITLE);;
                     String buttonTitle =RemoteConfigure.getFirebaseRemoteConfig(mContext).getRemoteConfigValue(RemoteConfigConst.CALL_FINISH_BUTTON_TITLE);
