@@ -1,6 +1,7 @@
 package com.p5m.me.view.activity.Main;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -42,6 +43,8 @@ import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.CommonUtillity;
+import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
@@ -50,6 +53,7 @@ import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.activity.custom.BottomTapLayout;
 import com.p5m.me.view.custom.CustomRateAlertDialog;
+import com.p5m.me.view.custom.WorkoutDurationAlert;
 import com.p5m.me.view.fragment.FindClass;
 import com.p5m.me.view.fragment.MembershipFragment;
 import com.p5m.me.view.fragment.MySchedule;
@@ -233,13 +237,17 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             LogUtils.debug("VarunSCHEDULE getIntent " + SCHEDULE_TAB_POSITION);
 
         }
+        if(TempStorage.getDefaultPage()>-1){
+            INITIAL_POSITION = TempStorage.getDefaultPage();
+            TempStorage.setDefaultPage(-1);
+        }
         RefrenceWrapper.getRefrenceWrapper(this).setActivity(this);
         buyClassesLayout.setOnClickListener(this);
         GlobalBus.getBus().register(this);
         FirebaseDynamicLinnk.getDynamicLink(this, getIntent());
         handler = new Handler(Looper.getMainLooper());
         setupBottomTabs();
-        (new RemoteConfigure()).fetchRemoteConfig(context);
+        RemoteConfigure.getFirebaseRemoteConfig(context).fetchRemoteConfig();
         homeAdapter = new HomeAdapter(((BaseActivity) activity).getSupportFragmentManager(), TOTAL_TABS, PROFILE_TAB_POSITION, SCHEDULE_TAB_POSITION, NAVIGATED_FROM_INT, NUMBER_OF_PACKAGES_TO_BUY, CLASS_OBJECT, BOOK_WITH_FRIEND_DATA);
         viewPager.setAdapter(homeAdapter);
         viewPager.addOnPageChangeListener(this);
@@ -259,7 +267,9 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         } catch (Exception e) {
             e.printStackTrace();
         }
-        openRateAlertDialog();
+        if(!showAlertForGoogleFormReview()){
+            openRateAlertDialog();
+        }
         networkCommunicator.getActivities(this, true);
         networkCommunicator.getRatingParameters(this, true);
         checkFacebookSessionStatus();
@@ -282,6 +292,9 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void notificationReceived(Events.NotificationCountUpdated notificationCountUpdated) {
         setNotificationIcon();
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onCallDisconnected(Events.OnUserDisconnectedCall onUserDisconnectedCall){
     }
 
     private void setNotificationIcon() {
@@ -704,7 +717,34 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         }
 
     }
+    private boolean showAlertForGoogleFormReview(){
+        ClassModel classModel;
+        try{
+            classModel = TempStorage.getClassForGoogleFormReview();
+            if(classModel!=null){
+                long timeInClass = TempStorage.getUserTimeInSession(classModel.getClassSessionId());
+                double timePercentage =  DateUtils.getClassCompletionPercentage(classModel,timeInClass);
+                String googleFormUrl;
+                if(timeInClass>0&&timePercentage>75){
+                    googleFormUrl = RemoteConfigure.getFirebaseRemoteConfig(mContext).getRemoteConfigValue(RemoteConfigConst.FINISHED_GOOGLE_FORM);
+                    String durationString = CommonUtillity.formatDuration(timeInClass*1000);
+                    String message = RemoteConfigure.getFirebaseRemoteConfig(mContext).getRemoteConfigValue(RemoteConfigConst.CALL_FINISH_MESSAGE);
+                    String title =  RemoteConfigure.getFirebaseRemoteConfig(mContext).getRemoteConfigValue(RemoteConfigConst.CALL_FINISHED_TITLE);;
+                    String buttonTitle =RemoteConfigure.getFirebaseRemoteConfig(mContext).getRemoteConfigValue(RemoteConfigConst.CALL_FINISH_BUTTON_TITLE);
 
+                    WorkoutDurationAlert dialog =  new WorkoutDurationAlert(mContext,title,message,buttonTitle,googleFormUrl);
+                    dialog.show();
+                    dialog.setOnDismissListener(dialog1 -> openRateAlertDialog());
+                }
+                 TempStorage.clearClassForGoogleFormReview();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+
+        return classModel!=null;
+    }
 }
 
 

@@ -26,11 +26,15 @@ public class RestServiceFactory {
 
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
     private static OkHttpClient.Builder httpClient2 = new OkHttpClient.Builder();
+    private static OkHttpClient.Builder httpClientYoutube = new OkHttpClient.Builder();
 
-    private static Retrofit retrofit,retrofit2;
+
+    private static Retrofit retrofit,retrofit2,retrofitYoutube;
 
     private static ApiService apiService;
     private static ApiService apiService2;
+    private static ApiService apiServiceYoutube;
+
 
 
     private static <S> S createService(Class<S> serviceClass) {
@@ -117,6 +121,36 @@ public class RestServiceFactory {
         return (S) apiService2;
     }
 
+
+    private static <S> S createServiceBaseUrlYoutube(Class<S> serviceClass) {
+        if (apiServiceYoutube == null) {
+
+            if (MyApp.RETROFIT_SHOW_LOG) {
+                HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+                logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+                //logging.setLevel(HttpLoggingInterceptor.Level.HEADERS);
+                httpClientYoutube.addInterceptor(logging);
+            }
+
+            httpClientYoutube.readTimeout(30, TimeUnit.SECONDS);
+            httpClientYoutube.connectTimeout(30, TimeUnit.SECONDS);
+
+
+
+            String baseUrl = "https://www.googleapis.com/youtube/v3/";
+
+
+
+            Retrofit.Builder builder =
+                    new Retrofit.Builder()
+                            .baseUrl(baseUrl)
+                            .addConverterFactory(GsonConverterFactory.create());
+            retrofitYoutube = builder.client(httpClientYoutube.build()).build();
+            apiServiceYoutube = (ApiService) retrofitYoutube.create(serviceClass);
+        }
+        return (S) apiServiceYoutube;
+    }
+
     public static Retrofit retrofit() {
         return retrofit;
     }
@@ -126,5 +160,8 @@ public class RestServiceFactory {
     }
     public static ApiService createService2() {
         return createServiceBaseUrl2(ApiService.class);
+    }
+    public static ApiService createServiceYoutube() {
+        return createServiceBaseUrlYoutube(ApiService.class);
     }
 }

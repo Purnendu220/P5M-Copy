@@ -288,6 +288,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                         FirebaseAnalysic.trackRegister(AppConstants.Tracker.FB, TempStorage.getUser());
                     } else
                         MixPanel.trackLogin(AppConstants.Tracker.FB, TempStorage.getUser());
+                    TempStorage.setDefaultPage(AppConstants.Tab.TAB_EXPLORE_PAGE);
 
                     HomeActivity.open(context);
                 }
@@ -310,6 +311,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                     IntercomEvents.successfulLoginIntercom(user.getFirstName() + " " + user.getLastName(), user.getEmail());
                     MyPreferences.getInstance().saveMembershipIcon(true);
                     GetStartedActivity.open(context);
+                    TempStorage.setDefaultPage(AppConstants.Tab.TAB_EXPLORE_PAGE);
                 }
                 break;
 

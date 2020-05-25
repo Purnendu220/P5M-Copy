@@ -18,9 +18,18 @@ public class RemoteConfigure {
     FirebaseRemoteConfigSettings configSettings;
     long cacheExpiration = 0;
     private Context context;
+    public static RemoteConfigure firebaseRemoteConfigHelper;
 
-    public RemoteConfigure() {
 
+
+    public static RemoteConfigure getFirebaseRemoteConfig(Context mContext) {
+        if (firebaseRemoteConfigHelper == null) {
+            firebaseRemoteConfigHelper = new RemoteConfigure(mContext);
+        }
+        return firebaseRemoteConfigHelper;
+    }
+    public RemoteConfigure(Context mContext) {
+        this.context = mContext;
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         configSettings = new FirebaseRemoteConfigSettings.Builder()
                 .setDeveloperModeEnabled(BuildConfig.DEBUG)
@@ -32,8 +41,7 @@ public class RemoteConfigure {
             mFirebaseRemoteConfig.setDefaults(R.xml.remote_configure_defaults);
     }
 
-    public void fetchRemoteConfig(Context context) {
-        this.context = context;
+    public void fetchRemoteConfig() {
         if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")
         ) {
             mFirebaseRemoteConfig.fetch(getCacheExpiration())
@@ -199,5 +207,8 @@ public class RemoteConfigure {
         RemoteConfigConst.PLAN_DESCRIPTION_DROP_IN_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.PLAN_DESCRIPTION_DROP_IN);
         RemoteConfigConst.ON_BOARDING_DATA_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.ON_BOARDING_DATA);
 
+    }
+    public String getRemoteConfigValue(String key){
+        return mFirebaseRemoteConfig.getString(key);
     }
 }

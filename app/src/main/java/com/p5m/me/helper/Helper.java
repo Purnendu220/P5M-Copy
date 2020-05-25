@@ -713,5 +713,21 @@ public class Helper {
                 return "";
         }
     }
+    public static boolean checkIfClassIsFirstOrThird(ClassModel model){
+        boolean checkIfFirstOrThird=false;
+        List<ClassModel> mList= TempStorage.getAttendedClasses();
+        if(model!=null&&mList!=null&&mList.size()>0){
+            for(int i=0;i<mList.size();i++){
+                ClassModel session = mList.get(i);
+                if(model.getClassSessionId()==session.getClassSessionId()){
+                    if(i==0||i==2){
+                        checkIfFirstOrThird = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return checkIfFirstOrThird;
+    }
 
 }

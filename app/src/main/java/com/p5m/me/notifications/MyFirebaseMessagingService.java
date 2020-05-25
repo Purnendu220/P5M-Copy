@@ -24,7 +24,9 @@ import com.p5m.me.storage.TempStorage;
 import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CalendarHelper;
+import com.p5m.me.utils.CommonUtillity;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.OpenAppUtils;
 import com.p5m.me.view.activity.Main.ClassProfileActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
@@ -475,6 +477,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     } else {
                         navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
 
+                    }
+                    break;
+                case "OnUpComingClassJoin":
+                    String platform = jsonObject.optString(AppConstants.Notification.PLATFORM);
+                    String link = jsonObject.optString(AppConstants.Notification.LINK);
+                    if(platform!=null&&link!=null){
+                        OpenAppUtils.openExternalApps(context,platform,link);
                     }
                     break;
 

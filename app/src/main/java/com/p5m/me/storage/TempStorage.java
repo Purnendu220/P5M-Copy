@@ -137,6 +137,55 @@ public class TempStorage {
         return MyPreferences.getInstance().getLng();
     }
 
+    public static void setCallStartTime(int sessionId,long time) {
+        MyPreferences.getInstance().setCallStartTime(sessionId,time);
+    }
+
+    public static void setCallStopTime(int sessionId,long time) {
+        MyPreferences.getInstance().setCallStopTime(sessionId,time);
+    }
+    public static void setUserTimeinSession(int sessionId,long time){
+        MyPreferences.getInstance().setUserTimeInSession(sessionId,time);
+    }
+
+    public static long getCallStartTime(int sessionId) {
+        return MyPreferences.getInstance().getCallStartTime(sessionId);
+    }
+
+    public static long getCallStopTime(int sessionId) {
+        return MyPreferences.getInstance().getCallStopTime(sessionId);
+    }
+    public static long getUserTimeInSession(int sessionId){
+        return MyPreferences.getInstance().getUserTimeInSession(sessionId);
+    }
+    public static void saveAttendedClasses(ClassModel model){
+        MyPreferences.getInstance().saveAttendedClassesList(model);
+    }
+    public static List<ClassModel> getAttendedClasses(){
+        return MyPreferences.getInstance().getAttendedClassesList();
+    }
+
+    public static void saveClassForGoogleFormReview(ClassModel model){
+       long time = getUserTimeInSession(model.getClassSessionId());
+       if(time>0){
+         MyPreferences.getInstance().saveClassForGoogleFormReview(model);}
+    }
+    public static void clearClassForGoogleFormReview(){
+        MyPreferences.getInstance().clearClassForGoogleFormReview();
+    }
+    public static ClassModel getClassForGoogleFormReview(){
+        return MyPreferences.getInstance().getClassForGoogleFormReview();
+    }
+
+    public static int getDefaultPage() {
+        return MyPreferences.getInstance().getDefaultPage();
+    }
+
+    public static void setDefaultPage(int page) {
+        MyPreferences.getInstance().setDefaultPage(page);
+    }
+
+
     public static int isOpenMembershipInfo() {
         return MyPreferences.getInstance().isOpenMembershipInfo();
     }

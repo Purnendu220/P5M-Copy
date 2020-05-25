@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:elevation="@dimen/margin_5">
-     <androidx.viewpager.widget.ViewPager
+     <com.p5m.me.view.activity.custom.AutoScrollViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="170dp"

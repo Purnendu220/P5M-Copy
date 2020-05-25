@@ -240,7 +240,10 @@
                     <ImageView
                         android:id="@+id/imageViewChannelName"
                         style="@style/ClassIconSmall"
-                        android:src="@drawable/class_icon" />
+                        android:src="@drawable/webcam"
+                        android:tint="@color/theme_dark_text"
+                        android:padding="@dimen/margin_3"
+                        />
 
                     <TextView
                         android:id="@+id/textViewChannelNAme"
@@ -254,7 +257,7 @@
                         android:gravity="left|center_vertical"
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
                         android:lineSpacingExtra="@dimen/line_spacing_extra"
-                        android:text="Female only"
+                        android:text=""
                         android:textColor="@color/theme_dark_text"
                         android:textSize="@dimen/text_medium" />
 

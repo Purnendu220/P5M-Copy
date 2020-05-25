@@ -22,11 +22,13 @@ import com.p5m.me.adapters.viewholder.ExplorePageTrainerListViewHolder;
 import com.p5m.me.adapters.viewholder.ExplorePageWorkoutViewHolder;
 import com.p5m.me.adapters.viewholder.StillConfusedViewHolder;
 import com.p5m.me.adapters.viewholder.TryP5MViewHolder;
+import com.p5m.me.adapters.viewholder.YouTubeViewHolder;
 import com.p5m.me.data.BannerData;
 import com.p5m.me.data.CustomerSpeakModel;
 import com.p5m.me.data.ExploreDataList;
 import com.p5m.me.data.ExploreDataModel;
 import com.p5m.me.data.ListLoader;
+import com.p5m.me.data.YoutubeResponse;
 import com.p5m.me.utils.LogUtils;
 
 import java.util.ArrayList;
@@ -62,6 +64,8 @@ public class ExplorePageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int GYM_CAROUSAL_VIEW_VALUE = 7;
     private static final int TOP_RATED_CLASSES_VALUE = 8;
     private static final int TEXT_WITH_BUTTONS_2_VALUE = 9;
+    private static final int YOUTUBE_PLAYLIST_VIEW = 10;
+
     private final boolean showLoader;
 
     private Context context;
@@ -108,6 +112,10 @@ public class ExplorePageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         list.clear();
         list.addAll(models);
         addLoader();
+    }
+
+    public void addYouTubePlayList(int index,YoutubeResponse model) {
+        list.add(index,model);
     }
 
     private void addLoader() {
@@ -184,6 +192,10 @@ public class ExplorePageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             }
         }
+       else if(item instanceof YoutubeResponse){
+            VIEW_TYPE = YOUTUBE_PLAYLIST_VIEW;
+
+        }
         return VIEW_TYPE;
     }
 
@@ -234,6 +246,10 @@ public class ExplorePageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_still_confused, parent, false);
             return new StillConfusedViewHolder(view);
         }
+        else if (viewType == YOUTUBE_PLAYLIST_VIEW) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_workout, parent, false);
+            return new YouTubeViewHolder(view);
+        }
         return new EmptyViewHolder(new LinearLayout(context));
     }
 
@@ -257,6 +273,8 @@ public class ExplorePageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((StillConfusedViewHolder) holder).bind(list.get(position), shownInScreen, adapterCallbacksExplore, position);
         } else if (holder instanceof ExplorePageRatingListViewHolder) {
             ((ExplorePageRatingListViewHolder) holder).bind(list.get(position), adapterCallbacksExplore, position);
+        } else if (holder instanceof YouTubeViewHolder) {
+            ((YouTubeViewHolder) holder).bind(list.get(position), adapterCallbacksExplore, position);
         } else if (holder instanceof EmptyViewHolder) {
             ((EmptyViewHolder) holder).bind();
         }

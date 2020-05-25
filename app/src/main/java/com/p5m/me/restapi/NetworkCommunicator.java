@@ -19,6 +19,7 @@ import com.p5m.me.data.RatingResponseModel;
 import com.p5m.me.data.UnratedClassData;
 import com.p5m.me.data.UserPackageDetail;
 import com.p5m.me.data.WishListResponse;
+import com.p5m.me.data.YoutubeResponse;
 import com.p5m.me.data.main.AgoraUserCount;
 import com.p5m.me.data.main.AgoraUserStatus;
 import com.p5m.me.data.main.BookingCancellationResponse;
@@ -82,6 +83,7 @@ import io.intercom.android.sdk.Intercom;
 import io.intercom.android.sdk.UserAttributes;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
@@ -180,11 +182,14 @@ public class NetworkCommunicator {
         public static final int GET_CAHHNEL_TOKEN = 167;
         public static final int GET_USER_STATUS_IN_CHANNEL = 176;
         public static final int GET_USER_COUNT_IN_CHANNEL = 177;
+        public static final int GET_YOUTUBE_PLAYLIST = 178;
+        public static final int ATTEND_CLASS_API = 179;
+
 
     }
 
     private Context context;
-    private ApiService apiService,apiService2;
+    private ApiService apiService,apiService2,apiServiceYoutube;
     private static NetworkCommunicator networkCommunicator;
     private MyPreferences myPreferences;
 
@@ -192,6 +197,7 @@ public class NetworkCommunicator {
         this.context = context;
         this.apiService = RestServiceFactory.createService();
         this.apiService2 = RestServiceFactory.createService2();
+        this.apiServiceYoutube = RestServiceFactory.createServiceYoutube();
         this.myPreferences = MyPreferences.initialize(context);
     }
 
@@ -1854,6 +1860,29 @@ public class NetworkCommunicator {
         return call;
 
     }
+    public Call attendClass(int classSessionId,final RequestListener requestListener) {
+        final int requestCode = RequestCode.ATTEND_CLASS_API;
+        Call<ResponseModel<Object>> call = apiService.attendClass(classSessionId,TempStorage.getUser().getId());
+        LogUtils.debug("NetworkCommunicator hitting Attend");
+
+        call.enqueue(new RestCallBack<ResponseModel<Object>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<Object>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator Attend onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<Object>> call, Response<ResponseModel<Object>> restResponse, ResponseModel<Object> response) {
+                LogUtils.networkSuccess("NetworkCommunicator Attend onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+
+        return call;
+
+    }
 
     public Call getUserStatusInChannel(String appId,String uid,String channelName,boolean showLoader,final RequestListener requestListener) {
         final int requestCode = RequestCode.GET_USER_STATUS_IN_CHANNEL;
@@ -1900,6 +1929,29 @@ public class NetworkCommunicator {
 
         return call;
 
+    }
+
+    public Call getYoutubePlayList(String playListId,String apiKey,String pageToken,final RequestListener requestListener){
+        final int requestCode = RequestCode.GET_YOUTUBE_PLAYLIST;
+
+        String part =AppConstants.ApiParamValue.SNIPPET;
+       int maxResult = AppConstants.ApiParamValue.MAX_RESULT_YOUTUBE;
+        Call<YoutubeResponse> call = apiServiceYoutube.getYouTubePlayList(part,playListId,apiKey,maxResult,pageToken);
+
+        call.enqueue(new Callback<YoutubeResponse>() {
+            @Override
+            public void onResponse(Call<YoutubeResponse> call, Response<YoutubeResponse> response) {
+                requestListener.onApiSuccess(response.body(), requestCode);
+
+            }
+
+            @Override
+            public void onFailure(Call<YoutubeResponse> call, Throwable t) {
+                requestListener.onApiFailure(t.getMessage(), requestCode);
+
+            }
+        });
+return call;
     }
 }
 

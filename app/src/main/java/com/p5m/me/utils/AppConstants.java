@@ -151,6 +151,7 @@ public class AppConstants {
         public static final String DEFAULT_SETTING_SERVER = "pref_default_setting_server";
         public static final String AUTH_TOKEN = "pref_auth_token";
         public static final String OPEN_MEMBERSHIP_INFO = "open_membership_info";
+        public static final String SET_DEFAULT_PAGE = "set_default_page";
 
 
         public static final String DEVICE_TOKEN = "pref_device_token";
@@ -162,6 +163,10 @@ public class AppConstants {
         public static final String RATING_PARAM = "rating_param";
         public static final String LATITUDE = "latitude";
         public static final String LONGITUDE = "longitude";
+        public static final String CALL_START_TIME = "call_start_time";
+        public static final String CALL_STOP_TIME = "call_stop_time";
+        public static final String USER_TIME_IN_CLASS = "user_time_in_class";
+
 
 
         public static final String PAYMENT_ERROR_RESPONSE = "payment_error_response";
@@ -174,6 +179,9 @@ public class AppConstants {
         public static final String CLASS_BOOKING_TIME = "Class_booking_time";
         public static final String COUNTRIES = "CountryList";
         public static final String CANCELLATION_REASONS = "CancellationReasonsList";
+        public static final String ATTENDED_CLASSES_LIST = "attended_classes_list";
+        public static final String CLASS_FOR_GOOGLE_FORM_REVIEW = "class_for_google_form_review";
+
         public static final String IS_SHOW_MEMBERSHIP_ICON = "IsShowMembershipIcon";
     }
 
@@ -306,6 +314,10 @@ public class AppConstants {
         public static final String GET_CHANNEL_TOKEN = "api/v1/user/class/token";
         public static final String GET_CHANNEL_USER_STATUS_IN_CHANNEL = "channel/user/property";
         public static final String GET_CHANNEL_USER_COUNT = "channel/user";
+        public static final String GET_YOUTUBE_PLAYLIST = "playlistItems";
+        public static final String ATTEND_CLASS = "api/v1/user/class/attend";
+
+
 
     }
 
@@ -327,6 +339,10 @@ public class AppConstants {
         public static final String PACKAGE_OFFER_PERCENTAGE = "PERCENTAGE";
         public static final String PACKAGE_TYPE_EXTENSION = "EXTENSION";
         public static final String SUCCESS_RESPONSE_STATUS = "true";
+        public static final String SNIPPET = "snippet";
+        public static final int MAX_RESULT_YOUTUBE = 50;
+
+
 
 
     }
@@ -390,6 +406,15 @@ public class AppConstants {
         public static final String U_ID = "uid";
         public static final String CHANNEL_NAME = "channelName";
 
+        public static final String PART = "part";
+        public static final String PLAYLIST_ID = "playlistId";
+        public static final String API_KEY = "key";
+        public static final String MAX_RESULT="maxResults";
+        public static final String PAGE_TOKEN="pageToken";
+
+
+
+
     }
 
     public static final class Notification {
@@ -400,6 +425,9 @@ public class AppConstants {
         public static final String NOTIFICATION_TYPE = "notificationCategory";
         public static final String USER_ID_TO_NOTIFY = "userIdToNotify";
         public static final String URL = "url";
+        public static final String PLATFORM = "platform";
+        public static final String LINK = "link";
+
 
         public static final String CLASS_FROM_TIME = "fromTime";
         public static final String CLASS_TO_TIME = "toTime";

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
+import com.p5m.me.BuildConfig;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.ExplorePageAdapter;
@@ -28,13 +29,17 @@ import com.p5m.me.data.ExploreGymModel;
 import com.p5m.me.data.ExploreRatedClassModel;
 import com.p5m.me.data.ExploreTrainerModel;
 import com.p5m.me.data.Filter;
+import com.p5m.me.data.Item;
 import com.p5m.me.data.PriceModel;
 import com.p5m.me.data.WorkoutModel;
+import com.p5m.me.data.YoutubeResponse;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.GymModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
+import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigure;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -49,6 +54,7 @@ import com.p5m.me.view.activity.Main.GymProfileActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
 import com.p5m.me.view.activity.Main.Trainers;
+import com.p5m.me.view.activity.Main.VideoPlayerActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.activity.custom.MyRecyclerView;
 
@@ -56,6 +62,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -80,6 +87,7 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
     private int pageSizeLimit = AppConstants.Limit.PAGE_LIMIT_EXPLORE_PAGE;
     private ClassesFilter<PriceModel> filter;
     private ClassesFilter<WorkoutModel> classesFilter;
+    private YoutubeResponse youTubeResponseModel;
 
     public static Fragment createExploreFragment() {
         Fragment tabFragment = new FragmentExplore();
@@ -100,6 +108,8 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
     private List<ClassesFilter> classesFilters;
     private String mixPannelSection;
     private String mixPannelValue;
+    String api_key,platlistId;
+    private int youTubeModel=2;
 
     public FragmentExplore() {
     }
@@ -139,6 +149,9 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
         recyclerView.addItemDecoration(new DividerItemDecoration(context));
         recyclerView.setAdapter(explorePageAdapter);
         explorePageAdapter.notifyDataSetChanges();
+         platlistId = RemoteConfigure.getFirebaseRemoteConfig(context).getRemoteConfigValue(RemoteConfigConst.YOUTUBE_PLAYLIST_ID);
+         api_key = BuildConfig.YOUTUBE_API_KEY;
+        networkCommunicator.getYoutubePlayList(platlistId,api_key,null,this);
         callApi();
         setToolBar();
     }
@@ -195,6 +208,7 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
     @Override
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
         switch (view.getId()) {
+
             case R.id.explorePlans:
                 mixPannelSection = TEXT_WITH_BUTTONS;
                 mixPannelValue = AppConstants.MixPanelValue.MEMBERSHIP;
@@ -289,6 +303,26 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
                         }
                     }
                 }
+                if(model!=null&&model instanceof YoutubeResponse){
+                    YoutubeResponse data = (YoutubeResponse) model;
+                    int index = explorePageAdapter.getList().indexOf(data);
+                    if(index!=-1){
+                        Object obj = explorePageAdapter.getList().get(index);
+                        if (obj instanceof YoutubeResponse) {
+                            YoutubeResponse youtubeData = (YoutubeResponse) obj;
+                            if (youtubeData.isShowMore()) {
+                                youtubeData.setShowMore(false);
+
+                            } else {
+                                youtubeData.setShowMore(true);
+
+                            }
+                            explorePageAdapter.notifyItemChanged(index);
+
+                        }
+                    }
+                }
+                recyclerView.smoothScrollToPosition(position);
                 break;
             case R.id.buttonContactUs:
                 mixPannelSection = TEXT_WITH_BUTTONS_2;
@@ -313,6 +347,14 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
                     mixPannelValue = data.getTitle();
 
                     ClassProfileActivity.open(context, data.getClassSessionId(), NAVIGATION_FROM_EXPLORE);
+                }
+                break;
+            case R.id.constraintViewPlayListItem:
+                if (model != null && model instanceof Item) {
+                    Item data = (Item) model;
+                    mixPannelSection = "Recorded video";
+                    mixPannelValue = data.getSnippet().getTitle();
+                    VideoPlayerActivity.openActivityYoutube(context,data.getSnippet().getResourceId().getVideoId());
                 }
                 break;
 
@@ -343,23 +385,35 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
             case NetworkCommunicator.RequestCode.GET_EXPLORE_DATA:
                 List<ExploreDataModel> exploreModels = ((ResponseModel<List<ExploreDataModel>>) response).data;
                 if (!exploreModels.isEmpty()) {
+                    Collections.sort(exploreModels);
                     explorePageAdapter.addAll(exploreModels);
-
                     explorePageAdapter.notifyDataSetChanged();
+                    for (int i=0;i<exploreModels.size();i++) {
+                        ExploreDataModel data =exploreModels.get(i);
+                          if(data.getWidgetType().equalsIgnoreCase("PRICE_MODEL_CAROUSEL_WIDGET")){
+                              youTubeModel = i+1;
+                          }
+                    }
                 } else {
                     explorePageAdapter.loaderDone();
                 }
+                setUpYouTubeResponse();
 
                 checkListData();
                 break;
 
+        case NetworkCommunicator.RequestCode.GET_YOUTUBE_PLAYLIST:
+            youTubeResponseModel = (YoutubeResponse) response;
+            setUpYouTubeResponse();
+         break;
         }
     }
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
         swipeRefreshLayout.setRefreshing(false);
         switch (requestCode) {
-            case NetworkCommunicator.RequestCode.GET_EXPLORE_DATA:
+                case NetworkCommunicator.RequestCode.GET_YOUTUBE_PLAYLIST:
+                case NetworkCommunicator.RequestCode.GET_EXPLORE_DATA:
                 ToastUtils.show(context,errorMessage);
                 break;
         }
@@ -383,4 +437,21 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
     public void onTabSelection(int position) {
 
     }
+
+    private void setUpYouTubeResponse(){
+        try{
+            if(explorePageAdapter!=null&&explorePageAdapter.getItemCount()>0&&youTubeResponseModel!=null&&youTubeResponseModel.getItems()!=null&&youTubeResponseModel.getItems().size()>0){
+                explorePageAdapter.addYouTubePlayList(youTubeModel,youTubeResponseModel);
+                explorePageAdapter.notifyDataSetChanged();
+
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+    }
+
+
 }

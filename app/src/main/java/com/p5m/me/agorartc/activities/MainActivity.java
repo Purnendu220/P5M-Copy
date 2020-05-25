@@ -340,6 +340,7 @@ public class MainActivity extends BaseActivity implements NetworkCommunicator.Re
 
         intent.setClass(getApplicationContext(), LiveActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private void getTokenForClass(ClassModel classModel ) {

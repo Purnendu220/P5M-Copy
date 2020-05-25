@@ -2,7 +2,7 @@ package com.p5m.me.data;
 
 import java.util.List;
 
-public class ExploreDataModel {
+public class ExploreDataModel implements Comparable {
 
 
     /**
@@ -20,6 +20,7 @@ public class ExploreDataModel {
     private List<Object> data;
     private int maxItemNumber;
     private boolean isMoreActivityShow;
+    private int order;
 
     public String getWidgetType() {
         return widgetType;
@@ -75,6 +76,21 @@ public class ExploreDataModel {
 
     public void setMoreActivityShow(boolean moreActivityShow) {
         isMoreActivityShow = moreActivityShow;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    @Override
+    public int compareTo(Object compareObj) {
+        int compareorder=((ExploreDataModel)compareObj).getOrder();
+                 return this.order-compareorder;
+
     }
 
 

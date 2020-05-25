@@ -73,6 +73,26 @@ public class MyPreferences {
         return PreferencesManager.getString(AppConstants.Pref.LONGITUDE, "");
     }
 
+    public long getCallStartTime(int sessionId) {
+        return PreferencesManager.getLong(AppConstants.Pref.CALL_START_TIME+sessionId, 0);
+    }
+    public void setCallStartTime(int sessionId,long startTime) {
+         PreferencesManager.putLong(AppConstants.Pref.CALL_START_TIME+sessionId,startTime);
+    }
+
+    public long getCallStopTime(int sessionId) {
+        return PreferencesManager.getLong(AppConstants.Pref.CALL_STOP_TIME+sessionId, 0);
+    }
+    public void setCallStopTime(int sessionId,long startTime) {
+        PreferencesManager.putLong(AppConstants.Pref.CALL_STOP_TIME+sessionId,startTime);
+    }
+    public void setUserTimeInSession(int sessionId,long time){
+        PreferencesManager.putLong(AppConstants.Pref.USER_TIME_IN_CLASS+sessionId,time);
+
+    }
+    public long getUserTimeInSession(int sessionId){
+        return PreferencesManager.getLong(AppConstants.Pref.USER_TIME_IN_CLASS+sessionId,0);
+    }
     public void saveAuthToken(String authToken) {
         if (authToken == null) {
             authToken = "";
@@ -94,6 +114,15 @@ public class MyPreferences {
         PreferencesManager.putString(AppConstants.Pref.LONGITUDE, lng);
     }
 
+
+    public void setDefaultPage(int page){
+        PreferencesManager.putInt(AppConstants.Pref.SET_DEFAULT_PAGE, page);
+
+    }
+    public int getDefaultPage(){
+       return PreferencesManager.getInt(AppConstants.Pref.SET_DEFAULT_PAGE, -1);
+
+    }
 
     public void setOpenMembershipInfo(int state) {
         PreferencesManager.putInt(AppConstants.Pref.OPEN_MEMBERSHIP_INFO, state);
@@ -448,6 +477,39 @@ public class MyPreferences {
         }
     }
 
+    public void saveAttendedClassesList(ClassModel model){
+        boolean sessionFound=false;
+        List<ClassModel> mList;
+        try {
+            mList = gson.fromJson(PreferencesManager.getString(AppConstants.Pref.ATTENDED_CLASSES_LIST), new TypeToken<List<ClassModel>>() {}.getType());
+            if(mList!=null&&mList.size()>0){
+                for (ClassModel session:mList) {
+                    if(session.getClassSessionId()==model.getClassSessionId()){
+                        sessionFound =true;
+                    }
+                }
+                if(!sessionFound){
+                    mList.add(model); }
+            }else{
+                mList = new ArrayList<>();
+                mList.add(model);
+            }
+            PreferencesManager.putString(AppConstants.Pref.ATTENDED_CLASSES_LIST, gson.toJson(mList));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public List<ClassModel> getAttendedClassesList(){
+        List<ClassModel> mList = null;
+        try {
+            mList = gson.fromJson(PreferencesManager.getString(AppConstants.Pref.ATTENDED_CLASSES_LIST), new TypeToken<List<ClassModel>>() {}.getType());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    return mList;
+    }
+
     public void saveCancellationReason(List<BookingCancellationResponse> reasons) {
         try {
             PreferencesManager.putString(AppConstants.Pref.CANCELLATION_REASONS, gson.toJson(reasons));
@@ -458,4 +520,30 @@ public class MyPreferences {
     }
 
 
+    public void saveClassForGoogleFormReview(ClassModel model) {
+        try {
+            PreferencesManager.putString(AppConstants.Pref.CLASS_FOR_GOOGLE_FORM_REVIEW, gson.toJson(model));
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+    public ClassModel getClassForGoogleFormReview() {
+        ClassModel classModel = null;
+        try {
+            classModel = gson.fromJson(PreferencesManager.getString(AppConstants.Pref.CLASS_FOR_GOOGLE_FORM_REVIEW), new TypeToken<ClassModel>() {}.getType());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return classModel;
+    }
+    public void clearClassForGoogleFormReview() {
+        try {
+            PreferencesManager.putString(AppConstants.Pref.CLASS_FOR_GOOGLE_FORM_REVIEW, "");
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
 }

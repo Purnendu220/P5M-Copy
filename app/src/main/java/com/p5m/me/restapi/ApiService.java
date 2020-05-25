@@ -13,6 +13,7 @@ import com.p5m.me.data.RatingResponseModel;
 import com.p5m.me.data.UnratedClassData;
 import com.p5m.me.data.UserPackageDetail;
 import com.p5m.me.data.WishListResponse;
+import com.p5m.me.data.YoutubeResponse;
 import com.p5m.me.data.main.AgoraUserCount;
 import com.p5m.me.data.main.AgoraUserStatus;
 import com.p5m.me.data.main.BookingCancellationResponse;
@@ -53,6 +54,7 @@ import com.p5m.me.data.request.WishListRequest;
 import java.util.List;
 
 import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -439,6 +441,16 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.GET_CHANNEL_USER_COUNT + "/{" + AppConstants.ApiParamKey.APP_ID + "}"+ "/{" + AppConstants.ApiParamKey.CHANNEL_NAME + "}")
     Call<ResponseModel<AgoraUserCount>> getUserCountInChannel(@Path(AppConstants.ApiParamKey.APP_ID) String appId, @Path(AppConstants.ApiParamKey.CHANNEL_NAME) String channelName );
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.GET_YOUTUBE_PLAYLIST)
+    Call<YoutubeResponse>  getYouTubePlayList(@Query(AppConstants.ApiParamKey.PART) String part, @Query(AppConstants.ApiParamKey.PLAYLIST_ID) String playListId,
+                                              @Query(AppConstants.ApiParamKey.API_KEY) String apiKey, @Query(AppConstants.ApiParamKey.MAX_RESULT) int maxResult,
+                                              @Query(AppConstants.ApiParamKey.PAGE_TOKEN) String pageToken);
+
+    @Headers("Content-type: application/json")
+    @POST(AppConstants.Url.ATTEND_CLASS)
+    Call<ResponseModel<Object>> attendClass(@Query(AppConstants.ApiParamKey.CLASS_SESSION_ID) int classSessionId, @Query(AppConstants.ApiParamKey.USER_ID) int userId);
 
 
 

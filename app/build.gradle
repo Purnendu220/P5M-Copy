@@ -83,6 +83,7 @@ android {
             buildConfigField "String", "AGORA_APP_ID", '\"761c4b2931dc40e6945e41daea2c091d\"'
             buildConfigField "String", "AGORA_APP_CUSTOMER_CERTIFICATE", '\"30d9c2ed76a34e27ab05ae85682ae4fc\"'
             buildConfigField "String", "AGORA_APP_CUSTOMER_ID", '\"418489ad97644a3e87695a6798a11aea\"'
+            buildConfigField "String", "YOUTUBE_API_KEY", '\"AIzaSyDqCAlD7vilwhBhp49T1PU4SpH5Ap2KGfA\"'
 
             manifestPlaceholders = [hostName: "staging.p5m.me", hostName_www: "www.staging.p5m.me", appName: "P5M LOCAL", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
 
@@ -104,6 +105,7 @@ android {
             buildConfigField "String", "AGORA_APP_ID", '\"761c4b2931dc40e6945e41daea2c091d\"'
             buildConfigField "String", "AGORA_APP_CUSTOMER_CERTIFICATE", '\"30d9c2ed76a34e27ab05ae85682ae4fc\"'
             buildConfigField "String", "AGORA_APP_CUSTOMER_ID", '\"418489ad97644a3e87695a6798a11aea\"'
+            buildConfigField "String", "YOUTUBE_API_KEY", '\"AIzaSyDqCAlD7vilwhBhp49T1PU4SpH5Ap2KGfA\"'
 
             manifestPlaceholders = [hostName: "staging.p5m.me", hostName_www: "www.staging.p5m.me", appName: "P5M LOCAL", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
 
@@ -117,16 +119,17 @@ android {
             buildConfigField "boolean", "FIREBASE_IS_PRODUCTION", "false"
             buildConfigField "String", "MIXPANEL_KEY", '\"705daac4d807e105c1ddc350c9324ca2\"'
             buildConfigField "String", "SENDER_ID", '\"109210713388\"'
-            buildConfigField "String", "BASE_URL", '\"http://52.209.64.40:8080\"'
-            buildConfigField "String", "BASE_URL_HTTPS", '\"https://52.209.64.40:8080\"'
+            buildConfigField "String", "BASE_URL", '\"http://uat.profive.co\"'
+            buildConfigField "String", "BASE_URL_HTTPS", '\"http://uat.profive.co\"'
             buildConfigField "String", "BASE_URL_MIDL", '\"/profive-midl/\"'
-            buildConfigField "String", "BASE_URL_SHARE", '\"http://staging.p5m.me\"'
+            buildConfigField "String", "BASE_URL_SHARE", '\"http://uat.profive.co\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
             buildConfigField "String", "AGORA_APP_ID", '\"37b3c68b87694725b992c9518ede593c\"'
             buildConfigField "String", "AGORA_APP_CUSTOMER_CERTIFICATE", '\"30d9c2ed76a34e27ab05ae85682ae4fc\"'
             buildConfigField "String", "AGORA_APP_CUSTOMER_ID", '\"418489ad97644a3e87695a6798a11aea\"'
+            buildConfigField "String", "YOUTUBE_API_KEY", '\"AIzaSyDqCAlD7vilwhBhp49T1PU4SpH5Ap2KGfA\"'
 
-            manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
+            manifestPlaceholders = [hostName: "uat.profive.co", hostName_www: "www.uat.profive.co", appName: "P5M", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
 
         }
         qa {
@@ -137,17 +140,18 @@ android {
             buildConfigField "boolean", "IS_CRASH_REPORT", "true"
             buildConfigField "String", "MIXPANEL_KEY", '\"705daac4d807e105c1ddc350c9324ca2\"'
             buildConfigField "String", "SENDER_ID", '\"109210713388\"'
-            buildConfigField "String", "BASE_URL", '\"http://52.209.64.40:9090\"'
-            buildConfigField "String", "BASE_URL_HTTPS", '\"https://52.209.64.40:9090\"'
+            buildConfigField "String", "BASE_URL", '\"https://qa.profive.co\"'
+            buildConfigField "String", "BASE_URL_HTTPS", '\"https://qa.profive.co\"'
             buildConfigField "boolean", "FIREBASE_IS_PRODUCTION", "false"
             buildConfigField "String", "BASE_URL_MIDL", '\"/profive-midl/\"'
-            buildConfigField "String", "BASE_URL_SHARE", '\"http://staging.p5m.me\"'
+            buildConfigField "String", "BASE_URL_SHARE", '\"http://qa.profive.co\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
             buildConfigField "String", "AGORA_APP_ID", '\"37b3c68b87694725b992c9518ede593c\"'
             buildConfigField "String", "AGORA_APP_CUSTOMER_CERTIFICATE", '\"30d9c2ed76a34e27ab05ae85682ae4fc\"'
             buildConfigField "String", "AGORA_APP_CUSTOMER_ID", '\"418489ad97644a3e87695a6798a11aea\"'
+            buildConfigField "String", "YOUTUBE_API_KEY", '\"AIzaSyDqCAlD7vilwhBhp49T1PU4SpH5Ap2KGfA\"'
 
-            manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
+            manifestPlaceholders = [hostName: "qa.profive.co", hostName_www: "www.qa.profive.co", appName: "P5M", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
 
         }
         liveTest {
@@ -168,6 +172,7 @@ android {
             buildConfigField "String", "AGORA_APP_ID", '\"37b3c68b87694725b992c9518ede593c\"'
             buildConfigField "String", "AGORA_APP_CUSTOMER_CERTIFICATE", '\"30d9c2ed76a34e27ab05ae85682ae4fc\"'
             buildConfigField "String", "AGORA_APP_CUSTOMER_ID", '\"418489ad97644a3e87695a6798a11aea\"'
+            buildConfigField "String", "YOUTUBE_API_KEY", '\"AIzaSyDqCAlD7vilwhBhp49T1PU4SpH5Ap2KGfA\"'
 
             manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "81e25498c1638dbcb2017cc88dba175c5d44a1a6"]
         }
@@ -190,6 +195,11 @@ android {
             buildConfigField "String", "AGORA_APP_ID", '\"065bcb1063964d0f836d63f5779b0030\"'
             buildConfigField "String", "AGORA_APP_CUSTOMER_CERTIFICATE", '\"30d9c2ed76a34e27ab05ae85682ae4fc\"'
             buildConfigField "String", "AGORA_APP_CUSTOMER_ID", '\"418489ad97644a3e87695a6798a11aea\"'
+            buildConfigField "String", "YOUTUBE_API_KEY", '\"AIzaSyDqCAlD7vilwhBhp49T1PU4SpH5Ap2KGfA\"'
+
+
+
+
 
             manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "81e25498c1638dbcb2017cc88dba175c5d44a1a6"]
         }
@@ -204,7 +214,6 @@ dependencies {
         all*.exclude group: 'com.android.support', module: 'support-v7'
     }
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-
     // implementation file('libs/apptimize-android-3.2.14.jar')
     /////////////////////////////////SUPPORT////////////////////////////////////////
     implementation 'androidx.multidex:multidex:2.0.0'
@@ -237,14 +246,12 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:commons:0.9.4.3'
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
     implementation 'com.robertlevonyan.components:Picker:1.1.1'
-//    implementation 'com.google.android:flexbox:0.3.2'
+    //    implementation 'com.google.android:flexbox:0.3.2'
     implementation 'com.google.android:flexbox:2.0.1'
     implementation 'com.google.firebase:firebase-core:17.0.0'
     implementation 'com.google.firebase:firebase-messaging:19.0.0'
     implementation 'com.google.firebase:firebase-config:18.0.0'
     implementation 'com.google.firebase:firebase-inappmessaging-display:19.0.1'
-
-
     implementation 'com.google.android.gms:play-services-location:16.0.0'
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation 'com.google.android.gms:play-services-places:16.1.0'
@@ -255,23 +262,21 @@ dependencies {
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.2@aar') {
         transitive = true
     }
-
     implementation 'com.mixpanel.android:mixpanel-android:5.4.0'
     implementation 'com.google.android.gms:play-services-gcm:15.0.1'
     implementation 'io.fotoapparat.fotoapparat:library:2.3.1'
     implementation 'me.zhanghai.android.materialratingbar:library:1.4.0'
     implementation 'com.github.DanielMartinus:Stepper-Touch:0.6'
-
     implementation 'com.google.firebase:firebase-dynamic-links:16.1.8'
     implementation 'com.mixpanel.android:mixpanel-android:5.4.1'
-//    implementation 'com.google.android.gms:play-services-gcm:15.0.1'
+    //    implementation 'com.google.android.gms:play-services-gcm:15.0.1'
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:design:28.0.0'
-
     // Intercom Integration
     implementation 'io.intercom.android:intercom-sdk:5.+'
     implementation 'io.agora.rtc:full-sdk:3.0.0'
-
+    implementation 'com.devbrackets.android:exomedia:4.3.0'
+    implementation files('libs/YouTubeAndroidPlayerApi.jar')
 }
 
 apply plugin: 'com.google.gms.google-services'

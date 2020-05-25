@@ -48,6 +48,7 @@ import com.p5m.me.view.activity.Main.ClassProfileActivity;
 import com.p5m.me.view.activity.Main.ContactActivity;
 import com.p5m.me.view.activity.Main.FullRatingActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
+import com.p5m.me.view.activity.Main.VideoPlayerActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.custom.CustomDialogCancelBooking;
@@ -204,24 +205,11 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             case R.id.imageViewVideoClass:
                 if(model instanceof ClassModel){
                     ClassModel data = (ClassModel) model;
-                    if(data.getPlatform()==null||data.getPlatform().equalsIgnoreCase(AppConstants.channelType.CHANNEL_INAPP)){
                         getTokenForClass((ClassModel) model);
-                    }else{
-                        if(DateUtils.isTimeCame(data.getClassDate(),data.getFromTime())){
-                            if(data.getLink()!=null){
-                                OpenAppUtils.openExternalApps(context,data.getPlatform(),data.getLink());
-                            }else{
-                                ToastUtils.show(context,context.getResources().getString(R.string.class_not_started_yet));
-
-                            }
-                        }else{
-                            ToastUtils.show(context,String.format(context.getResources().getString(R.string.time_not_came),data.getFromTime(),data.getClassDate(),AppConstants.TIME_START_DURATION+""));
-                        }
-                    }
-
                 }
 
-            break;
+
+                break;
 
             default:
                 if (shownIn != AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED) {
@@ -240,7 +228,18 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
             @Override
             public void onApiSuccess(Object response, int requestCode) {
                 TokenResponse tokenModel = ((ResponseModel<TokenResponse>) response).data;
-                MainActivity.open(context,classModel.getClassSessionId()+"",tokenModel.getToken(),classModel);
+                if(classModel.getPlatform()==null||classModel.getPlatform().equalsIgnoreCase(AppConstants.channelType.CHANNEL_INAPP)){
+                    MainActivity.open(context,classModel.getClassSessionId()+"",tokenModel.getToken(),classModel);
+                }else{
+                    if(classModel.getLink()!=null){
+                            OpenAppUtils.openExternalApps(context,classModel.getPlatform(),classModel.getLink());
+                        }else{
+                            ToastUtils.show(context,context.getResources().getString(R.string.class_not_started_yet));
+
+                        }
+
+                }
+
 
 
             }

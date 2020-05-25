@@ -62,6 +62,8 @@ public class RegistrationActivity extends BaseActivity {
             TOTAL_STEPS = AppConstants.Tab.COUNT_NORMAL_REGISTRATION;
         }
 
+
+
     }
 
 
