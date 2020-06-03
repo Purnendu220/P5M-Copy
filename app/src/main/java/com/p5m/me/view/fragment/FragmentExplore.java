@@ -38,6 +38,7 @@ import com.p5m.me.data.main.GymModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
+import com.p5m.me.helper.SpeedyLinearLayoutManager;
 import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.remote_config.RemoteConfigure;
 import com.p5m.me.restapi.NetworkCommunicator;
@@ -144,19 +145,21 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
         swipeRefreshLayout.setOnRefreshListener(this);
 
         explorePageAdapter = new ExplorePageAdapter(context, SHOWN_IN_EXPLORE_PAGE, false, this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+//        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        recyclerView.setLayoutManager(new SpeedyLinearLayoutManager(context, SpeedyLinearLayoutManager.VERTICAL, false));
+
         recyclerView.setHasFixedSize(false);
         recyclerView.addItemDecoration(new DividerItemDecoration(context));
         recyclerView.setAdapter(explorePageAdapter);
         explorePageAdapter.notifyDataSetChanges();
          platlistId = RemoteConfigure.getFirebaseRemoteConfig(context).getRemoteConfigValue(RemoteConfigConst.YOUTUBE_PLAYLIST_ID);
          api_key = BuildConfig.YOUTUBE_API_KEY;
-        networkCommunicator.getYoutubePlayList(platlistId,api_key,null,this);
         callApi();
         setToolBar();
     }
 
     private void callApi() {
+        networkCommunicator.getYoutubePlayList(platlistId,api_key,null,this);
         networkCommunicator.getExploreData(this, false);
 
     }
@@ -398,6 +401,7 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
                     explorePageAdapter.loaderDone();
                 }
                 setUpYouTubeResponse();
+                explorePageAdapter.notifyDataSetChanged();
 
                 checkListData();
                 break;
@@ -445,8 +449,10 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
                 explorePageAdapter.notifyDataSetChanged();
 
             }
+
         }
         catch (Exception e){
+            ToastUtils.show(context,e.getMessage());
             e.printStackTrace();
         }
 
