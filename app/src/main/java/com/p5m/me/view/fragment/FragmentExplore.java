@@ -23,17 +23,14 @@ import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.ExplorePageAdapter;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.ClassesFilter;
-import com.p5m.me.data.ExploreDataList;
 import com.p5m.me.data.ExploreDataModel;
 import com.p5m.me.data.ExploreGymModel;
 import com.p5m.me.data.ExploreRatedClassModel;
 import com.p5m.me.data.ExploreTrainerModel;
-import com.p5m.me.data.Filter;
 import com.p5m.me.data.Item;
 import com.p5m.me.data.PriceModel;
 import com.p5m.me.data.WorkoutModel;
 import com.p5m.me.data.YoutubeResponse;
-import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.GymModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.eventbus.Events;
@@ -72,7 +69,6 @@ import io.intercom.android.sdk.Intercom;
 
 import static com.p5m.me.utils.AppConstants.AppNavigation.NAVIGATION_FROM_EXPLORE;
 import static com.p5m.me.utils.AppConstants.AppNavigation.SHOWN_IN_EXPLORE_PAGE;
-import static com.p5m.me.utils.AppConstants.ExploreViewType.BANNER_CAROUSAL_VIEW;
 import static com.p5m.me.utils.AppConstants.ExploreViewType.CATEGORY_CAROUSEL_VIEW;
 import static com.p5m.me.utils.AppConstants.ExploreViewType.GYM_VIEW;
 import static com.p5m.me.utils.AppConstants.ExploreViewType.PRICE_MODEL_CAROUSEL_VIEW;
@@ -110,7 +106,7 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
     private String mixPannelSection;
     private String mixPannelValue;
     String api_key,platlistId;
-    private int youTubeModel=2;
+    private int youTubeModelIndex =-1;
 
     public FragmentExplore() {
     }
@@ -393,8 +389,8 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
                     explorePageAdapter.notifyDataSetChanged();
                     for (int i=0;i<exploreModels.size();i++) {
                         ExploreDataModel data =exploreModels.get(i);
-                          if(data.getWidgetType().equalsIgnoreCase("PRICE_MODEL_CAROUSEL_WIDGET")){
-                              youTubeModel = i+1;
+                          if(data.getWidgetType().equalsIgnoreCase("YOUTUBE")&&data.isShowDivider()){
+                              youTubeModelIndex = data.getOrder();
                           }
                     }
                 } else {
@@ -444,8 +440,8 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
 
     private void setUpYouTubeResponse(){
         try{
-            if(explorePageAdapter!=null&&explorePageAdapter.getItemCount()>0&&youTubeResponseModel!=null&&youTubeResponseModel.getItems()!=null&&youTubeResponseModel.getItems().size()>0){
-                explorePageAdapter.addYouTubePlayList(youTubeModel,youTubeResponseModel);
+            if(explorePageAdapter!=null&&explorePageAdapter.getItemCount()>0&&youTubeResponseModel!=null&&youTubeResponseModel.getItems()!=null&&youTubeResponseModel.getItems().size()>0&&youTubeModelIndex>-1){
+                explorePageAdapter.addYouTubePlayList(youTubeModelIndex,youTubeResponseModel);
                 explorePageAdapter.notifyDataSetChanged();
 
             }
