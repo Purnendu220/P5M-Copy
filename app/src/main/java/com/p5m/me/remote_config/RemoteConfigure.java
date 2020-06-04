@@ -147,6 +147,8 @@ public class RemoteConfigure {
         RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.SHOW_SELECTION_OPTIONS);
         RemoteConfigConst.PLAN_DESCRIPTION_DROP_IN_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.PLAN_DESCRIPTION_DROP_IN);
         RemoteConfigConst.ON_BOARDING_DATA_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.ON_BOARDING_DATA);
+        RemoteConfigConst.BOOK_FIND_CLASS_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.BOOK_FIND_CLASS);
+        RemoteConfigConst.BOOK_OTHER_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.BOOK_OTHERS);
 
 
     }
@@ -206,6 +208,8 @@ public class RemoteConfigure {
         RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.SHOW_SELECTION_OPTIONS);
         RemoteConfigConst.PLAN_DESCRIPTION_DROP_IN_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.PLAN_DESCRIPTION_DROP_IN);
         RemoteConfigConst.ON_BOARDING_DATA_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.ON_BOARDING_DATA);
+        RemoteConfigConst.BOOK_OTHER_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.BOOK_OTHERS);
+        RemoteConfigConst.BOOK_FIND_CLASS_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.BOOK_FIND_CLASS);
 
     }
     public String getRemoteConfigValue(String key){

@@ -302,4 +302,15 @@
         <key>call_finish_title</key>
         <value>Thank You</value>
     </entry>
+
+    <entry>
+        <key>book_button_other</key>
+        <value>[{"online_button_en": "online", "physical_button_en": "at gym", "online_button_ar": "online", "physical_button_ar": "at gym"}]
+        </value>
+    </entry>
+  <entry>
+        <key>book_button_find_class</key>
+        <value>[{"online_button_en": "online", "physical_button_en": "at gym", "online_button_ar": "online", "physical_button_ar": "at gym"}]
+        </value>
+    </entry>
 </defaultsMap>

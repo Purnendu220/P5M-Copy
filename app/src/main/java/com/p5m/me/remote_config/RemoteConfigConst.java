@@ -73,6 +73,8 @@ public class RemoteConfigConst {
     public static String LEFT_EARLY_GOOGLE_FORM="left_early_google_form";
     public static String FINISHED_GOOGLE_FORM="finish_google_form";
     public static String CALL_FINISHED_TITLE="call_finish_title";
+    public static String BOOK_FIND_CLASS="book_button_find_class";
+    public static String BOOK_OTHERS="book_button_other";
 
 
 
@@ -144,6 +146,8 @@ public class RemoteConfigConst {
     public static final int PLAN_DESCRIPTION_DROP_IN_KEY = 986;
     public static final int ON_BOARDING_DATA_KEY = 987;
     public static final int TESTIMONIALS_RIYADH_KEY = 988;
+    public static final int BOOK_FIND_CLASS_KEY = 989;
+    public static final int BOOK_OTHERS_KEY = 990;
 
 
     /* ------VALUES---------*/
@@ -211,6 +215,8 @@ public class RemoteConfigConst {
     public static String SHOW_SELECTION_OPTIONS_VALUE = "true";
     public static String ON_BOARDING_DATA_VALUE = "";
     public static String CHANNEL_LIST = "";
+    public static String BOOK_FIND_CLASS_VALUE = "";
+    public static String BOOK_OTHER_VALUE = "";
 
 
 
