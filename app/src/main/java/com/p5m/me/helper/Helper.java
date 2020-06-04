@@ -227,6 +227,55 @@ public class Helper {
         }
 
     }
+  public static void setJoinButtonOther(Context context, Button buttonJoin, ClassModel model) {
+
+        if (model.isUserJoinStatus()) {
+
+            buttonJoin.setText(RemoteConfigConst.BOOKED_VALUE);
+            RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
+
+
+        } else if (model.getAvailableSeat() == 0) {
+
+            if (model.getWishType() != null) {
+                if (model.getWishType().equalsIgnoreCase(AppConstants.ApiParamKey.WAITLIST)) {
+                    buttonJoin.setText(RemoteConfigConst.WAITLISTED_VALUE);
+                    RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
+
+                } else {
+                    buttonJoin.setText(RemoteConfigConst.WAITLIST_VALUE);
+                    RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+                }
+            } else {
+                buttonJoin.setText(RemoteConfigConst.WAITLIST_VALUE);
+                RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+            }
+
+        } else {
+            String BOOK_OTHER_VALUE = RemoteConfigConst.BOOK_OTHER_VALUE;
+            if (BOOK_OTHER_VALUE != null && !BOOK_OTHER_VALUE.isEmpty()) {
+                Gson g = new Gson();
+                BookButtonModel p = g.fromJson(BOOK_OTHER_VALUE, new TypeToken<BookButtonModel>() {
+                }.getType());
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en")) {
+                    if (model.isVideoClass())
+                        buttonJoin.setText(p.getOnline_button_en());
+                    else
+                        buttonJoin.setText(p.getPhysical_button_en());
+                } else {
+                    if (model.isVideoClass())
+                        buttonJoin.setText(p.getOnline_button_ar());
+                    else
+                        buttonJoin.setText(p.getPhysical_button_ar());
+                }
+
+                RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+
+
+            }
+        }
+
+    }
 
 
     public static void setJoinStatusProfile(Context context, TextView view, TextView
