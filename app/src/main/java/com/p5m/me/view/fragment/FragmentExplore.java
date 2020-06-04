@@ -381,13 +381,15 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
             case NetworkCommunicator.RequestCode.GET_EXPLORE_DATA:
                 List<ExploreDataModel> exploreModels = ((ResponseModel<List<ExploreDataModel>>) response).data;
                 if (!exploreModels.isEmpty()) {
+                    youTubeModelIndex = -1;
                     Collections.sort(exploreModels);
+                    explorePageAdapter.clearAll();
                     explorePageAdapter.addAll(exploreModels);
                     explorePageAdapter.notifyDataSetChanged();
                     for (int i=0;i<exploreModels.size();i++) {
                         ExploreDataModel data =exploreModels.get(i);
                           if(data.getWidgetType().equalsIgnoreCase("YOUTUBE")&&data.isShowDivider()){
-                              youTubeModelIndex = data.getOrder();
+                              youTubeModelIndex = data.getOrder()-1;
                           }
                     }
                 } else {
