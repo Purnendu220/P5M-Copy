@@ -115,7 +115,8 @@ public class ExplorePageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public void addYouTubePlayList(int index,YoutubeResponse model) {
-        list.add(index,model);
+        list.set(index,model);
+        //list.add(index,model);
     }
 
     private void addLoader() {
