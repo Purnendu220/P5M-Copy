@@ -269,7 +269,7 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 buttonJoin.setBackground(context.getDrawable(R.drawable.full_rect));
 
             } else {
-                Helper.setJoinButton(context, buttonJoin, model);
+                Helper.setJoinButtonOther(context, buttonJoin, model);
             }
             if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED) {
                 if (model.getRatingResDto() == null || model.getRatingResDto().getRating() == 0) {

@@ -22,10 +22,14 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
+import com.p5m.me.data.RemoteConfigDataModel;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CommonUtillity;
 import com.p5m.me.utils.DateUtils;
@@ -35,6 +39,7 @@ import com.p5m.me.utils.LanguageUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.p5m.me.remote_config.RemoteConfigConst.HOW_IT_WORKS_VALUE;
 import static com.p5m.me.utils.LanguageUtils.matchFitnessWord;
 
 /**
@@ -115,6 +120,12 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
     @BindView(R.id.textViewClassRating)
     public TextView textViewClassRating;
 
+    @BindView(R.id.layoutOnlineClassProcess)
+    public LinearLayout layoutOnlineClassProcess;
+
+    @BindView(R.id.textViewOnlineInfo)
+    public TextView textViewOnlineInfo;
+
     @BindView(R.id.relativeLayoutFitnessLevel)
     public RelativeLayout relativeLayoutFitnessLevel;
 
@@ -157,17 +168,17 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
             itemView.setVisibility(View.VISIBLE);
 
             final ClassModel model = (ClassModel) data;
-            if(model.isVideoClass()){
+            if (model.isVideoClass()) {
                 layoutSeats.setVisibility(View.GONE);
                 mapViewLayout.setVisibility(View.GONE);
-                if(model.isUserJoinStatus()){
+                if (model.isUserJoinStatus()) {
                     relativeLayoutVideoClass.setVisibility(View.VISIBLE);
 
-                }else{
+                } else {
                     relativeLayoutVideoClass.setVisibility(View.GONE);
 
                 }
-            }else{
+            } else {
                 layoutSeats.setVisibility(View.VISIBLE);
                 relativeLayoutVideoClass.setVisibility(View.GONE);
                 mapViewLayout.setVisibility(View.VISIBLE);
@@ -189,8 +200,23 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
             } else {
                 layoutDesc.setVisibility(View.GONE);
             }
+            if (model.isVideoClass() && !HOW_IT_WORKS_VALUE.isEmpty()) {
+                Gson g = new Gson();
+                RemoteConfigDataModel p = g.fromJson(HOW_IT_WORKS_VALUE, new TypeToken<RemoteConfigDataModel>() {
+                }.getType());
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en") && !p.getEn().isEmpty()) {
 
-            if (model.getGymBranchDetail() != null&&!model.isVideoClass()) {
+                    layoutOnlineClassProcess.setVisibility(View.VISIBLE);
+                    textViewOnlineInfo.setText(p.getEn());
+                }else {
+                    layoutOnlineClassProcess.setVisibility(View.VISIBLE);
+                    textViewOnlineInfo.setText(p.getAr());
+                }
+            } else {
+                layoutOnlineClassProcess.setVisibility(View.GONE);
+            }
+
+            if (model.getGymBranchDetail() != null && !model.isVideoClass()) {
                 layoutMap.setVisibility(View.VISIBLE);
                 textViewMap.setText(Html.fromHtml(context.getString(R.string.address) + context.getString(R.string.gaping) + model.getGymBranchDetail().getAddress()));
             } else {
@@ -262,10 +288,10 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
             }
 
             if (model.getGymBranchDetail() != null) {
-                if(model.isVideoClass()){
+                if (model.isVideoClass()) {
                     textViewLocation.setText(model.getGymBranchDetail().getGymName());
 
-                }else{
+                } else {
                     textViewLocation.setText(model.getGymBranchDetail().getGymName() + ", " + model.getGymBranchDetail().getBranchName() + ", " + model.getGymBranchDetail().getLocalityName());
 
                 }
@@ -320,15 +346,15 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
 
             textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
             textViewGender.setText(Helper.getClassGenderText(model.getClassType()));
-            if(model.isVideoClass()){
+            if (model.isVideoClass()) {
                 String channelName = CommonUtillity.getChannelName(model.getPlatform());
-                if(channelName!=null&&!channelName.isEmpty()){
+                if (channelName != null && !channelName.isEmpty()) {
                     layoutChannelName.setVisibility(View.VISIBLE);
                     textViewChannelNAme.setText(channelName);
-                }else{
+                } else {
                     layoutChannelName.setVisibility(View.GONE);
                 }
-            }else{
+            } else {
                 layoutChannelName.setVisibility(View.GONE);
             }
 

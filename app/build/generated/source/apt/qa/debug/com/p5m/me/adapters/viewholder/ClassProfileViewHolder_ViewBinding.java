@@ -52,6 +52,8 @@ public class ClassProfileViewHolder_ViewBinding implements Unbinder {
     target.layoutSeeAllReview = Utils.findRequiredViewAsType(source, R.id.layoutSeeAllReview, "field 'layoutSeeAllReview'", LinearLayout.class);
     target.linearLayoutClassRating = Utils.findRequiredViewAsType(source, R.id.linearLayoutClassRating, "field 'linearLayoutClassRating'", LinearLayout.class);
     target.textViewClassRating = Utils.findRequiredViewAsType(source, R.id.textViewClassRating, "field 'textViewClassRating'", TextView.class);
+    target.layoutOnlineClassProcess = Utils.findRequiredViewAsType(source, R.id.layoutOnlineClassProcess, "field 'layoutOnlineClassProcess'", LinearLayout.class);
+    target.textViewOnlineInfo = Utils.findRequiredViewAsType(source, R.id.textViewOnlineInfo, "field 'textViewOnlineInfo'", TextView.class);
     target.relativeLayoutFitnessLevel = Utils.findRequiredViewAsType(source, R.id.relativeLayoutFitnessLevel, "field 'relativeLayoutFitnessLevel'", RelativeLayout.class);
     target.imageViewClassFitnessLevel = Utils.findRequiredViewAsType(source, R.id.imageViewClassFitnessLevel, "field 'imageViewClassFitnessLevel'", ImageView.class);
     target.textViewFitnessLevel = Utils.findRequiredViewAsType(source, R.id.textViewFitnessLevel, "field 'textViewFitnessLevel'", TextView.class);
@@ -97,6 +99,8 @@ public class ClassProfileViewHolder_ViewBinding implements Unbinder {
     target.layoutSeeAllReview = null;
     target.linearLayoutClassRating = null;
     target.textViewClassRating = null;
+    target.layoutOnlineClassProcess = null;
+    target.textViewOnlineInfo = null;
     target.relativeLayoutFitnessLevel = null;
     target.imageViewClassFitnessLevel = null;
     target.textViewFitnessLevel = null;

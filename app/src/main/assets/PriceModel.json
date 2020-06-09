@@ -1,31 +1,44 @@
 [
-    {
-        "order": 1,
-        "name": "Group Classes",
-        "arName": "كلاسات جماعية",
-        "value": "CHARGABLE",
-        "imageUrl": "http://d1zfy71n00v47t.cloudfront.net/explore/categories/group.jpg"
-    },
-    {
-        "order": 4,
-        "name": "Free",
-        "arName": "مجاناً",
-        "value": "FOC",
-        "imageUrl": "http://d1zfy71n00v47t.cloudfront.net/explore/categories/free.jpg"
-    },
-    {
-        "order": 2,
-        "name": "Personal Training",
-        "arName": "تمرين فردي",
-        "value": "PT",
-        "imageUrl": "http://d1zfy71n00v47t.cloudfront.net/explore/categories/personaltraining.jpg"
-    },
-    {
-        "order": 3,
-        "name": "Events & Workshops",
-        "arName": "فعاليات وورش",
-        "value": "WORKSHOP",
-        "imageUrl": null
-    }
-
+  {
+    "order": 3,
+    "name": "Group Classes",
+    "arName": "كلاسات جماعية",
+    "value": "CHARGABLE",
+    "imageUrl": "http://d1zfy71n00v47t.cloudfront.net/explore/categories/group.jpg"
+  },
+  {
+    "order": 6,
+    "name": "Free",
+    "arName": "مجاناً",
+    "value": "FOC",
+    "imageUrl": "http://d1zfy71n00v47t.cloudfront.net/explore/categories/free.jpg"
+  },
+  {
+    "order": 4,
+    "name": "Personal Training",
+    "arName": "تمرين فردي",
+    "value": "PT",
+    "imageUrl": "http://d1zfy71n00v47t.cloudfront.net/explore/categories/personaltraining.jpg"
+  },
+  {
+    "order": 5,
+    "name": "Events & Workshops",
+    "arName": "فعاليات وورش",
+    "value": "WORKSHOP",
+    "imageUrl": null
+  },
+  {
+    "order": 2,
+    "name": "Physical",
+    "arName": "Physical",
+    "value": "WORKSHOP",
+    "imageUrl": null
+  },
+  {
+    "order": 1,
+    "name": "Virtual",
+    "arName": "Virtual",
+    "value": "WORKSHOP",
+    "imageUrl": null
+  }
 ]

@@ -124,7 +124,10 @@
     </entry>
     <entry>
         <key>GYM_VISIT_LIMIT_DETAIL_TEXT</key>
-        <value>هناك حد لعدد المرات التي يمكن أن تزور فيها كل نادي. قم بالاطلاع على ذلك تحت كل اشتراك. عند الوصول للحد، بالامكان مواصلة زيارة النادي المفضل لديك عن طريق شراء زيارة واحدة.</value>
+        <value>هناك حد لعدد المرات التي يمكن أن تزور فيها كل نادي. قم بالاطلاع على ذلك تحت كل
+            اشتراك. عند الوصول للحد، بالامكان مواصلة زيارة النادي المفضل لديك عن طريق شراء زيارة
+            واحدة.
+        </value>
     </entry>
     <entry>
         <key>MEMBERSHIP_OFFER_COLOR</key>
@@ -137,8 +140,7 @@
     </entry>
     <entry>
         <key>faqs</key>
-        <value>
-        </value>
+        <value></value>
     </entry>
 
     <entry>
@@ -154,12 +156,13 @@
     </entry>
     <entry>
         <key>Welcome_sub</key>
-        <value>على تطبيق  P5M يمكنك زيارة نوادي رياضية متعددة والقيام بأنشطة متعددة باستخدام باقة واحدة فقط!
+        <value>على تطبيق P5M يمكنك زيارة نوادي رياضية متعددة والقيام بأنشطة متعددة باستخدام باقة
+            واحدة فقط!
         </value>
     </entry>
     <entry>
         <key>Section_one_title</key>
-        <value>مع  اشتراك P5M ، يمكنك:</value>
+        <value>مع اشتراك P5M ، يمكنك:</value>
     </entry>
     <entry>
         <key>Section_one_sub_one</key>
@@ -167,7 +170,9 @@
     </entry>
     <entry>
         <key>Section_one_sub_one_detail</key>
-        <value>مع اشتراك P5M يمكنك التسجيل في كلاس سباحة اليوم ، وغداً كلاس كروسفت و اليوغا في عطلة نهاية الأسبوع. كل كلاس في نادي رياضي مختلف. </value>
+        <value>مع اشتراك P5M يمكنك التسجيل في كلاس سباحة اليوم ، وغداً كلاس كروسفت و اليوغا في عطلة
+            نهاية الأسبوع. كل كلاس في نادي رياضي مختلف.
+        </value>
     </entry>
     <entry>
         <key>Section_one_sub_two</key>
@@ -183,7 +188,8 @@
     </entry>
     <entry>
         <key>Section_one_sub_three_detail</key>
-        <value>إذا تشتري عادتاً كلاس واحد إلىنادي رياضي ، ستوفر ٤٠ ٪ عن طريق اشتراك P5M.ادفع ٣٠KWD ل ٥ كلاسات بدلاً من ان تدفع  ٥٠KWD !
+        <value>إذا تشتري عادتاً كلاس واحد إلىنادي رياضي ، ستوفر ٤٠ ٪ عن طريق اشتراك P5M.ادفع ٣٠KWD ل
+            ٥ كلاسات بدلاً من ان تدفع ٥٠KWD !
         </value>
     </entry>
     <entry>
@@ -192,7 +198,8 @@
     </entry>
     <entry>
         <key>Section_one_sub_four_detail</key>
-        <value>احجز وادفع لتمرينك في الليل ، فيالصباح أو في الطريق إلى الكلاس. لا تنتظر عبر الهاتف أو تقلق بشأن حجزك.
+        <value>احجز وادفع لتمرينك في الليل ، فيالصباح أو في الطريق إلى الكلاس. لا تنتظر عبر الهاتف
+            أو تقلق بشأن حجزك.
         </value>
     </entry>
     <entry>
@@ -209,7 +216,8 @@
     </entry>
     <entry>
         <key>Section_two_sub_two_detail</key>
-        <value>اختر عدد الكلاسات بناءً على مستوى لياقتك الحالية. واستخدم كلاساتك في جميع النوادي الرياضية على التطبيق.
+        <value>اختر عدد الكلاسات بناءً على مستوى لياقتك الحالية. واستخدم كلاساتك في جميع النوادي
+            الرياضية على التطبيق.
         </value>
     </entry>
     <entry>
@@ -218,7 +226,7 @@
     </entry>
     <entry>
         <key>Section_two_sub_three_detail</key>
-        <value> تدرب في أي نادي رياضي تريد ، في أي وقتتريد ،و ادفع أقل.</value>
+        <value>تدرب في أي نادي رياضي تريد ، في أي وقتتريد ،و ادفع أقل.</value>
     </entry>
     <entry>
         <key>Section_two_sub_four</key>
@@ -247,7 +255,20 @@
     </entry>
     <entry>
         <key>onboarding</key>
-        <value>[{"text_en": ""Explore and join fitness classes around you with one plan."", "text_ar": "استكشف وانضم للكلاسات الرياضية التي حولك بدون الحاجة لاشتراك", "image": "https://d15r6mjl4pq1lw.cloudfront.net/gymgallery/0af557e0-eec5-4223-93dc-cb9c9e84ce29.png"}, {"text_en": "Discover new trainers and studios that cater to your fitness needs.", "text_ar”: "استكشف مدربين جدد ونوادي تلبي متطلبات لياقتك البدنية", "image": "https://d15r6mjl4pq1lw.cloudfront.net/gymgallery/654f945e-3a00-4d01-aeb5-0b65a7abce56.png"}, {"text_en": "Filter classes based on location, time and activity to find your perfect workout.", "text_ar": "قم بعمل فلتر للمواقع والأوقات والنشاطات للعثور على التمرين المناسب لك", "image": "https://d15r6mjl4pq1lw.cloudfront.net/gymgallery/bf51a873-8a3b-4762-9e7b-314740e1cf60.png"}, {"text_en": "I don’t know where to start” Is no longer an excuse.", "text_ar": "'لا أدري أين أبدأ' لم يعد عذرا بعد اليوم", "image": "https://d15r6mjl4pq1lw.cloudfront.net/gymgallery/41cc5590-3a44-4cc7-9b38-448c96403030.png”}]</value>
+        <value>[{"text_en": ""Explore and join fitness classes around you with one plan."",
+            "text_ar": "استكشف وانضم للكلاسات الرياضية التي حولك بدون الحاجة لاشتراك", "image":
+            "https://d15r6mjl4pq1lw.cloudfront.net/gymgallery/0af557e0-eec5-4223-93dc-cb9c9e84ce29.png"},
+            {"text_en": "Discover new trainers and studios that cater to your fitness needs.",
+            "text_ar”: "استكشف مدربين جدد ونوادي تلبي متطلبات لياقتك البدنية", "image":
+            "https://d15r6mjl4pq1lw.cloudfront.net/gymgallery/654f945e-3a00-4d01-aeb5-0b65a7abce56.png"},
+            {"text_en": "Filter classes based on location, time and activity to find your perfect
+            workout.", "text_ar": "قم بعمل فلتر للمواقع والأوقات والنشاطات للعثور على التمرين
+            المناسب لك", "image":
+            "https://d15r6mjl4pq1lw.cloudfront.net/gymgallery/bf51a873-8a3b-4762-9e7b-314740e1cf60.png"},
+            {"text_en": "I don’t know where to start” Is no longer an excuse.", "text_ar": "'لا أدري
+            أين أبدأ' لم يعد عذرا بعد اليوم", "image":
+            "https://d15r6mjl4pq1lw.cloudfront.net/gymgallery/41cc5590-3a44-4cc7-9b38-448c96403030.png”}]
+        </value>
     </entry>
     <entry>
         <key>call_finish_message</key>
@@ -255,7 +276,7 @@
     </entry>
     <entry>
         <key>call_finish_button_title</key>
-        <value>Book another class </value>
+        <value>Book another class</value>
     </entry>
     <entry>
         <key>youtube_section_title</key>
@@ -277,5 +298,21 @@
         <key>call_finish_title</key>
         <value>Thank You</value>
     </entry>
-
+    <entry>
+        <key>book_button_other</key>
+        <value>[{"online_button_en": "online", "physical_button_en": "at gym", "online_button_ar":
+            "online", "physical_button_ar": "at gym"}]
+        </value>
+    </entry>
+    <entry>
+        <key>book_button_find_class</key>
+        <value>[{"online_button_en": "online", "physical_button_en": "at gym", "online_button_ar":
+            "online", "physical_button_ar": "at gym"}]
+        </value>
+    </entry>
+ <entry>
+        <key>how_it_works</key>
+        <value>{"en":"", "ar":""}
+        </value>
+    </entry>
 </defaultsMap>

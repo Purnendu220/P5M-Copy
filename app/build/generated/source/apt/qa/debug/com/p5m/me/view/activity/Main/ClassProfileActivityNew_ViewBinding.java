@@ -22,9 +22,9 @@ import java.lang.Override;
 public class ClassProfileActivityNew_ViewBinding implements Unbinder {
   private ClassProfileActivityNew target;
 
-  private View view7f0a03cb;
-
   private View view7f0a03cc;
+
+  private View view7f0a03cd;
 
   @UiThread
   public ClassProfileActivityNew_ViewBinding(ClassProfileActivityNew target) {
@@ -41,7 +41,7 @@ public class ClassProfileActivityNew_ViewBinding implements Unbinder {
     target.layoutButton = Utils.findRequiredView(source, R.id.layoutButton, "field 'layoutButton'");
     view = Utils.findRequiredView(source, R.id.textViewBook, "field 'textViewBook' and method 'textViewBook'");
     target.textViewBook = Utils.castView(view, R.id.textViewBook, "field 'textViewBook'", TextView.class);
-    view7f0a03cb = view;
+    view7f0a03cc = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -50,7 +50,7 @@ public class ClassProfileActivityNew_ViewBinding implements Unbinder {
     });
     view = Utils.findRequiredView(source, R.id.textViewBookWithFriend, "field 'textViewBookWithFriend' and method 'textViewBookWithFriend'");
     target.textViewBookWithFriend = Utils.castView(view, R.id.textViewBookWithFriend, "field 'textViewBookWithFriend'", TextView.class);
-    view7f0a03cc = view;
+    view7f0a03cd = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -136,9 +136,9 @@ public class ClassProfileActivityNew_ViewBinding implements Unbinder {
     target.imageViewClassFitnessLevel = null;
     target.textViewFitnessLevel = null;
 
-    view7f0a03cb.setOnClickListener(null);
-    view7f0a03cb = null;
     view7f0a03cc.setOnClickListener(null);
     view7f0a03cc = null;
+    view7f0a03cd.setOnClickListener(null);
+    view7f0a03cd = null;
   }
 }

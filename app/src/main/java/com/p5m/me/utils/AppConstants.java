@@ -538,6 +538,7 @@ public class AppConstants {
       public static final String TRAINER_CAROUSAL_VIEW = "TRAINER_VIEW";
       public static final String TOP_RATED_CLASSES = "TOP_RATED_CLASSES";
       public static final String TEXT_WITH_BUTTONS_2 = "CONFUSED_BUTTONS";
+      public static final String YOUTUBE_PLAYLIST = "YOUTUBE_PLAYLIST_VIEW";
 
 
   }

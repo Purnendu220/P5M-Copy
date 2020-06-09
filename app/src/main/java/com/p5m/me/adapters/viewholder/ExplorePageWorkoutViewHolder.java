@@ -50,6 +50,7 @@ public class ExplorePageWorkoutViewHolder extends RecyclerView.ViewHolder {
     private Gson gson;
     private List<WorkoutModel> list;
     private List<WorkoutModel> listInitial;
+    int MINIMUM_ITEMSTO_SHOW=4;
 
     private ExplorePageWorkoutListAdapter adapter;
 
@@ -112,10 +113,10 @@ public class ExplorePageWorkoutViewHolder extends RecyclerView.ViewHolder {
                     GridLayoutManager layoutManager = new GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false);
                     recyclerView.setLayoutManager(layoutManager);
                     if (!model.isMoreActivityShow()) {
-                        if (list.size() > 4) {
-                            listInitial = list.subList(0, 4);
+                        if (list.size() > MINIMUM_ITEMSTO_SHOW) {
+                            listInitial = list.subList(0, MINIMUM_ITEMSTO_SHOW);
                             setData(listInitial);
-                            int count = list.size() - 4;
+                            int count = list.size() - MINIMUM_ITEMSTO_SHOW;
                             String s = String.valueOf(LanguageUtils.numberConverter(count));
                             textViewMore.setText(Html.fromHtml(String.format(context.getResources().getString(R.string.more_workouts), "<b>" + "+" + s + "</b>")));
                             textViewMore.setVisibility(View.VISIBLE);
@@ -125,7 +126,7 @@ public class ExplorePageWorkoutViewHolder extends RecyclerView.ViewHolder {
                         }
                     } else {
                         setData(list);
-                        if (list.size() > 4) {
+                        if (list.size() > MINIMUM_ITEMSTO_SHOW) {
                             textViewMore.setText(context.getResources().getString(R.string.less_workouts));
                             textViewMore.setVisibility(View.VISIBLE);
                         } else {

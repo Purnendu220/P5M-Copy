@@ -25,10 +25,14 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.p5m.me.BuildConfig;
 import com.p5m.me.MyApp;
 import com.p5m.me.R;
 import com.p5m.me.agorartc.stats.VideoStatusData;
+import com.p5m.me.data.BookButtonModel;
+import com.p5m.me.data.RemoteConfigDataModel;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.GymBranchDetail;
@@ -36,11 +40,13 @@ import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.data.main.MediaModel;
 import com.p5m.me.data.main.TrainerDetailModel;
 import com.p5m.me.data.main.TrainerModel;
+import com.p5m.me.fxn.utility.Constants;
 import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.KeyboardUtils;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.LoginRegister.ContinueUser;
 import com.p5m.me.view.activity.LoginRegister.InfoScreen;
@@ -52,6 +58,7 @@ import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -181,32 +188,98 @@ public class Helper {
 
         } else if (model.getAvailableSeat() == 0) {
 
-            if(model.getWishType()!=null) {
-                if(model.getWishType().equalsIgnoreCase(AppConstants.ApiParamKey.WAITLIST)) {
+            if (model.getWishType() != null) {
+                if (model.getWishType().equalsIgnoreCase(AppConstants.ApiParamKey.WAITLIST)) {
                     buttonJoin.setText(RemoteConfigConst.WAITLISTED_VALUE);
                     RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
 
-                }
-                else{
+                } else {
                     buttonJoin.setText(RemoteConfigConst.WAITLIST_VALUE);
                     RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
                 }
-            }
-            else{
+            } else {
                 buttonJoin.setText(RemoteConfigConst.WAITLIST_VALUE);
                 RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
             }
 
         } else {
+            String BOOK_FIND_CLASS_VALUE = RemoteConfigConst.BOOK_FIND_CLASS_VALUE;
+            if (BOOK_FIND_CLASS_VALUE != null && !BOOK_FIND_CLASS_VALUE.isEmpty()) {
+                Gson g = new Gson();
+                BookButtonModel p = g.fromJson(BOOK_FIND_CLASS_VALUE, new TypeToken<BookButtonModel>() {
+                }.getType());
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en")) {
+                    if (model.isVideoClass())
+                        buttonJoin.setText(p.getOnline_button_en());
+                    else
+                        buttonJoin.setText(p.getPhysical_button_en());
+                } else {
+                    if (model.isVideoClass())
+                        buttonJoin.setText(p.getOnline_button_ar());
+                    else
+                        buttonJoin.setText(p.getPhysical_button_ar());
+                }
 
-            buttonJoin.setText(RemoteConfigConst.BOOK_VALUE);
-            RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+                RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
 
 
+            }
         }
+
+    }
+  public static void setJoinButtonOther(Context context, Button buttonJoin, ClassModel model) {
+
+        if (model.isUserJoinStatus()) {
+
+            buttonJoin.setText(RemoteConfigConst.BOOKED_VALUE);
+            RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
+
+
+        } else if (model.getAvailableSeat() == 0) {
+
+            if (model.getWishType() != null) {
+                if (model.getWishType().equalsIgnoreCase(AppConstants.ApiParamKey.WAITLIST)) {
+                    buttonJoin.setText(RemoteConfigConst.WAITLISTED_VALUE);
+                    RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
+
+                } else {
+                    buttonJoin.setText(RemoteConfigConst.WAITLIST_VALUE);
+                    RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+                }
+            } else {
+                buttonJoin.setText(RemoteConfigConst.WAITLIST_VALUE);
+                RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+            }
+
+        } else {
+            String BOOK_OTHER_VALUE = RemoteConfigConst.BOOK_OTHER_VALUE;
+            if (BOOK_OTHER_VALUE != null && !BOOK_OTHER_VALUE.isEmpty()) {
+                Gson g = new Gson();
+                BookButtonModel p = g.fromJson(BOOK_OTHER_VALUE, new TypeToken<BookButtonModel>() {
+                }.getType());
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en")) {
+                    if (model.isVideoClass())
+                        buttonJoin.setText(p.getOnline_button_en());
+                    else
+                        buttonJoin.setText(p.getPhysical_button_en());
+                } else {
+                    if (model.isVideoClass())
+                        buttonJoin.setText(p.getOnline_button_ar());
+                    else
+                        buttonJoin.setText(p.getPhysical_button_ar());
+                }
+
+                RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+
+
+            }
+        }
+
     }
 
-    public static void setJoinStatusProfile(Context context, TextView view, TextView view1, ClassModel model) {
+
+    public static void setJoinStatusProfile(Context context, TextView view, TextView
+            view1, ClassModel model) {
         if (model.isExpired()) {
 //            view.setText(context.getString(R.string.expired));
 //            view.setBackgroundResource(R.drawable.theme_bottom_text_button_full);
@@ -217,7 +290,7 @@ public class Helper {
         } else if (model.isUserJoinStatus()) {
 //            view.setText(context.getString(R.string.booked));
             view.setText(RemoteConfigConst.BOOKED_VALUE);
-          //  view.setBackgroundColor(context.getResources().getColor(R.color.theme_booked));
+            //  view.setBackgroundColor(context.getResources().getColor(R.color.theme_booked));
             RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
 
             view.setEnabled(false);
@@ -226,32 +299,28 @@ public class Helper {
         } else if (model.getAvailableSeat() == 0) {
 //            view.setText(context.getString(R.string.full));
 
-            if(model.getWishType()!=null) {
-                if(model.getWishType().equalsIgnoreCase(AppConstants.ApiParamKey.WAITLIST)) {
+            if (model.getWishType() != null) {
+                if (model.getWishType().equalsIgnoreCase(AppConstants.ApiParamKey.WAITLIST)) {
                     view.setText(RemoteConfigConst.WAITLISTED_VALUE);
                     RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOKED_COLOR_VALUE, context.getResources().getColor(R.color.theme_booked));
-                }
-                else{
+                } else {
                     view.setText(RemoteConfigConst.WAITLIST_VALUE);
                     RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
 
                 }
-            }
-            else{
+            } else {
                 view.setText(RemoteConfigConst.WAITLIST_VALUE);
                 RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
 
             }
 
             view1.setVisibility(View.GONE);
-        }
-        else if (model.getAvailableSeat() < 2) {
+        } else if (model.getAvailableSeat() < 2) {
             view1.setVisibility(View.GONE);
             view.setText(RemoteConfigConst.BOOK_IN_CLASS_VALUE);
             RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOK_IN_CLASS_COLOR_VALUE, context.getResources().getColor(R.color.colorAccent));
 
-        }
-        else {
+        } else {
 //            view.setText(context.getString(R.string.reserve_class));
             view.setText(RemoteConfigConst.BOOK_IN_CLASS_VALUE);
 
@@ -263,7 +332,7 @@ public class Helper {
 //            view1.setText(context.getString(R.string.reserve_class_with_friend));
 
 //            view1.setBackgroundResource(R.drawable.theme_bottom_text_button_book);
-           // RemoteConfigSetUp.setBackgroundColor(view1, RemoteConfigConst.BOOK_WITH_FRIEND_COLOR_VALUE, context.getResources().getColor(R.color.colorAccent));
+            // RemoteConfigSetUp.setBackgroundColor(view1, RemoteConfigConst.BOOK_WITH_FRIEND_COLOR_VALUE, context.getResources().getColor(R.color.colorAccent));
             view1.setText(RemoteConfigConst.BOOK_WITH_FRIEND_VALUE);
             view1.setEnabled(true);
 
@@ -286,7 +355,8 @@ public class Helper {
         setFavButtonGray(context, buttonFav, model.isIsfollow());
     }
 
-    public static void setFavButton(Context context, ImageButton buttonFav, TrainerDetailModel model) {
+    public static void setFavButton(Context context, ImageButton buttonFav, TrainerDetailModel
+            model) {
         setFavButton(context, buttonFav, model.isIsfollow());
     }
 
@@ -315,7 +385,8 @@ public class Helper {
         }
     }
 
-    private static void setFavButtonGray(Context context, ImageButton buttonFav, boolean isFollow) {
+    private static void setFavButtonGray(Context context, ImageButton buttonFav,
+                                         boolean isFollow) {
 
         if (isFollow) {
             buttonFav.setImageResource(R.drawable.heart_fav);
@@ -325,7 +396,8 @@ public class Helper {
         }
     }
 
-    public static void openImageListViewer(Context context, List<MediaModel> list, int position, String viewholderType) {
+    public static void openImageListViewer(Context context, List<MediaModel> list,
+                                           int position, String viewholderType) {
 
         List<String> images = new ArrayList<>(list.size());
         for (MediaModel mediaModel : list) {
@@ -355,7 +427,8 @@ public class Helper {
 //                .show();
     }
 
-    public static void openImageViewer(Context context, Activity activity, View sharedElement, String url, String viewholderType) {
+    public static void openImageViewer(Context context, Activity activity, View
+            sharedElement, String url, String viewholderType) {
 
         if (url == null || url.isEmpty()) {
             return;
@@ -379,7 +452,8 @@ public class Helper {
 //                .show();
     }
 
-    public static void showPopMenu(Context context, View view, PopupMenu.OnMenuItemClickListener onMenuItemClickListener) {
+    public static void showPopMenu(Context context, View
+            view, PopupMenu.OnMenuItemClickListener onMenuItemClickListener) {
         PopupMenu popup = new PopupMenu(context, view);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.action_profile, popup.getMenu());
@@ -444,6 +518,7 @@ public class Helper {
         }
         return json;
     }
+
     public static String getFitnessLevelFromAsset(Context context) {
         String json = null;
         try {
@@ -459,6 +534,7 @@ public class Helper {
         }
         return json;
     }
+
     public static String getTimeFromAsset(Context context) {
         String json = null;
         try {
@@ -474,6 +550,7 @@ public class Helper {
         }
         return json;
     }
+
     public static String getPriceModelFromAsset(Context context) {
         String json = null;
         try {
@@ -492,7 +569,7 @@ public class Helper {
 
 
     public static boolean isSpecialClass(ClassModel model) {
-        return model!=null && model.getPriceModel()!=null
+        return model != null && model.getPriceModel() != null
                 && ((model.getPriceModel().equals("SPECIAL")
                 || model.getPriceModel().equalsIgnoreCase("PT")
                 || model.getPriceModel().equalsIgnoreCase("WORKSHOP")
@@ -500,7 +577,7 @@ public class Helper {
     }
 
     public static boolean isFreeClass(ClassModel model) {
-        return model!=null&&model.getPriceModel()!=null&&model.getPriceModel().equals("FOC");
+        return model != null && model.getPriceModel() != null && model.getPriceModel().equals("FOC");
     }
 
     public static boolean isFemalesAllowed(ClassModel classModel) {
@@ -535,15 +612,17 @@ public class Helper {
         classModel.setUserJoinStatus(joinedData.isUserJoinStatus());
         classModel.setAvailableSeat(joinedData.getAvailableSeat());
         classModel.setJoinClassId(joinedData.getJoinClassId());
-        if(joinedData.getRefBookingId()!=null)
-        classModel.setRefBookingId(joinedData.getRefBookingId());
+        if (joinedData.getRefBookingId() != null)
+            classModel.setRefBookingId(joinedData.getRefBookingId());
         else
             classModel.setRefBookingId(null);
 
     }
+
     public static void setWaitlistRemoveData(ClassModel classModel, ClassModel joinedData) {
         classModel.setWishType(joinedData.getWishType());
     }
+
     public static void setWaitlistAddData(ClassModel classModel, ClassModel joinedData) {
         classModel.setWishType(joinedData.getWishType());
     }
@@ -606,11 +685,13 @@ public class Helper {
         String url = getUrlBase() + "/share/classes/" + id + "/" + name;
         shareUrl(context, classShareMessage + url.replace(" ", ""));
     }
+
     public static String classEventDescription(Context context, int id, String name) {
-        CharSequence classShareMessage = String.format(context.getString(R.string.class_event_description),name+"");
+        CharSequence classShareMessage = String.format(context.getString(R.string.class_event_description), name + "");
         String url = getUrlBase() + "/share/classes/" + id + "/" + name;
-        return classShareMessage+url.replace(" ", "");
+        return classShareMessage + url.replace(" ", "");
     }
+
     private static String getUrlBase() {
         String urlBase = BuildConfig.BASE_URL_SHARE;
 
@@ -648,7 +729,6 @@ public class Helper {
         }
 
 
-
         return nameList;
     }
 
@@ -683,16 +763,18 @@ public class Helper {
     }
 
     public static boolean isTrainerOrGym(ClassModel classModel, VideoStatusData user) {
-        if(classModel.getGymBranchDetail().getGymId()==user.mUid||classModel.getTrainerDetail()!=null&&classModel.getTrainerDetail().getId()==user.mUid){
+        if (classModel.getGymBranchDetail().getGymId() == user.mUid || classModel.getTrainerDetail() != null && classModel.getTrainerDetail().getId() == user.mUid) {
             return true;
         }
-            return false;
+        return false;
     }
-    public static String getbase64EncodedString(String string){
-        return Base64.encodeToString(string.getBytes(),Base64.NO_WRAP);
+
+    public static String getbase64EncodedString(String string) {
+        return Base64.encodeToString(string.getBytes(), Base64.NO_WRAP);
     }
-    public static String getNetworkQualityTx(int quality){
-        switch (quality){
+
+    public static String getNetworkQualityTx(int quality) {
+        switch (quality) {
             case 0:
                 return "UNKNOWN";
             case 1:
@@ -713,14 +795,15 @@ public class Helper {
                 return "";
         }
     }
-    public static boolean checkIfClassIsFirstOrThird(ClassModel model){
-        boolean checkIfFirstOrThird=false;
-        List<ClassModel> mList= TempStorage.getAttendedClasses();
-        if(model!=null&&mList!=null&&mList.size()>0){
-            for(int i=0;i<mList.size();i++){
+
+    public static boolean checkIfClassIsFirstOrThird(ClassModel model) {
+        boolean checkIfFirstOrThird = false;
+        List<ClassModel> mList = TempStorage.getAttendedClasses();
+        if (model != null && mList != null && mList.size() > 0) {
+            for (int i = 0; i < mList.size(); i++) {
                 ClassModel session = mList.get(i);
-                if(model.getClassSessionId()==session.getClassSessionId()){
-                    if(i==0||i==2){
+                if (model.getClassSessionId() == session.getClassSessionId()) {
+                    if (i == 0 || i == 2) {
                         checkIfFirstOrThird = true;
                         break;
                     }
