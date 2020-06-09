@@ -75,6 +75,7 @@ public class RemoteConfigConst {
     public static String CALL_FINISHED_TITLE="call_finish_title";
     public static String BOOK_FIND_CLASS="book_button_find_class";
     public static String BOOK_OTHERS="book_button_other";
+    public static String HOW_IT_WORKS="how_it_works";
 
 
 
@@ -148,6 +149,7 @@ public class RemoteConfigConst {
     public static final int TESTIMONIALS_RIYADH_KEY = 988;
     public static final int BOOK_FIND_CLASS_KEY = 989;
     public static final int BOOK_OTHERS_KEY = 990;
+    public static final int HOW_IT_WORKS_KEY = 991;
 
 
     /* ------VALUES---------*/
@@ -217,6 +219,7 @@ public class RemoteConfigConst {
     public static String CHANNEL_LIST = "";
     public static String BOOK_FIND_CLASS_VALUE = "";
     public static String BOOK_OTHER_VALUE = "";
+    public static String HOW_IT_WORKS_VALUE = "";
 
 
 

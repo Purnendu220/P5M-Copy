@@ -47,6 +47,7 @@ import static com.p5m.me.remote_config.RemoteConfigConst.FULL_BUTTON_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.FULL_BUTTON_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.GYM_VISIT_LIMIT_DETAIL_TEXT_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.GYM_VISIT_LIMIT_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.HOW_IT_WORKS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.INVITE_FRIENDS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.JOIN_WAITLIST_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.MEMBERSHIP_OFFER_COLOR_KEY;
@@ -368,6 +369,9 @@ public class RemoteConfigSetUp {
                     break;
              case BOOK_FIND_CLASS_KEY:
                     RemoteConfigConst.BOOK_FIND_CLASS_VALUE = keyValue;
+                    break;
+            case HOW_IT_WORKS_KEY:
+                    RemoteConfigConst.HOW_IT_WORKS_VALUE = keyValue;
                     break;
             }
         }

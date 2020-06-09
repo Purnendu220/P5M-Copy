@@ -149,6 +149,7 @@ public class RemoteConfigure {
         RemoteConfigConst.ON_BOARDING_DATA_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.ON_BOARDING_DATA);
         RemoteConfigConst.BOOK_FIND_CLASS_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.BOOK_FIND_CLASS);
         RemoteConfigConst.BOOK_OTHER_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.BOOK_OTHERS);
+        RemoteConfigConst.HOW_IT_WORKS_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.HOW_IT_WORKS);
 
 
     }
@@ -210,6 +211,7 @@ public class RemoteConfigure {
         RemoteConfigConst.ON_BOARDING_DATA_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.ON_BOARDING_DATA);
         RemoteConfigConst.BOOK_OTHER_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.BOOK_OTHERS);
         RemoteConfigConst.BOOK_FIND_CLASS_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.BOOK_FIND_CLASS);
+        RemoteConfigConst.HOW_IT_WORKS_VALUE = mFirebaseRemoteConfig.getString(RemoteConfigConst.HOW_IT_WORKS);
 
     }
     public String getRemoteConfigValue(String key){

@@ -18,9 +18,9 @@ import java.lang.Override;
 public class LoginActivity_ViewBinding implements Unbinder {
   private LoginActivity target;
 
-  private View view7f0a0405;
+  private View view7f0a0406;
 
-  private View view7f0a045a;
+  private View view7f0a045c;
 
   private View view7f0a0080;
 
@@ -36,7 +36,7 @@ public class LoginActivity_ViewBinding implements Unbinder {
     View view;
     view = Utils.findRequiredView(source, R.id.textViewForgetPassword, "field 'textViewForgetPassword' and method 'textViewForgetPassword'");
     target.textViewForgetPassword = Utils.castView(view, R.id.textViewForgetPassword, "field 'textViewForgetPassword'", TextView.class);
-    view7f0a0405 = view;
+    view7f0a0406 = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -45,7 +45,7 @@ public class LoginActivity_ViewBinding implements Unbinder {
     });
     view = Utils.findRequiredView(source, R.id.textViewSignUp, "field 'textViewSignUp' and method 'textViewSignUp'");
     target.textViewSignUp = Utils.castView(view, R.id.textViewSignUp, "field 'textViewSignUp'", TextView.class);
-    view7f0a045a = view;
+    view7f0a045c = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -88,10 +88,10 @@ public class LoginActivity_ViewBinding implements Unbinder {
     target.layoutProgressRoot = null;
     target.layoutContainer = null;
 
-    view7f0a0405.setOnClickListener(null);
-    view7f0a0405 = null;
-    view7f0a045a.setOnClickListener(null);
-    view7f0a045a = null;
+    view7f0a0406.setOnClickListener(null);
+    view7f0a0406 = null;
+    view7f0a045c.setOnClickListener(null);
+    view7f0a045c = null;
     view7f0a0080.setOnClickListener(null);
     view7f0a0080 = null;
   }

@@ -313,4 +313,9 @@
         <value>[{"online_button_en": "online", "physical_button_en": "at gym", "online_button_ar": "online", "physical_button_ar": "at gym"}]
         </value>
     </entry>
+    <entry>
+        <key>how_it_works</key>
+        <value>{"en":"", "ar":""}
+        </value>
+    </entry>
 </defaultsMap>
