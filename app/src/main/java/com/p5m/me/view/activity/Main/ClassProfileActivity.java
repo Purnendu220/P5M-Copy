@@ -70,7 +70,6 @@ import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.BookForAFriendPopup;
 import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.fragment.BottomSheetClassBookingOptions;
-import com.p5m.me.view.fragment.MembershipFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -802,7 +801,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                         }
                         if (packages.size() == 1 || !user.isBuyMembership()) {
                             Package aPackage = packages.get(0);
-                            CheckoutActivity.openActivity(context, aPackage, classModel, 2, mBookWithFriendData, aPackage.getNoOfClass());
+                            CheckoutActivity.openActivity(context, aPackage, classModel, 2, mBookWithFriendData, aPackage.getNoOfClass(), aPackage.getCredits());
                             return;
 
                         } else {

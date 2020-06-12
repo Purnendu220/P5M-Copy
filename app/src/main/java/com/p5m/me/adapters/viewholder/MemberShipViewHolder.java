@@ -308,13 +308,13 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void handleCreditText(Package model) {
-        String creditString = String.format(context.getResources().getString(R.string.include_credits), Integer.parseInt(LanguageUtils.numberConverter(model.getCredits()))," 1-"+LanguageUtils.numberConverter(model.getNoOfClass()));
+        String creditString = String.format(context.getResources().getString(R.string.include_credits), Integer.parseInt(LanguageUtils.numberConverter(model.getCredits()))," 1-"+LanguageUtils.numberConverter(model.getCredits()/5));
 
         SpannableString ss = new SpannableString(creditString);
         ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
-
+//Showing popup
 //                startActivity(new Intent(MyActivity.this, NextActivity.class));
             }
 
@@ -324,7 +324,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                 ds.setUnderlineText(false);
             }
         };
-        ss.setSpan(clickableSpan, 22, 27, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(clickableSpan, 22, ss.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         credits.setText(ss);
         credits.setMovementMethod(LinkMovementMethod.getInstance());
