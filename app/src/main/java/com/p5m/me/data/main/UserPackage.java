@@ -6,6 +6,7 @@ public class UserPackage implements java.io.Serializable {
     private String expiryDate;
     private int gymId;
     private int balanceClass;
+    private float credits;
     private String gymName;
     private int packageId;
     private String packageName;
@@ -92,5 +93,13 @@ public class UserPackage implements java.io.Serializable {
 
     public void setTotalRemainingWeeks(Integer totalRemainingWeeks) {
         this.totalRemainingWeeks = totalRemainingWeeks;
+    }
+
+    public float getCredits() {
+        return credits;
+    }
+
+    public void setCredits(float credits) {
+        this.credits = credits;
     }
 }
