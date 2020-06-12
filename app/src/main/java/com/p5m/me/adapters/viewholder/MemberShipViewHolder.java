@@ -1,13 +1,20 @@
 package com.p5m.me.adapters.viewholder;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Paint;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -63,6 +70,9 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.packageUsage)
     TextView packageUsage;
+
+    @BindView(R.id.credits)
+    TextView credits;
 
     @BindView(R.id.textViewSoFarYouVisited)
     TextView textViewSoFarYouVisited;
@@ -221,6 +231,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     mainLayoutActivePackageDropin.setVisibility(View.GONE);
                     mainLayoutUserPakages.setVisibility(View.GONE);
                     layoutMainOfferedPackage.setVisibility(View.VISIBLE);
+                    handleCreditText(model);
                     if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
                         txtPackageName.setText(model.getName());
                         txtPackageOffredClasses.setText(numberConverter(model.getNoOfClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs_one), model.getNoOfClass()) + " " + context.getString(R.string.at_any_gym));
@@ -286,13 +297,38 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                             }
                         }
                     });
-
+                    txtPackageOffredClasses.setVisibility(View.GONE);
 
                 }
+
 
         } else {
             itemView.setVisibility(View.GONE);
         }
+    }
+
+    private void handleCreditText(Package model) {
+        String creditString = String.format(context.getResources().getString(R.string.include_credits), Integer.parseInt(LanguageUtils.numberConverter(model.getCredits()))," 1-"+LanguageUtils.numberConverter(model.getCredits()/5));
+
+        SpannableString ss = new SpannableString(creditString);
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(View textView) {
+//Showing popup
+//                startActivity(new Intent(MyActivity.this, NextActivity.class));
+            }
+
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setUnderlineText(false);
+            }
+        };
+        ss.setSpan(clickableSpan, 22, ss.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        credits.setText(ss);
+        credits.setMovementMethod(LinkMovementMethod.getInstance());
+        credits.setHighlightColor(Color.TRANSPARENT);
     }
 
     private void manageViews(ClassModel classModel, Package model) {
@@ -386,7 +422,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
         if (model.getPromoResponseDto().getDiscountType().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_OFFER_PERCENTAGE)) {
             offerText = context.getString(R.string.package_offer_percentage);
         } else {
-            if (TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.SAUDI_CURRENCY)||
+            if (TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.SAUDI_CURRENCY) ||
                     TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.SAUDI_CURRENCY_SHORT))
                 offerText = context.getString(R.string.sar_off);
             else

@@ -8,6 +8,7 @@ public class Package implements java.io.Serializable {
     private int duration;
     private String validityPeriod;
     private float cost;
+    private float credits;
     private long modifiedAt;
     private int noOfClass;
     private String name;
@@ -135,5 +136,13 @@ public class Package implements java.io.Serializable {
 
     public void setBookingWithFriend(boolean bookingWithFriend) {
         isBookingWithFriend = bookingWithFriend;
+    }
+
+    public float getCredits() {
+        return credits;
+    }
+
+    public void setCredits(float credits) {
+        this.credits = credits;
     }
 }
