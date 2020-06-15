@@ -14,6 +14,11 @@ import io.agora.rtc.video.VideoEncoderConfiguration;
 
 public class AppConstants {
 
+    public static int minCreditValue = 5;
+    public static int physicalCreditValue = 10;
+
+    public static int maxCreditValue = 50;
+
     public static String plural(String word, int number) {
         if(Constants.LANGUAGE==Locale.ENGLISH)
             return number == 1 ? word : word + "s";
@@ -357,6 +362,8 @@ public class AppConstants {
         public static final String CATEGORY_ID = "categoryId";
         public static final String USER_ID = "userId";
         public static final String PACKAGE_TYPE = "packageType";
+        public static final String DEBUG = "debug";
+
         public static final String EMAIL = "email";
         public static final String VALUE = "value";
         public static final String TYPE = "type";
@@ -392,6 +399,7 @@ public class AppConstants {
         public static final String LONGITUDE = "longitude";
         public static final String LATITUDE = "latitude";
         public static final String NUMBEROFDAYS = "NUMBEROFDAYS";
+
 
 
         public static final String NUMBEROFCLASS = "NUMBEROFCLASS";
@@ -601,5 +609,26 @@ public class AppConstants {
         String CHANNEL_INAPP = "INAPP";
 
     }
+    public interface AlertRequestCodes {
+        int ALERT_REQUEST_PURCHASE = 1;
+        int ALERT_REQUEST_PURCHASE_CANCEL = 2;
+
+
+    }
+    public interface PriceModels {
+        String  CHARGABLE = "CHARGABLE";
+        String PT = "PT";
+        String WORKSHOP = "WORKSHOP";
+        String SPECIAL = "SPECIAL";
+        String FOC = "FOC";
+
+
+    }
+    public interface ClassModes{
+        String PHYSICAL= "PHYSICAL";
+        String VIRTUAL = "VIRTUAL";
+
+    }
+
 
 }

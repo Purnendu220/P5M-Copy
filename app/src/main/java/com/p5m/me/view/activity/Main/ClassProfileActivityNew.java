@@ -1003,7 +1003,7 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
                     userHaveGeneralPackageForClass = true;
 
                 }
-                if (userPackageInfo.userPackageGeneral.getBalanceClass() > 0 && DateUtils.canJoinClass(classModel.getClassDate(), userPackageInfo.userPackageGeneral.getExpiryDate()) < 0) {
+                if (userPackageInfo.userPackageGeneral.getBalance() > 0 && DateUtils.canJoinClass(classModel.getClassDate(), userPackageInfo.userPackageGeneral.getExpiryDate()) < 0) {
                     userHaveExpiredGeneralPackageForClass = true;
 
                 }

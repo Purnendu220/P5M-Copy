@@ -7,122 +7,144 @@
     android:background="@color/theme_bg"
     android:fitsSystemWindows="true"
     tools:context=".view.activity.Main.ClassProfileActivity">
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        >
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/tool_bar_height"
-            android:background="?attr/colorPrimary"
-            android:contentInsetEnd="0dp"
-            android:contentInsetLeft="0dp"
-            android:contentInsetRight="0dp"
-            android:contentInsetStart="0dp"
-            android:elevation="4dp"
-            app:contentInsetEnd="0dp"
-            app:contentInsetLeft="0dp"
-            app:contentInsetRight="0dp"
-            app:contentInsetStart="0dp"
-            app:layout_scrollFlags="enterAlways|scroll"
-            app:tabIndicatorColor="@color/date_tabs" />
-    </com.google.android.material.appbar.AppBarLayout>
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tool_bar_height"
+                android:background="?attr/colorPrimary"
+                android:contentInsetEnd="0dp"
+                android:contentInsetLeft="0dp"
+                android:contentInsetRight="0dp"
+                android:contentInsetStart="0dp"
+                android:elevation="4dp"
+                app:contentInsetEnd="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetRight="0dp"
+                app:contentInsetStart="0dp"
+                app:layout_scrollFlags="enterAlways|scroll"
+                app:tabIndicatorColor="@color/date_tabs" />
+        </com.google.android.material.appbar.AppBarLayout>
 
-        <FrameLayout
+        <include
+            android:id="@+id/layoutWarning"
+            layout="@layout/layout_warning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/appBarLayout"
+            android:visibility="gone"
+            ></include>
+
+
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_below="@+id/layoutWarning"
+            android:layout_above="@+id/layoutButton"
+            >
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/bottom_text_button_height"
-                android:background="@color/theme_bg"
-                android:clipToPadding="false"
-                android:scrollbars="none" />
+                android:orientation="vertical">
 
-        </FrameLayout>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/theme_bg"
+                    android:clipToPadding="false"
+                    android:scrollbars="none" />
 
-    <LinearLayout
-        android:id="@+id/layoutButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="vertical">
+            </FrameLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <LinearLayout
+            android:id="@+id/layoutButton"
             android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:background="@drawable/bg_shadow_dark"
-            />
-<LinearLayout
-    android:id="@+id/layoutBottomTabs"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:background="@color/white"
-    >
-    <TextView
-        android:id="@+id/textViewBookWithFriend"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/theme_rounded_corner_button"
-        android:clickable="true"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center"
-        android:letterSpacing="@dimen/button_letter_spacing"
-        android:text="@string/reserve_class_with_friend"
-        android:textAllCaps="true"
-        android:paddingLeft="@dimen/margin_2"
-        android:paddingEnd="@dimen/margin_2"
-        android:textColor="@color/theme_book"
-        android:textSize="@dimen/text_small"
-        android:layout_marginTop="@dimen/margin_10"
-        android:layout_marginBottom="@dimen/margin_10"
-        android:layout_marginLeft="@dimen/margin_10"
-        android:paddingTop="@dimen/margin_10"
-        android:paddingBottom="@dimen/margin_10"
-        android:layout_weight=".8"
-        android:visibility="visible"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
 
-        />
-    <TextView
-        android:id="@+id/textViewBook"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/theme_rounded_corner_button_filled"
-        android:clickable="true"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center"
-        android:letterSpacing="@dimen/button_letter_spacing"
-        android:text="@string/reserve_class"
-        android:paddingTop="@dimen/margin_10"
-        android:paddingBottom="@dimen/margin_10"
-        android:textAllCaps="true"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_small"
-        android:layout_weight="1.1"
-        android:layout_marginTop="@dimen/margin_10"
-        android:layout_marginBottom="@dimen/margin_10"
-        android:layout_marginLeft="@dimen/margin_10"
-        android:layout_marginRight="@dimen/margin_10"
-        android:focusable="true"
-        />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@drawable/bg_shadow_dark"
+                />
+            <LinearLayout
+                android:id="@+id/layoutBottomTabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/white"
+                >
+                <TextView
+                    android:id="@+id/textViewBookWithFriend"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/theme_rounded_corner_button"
+                    android:clickable="true"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:letterSpacing="@dimen/button_letter_spacing"
+                    android:text="@string/reserve_class_with_friend"
+                    android:textAllCaps="true"
+                    android:paddingLeft="@dimen/margin_2"
+                    android:paddingEnd="@dimen/margin_2"
+                    android:textColor="@color/theme_book"
+                    android:textSize="@dimen/text_small"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:paddingTop="@dimen/margin_10"
+                    android:paddingBottom="@dimen/margin_10"
+                    android:layout_weight=".8"
+                    android:visibility="visible"
 
-</LinearLayout>
+                    />
+                <TextView
+                    android:id="@+id/textViewBook"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/theme_rounded_corner_button_filled"
+                    android:clickable="true"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:letterSpacing="@dimen/button_letter_spacing"
+                    android:text="@string/reserve_class"
+                    android:paddingTop="@dimen/margin_10"
+                    android:paddingBottom="@dimen/margin_10"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_small"
+                    android:layout_weight="1.1"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10"
+                    android:focusable="true"
+                    />
 
-    </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

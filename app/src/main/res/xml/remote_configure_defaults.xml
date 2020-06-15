@@ -318,4 +318,9 @@
         <value>{"en":"", "ar":""}
         </value>
     </entry>
+    <entry>
+        <key>credit_values_model</key>
+        <value>{"en_values":{ "title":"How many credits required to book a class ?","at_gym_title":"Any class at gym", "at_gym_credit":" - 10 P5M Credits", "onlline_title":"Any online class", "online_credit":" - 5 P5M Credits", "special_title":"PT classes range from", "special_credit":" 20 to 50 P5M Credits","cancel_text":"Cancel","ok_text":"Proceed" }, "ar_values":{ "title":"How many credits required to book a class ?","at_gym_title":"Any class at gym", "at_gym_credit":" - 10 P5M Credits", "onlline_title":"Any online class", "online_credit":" - 5 P5M Credits", "special_title":"PT classes range from", "special_credit":" 20 to 50 P5M Credits","cancel_text":"Cancel","ok_text":"Proceed"}}</value>
+    </entry>
+
 </defaultsMap>

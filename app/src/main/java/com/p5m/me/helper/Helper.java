@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -32,12 +33,14 @@ import com.p5m.me.MyApp;
 import com.p5m.me.R;
 import com.p5m.me.agorartc.stats.VideoStatusData;
 import com.p5m.me.data.BookButtonModel;
+import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.RemoteConfigDataModel;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.GymBranchDetail;
 import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.data.main.MediaModel;
+import com.p5m.me.data.main.PriceModelMaster;
 import com.p5m.me.data.main.TrainerDetailModel;
 import com.p5m.me.data.main.TrainerModel;
 import com.p5m.me.fxn.utility.Constants;
@@ -48,6 +51,7 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.KeyboardUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.LoginRegister.ContinueUser;
 import com.p5m.me.view.activity.LoginRegister.InfoScreen;
 import com.p5m.me.view.activity.Main.LocationActivity;
@@ -579,6 +583,51 @@ public class Helper {
     public static boolean isFreeClass(ClassModel model) {
         return model != null && model.getPriceModel() != null && model.getPriceModel().equals("FOC");
     }
+    public static float getClassPrice(ClassModel model) {
+        if(model!=null&&isSpecialClass(model)){
+            if(isFreeClass(model)){
+                return 0;
+            }else{
+                return model.getPrice();
+
+            }
+
+        }
+        else if(model!=null&&model.getPriceModel().equalsIgnoreCase(AppConstants.PriceModels.CHARGABLE)){
+            if(model.isVideoClass()){
+               return 5;
+            }else{
+                return 10;
+
+            }
+
+        }
+        return 0;
+    }
+
+    public static String getClassCreditValue(Context context,ClassModel model){
+        List<PriceModelMaster> master = TempStorage.getDefault().getPriceModelMaster();
+        if(model.getPriceModel().equalsIgnoreCase(AppConstants.PriceModels.CHARGABLE)){
+            if(model.isVideoClass()){
+           PriceModelMaster masterVirtual = getPriceModelForCredit(master,AppConstants.ClassModes.VIRTUAL);
+                return String.format(context.getString(R.string.p5m_credits_value),masterVirtual!=null?masterVirtual.getCredits()+"":AppConstants.minCreditValue);
+            }else{
+                PriceModelMaster masterPhysical = getPriceModelForCredit(master,AppConstants.ClassModes.PHYSICAL);
+                return String.format(context.getString(R.string.p5m_credits_value),masterPhysical!=null?masterPhysical.getCredits()+"":AppConstants.physicalCreditValue);
+
+            }
+
+        }else if(model.getPriceModel().equalsIgnoreCase(AppConstants.PriceModels.PT)||model.getPriceModel().equalsIgnoreCase(AppConstants.PriceModels.WORKSHOP)||model.getPriceModel().equalsIgnoreCase(AppConstants.PriceModels.SPECIAL)){
+            return String.format(context.getString(R.string.p5m_credits_value),(int)model.getPrice()+"");
+
+
+        }
+        else if(model.getPriceModel().equalsIgnoreCase(AppConstants.PriceModels.FOC)){
+             return context.getString(R.string.free_class);
+
+        }
+     return "";
+    }
 
     public static boolean isFemalesAllowed(ClassModel classModel) {
         return classModel.getClassType().equals(AppConstants.ApiParamValue.GENDER_BOTH) || classModel.getClassType().equals(AppConstants.ApiParamValue.GENDER_FEMALE);
@@ -586,6 +635,31 @@ public class Helper {
 
     public static boolean isMalesAllowed(ClassModel classModel) {
         return classModel.getClassType().equals(AppConstants.ApiParamValue.GENDER_BOTH) || classModel.getClassType().equals(AppConstants.ApiParamValue.GENDER_MALE);
+    }
+
+    public static boolean isUserAllowedForClass(Context context,ClassModel classModel) {
+        if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
+                && !Helper.isMalesAllowed(classModel)) {
+            ToastUtils.show(context, context.getString(R.string.gender_females_only_error));
+            return false;
+        } else if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
+                && !Helper.isFemalesAllowed(classModel)) {
+            ToastUtils.show(context, context.getString(R.string.gender_males_only_error));
+            return false;
+        }
+    return true;
+    }
+    public static boolean isFriendAllowedForClass(Context context,ClassModel classModel ,BookWithFriendData friend) {
+        if (friend.getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
+                && !Helper.isMalesAllowed(classModel)) {
+            ToastUtils.show(context, context.getString(R.string.gender_females_only_error));
+            return false;
+        } else if (friend.getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
+                && !Helper.isFemalesAllowed(classModel)) {
+            ToastUtils.show(context, context.getString(R.string.gender_males_only_error));
+            return false;
+        }
+        return true;
     }
 
     public static String getClassGenderText(String classType) {
@@ -812,5 +886,14 @@ public class Helper {
         }
         return checkIfFirstOrThird;
     }
-
+public static PriceModelMaster  getPriceModelForCredit(List<PriceModelMaster> masterList,String classMode){
+    PriceModelMaster master=null;
+    for (PriceModelMaster model:masterList)
+    {
+        if(model.getClassMode().equalsIgnoreCase(classMode)){
+         master = model;
+        }
+    }
+    return master;
+    }
 }

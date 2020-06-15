@@ -151,7 +151,9 @@
                                 android:paddingLeft="12dp"
                                 android:paddingTop="16dp"
                                 android:paddingRight="16dp"
-                                android:paddingBottom="16dp">
+                                android:paddingBottom="16dp"
+                                android:orientation="vertical"
+                                >
 
                                 <Button
                                     android:id="@+id/buttonJoin"
@@ -194,6 +196,19 @@
                                     android:textColor="@color/dark_grey"
                                     android:textSize="@dimen/text_extra_small"
                                     android:visibility="gone" />
+                                <TextView
+                                    android:id="@+id/textViewCreditPrice"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/green"
+                                    android:layout_marginTop="@dimen/margin_2"
+                                    android:textSize="@dimen/text_size_small"
+                                    android:layout_gravity="center"
+                                    android:textStyle="italic"
+                                    android:visibility="gone"
+                                    >
+                                </TextView>
+
                             </LinearLayout>
                         </FrameLayout>
 

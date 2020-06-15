@@ -702,7 +702,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
             case EXTENSION:
                 if (userPackage != null) {
                     textViewPackageName.setText(userPackage.getPackageName());
-                    textViewClassName.setText(LanguageUtils.numberConverter(userPackage.getBalanceClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs), userPackage.getBalanceClass()));
+                    textViewClassName.setText(LanguageUtils.numberConverter(userPackage.getBalance()) + " " + context.getString(R.string.p5m_credits));
                 }
                 setExtendedText();
                 break;

@@ -6,9 +6,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
+import android.webkit.RenderProcessGoneDetail;
+import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
@@ -126,8 +129,15 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
         }
 
         webView.getSettings().setLoadWithOverviewMode(true);
-
+        webView.getSettings().setAllowFileAccess(true);
         layoutProgress.setVisibility(View.VISIBLE);
+        webView.setWebChromeClient(new WebChromeClient() {
+            public void onProgressChanged(WebView view, int progress) {
+
+                LogUtils.networkError("progress: "+progress);
+            }
+    });
+
         webView.loadUrl(paymentUrl.getPaymentURL());
         webView.setWebViewClient(new MyWebViewClient());
         refId = paymentUrl.getReferenceID();
@@ -216,6 +226,7 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
 
             return true;
         }
+
 
         @Override
         public void onPageFinished(WebView view, String url) {

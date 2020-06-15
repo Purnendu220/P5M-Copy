@@ -1,5 +1,7 @@
 package com.p5m.me.view.activity.Main;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -17,6 +19,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -129,6 +134,28 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public TextView textViewBookWithFriend;
     @BindView(R.id.swipeRefreshLayout)
     public SwipeRefreshLayout swipeRefreshLayout;
+
+    //Warning Layout Declare
+
+    @BindView(R.id.layoutWarning)
+    View layoutWarning;
+
+    @BindView(R.id.textViewWarning)
+    View textViewWarning;
+
+    @BindView(R.id.textPurchase)
+    View textPurchase;
+    @BindView(R.id.imgCloseWarning)
+    ImageView imgCloseWarning;
+
+
+
+
+
+
+
+
+
     private User user;
     public View imageViewOptions;
     private ClassProfileAdapter classProfileAdapter;
@@ -253,7 +280,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         if (RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE != null && !RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE.isEmpty()) {
             showChoosePackageOption = Boolean.valueOf(RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE);
         }
-
+        imgCloseWarning.setOnClickListener(this);
+        textPurchase.setOnClickListener(this);
 
     }
 
@@ -298,96 +326,19 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public void textViewBook() {
         isBookWithFriendInProgress = false;
         mBookWithFriendData = null;
-        // Check if class is allowed for the gender..
-        if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
-                && !Helper.isMalesAllowed(classModel)) {
-            ToastUtils.show(context, context.getString(R.string.gender_females_only_error));
-            return;
-        } else if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
-                && !Helper.isFemalesAllowed(classModel)) {
-            ToastUtils.show(context, context.getString(R.string.gender_males_only_error));
+        if(!Helper.isUserAllowedForClass(context,classModel)){
             return;
         }
         textViewBook.setEnabled(false);
-
         textViewBook.setText(context.getResources().getString(R.string.please_wait));
         if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus() == false) {
-            networkCommunicator.addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
-                @Override
-                public void onApiSuccess(Object response, int requestCode) {
-                    textViewBook.setEnabled(false);
-                    try {
-                        if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus() == false) {
-                            String message = String.format(context.getString(R.string.added_to_waitlist));
-                            DialogUtils.showBasicMessage(context, message, context.getString(R.string.view_wishlist), new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    Intent navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
-                                    context.startActivity(navigationIntent);
-                                    textViewBook.setEnabled(true);
-                                }
-                            });
-                        } else {
-                            String message = String.format(context.getString(R.string.added_to_wishlist), classModel.getTitle());
-                            ToastUtils.show(context, message);
-                        }
-                        classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
-                        classModel.setWishType(AppConstants.ApiParamKey.WAITLIST);
-                        EventBroadcastHelper.sendWishAdded(classModel);
-                        EventBroadcastHelper.waitlistClassJoin(context, classModel);
-                        Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
-
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        LogUtils.exception(e);
-                    }
-
-                }
-
-                @Override
-                public void onApiFailure(String errorMessage, int requestCode) {
-                    textViewBook.setEnabled(true);
-
-                    ToastUtils.show(context, errorMessage);
-                    Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
-
-                }
-            });
+            addToWishList();
             return;
         }
-
-
-        if (Helper.isSpecialClass(classModel)) {
-            if (Helper.isFreeClass(classModel))
-                joinClass();
-            else {
-                if (!user.isBuyMembership())
-                    CheckoutActivity.openActivity(context, classModel, 1);
-
-                else {
-                    if (Helper.isSpecialClass(classModel) &&
-                            !Helper.isFreeClass(classModel)
-                    ) {
-
-                        CheckoutActivity.openActivity(context, classModel, 1);
-
-                    } else {
-                        joinClass();
-
-                    }
-                }
-            }
-            return;
-        }
-
-
         networkCommunicator.getMyUser(new NetworkCommunicator.RequestListener() {
             @Override
             public void onApiSuccess(Object response, int requestCode) {
-                performJoinProcess();
-
-//                warningNonRefundablePopUp();
+                joinClass();
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
             }
 
@@ -398,6 +349,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             }
         }, false);
     }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void waitlistJoin(Events.WaitlistJoin data) {
@@ -421,43 +373,19 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     public void bookWithAFriend(final BookWithFriendData data) {
 
         // Check if class is allowed for the gender..
-        if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
-                && !Helper.isMalesAllowed(classModel)) {
-            ToastUtils.show(context, mContext.getResources().getText(R.string.gender_females_only_error).toString());
-            return;
-        } else if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
-                && !Helper.isFemalesAllowed(classModel)) {
-            ToastUtils.show(context, mContext.getResources().getText(R.string.gender_males_only_error).toString());
+        if(!Helper.isUserAllowedForClass(context,classModel)){
             return;
         }
-        if (data.getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
-                && !Helper.isMalesAllowed(classModel)) {
-            ToastUtils.show(context, mContext.getResources().getText(R.string.gender_females_only_error).toString());
-            return;
-        } else if (data.getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
-                && !Helper.isFemalesAllowed(classModel)) {
-            ToastUtils.show(context, mContext.getResources().getText(R.string.gender_males_only_error).toString());
+        if(!Helper.isFriendAllowedForClass(context,classModel,data)){
             return;
         }
-
-
-        if (Helper.isSpecialClass(classModel)) {
-            if (Helper.isFreeClass(classModel))
-                joinClassWithFriend(data);
-            else {
-                CheckoutActivity.openActivity(context, classModel, 2, data);
-            }
-            return;
-        }
-
         textViewBookWithFriend.setText(context.getResources().getString(R.string.please_wait));
         textViewBookWithFriend.setEnabled(false);
 
         networkCommunicator.getMyUser(new NetworkCommunicator.RequestListener() {
             @Override
             public void onApiSuccess(Object response, int requestCode) {
-
-                performJoinProcessWithFriend(data);
+                joinClassWithFriend(data);
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
             }
 
@@ -469,15 +397,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         }, false);
     }
 
-    private void performJoinProcessWithFriend(BookWithFriendData dataFriend) {
-        UserPackageInfo userPackageInfo = new UserPackageInfo(TempStorage.getUser());
-        // if (userPackageInfo.havePackages) {
-        joinClassWithFriend(dataFriend);
-//        } else {
-//            // 3rt condition : have no packages..
-//            MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, 2);
-//        }
-    }
+
 
     private void joinClassWithFriend(BookWithFriendData data) {
         List<BookWithFriendData> friendList = new ArrayList<>();
@@ -487,82 +407,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         networkCommunicator.joinClass(new JoinClassRequest(TempStorage.getUser().getId(), classModel.getClassSessionId(), friendList), this, false);
     }
 
-    private void performJoinProcess() {
-        boolean userHaveDropinForClass = false;
-        boolean userHaveExpiredDropinForClass = false;
-        boolean userHaveExpiredGeneralPackageForClass = false;
 
-
-        boolean userHaveGeneralPackageForClass = false;
-        ArrayList<Integer> list = new ArrayList<>();
-        UserPackageInfo userPackageInfo = new UserPackageInfo(TempStorage.getUser());
-
-        if (userPackageInfo.havePackages) {
-
-            // 1st condition : have drop-in for class..
-            if (userPackageInfo.haveDropInPackage && classModel.getGymBranchDetail() != null) {
-                userHaveDropinForClass = false;
-                for (UserPackage userPackage : userPackageInfo.userPackageReady) {
-                    if ((userPackage.getGymId() == classModel.getGymBranchDetail().getGymId()) && (userPackage.getExpiryDate() == null || DateUtils.canJoinClass(classModel.getClassDate(), userPackage.getExpiryDate()) >= 0)) {
-                        userHaveDropinForClass = true;
-                        list.add(userPackage.getGymId());
-                    }
-                    if ((userPackage.getGymId() == classModel.getGymBranchDetail().getGymId()) && (userPackage.getExpiryDate() != null && DateUtils.canJoinClass(classModel.getClassDate(), userPackage.getExpiryDate()) < 0)) {
-                        userHaveExpiredDropinForClass = true;
-                    }
-                }
-
-            }
-            // 2st condition : have class remaining in package..
-            if (userPackageInfo.haveGeneralPackage) {
-                if (userPackageInfo.userPackageGeneral != null) {
-
-
-                    if (DateUtils.canJoinClass(classModel.getClassDate(), userPackageInfo.userPackageGeneral.getExpiryDate()) >= 0) {
-                        userHaveGeneralPackageForClass = true;
-
-                    }
-                    if (DateUtils.canJoinClass(classModel.getClassDate(), userPackageInfo.userPackageGeneral.getExpiryDate()) < 0) {
-                        userHaveExpiredGeneralPackageForClass = true;
-
-                    }
-
-                }
-            }
-            try {
-                if (userHaveDropinForClass || userHaveGeneralPackageForClass) {
-                    joinClass();
-                    return;
-                } else {
-                    if (userHaveExpiredGeneralPackageForClass) {
-                        textViewBook.setEnabled(true);
-                        DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), getString(R.string.purchase), new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                dialog.dismiss();
-
-                                joinClass();
-
-                            }
-                        });
-                        return;
-                    } else {
-                        joinClass();
-                        return;
-                    }
-
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                joinClass();
-                return;
-            }
-        } else {
-            // 3rt condition : have no packages..
-            callPackageListApi(1);
-        }
-    }
 
     private void joinClass() {
         textViewBook.setText(context.getResources().getString(R.string.please_wait));
@@ -685,11 +530,18 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             case R.id.layoutUserWallet:
                 showWalletAlert();
                 break;
+
+            case R.id.imgCloseWarning:
+                viewGoneAnimator(layoutWarning);
+                break;
+            case R.id.textPurchase:
+                HomeActivity.show(context, AppConstants.Tab.TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS);
+                break;
         }
     }
 
     private void showWalletAlert() {
-        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.wallet_alert_title), context.getString(R.string.wallet_alert), 1, "", context.getResources().getString(R.string.ok), CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO, null, true, this);
+        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.p5m_credits), context.getString(R.string.p5m_credit_alert), 1, "", context.getResources().getString(R.string.ok), CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO, null, true, this);
         try {
             mCustomAlertDialog.show();
         } catch (Exception e) {
@@ -705,7 +557,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             case NetworkCommunicator.RequestCode.JOIN_CLASS:
                 User user = ((ResponseModel<User>) response).data;
                 classModel.setUserJoinStatus(true);
-
                 saved5MinClass(classModel);
 
                 EventBroadcastHelper.sendUserUpdate(context, user);
@@ -773,7 +624,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     }
 
                 }
-                handleWalletOfSpecialAndFreeClass();
+                handleP5MCredits();
                 break;
             case NetworkCommunicator.RequestCode.CLASS_RATING_LIST:
                 ratingData = ((ResponseModel<ClassRatingUserData>) response).data;
@@ -791,7 +642,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     List<Package> packages = new ArrayList<>(packagesTemp.size());
                     user = TempStorage.getUser();
                     if (mBookWithFriendData != null) {
-
                         for (Package aPackage : packagesTemp) {
                             int numberOfDays = DateUtils.getPackageNumberOfDays(aPackage.getDuration(), aPackage.getValidityPeriod());
                             if (!(aPackage.getDuration() > 0 && DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays)) {
@@ -806,26 +656,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             return;
 
                         } else {
-                            Package aPackage = null;
-                            for (Package p : packages) {
-                                if (p.getPackageType().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
-                                    aPackage = p;
-
-                                }
-                            }
-                            if (showChoosePackageOption) {
-                                try {
-                                    BottomSheetClassBookingOptions mBottomSheetClassBookingOptions = BottomSheetClassBookingOptions.newInstance(classModel, mBookWithFriendData, aPackage.getNoOfClass(), aPackage);
-                                    mBottomSheetClassBookingOptions.show(((ClassProfileActivity) context).getSupportFragmentManager(), "friend_booking");
-                                } catch (IllegalStateException ignored) {
-                                }
-                              } else {
-                                HomeActivity.show(context, AppConstants.Tab.TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, aPackage.getNoOfClass());
-                            }
-
-
+                            HomeActivity.show(context, AppConstants.Tab.TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel, mBookWithFriendData, 1);
                         }
-
                     } else {
                         for (Package aPackage : packagesTemp) {
                             int numberOfDays = DateUtils.getPackageNumberOfDays(aPackage.getDuration(), aPackage.getValidityPeriod());
@@ -838,26 +670,14 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                             CheckoutActivity.openActivity(context, aPackage, classModel, 1, aPackage.getNoOfClass());
                             return;
                         } else {
-                            Package aPackage = packages.get(0);
                             textViewBook.setEnabled(true);
-                            if (showChoosePackageOption) {
-                                try {
-                                    BottomSheetClassBookingOptions mBottomSheetClassBookingOptions = BottomSheetClassBookingOptions.newInstance(classModel, mBookWithFriendData, aPackage.getNoOfClass(), aPackage);
-                                    mBottomSheetClassBookingOptions.show(((ClassProfileActivity) activity).getSupportFragmentManager(), "friend_booking");
-                                } catch (IllegalStateException ignored) {
-                                }
-                              } else {
-                                HomeActivity.show(context, AppConstants.Tab.TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
-
-                            }
-
-                            // HomeActivity.show(context,AppConstants.Tab.TAB_MY_MEMBERSHIP,AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
+                            HomeActivity.show(context, AppConstants.Tab.TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
                         }
                     }
                 }
                 break;
             case NetworkCommunicator.RequestCode.ME_USER:
-               handleWalletOfSpecialAndFreeClass();
+               handleP5MCredits();
                 break;
             case NetworkCommunicator.RequestCode.GET_CAHHNEL_TOKEN:
                 TokenResponse tokenModel = ((ResponseModel<TokenResponse>) response).data;
@@ -891,6 +711,23 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
             }
         }
+    }
+    private void handleP5MCredits() {
+        UserPackageInfo userPackageInfo = new UserPackageInfo(TempStorage.getUser());
+        if (userPackageInfo!=null&&userPackageInfo.haveGeneralPackage&&userPackageInfo.userPackageGeneral.getBalance()>0) {
+                mLayoutUserWallet.setVisibility(View.VISIBLE);
+                mTextViewWalletAmount.setText(LanguageUtils.numberConverter(userPackageInfo.userPackageGeneral.getBalance()) + " " + context.getString(R.string.p5m_credits));
+                if(Helper.getClassPrice(classModel)>userPackageInfo.userPackageGeneral.getBalance()){
+                    layoutWarning.setVisibility(View.VISIBLE);
+                }
+
+            } else {
+                mLayoutUserWallet.setVisibility(View.GONE);
+                layoutWarning.setVisibility(View.VISIBLE);
+            }
+
+
+
     }
 
     private void saved5MinClass(ClassModel classModel) {
@@ -1036,18 +873,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             case NetworkCommunicator.RequestCode.PACKAGES_FOR_USER:
                 break;
             case NetworkCommunicator.RequestCode.ME_USER:
-                if (Helper.isSpecialClass(classModel) &&
-                        !Helper.isFreeClass(classModel)) {
-                    user = TempStorage.getUser();
-                    mWalletCredit = user.getWalletDto();
-                    if (mWalletCredit != null && mWalletCredit.getBalance() > 0) {
-                        mLayoutUserWallet.setVisibility(View.VISIBLE);
-                        mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance()) + " " + TempStorage.getUser().getCurrencyCode());
-                    } else {
-                        mLayoutUserWallet.setVisibility(View.GONE);
+                handleP5MCredits();
 
-                    }
-                }
                 break;
             case NetworkCommunicator.RequestCode.GET_CAHHNEL_TOKEN:
                ToastUtils.show(context, errorMessage);
@@ -1104,7 +931,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     userHaveGeneralPackageForClass = true;
 
                 }
-                if (userPackageInfo.userPackageGeneral.getBalanceClass() > 0 && DateUtils.canJoinClass(classModel.getClassDate(), userPackageInfo.userPackageGeneral.getExpiryDate()) < 0) {
+                if (userPackageInfo.userPackageGeneral.getBalance() > 0 && DateUtils.canJoinClass(classModel.getClassDate(), userPackageInfo.userPackageGeneral.getExpiryDate()) < 0) {
                     userHaveExpiredGeneralPackageForClass = true;
 
                 }
@@ -1151,6 +978,122 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
     @Override
     public void onCancelClick(int requestCode, Object data) {
+
+    }
+    private void addToWishList() {
+        networkCommunicator.addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
+            @Override
+            public void onApiSuccess(Object response, int requestCode) {
+                textViewBook.setEnabled(false);
+                try {
+                    if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus() == false) {
+                        String message = String.format(context.getString(R.string.added_to_waitlist));
+                        DialogUtils.showBasicMessage(context, message, context.getString(R.string.view_wishlist), new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                Intent navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_SCHEDULE, AppConstants.Tab.TAB_MY_SCHEDULE_WISH_LIST);
+                                context.startActivity(navigationIntent);
+                                textViewBook.setEnabled(true);
+                            }
+                        });
+                    } else {
+                        String message = String.format(context.getString(R.string.added_to_wishlist), classModel.getTitle());
+                        ToastUtils.show(context, message);
+                    }
+                    classModel.setWishListId(((ResponseModel<WishListResponse>) response).data.getId());
+                    classModel.setWishType(AppConstants.ApiParamKey.WAITLIST);
+                    EventBroadcastHelper.sendWishAdded(classModel);
+                    EventBroadcastHelper.waitlistClassJoin(context, classModel);
+                    Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    LogUtils.exception(e);
+                }
+
+            }
+
+            @Override
+            public void onApiFailure(String errorMessage, int requestCode) {
+                textViewBook.setEnabled(true);
+
+                ToastUtils.show(context, errorMessage);
+                Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
+
+            }
+        });
+    }
+
+    private void checkIfPackageExpireBeforeClassDate(){
+      UserPackageInfo userPackageInfo = new UserPackageInfo(TempStorage.getUser());
+      boolean userHaveExpiredGeneralPackageForClass =false;
+        if (userPackageInfo.haveGeneralPackage) {
+            if (userPackageInfo.userPackageGeneral != null) {
+                if (DateUtils.canJoinClass(classModel.getClassDate(), userPackageInfo.userPackageGeneral.getExpiryDate()) < 0) {
+                    userHaveExpiredGeneralPackageForClass = true;
+
+                }
+
+            }
+        }
+        try {
+            if (userHaveExpiredGeneralPackageForClass) {
+
+                    return;
+                }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+    }
+    private void viewGoneAnimator(View view) {
+        Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+        view.startAnimation(slideUp);
+        slideUp.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                view.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+//        view.animate()
+//                .alpha(0f)
+//                .setDuration(1000)
+//                .setListener(new AnimatorListenerAdapter() {
+//                    @Override
+//                    public void onAnimationEnd(Animator animation) {
+//                        view.setVisibility(View.GONE);
+//                    }
+//                });
+
+    }
+
+    private void viewVisibleAnimator(View view) {
+        Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+         view.startAnimation(slideUp);
+
+//        view.animate()
+//                .alpha(1f)
+//                .setDuration(1000)
+//                .setListener(new AnimatorListenerAdapter() {
+//                    @Override
+//                    public void onAnimationEnd(Animator animation) {
+//                        view.setVisibility(View.VISIBLE);
+//                    }
+//                });
 
     }
 }

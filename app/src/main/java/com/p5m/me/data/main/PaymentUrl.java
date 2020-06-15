@@ -19,6 +19,7 @@ public class PaymentUrl implements java.io.Serializable {
     }
 
     public String getPaymentURL() {
+       // return "https://stackoverflow.com/questions/29437302/url-loads-in-chrome-app-but-not-webview";
         return this.paymentURL;
     }
 
