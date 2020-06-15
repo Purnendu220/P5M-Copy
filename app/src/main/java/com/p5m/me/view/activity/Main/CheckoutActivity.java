@@ -349,23 +349,10 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     setTextValidityPeriod(aPackage);
                     textViewLimit.setVisibility(View.GONE);
                     textViewLimit.setText(RemoteConfigConst.GYM_VISIT_LIMIT_VALUE);
-                    textViewPackageClasses.setText(numberConverter(aPackage.getNoOfClass()) + " " + AppConstants.pluralES(getString(R.string.one_class), aPackage.getNoOfClass()) + " " + context.getString(R.string.at_any_gym));
+                    textViewPackageClasses.setText(numberConverter(aPackage.getCredits()) + " " + getString(R.string.p5m_credits) + " " + context.getString(R.string.at_any_gym));
                     textViewCancellationPolicyGeneralToggle.setVisibility(View.GONE);
                     textViewPackageName.setText(Html.fromHtml(numberConverter(mNumberOfPackagesToBuy) + "X <b>" + aPackage.getName() + "</b>"));
 
-
-                } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
-                    textViewPackageValidity.setText(context.getString(R.string.valid_for) + " " + DateUtils.getPackageClassDate(classModel.getClassDate()) + " -" + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()));
-
-                    textViewLimit.setVisibility(View.GONE);
-                    textViewCancellationPolicyGeneralToggle.setVisibility(View.VISIBLE);
-                    textViewCancellationPolicyGenral.setText(R.string.membership_drop_in_info);
-                    textViewPackageName.setText(Html.fromHtml(numberConverter(mNumberOfClasses) + "X <b>" + aPackage.getName() + "</b>"));
-
-                   /* if (mNumberOfPackagesToBuy == 1) {
-                        textViewPackageClasses.setText(context.getString(R.string.class_one_at)+" "+ classModel.getGymBranchDetail().getGymName() );
-                    } else*/
-                    textViewPackageClasses.setText(LanguageUtils.numberConverter(mNumberOfClasses) + " " + AppConstants.pluralES(context.getString(R.string.classs), mNumberOfClasses) + " " + context.getString(R.string.at) + " " + classModel.getGymBranchDetail().getGymName());
 
                 }
 
@@ -631,10 +618,8 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     textViewPackageExtendNoOfDays.setVisibility(View.GONE);
                     textViewPlus.setVisibility(View.GONE);
                     if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL))
-                        textViewPackageClasses.setText(numberConverter(aPackage.getNoOfClass()) + " " + AppConstants.pluralES(getString(R.string.one_class), aPackage.getNoOfClass()) + " " + context.getString(R.string.at_any_gym));
-                    else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
-                        textViewPackageClasses.setText(LanguageUtils.numberConverter(mNumberOfClasses) + " " + AppConstants.pluralES(context.getString(R.string.classs), mNumberOfClasses) + " " + context.getString(R.string.at) + " " + classModel.getGymBranchDetail().getGymName());
-                    }
+                        textViewPackageClasses.setText(numberConverter(aPackage.getCredits()) + " " + getString(R.string.p5m_credits)  + " " + context.getString(R.string.at_any_gym));
+
                     textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
                     textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
                     finalCost = aPackage.getCost();
@@ -862,15 +847,11 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 if (friendsDetail != null) {
                     List<BookWithFriendData> data = new ArrayList<>();
                     data.add(friendsDetail);
-                    if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
-                        paymentUrlRequest = new PaymentUrlRequest(TempStorage.getUser().getId(),
-                                aPackage.getId(), classModel.getClassSessionId(),
-                                classModel.getGymBranchDetail().getGymId(), data, aPackage.getNoOfClass(), paymentOptionId);
-                    } else {
+
                         paymentUrlRequest = new PaymentUrlRequest(TempStorage.getUser().getId(),
                                 aPackage.getId(), classModel.getClassSessionId(),
                                 classModel.getGymBranchDetail().getGymId(), data, paymentOptionId);
-                    }
+
 
 
                 } else {

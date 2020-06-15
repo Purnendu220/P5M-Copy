@@ -45,7 +45,9 @@ import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.Main.CheckoutActivity;
 import com.p5m.me.view.activity.Main.MembershipInfoActivity;
 import com.p5m.me.view.activity.Main.PackageLimitsActivity;
+import com.p5m.me.view.custom.AlertP5MCreditInfo;
 import com.p5m.me.view.custom.CustomAlertDialog;
+import com.p5m.me.view.custom.OnAlertButtonAction;
 import com.p5m.me.view.custom.PackageExtensionAlertDialog;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -61,7 +63,7 @@ import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_NO_PACKAG
 
 
 public class MembershipFragment extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks, NetworkCommunicator.RequestListener,
-        SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, CustomAlertDialog.OnAlertButtonAction {
+        SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, CustomAlertDialog.OnAlertButtonAction, OnAlertButtonAction {
 
     @BindView(R.id.recyclerView)
     public RecyclerView recyclerView;
@@ -315,24 +317,6 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
             // show general, ready, and owned packages
             if (userPackageInfo.havePackages) {
-                if(userPackageInfo.userPackageReady!=null&&userPackageInfo.userPackageReady.size()>0){
-                    if(classModel==null){
-                        if(mFriendsData!=null){
-                            for (UserPackage dropInPackage:userPackageInfo.userPackageReady) {
-                                if(dropInPackage.getBalanceClass()>=mNumberOfPackagesToBuy){
-                                    memberShipAdapter.addOwnedPackages(dropInPackage);
-
-                                }
-                            }
-                        }
-                        else{
-                            memberShipAdapter.addAllOwnedPackages(userPackageInfo.userPackageReady);
-
-                        }
-                    }
-
-                }
-
                 if (userPackageInfo.haveGeneralPackage && !user.isBuyMembership()) {
                     // User have General package and may be also have dropins..
                     memberShipAdapter.addOwnedPackages(userPackageInfo.userPackageGeneral);
@@ -375,10 +359,6 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
             memberShipAdapter.setClassModel(null);
 
             if (userPackageInfo.havePackages) {
-                if(classModel==null){
-                    memberShipAdapter.addAllOwnedPackages(userPackageInfo.userPackageReady);
-
-                }
 
                 if (!userPackageInfo.haveGeneralPackage) {
                     // User don't have General package..
@@ -505,6 +485,16 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                 }
             }
             break;
+            case R.id.txtPackageOffredClassesLimits:
+                if (model instanceof Package) {
+                    Package pkg = (Package) model;
+                    AlertP5MCreditInfo alert = new AlertP5MCreditInfo(context,pkg,MembershipFragment.this);
+                    alert.show();
+
+
+
+                }
+                break;
 
         }
         }
@@ -665,12 +655,25 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
         @Override
         public void onOkClick ( int requestCode, Object data){
+        switch (requestCode){
+            case AppConstants.AlertRequestCodes.ALERT_REQUEST_PURCHASE:
+                if(data!=null&&data instanceof  Package){
+                    Package modelPkg =(Package)data;
+                    CheckoutActivity.openActivity(context, modelPkg);
+                    MixPanel.trackPackagePreferred(modelPkg.getName());
+
+                }
+                break;
+        }
 
         }
 
         @Override
         public void onCancelClick ( int requestCode, Object data){
-
+            switch (requestCode){
+                case AppConstants.AlertRequestCodes.ALERT_REQUEST_PURCHASE_CANCEL:
+                    break;
+            }
         }
 
         @Override

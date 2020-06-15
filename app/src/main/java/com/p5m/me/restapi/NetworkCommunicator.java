@@ -926,7 +926,7 @@ public class NetworkCommunicator {
 
                         for (UserPackage userPackage : response.data.getUserPackageDetailDtoList()) {
                             if (userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)
-                                    && userPackage.getBalanceClass() != 0) {
+                                    && userPackage.getBalance() != 0) {
                                 userMainPackage = userPackage.getPackageName().toUpperCase();
 
                             } else if (userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {

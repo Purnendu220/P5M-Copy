@@ -398,6 +398,8 @@
     <string name="congratulation_package">Congratulations! Package</string>
     <string name="classs">Class</string>
     <string name="classs_one">class</string>
+    <string name="p5m_credits">credits</string>
+    <string name="p5m_credits_value">%s credits</string>
 
     <string name="payment_pending">Payment pending</string>
     <string name="payment_sucessful">Payment successful</string>
@@ -482,7 +484,8 @@
     <string name="are_you_sure_leave_page">Are you sure you want to leave this page?</string>
     <string name="non_refundable_warning_msg">This class is non-refundable after purchase. Do you want to continue?</string>
     <string name="non_refundable_warning">*This class is non-refundable after purchase.</string>
-    <string name="wallet_alert">Use your wallet credits to purchase any package on the app.</string>
+    <string name="wallet_alert">Use your P5M credits to purchase any class on the app.</string>
+    <string name="p5m_credit_alert">Use your P5M credits to purchase any class on the app.</string>
 
     <string name="on_ya">Oh Ya!</string>
     <string name="maybe_next_time">Maybe next time</string>
@@ -532,6 +535,8 @@ Would you like to view your balance? </string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="classess_remaining">You have %d/%d classes remaining</string>
+    <string name="credits_remaining">You have %d/%d credits remaining</string>
+
     <string name="so_far_you_visited">So far you visited</string>
     <string name="drop_in_text">You have 1 active drop-in at %s, expire on %s</string>
     <string name="drop_in_unlimited">You have 1 active drop-in for %s</string>
@@ -700,6 +705,12 @@ Would you like to view your balance? </string>
     <string name="add_money">Add Money</string>
     <string name="proceed_add_money">Proceed add money</string>
     <string name="on_p5m">On P5M</string>
+    <string name="book_class_limits">book %d - %d classes</string>
+    <string name="pt_class_range">Special Class range </string>
+    <string name="all_online_class_range">All online class - </string>
+    <string name="all_atgym_class_range">All at gym class -</string>
+    <string name="credit_value">How many credits required to book a class ?</string>
+    <string name="free_class">Free</string>
 
     <!-- Legal digits for channel names -->
 

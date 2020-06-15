@@ -871,6 +871,8 @@
     <string name="_5">/٥</string>
     <string name="wallet_credit_applied">تم إضافة الرصيد</string>
     <string name="wallet_alert">استخدم رصيدك لشراء أي حزمة في التطبيق</string>
+    <string name="p5m_credit_alert">Use your P5M credits to purchase any class on the app.</string>
+
     <string name="success">Success</string>
     <string name="alert_message">Congratulation You have done this successfully.</string>
     <string name="successfull_refund_message">تم استرداد المبلغ المدفوع لهذا الكلاس إلى حسابك. استخدم رصيدك لحجز تمرينك التالي معنا.
@@ -1057,6 +1059,7 @@
     <string name="add_money">Add Money</string>
     <string name="proceed_add_money">Proceed add money</string>
     <string name="on_p5m">On P5M</string>
+    <string name="free_class">Free</string>
 
     <!-- Legal digits for channel names -->
 

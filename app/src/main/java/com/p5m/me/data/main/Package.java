@@ -15,6 +15,7 @@ public class Package implements java.io.Serializable {
     private String gymName;
     private int id;
     private String packageType;
+    private int credits;
 
     private boolean status;
     private PromoCode promoResponseDto;
@@ -135,5 +136,13 @@ public class Package implements java.io.Serializable {
 
     public void setBookingWithFriend(boolean bookingWithFriend) {
         isBookingWithFriend = bookingWithFriend;
+    }
+
+    public int getCredits() {
+        return credits;
+    }
+
+    public void setCredits(int credits) {
+        this.credits = credits;
     }
 }

@@ -102,6 +102,11 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.textViewChannelNAme)
     public TextView textViewChannelNAme;
 
+    @BindView(R.id.textViewCreditPrice)
+    public TextView textViewCreditPrice;
+
+
+
     public ClassMiniDetailViewHolder(View view, int shownInScreen) {
         super(view);
 
@@ -141,6 +146,9 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 }
                 // Handle Cancel Booking
                 buttonJoin.setVisibility(View.VISIBLE);
+                textViewCreditPrice.setVisibility(View.GONE);
+
+
                 imageViewOptions1.setVisibility(View.GONE);
 //                imageViewOptions2.setVisibility(View.VISIBLE);
                 if(model.isVideoClass()){
@@ -155,12 +163,16 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 textViewTrainerName.setVisibility(View.VISIBLE);
 
                 buttonJoin.setVisibility(View.VISIBLE);
+                textViewCreditPrice.setVisibility(View.VISIBLE);
+
 
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE) {
                 trainerImage.setVisibility(View.GONE);
                 textViewTrainerName.setVisibility(View.GONE);
 
                 buttonJoin.setVisibility(View.VISIBLE);
+                textViewCreditPrice.setVisibility(View.VISIBLE);
+
                 imageViewOptions1.setVisibility(View.GONE);
                 imageViewOptions2.setVisibility(View.VISIBLE);
 
@@ -177,6 +189,8 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 textViewTrainerName.setVisibility(View.VISIBLE);
 
                 buttonJoin.setVisibility(View.VISIBLE);
+                textViewCreditPrice.setVisibility(View.VISIBLE);
+
                 imageViewOptions1.setVisibility(View.GONE);
                 imageViewOptions2.setVisibility(View.VISIBLE);
 
@@ -189,6 +203,8 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 textViewTrainerName.setVisibility(View.VISIBLE);
 
                 buttonJoin.setVisibility(View.GONE);
+                textViewCreditPrice.setVisibility(View.GONE);
+
                 imageViewOptions1.setVisibility(View.GONE);
                 imageViewOptions2.setVisibility(View.GONE);
                 try {
@@ -209,6 +225,8 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 textViewTrainerName.setVisibility(View.VISIBLE);
 
                 buttonJoin.setVisibility(View.VISIBLE);
+                textViewCreditPrice.setVisibility(View.VISIBLE);
+
                 imageViewOptions1.setVisibility(View.GONE);
                 imageViewOptions2.setVisibility(View.VISIBLE);
 
@@ -263,6 +281,9 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
             textViewClassName.setText(model.getTitle());
             textViewClassCategory.setText(model.getClassCategory());
             textViewClassDate.setText(DateUtils.getClassDate(model.getClassDate()));
+
+            textViewCreditPrice.setText(Helper.getClassCreditValue(context,model));
+
             if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_SCHEDULE_UPCOMING) {
                 // In Schedule showing the Cancel Button
                 buttonJoin.setText(context.getString(R.string.cancel));

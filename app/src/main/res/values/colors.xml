@@ -90,6 +90,7 @@
     <color name="black_half_transparent">#66000000</color>
     <color name="black_full_transparent">#22000000</color>
     <color name="payment_pending">#ebf2fc</color>
+    <color name="warning_color">#FFCC00</color>
 
 
 </resources>
