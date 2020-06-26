@@ -24,6 +24,7 @@ public class MemberShipViewHolder_ViewBinding implements Unbinder {
     this.target = target;
 
     target.mainLayoutUserPakages = Utils.findRequiredViewAsType(source, R.id.mainLayoutUserPakages, "field 'mainLayoutUserPakages'", RelativeLayout.class);
+    target.textViewBuyMoreCredits = Utils.findRequiredViewAsType(source, R.id.textViewBuyMoreCredits, "field 'textViewBuyMoreCredits'", TextView.class);
     target.packageTitle = Utils.findRequiredViewAsType(source, R.id.packageTitle, "field 'packageTitle'", TextView.class);
     target.packageUsage = Utils.findRequiredViewAsType(source, R.id.packageUsage, "field 'packageUsage'", TextView.class);
     target.textViewSoFarYouVisited = Utils.findRequiredViewAsType(source, R.id.textViewSoFarYouVisited, "field 'textViewSoFarYouVisited'", TextView.class);
@@ -58,6 +59,7 @@ public class MemberShipViewHolder_ViewBinding implements Unbinder {
     this.target = null;
 
     target.mainLayoutUserPakages = null;
+    target.textViewBuyMoreCredits = null;
     target.packageTitle = null;
     target.packageUsage = null;
     target.textViewSoFarYouVisited = null;

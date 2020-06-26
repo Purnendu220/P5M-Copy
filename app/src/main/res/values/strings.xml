@@ -125,8 +125,8 @@
     <string name="classes_remaining" translatable="false">classes remaining</string>
     <string name="valid_till">Valid till</string>
     <string name="coach_at">Coach at </string>
-    <string name="recharge">"<u>Buy Classes</u>"</string>
-    <string name="buy_classes">Buy Classes</string>
+    <string name="recharge">"<u>Buy Credits</u>"</string>
+    <string name="buy_classes">Buy Credits</string>
 
     <string name="email_error_text">Please provide a valid email.</string>
 
@@ -179,8 +179,6 @@
     <string name="title_activity_sign_up_options" translatable="false">SignUpOptions</string>
     <string name="your_fitness_freedom">Your Fitness Freedom</string>
     <string name="registration_done">Registration completed successfully!</string>
-    <string name="join_fail_date_expire">Your current plan will expire before the date of the following class. Would you like to continue and purchase a one-time visit to this class?</string>
-    <string name="join_fail_limit_exhaust">You have exceeded the number of visits to this studio. Would you like to continue and purchase a one-time visit to this class, without changing your current plan?</string>
 
     <string name="join_share_limit_exhaust">You have exceeded package share limit.Would you like to continue and purchase a one-time visit to this class, without changing your current plan?</string>
 
@@ -378,9 +376,7 @@
     <string name="needs_your_gender">P5M needs your Gender</string>
     <string name="sure_unjoin_both">Are you sure you want to cancel both bookings ?</string>
     <string name="sure_unjoin_friend">Are you sure you want to cancel your friend\'s booking ?</string>
-    <string name="join_fail_limit_exhaust_booking_with_friend">You have exceeded the number of visits to the following studio. Would you like to continue and purchase a one-time visit to this class, for your guest?</string>
-    <string name="join_fail_limit_exhaust_booking_with_friend_two_ready">You have exceeded the number of visits to the following studio. Would you like to continue and purchase %1d one-time visits to this class, for yourself and your guest?</string>
-    <string name="cancel_class_self">Unjoin My Class</string>
+      <string name="cancel_class_self">Unjoin My Class</string>
     <string name="cancel_class_friend">Cancel Friend\'s booking</string>
     <string name="cancel_class_both">Cancel Both bookings</string>
     <string name="limit_for_this_gym" translatable="false">visit limit for this gym.So you need to buy different package to book with friend.</string>
@@ -400,6 +396,7 @@
     <string name="classs_one">class</string>
     <string name="p5m_credits">credits</string>
     <string name="p5m_credits_value">%s credits</string>
+    <string name="inludes_p5m_credits">Includes</string>
 
     <string name="payment_pending">Payment pending</string>
     <string name="payment_sucessful">Payment successful</string>
@@ -505,7 +502,6 @@ Would you like to view your balance? </string>
     <string name="join_waitlist">Join Waitlist</string>
     <string name="view_wishlist">View my Wishlist</string>
     <string name="time_offer_promo">Extra time offer applied</string>
-    <string name="class_offer_promo">Free class offer applied</string>
     <string name="discount_promo_applied">Discount applied</string>
     <string name="special_offer">Special Offer:</string>
     <string name="or">OR</string>
@@ -534,8 +530,6 @@ Would you like to view your balance? </string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
-    <string name="classess_remaining">You have %d/%d classes remaining</string>
-    <string name="credits_remaining">You have %d/%d credits remaining</string>
 
     <string name="so_far_you_visited">So far you visited</string>
     <string name="drop_in_text">You have 1 active drop-in at %s, expire on %s</string>
@@ -705,14 +699,28 @@ Would you like to view your balance? </string>
     <string name="add_money">Add Money</string>
     <string name="proceed_add_money">Proceed add money</string>
     <string name="on_p5m">On P5M</string>
-    <string name="book_class_limits">book %d - %d classes</string>
     <string name="pt_class_range">Special Class range </string>
     <string name="all_online_class_range">All online class - </string>
     <string name="all_atgym_class_range">All at gym class -</string>
-    <string name="credit_value">How many credits required to book a class ?</string>
-    <string name="free_class">Free</string>
 
     <!-- Legal digits for channel names -->
+    <string name="includes_credits">%s credits to</string>
+    <string name="credit_value">How many credits do I need to join a class?</string>
+    <string name="credits_remaining">You have %d/%d credits remaining</string>
+    <string name="buy_more_credits"><u>Buy more credits</u></string>
+    <string name="join_fail_limit_exhaust">You  have exceeded the number of times you can visit this gym with your plan. You can add more credits to your account in order to join this class.</string>
+    <string name="join_fail_limit_exhaust_booking_with_friend">You  have exceeded the number of times you can visit this gym with your plan. You can add more credits to your account in order to join this class, for your guest?</string>
+    <string name="join_fail_limit_exhaust_booking_with_friend_two_ready">You  have exceeded the number of times you can visit this gym with your plan. You can add more credits to your account in order to join this class, for yourself and your guest?</string>
+    <string name="add_credits">Add credits</string>
+    <string name="add_more_credits"><u>Add more credits</u></string>
+    <string name="join_fail_date_expire">Your plan ends before the date of this class . Would you like to add extra credits to your account in order to secure a spot in this class? </string>
+    <string name="insufficient_credits">Your don\'t have enough credits to join this class. Would you like to add more credits to join this class?</string>
+    <string name="class_offer_promo">Free credit offer applied</string>
+
+    <string name="book_class_limits">book %d - %d classes</string>
+    <string name="free_class">Free</string>
+    <string name="class_credits">%s credits</string>
+
 
 
 </resources>

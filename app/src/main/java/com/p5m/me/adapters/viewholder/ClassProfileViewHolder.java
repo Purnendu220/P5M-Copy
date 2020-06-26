@@ -143,6 +143,12 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
     @BindView(R.id.layoutSeats)
     RelativeLayout layoutSeats;
 
+    @BindView(R.id.textViewClassCredits)
+    TextView textViewClassCredits;
+
+    @BindView(R.id.layoutClassCredits)
+    RelativeLayout layoutClassCredits;
+
     @BindView(R.id.layoutChannelName)
     public RelativeLayout layoutChannelName;
 
@@ -200,6 +206,14 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
             } else {
                 layoutDesc.setVisibility(View.GONE);
             }
+            if(Helper.getClassPrice(model)>0){
+                layoutClassCredits.setVisibility(View.VISIBLE);
+                textViewClassCredits.setText(Helper.getClassCreditValue(context,model));
+            }else{
+                layoutClassCredits.setVisibility(View.GONE);
+
+            }
+
             if (model.isVideoClass() && !HOW_IT_WORKS_VALUE.isEmpty()) {
                 Gson g = new Gson();
                 RemoteConfigDataModel p = g.fromJson(HOW_IT_WORKS_VALUE, new TypeToken<RemoteConfigDataModel>() {

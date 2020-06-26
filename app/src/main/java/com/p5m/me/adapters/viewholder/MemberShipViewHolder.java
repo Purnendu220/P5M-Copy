@@ -25,6 +25,7 @@ import com.p5m.me.data.UserPackageDetail;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.UserPackage;
+import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.storage.TempStorage;
@@ -57,6 +58,9 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.mainLayoutUserPakages)
     RelativeLayout mainLayoutUserPakages;
+
+    @BindView(R.id.textViewBuyMoreCredits)
+    TextView textViewBuyMoreCredits;
 
     @BindView(R.id.packageTitle)
     TextView packageTitle;
@@ -178,6 +182,19 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     packageTitle.setText(model.getPackageName());
                     packageUsage.setText(String.format(context.getResources().getString(R.string.credits_remaining), Integer.parseInt(LanguageUtils.numberConverter(model.getBalance())), Integer.parseInt(LanguageUtils.numberConverter(model.getTotalCredit()))));
                     packageValidForOwn.setText(context.getString(R.string.valid_till) + " " + DateUtils.getPackageClassDate(model.getExpiryDate()));
+
+                    if(model.getBalance()<Helper.getBaseCreditValue()){
+                        textViewBuyMoreCredits.setVisibility(View.VISIBLE);
+                    }else{
+                        textViewBuyMoreCredits.setVisibility(View.GONE);
+
+                    }
+                    textViewBuyMoreCredits.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            adapterCallbacks.onAdapterItemClick(MemberShipViewHolder.this, textViewBuyMoreCredits, model, position);
+                        }
+                    });
                     setPackageTags(model.getPackageId()
                     );
                 }
@@ -191,7 +208,8 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     layoutMainOfferedPackage.setVisibility(View.VISIBLE);
                     if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
                         txtPackageName.setText(model.getName());
-                        txtPackageOffredCredits.setText(numberConverter(model.getCredits()) + " " + context.getString(R.string.p5m_credits) + " " + context.getString(R.string.at_any_gym));
+                       String includesCredits =  String.format(context.getString(R.string.includes_credits),numberConverter(model.getCredits()));
+                        txtPackageOffredCredits.setText(includesCredits+ "" + context.getString(R.string.at_any_gym));
                         setTextValidityPeriod(model);
                         txtPriceAfterOffer.setText(LanguageUtils.numberConverter(model.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()).toUpperCase());
                         setPackageTags(model.getId());
@@ -201,7 +219,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     setMaxAvailableClasses(model.getCredits());
                     manageViews(classModel, model);
                     if (model.getPromoResponseDto() != null) {
-                        if (model.getPromoResponseDto().getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFCLASS))
+                        if (model.getPromoResponseDto().getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFCREDIT))
                             setClassPromo(model);
                         else if (model.getPromoResponseDto().getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFDAYS))
                             setClassPromo(model);
@@ -236,7 +254,12 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     txtPackageOffredClassesLimits.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            adapterCallbacks.onAdapterItemClick(MemberShipViewHolder.this,txtPackageOffredClassesLimits,data,position);
+                            if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL) &&
+                                    classModel != null && DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays) {
+
+                            } else
+                                adapterCallbacks.onAdapterItemClick(MemberShipViewHolder.this,txtPackageOffredClassesLimits,data,position);
+
                         }
                     });
 
@@ -441,7 +464,8 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
     private void setMaxAvailableClasses(int credits){
         if(credits>0){
-            String message = String.format(context.getString(R.string.book_class_limits),credits/AppConstants.maxCreditValue,credits/AppConstants.minCreditValue);
+
+            String message = String.format(context.getString(R.string.book_class_limits),credits<AppConstants.maxCreditValue?1:credits/AppConstants.maxCreditValue,credits/AppConstants.minCreditValue);
             txtPackageOffredClassesLimits.setText(message);
             txtPackageOffredClassesLimits.setVisibility(View.VISIBLE);
             txtPackageOffredClassesLimits.setPaintFlags(txtPackageOffredClassesLimits.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);

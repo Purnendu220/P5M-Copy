@@ -56,6 +56,7 @@ public class ClassModel implements java.io.Serializable {
     private boolean videoClass;
     private String platform;
     private String link;
+    private int credit;
 
     public boolean isExpired() {
         return isExpired;
@@ -380,5 +381,13 @@ public class ClassModel implements java.io.Serializable {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public int getCredit() {
+        return credit;
+    }
+
+    public void setCredit(int credit) {
+        this.credit = credit;
     }
 }

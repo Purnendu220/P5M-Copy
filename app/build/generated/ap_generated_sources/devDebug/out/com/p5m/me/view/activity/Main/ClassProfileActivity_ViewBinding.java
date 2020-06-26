@@ -21,9 +21,9 @@ import java.lang.Override;
 public class ClassProfileActivity_ViewBinding implements Unbinder {
   private ClassProfileActivity target;
 
-  private View view7f0a03d3;
+  private View view7f0a03d5;
 
-  private View view7f0a03d4;
+  private View view7f0a03d6;
 
   @UiThread
   public ClassProfileActivity_ViewBinding(ClassProfileActivity target) {
@@ -42,7 +42,7 @@ public class ClassProfileActivity_ViewBinding implements Unbinder {
     target.layoutButton = Utils.findRequiredView(source, R.id.layoutButton, "field 'layoutButton'");
     view = Utils.findRequiredView(source, R.id.textViewBook, "field 'textViewBook' and method 'textViewBook'");
     target.textViewBook = Utils.castView(view, R.id.textViewBook, "field 'textViewBook'", TextView.class);
-    view7f0a03d3 = view;
+    view7f0a03d5 = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -51,7 +51,7 @@ public class ClassProfileActivity_ViewBinding implements Unbinder {
     });
     view = Utils.findRequiredView(source, R.id.textViewBookWithFriend, "field 'textViewBookWithFriend' and method 'textViewBookWithFriend'");
     target.textViewBookWithFriend = Utils.castView(view, R.id.textViewBookWithFriend, "field 'textViewBookWithFriend'", TextView.class);
-    view7f0a03d4 = view;
+    view7f0a03d6 = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -85,9 +85,9 @@ public class ClassProfileActivity_ViewBinding implements Unbinder {
     target.textPurchase = null;
     target.imgCloseWarning = null;
 
-    view7f0a03d3.setOnClickListener(null);
-    view7f0a03d3 = null;
-    view7f0a03d4.setOnClickListener(null);
-    view7f0a03d4 = null;
+    view7f0a03d5.setOnClickListener(null);
+    view7f0a03d5 = null;
+    view7f0a03d6.setOnClickListener(null);
+    view7f0a03d6 = null;
   }
 }

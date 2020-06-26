@@ -402,7 +402,8 @@ public class AppConstants {
 
 
 
-        public static final String NUMBEROFCLASS = "NUMBEROFCLASS";
+        public static final String NUMBEROFCREDIT = "NUMBEROFCREDIT";
+
         public static final String PERCENTAGE = "PERCENTAGE";
         public static final String WAITLIST = "WAITLIST";
         public static final String APP_STORE_ID = "Store-Id";

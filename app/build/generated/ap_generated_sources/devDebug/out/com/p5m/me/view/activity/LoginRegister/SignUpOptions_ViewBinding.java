@@ -18,7 +18,7 @@ import java.lang.Override;
 public class SignUpOptions_ViewBinding implements Unbinder {
   private SignUpOptions target;
 
-  private View view7f0a0425;
+  private View view7f0a0429;
 
   private View view7f0a0080;
 
@@ -37,7 +37,7 @@ public class SignUpOptions_ViewBinding implements Unbinder {
     target.layoutProgress = Utils.findRequiredView(source, R.id.layoutProgress, "field 'layoutProgress'");
     view = Utils.findRequiredView(source, R.id.textViewLogin, "field 'textViewLogin' and method 'textViewLogin'");
     target.textViewLogin = Utils.castView(view, R.id.textViewLogin, "field 'textViewLogin'", TextView.class);
-    view7f0a0425 = view;
+    view7f0a0429 = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -94,8 +94,8 @@ public class SignUpOptions_ViewBinding implements Unbinder {
     target.buttonFemale = null;
     target.buttonNext = null;
 
-    view7f0a0425.setOnClickListener(null);
-    view7f0a0425 = null;
+    view7f0a0429.setOnClickListener(null);
+    view7f0a0429 = null;
     view7f0a0080.setOnClickListener(null);
     view7f0a0080 = null;
   }

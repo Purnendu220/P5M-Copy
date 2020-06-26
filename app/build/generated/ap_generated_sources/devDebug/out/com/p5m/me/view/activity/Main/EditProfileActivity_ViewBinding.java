@@ -21,7 +21,7 @@ public class EditProfileActivity_ViewBinding implements Unbinder {
 
   private View view7f0a017f;
 
-  private View view7f0a0192;
+  private View view7f0a0193;
 
   @UiThread
   public EditProfileActivity_ViewBinding(EditProfileActivity target) {
@@ -60,7 +60,7 @@ public class EditProfileActivity_ViewBinding implements Unbinder {
     target.progressBar = Utils.findRequiredView(source, R.id.progressBar, "field 'progressBar'");
     view = Utils.findRequiredView(source, R.id.imageViewDone, "field 'imageViewDone' and method 'imageViewDone'");
     target.imageViewDone = Utils.castView(view, R.id.imageViewDone, "field 'imageViewDone'", ImageView.class);
-    view7f0a0192 = view;
+    view7f0a0193 = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -99,7 +99,7 @@ public class EditProfileActivity_ViewBinding implements Unbinder {
 
     view7f0a017f.setOnClickListener(null);
     view7f0a017f = null;
-    view7f0a0192.setOnClickListener(null);
-    view7f0a0192 = null;
+    view7f0a0193.setOnClickListener(null);
+    view7f0a0193 = null;
   }
 }

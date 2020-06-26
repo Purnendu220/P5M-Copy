@@ -19,7 +19,7 @@ public class InfoScreen_ViewBinding implements Unbinder {
 
   private View view7f0a0087;
 
-  private View view7f0a0425;
+  private View view7f0a0429;
 
   @UiThread
   public InfoScreen_ViewBinding(InfoScreen target) {
@@ -43,7 +43,7 @@ public class InfoScreen_ViewBinding implements Unbinder {
       }
     });
     view = Utils.findRequiredView(source, R.id.textViewLogin, "method 'login'");
-    view7f0a0425 = view;
+    view7f0a0429 = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -65,7 +65,7 @@ public class InfoScreen_ViewBinding implements Unbinder {
 
     view7f0a0087.setOnClickListener(null);
     view7f0a0087 = null;
-    view7f0a0425.setOnClickListener(null);
-    view7f0a0425 = null;
+    view7f0a0429.setOnClickListener(null);
+    view7f0a0429 = null;
   }
 }

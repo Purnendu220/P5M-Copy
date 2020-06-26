@@ -221,7 +221,7 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                 textViewExtendPackage.setVisibility(View.GONE);
 
                 /************************NO PACKAGE******************************/
-                textViewPackage.setText(Html.fromHtml("<b>" + numberConverter(0) + "</b> " + context.getString(R.string.classes).toLowerCase()));
+                textViewPackage.setText(Html.fromHtml("<b>" + numberConverter(0) + "</b> " + context.getString(R.string.p5m_credits).toLowerCase()));
                 textViewRecharge.setVisibility(View.VISIBLE);
                 textViewMore.setVisibility(View.GONE);
                 textViewValidity.setVisibility(View.GONE);

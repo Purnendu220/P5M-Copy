@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical|center"
             android:orientation="vertical"
-            android:background="@color/white"
             android:layout_marginLeft="@dimen/margin_15"
             android:layout_marginRight="@dimen/margin_15"
             android:layout_marginTop="@dimen/margin_10"
@@ -71,6 +70,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_10"
                 android:gravity="left"
+                android:textColorHint="@color/hintColor"
+                app:boxStrokeColor="@color/hintColor"
+
                 app:errorEnabled="true">
 
                 <EditText
@@ -84,6 +86,7 @@
                     android:maxLines="1"
                     android:textSize="@dimen/text_medium"
                     android:maxLength="70"
+                    android:textColor="@color/black"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -96,6 +99,10 @@
                 android:gravity="left"
                 app:errorEnabled="true"
                 android:layout_marginTop="@dimen/margin_5"
+                android:textColorHint="@color/hintColor"
+                app:boxStrokeColor="@color/hintColor"
+
+
                 >
 
                 <EditText
@@ -109,6 +116,8 @@
                     android:maxLines="1"
                     android:textSize="@dimen/text_medium"
                     android:maxLength="70"
+                    android:textColor="@color/black"
+
 
                     />
 
