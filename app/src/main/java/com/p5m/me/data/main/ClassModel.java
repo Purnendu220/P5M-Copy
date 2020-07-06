@@ -58,6 +58,10 @@ public class ClassModel implements java.io.Serializable {
     private String link;
     private int credit;
 
+    public ClassModel() {
+
+    }
+
     public boolean isExpired() {
         return isExpired;
     }

@@ -224,7 +224,7 @@
                         android:gravity="left"
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
                         android:lineSpacingExtra="@dimen/line_spacing_extra"
-                        android:text="@string/recharge"
+                        android:text="@string/add_credits"
                         android:textColor="@color/theme_accent_text"
                         android:textSize="@dimen/text_medium"
                         android:textStyle="bold" />

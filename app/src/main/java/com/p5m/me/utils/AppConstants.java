@@ -225,6 +225,7 @@ public class AppConstants {
 
 
         public static final String REFERENCE_ID = "Reference_Id";
+        public static final String USER_HAVE_PACKAGE = "User_Have_Package";
         public static final String PAYMENT_OPTION_ID = "payment_option_id";
         public static final String USER_ID ="user_id" ;
     }

@@ -126,6 +126,9 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
     @BindView(R.id.textViewOnlineInfo)
     public TextView textViewOnlineInfo;
 
+    @BindView(R.id.textViewOnlineInfoTitle)
+    public TextView textViewOnlineInfoTitle;
+
     @BindView(R.id.relativeLayoutFitnessLevel)
     public RelativeLayout relativeLayoutFitnessLevel;
 
@@ -192,7 +195,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
                 latlng = new LatLng(model.getGymBranchDetail().getLatitude(), model.getGymBranchDetail().getLongitude());
             }
             if (Helper.isSpecialClass(model)) {
-                textViewSpecialClass.setVisibility(View.VISIBLE);
+                textViewSpecialClass.setVisibility(View.GONE);
                 textViewSpecialClass.setText(Helper.getSpecialClassText(model));
 
             } else {
@@ -219,12 +222,17 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
                 RemoteConfigDataModel p = g.fromJson(HOW_IT_WORKS_VALUE, new TypeToken<RemoteConfigDataModel>() {
                 }.getType());
                 if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en") && !p.getEn().isEmpty()) {
-
+                    textViewOnlineInfoTitle.setVisibility(View.VISIBLE);
                     layoutOnlineClassProcess.setVisibility(View.VISIBLE);
                     textViewOnlineInfo.setText(p.getEn());
+                    textViewOnlineInfoTitle.setText(p.getTitle_en());
                 }else {
+                    textViewOnlineInfoTitle.setVisibility(View.VISIBLE);
+
                     layoutOnlineClassProcess.setVisibility(View.VISIBLE);
                     textViewOnlineInfo.setText(p.getAr());
+                    textViewOnlineInfoTitle.setText(p.getTitle_ar());
+
                 }
             } else {
                 layoutOnlineClassProcess.setVisibility(View.GONE);

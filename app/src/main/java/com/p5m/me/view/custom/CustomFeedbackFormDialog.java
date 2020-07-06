@@ -318,7 +318,7 @@ public class CustomFeedbackFormDialog extends Dialog implements OnClickListener,
                 checkFor5MinDifference(model))) {
             CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(mContext, "", mContext.getString(R.string.successfull_refund_message), 1, mContext.getString(R.string.not_now), mContext.getString(R.string.yes), CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_SUCCESSFULL_UNJOIN, null, false, CustomFeedbackFormDialog.this);
             try {
-                mCustomAlertDialog.show();
+               // mCustomAlertDialog.show();
             } catch (Exception e) {
                 e.printStackTrace();
             }

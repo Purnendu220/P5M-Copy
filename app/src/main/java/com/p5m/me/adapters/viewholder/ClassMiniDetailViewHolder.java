@@ -125,7 +125,7 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
             layoutGender.setVisibility(View.GONE);
             buttonClassRating.setVisibility(View.GONE);
             if (Helper.isSpecialClass(model)) {
-                layoutSpecial.setVisibility(View.VISIBLE);
+                layoutSpecial.setVisibility(View.GONE);
                 textViewSpecialClass.setText(Helper.getSpecialClassText(model));
             } else {
                 layoutSpecial.setVisibility(View.GONE);
@@ -146,7 +146,7 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 }
                 // Handle Cancel Booking
                 buttonJoin.setVisibility(View.VISIBLE);
-                textViewCreditPrice.setVisibility(View.GONE);
+                textViewCreditPrice.setVisibility(View.VISIBLE);
 
 
                 imageViewOptions1.setVisibility(View.GONE);

@@ -117,16 +117,13 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
             }else{
                 textViewChannelName.setVisibility(View.GONE);
             }
+            textViewCreditPrice.setVisibility(View.GONE);
+           // textViewCreditPrice.setText(Helper.getClassCreditValue(context,model));
 
-            textViewCreditPrice.setText(Helper.getClassCreditValue(context,model));
-
-            if (Helper.isSpecialClass(model)) {
+          //  if (Helper.isSpecialClass(model)) {
                 textViewSpecialClass.setVisibility(View.VISIBLE);
-                textViewSpecialClass.setText(Helper.getSpecialClassText(model));
+                textViewSpecialClass.setText(Helper.getClassCreditValue(context,model));
 
-            } else {
-                textViewSpecialClass.setVisibility(View.GONE);
-            }
 
             if (model.getClassMedia() != null) {
                 ImageUtils.setImage(context,

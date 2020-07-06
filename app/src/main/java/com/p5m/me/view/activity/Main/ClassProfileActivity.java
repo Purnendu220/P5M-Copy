@@ -398,7 +398,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 int creditRequiredForClass =  Helper.requiredCreditForClass(TempStorage.getUser(),classModel,1);
                 UserPackageInfo userPackageInfo = new UserPackageInfo(TempStorage.getUser());
                 if(userPackageInfo.haveGeneralPackage&&creditRequiredForClass>userPackageInfo.userPackageGeneral.getBalance()){
-                    showAlertForAddCredit(mContext.getString(R.string.includes_credits),mContext.getString(R.string.add_credits),1);
+                    showAlertForAddCredit(mContext.getString(R.string.insufficient_credits),mContext.getString(R.string.add_credits),1);
                     textViewBook.setEnabled(true);
                     textViewBook.setText(RemoteConfigConst.BOOK_IN_CLASS_VALUE);
                     return;

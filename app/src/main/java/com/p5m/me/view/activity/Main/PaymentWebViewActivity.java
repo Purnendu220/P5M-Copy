@@ -25,10 +25,12 @@ import com.p5m.me.R;
 import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.analytics.MixPanel;
+import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.PaymentUrl;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.restapi.NetworkCommunicator;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
@@ -40,6 +42,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.p5m.me.utils.AppConstants.DataKey.REFERENCE_ID;
+import static com.p5m.me.utils.AppConstants.DataKey.USER_HAVE_PACKAGE;
 
 public class PaymentWebViewActivity extends BaseActivity implements NetworkCommunicator.RequestListener {
 
@@ -72,6 +75,7 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
     private CountDownTimer mTimmer;
     private String refId;
     private long timeFortransaction = 600000;
+    private boolean userHavePackage = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,6 +145,10 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
         webView.loadUrl(paymentUrl.getPaymentURL());
         webView.setWebViewClient(new MyWebViewClient());
         refId = paymentUrl.getReferenceID();
+        UserPackageInfo userPackageInfo = new UserPackageInfo(TempStorage.getUser());
+        if(userPackageInfo.haveGeneralPackage&&userPackageInfo.userPackageGeneral!=null){
+            userHavePackage = true;
+        }
 
     }
 
@@ -159,6 +167,7 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
         overridePendingTransition(0, 0);
         Intent returnIntent = getIntent();
         returnIntent.putExtra(REFERENCE_ID, refId);
+        returnIntent.putExtra(USER_HAVE_PACKAGE,userHavePackage);
         setResult(RESULT_OK, returnIntent);
         finish();
         overridePendingTransition(0, 0);
@@ -171,7 +180,7 @@ public class PaymentWebViewActivity extends BaseActivity implements NetworkCommu
         overridePendingTransition(0, 0);
         Intent returnIntent = getIntent();
         returnIntent.putExtra(REFERENCE_ID, refId);
-        setResult(RESULT_OK, returnIntent);
+        setResult(RESULT_CANCELED, returnIntent);
         finish();
         overridePendingTransition(0, 0);
 

@@ -6,7 +6,7 @@ public class PaymentUrl implements java.io.Serializable {
     private String tapPayURL;
     private String paymentUrl;
     private String responseMessage;
-    private String referenceID;
+    private String referenceId;
     private String responseCode;
     private boolean isCompleted;
 
@@ -35,11 +35,11 @@ public class PaymentUrl implements java.io.Serializable {
     }
 
     public String getReferenceID() {
-        return this.referenceID;
+        return this.referenceId;
     }
 
     public void setReferenceID(String referenceID) {
-        this.referenceID = referenceID;
+        this.referenceId = referenceID;
     }
 
     public String getResponseCode() {

@@ -71,6 +71,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.agora.rtc.internal.LastmileProbeConfig;
+
 /**
  * Created by Varun John on 4/20/2018.
  */
@@ -622,11 +624,11 @@ public class Helper {
         return model != null && model.getPriceModel() != null && model.getPriceModel().equals("FOC");
     }
     public static int getClassPrice(ClassModel model) {
-       return model.getCredit();
+       return model!=null?model.getCredit():0;
     }
 
     public static String getClassCreditValue(Context context,ClassModel model){
-        if(model.getCredit()>0){
+        if(model!=null&&model.getCredit()>0){
             return String.format(context.getString(R.string.p5m_credits_value),model.getCredit()+"");
 
         }
@@ -908,7 +910,7 @@ public static PriceModelMaster  getPriceModelForCredit(List<PriceModelMaster> ma
         if(userPackageInfo.haveGeneralPackage){
             int userCredit = userPackageInfo.userPackageGeneral.getBalance();
             if(userCredit<classModel.getCredit()*userCount){
-                return classModel.getCredit()*userCount-userCredit;
+                return classModel.getCredit()*userCount;
             }
             else{
                 return 0;
@@ -945,5 +947,20 @@ public static PriceModelMaster  getPriceModelForCredit(List<PriceModelMaster> ma
          }
         }
         return false;
+    }
+
+    public static LastmileProbeConfig getLastMileProbeConfigTest(){
+        // Configure a LastmileProbeConfig instance.
+        LastmileProbeConfig config = new LastmileProbeConfig(){};
+// Probe the uplink network quality.
+        config.probeUplink =  true;
+// Probe the downlink network quality.
+        config.probeDownlink = true;
+// The expected uplink bitrate (bps). The value range is [100000, 5000000].
+        config.expectedUplinkBitrate = 2500000;
+// The expected downlink bitrate (bps). The value range is [100000, 5000000].
+        config.expectedDownlinkBitrate = 2500000;
+// Start the last-mile network test before joining the channel.
+      return config;
     }
 }
