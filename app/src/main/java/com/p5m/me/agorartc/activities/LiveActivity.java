@@ -217,6 +217,10 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
         rtcEngine().setDefaultAudioRoutetoSpeakerphone(true);
         rtcEngine().enableDualStreamMode(true);
         rtcEngine().adjustPlaybackSignalVolume(400);
+        rtcEngine().setAudioProfile(4, 3);
+
+
+
 
 
         rtcEngine().setLocalPublishFallbackOption(Constants.STREAM_FALLBACK_OPTION_VIDEO_STREAM_LOW);
@@ -350,6 +354,7 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
             SurfaceView surface = prepareRtcVideo(uid, false);
             switchToLargeView(new VideoStatusData(uid,surface, VideoStatusData.DEFAULT_STATUS, VideoStatusData.DEFAULT_VOLUME));
             isTrainerJoined = true;
+            rtcEngine().setRemoteVideoStreamType(uid,0);
 
         }else{
             SurfaceView surface = prepareRtcVideo(uid, false,VideoCanvas.RENDER_MODE_HIDDEN);
@@ -360,6 +365,8 @@ public class LiveActivity extends RtcBaseActivity implements NetworkCommunicator
                 bindToSmallVideoView(0);
 
             }
+            rtcEngine().setRemoteVideoStreamType(uid,1);
+
         }
         EventBroadcastHelper.onUserCountChange(mUidsList.size());
     }

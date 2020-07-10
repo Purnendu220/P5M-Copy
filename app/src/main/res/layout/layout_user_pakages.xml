@@ -38,7 +38,7 @@
           android:id="@+id/packageUsage"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/classess_remaining"
+          android:text="@string/credits_remaining"
           android:textSize="@dimen/text_medium"
           android:textColor="@color/theme_dark_text"
           android:layout_marginTop="@dimen/margin_10"
@@ -75,7 +75,21 @@
           android:textStyle="bold" />
       </RelativeLayout>
 
-
+      <TextView
+          android:id="@+id/textViewBuyMoreCredits"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_toRightOf="@id/packageValidForOwn"
+          android:fontFamily="sans-serif"
+          android:letterSpacing="@dimen/text_medium_letter_spacing"
+          android:lineSpacingExtra="@dimen/line_spacing_extra"
+          android:text="@string/add_credits"
+          android:layout_marginTop="@dimen/margin_10"
+          android:textColor="@color/theme_accent_text"
+          android:textSize="@dimen/text_medium"
+          android:textStyle="bold"
+          android:visibility="gone"
+          />
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

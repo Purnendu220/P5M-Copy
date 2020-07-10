@@ -87,6 +87,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     private double finalCost;
     private Integer paymentOptionId;
     private boolean openDialog = true;
+    private boolean userHavePackage;
 
     /*
             if user is purchasing a package
@@ -583,8 +584,8 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 if (promoCode != null) {
                     if (promoCode.getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFDAYS)) {
                         setNumberOfDaysPromo();
-                    } else if (promoCode.getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFCLASS)) {
-                        setNumberOfClassPromo();
+                    } else if (promoCode.getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFCREDIT)) {
+                        setNumberOfCreditsPromo();
                     } else {
                         textViewPromoCodeText.setText(getResources().getString(R.string.discount_promo_applied));
                         textViewPackageExtendNoOfDays.setVisibility(View.GONE);
@@ -649,16 +650,16 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
     }
 
-    private void setNumberOfClassPromo() {
+    private void setNumberOfCreditsPromo() {
         textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
         textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
         finalCost = aPackage.getCost();
-        if (promoCode.getExtraNumberOfClass() != 0) {
+        if (promoCode.getExtraCredits() != 0) {
             textViewPackageClasses.setVisibility(View.VISIBLE);
             layoutPromoCode.setVisibility(View.VISIBLE);
-            int totalClasses = aPackage.getNoOfClass() + promoCode.getExtraNumberOfClass();
+            int totalCredits = aPackage.getCredits() + promoCode.getExtraCredits();
 //            textViewPackageClasses.setText(numberConverter(totalClasses) + " " + AppConstants.pluralES(getString(R.string.one_class), aPackage.getNoOfClass()) + " " + context.getString(R.string.at_any_gym));
-            textViewPackageClasses.setText(Html.fromHtml("<font color='#42A1ED'>" + numberConverter(totalClasses) + " " + AppConstants.pluralES(getString(R.string.one_class), aPackage.getNoOfClass()) + "</font>" + " " + context.getString(R.string.at_any_gym)));
+            textViewPackageClasses.setText(Html.fromHtml("<font color='#42A1ED'>" + numberConverter(totalCredits) + " " + getString(R.string.p5m_credits)  + "</font>" + " " + context.getString(R.string.at_any_gym)));
             textViewPromoCodePrice.setVisibility(View.GONE);
             textViewPromoCodeText.setText(getResources().getString(R.string.class_offer_promo));
             buttonPromoCode.setText(context.getString(R.string.remove_promo_code));
@@ -961,6 +962,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         if (requestCode == AppConstants.ResultCode.PAYMENT_SUCCESS && resultCode == RESULT_OK) {
 
             refId = data.getStringExtra(AppConstants.DataKey.REFERENCE_ID);
+            userHavePackage = data.getBooleanExtra(AppConstants.DataKey.USER_HAVE_PACKAGE,false);
             openDialog = true;
             if (refId != null && refId.length() > 0) {
                 redirectOnResult1();
@@ -978,6 +980,9 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 handlePayment();
             }
         }
+        if(resultCode == RESULT_CANCELED){
+            finish();
+        }
     }
 
     private void redirectOnResult1() {
@@ -988,22 +993,22 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
             case PACKAGE:
 
                 PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,
-                        refId, aPackage, null, checkoutFor, null, null, mNumberOfPackagesToBuy, couponCode);
+                        refId, aPackage, null, checkoutFor, null, null, mNumberOfPackagesToBuy, couponCode,userHavePackage);
 
                 break;
             case CLASS_PURCHASE_WITH_PACKAGE:
                 PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,
-                        refId, aPackage, classModel, checkoutFor, null, null, mNumberOfPackagesToBuy, couponCode);
+                        refId, aPackage, classModel, checkoutFor, null, null, mNumberOfPackagesToBuy, couponCode,userHavePackage);
 
                 break;
             case SPECIAL_CLASS:
                 PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,
-                        refId, null, classModel, checkoutFor, null, selectedPacakageFromList, mNumberOfPackagesToBuy, couponCode);
+                        refId, null, classModel, checkoutFor, null, selectedPacakageFromList, mNumberOfPackagesToBuy, couponCode,userHavePackage);
 
                 break;
             case EXTENSION:
                 PaymentConfirmationActivity.openActivity(context, navigatinFrom,
-                        refId, null, null, checkoutFor, userPackage, selectedPacakageFromList, mNumberOfPackagesToBuy, couponCode);
+                        refId, null, null, checkoutFor, userPackage, selectedPacakageFromList, mNumberOfPackagesToBuy, couponCode,userHavePackage);
 
                 break;
         }

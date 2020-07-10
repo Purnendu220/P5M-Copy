@@ -22,8 +22,19 @@ public class PaymentConfirmationResponse {
         private String expiryDate;
         private int numberOfClasses;
         private ClassDetailDtoBean classDetailDto;
+        private int totalCredit;
+        private int paymentTotalCredit;
+        private String paymentExpiryDate;
 
-        public String getReferenceId() {
+    public int getTotalCredit() {
+        return totalCredit;
+    }
+
+    public void setTotalCredit(int totalCredit) {
+        this.totalCredit = totalCredit;
+    }
+
+    public String getReferenceId() {
             return referenceId;
         }
 
@@ -87,7 +98,23 @@ public class PaymentConfirmationResponse {
             this.classDetailDto = classDetailDto;
         }
 
-        public static class ClassDetailDtoBean {
+    public int getPaymentTotalCredit() {
+        return paymentTotalCredit;
+    }
+
+    public void setPaymentTotalCredit(int paymentTotalCredit) {
+        this.paymentTotalCredit = paymentTotalCredit;
+    }
+
+    public String getPaymentExpiryDate() {
+        return paymentExpiryDate;
+    }
+
+    public void setPaymentExpiryDate(String paymentExpiryDate) {
+        this.paymentExpiryDate = paymentExpiryDate;
+    }
+
+    public static class ClassDetailDtoBean {
             /**
              * classSessionId : 45903
              * classDate : 2019-01-14
@@ -141,6 +168,9 @@ public class PaymentConfirmationResponse {
             public void setTitle(String title) {
                 this.title = title;
             }
+
+
+
 
     }
 }

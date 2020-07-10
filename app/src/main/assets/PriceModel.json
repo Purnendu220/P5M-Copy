@@ -26,19 +26,5 @@
     "arName": "فعاليات وورش",
     "value": "WORKSHOP",
     "imageUrl": null
-  },
-  {
-    "order": 2,
-    "name": "Physical",
-    "arName": "Physical",
-    "value": "WORKSHOP",
-    "imageUrl": null
-  },
-  {
-    "order": 1,
-    "name": "Virtual",
-    "arName": "Virtual",
-    "value": "WORKSHOP",
-    "imageUrl": null
   }
 ]

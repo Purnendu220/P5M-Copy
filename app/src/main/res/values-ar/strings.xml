@@ -209,7 +209,6 @@
 
     <string name="of"><b>من</b></string>
 
-    <string name="classess_remaining">%d من %d كلاسات متبقية</string>
 
     <string name="valid_till">صالحة حتى</string>
 
@@ -306,9 +305,7 @@
 
     <string name="registration_done">اكتمل التسجيل بنجاح!</string>
 
-    <string name="join_fail_date_expire">ينتهي اشتراكك الحالي قبل موعد هذا الكلاس. هل ترغب بالاستمرار عن طريق شراء زيارة واحدة؟</string>
 
-    <string name="join_fail_limit_exhaust">لقد وصلت لحد الزيارات الخاص بهذا النادي. هل ترغب بالاستمرار عن طريق شراء زيارة واحدة من دون تغيير اشتراكك الحالي؟</string>
 
     <string name="join_share_limit_exhaust">لقد وصلت للحد المسموح به للمشاركة. هل ترغب في المتابعة وشراء زيارة واحدة، دون تغيير خطتك الحالية؟</string>
 
@@ -662,9 +659,6 @@
 
     <string name="sure_unjoin_friend">هل انت متأكد من الغاء حجز صديقك؟</string>
 
-    <string name="join_fail_limit_exhaust_booking_with_friend">لقد وصلت لحد الزيارات المسموح لهذا النادي. هل ترغب بالاستمرار عن طريق شراء زيارة واحدة لصديقك؟</string>
-
-    <string name="join_fail_limit_exhaust_booking_with_friend_two_ready">لقد وصلت لحد الزيارات المسموح لهذا النادي. هل ترغب بالاستمرار عن طريق شراء %1d زيارة واحدة لنفسك ولصديقك؟</string>
 
     <string name="cancel_class_self">الغاء حجزي</string>
 
@@ -881,7 +875,6 @@
     <string name="wallet_alert_title">محفظة P5M </string>
     <string name="wallet_text">رصيدك</string>
     <string name="time_offer_promo">تمت إضافة وقتك الإضافي</string>
-    <string name="class_offer_promo">تم إضافة كلاسك الإضافي</string>
     <string name="special_offer"> عرض خاص:</string>
     <string name="discount_promo_applied">تم الخصم</string>
     <string name="added_to_waitlist">لقد تم إضافتك إلى قائمة الانتظار. سنقوم بإخبارك عندما يتوفر أي مقعد.</string>
@@ -1059,8 +1052,28 @@
     <string name="add_money">Add Money</string>
     <string name="proceed_add_money">Proceed add money</string>
     <string name="on_p5m">On P5M</string>
-    <string name="free_class">Free</string>
 
     <!-- Legal digits for channel names -->
+
+
+
+
+    <string name="includes_credits">%s  نقط لحجز</string>
+    <string name="credit_value">كم عدد النقاط التي أحتاجها للانضمام إلى كلاس؟</string>
+    <string name="credits_remaining">لديك d/%d% نقطة متبقية</string>
+    <string name="buy_more_credits"><u>اشتري المزيد من النقاط </u></string>
+    <string name="join_fail_limit_exhaust">لقد تجاوزت عدد المرات التي يمكنك زيارة هذه النادي مع خطتك. يمكنك إضافة المزيد من النقاط لحسابك للانضمام إلى هذا الكلاس.</string>
+    <string name="join_fail_limit_exhaust_booking_with_friend">You  have exceeded the number of times you can visit this gym with your plan. You can add more credits to your account in order to join this class, for your guest?</string>
+    <string name="join_fail_limit_exhaust_booking_with_friend_two_ready">You  have exceeded the number of times you can visit this gym with your plan. You can add more credits to your account in order to join this class, for yourself and your guest?</string>
+    <string name="add_credits">أضف نقاط</string>
+    <string name="add_more_credits"><u>أضف المزيد من النقاط </u></string>
+    <string name="join_fail_date_expire">خطتك تنتهي قبل تاريخ هذا الكلاس. هل تريد إضافة نقاط إضافية إلى حسابك من أجل تأمين مكان في هذا الكلاس؟ </string>
+    <string name="insufficient_credits">ليس لديك ما يكفي من النقاط للانضمام إلى هذا الكلاس. هل تريدفي إضافة المزيد من النقاط للانضمام إلى هذا الكلاس؟</string>
+    <string name="class_offer_promo">Free credit offer applied</string>
+    <string name="book_class_limits">  %s - %s كلاس لحجز</string>
+    <string name="free_class">مجانا</string>
+    <string name="class_credits"> %s نقاط</string>
+    <string name="updated_credit_balance" tools:ignore="ExtraTranslation">تحديث رصيدك </string>
+    <string name="credit_balance" tools:ignore="ExtraTranslation">الرصيد الدائن</string>
 
 </resources>

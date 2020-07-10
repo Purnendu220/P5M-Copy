@@ -33,6 +33,7 @@ import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
+import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
@@ -100,6 +101,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
     private static User.WalletDto mWalletCredit;
     private boolean isTabSelected=false;
     private boolean showChoosePackageOption=true;
+    private boolean isBuyMoreCredits =false;
 
 
     public MembershipFragment() {
@@ -306,8 +308,17 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         //onRefresh();
     }
 
+    public void fragmentPaused(){
+        if(isBuyMoreCredits){
+            LogUtils.networkError("************"+isBuyMoreCredits+" ********* fragmentPaused");
+            memberShipAdapter.clearAll();
+            checkPackages();
+        }
 
-    private void checkPackages() {
+    }
+
+    private void checkPackages(boolean ... buyMoreCredits) {
+        isBuyMoreCredits = false;
         userPackageInfo = new UserPackageInfo(user);
 
         swipeRefreshLayout.setRefreshing(false);
@@ -319,11 +330,15 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
             if (userPackageInfo.havePackages) {
                 if (userPackageInfo.haveGeneralPackage && !user.isBuyMembership()) {
                     // User have General package and may be also have dropins..
+                    if(classModel==null)
                     memberShipAdapter.addOwnedPackages(userPackageInfo.userPackageGeneral);
+
                     memberShipAdapter.setHeaderText(context.getString(R.string.membership_only_drop_in_package_heading_1),
                             context.getString(R.string.membership_only_drop_in_package_heading_2));
                 } else if (userPackageInfo.haveGeneralPackage && user.isBuyMembership()) {
-                    memberShipAdapter.addOwnedPackages(userPackageInfo.userPackageGeneral);
+                    if(classModel==null)
+                        memberShipAdapter.addOwnedPackages(userPackageInfo.userPackageGeneral);
+
                     memberShipAdapter.setHeaderText(context.getString(R.string.membership_no_package_heading_1),
                             context.getString(R.string.membership_only_drop_in_package_heading_2));
                 } else {
@@ -359,26 +374,14 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
             memberShipAdapter.setClassModel(null);
 
             if (userPackageInfo.havePackages) {
-
-                if (!userPackageInfo.haveGeneralPackage) {
-                    // User don't have General package..
-                    // get general and show owned packages
-                    swipeRefreshLayout.setRefreshing(true);
-                    memberShipAdapter.setHeaderText(context.getString(R.string.membership_drop_in_package_heading_1),
-                            context.getString(R.string.membership_drop_in_package_heading_2));
-
-                } else {
-                    // User only have drop in packages..
-                    // only Show owned packages..
+                if(userPackageInfo.haveGeneralPackage){
+                    memberShipAdapter.clearAllOwnedPackages();
                     memberShipAdapter.addOwnedPackages(userPackageInfo.userPackageGeneral);
-                    memberShipAdapter.setHeaderText(context.getString(R.string.membership_general_package_heading_1), context.getString(R.string.membership_general_package_heading_2));
-                    memberShipAdapter.notifyDataSetChanges();
+
                 }
             }
             if (user.isBuyMembership()) {
                 imageViewInfo.setVisibility(View.VISIBLE);
-
-
                 swipeRefreshLayout.setRefreshing(true);
                 networkCommunicator.getPackages(user.getId(), this, false);
                 if (userPackageInfo.haveDropInPackage || userPackageInfo.haveGeneralPackage) {
@@ -388,9 +391,15 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                     memberShipAdapter.setHeaderText(context.getString(R.string.membership_drop_in_package_heading_1),
                             context.getString(R.string.membership_general_package_heading_1));
                 }
+                textGymVisitLimits.setVisibility(View.VISIBLE);
 
             } else {
-                textGymVisitLimits.setVisibility(View.GONE);
+                textGymVisitLimits.setVisibility(View.VISIBLE);
+            }
+            if(buyMoreCredits!=null&&buyMoreCredits.length>0&&buyMoreCredits[0]){
+                swipeRefreshLayout.setRefreshing(true);
+                networkCommunicator.getPackages(user.getId(), this, false);
+                isBuyMoreCredits = buyMoreCredits[0];
             }
             memberShipAdapter.notifyDataSetChanges();
 
@@ -495,6 +504,9 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
                 }
                 break;
+            case R.id.textViewBuyMoreCredits:
+                checkPackages(true);
+                break;
 
         }
         }
@@ -522,32 +534,40 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                         List<Package> packages = new ArrayList<>(packagesTemp.size());
 
                         for (Package aPackage : packagesTemp) {
-                            if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
-                                if (user.isBuyMembership()) {
+                            if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)&&!Helper.isPlanExpiring(classModel,aPackage)) {
+                                if (user.isBuyMembership()||classModel!=null||isBuyMoreCredits) {
+                                    if(classModel==null||(classModel!=null&& Helper.requiredCreditForClass(user,classModel,mFriendsData==null?1:2)<=aPackage.getCredits()))
                                     packages.add(aPackage);
                                 }
-                            } else if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
-                                aPackage.setGymName(classModel.getGymBranchDetail().getGymName());
-                                if(!showChoosePackageOption){
-                                    packages.add(aPackage);
-                                }
-                                mAvailableDropInPackage = aPackage;
                             }
                         }
                         if (mFriendsData != null) {
                             List<Package> packagesWithVisitLimit = new ArrayList<>();
                             for (Package aPackage : packages) {
                                 aPackage.setBookingWithFriend(true);
-                                if (aPackage.getGymVisitLimit() != 1) {
+                                if(classModel!=null&&classModel.getPriceModel().equalsIgnoreCase(AppConstants.PriceModels.CHARGABLE)){
+                                    if (aPackage.getGymVisitLimit() != 1) {
+                                        packagesWithVisitLimit.add(aPackage);
+                                    }
+                                }else{
                                     packagesWithVisitLimit.add(aPackage);
+
                                 }
 
+
+
+                            }
+                            if(packagesWithVisitLimit!=null&&packagesWithVisitLimit.size()>0){
+                                memberShipAdapter.clearAllOwnedPackages();
                             }
                             memberShipAdapter.addAllOfferedPackages(packagesWithVisitLimit);
 
 
                         }
                         else {
+                            if(packages!=null&&packages.size()>0){
+                                memberShipAdapter.clearAllOwnedPackages();
+                            }
                             memberShipAdapter.addAllOfferedPackages(packages);
 
                         }

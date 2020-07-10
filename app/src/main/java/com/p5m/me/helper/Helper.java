@@ -35,19 +35,23 @@ import com.p5m.me.agorartc.stats.VideoStatusData;
 import com.p5m.me.data.BookButtonModel;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.RemoteConfigDataModel;
+import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.GymBranchDetail;
 import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.data.main.MediaModel;
+import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.PriceModelMaster;
 import com.p5m.me.data.main.TrainerDetailModel;
 import com.p5m.me.data.main.TrainerModel;
+import com.p5m.me.data.main.User;
 import com.p5m.me.fxn.utility.Constants;
 import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.remote_config.RemoteConfigSetUp;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.KeyboardUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
@@ -66,6 +70,8 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import io.agora.rtc.internal.LastmileProbeConfig;
 
 /**
  * Created by Varun John on 4/20/2018.
@@ -571,6 +577,40 @@ public class Helper {
         return json;
     }
 
+    public static boolean isPlanExpiring(ClassModel classModel, Package model){
+       int numberOfDays;
+        if (classModel != null) {
+            numberOfDays = model.getDuration();
+            switch (model.getValidityPeriod()) {
+                case "DAYS":
+                    numberOfDays *= 1;
+                    break;
+                case "WEEKS":
+                    numberOfDays *= 7;
+                    break;
+                case "MONTHS":
+                    numberOfDays *= 30;
+                    break;
+                case "YEARS":
+                    numberOfDays *= 365;
+                    break;
+            }
+
+            if (numberOfDays > 0 && DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays) {
+                return true;
+
+
+            } else {
+                return false;
+
+
+            }
+        } else {
+      return false;
+        }
+
+    }
+
 
     public static boolean isSpecialClass(ClassModel model) {
         return model != null && model.getPriceModel() != null
@@ -583,50 +623,18 @@ public class Helper {
     public static boolean isFreeClass(ClassModel model) {
         return model != null && model.getPriceModel() != null && model.getPriceModel().equals("FOC");
     }
-    public static float getClassPrice(ClassModel model) {
-        if(model!=null&&isSpecialClass(model)){
-            if(isFreeClass(model)){
-                return 0;
-            }else{
-                return model.getPrice();
-
-            }
-
-        }
-        else if(model!=null&&model.getPriceModel().equalsIgnoreCase(AppConstants.PriceModels.CHARGABLE)){
-            if(model.isVideoClass()){
-               return 5;
-            }else{
-                return 10;
-
-            }
-
-        }
-        return 0;
+    public static int getClassPrice(ClassModel model) {
+       return model!=null?model.getCredit():0;
     }
 
     public static String getClassCreditValue(Context context,ClassModel model){
-        List<PriceModelMaster> master = TempStorage.getDefault().getPriceModelMaster();
-        if(model.getPriceModel().equalsIgnoreCase(AppConstants.PriceModels.CHARGABLE)){
-            if(model.isVideoClass()){
-           PriceModelMaster masterVirtual = getPriceModelForCredit(master,AppConstants.ClassModes.VIRTUAL);
-                return String.format(context.getString(R.string.p5m_credits_value),masterVirtual!=null?masterVirtual.getCredits()+"":AppConstants.minCreditValue);
-            }else{
-                PriceModelMaster masterPhysical = getPriceModelForCredit(master,AppConstants.ClassModes.PHYSICAL);
-                return String.format(context.getString(R.string.p5m_credits_value),masterPhysical!=null?masterPhysical.getCredits()+"":AppConstants.physicalCreditValue);
-
-            }
-
-        }else if(model.getPriceModel().equalsIgnoreCase(AppConstants.PriceModels.PT)||model.getPriceModel().equalsIgnoreCase(AppConstants.PriceModels.WORKSHOP)||model.getPriceModel().equalsIgnoreCase(AppConstants.PriceModels.SPECIAL)){
-            return String.format(context.getString(R.string.p5m_credits_value),(int)model.getPrice()+"");
-
+        if(model!=null&&model.getCredit()>0){
+            return String.format(context.getString(R.string.p5m_credits_value),model.getCredit()+"");
 
         }
-        else if(model.getPriceModel().equalsIgnoreCase(AppConstants.PriceModels.FOC)){
+        else {
              return context.getString(R.string.free_class);
-
         }
-     return "";
     }
 
     public static boolean isFemalesAllowed(ClassModel classModel) {
@@ -895,5 +903,64 @@ public static PriceModelMaster  getPriceModelForCredit(List<PriceModelMaster> ma
         }
     }
     return master;
+    }
+
+    public static int requiredCreditForClass(User user, ClassModel classModel,int userCount) {
+        UserPackageInfo userPackageInfo = new UserPackageInfo(user);
+        if(userPackageInfo.haveGeneralPackage){
+            int userCredit = userPackageInfo.userPackageGeneral.getBalance();
+            if(userCredit<classModel.getCredit()*userCount){
+                return classModel.getCredit()*userCount;
+            }
+            else{
+                return 0;
+            }
+        }
+
+      return classModel.getCredit()*userCount;
+    }
+
+    public static int getBaseCreditValue() {
+        if(TempStorage.getDefault().getPriceModelMaster()!=null){
+            for (PriceModelMaster master:TempStorage.getDefault().getPriceModelMaster()) {
+                if(master.getClassMode().equalsIgnoreCase(AppConstants.ClassModes.PHYSICAL)){
+                        return master.getCredits();
+                    }
+            }
+        }
+
+        return AppConstants.physicalCreditValue;
+    }
+
+    public static boolean isCurrentPlanExpiring(ClassModel classModel, User user) {
+        if(classModel!=null){
+            UserPackageInfo userPackageInfo = new UserPackageInfo(user);
+         if(userPackageInfo.haveGeneralPackage){
+             if (DateUtils.canJoinClass(classModel.getClassDate(), userPackageInfo.userPackageGeneral.getExpiryDate()) < 0) {
+                 return true;
+             }
+             else {
+                 return false;
+
+             }
+
+         }
+        }
+        return false;
+    }
+
+    public static LastmileProbeConfig getLastMileProbeConfigTest(){
+        // Configure a LastmileProbeConfig instance.
+        LastmileProbeConfig config = new LastmileProbeConfig(){};
+// Probe the uplink network quality.
+        config.probeUplink =  true;
+// Probe the downlink network quality.
+        config.probeDownlink = true;
+// The expected uplink bitrate (bps). The value range is [100000, 5000000].
+        config.expectedUplinkBitrate = 2500000;
+// The expected downlink bitrate (bps). The value range is [100000, 5000000].
+        config.expectedDownlinkBitrate = 2500000;
+// Start the last-mile network test before joining the channel.
+      return config;
     }
 }

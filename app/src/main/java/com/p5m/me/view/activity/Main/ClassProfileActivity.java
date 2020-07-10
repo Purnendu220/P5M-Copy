@@ -338,6 +338,16 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         networkCommunicator.getMyUser(new NetworkCommunicator.RequestListener() {
             @Override
             public void onApiSuccess(Object response, int requestCode) {
+            int creditRequiredForClass =  Helper.requiredCreditForClass(TempStorage.getUser(),classModel,1);
+             UserPackageInfo userPackageInfo = new UserPackageInfo(TempStorage.getUser());
+             if(userPackageInfo.haveGeneralPackage&&creditRequiredForClass>userPackageInfo.userPackageGeneral.getBalance()){
+              showAlertForAddCredit(mContext.getString(R.string.insufficient_credits),mContext.getString(R.string.add_credits),1);
+                 textViewBook.setEnabled(true);
+                 textViewBook.setText(RemoteConfigConst.BOOK_IN_CLASS_VALUE);
+
+                 return;
+             }
+
                 joinClass();
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
             }
@@ -385,6 +395,14 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         networkCommunicator.getMyUser(new NetworkCommunicator.RequestListener() {
             @Override
             public void onApiSuccess(Object response, int requestCode) {
+                int creditRequiredForClass =  Helper.requiredCreditForClass(TempStorage.getUser(),classModel,1);
+                UserPackageInfo userPackageInfo = new UserPackageInfo(TempStorage.getUser());
+                if(userPackageInfo.haveGeneralPackage&&creditRequiredForClass>userPackageInfo.userPackageGeneral.getBalance()){
+                    showAlertForAddCredit(mContext.getString(R.string.insufficient_credits),mContext.getString(R.string.add_credits),1);
+                    textViewBook.setEnabled(true);
+                    textViewBook.setText(RemoteConfigConst.BOOK_IN_CLASS_VALUE);
+                    return;
+                }
                 joinClassWithFriend(data);
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
             }
@@ -645,12 +663,19 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                         for (Package aPackage : packagesTemp) {
                             int numberOfDays = DateUtils.getPackageNumberOfDays(aPackage.getDuration(), aPackage.getValidityPeriod());
                             if (!(aPackage.getDuration() > 0 && DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays)) {
-                                if (aPackage.getGymVisitLimit() != 1) {
+                                if(classModel!=null&&classModel.getPriceModel().equalsIgnoreCase(AppConstants.PriceModels.CHARGABLE)){
+                                    if (aPackage.getGymVisitLimit() != 1&&Helper.requiredCreditForClass(user,classModel,mBookWithFriendData==null?1:2)<=aPackage.getCredits()) {
                                     packages.add(aPackage);
+                                }
+                                }else{
+                                   if(Helper.requiredCreditForClass(user,classModel,mBookWithFriendData==null?1:2)<=aPackage.getCredits()) {
+                                       packages.add(aPackage);
+
+                                   }
                                 }
                             }
                         }
-                        if (packages.size() == 1 || !user.isBuyMembership()) {
+                        if (packages.size() == 1) {
                             Package aPackage = packages.get(0);
                             CheckoutActivity.openActivity(context, aPackage, classModel, 2, mBookWithFriendData, aPackage.getNoOfClass());
                             return;
@@ -662,10 +687,14 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                         for (Package aPackage : packagesTemp) {
                             int numberOfDays = DateUtils.getPackageNumberOfDays(aPackage.getDuration(), aPackage.getValidityPeriod());
                             if (!(aPackage.getDuration() > 0 && DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays)) {
-                                packages.add(aPackage);
+                                if(Helper.requiredCreditForClass(user,classModel,mBookWithFriendData==null?1:2)<=aPackage.getCredits()) {
+                                    packages.add(aPackage);
+
+                                }
+
                             }
                         }
-                        if (packages.size() == 1 || !user.isBuyMembership()) {
+                        if (packages.size() == 1 ) {
                             Package aPackage = packages.get(0);
                             CheckoutActivity.openActivity(context, aPackage, classModel, 1, aPackage.getNoOfClass());
                             return;
@@ -718,12 +747,12 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 mLayoutUserWallet.setVisibility(View.VISIBLE);
                 mTextViewWalletAmount.setText(LanguageUtils.numberConverter(userPackageInfo.userPackageGeneral.getBalance()) + " " + context.getString(R.string.p5m_credits));
                 if(Helper.getClassPrice(classModel)>userPackageInfo.userPackageGeneral.getBalance()){
-                    layoutWarning.setVisibility(View.VISIBLE);
+                    layoutWarning.setVisibility(View.GONE);
                 }
 
             } else {
                 mLayoutUserWallet.setVisibility(View.GONE);
-                layoutWarning.setVisibility(View.VISIBLE);
+                layoutWarning.setVisibility(View.GONE);
             }
 
 
@@ -762,13 +791,13 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                                 message = String.format(mContext.getString(R.string.join_fail_limit_exhaust_booking_with_friend));
 
                             } else {
-                                message = String.format(mContext.getString(R.string.join_fail_limit_exhaust_booking_with_friend_two_ready), errorResponse.getReadyPckSize());
+                                message = String.format(mContext.getString(R.string.join_fail_limit_exhaust_booking_with_friend_two_ready));
 
                             }
                         } else {
                             message = getString(R.string.join_fail_limit_exhaust);
                         }
-                        DialogUtils.showBasic(context, message, getString(R.string.purchase), new MaterialDialog.SingleButtonCallback() {
+                        DialogUtils.showBasic(context, message, getString(R.string.add_credits), new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 dialog.dismiss();
@@ -815,8 +844,8 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 } else if (errorMessage.equals("402")) {
                     if (isBookWithFriendInProgress && mBookWithFriendData != null) {
                         final User errorResponse = MyPreferences.getInstance().getPaymentErrorResponse();
-                        if (checkIfUserHaveExpiredPackage()) {
-                            DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), getString(R.string.purchase), new MaterialDialog.SingleButtonCallback() {
+                        if (Helper.isCurrentPlanExpiring(classModel,TempStorage.getUser())) {
+                            DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), getString(R.string.add_credits), new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();
@@ -840,7 +869,20 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
 
                     } else {
-                        callPackageListApi(1);
+                        if (Helper.isCurrentPlanExpiring(classModel,TempStorage.getUser())) {
+                            DialogUtils.showBasic(context, getString(R.string.join_fail_date_expire), getString(R.string.add_credits), new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    dialog.dismiss();
+                                    callPackageListApi(1);
+
+                                }
+                            });
+                        }else{
+                            callPackageListApi(1);
+
+                        }
+
                         //MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS, classModel);
 
 
@@ -902,44 +944,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
     }
 
-    private boolean checkIfUserHaveExpiredPackage() {
-        boolean userHaveDropinForClass = false;
-        boolean userHaveExpiredDropinForClass = false;
-        boolean userHaveExpiredGeneralPackageForClass = false;
 
-
-        boolean userHaveGeneralPackageForClass = false;
-        ArrayList<Integer> list = new ArrayList<>();
-        UserPackageInfo userPackageInfo = new UserPackageInfo(TempStorage.getUser());
-
-        if (userPackageInfo.haveDropInPackage && classModel.getGymBranchDetail() != null) {
-            userHaveDropinForClass = false;
-            for (UserPackage userPackage : userPackageInfo.userPackageReady) {
-                if ((userPackage.getGymId() == classModel.getGymBranchDetail().getGymId()) && (userPackage.getExpiryDate() == null || DateUtils.canJoinClass(classModel.getClassDate(), userPackage.getExpiryDate()) >= 0)) {
-                    userHaveDropinForClass = true;
-                    list.add(userPackage.getGymId());
-                }
-                if ((userPackage.getGymId() == classModel.getGymBranchDetail().getGymId()) && (userPackage.getExpiryDate() != null && DateUtils.canJoinClass(classModel.getClassDate(), userPackage.getExpiryDate()) < 0)) {
-                    userHaveExpiredDropinForClass = true;
-                }
-            }
-
-        }
-        if (userPackageInfo.haveGeneralPackage) {
-            if (userPackageInfo.userPackageGeneral != null) {
-                if (DateUtils.canJoinClass(classModel.getClassDate(), userPackageInfo.userPackageGeneral.getExpiryDate()) >= 0) {
-                    userHaveGeneralPackageForClass = true;
-
-                }
-                if (userPackageInfo.userPackageGeneral.getBalance() > 0 && DateUtils.canJoinClass(classModel.getClassDate(), userPackageInfo.userPackageGeneral.getExpiryDate()) < 0) {
-                    userHaveExpiredGeneralPackageForClass = true;
-
-                }
-
-            }
-        }
-        return userHaveExpiredGeneralPackageForClass;
-    }
 
     @Override
     public void onBackPressed() {
@@ -1094,6 +1099,18 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 //                        view.setVisibility(View.VISIBLE);
 //                    }
 //                });
+
+    }
+
+    private void showAlertForAddCredit(String message,String action,int readyPackageSize){
+        DialogUtils.showBasic(context, message, action, new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                dialog.dismiss();
+                callPackageListApi(readyPackageSize);
+
+            }
+        });
 
     }
 }

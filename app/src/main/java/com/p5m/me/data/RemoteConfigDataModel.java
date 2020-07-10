@@ -6,6 +6,8 @@ public class RemoteConfigDataModel {
     private String ar;
     private String ar_ksa;
     private String en_ksa;
+    private String title_en;
+    private String title_ar;
 
 
     public RemoteConfigDataModel(String en, String ar) {
@@ -43,5 +45,21 @@ public class RemoteConfigDataModel {
 
     public void setEn_ksa(String en_ksa) {
         this.en_ksa = en_ksa;
+    }
+
+    public String getTitle_en() {
+        return title_en;
+    }
+
+    public void setTitle_en(String title_en) {
+        this.title_en = title_en;
+    }
+
+    public String getTitle_ar() {
+        return title_ar;
+    }
+
+    public void setTitle_ar(String title_ar) {
+        this.title_ar = title_ar;
     }
 }

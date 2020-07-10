@@ -4,9 +4,9 @@ package com.p5m.me.data.main;
 public class PaymentUrl implements java.io.Serializable {
     private static final long serialVersionUID = 6865989894929977201L;
     private String tapPayURL;
-    private String paymentURL;
+    private String paymentUrl;
     private String responseMessage;
-    private String referenceID;
+    private String referenceId;
     private String responseCode;
     private boolean isCompleted;
 
@@ -19,12 +19,11 @@ public class PaymentUrl implements java.io.Serializable {
     }
 
     public String getPaymentURL() {
-       // return "https://stackoverflow.com/questions/29437302/url-loads-in-chrome-app-but-not-webview";
-        return this.paymentURL;
+        return this.paymentUrl;
     }
 
     public void setPaymentURL(String paymentURL) {
-        this.paymentURL = paymentURL;
+        this.paymentUrl = paymentURL;
     }
 
     public String getResponseMessage() {
@@ -36,11 +35,11 @@ public class PaymentUrl implements java.io.Serializable {
     }
 
     public String getReferenceID() {
-        return this.referenceID;
+        return this.referenceId;
     }
 
     public void setReferenceID(String referenceID) {
-        this.referenceID = referenceID;
+        this.referenceId = referenceID;
     }
 
     public String getResponseCode() {

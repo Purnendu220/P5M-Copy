@@ -167,7 +167,7 @@
                                     android:textAllCaps="true"
                                     android:textColor="@color/white"
                                     android:textSize="13sp"
-                                    android:visibility="gone" />
+                                    android:visibility="visible" />
 
                                 <Button
                                     android:id="@+id/buttonClassRating"
