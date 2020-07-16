@@ -719,7 +719,7 @@ Would you like to view your balance? </string>
 
     <string name="book_class_limits">book %d - %d classes</string>
     <string name="free_class">Free</string>
-    <string name="class_credits">%s credits</string>
+    <string name="class_credits"><b>%s credits</b></string>
     <string name="updated_credit_balance" tools:ignore="ExtraTranslation">Updated credit balance</string>
     <string name="credit_balance" tools:ignore="ExtraTranslation">Credit balance</string>
 

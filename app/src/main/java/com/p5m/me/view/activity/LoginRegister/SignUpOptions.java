@@ -9,13 +9,16 @@ import androidx.core.content.ContextCompat;
 import android.os.Handler;
 import android.text.Spannable;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -24,6 +27,13 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.p5m.me.R;
 import com.p5m.me.analytics.FirebaseAnalysic;
@@ -47,6 +57,7 @@ import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.GetStartedActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
+import com.p5m.me.view.activity.Main.LocationSelectionActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 
 import org.json.JSONException;
@@ -63,6 +74,9 @@ import io.intercom.android.sdk.identity.Registration;
 
 public class SignUpOptions extends BaseActivity implements NetworkCommunicator.RequestListener, View.OnClickListener {
 
+
+    private GoogleSignInClient mSignInClient;
+    private GoogleSignInAccount mGoogleSignInAccount;
 
     public static void open(Context context) {
         context.startActivity(new Intent(context, SignUpOptions.class));
@@ -84,6 +98,8 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
     TextView textViewBottom;
     @BindView(R.id.buttonLoginFacebook)
     Button buttonLoginFacebook;
+    @BindView(R.id.signInButton)
+    SignInButton signInButton;
     @BindView(R.id.layoutProgress)
     View layoutProgress;
 
@@ -122,6 +138,10 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
     @BindView(R.id.buttonNext)
     public Button buttonNext;
 
+    @BindView(R.id.layoutSignUpOption)
+    public LinearLayout layoutSignUpOption;
+
+
     private String email;
     private String gender;
 
@@ -132,6 +152,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
     private static RegistrationRequest registrationRequest = new RegistrationRequest();
     private static int countryId;
     private static int navigationFrom;
+    private static final int RC_SIGN_IN = 1;
 
 
     @Override
@@ -166,14 +187,97 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
         textViewBottom.setMovementMethod(LinkMovementMethod.getInstance());
         textViewBottom.setText(span);
         SetupFBLogin();
+        setUpGoogleSignIn();
         setupViews();
 
     }
 
+    private void setUpGoogleSignIn() {
+        GoogleSignInOptions options =
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                        .requestScopes(Drive.SCOPE_FILE)
+                        .requestEmail()
+                        .requestProfile()
+                        .build();
+
+        mSignInClient = GoogleSignIn.getClient(this, options);
+
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Launches the sign in flow, the result is returned in onActivityResult
+                Intent intent = mSignInClient.getSignInIntent();
+                startActivityForResult(intent, RC_SIGN_IN);
+
+            }
+        });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task =
+                    GoogleSignIn.getSignedInAccountFromIntent(data);
+            if (task.isSuccessful()) {
+                // Sign in succeeded, proceed with account
+                handleGoogleSignIn(task);
+
+            } else {
+                // Sign in failed, handle failure and update UI
+                // ...
+                Toast.makeText(getApplicationContext(), "Sign in cancel", Toast.LENGTH_LONG).show();
+
+            }
+
+        } else {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+
+        }
+    }
+
+    private void handleGoogleSignIn(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            // Signed in successfully, show authenticated UI.
+            updateProfileByGoogleSignIn(account);
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            LogUtils.debug("signInResult:failed code=" + e.getStatusCode());
+            updateProfileByGoogleSignIn(null);
+        }
+
+    }
+
+    private void updateProfileByGoogleSignIn(GoogleSignInAccount account) {
+        if (account != null) {
+            mGoogleSignInAccount = account;
+            String first_name = "";
+            String last_name = "";
+            String gender = "";
+            email = "";
+            String id = "";
+
+            try {
+                id = account.getId();
+                first_name = account.getGivenName();
+                last_name = account.getFamilyName();
+                email = account.getEmail();
+                registrationRequest = new RegistrationRequest(id, first_name, last_name, -1, AppConstants.ApiParamValue.LOGINWITHGOOGLE);
+                if (email != null && !TextUtils.isEmpty(email))
+                    networkCommunicator.validateEmail(email, SignUpOptions.this, false);
+                else
+                    LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_GOOGLE_LOGIN);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                LogUtils.exception(e);
+            }
+
+
+        }
     }
 
     private void SetupFBLogin() {
@@ -214,7 +318,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
 
                                         faceBookUser = new FaceBookUser(id, first_name, last_name, gender, email);
 
-                                        networkCommunicator.loginFb(new LoginRequest(id, first_name, last_name, email, gender), SignUpOptions.this, false);
+                                        networkCommunicator.loginFb(new LoginRequest(id, first_name, last_name, email, gender, AppConstants.ApiParamValue.LOGINWITHFACEBOOK), SignUpOptions.this, false);
                                     }
                                 });
                         Bundle parameters = new Bundle();
@@ -296,13 +400,23 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
 
                 break;
             case NetworkCommunicator.RequestCode.VALIDATE_EMAIL:
-                setEmail(email);
-                networkCommunicator.register(registrationRequest, SignUpOptions.this, false);
+                registrationRequest.setEmail(email);
+                if (faceBookUser != null) {
+                    registrationRequest.setFacebookId(faceBookUser.getId());
+                    LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_FACEBOOK_LOGIN);
+                } else if(mGoogleSignInAccount!=null){
+                    registrationRequest.setGoogleId(mGoogleSignInAccount.getId());
+                    LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_GOOGLE_LOGIN);
+                } else {
+                    setEmail(email);
+                    networkCommunicator.register(registrationRequest, SignUpOptions.this, false);
+
+                }
                 break;
             case NetworkCommunicator.RequestCode.REGISTER:
                 if (response != null) {
                     User user = ((ResponseModel<User>) response).data;
-                    registrationRequest=new RegistrationRequest();
+                    registrationRequest = new RegistrationRequest();
                     TempStorage.setCountryId(user.getId());
                     TempStorage.setCountryName(user.getStoreName());
                     EventBroadcastHelper.sendLogin(context, user);
@@ -329,10 +443,24 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
         switch (requestCode) {
 
             case NetworkCommunicator.RequestCode.LOGIN_FB:
-                facebookValidation();
+                if (faceBookUser != null)
+                    facebookValidation();
                 break;
             case NetworkCommunicator.RequestCode.VALIDATE_EMAIL:
-                textInputLayoutEmail.setError(errorMessage);
+
+                if (faceBookUser != null) {
+                    networkCommunicator.loginFb(new LoginRequest(faceBookUser.getId(), faceBookUser.getName(), faceBookUser.getLastName(), email, faceBookUser.getGender(), AppConstants.ApiParamValue.LOGINWITHFACEBOOK), SignUpOptions.this, false);
+                } else if (mGoogleSignInAccount != null) {
+                    registrationRequest.setGoogleId(mGoogleSignInAccount.getId());
+                    networkCommunicator.loginFb(new LoginRequest(mGoogleSignInAccount.getId(), mGoogleSignInAccount.getGivenName(), mGoogleSignInAccount.getFamilyName(), email,  AppConstants.ApiParamValue.LOGINWITHGOOGLE), SignUpOptions.this, false);
+                }
+             /*   if (faceBookUser != null) {
+                    networkCommunicator.loginFb(new LoginRequest(faceBookUser.getId(), faceBookUser.getName(), faceBookUser.getLastName(), email, faceBookUser.getGender(), AppConstants.ApiParamValue.LOGINWITHFACEBOOK), SignUpOptions.this, false);
+                } else if (mGoogleSignInAccount != null) {
+                    networkCommunicator.loginFb(new LoginRequest(mGoogleSignInAccount.getId(), mGoogleSignInAccount.getDisplayName(), "", email, "MALE", AppConstants.ApiParamValue.LOGINWITHGOOGLE), SignUpOptions.this, false);
+
+                }*/ else
+                    textInputLayoutEmail.setError(errorMessage);
                 break;
             case NetworkCommunicator.RequestCode.REGISTER:
                 ToastUtils.showFailureResponse(context, errorMessage);
@@ -463,6 +591,9 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
             case R.id.buttonNext:
                 validateAndGenerateRegistrationRequest();
                 break;
+            case R.id.buttonRegister:
+                onClickRegister();
+                break;
 
         }
     }
@@ -536,7 +667,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
 
     private void facebookValidation() {
         String message = "";
-        registrationRequest = new RegistrationRequest(faceBookUser.getId(), faceBookUser.getName(), faceBookUser.getLastName(), TempStorage.getCountryId());
+        registrationRequest = new RegistrationRequest(faceBookUser.getId(), faceBookUser.getName(), faceBookUser.getLastName(), TempStorage.getCountryId(), AppConstants.ApiParamValue.LOGINWITHFACEBOOK);
 
         if (faceBookUser.getEmail().isEmpty()) {
 
@@ -560,6 +691,16 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
         if (!message.isEmpty()) {
             DialogUtils.showBasicMessage(context, context.getString(R.string.app_name), getString(R.string.ok), message);
         }
+    }
+
+
+
+    public void onClickRegister() {
+        if (gender.isEmpty()) {
+            ToastUtils.show(this, getString(R.string.gender_required));
+        } else
+            networkCommunicator.register(registrationRequest, SignUpOptions.this, false);
+
     }
 
 
