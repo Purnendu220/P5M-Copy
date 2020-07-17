@@ -248,13 +248,14 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
     }
 
-    public void refreshFragment(int navigatedFrom, ClassModel classModel, BookWithFriendData mFriendsData, int mNumberOfPackagesToBuy) {
+    public void refreshFragment(int navigatedFrom, ClassModel classModel, BookWithFriendData mFriendsData, int mNumberOfPackagesToBuy,boolean addCredits) {
         if (!swipeRefreshLayout.isRefreshing()) {
-            if (this.navigatedFrom != navigatedFrom || this.classModel != classModel || this.mFriendsData != mFriendsData || this.mNumberOfPackagesToBuy != mNumberOfPackagesToBuy) {
+            if (this.navigatedFrom != navigatedFrom || this.classModel != classModel || this.mFriendsData != mFriendsData || this.mNumberOfPackagesToBuy != mNumberOfPackagesToBuy|| this.isBuyMoreCredits != addCredits) {
                 this.navigatedFrom = navigatedFrom;
                 this.classModel = classModel;
                 this.mFriendsData = mFriendsData;
                 this.mNumberOfPackagesToBuy = mNumberOfPackagesToBuy;
+                this.isBuyMoreCredits = addCredits;
                 refreshFromEvent();
             }else{
                 memberShipAdapter.setClassModel(null);
@@ -376,7 +377,11 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
             if (userPackageInfo.havePackages) {
                 if(userPackageInfo.haveGeneralPackage){
                     memberShipAdapter.clearAllOwnedPackages();
-                    memberShipAdapter.addOwnedPackages(userPackageInfo.userPackageGeneral);
+                    if(buyMoreCredits==null||buyMoreCredits.length<1 || !buyMoreCredits[0] ){
+                        memberShipAdapter.addOwnedPackages(userPackageInfo.userPackageGeneral);
+
+                    }
+
 
                 }
             }
@@ -391,10 +396,10 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                     memberShipAdapter.setHeaderText(context.getString(R.string.membership_drop_in_package_heading_1),
                             context.getString(R.string.membership_general_package_heading_1));
                 }
-                textGymVisitLimits.setVisibility(View.VISIBLE);
+                textGymVisitLimits.setVisibility(View.GONE);
 
             } else {
-                textGymVisitLimits.setVisibility(View.VISIBLE);
+                textGymVisitLimits.setVisibility(View.GONE);
             }
             if(buyMoreCredits!=null&&buyMoreCredits.length>0&&buyMoreCredits[0]){
                 swipeRefreshLayout.setRefreshing(true);
@@ -587,9 +592,13 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
                 case NetworkCommunicator.RequestCode.ME_USER:
                     setUserWalletDetail();
-
-
+                    if(isBuyMoreCredits){
+                        checkPackages(isBuyMoreCredits);
+                    }else{
                         checkPackages();
+
+                    }
+
 
 
                     break;

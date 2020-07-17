@@ -6,8 +6,5 @@
 
   Do NOT modify, delete, or commit to source control!
 -->
-
-<string tools:ignore="UnusedResources,TypographyDashes" name="com.crashlytics.android.build_id" translatable="false">cc55d995-b283-41e3-b2b0-e1aaa5333f6e</string>
-
-<string tools:ignore="UnusedResources,TypographyDashes" name="com.crashlytics.android.build_id" translatable="false">e72fcc49-b536-44da-922a-e44076d4f9f6</string>
+<string tools:ignore="UnusedResources,TypographyDashes" name="com.crashlytics.android.build_id" translatable="false">17b14e58-e311-47ad-8dc3-4d3b75a4a2a6</string>
 </resources>

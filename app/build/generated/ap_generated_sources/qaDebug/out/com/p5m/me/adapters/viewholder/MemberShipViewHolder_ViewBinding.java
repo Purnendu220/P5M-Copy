@@ -35,8 +35,6 @@ public class MemberShipViewHolder_ViewBinding implements Unbinder {
     target.mainLayoutActivePackageDropin = Utils.findRequiredViewAsType(source, R.id.mainLayoutActivePackageDropin, "field 'mainLayoutActivePackageDropin'", LinearLayout.class);
     target.packageValidForOwn = Utils.findRequiredViewAsType(source, R.id.packageValidForOwn, "field 'packageValidForOwn'", TextView.class);
     target.textViewExtendPackage = Utils.findRequiredViewAsType(source, R.id.textViewExtendPackage, "field 'textViewExtendPackage'", TextView.class);
-    target.txtPackageName = Utils.findRequiredViewAsType(source, R.id.txtPackageName, "field 'txtPackageName'", TextView.class);
-    target.txtIsPackagePopular = Utils.findRequiredViewAsType(source, R.id.txtIsPackagePopular, "field 'txtIsPackagePopular'", TextView.class);
     target.txtPackageOffer = Utils.findRequiredViewAsType(source, R.id.txtPackageOffer, "field 'txtPackageOffer'", TextView.class);
     target.txtPackageOffredCredits = Utils.findRequiredViewAsType(source, R.id.txtPackageOffredCredits, "field 'txtPackageOffredCredits'", TextView.class);
     target.txtPackageOffredClassesLimits = Utils.findRequiredViewAsType(source, R.id.txtPackageOffredClassesLimits, "field 'txtPackageOffredClassesLimits'", TextView.class);
@@ -70,8 +68,6 @@ public class MemberShipViewHolder_ViewBinding implements Unbinder {
     target.mainLayoutActivePackageDropin = null;
     target.packageValidForOwn = null;
     target.textViewExtendPackage = null;
-    target.txtPackageName = null;
-    target.txtIsPackagePopular = null;
     target.txtPackageOffer = null;
     target.txtPackageOffredCredits = null;
     target.txtPackageOffredClassesLimits = null;

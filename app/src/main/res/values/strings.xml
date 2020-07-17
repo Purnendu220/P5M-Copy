@@ -704,7 +704,7 @@ Would you like to view your balance? </string>
     <string name="all_atgym_class_range">All at gym class -</string>
 
     <!-- Legal digits for channel names -->
-    <string name="includes_credits">%s credits to</string>
+    <string name="includes_credits">%s credits</string>
     <string name="credit_value">How many credits do I need to join a class?</string>
     <string name="credits_remaining">You have %d/%d credits remaining</string>
     <string name="buy_more_credits"><u>Buy more credits</u></string>
