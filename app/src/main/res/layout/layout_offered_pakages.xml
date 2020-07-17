@@ -24,47 +24,60 @@
             android:orientation="horizontal"
 
             >
-
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_20"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/txtPackageName"
+                    android:id="@+id/txtPackageOffredCredits"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_10"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:gravity="center_vertical"
                     android:letterSpacing="@dimen/text_medium_letter_spacing"
                     android:lineSpacingExtra="@dimen/line_spacing_extra_title"
-                    android:text="SUMMER BODY"
-                    android:textAllCaps="true"
-                    android:textColor="@color/theme_dark_text"
-                    android:textSize="@dimen/text_large"
-                    android:textStyle="bold" />
+                    android:text="@string/includes_credits"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/text_medium"
+
+
+                    />
 
                 <TextView
-                    android:id="@+id/txtIsPackagePopular"
+                    android:id="@+id/txtPackageOffredClassesLimits"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/margin_10"
-                    android:background="@drawable/rouded_corner_text"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:paddingStart="@dimen/margin_8"
-                    android:paddingEnd="@dimen/margin_8"
-                    android:text="SUMMER BODY"
-                    android:textColor="@color/theme_book"
-                    android:textSize="@dimen/text_small"
-                    android:visibility="gone" />
-                <ImageView
-                    android:layout_width="@dimen/margin_35"
-                    android:layout_height="@dimen/margin_35"
-                    android:layout_toLeftOf="@id/txtPackageOffer"
-                    android:layout_marginRight="@dimen/margin_5"
-                    android:padding="@dimen/margin_5"
-                    android:src="@drawable/info"
-                    android:visibility="gone"/>
+                    android:letterSpacing="@dimen/text_medium_letter_spacing"
+                    android:lineSpacingExtra="@dimen/line_spacing_extra_title"
+                    android:text="@string/book_class_limits"
+                    android:visibility="visible"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:textColor="@color/colorAccent"
+
+                    android:textSize="@dimen/text_medium" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/packageValidFor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_10"
+                        android:layout_marginBottom="@dimen/margin_10"
+                        android:text="@string/valid_for"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/text_medium" />
+
+
+
+                </RelativeLayout>
 
             </LinearLayout>
 
@@ -75,7 +88,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
                 android:background="@drawable/rounded_corner_text_filled"
                 android:gravity="center"
                 android:paddingLeft="@dimen/margin_30"
@@ -87,33 +99,16 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_small"
                 android:textStyle="bold" />
-
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_10"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/packageValidFor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_20"
-                android:layout_marginBottom="@dimen/margin_10"
-                android:text="@string/valid_for"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/text_medium" />
-
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_10"
+                android:orientation="vertical"
+                android:layout_below="@+id/txtPackageOffer"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/margin_20"
-                android:orientation="vertical">
+                android:layout_marginTop="@dimen/margin_10"
+
+                >
 
                 <TextView
                     android:id="@+id/txtPriceBeforeOffer"
@@ -142,40 +137,11 @@
 
             </LinearLayout>
 
+
+
         </RelativeLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_20"
-            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/txtPackageOffredCredits"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:layout_gravity="center"
-                android:letterSpacing="@dimen/text_medium_letter_spacing"
-                android:lineSpacingExtra="@dimen/line_spacing_extra_title"
-                android:text="@string/includes_credits"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_medium" />
-
-            <TextView
-                android:id="@+id/txtPackageOffredClassesLimits"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:gravity="center_vertical"
-                android:layout_gravity="center"
-                android:letterSpacing="@dimen/text_medium_letter_spacing"
-                android:lineSpacingExtra="@dimen/line_spacing_extra_title"
-                android:text="@string/book_class_limits"
-                android:visibility="gone"
-                android:layout_marginLeft="@dimen/margin_10"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/text_medium" />
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/layoutTimeClassPromo"
