@@ -188,6 +188,7 @@ public class AppConstants {
         public static final String CLASS_FOR_GOOGLE_FORM_REVIEW = "class_for_google_form_review";
 
         public static final String IS_SHOW_MEMBERSHIP_ICON = "IsShowMembershipIcon";
+        public static final String GOOGLE_LOGIN = "Google_Login";
     }
 
     public class DataKey {
@@ -351,8 +352,8 @@ public class AppConstants {
         public static final int MAX_RESULT_YOUTUBE = 50;
 
 
-
-
+        public static final String LOGINWITHFACEBOOK = "facebook";
+        public static final String LOGINWITHGOOGLE = "google";
     }
 
     public class ApiParamKey {
@@ -494,6 +495,7 @@ public class AppConstants {
         public static final int SHOWN_IN_GET_STARTED = 67;
         public static final int NAVIGATION_FROM_FACEBOOK_SIGNUP = 68;
         public static final int NAVIGATION_FROM_FACEBOOK_LOGIN = 69;
+        public static final int NAVIGATION_FROM_GOOGLE_LOGIN = 70;
     }
 
     public class Limit {
