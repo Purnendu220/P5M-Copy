@@ -99,11 +99,11 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
     /* User Existig Pakages DROP IN Layout Declaration*/
 
     /* User Offered Pakages   Layout Declaration*/
-    @BindView(R.id.txtPackageName)
-    TextView txtPackageName;
-
-    @BindView(R.id.txtIsPackagePopular)
-    TextView txtIsPackagePopular;
+//    @BindView(R.id.txtPackageName)
+//    TextView txtPackageName;
+//
+//    @BindView(R.id.txtIsPackagePopular)
+//    TextView txtIsPackagePopular;
     @BindView(R.id.txtPackageOffer)
     TextView txtPackageOffer;
 
@@ -207,7 +207,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     mainLayoutUserPakages.setVisibility(View.GONE);
                     layoutMainOfferedPackage.setVisibility(View.VISIBLE);
                     if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
-                        txtPackageName.setText(model.getName());
+                      //  txtPackageName.setText(model.getName());
                        String includesCredits =  String.format(context.getString(R.string.includes_credits),numberConverter(model.getCredits()));
                         txtPackageOffredCredits.setText(includesCredits+ "" + context.getString(R.string.at_any_gym));
                         setTextValidityPeriod(model);
@@ -425,40 +425,40 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void setPackageTags(int packageId) {
-        txtIsPackagePopular.setVisibility(View.GONE);
-        try {
-            String packageTags = RemoteConfigConst.PACKAGE_TAGS_VALUE;
-            if (packageTags != null && !packageTags.isEmpty()) {
-                Gson g = new Gson();
-                List<PackageTags> p = g.fromJson(packageTags, new TypeToken<List<PackageTags>>() {
-                }.getType());
-                listPackageTags = p;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (listPackageTags != null && listPackageTags.size() > 0) {
-            for (PackageTags p : listPackageTags) {
-                if (p.getId() == packageId) {
-                    if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en")
-                            && !p.getTag_en().isEmpty()) {
-                        txtIsPackagePopular.setText(p.getTag_en());
-                        txtIsPackagePopular.setVisibility(View.VISIBLE);
-
-                    } else if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")
-                            && !p.getTag_ar().isEmpty()) {
-                        txtIsPackagePopular.setText(p.getTag_ar());
-                        txtIsPackagePopular.setVisibility(View.VISIBLE);
-
-                    }
-
-
-                }
-
-            }
-
-        }
+//        txtIsPackagePopular.setVisibility(View.GONE);
+//        try {
+//            String packageTags = RemoteConfigConst.PACKAGE_TAGS_VALUE;
+//            if (packageTags != null && !packageTags.isEmpty()) {
+//                Gson g = new Gson();
+//                List<PackageTags> p = g.fromJson(packageTags, new TypeToken<List<PackageTags>>() {
+//                }.getType());
+//                listPackageTags = p;
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        if (listPackageTags != null && listPackageTags.size() > 0) {
+//            for (PackageTags p : listPackageTags) {
+//                if (p.getId() == packageId) {
+//                    if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en")
+//                            && !p.getTag_en().isEmpty()) {
+//                        txtIsPackagePopular.setText(p.getTag_en());
+//                        txtIsPackagePopular.setVisibility(View.VISIBLE);
+//
+//                    } else if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")
+//                            && !p.getTag_ar().isEmpty()) {
+//                        txtIsPackagePopular.setText(p.getTag_ar());
+//                        txtIsPackagePopular.setVisibility(View.VISIBLE);
+//
+//                    }
+//
+//
+//                }
+//
+//            }
+//
+//        }
 
     }
 
