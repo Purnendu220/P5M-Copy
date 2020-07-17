@@ -250,14 +250,16 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
     implementation 'com.robertlevonyan.components:Picker:1.1.1'
     //    implementation 'com.google.android:flexbox:0.3.2'
+    implementation 'com.google.android.gms:play-services-auth:18.0.0'
+
     implementation 'com.google.android:flexbox:2.0.1'
     implementation 'com.google.firebase:firebase-core:17.0.0'
     implementation 'com.google.firebase:firebase-messaging:19.0.0'
     implementation 'com.google.firebase:firebase-config:18.0.0'
     implementation 'com.google.firebase:firebase-inappmessaging-display:19.0.1'
-    implementation 'com.google.android.gms:play-services-location:16.0.0'
-    implementation 'com.google.android.gms:play-services-maps:16.1.0'
-    implementation 'com.google.android.gms:play-services-places:16.1.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-places:17.0.0'
     implementation 'id.zelory:compressor:1.0.4'
     implementation 'com.facebook.fresco:fresco:1.2.0'
     implementation 'com.bogdwellers:pinchtozoom:0.1'
@@ -280,6 +282,7 @@ dependencies {
     implementation 'io.agora.rtc:full-sdk:3.0.1.1'
     implementation 'com.devbrackets.android:exomedia:4.3.0'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
+    implementation 'com.google.android.gms:play-services-plus:17.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

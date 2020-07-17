@@ -1,9 +1,12 @@
 package com.p5m.me.view.activity.LoginRegister;
 
+import android.app.Person;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,6 +14,9 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -19,6 +25,21 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.GoogleApi;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.plus.Plus;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.p5m.me.R;
@@ -34,6 +55,7 @@ import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.target_user_notification.UserPropertyConst;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.KeyboardUtils;
@@ -64,6 +86,7 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
 
     private String email;
     private RegistrationRequest registrationRequest;
+    private GoogleSignInAccount mGoogleSignInAccount;
 
     public static void open(Context context, int navigationFrom) {
         context.startActivity(new Intent(context, LoginActivity.class)
@@ -91,6 +114,8 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
 
     @BindView(R.id.buttonLoginFacebook)
     public Button buttonLoginFacebook;
+    @BindView(R.id.sign_in_button)
+    public SignInButton signInButton;
     @BindView(R.id.buttonLogin)
     public Button buttonLogin;
 
@@ -104,6 +129,10 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
     private CallbackManager callbackManager;
     private FaceBookUser faceBookUser;
     private long loginTime;
+
+    private GoogleSignInClient mSignInClient;
+    TextView textView;
+    private static final int RC_SIGN_IN = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,8 +160,31 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
         });
 
         SetupFBLogin();
+        setUpGoogleSignIn();
 
     }
+
+    private void setUpGoogleSignIn() {
+        GoogleSignInOptions options =
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                        .requestScopes(Drive.SCOPE_FILE)
+                        .requestEmail()
+                        .requestProfile()
+                        .build();
+
+        mSignInClient = GoogleSignIn.getClient(this, options);
+
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Launches the sign in flow, the result is returned in onActivityResult
+                Intent intent = mSignInClient.getSignInIntent();
+                startActivityForResult(intent, RC_SIGN_IN);
+
+            }
+        });
+    }
+
 
     private void setUserProperty() {
         FirebaseAnalytics.getInstance(context).setUserProperty(UserPropertyConst.GENDER, TempStorage.getUser().getGender());
@@ -188,8 +240,72 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task =
+                    GoogleSignIn.getSignedInAccountFromIntent(data);
+
+            if (task.isSuccessful()) {
+                // Sign in succeeded, proceed with account
+                GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+
+                handleGoogleSignIn(task, result);
+
+            } else {
+                // Sign in failed, handle failure and update UI
+                // ...
+                Toast.makeText(getApplicationContext(), "Sign in cancel", Toast.LENGTH_LONG).show();
+
+            }
+
+        } else {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+
+        }
+    }
+
+    private void handleGoogleSignIn(Task<GoogleSignInAccount> completedTask, GoogleSignInResult result) {
+        try {
+            mGoogleSignInAccount = completedTask.getResult(ApiException.class);
+
+            // Signed in successfully, show authenticated UI.
+            updateProfileByGoogleSignIn(mGoogleSignInAccount);
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            LogUtils.debug("signInResult:failed code=" + e.getStatusCode());
+            updateProfileByGoogleSignIn(null);
+        }
+
+    }
+
+    private void updateProfileByGoogleSignIn(GoogleSignInAccount account) {
+        if (account != null) {
+            String first_name = "";
+            String last_name = "";
+            String gender = "";
+            email = "";
+            String id = "";
+
+            try {
+                id = account.getId();
+                first_name = account.getGivenName();
+                last_name = account.getFamilyName();
+                email = account.getEmail();
+                registrationRequest = new RegistrationRequest(id, first_name, last_name, -1, AppConstants.ApiParamValue.LOGINWITHGOOGLE);
+                if (email != null && !TextUtils.isEmpty(email))
+                    networkCommunicator.validateEmail(email, LoginActivity.this, false);
+                else
+                    LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_GOOGLE_LOGIN);
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                LogUtils.exception(e);
+            }
+
+
+        }
     }
 
     private void SetupFBLogin() {
@@ -230,9 +346,10 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                                         }
 
                                         faceBookUser = new FaceBookUser(id, first_name, last_name, gender, email);
-                                        registrationRequest = new RegistrationRequest(faceBookUser.getId(), faceBookUser.getName(), faceBookUser.getLastName(), -1);
+                                        registrationRequest = new RegistrationRequest(faceBookUser.getId(), faceBookUser.getName(), faceBookUser.getLastName(), -1, AppConstants.ApiParamValue.LOGINWITHFACEBOOK);
                                         registrationRequest.setGender(gender);
-                                        if (email!=null && !TextUtils.isEmpty(email))
+                                        registrationRequest.setFacebookId(faceBookUser.getId());
+                                        if (email != null && !TextUtils.isEmpty(email))
                                             networkCommunicator.validateEmail(email, LoginActivity.this, false);
                                         else
                                             LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_FACEBOOK_LOGIN);
@@ -297,7 +414,13 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
             case NetworkCommunicator.RequestCode.VALIDATE_EMAIL:
                 registrationRequest.setEmail(email);
                 layoutProgressRoot.setVisibility(View.GONE);
-                LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_FACEBOOK_LOGIN);
+                if (faceBookUser != null) {
+                    registrationRequest.setFacebookId(faceBookUser.getId());
+                    LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_FACEBOOK_LOGIN);
+                } else {
+                    registrationRequest.setGoogleId(mGoogleSignInAccount.getId());
+                    LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_GOOGLE_LOGIN);
+                }
                 break;
             case NetworkCommunicator.RequestCode.LOGIN_FB:
 
@@ -335,19 +458,21 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
 
             case NetworkCommunicator.RequestCode.LOGIN_FB:
 
-                SignUpOptions.open(context,registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_FB_LOGIN);
+                SignUpOptions.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_FB_LOGIN);
                 layoutProgressRoot.setVisibility(View.GONE);
 
                 break;
             case NetworkCommunicator.RequestCode.VALIDATE_EMAIL:
 
                 if (faceBookUser != null) {
-                    networkCommunicator.loginFb(new LoginRequest(faceBookUser.getId(), faceBookUser.getName(), faceBookUser.getLastName(), email, faceBookUser.getGender()), LoginActivity.this, false);
+                    networkCommunicator.loginFb(new LoginRequest(faceBookUser.getId(), faceBookUser.getName(), faceBookUser.getLastName(), email, faceBookUser.getGender(), AppConstants.ApiParamValue.LOGINWITHFACEBOOK), LoginActivity.this, false);
+                } else if (mGoogleSignInAccount != null) {
+                    registrationRequest.setGoogleId(mGoogleSignInAccount.getId());
+                    networkCommunicator.loginFb(new LoginRequest(mGoogleSignInAccount.getId(), mGoogleSignInAccount.getGivenName(), mGoogleSignInAccount.getFamilyName(), email,  AppConstants.ApiParamValue.LOGINWITHGOOGLE), LoginActivity.this, false);
                 }
                 break;
 
         }
     }
-
 
 }

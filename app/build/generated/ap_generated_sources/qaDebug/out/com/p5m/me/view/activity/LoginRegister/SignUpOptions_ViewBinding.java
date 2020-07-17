@@ -4,12 +4,14 @@ package com.p5m.me.view.activity.LoginRegister;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.CallSuper;
 import androidx.annotation.UiThread;
 import butterknife.Unbinder;
 import butterknife.internal.DebouncingOnClickListener;
 import butterknife.internal.Utils;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.p5m.me.R;
 import java.lang.IllegalStateException;
@@ -18,7 +20,7 @@ import java.lang.Override;
 public class SignUpOptions_ViewBinding implements Unbinder {
   private SignUpOptions target;
 
-  private View view7f0a0429;
+  private View view7f0a042c;
 
   private View view7f0a0080;
 
@@ -34,10 +36,11 @@ public class SignUpOptions_ViewBinding implements Unbinder {
     View view;
     target.textViewBottom = Utils.findRequiredViewAsType(source, R.id.textViewBottom, "field 'textViewBottom'", TextView.class);
     target.buttonLoginFacebook = Utils.findRequiredViewAsType(source, R.id.buttonLoginFacebook, "field 'buttonLoginFacebook'", Button.class);
+    target.signInButton = Utils.findRequiredViewAsType(source, R.id.signInButton, "field 'signInButton'", SignInButton.class);
     target.layoutProgress = Utils.findRequiredView(source, R.id.layoutProgress, "field 'layoutProgress'");
     view = Utils.findRequiredView(source, R.id.textViewLogin, "field 'textViewLogin' and method 'textViewLogin'");
     target.textViewLogin = Utils.castView(view, R.id.textViewLogin, "field 'textViewLogin'", TextView.class);
-    view7f0a0429 = view;
+    view7f0a042c = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -58,6 +61,7 @@ public class SignUpOptions_ViewBinding implements Unbinder {
     target.buttonMale = Utils.findRequiredViewAsType(source, R.id.buttonMale, "field 'buttonMale'", Button.class);
     target.buttonFemale = Utils.findRequiredViewAsType(source, R.id.buttonFemale, "field 'buttonFemale'", Button.class);
     target.buttonNext = Utils.findRequiredViewAsType(source, R.id.buttonNext, "field 'buttonNext'", Button.class);
+    target.layoutSignUpOption = Utils.findRequiredViewAsType(source, R.id.layoutSignUpOption, "field 'layoutSignUpOption'", LinearLayout.class);
     view = Utils.findRequiredView(source, R.id.buttonLogin, "method 'buttonLogin'");
     view7f0a0080 = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
@@ -77,6 +81,7 @@ public class SignUpOptions_ViewBinding implements Unbinder {
 
     target.textViewBottom = null;
     target.buttonLoginFacebook = null;
+    target.signInButton = null;
     target.layoutProgress = null;
     target.textViewLogin = null;
     target.textViewGenderError = null;
@@ -93,9 +98,10 @@ public class SignUpOptions_ViewBinding implements Unbinder {
     target.buttonMale = null;
     target.buttonFemale = null;
     target.buttonNext = null;
+    target.layoutSignUpOption = null;
 
-    view7f0a0429.setOnClickListener(null);
-    view7f0a0429 = null;
+    view7f0a042c.setOnClickListener(null);
+    view7f0a042c = null;
     view7f0a0080.setOnClickListener(null);
     view7f0a0080 = null;
   }
