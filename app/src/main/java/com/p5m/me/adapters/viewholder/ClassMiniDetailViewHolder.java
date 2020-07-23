@@ -146,7 +146,7 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 }
                 // Handle Cancel Booking
                 buttonJoin.setVisibility(View.VISIBLE);
-                textViewCreditPrice.setVisibility(View.VISIBLE);
+                textViewCreditPrice.setVisibility(View.GONE);
 
 
                 imageViewOptions1.setVisibility(View.GONE);
@@ -163,7 +163,7 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 textViewTrainerName.setVisibility(View.VISIBLE);
 
                 buttonJoin.setVisibility(View.VISIBLE);
-                textViewCreditPrice.setVisibility(View.VISIBLE);
+                textViewCreditPrice.setVisibility(View.GONE);
 
 
             } else if (shownInScreen == AppConstants.AppNavigation.SHOWN_IN_TRAINER_PROFILE) {

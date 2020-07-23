@@ -24,6 +24,7 @@ import com.p5m.me.R;
 import com.p5m.me.data.main.StoreApiModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.remote_config.RemoteConfigure;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
@@ -87,6 +88,15 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
         networkCommunicator.getActivities(this, false);
         RemoteConfigure.getFirebaseRemoteConfig(context).fetchRemoteConfig();
 //        RemoteConfigSetUp.getValues();
+
+        try{
+            AppConstants.physicalCreditValue = Integer.parseInt(RemoteConfigure.getFirebaseRemoteConfig(context).getRemoteConfigValue(RemoteConfigConst.PHYSICAL_CLASS_VALUE));
+            AppConstants.minCreditValue = Integer.parseInt(RemoteConfigure.getFirebaseRemoteConfig(context).getRemoteConfigValue(RemoteConfigConst.VIRTUAL_CLASS_VALUE));
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
         if (Build.VERSION.SDK_INT >= 23) {
             if (PermissionUtility.verifyLocationPermissions(Splash.this)) {

@@ -1060,7 +1060,7 @@
 
     <string name="includes_credits">%s  نقط لحجز</string>
     <string name="credit_value">كم عدد النقاط التي أحتاجها للانضمام إلى كلاس؟</string>
-    <string name="credits_remaining">لديك d/%d% نقطة متبقية</string>
+    <string name="credits_remaining">You have %d/%d credits remaining</string>
     <string name="buy_more_credits"><u>اشتري المزيد من النقاط </u></string>
     <string name="join_fail_limit_exhaust">لقد تجاوزت عدد المرات التي يمكنك زيارة هذه النادي مع خطتك. يمكنك إضافة المزيد من النقاط لحسابك للانضمام إلى هذا الكلاس.</string>
     <string name="join_fail_limit_exhaust_booking_with_friend">You  have exceeded the number of times you can visit this gym with your plan. You can add more credits to your account in order to join this class, for your guest?</string>

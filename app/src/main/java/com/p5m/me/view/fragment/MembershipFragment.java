@@ -386,6 +386,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                 }
             }
             if (user.isBuyMembership()) {
+                memberShipAdapter.clearAll();
                 imageViewInfo.setVisibility(View.VISIBLE);
                 swipeRefreshLayout.setRefreshing(true);
                 networkCommunicator.getPackages(user.getId(), this, false);
@@ -572,6 +573,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                         else {
                             if(packages!=null&&packages.size()>0){
                                 memberShipAdapter.clearAllOwnedPackages();
+                                memberShipAdapter.clearAll();
                             }
                             memberShipAdapter.addAllOfferedPackages(packages);
 
