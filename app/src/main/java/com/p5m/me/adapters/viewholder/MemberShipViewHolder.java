@@ -179,6 +179,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     mainLayoutActivePackageDropin.setVisibility(View.GONE);
                     mainLayoutUserPakages.setVisibility(View.VISIBLE);
                     layoutMainOfferedPackage.setVisibility(View.GONE);
+                    packageTitle.setVisibility(View.GONE);
                     packageTitle.setText(model.getPackageName());
                     packageUsage.setText(String.format(context.getResources().getString(R.string.credits_remaining), Integer.parseInt(LanguageUtils.numberConverter(model.getBalance())), Integer.parseInt(LanguageUtils.numberConverter(model.getTotalCredit()))));
                     packageValidForOwn.setText(context.getString(R.string.valid_till) + " " + DateUtils.getPackageClassDate(model.getExpiryDate()));
@@ -464,8 +465,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
     private void setMaxAvailableClasses(int credits){
         if(credits>0){
-
-            String message = String.format(context.getString(R.string.book_class_limits),credits<AppConstants.maxCreditValue?1:credits/AppConstants.maxCreditValue,credits/AppConstants.minCreditValue);
+            String message = String.format(context.getString(R.string.book_class_limits),credits<AppConstants.maxCreditValue?"1":credits/AppConstants.maxCreditValue+"",(credits/AppConstants.minCreditValue)+"");
             txtPackageOffredClassesLimits.setText(message);
             txtPackageOffredClassesLimits.setVisibility(View.VISIBLE);
             txtPackageOffredClassesLimits.setPaintFlags(txtPackageOffredClassesLimits.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);

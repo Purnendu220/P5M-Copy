@@ -717,7 +717,7 @@ Would you like to view your balance? </string>
     <string name="insufficient_credits">You don\'t have enough credits to join this class. Would you like to add more credits to join this class?</string>
     <string name="class_offer_promo">Free credit offer applied</string>
 
-    <string name="book_class_limits">book %d - %d classes</string>
+    <string name="book_class_limits">Book %s - %s classes</string>
     <string name="free_class">Free</string>
     <string name="class_credits"><b>%s credits</b></string>
     <string name="updated_credit_balance" tools:ignore="ExtraTranslation">Updated credit balance</string>

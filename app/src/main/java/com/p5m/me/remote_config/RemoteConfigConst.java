@@ -77,6 +77,9 @@ public class RemoteConfigConst {
     public static String BOOK_OTHERS="book_button_other";
     public static String HOW_IT_WORKS="how_it_works";
     public static String CREDIT_VALUE_MODEL = "credit_values_model";
+    public static String PHYSICAL_CLASS_VALUE = "physical_class_value";
+    public static String VIRTUAL_CLASS_VALUE = "virtual_class_value";
+
 
 
 
