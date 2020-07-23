@@ -8,8 +8,8 @@ public final class BuildConfig {
   public static final String APPLICATION_ID = "com.p5m.me";
   public static final String BUILD_TYPE = "debug";
   public static final String FLAVOR = "qa";
-  public static final int VERSION_CODE = 71;
-  public static final String VERSION_NAME = "1.9.00";
+  public static final int VERSION_CODE = 75;
+  public static final String VERSION_NAME = "1.9.02";
   // Fields from product flavor: qa
   public static final String AGORA_APP_CUSTOMER_CERTIFICATE = "30d9c2ed76a34e27ab05ae85682ae4fc";
   public static final String AGORA_APP_CUSTOMER_ID = "418489ad97644a3e87695a6798a11aea";
@@ -24,6 +24,6 @@ public final class BuildConfig {
   public static final boolean IS_PRODUCTION = false;
   public static final String MIXPANEL_KEY = "705daac4d807e105c1ddc350c9324ca2";
   public static final String SENDER_ID = "109210713388";
-  public static final String VERSION_NAME_API = "1.9.00";
+  public static final String VERSION_NAME_API = "1.9.02";
   public static final String YOUTUBE_API_KEY = "AIzaSyDqCAlD7vilwhBhp49T1PU4SpH5Ap2KGfA";
 }

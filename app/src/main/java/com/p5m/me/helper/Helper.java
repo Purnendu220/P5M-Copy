@@ -49,6 +49,7 @@ import com.p5m.me.data.main.User;
 import com.p5m.me.fxn.utility.Constants;
 import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.remote_config.RemoteConfigSetUp;
+import com.p5m.me.remote_config.RemoteConfigure;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
@@ -215,22 +216,28 @@ public class Helper {
         } else {
             String BOOK_FIND_CLASS_VALUE = RemoteConfigConst.BOOK_FIND_CLASS_VALUE;
             if (BOOK_FIND_CLASS_VALUE != null && !BOOK_FIND_CLASS_VALUE.isEmpty()) {
-                Gson g = new Gson();
-                BookButtonModel p = g.fromJson(BOOK_FIND_CLASS_VALUE, new TypeToken<BookButtonModel>() {
-                }.getType());
-                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en")) {
-                    if (model.isVideoClass())
-                        buttonJoin.setText(p.getOnline_button_en());
-                    else
-                        buttonJoin.setText(p.getPhysical_button_en());
-                } else {
-                    if (model.isVideoClass())
-                        buttonJoin.setText(p.getOnline_button_ar());
-                    else
-                        buttonJoin.setText(p.getPhysical_button_ar());
-                }
+                try{
+                    Gson g = new Gson();
+                    BookButtonModel p = g.fromJson(BOOK_FIND_CLASS_VALUE, new TypeToken<BookButtonModel>() {
+                    }.getType());
+                    if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en")) {
+                        if (model.isVideoClass())
+                            buttonJoin.setText(p.getOnline_button_en());
+                        else
+                            buttonJoin.setText(p.getPhysical_button_en());
+                    } else {
+                        if (model.isVideoClass())
+                            buttonJoin.setText(p.getOnline_button_ar());
+                        else
+                            buttonJoin.setText(p.getPhysical_button_ar());
+                    }
 
-                RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+                    RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
 
 
             }
@@ -264,22 +271,27 @@ public class Helper {
         } else {
             String BOOK_OTHER_VALUE = RemoteConfigConst.BOOK_OTHER_VALUE;
             if (BOOK_OTHER_VALUE != null && !BOOK_OTHER_VALUE.isEmpty()) {
-                Gson g = new Gson();
-                BookButtonModel p = g.fromJson(BOOK_OTHER_VALUE, new TypeToken<BookButtonModel>() {
-                }.getType());
-                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en")) {
-                    if (model.isVideoClass())
-                        buttonJoin.setText(p.getOnline_button_en());
-                    else
-                        buttonJoin.setText(p.getPhysical_button_en());
-                } else {
-                    if (model.isVideoClass())
-                        buttonJoin.setText(p.getOnline_button_ar());
-                    else
-                        buttonJoin.setText(p.getPhysical_button_ar());
-                }
+                try{
+                    Gson g = new Gson();
+                    BookButtonModel p = g.fromJson(BOOK_OTHER_VALUE, new TypeToken<BookButtonModel>() {
+                    }.getType());
+                    if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en")) {
+                        if (model.isVideoClass())
+                            buttonJoin.setText(p.getOnline_button_en());
+                        else
+                            buttonJoin.setText(p.getPhysical_button_en());
+                    } else {
+                        if (model.isVideoClass())
+                            buttonJoin.setText(p.getOnline_button_ar());
+                        else
+                            buttonJoin.setText(p.getPhysical_button_ar());
+                    }
 
-                RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+                    RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+
+                }
+                catch (Exception e){
+                    e.printStackTrace();}
 
 
             }
@@ -921,13 +933,14 @@ public static PriceModelMaster  getPriceModelForCredit(List<PriceModelMaster> ma
     }
 
     public static int getBaseCreditValue() {
-        if(TempStorage.getDefault().getPriceModelMaster()!=null){
+        if(TempStorage.getDefault()!=null&&TempStorage.getDefault().getPriceModelMaster()!=null){
             for (PriceModelMaster master:TempStorage.getDefault().getPriceModelMaster()) {
                 if(master.getClassMode().equalsIgnoreCase(AppConstants.ClassModes.PHYSICAL)){
                         return master.getCredits();
                     }
             }
         }
+
 
         return AppConstants.physicalCreditValue;
     }
