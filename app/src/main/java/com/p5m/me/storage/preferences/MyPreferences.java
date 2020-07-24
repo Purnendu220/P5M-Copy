@@ -165,9 +165,11 @@ public class MyPreferences {
         return PreferencesManager.getBoolean(AppConstants.Pref.FACEBOOK_LOGIN, false);
     }
 
+
     public boolean isLoginWithGoogle() {
         return PreferencesManager.getBoolean(AppConstants.Pref.GOOGLE_LOGIN, false);
     }
+
 
     public String getDeviceToken() {
         return PreferencesManager.getString(AppConstants.Pref.DEVICE_TOKEN, null);

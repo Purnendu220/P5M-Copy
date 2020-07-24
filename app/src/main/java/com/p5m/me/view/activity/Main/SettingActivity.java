@@ -15,6 +15,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.facebook.AccessToken;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.p5m.me.FAQAdapter;
 import com.p5m.me.R;
 import com.p5m.me.analytics.IntercomEvents;
@@ -28,6 +33,7 @@ import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.ToastUtils;
@@ -161,12 +167,30 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case R.id.layoutLogout:
                 imageViewLogout.setVisibility(View.GONE);
                 progressBarLogout.setVisibility(View.VISIBLE);
+                checkForGoogleUser();
                 networkCommunicator.logout(new LogoutRequest(TempStorage.getUser().getId()), this, false);
                 break;
             case R.id.layoutChangeCountry:
                 if (categories != null && countryModel != null)
                     openCountryChangeDialog();
                 break;
+        }
+    }
+
+    private void checkForGoogleUser() {
+        try {
+            if (MyPreferences.getInstance().isLoginWithGoogle()) {
+                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken(activity.getString(R.string.default_web_client_id))
+                        .requestEmail()
+                        .requestProfile()
+                        .build();
+                // Build a GoogleSignInClient with the options specified by gso.
+                GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(activity, gso);
+                mGoogleSignInClient.signOut();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
