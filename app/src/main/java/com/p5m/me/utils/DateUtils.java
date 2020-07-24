@@ -546,4 +546,20 @@ public class DateUtils {
     return 0;
     }
 
+    public static String getDateEnglish(String date){
+        String dateStr=date;
+        try {
+        SimpleDateFormat classDateEng = new SimpleDateFormat("yyyy-MM-dd", new Locale("en"));
+
+            Date cla = classDate.parse(date);
+            dateStr = classDateEng.format(cla);
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    return dateStr;
+    }
+
 }
