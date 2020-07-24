@@ -56,6 +56,7 @@ import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.RefrenceWrapper;
@@ -353,12 +354,16 @@ public class ClassList extends BaseFragment implements ViewPagerFragmentSelectio
 
 
     private ClassListRequest generateRequest() {
-
+       String localdate= date;
         if (classListRequest == null) {
             classListRequest = new ClassListRequest();
         }
-
-        classListRequest.setClassDate(date);
+           try {
+               localdate =  DateUtils.getDateEnglish(date);
+           }catch (Exception e){
+               e.printStackTrace();
+           }
+        classListRequest.setClassDate(localdate);
         classListRequest.setPage(page);
         classListRequest.setSize(pageSizeLimit);
         classListRequest.setUserId(TempStorage.getUser().getId());

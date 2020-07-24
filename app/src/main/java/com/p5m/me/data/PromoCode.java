@@ -10,7 +10,7 @@ public class PromoCode implements java.io.Serializable {
     private float priceAfterDiscount;
     private String promoCode;
     private String promoDesc;
-    private int extraNumberOfDays;
+    private int extraDays;
     private int extraCredits;
 
     public float getPrice() {
@@ -62,11 +62,11 @@ public class PromoCode implements java.io.Serializable {
     }
 
     public int getExtraNumberOfDays() {
-        return extraNumberOfDays;
+        return extraDays;
     }
 
     public void setExtraNumberOfDays(int extraNumberOfDays) {
-        this.extraNumberOfDays = extraNumberOfDays;
+        this.extraDays = extraNumberOfDays;
     }
 
 
