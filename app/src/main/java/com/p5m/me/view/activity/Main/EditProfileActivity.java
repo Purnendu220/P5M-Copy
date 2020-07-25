@@ -360,10 +360,16 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                 dialogDob();
                 break;
             case R.id.layoutChangePass:
-                if (TempStorage.getUser().getFacebookId()==null||TempStorage.getUser().getFacebookId().isEmpty()||TempStorage.getUser().getFacebookId().equalsIgnoreCase("0")) {
-                    ChangePasswordActivity.openActivity(context);
-                } else {
+                if (TempStorage.getUser().getFacebookId()!=null&& !TempStorage.getUser().getFacebookId().isEmpty()&& !TempStorage.getUser().getFacebookId().equalsIgnoreCase("0")
+
+                        ) {
                     dialogFBChangePass();
+                }else if (TempStorage.getUser().getGoogleId()!=null&& !TempStorage.getUser().getGoogleId().isEmpty()&& !TempStorage.getUser().getGoogleId()
+                        .equalsIgnoreCase("0")) {
+                    dialogFBChangePass();
+                } else {
+
+                    ChangePasswordActivity.openActivity(context);
                 }
                 break;
             case R.id.textViewNationality:

@@ -15,6 +15,7 @@ public class User implements java.io.Serializable {
     private boolean favTrainerNotification;
     private long lastActiveDate;
     private String facebookId;
+    private String googleId;
     private String profileImage;
     private String firstName;
     private String lastName;
@@ -343,6 +344,14 @@ public class User implements java.io.Serializable {
 
     public void setCurrencyCode(String currencyCode) {
         this.currencyCode = currencyCode;
+    }
+
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
     }
 
 
