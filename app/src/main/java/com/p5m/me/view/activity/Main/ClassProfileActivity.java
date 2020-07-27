@@ -395,7 +395,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         networkCommunicator.getMyUser(new NetworkCommunicator.RequestListener() {
             @Override
             public void onApiSuccess(Object response, int requestCode) {
-                int creditRequiredForClass =  Helper.requiredCreditForClass(TempStorage.getUser(),classModel,1);
+                int creditRequiredForClass =  Helper.requiredCreditForClass(TempStorage.getUser(),classModel,2);
                 UserPackageInfo userPackageInfo = new UserPackageInfo(TempStorage.getUser());
                 if(userPackageInfo.haveGeneralPackage&&creditRequiredForClass>userPackageInfo.userPackageGeneral.getBalance()){
                     showAlertForAddCredit(mContext.getString(R.string.insufficient_credits),mContext.getString(R.string.add_credits),1);
@@ -546,7 +546,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 break;
 
             case R.id.layoutUserWallet:
-                showWalletAlert();
+//                showWalletAlert();
                 break;
 
             case R.id.imgCloseWarning:
@@ -575,10 +575,13 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             case NetworkCommunicator.RequestCode.JOIN_CLASS:
                 User user = ((ResponseModel<User>) response).data;
                 classModel.setUserJoinStatus(true);
+                EventBroadcastHelper.sendUserUpdate(context, user);
+
+                handleP5MCredits();
+
                 saved5MinClass(classModel);
 
-                EventBroadcastHelper.sendUserUpdate(context, user);
-                int joinWith;
+               int joinWith;
                 if (isBookWithFriendInProgress) {
                     joinWith = AppConstants.Values.UNJOIN_BOTH_CLASS; // Book With Friend
                 } else {

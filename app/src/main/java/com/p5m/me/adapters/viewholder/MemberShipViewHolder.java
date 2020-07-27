@@ -183,7 +183,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     packageTitle.setText(model.getPackageName());
                     packageUsage.setText(String.format(context.getResources().getString(R.string.credits_remaining), Integer.parseInt(LanguageUtils.numberConverter(model.getBalance())), Integer.parseInt(LanguageUtils.numberConverter(model.getTotalCredit()))));
                     packageValidForOwn.setText(context.getString(R.string.valid_till) + " " + DateUtils.getPackageClassDate(model.getExpiryDate()));
-
+                    textViewBuyMoreCredits.setText(Html.fromHtml("<u>"+context.getString(R.string.add_credits)+"</u>"));
                     if(model.getBalance()<=Helper.getBaseCreditValue()){
                         textViewBuyMoreCredits.setVisibility(View.VISIBLE);
                     }else{

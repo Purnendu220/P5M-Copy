@@ -719,6 +719,10 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                     textViewClassName.setText(LanguageUtils.numberConverter(userPackage.getBalance()) + " " + context.getString(R.string.p5m_credits));
                 }
                 setExtendedText();
+                if(userAlreadyHavePackage ){
+                    textViewClass.setText(R.string.updated_credit_balance);
+                }
+
                 break;
 
         }

@@ -869,6 +869,7 @@ public class MixPanel {
             props.put("Location", user.getLocation());
             props.put("Nationality", user.getNationality());
             props.put("FacebookId", user.getFacebookId());
+            props.put("GoogleId", user.getGoogleId());
             props.put("Category List", MixPanel.getCategoryList(user.getClassCategoryList()));
             props.put("Number of Transactions", user.getNumberOfTransactions() + "");
             props.put("General Package", userPackageInfo.haveGeneralPackage ?

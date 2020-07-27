@@ -1073,7 +1073,7 @@
     <string name="book_class_limits">  %s - %s كلاس لحجز</string>
     <string name="free_class">مجانا</string>
     <string name="class_credits"> %s نقاط</string>
-    <string name="updated_credit_balance" tools:ignore="ExtraTranslation">تحديث رصيدك </string>
-    <string name="credit_balance" tools:ignore="ExtraTranslation">الرصيد الدائن</string>
+    <string name="updated_credit_balance" >تحديث رصيدك </string>
+    <string name="credit_balance" >الرصيد الدائن</string>
 
 </resources>
