@@ -268,9 +268,9 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                 registrationRequest = new RegistrationRequest(id, first_name, last_name, -1, AppConstants.ApiParamValue.LOGINWITHGOOGLE);
                 if (email != null && !TextUtils.isEmpty(email))
                     networkCommunicator.validateEmail(email, SignUpOptions.this, false);
-                else
-                    LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_GOOGLE_LOGIN);
-
+                else {
+                     LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_GOOGLE_LOGIN);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 LogUtils.exception(e);
@@ -406,6 +406,8 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                     LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_FACEBOOK_LOGIN);
                 } else if(mGoogleSignInAccount!=null){
                     registrationRequest.setGoogleId(mGoogleSignInAccount.getId());
+                    registrationRequest.setStoreId(TempStorage.getCountryId());
+
                     LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_GOOGLE_LOGIN);
                 } else {
                     setEmail(email);

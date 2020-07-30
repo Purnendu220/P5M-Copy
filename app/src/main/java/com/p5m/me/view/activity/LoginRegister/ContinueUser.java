@@ -57,6 +57,7 @@ public class ContinueUser extends BaseActivity implements View.OnClickListener, 
         buttonLogin.setOnClickListener(this);
         buttonRegister.setOnClickListener(this);
         textViewSwitch.setOnClickListener(this);
+        TempStorage.setCountryId(0);
         if (TempStorage.getCountries() == null)
             networkCommunicator.getStoreData(this, false);
 

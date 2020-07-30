@@ -395,7 +395,7 @@
     <string name="classs">Class</string>
     <string name="classs_one">class</string>
     <string name="p5m_credits">credits</string>
-    <string name="p5m_credits_value">%s credits</string>
+    <string name="p5m_credits_value">%1s credits</string>
     <string name="inludes_p5m_credits">Includes</string>
 
     <string name="payment_pending">Payment pending</string>
@@ -706,11 +706,11 @@ Would you like to view your balance? </string>
     <!-- Legal digits for channel names -->
     <string name="includes_credits">%s credits</string>
     <string name="credit_value">How many credits do I need to join a class?</string>
-    <string name="credits_remaining">You have %d/%d credits remaining</string>
+    <string name="credits_remaining">You have  %1$s / %2$s credits remaining</string>
     <string name="buy_more_credits"><u>Buy more credits</u></string>
     <string name="join_fail_limit_exhaust">You  have exceeded the number of times you can visit this gym with your plan. You can add more credits to your account in order to join this class.</string>
-    <string name="join_fail_limit_exhaust_booking_with_friend">You  have exceeded the number of times you can visit this gym with your plan. You can add more credits to your account in order to join this class, for your guest?</string>
-    <string name="join_fail_limit_exhaust_booking_with_friend_two_ready">You  have exceeded the number of times you can visit this gym with your plan. You can add more credits to your account in order to join this class, for yourself and your guest?</string>
+    <string name="join_fail_limit_exhaust_booking_with_friend">You  have exceeded the number of times you can visit this gym with yout plan. You can add more credits to your account in order to join this class.</string>
+    <string name="join_fail_limit_exhaust_booking_with_friend_two_ready">Your don\'t have enough credits to join this class. Would you like to add more credits to join this class?</string>
     <string name="add_credits">Add credits</string>
     <string name="add_more_credits"><u>Add more credits</u></string>
     <string name="join_fail_date_expire">Your plan ends before the date of this class . Would you like to add extra credits to your account in order to secure a spot in this class? </string>
@@ -722,6 +722,8 @@ Would you like to view your balance? </string>
     <string name="class_credits"><b>%s credits</b></string>
     <string name="updated_credit_balance">Updated credit balance</string>
     <string name="credit_balance" >Number of credits</string>
+    <string name="_5_credits">5 Credits</string>
+    <string name="_10_credits">10 Credits</string>
 
 
 </resources>

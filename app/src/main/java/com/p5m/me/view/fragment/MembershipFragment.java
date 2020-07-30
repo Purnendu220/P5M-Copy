@@ -426,7 +426,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                     }
                     if (mFriendsData != null && aPackage.getGymVisitLimit() == 1) {
                         DialogUtils.showBasicMessage(context, "",
-                                getString(R.string.this_package_has) + " " + aPackage.getGymVisitLimit() + getString(R.string.limit_for_this_gym)
+                                getString(R.string.this_package_has) + " " + LanguageUtils.numberConverter(aPackage.getGymVisitLimit()) + getString(R.string.limit_for_this_gym)
                                 , context.getResources().getString(R.string.continue_with), new MaterialDialog.SingleButtonCallback() {
                                     @Override
                                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {

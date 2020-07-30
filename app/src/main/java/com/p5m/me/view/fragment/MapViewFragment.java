@@ -60,10 +60,13 @@ import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.data.request.BranchListRequest;
 import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
+import com.p5m.me.fxn.utility.Constants;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.DateUtils;
+import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.RefrenceWrapper;
 import com.p5m.me.utils.ToastUtils;
@@ -74,10 +77,14 @@ import com.p5m.me.view.custom.ShowSchedulesBootomDialogFragment;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -124,6 +131,8 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     private boolean isMarkerClick = false;
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
     private static final long MIN_TIME_BW_UPDATES = 1000 * 10 * 1; // 1 minute
+    private String dateEnglish;
+
 
     public static Fragment createFragment(String date, int position, int shownIn) {
         Fragment tabFragment = new MapViewFragment();
@@ -157,7 +166,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         fragmentPositionInViewPager = getArguments().getInt(AppConstants.DataKey.TAB_POSITION_INT);
         position = RefrenceWrapper.getRefrenceWrapper(context).getLatLng();
         setNearerGymView();
-        MixPanel.trackFindClass(showInScreen,false);
+        MixPanel.trackFindClass(showInScreen, false);
     }
 
     private void checkLocation() {
@@ -181,7 +190,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
             case LOCATION_REQUEST_PERMISSION: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                   getLocation();
+                    getLocation();
                 }
                 return;
             }
@@ -189,6 +198,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
 
         }
     }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -211,7 +221,12 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
         if (branchListRequest == null) {
             branchListRequest = new BranchListRequest();
         }
-        branchListRequest.setClassDate(date);
+        if (Constants.LANGUAGE == Locale.ENGLISH) {
+            branchListRequest.setClassDate(date);
+
+        } else {
+            branchListRequest.setClassDate(DateUtils.dateConverter(date));
+        }
         branchListRequest.setUserId(TempStorage.getUser().getId());
 
         branchListRequest.setActivityList(null);
@@ -242,7 +257,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
                 activities.add(String.valueOf(((ClassActivity) classesFilter.getObject()).getId()));
             } else if (classesFilter.getObject() instanceof GymDataModel) {
                 gymList.add(String.valueOf(((GymDataModel) classesFilter.getObject()).getId()));
-            }else if (classesFilter.getObject() instanceof PriceModel) {
+            } else if (classesFilter.getObject() instanceof PriceModel) {
                 priceModelList.add(String.valueOf(((PriceModel) classesFilter.getObject()).getValue()));
             } else if (classesFilter.getObject() instanceof Filter.FitnessLevel) {
                 fitnessLevelList.add(String.valueOf(((Filter.FitnessLevel) classesFilter.getObject()).getLevel()));
@@ -313,7 +328,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     @Override
     public void onResume() {
         super.onResume();
-        if (mMap != null){
+        if (mMap != null) {
             mMap.clear();
             callNearerGymApi();
         }
@@ -324,9 +339,15 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     public void onAdapterItemClick(RecyclerView.ViewHolder viewHolder, View view, Object model, int position) {
         switch (view.getId()) {
             case R.id.textViewShowSchedule:
-                MixPanel.trackMapViewClick("schedule",branchModel.get(position));
+                MixPanel.trackMapViewClick("schedule", branchModel.get(position));
+                if (Constants.LANGUAGE == Locale.ENGLISH) {
+                    dateEnglish = date;
+
+                } else {
+                    dateEnglish=DateUtils.dateConverter(date);
+                }
                 ShowSchedulesBootomDialogFragment showSchedulesBootomDialogFragment =
-                        ShowSchedulesBootomDialogFragment.newInstance(context, date, Collections.singletonList(branchModel.get(position).getBranchId()), branchModel.get(position), this);
+                        ShowSchedulesBootomDialogFragment.newInstance(context, dateEnglish, Collections.singletonList(branchModel.get(position).getBranchId()), branchModel.get(position), this);
                 showSchedulesBootomDialogFragment.show(((HomeActivity) context).getSupportFragmentManager(),
                         "show_schedule");
                 break;
@@ -336,7 +357,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
             case R.id.textViewGymName:
                 if (model instanceof BranchModel) {
                     BranchModel branchModel = (BranchModel) model;
-                    MixPanel.trackMapViewClick("visit_gym_profile",branchModel);
+                    MixPanel.trackMapViewClick("visit_gym_profile", branchModel);
                     GymProfileActivity.open(context, branchModel.getGymId(), AppConstants.AppNavigation.SHOWN_IN_MAP_VIEW);
                 }
                 break;
@@ -384,8 +405,6 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
                 break;
         }
     }
-
-
 
 
     @Override
@@ -475,7 +494,7 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
             CircleOptions circleOptions = new CircleOptions().center(position).radius(50000).strokeColor(Color.TRANSPARENT)
                     .fillColor(Color.TRANSPARENT);
             mCircle = mMap.addCircle(circleOptions);
-        }else{
+        } else {
             LogUtils.debug("Position is null");
         }
         for (int i = 0; i < branchModel.size(); i++) {
@@ -622,8 +641,8 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
             if (loc != null) {
                 lat = loc.getLatitude();
                 lang = loc.getLongitude();
-                TempStorage.setLat(lat+"");
-                TempStorage.setLng(lang+"");
+                TempStorage.setLat(lat + "");
+                TempStorage.setLng(lang + "");
                 position = new LatLng(lat, lang);
             }
 
@@ -661,7 +680,6 @@ public class MapViewFragment extends BaseFragment implements OnMapReadyCallback,
     public void onProviderDisabled(String provider) {
 
     }
-
 
 
     private class CustomClusterRenderer extends DefaultClusterRenderer<MapData> {

@@ -1042,6 +1042,7 @@ public class NetworkCommunicator {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> restResponse, ResponseModel response) {
                 LogUtils.networkSuccess("NetworkCommunicator joinClass onResponse data " + response);
+                TempStorage.setCountryId(0);
                 Intercom.client().logout();
                 requestListener.onApiSuccess(response, requestCode);
             }

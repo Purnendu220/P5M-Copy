@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Build;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
@@ -181,7 +182,8 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     layoutMainOfferedPackage.setVisibility(View.GONE);
                     packageTitle.setVisibility(View.GONE);
                     packageTitle.setText(model.getPackageName());
-                    packageUsage.setText(String.format(context.getResources().getString(R.string.credits_remaining), Integer.parseInt(LanguageUtils.numberConverter(model.getBalance())), Integer.parseInt(LanguageUtils.numberConverter(model.getTotalCredit()))));
+                        packageUsage.setText(String.format(context.getResources().getString(R.string.credits_remaining),numberConverter(model.getBalance()), numberConverter(model.getTotalCredit())));
+
                     packageValidForOwn.setText(context.getString(R.string.valid_till) + " " + DateUtils.getPackageClassDate(model.getExpiryDate()));
                     textViewBuyMoreCredits.setText(Html.fromHtml("<u>"+context.getString(R.string.add_credits)+"</u>"));
                     if(model.getBalance()<=Helper.getBaseCreditValue()){
@@ -212,7 +214,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                        String includesCredits =  String.format(context.getString(R.string.includes_credits),numberConverter(model.getCredits()));
                         txtPackageOffredCredits.setText(includesCredits+ "" + context.getString(R.string.at_any_gym));
                         setTextValidityPeriod(model);
-                        txtPriceAfterOffer.setText(LanguageUtils.numberConverter(model.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()).toUpperCase());
+                        txtPriceAfterOffer.setText(numberConverter(model.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()).toUpperCase());
                         setPackageTags(model.getId());
 
 
@@ -465,7 +467,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
     private void setMaxAvailableClasses(int credits){
         if(credits>0){
-            String message = String.format(context.getString(R.string.book_class_limits),credits<AppConstants.maxCreditValue?"1":credits/AppConstants.maxCreditValue+"",(credits/AppConstants.minCreditValue)+"");
+            String message = String.format(context.getString(R.string.book_class_limits),credits<AppConstants.maxCreditValue?LanguageUtils.numberConverter(1):LanguageUtils.numberConverter(credits/AppConstants.maxCreditValue),LanguageUtils.numberConverter(credits/AppConstants.minCreditValue)+"");
             txtPackageOffredClassesLimits.setText(message);
             txtPackageOffredClassesLimits.setVisibility(View.VISIBLE);
             txtPackageOffredClassesLimits.setPaintFlags(txtPackageOffredClassesLimits.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);

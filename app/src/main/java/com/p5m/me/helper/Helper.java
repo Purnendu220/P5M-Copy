@@ -641,7 +641,7 @@ public class Helper {
 
     public static String getClassCreditValue(Context context,ClassModel model){
         if(model!=null&&model.getCredit()>0){
-            return String.format(context.getString(R.string.p5m_credits_value),model.getCredit()+"");
+            return String.format(context.getString(R.string.p5m_credits_value),LanguageUtils.numberConverter(model.getCredit()));
 
         }
         else {

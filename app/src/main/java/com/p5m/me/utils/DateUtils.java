@@ -41,6 +41,7 @@ public class DateUtils {
     private static SimpleDateFormat classTime24Format = new SimpleDateFormat("HH:mm", Locale.getDefault());
     private static SimpleDateFormat classTime12Format = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
     private static SimpleDateFormat ExtendedDateFormat = new SimpleDateFormat("d MMM ", Locale.getDefault());
+    private static SimpleDateFormat finalDateFormat = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);
 
     public static void reInitialize() {
 
@@ -230,6 +231,14 @@ public class DateUtils {
             e.printStackTrace();
             LogUtils.exception(e);
         }
+        return "";
+    }
+  public static String dateConverter(String date) {
+      try {
+         return finalDateFormat.format(finalDateFormat.parse(date));
+      } catch (ParseException e) {
+          e.printStackTrace();
+      }
         return "";
     }
 

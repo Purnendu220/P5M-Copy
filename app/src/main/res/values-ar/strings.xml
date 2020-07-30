@@ -1045,7 +1045,7 @@
     <string name="online_count">Users Online (%d)</string>
     <string name="welcome">Welcome</string>
     <string name="your_home">Your Home</string>
-    <string name="start_call">Start</string>
+    <string name="start_call">مفهوم</string>
     <string name="class_not_started_yet">Class not started yet</string>
     <string name="time_not_came">Your class starts at %s on %s Please try again %s minutes before the class start</string>
     <string name="available_balance">Available Balance</string>
@@ -1060,11 +1060,12 @@
 
     <string name="includes_credits">%s  نقط لحجز</string>
     <string name="credit_value">كم عدد النقاط التي أحتاجها للانضمام إلى كلاس؟</string>
-    <string name="credits_remaining">You have %d/%d credits remaining</string>
+    <!--<string name="credits_remaining">لديك  نقطة متبقية</string>-->
+    <string name="credits_remaining">%1$s / %2$s نقطة متبقية</string>
     <string name="buy_more_credits"><u>اشتري المزيد من النقاط </u></string>
     <string name="join_fail_limit_exhaust">لقد تجاوزت عدد المرات التي يمكنك زيارة هذه النادي مع خطتك. يمكنك إضافة المزيد من النقاط لحسابك للانضمام إلى هذا الكلاس.</string>
-    <string name="join_fail_limit_exhaust_booking_with_friend">You  have exceeded the number of times you can visit this gym with your plan. You can add more credits to your account in order to join this class, for your guest?</string>
-    <string name="join_fail_limit_exhaust_booking_with_friend_two_ready">You  have exceeded the number of times you can visit this gym with your plan. You can add more credits to your account in order to join this class, for yourself and your guest?</string>
+    <string name="join_fail_limit_exhaust_booking_with_friend">لقد تجاوزت عدد المرات التي يمكنك زيارة هذه النادي مع خطتك. يمكنك إضافة المزيد من النقاط لحسابك للانضمام إلى هذا الكلاس.</string>
+    <string name="join_fail_limit_exhaust_booking_with_friend_two_ready">ليس لديك ما يكفي من النقاط للانضمام إلى هذا الكلاس. هل تريدفي إضافة المزيد من النقاط للانضمام إلى هذا الكلاس؟</string>
     <string name="add_credits">أضف نقاط</string>
     <string name="add_more_credits"><u>أضف المزيد من النقاط </u></string>
     <string name="join_fail_date_expire">خطتك تنتهي قبل تاريخ هذا الكلاس. هل تريد إضافة نقاط إضافية إلى حسابك من أجل تأمين مكان في هذا الكلاس؟ </string>
@@ -1075,5 +1076,9 @@
     <string name="class_credits"> %s نقاط</string>
     <string name="updated_credit_balance" >تحديث رصيدك </string>
     <string name="credit_balance" >الرصيد الدائن</string>
+    <string name="p5m_credits">نقاط</string>
+    <string name="p5m_credits_value">نقاط %1$s</string>
+    <string name="_5_credits">5 Credits</string>
+    <string name="_10_credits">10 Credits</string>
 
 </resources>
