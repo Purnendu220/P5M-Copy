@@ -56,6 +56,7 @@
     <string name="donot_signup">Don\'t have an account?</string>
     <string name="done">Done</string>
     <string name="already_account">Already have an account? </string>
+    <string name="already_account_error">Already have an account </string>
 
     <!--<string name="agree">By login you are agree to our <b>terms of service</b>\n and <b>privacy policy</b>.</string>-->
     <!--<string name="facebook_permission">Email permission is required to continue. Kindly login with facebook and grant the permission.</string>-->
@@ -122,7 +123,7 @@
     <string name="your_current_plan">YOUR CURRENT PLAN</string>
     <string name="select">SELECT</string>
     <string name="of"><b>of</b></string>
-    <string name="classes_remaining" translatable="false">classes remaining</string>
+    <string name="classes_remaining">credits remaining</string>
     <string name="valid_till">Valid till</string>
     <string name="coach_at">Coach at </string>
     <string name="recharge">"<u>Buy Credits</u>"</string>
@@ -157,7 +158,7 @@
     <string name="upcoming_classes">Upcoming Classes</string>
     <string name="today">Today</string>
     <string name="sign_up">"<b><u>Sign Up</u></b>"</string>
-    <string name="profile_package_expiry">" remaining until your classes expire."</string>
+    <string name="profile_package_expiry">" remaining until your credits expire."</string>
     <string name="view_gym_visit_limits">View gym visit limits</string>
     <string name="gym_visit_limits_no_lines">gym visit limits</string>
     <string name="select_plan">Select Plan</string>

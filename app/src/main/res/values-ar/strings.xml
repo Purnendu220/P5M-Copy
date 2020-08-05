@@ -89,6 +89,7 @@
     <string name="done">إتمام</string>
 
     <string name="already_account">لديك حساب بالفعل؟</string>
+    <string name="already_account_error">لديك حساب بالفعل</string>
 
     <!--<string name="agree">By login you are agree to our <b>terms of service</b>\n and <b>privacy policy</b>.</string> <string name="facebook_permission">Email permission is required to continue. Kindly login with facebook and grant the permission.</string>-->
 
@@ -267,7 +268,8 @@
 
     <string name="sign_up">""<b><u>حساب جديد</u></b>""</string>
 
-    <string name="profile_package_expiry">"متبقية لنهاية صلاحية كلاساتك"</string>
+<!--    <string name="profile_package_expiry">"متبقية لنهاية صلاحية كلاساتك"</string>-->
+    <string name="profile_package_expiry">" remaining until your credits expire."</string>
 
     <string name="view_gym_visit_limits">الاطلاع على حدود زيارة النوادي</string>
 
@@ -1080,5 +1082,6 @@
     <string name="p5m_credits_value">نقاط %1$s</string>
     <string name="_5_credits">5 Credits</string>
     <string name="_10_credits">10 Credits</string>
+    <string name="classes_remaining">credits remaining</string>
 
 </resources>

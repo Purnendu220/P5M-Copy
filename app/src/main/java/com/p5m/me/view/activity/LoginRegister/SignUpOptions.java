@@ -257,7 +257,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
             String first_name = "";
             String last_name = "";
             String gender = "";
-            email = "";
+            String email = "";
             String id = "";
 
             try {
@@ -265,11 +265,13 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                 first_name = account.getGivenName();
                 last_name = account.getFamilyName();
                 email = account.getEmail();
-                registrationRequest = new RegistrationRequest(id, first_name, last_name, -1, AppConstants.ApiParamValue.LOGINWITHGOOGLE);
-                if (email != null && !TextUtils.isEmpty(email))
-                    networkCommunicator.validateEmail(email, SignUpOptions.this, false);
+
+                registrationRequest = new RegistrationRequest(id, first_name, last_name, TempStorage.getCountryId(), AppConstants.ApiParamValue.LOGINWITHGOOGLE);
+                registrationRequest.setEmail(email);
+                if (id != null && !TextUtils.isEmpty(id))
+                    networkCommunicator.validateEmail(id, SignUpOptions.this, false);
                 else {
-                     LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_GOOGLE_LOGIN);
+                    LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_GOOGLE_LOGIN);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -392,7 +394,6 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                         FirebaseAnalysic.trackRegister(AppConstants.Tracker.FB, TempStorage.getUser());
                     } else
                         MixPanel.trackLogin(AppConstants.Tracker.FB, TempStorage.getUser());
-                    TempStorage.setDefaultPage(AppConstants.Tab.TAB_EXPLORE_PAGE);
 
                     HomeActivity.open(context);
                 }
@@ -400,18 +401,40 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
 
                 break;
             case NetworkCommunicator.RequestCode.VALIDATE_EMAIL:
-                registrationRequest.setEmail(email);
-                if (faceBookUser != null) {
-                    registrationRequest.setFacebookId(faceBookUser.getId());
-                    LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_FACEBOOK_LOGIN);
-                } else if(mGoogleSignInAccount!=null){
-                    registrationRequest.setGoogleId(mGoogleSignInAccount.getId());
-                    registrationRequest.setStoreId(TempStorage.getCountryId());
+                if (response != null) {
+                    List<String> email = ((ResponseModel<List<String>>) response).data;
+                    if (email != null) {
+                        if (faceBookUser != null) {
+                            TempStorage.setDefaultPage(AppConstants.Tab.TAB_FIND_CLASS);
+                            networkCommunicator.loginFb(new LoginRequest(faceBookUser.getId(), faceBookUser.getName(), faceBookUser.getLastName(), faceBookUser.getEmail(), faceBookUser.getGender(), AppConstants.ApiParamValue.LOGINWITHFACEBOOK), SignUpOptions.this, false);
+                        }
+                        else if (mGoogleSignInAccount != null) {
+                            TempStorage.setDefaultPage(AppConstants.Tab.TAB_FIND_CLASS);
+                            networkCommunicator.loginFb(new LoginRequest(mGoogleSignInAccount.getId(), mGoogleSignInAccount.getGivenName(), mGoogleSignInAccount.getFamilyName(), mGoogleSignInAccount.getEmail(), AppConstants.ApiParamValue.LOGINWITHGOOGLE), SignUpOptions.this, false);
+                        }
+                        else
+                            ToastUtils.show(context,getString(R.string.already_account_error));
+                    } else {
+                        TempStorage.setDefaultPage(AppConstants.Tab.TAB_EXPLORE_PAGE);
+                        if (faceBookUser != null) {
+                            registrationRequest.setFacebookId(faceBookUser.getId());
+                            registrationRequest.setEmail(faceBookUser.getEmail());
+                            LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_FACEBOOK_LOGIN);
+                        } else if (mGoogleSignInAccount != null) {
+                            registrationRequest.setGoogleId(mGoogleSignInAccount.getId());
+                            registrationRequest.setEmail(mGoogleSignInAccount.getEmail());
+                            registrationRequest.setStoreId(TempStorage.getCountryId());
+                            LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_GOOGLE_LOGIN);
+                        } else {
+                            registrationRequest.setEmail(this.email);
+                            networkCommunicator.register(registrationRequest, SignUpOptions.this, false);
 
-                    LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_GOOGLE_LOGIN);
-                } else {
-                    setEmail(email);
-                    networkCommunicator.register(registrationRequest, SignUpOptions.this, false);
+                        }
+                    }
+
+
+//                    else
+//                        textInputLayoutEmail.setError(errorMessage);
 
                 }
                 break;
@@ -428,6 +451,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                     MyPreferences.getInstance().saveMembershipIcon(true);
                     GetStartedActivity.open(context);
                     TempStorage.setDefaultPage(AppConstants.Tab.TAB_EXPLORE_PAGE);
+                    finish();
                 }
                 break;
 
@@ -450,19 +474,21 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                 break;
             case NetworkCommunicator.RequestCode.VALIDATE_EMAIL:
 
-                if (faceBookUser != null) {
+               /* if (faceBookUser != null) {
                     networkCommunicator.loginFb(new LoginRequest(faceBookUser.getId(), faceBookUser.getName(), faceBookUser.getLastName(), email, faceBookUser.getGender(), AppConstants.ApiParamValue.LOGINWITHFACEBOOK), SignUpOptions.this, false);
                 } else if (mGoogleSignInAccount != null) {
                     registrationRequest.setGoogleId(mGoogleSignInAccount.getId());
-                    networkCommunicator.loginFb(new LoginRequest(mGoogleSignInAccount.getId(), mGoogleSignInAccount.getGivenName(), mGoogleSignInAccount.getFamilyName(), email,  AppConstants.ApiParamValue.LOGINWITHGOOGLE), SignUpOptions.this, false);
+                    networkCommunicator.loginFb(new LoginRequest(mGoogleSignInAccount.getId(), mGoogleSignInAccount.getGivenName(), mGoogleSignInAccount.getFamilyName(), email, AppConstants.ApiParamValue.LOGINWITHGOOGLE), SignUpOptions.this, false);
                 }
-             /*   if (faceBookUser != null) {
+             *//*   if (faceBookUser != null) {
                     networkCommunicator.loginFb(new LoginRequest(faceBookUser.getId(), faceBookUser.getName(), faceBookUser.getLastName(), email, faceBookUser.getGender(), AppConstants.ApiParamValue.LOGINWITHFACEBOOK), SignUpOptions.this, false);
                 } else if (mGoogleSignInAccount != null) {
                     networkCommunicator.loginFb(new LoginRequest(mGoogleSignInAccount.getId(), mGoogleSignInAccount.getDisplayName(), "", email, "MALE", AppConstants.ApiParamValue.LOGINWITHGOOGLE), SignUpOptions.this, false);
 
-                }*/ else
-                    textInputLayoutEmail.setError(errorMessage);
+                }*//*
+                else
+                    textInputLayoutEmail.setError(errorMessage);*/
+                ToastUtils.show(context, errorMessage);
                 break;
             case NetworkCommunicator.RequestCode.REGISTER:
                 ToastUtils.showFailureResponse(context, errorMessage);
@@ -694,7 +720,6 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
             DialogUtils.showBasicMessage(context, context.getString(R.string.app_name), getString(R.string.ok), message);
         }
     }
-
 
 
     public void onClickRegister() {

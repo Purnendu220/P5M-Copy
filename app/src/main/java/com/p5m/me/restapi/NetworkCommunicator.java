@@ -308,18 +308,18 @@ public class NetworkCommunicator {
 
     public Call validateEmail(String email, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.VALIDATE_EMAIL;
-        Call<ResponseModel> call = apiService.validateEmail(AppConstants.ApiParamValue.EMAIL, email);
+        Call<ResponseModel<List<String>>> call = apiService.validateEmail( email);
         LogUtils.debug("NetworkCommunicator hitting validateEmail");
 
-        call.enqueue(new RestCallBack<ResponseModel>(context) {
+        call.enqueue(new RestCallBack<ResponseModel<List<String>>>(context) {
             @Override
-            public void onFailure(Call<ResponseModel> call, String message) {
+            public void onFailure(Call<ResponseModel<List<String>>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator validateEmail onFailure " + message);
                 requestListener.onApiFailure(message, requestCode);
             }
 
             @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> restResponse, ResponseModel response) {
+            public void onResponse(Call<ResponseModel<List<String>>> call, Response<ResponseModel<List<String>>> restResponse, ResponseModel<List<String>> response) {
                 LogUtils.networkSuccess("NetworkCommunicator validateEmail onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
             }

@@ -103,8 +103,9 @@ public interface ApiService {
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.VALIDATE_EMAIL)
-    Call<ResponseModel> validateEmail(@Query(AppConstants.ApiParamKey.TYPE) String type,
-                                      @Query(AppConstants.ApiParamKey.VALUE) String value);
+//    Call<ResponseModel> validateEmail(@Query(AppConstants.ApiParamKey.TYPE) String type,
+//                                      @Query(AppConstants.ApiParamKey.VALUE) String value);
+ Call<ResponseModel<List<String>>> validateEmail(@Query(AppConstants.ApiParamKey.EMAIL) String type);
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.ALL_CITY)

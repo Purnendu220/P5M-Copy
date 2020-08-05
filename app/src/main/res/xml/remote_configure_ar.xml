@@ -329,4 +329,8 @@
         <key>virtual_class_value</key>
         <value>5</value>
     </entry>
+ <entry>
+        <key>plan_class_text</key>
+        <value> </value>
+    </entry>
 </defaultsMap>

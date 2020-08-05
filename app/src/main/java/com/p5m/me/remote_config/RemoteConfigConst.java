@@ -59,6 +59,7 @@ public class RemoteConfigConst {
     public static final String SECTION_TWO_SUB_THREE_DETAIL = "Section_two_sub_three_detail";
     public static final String SECTION_TWO_SUB_FOUR = "Section_two_sub_four";
     public static final String SECTION_TWO_SUB_FOUR_DETAIL = "Section_two_sub_four_detail";
+    public static final String PLAN_CLASS_TEXT = "plan_class_text";
     public static String PLAN_DESCRIPTION = "plan_description";
     public static String DROP_IN_COST = "drop_in_cost";
     public static String SHOW_SELECTION_OPTIONS = "show_select_options";
@@ -154,6 +155,7 @@ public class RemoteConfigConst {
     public static final int BOOK_FIND_CLASS_KEY = 989;
     public static final int BOOK_OTHERS_KEY = 990;
     public static final int HOW_IT_WORKS_KEY = 991;
+    public static final int PLAN_CLASS_KEY = 992;
 
 
     /* ------VALUES---------*/
@@ -224,6 +226,7 @@ public class RemoteConfigConst {
     public static String BOOK_FIND_CLASS_VALUE = "";
     public static String BOOK_OTHER_VALUE = "";
     public static String HOW_IT_WORKS_VALUE = "";
+    public static String PLAN_CLASS_VALUES = "";
 
 
 

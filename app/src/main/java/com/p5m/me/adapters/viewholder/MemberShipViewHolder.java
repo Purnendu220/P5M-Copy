@@ -22,6 +22,8 @@ import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.UserPackageDetailAdapter;
 import com.p5m.me.data.PackageTags;
+import com.p5m.me.data.RemoteConfigDataModel;
+import com.p5m.me.data.RemoteConfigPlanText;
 import com.p5m.me.data.UserPackageDetail;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
@@ -41,6 +43,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.p5m.me.remote_config.RemoteConfigConst.HOW_IT_WORKS_VALUE;
+import static com.p5m.me.remote_config.RemoteConfigConst.PLAN_CLASS_VALUES;
 import static com.p5m.me.utils.LanguageUtils.currencyConverter;
 import static com.p5m.me.utils.LanguageUtils.numberConverter;
 
@@ -182,13 +186,12 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     layoutMainOfferedPackage.setVisibility(View.GONE);
                     packageTitle.setVisibility(View.GONE);
                     packageTitle.setText(model.getPackageName());
-                        packageUsage.setText(String.format(context.getResources().getString(R.string.credits_remaining),numberConverter(model.getBalance()), numberConverter(model.getTotalCredit())));
-
+                    packageUsage.setText(String.format(context.getResources().getString(R.string.credits_remaining), numberConverter(model.getBalance()), numberConverter(model.getTotalCredit())));
                     packageValidForOwn.setText(context.getString(R.string.valid_till) + " " + DateUtils.getPackageClassDate(model.getExpiryDate()));
-                    textViewBuyMoreCredits.setText(Html.fromHtml("<u>"+context.getString(R.string.add_credits)+"</u>"));
-                    if(model.getBalance()<=Helper.getBaseCreditValue()){
+                    textViewBuyMoreCredits.setText(Html.fromHtml("<u>" + context.getString(R.string.add_credits) + "</u>"));
+                    if (model.getBalance() <= Helper.getBaseCreditValue()) {
                         textViewBuyMoreCredits.setVisibility(View.VISIBLE);
-                    }else{
+                    } else {
                         textViewBuyMoreCredits.setVisibility(View.GONE);
 
                     }
@@ -210,16 +213,33 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     mainLayoutUserPakages.setVisibility(View.GONE);
                     layoutMainOfferedPackage.setVisibility(View.VISIBLE);
                     if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
-                      //  txtPackageName.setText(model.getName());
-                       String includesCredits =  String.format(context.getString(R.string.includes_credits),numberConverter(model.getCredits()));
-                        txtPackageOffredCredits.setText(includesCredits+ "" + context.getString(R.string.at_any_gym));
+                        //  txtPackageName.setText(model.getName());
+                        String includesCredits = String.format(context.getString(R.string.includes_credits), numberConverter(model.getCredits()));
+                        txtPackageOffredCredits.setText(includesCredits + "" + context.getString(R.string.at_any_gym));
                         setTextValidityPeriod(model);
                         txtPriceAfterOffer.setText(numberConverter(model.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()).toUpperCase());
                         setPackageTags(model.getId());
 
 
                     }
-                    setMaxAvailableClasses(model.getCredits());
+                    if (!PLAN_CLASS_VALUES.isEmpty()) {
+                        Gson g = new Gson();
+                        List<RemoteConfigPlanText> p = g.fromJson(PLAN_CLASS_VALUES, new TypeToken<List<RemoteConfigPlanText>>() {
+                        }.getType());
+                        for(int i =0;i<p.size();i++)
+                        if(model.getId() == Integer.parseInt(p.get(i).getId())) {
+                            if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar") && !p.get(i).getAr().isEmpty()) {
+                                txtPackageOffredClassesLimits.setText(p.get(i).getAr());
+                                txtPackageOffredClassesLimits.setVisibility(View.VISIBLE);
+
+                            } else {
+                                txtPackageOffredClassesLimits.setText(p.get(i).getEn());
+                                txtPackageOffredClassesLimits.setVisibility(View.VISIBLE);
+                            }
+                        }
+
+                    } else
+                        setMaxAvailableClasses(model.getCredits());
                     manageViews(classModel, model);
                     if (model.getPromoResponseDto() != null) {
                         if (model.getPromoResponseDto().getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFCREDIT))
@@ -261,11 +281,10 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                                     classModel != null && DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays) {
 
                             } else
-                                adapterCallbacks.onAdapterItemClick(MemberShipViewHolder.this,txtPackageOffredClassesLimits,data,position);
+                                adapterCallbacks.onAdapterItemClick(MemberShipViewHolder.this, txtPackageOffredClassesLimits, data, position);
 
                         }
                     });
-
 
 
                 }
@@ -273,6 +292,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
         } else {
             itemView.setVisibility(View.GONE);
         }
+
     }
 
     private void manageViews(ClassModel classModel, Package model) {
@@ -366,7 +386,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
         if (model.getPromoResponseDto().getDiscountType().equalsIgnoreCase(AppConstants.ApiParamValue.PACKAGE_OFFER_PERCENTAGE)) {
             offerText = context.getString(R.string.package_offer_percentage);
         } else {
-            if (TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.SAUDI_CURRENCY)||
+            if (TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.SAUDI_CURRENCY) ||
                     TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.SAUDI_CURRENCY_SHORT))
                 offerText = context.getString(R.string.sar_off);
             else
@@ -465,14 +485,14 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    private void setMaxAvailableClasses(int credits){
-        if(credits>0){
-            String message = String.format(context.getString(R.string.book_class_limits),credits<AppConstants.maxCreditValue?LanguageUtils.numberConverter(1):LanguageUtils.numberConverter(credits/AppConstants.maxCreditValue),LanguageUtils.numberConverter(credits/AppConstants.minCreditValue)+"");
+    private void setMaxAvailableClasses(int credits) {
+        if (credits > 0) {
+            String message = String.format(context.getString(R.string.book_class_limits), credits < AppConstants.maxCreditValue ? LanguageUtils.numberConverter(1) : LanguageUtils.numberConverter(credits / AppConstants.maxCreditValue), LanguageUtils.numberConverter(credits / AppConstants.minCreditValue) + "");
             txtPackageOffredClassesLimits.setText(message);
             txtPackageOffredClassesLimits.setVisibility(View.VISIBLE);
             txtPackageOffredClassesLimits.setPaintFlags(txtPackageOffredClassesLimits.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-        }else{
+        } else {
             txtPackageOffredClassesLimits.setVisibility(View.GONE);
 
         }
