@@ -14,6 +14,11 @@ import io.agora.rtc.video.VideoEncoderConfiguration;
 
 public class AppConstants {
 
+    public static int minCreditValue = 5;
+    public static int physicalCreditValue = 10;
+
+    public static int maxCreditValue = 50;
+
     public static String plural(String word, int number) {
         if(Constants.LANGUAGE==Locale.ENGLISH)
             return number == 1 ? word : word + "s";
@@ -183,6 +188,7 @@ public class AppConstants {
         public static final String CLASS_FOR_GOOGLE_FORM_REVIEW = "class_for_google_form_review";
 
         public static final String IS_SHOW_MEMBERSHIP_ICON = "IsShowMembershipIcon";
+        public static final String GOOGLE_LOGIN = "Google_Login";
     }
 
     public class DataKey {
@@ -213,6 +219,8 @@ public class AppConstants {
         public static final String CLASS_MODEL = "class_model";
         public static final String BOOK_WITH_FRIEND_DATA = "book_with_friend_data";
         public static final String NUMBER_OF_PACKAGES_TO_BUY = "number_of_packages_to_buy";
+        public static final String ADD_EXTRA_CREDITS = "add_extra_credits";
+
         public static final String PAGES_TO_OPEN = "pages_to_open";
         public static final String SHOW_DROPIN = "show_drop_in";
 
@@ -220,6 +228,7 @@ public class AppConstants {
 
 
         public static final String REFERENCE_ID = "Reference_Id";
+        public static final String USER_HAVE_PACKAGE = "User_Have_Package";
         public static final String PAYMENT_OPTION_ID = "payment_option_id";
         public static final String USER_ID ="user_id" ;
     }
@@ -343,8 +352,8 @@ public class AppConstants {
         public static final int MAX_RESULT_YOUTUBE = 50;
 
 
-
-
+        public static final String LOGINWITHFACEBOOK = "facebook";
+        public static final String LOGINWITHGOOGLE = "google";
     }
 
     public class ApiParamKey {
@@ -357,6 +366,8 @@ public class AppConstants {
         public static final String CATEGORY_ID = "categoryId";
         public static final String USER_ID = "userId";
         public static final String PACKAGE_TYPE = "packageType";
+        public static final String DEBUG = "debug";
+
         public static final String EMAIL = "email";
         public static final String VALUE = "value";
         public static final String TYPE = "type";
@@ -394,7 +405,9 @@ public class AppConstants {
         public static final String NUMBEROFDAYS = "NUMBEROFDAYS";
 
 
-        public static final String NUMBEROFCLASS = "NUMBEROFCLASS";
+
+        public static final String NUMBEROFCREDIT = "NUMBEROFCREDIT";
+
         public static final String PERCENTAGE = "PERCENTAGE";
         public static final String WAITLIST = "WAITLIST";
         public static final String APP_STORE_ID = "Store-Id";
@@ -482,6 +495,7 @@ public class AppConstants {
         public static final int SHOWN_IN_GET_STARTED = 67;
         public static final int NAVIGATION_FROM_FACEBOOK_SIGNUP = 68;
         public static final int NAVIGATION_FROM_FACEBOOK_LOGIN = 69;
+        public static final int NAVIGATION_FROM_GOOGLE_LOGIN = 70;
     }
 
     public class Limit {
@@ -601,5 +615,26 @@ public class AppConstants {
         String CHANNEL_INAPP = "INAPP";
 
     }
+    public interface AlertRequestCodes {
+        int ALERT_REQUEST_PURCHASE = 1;
+        int ALERT_REQUEST_PURCHASE_CANCEL = 2;
+
+
+    }
+    public interface PriceModels {
+        String  CHARGABLE = "CHARGABLE";
+        String PT = "PT";
+        String WORKSHOP = "WORKSHOP";
+        String SPECIAL = "SPECIAL";
+        String FOC = "FOC";
+
+
+    }
+    public interface ClassModes{
+        String PHYSICAL= "PHYSICAL";
+        String VIRTUAL = "VIRTUAL";
+
+    }
+
 
 }

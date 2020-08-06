@@ -79,6 +79,10 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         ownedPackages.addAll(data);
     }
 
+    public void clearAllOwnedPackages() {
+        ownedPackages.clear();
+    }
+
     public List<UserPackage> getOwnedPackages() {
         return ownedPackages;
     }

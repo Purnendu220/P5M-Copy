@@ -95,7 +95,6 @@ public class NetworkCommunicator {
     private FirebaseAnalytics mFirebaseAnalytics;
 
 
-
     public interface RequestListener<T> {
 
         void onApiSuccess(T response, int requestCode);
@@ -189,7 +188,7 @@ public class NetworkCommunicator {
     }
 
     private Context context;
-    private ApiService apiService,apiService2,apiServiceYoutube;
+    private ApiService apiService, apiService2, apiServiceYoutube;
     private static NetworkCommunicator networkCommunicator;
     private MyPreferences myPreferences;
 
@@ -249,7 +248,11 @@ public class NetworkCommunicator {
             public void onResponse(Call<ResponseModel<User>> call, Response<ResponseModel<User>> restResponse, ResponseModel<User> response) {
                 LogUtils.networkSuccess("NetworkCommunicator loginFB onResponse data " + response);
                 TempStorage.setAuthToken(restResponse.headers().get(AppConstants.ApiParamKey.MYU_AUTH_TOKEN));
-                MyPreferences.getInstance().setLoginWithFacebook(true);
+                if (loginRequest.getLoginThrough().equalsIgnoreCase(AppConstants.ApiParamValue.LOGINWITHFACEBOOK))
+                    MyPreferences.getInstance().setLoginWithFacebook(true);
+                else
+                    MyPreferences.getInstance().setLoginWithGoogle(true);
+
                 requestListener.onApiSuccess(response, requestCode);
 
 //                EventBroadcastHelper.sendDeviceUpdate(context);
@@ -926,7 +929,7 @@ public class NetworkCommunicator {
 
                         for (UserPackage userPackage : response.data.getUserPackageDetailDtoList()) {
                             if (userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)
-                                    && userPackage.getBalanceClass() != 0) {
+                                    && userPackage.getBalance() != 0) {
                                 userMainPackage = userPackage.getPackageName().toUpperCase();
 
                             } else if (userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
@@ -1837,9 +1840,9 @@ public class NetworkCommunicator {
     }
 
 
-    public Call getTokenForClass(int classSessionId,final RequestListener requestListener) {
+    public Call getTokenForClass(int classSessionId, final RequestListener requestListener) {
         final int requestCode = RequestCode.GET_CAHHNEL_TOKEN;
-        Call<ResponseModel<TokenResponse>> call = apiService.getChannelToken(TempStorage.getUser().getId(),classSessionId);
+        Call<ResponseModel<TokenResponse>> call = apiService.getChannelToken(TempStorage.getUser().getId(), classSessionId);
         LogUtils.debug("NetworkCommunicator hitting Store Data");
 
         call.enqueue(new RestCallBack<ResponseModel<TokenResponse>>(context) {
@@ -1860,9 +1863,10 @@ public class NetworkCommunicator {
         return call;
 
     }
-    public Call attendClass(int classSessionId,final RequestListener requestListener) {
+
+    public Call attendClass(int classSessionId, final RequestListener requestListener) {
         final int requestCode = RequestCode.ATTEND_CLASS_API;
-        Call<ResponseModel<Object>> call = apiService.attendClass(classSessionId,TempStorage.getUser().getId());
+        Call<ResponseModel<Object>> call = apiService.attendClass(classSessionId, TempStorage.getUser().getId());
         LogUtils.debug("NetworkCommunicator hitting Attend");
 
         call.enqueue(new RestCallBack<ResponseModel<Object>>(context) {
@@ -1884,9 +1888,9 @@ public class NetworkCommunicator {
 
     }
 
-    public Call getUserStatusInChannel(String appId,String uid,String channelName,boolean showLoader,final RequestListener requestListener) {
+    public Call getUserStatusInChannel(String appId, String uid, String channelName, boolean showLoader, final RequestListener requestListener) {
         final int requestCode = RequestCode.GET_USER_STATUS_IN_CHANNEL;
-        Call<ResponseModel<AgoraUserStatus>> call = apiService2.getUserStatusInChannel(appId,uid,channelName);
+        Call<ResponseModel<AgoraUserStatus>> call = apiService2.getUserStatusInChannel(appId, uid, channelName);
         LogUtils.debug("NetworkCommunicator hitting Store Data");
 
         call.enqueue(new RestCallBack<ResponseModel<AgoraUserStatus>>(context) {
@@ -1907,9 +1911,10 @@ public class NetworkCommunicator {
         return call;
 
     }
-    public Call getUserCountInChannel(String appId,String channelName,boolean showLoader,final RequestListener requestListener) {
+
+    public Call getUserCountInChannel(String appId, String channelName, boolean showLoader, final RequestListener requestListener) {
         final int requestCode = RequestCode.GET_USER_COUNT_IN_CHANNEL;
-        Call<ResponseModel<AgoraUserCount>> call = apiService2.getUserCountInChannel(appId,channelName);
+        Call<ResponseModel<AgoraUserCount>> call = apiService2.getUserCountInChannel(appId, channelName);
         LogUtils.debug("NetworkCommunicator hitting Store Data");
 
         call.enqueue(new RestCallBack<ResponseModel<AgoraUserCount>>(context) {
@@ -1931,12 +1936,12 @@ public class NetworkCommunicator {
 
     }
 
-    public Call getYoutubePlayList(String playListId,String apiKey,String pageToken,final RequestListener requestListener){
+    public Call getYoutubePlayList(String playListId, String apiKey, String pageToken, final RequestListener requestListener) {
         final int requestCode = RequestCode.GET_YOUTUBE_PLAYLIST;
 
-        String part =AppConstants.ApiParamValue.SNIPPET;
-       int maxResult = AppConstants.ApiParamValue.MAX_RESULT_YOUTUBE;
-        Call<YoutubeResponse> call = apiServiceYoutube.getYouTubePlayList(part,playListId,apiKey,maxResult,pageToken);
+        String part = AppConstants.ApiParamValue.SNIPPET;
+        int maxResult = AppConstants.ApiParamValue.MAX_RESULT_YOUTUBE;
+        Call<YoutubeResponse> call = apiServiceYoutube.getYouTubePlayList(part, playListId, apiKey, maxResult, pageToken);
 
         call.enqueue(new Callback<YoutubeResponse>() {
             @Override
@@ -1951,7 +1956,7 @@ public class NetworkCommunicator {
 
             }
         });
-return call;
+        return call;
     }
 }
 
