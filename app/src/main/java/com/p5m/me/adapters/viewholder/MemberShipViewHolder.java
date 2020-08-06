@@ -165,6 +165,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
             itemView.setVisibility(View.VISIBLE);
             textViewExtendPackage.setVisibility(View.GONE);
+            txtPackageOffredClassesLimits.setPaintFlags(txtPackageOffredClassesLimits.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             // Package owned..
             if (data instanceof UserPackage) {
                 UserPackage model = (UserPackage) data;
@@ -224,7 +225,8 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     }
                     if (!PLAN_CLASS_VALUES.isEmpty()) {
                         Gson g = new Gson();
-                        List<RemoteConfigPlanText> p = g.fromJson(PLAN_CLASS_VALUES, new TypeToken<List<RemoteConfigPlanText>>() {
+                        List<RemoteConfigPlanText> p
+                                = g.fromJson(PLAN_CLASS_VALUES, new TypeToken<List<RemoteConfigPlanText>>() {
                         }.getType());
                         for(int i =0;i<p.size();i++)
                         if(model.getId() == Integer.parseInt(p.get(i).getId())) {
