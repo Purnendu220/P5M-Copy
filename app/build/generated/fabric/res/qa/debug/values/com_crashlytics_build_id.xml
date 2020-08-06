@@ -7,4 +7,5 @@
   Do NOT modify, delete, or commit to source control!
 -->
 <string tools:ignore="UnusedResources,TypographyDashes" name="com.crashlytics.android.build_id" translatable="false">00f11734-8e44-4b8e-97f7-463e83ca7b23</string>
+
 </resources>
