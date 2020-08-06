@@ -58,29 +58,6 @@
                     android:layout_marginLeft="@dimen/margin_10"
                     android:textColor="@color/colorAccent"
 
-                <TextView
-                    android:id="@+id/txtIsPackagePopular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/margin_10"
-                    android:background="@drawable/rouded_corner_text"
-                    android:gravity="center_vertical"
-                    android:paddingStart="@dimen/margin_8"
-                    android:paddingEnd="@dimen/margin_8"
-                    android:text="SUMMER BODY"
-                    android:textColor="@color/theme_book"
-                    android:textSize="@dimen/text_small"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:layout_width="@dimen/margin_35"
-                    android:layout_height="@dimen/margin_35"
-                    android:layout_marginRight="@dimen/margin_5"
-                    android:layout_toLeftOf="@id/txtPackageOffer"
-                    android:padding="@dimen/margin_5"
-                    android:src="@drawable/info"
-                    android:visibility="gone" />
                     android:textSize="@dimen/text_medium" />
 
                 <RelativeLayout
@@ -105,6 +82,7 @@
             </LinearLayout>
 
 
+
             <TextView
                 android:id="@+id/txtPackageOffer"
                 android:layout_width="wrap_content"
@@ -121,37 +99,6 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_small"
                 android:textStyle="bold" />
-
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_10"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_20"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/txtPackageOffredClasses"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:gravity="center_vertical"
-                    android:letterSpacing="@dimen/text_medium_letter_spacing"
-                    android:lineSpacingExtra="@dimen/line_spacing_extra_title"
-                    android:text="5 classes at any gym"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_medium" />
-
-
-            </LinearLayout>
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -167,20 +114,21 @@
                     android:id="@+id/txtPriceBeforeOffer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
                     android:text="30 KWD"
                     android:textAlignment="inherit"
+                    android:gravity="right"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/text_large"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    />
 
                 <TextView
                     android:id="@+id/txtPriceAfterOffer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
                     android:text="30 KWD"
                     android:textAlignment="inherit"
+                    android:gravity="right"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/text_extra_large"
                     android:textStyle="bold"
@@ -194,17 +142,6 @@
         </RelativeLayout>
 
 
-
-        <TextView
-            android:id="@+id/credits"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_20"
-            android:layout_marginBottom="@dimen/margin_10"
-            android:text="@string/include_credits"
-            android:textColor="@color/black"
-            android:textColorLink="@color/blue"
-            android:textSize="@dimen/text_medium" />
 
         <LinearLayout
             android:id="@+id/layoutTimeClassPromo"
@@ -242,15 +179,14 @@
 
 
         </LinearLayout>
-
         <RelativeLayout
             android:id="@+id/layoutNotApplicable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/text_dark_gray"
-            android:orientation="horizontal"
             android:paddingLeft="@dimen/margin_20"
             android:paddingEnd="@dimen/margin_10"
+            android:orientation="horizontal"
+            android:background="@color/text_dark_gray"
             android:visibility="gone"
             android:weightSum="4">
 
@@ -259,17 +195,17 @@
                 android:id="@+id/textViewNotApplicable"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/margin_35"
-                android:layout_alignParentStart="true"
                 android:layout_gravity="center_vertical"
                 android:ellipsize="end"
                 android:fontFamily="sans-serif"
                 android:gravity="left|center_vertical"
+                android:layout_alignParentStart="true"
+                android:textAllCaps="true"
+                android:textStyle="bold"
                 android:letterSpacing="@dimen/text_medium_letter_spacing"
                 android:text="@string/not_applicable"
-                android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_medium"
-                android:textStyle="bold"
                 android:visibility="visible" />
 
             <ImageView
@@ -280,6 +216,7 @@
                 android:layout_marginEnd="@dimen/margin_3"
                 android:padding="@dimen/margin_5"
                 android:src="@drawable/not_applicable_info" />
+
 
 
         </RelativeLayout>
