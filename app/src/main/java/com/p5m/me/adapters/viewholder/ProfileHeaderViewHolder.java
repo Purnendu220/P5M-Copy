@@ -75,7 +75,7 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
 
             textViewName.setText(user.getFirstName() + " " + user.getLastName());
             UserPackageInfo userPackageInfo = new UserPackageInfo(user);
-
+            textViewRecharge.setText(Html.fromHtml("<u>"+context.getString(R.string.add_credits)+"</u>"));
             ImageUtils.setImage(context,
                     user.getProfileImage(),
                     R.drawable.profile_holder_big, imageView);

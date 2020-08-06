@@ -221,19 +221,18 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
                 Gson g = new Gson();
                 RemoteConfigDataModel p = g.fromJson(HOW_IT_WORKS_VALUE, new TypeToken<RemoteConfigDataModel>() {
                 }.getType());
-                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en") && !p.getEn().isEmpty()) {
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar") && !p.getAr().isEmpty()) {
                     textViewOnlineInfoTitle.setVisibility(View.VISIBLE);
-                    layoutOnlineClassProcess.setVisibility(View.VISIBLE);
-                    textViewOnlineInfo.setText(p.getEn());
-                    textViewOnlineInfoTitle.setText(p.getTitle_en());
-                }else {
-                    textViewOnlineInfoTitle.setVisibility(View.VISIBLE);
-
                     layoutOnlineClassProcess.setVisibility(View.VISIBLE);
                     textViewOnlineInfo.setText(p.getAr());
                     textViewOnlineInfoTitle.setText(p.getTitle_ar());
-
                 }
+                else {
+                textViewOnlineInfoTitle.setVisibility(View.VISIBLE);
+                layoutOnlineClassProcess.setVisibility(View.VISIBLE);
+                textViewOnlineInfo.setText(p.getEn());
+                textViewOnlineInfoTitle.setText(p.getTitle_en());
+            }
             } else {
                 layoutOnlineClassProcess.setVisibility(View.GONE);
             }

@@ -686,10 +686,8 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                     if (paymentResponse.getClassDetailDto() != null)
                         textViewValidity.setText(DateUtils.getPackageClassDate(paymentResponse.getClassDetailDto().getClassDate()) + "\n" + DateUtils.getClassTime(paymentResponse.getClassDetailDto().getFromTime(), paymentResponse.getClassDetailDto().getToTime()));
                 } else {
-                    if(userAlreadyHavePackage&&!TextUtils.isEmpty(paymentResponse.getPaymentExpiryDate())){
+                    if(userAlreadyHavePackage && !TextUtils.isEmpty(paymentResponse.getPaymentExpiryDate())){
                         textViewValidity.setText(DateUtils.getClassDate(paymentResponse.getPaymentExpiryDate()));
-
-
                     }else{
                         if (!TextUtils.isEmpty(paymentResponse.getExpiryDate())) {
                             textViewValidity.setText(DateUtils.getClassDate(paymentResponse.getExpiryDate()));
@@ -719,17 +717,29 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                     textViewClassName.setText(LanguageUtils.numberConverter(userPackage.getBalance()) + " " + context.getString(R.string.p5m_credits));
                 }
                 setExtendedText();
+                if(userAlreadyHavePackage ){
+                    textViewClass.setText(R.string.updated_credit_balance);
+                }
+
                 break;
 
         }
-        if(userAlreadyHavePackage&&paymentResponse.getPaymentTotalCredit()>0){
+        if(userAlreadyHavePackage && paymentResponse.getPaymentTotalCredit()>0){
             if(classModel==null){
                 classModel = new ClassModel();
             }
             textViewClassName.setText(LanguageUtils.numberConverter(paymentResponse.getPaymentTotalCredit()-classModel.getCredit()) + " " + context.getString(R.string.p5m_credits));
 
         }
-       else if (paymentResponse.getTotalCredit() != 0)
+        else if(!userAlreadyHavePackage && paymentResponse.getTotalCredit() != 0)
+        {
+            if(classModel==null){
+                classModel = new ClassModel();
+            }
+            textViewClassName.setText(LanguageUtils.numberConverter(paymentResponse.getTotalCredit()-classModel.getCredit()) + " " + context.getString(R.string.p5m_credits));
+        }
+
+        else if (paymentResponse.getTotalCredit() != 0)
             textViewClassName.setText(LanguageUtils.numberConverter(paymentResponse.getTotalCredit()) + " " + context.getString(R.string.p5m_credits));
 
     }

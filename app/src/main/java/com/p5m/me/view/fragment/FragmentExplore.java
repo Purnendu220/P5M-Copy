@@ -155,7 +155,7 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
     }
 
     private void callApi() {
-        //networkCommunicator.getYoutubePlayList(platlistId,api_key,null,this);
+        networkCommunicator.getYoutubePlayList(platlistId,api_key,null,this);
         networkCommunicator.getExploreData(this, false);
 
     }

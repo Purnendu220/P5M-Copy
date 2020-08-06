@@ -251,7 +251,10 @@ public class AppConstants {
         public static final String LOGOUT = "api/v1/device/logout";
         public static final String REGISTER = "api/v1/user/register";
         public static final String FORGOT_PASSWORD = "api/v1/user/forgotPassword";
-        public static final String VALIDATE_EMAIL = "api/v1/user/validate";
+        public static final String VALIDATE_EMAIL = "api/v1/user/search";
+//        public static final String VALIDATE_EMAIL = "api/v1/user/validate";
+
+
 
         public static final String DEFAULT_SETTING = "api/v1/user/default";
 

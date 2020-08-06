@@ -60,6 +60,7 @@ import com.p5m.me.target_user_notification.UserPropertyConst;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.KeyboardUtils;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.Main.LocationActivity;
 import com.p5m.me.view.activity.Main.LocationSelectionActivity;
@@ -69,6 +70,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -293,8 +296,8 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                 last_name = account.getFamilyName();
                 email = account.getEmail();
                 registrationRequest = new RegistrationRequest(id, first_name, last_name, -1, AppConstants.ApiParamValue.LOGINWITHGOOGLE);
-                if (email != null && !TextUtils.isEmpty(email))
-                    networkCommunicator.validateEmail(email, LoginActivity.this, false);
+                if (id != null && !TextUtils.isEmpty(id))
+                    networkCommunicator.validateEmail(id, LoginActivity.this, false);
                 else
                     LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_GOOGLE_LOGIN);
 
@@ -350,7 +353,7 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                                         registrationRequest.setGender(gender);
                                         registrationRequest.setFacebookId(faceBookUser.getId());
                                         if (email != null && !TextUtils.isEmpty(email))
-                                            networkCommunicator.validateEmail(email, LoginActivity.this, false);
+                                            networkCommunicator.validateEmail(id, LoginActivity.this, false);
                                         else
                                             LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_FACEBOOK_LOGIN);
 
@@ -412,7 +415,7 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
             }
             break;
             case NetworkCommunicator.RequestCode.VALIDATE_EMAIL:
-                registrationRequest.setEmail(email);
+               /* registrationRequest.setEmail(email);
                 layoutProgressRoot.setVisibility(View.GONE);
                 if (faceBookUser != null) {
                     registrationRequest.setFacebookId(faceBookUser.getId());
@@ -420,8 +423,36 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
                 } else {
                     registrationRequest.setGoogleId(mGoogleSignInAccount.getId());
                     LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_GOOGLE_LOGIN);
+                }*/
+//            case NetworkCommunicator.RequestCode.VALIDATE_EMAIL:
+                if (response != null) {
+                    List<String> email = ((ResponseModel<List<String>>) response).data;
+                    if (email != null) {
+                        TempStorage.setDefaultPage(AppConstants.Tab.TAB_FIND_CLASS);
+                        if (faceBookUser != null) {
+                            networkCommunicator.loginFb(new LoginRequest(faceBookUser.getId(), faceBookUser.getName(), faceBookUser.getLastName(), faceBookUser.getEmail(), faceBookUser.getGender(), AppConstants.ApiParamValue.LOGINWITHFACEBOOK), LoginActivity.this, false);
+                        }
+                        if (mGoogleSignInAccount != null) {
+                            networkCommunicator.loginFb(new LoginRequest(mGoogleSignInAccount.getId(), mGoogleSignInAccount.getGivenName(), mGoogleSignInAccount.getFamilyName(), mGoogleSignInAccount.getEmail(), AppConstants.ApiParamValue.LOGINWITHGOOGLE), LoginActivity.this, false);
+                        }
+                    } else {
+                        TempStorage.setDefaultPage(AppConstants.Tab.TAB_EXPLORE_PAGE);
+                        if (faceBookUser != null) {
+                            registrationRequest.setFacebookId(faceBookUser.getId());
+                            registrationRequest.setEmail(faceBookUser.getEmail());
+                            LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_FACEBOOK_LOGIN);
+                        } else if (mGoogleSignInAccount != null) {
+                            registrationRequest.setGoogleId(mGoogleSignInAccount.getId());
+                            registrationRequest.setEmail(mGoogleSignInAccount.getEmail());
+                            registrationRequest.setStoreId(TempStorage.getCountryId());
+
+                            LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_GOOGLE_LOGIN);
+                        }
+                    }
+
                 }
                 break;
+//                break;
             case NetworkCommunicator.RequestCode.LOGIN_FB:
 
                 if (response != null) {
@@ -463,13 +494,13 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
 
                 break;
             case NetworkCommunicator.RequestCode.VALIDATE_EMAIL:
-
-                if (faceBookUser != null) {
+                ToastUtils.show(context,errorMessage);
+             /*if (faceBookUser != null) {
                     networkCommunicator.loginFb(new LoginRequest(faceBookUser.getId(), faceBookUser.getName(), faceBookUser.getLastName(), email, faceBookUser.getGender(), AppConstants.ApiParamValue.LOGINWITHFACEBOOK), LoginActivity.this, false);
                 } else if (mGoogleSignInAccount != null) {
                     registrationRequest.setGoogleId(mGoogleSignInAccount.getId());
                     networkCommunicator.loginFb(new LoginRequest(mGoogleSignInAccount.getId(), mGoogleSignInAccount.getGivenName(), mGoogleSignInAccount.getFamilyName(), email,  AppConstants.ApiParamValue.LOGINWITHGOOGLE), LoginActivity.this, false);
-                }
+                }*/
                 break;
 
         }

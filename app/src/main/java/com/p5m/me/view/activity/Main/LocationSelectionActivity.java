@@ -48,7 +48,8 @@ import butterknife.ButterKnife;
 
 import static com.p5m.me.analytics.IntercomEvents.successfulLoginIntercom;
 
-public class LocationSelectionActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener, NetworkCommunicator.RequestListener {
+public class
+LocationSelectionActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener, NetworkCommunicator.RequestListener {
 
 
     private int position = -1;
@@ -62,7 +63,7 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
     private boolean isRegisterClick = false;
 
     public static void open(Context context) {
-        LocationSelectionActivity.navigateFrom =0 ;
+        LocationSelectionActivity.navigateFrom = 0;
         context.startActivity(new Intent(context, LocationSelectionActivity.class));
     }
 
@@ -122,7 +123,10 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
         textViewLogin.setOnClickListener(this);
         buttonFemale.setOnClickListener(this);
         buttonMale.setOnClickListener(this);
-        handleLocationView();
+        if (TempStorage.getCountryId() != 0)
+            handleGenderScreen();
+        else
+            handleLocationView();
         Helper.setupErrorWatcher(textViewCountryName, textInputLayoutCity);
         if (TempStorage.getCountries() == null)
             callApi();
@@ -226,7 +230,19 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonNext:
-                if (position < 0) {
+                if (position >= 0 && position < model.size()) {
+                    TempStorage.setCountryId(model.get(position).getCountryId());
+//                    ToastUtils.show(context, getString(R.string.select_city));
+                } else if(other){
+                    TempStorage.setCountryId(-1);
+                    textInputLayoutCity.setVisibility(View.VISIBLE);
+                    if (!isError()) {
+                        callInterestedCityApi();
+                        buttonNext.setEnabled(false);
+                        buttonNext.setText(context.getResources().getString(R.string.please_wait));
+                    }
+                }
+                if (TempStorage.getCountryId() == 0) {
                     ToastUtils.show(context, getString(R.string.select_city));
                 } else if (isRegisterClick) {
                     if (TextUtils.isEmpty(gender)) {
@@ -248,7 +264,7 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
                     handleGenderScreen();
 //                    SignUpOptions.open(this, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_GOOGLE_LOGIN);
 
-                } else if (isSelectCountry && model != null) {
+                } else if (model != null) {
                     if (!other) {
                         textInputLayoutCity.setVisibility(View.GONE);
                         countryId = model.get(position).getId();
@@ -259,13 +275,6 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
                             TempStorage.setCountryId(countryId);
                             TempStorage.setCountryName(model.get(position).getName());
                             SignUpOptions.open(context, countryId);
-                        }
-                    } else {
-                        textInputLayoutCity.setVisibility(View.VISIBLE);
-                        if (!isError()) {
-                            callInterestedCityApi();
-                            buttonNext.setEnabled(false);
-                            buttonNext.setText(context.getResources().getString(R.string.please_wait));
                         }
                     }
 
@@ -318,6 +327,7 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
                     FirebaseAnalysic.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
                     IntercomEvents.successfulLoginIntercom(user.getFirstName() + " " + user.getLastName(), user.getEmail());
                     GetStartedActivity.open(context);
+                    finish();
                 }
                 break;
             case NetworkCommunicator.RequestCode.LOGIN_FB:
@@ -335,7 +345,7 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
                     if (countryId != 0)
                         networkCommunicator.updateStoreId(countryId, this, false);
                     else
-                        HomeActivity.open(context);
+                        GetStartedActivity.open(context);
 
                     finish();
                 }
@@ -410,5 +420,11 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
         buttonFemale.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
         gender = AppConstants.ApiParamValue.GENDER_MALE;
         registrationRequest.setGender(gender);
+    }
+
+    @Override
+    public void onBackPressed() {
+        TempStorage.setCountryId(0);
+        super.onBackPressed();
     }
 }

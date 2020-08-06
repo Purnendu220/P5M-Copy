@@ -196,7 +196,8 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
             if (ratingValue > -1) {
                 setStarRating(ratingValue);
             }
-            refrenceWrapper.getCustomRateAlertDialog().dismiss();
+            if (refrenceWrapper.getCustomRateAlertDialog() != null)
+                refrenceWrapper.getCustomRateAlertDialog().dismiss();
             if (TempStorage.getRatingParams() != null && TempStorage.getRatingParams().size() > 0) {
                 createRatingParamList();
             } else {
@@ -359,6 +360,7 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
                 context.getResources().getString(R.string.go_to_settings), new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
                         Intent i = new Intent();
                         i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                         i.addCategory(Intent.CATEGORY_DEFAULT);
@@ -366,8 +368,9 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                         i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+
                         context.startActivity(i);
-                        dialog.dismiss();
+
                     }
                 }, context.getResources().getString(R.string.cancel), new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -644,7 +647,7 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
             case NetworkCommunicator.RequestCode.CLASS_RATING:
                 RatingResponseModel responseModel = ((ResponseModel<RatingResponseModel>) response).data;
                 ratingId = responseModel.getId();
-                IntercomEvents.ratedClass(request,model);
+                IntercomEvents.ratedClass(request, model);
                 processFileUpload();
                 TempStorage.removeSavedClass(model.getClassSessionId(), context);
                 break;

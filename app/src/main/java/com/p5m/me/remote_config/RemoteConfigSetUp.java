@@ -57,6 +57,7 @@ import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_CLASS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_FAILURE_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_PACKAGE_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PAYMENT_PENDING_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.PLAN_CLASS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PLAN_DESCRIPTION_DROP_IN_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.PLAN_DESCRIPTION_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.RECOMMENDED_FOR_YOU_COLOR_KEY;
@@ -372,6 +373,9 @@ public class RemoteConfigSetUp {
                     break;
             case HOW_IT_WORKS_KEY:
                     RemoteConfigConst.HOW_IT_WORKS_VALUE = keyValue;
+                    break;
+             case PLAN_CLASS_KEY:
+                    RemoteConfigConst.PLAN_CLASS_VALUES = keyValue;
                     break;
             }
         }

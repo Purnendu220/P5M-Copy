@@ -56,6 +56,7 @@
     <string name="donot_signup">Don\'t have an account?</string>
     <string name="done">Done</string>
     <string name="already_account">Already have an account? </string>
+    <string name="already_account_error">Already have an account </string>
 
     <!--<string name="agree">By login you are agree to our <b>terms of service</b>\n and <b>privacy policy</b>.</string>-->
     <!--<string name="facebook_permission">Email permission is required to continue. Kindly login with facebook and grant the permission.</string>-->
@@ -122,7 +123,7 @@
     <string name="your_current_plan">YOUR CURRENT PLAN</string>
     <string name="select">SELECT</string>
     <string name="of"><b>of</b></string>
-    <string name="classes_remaining" translatable="false">classes remaining</string>
+    <string name="classes_remaining">credits remaining</string>
     <string name="valid_till">Valid till</string>
     <string name="coach_at">Coach at </string>
     <string name="recharge">"<u>Buy Credits</u>"</string>
@@ -157,7 +158,7 @@
     <string name="upcoming_classes">Upcoming Classes</string>
     <string name="today">Today</string>
     <string name="sign_up">"<b><u>Sign Up</u></b>"</string>
-    <string name="profile_package_expiry">" remaining until your classes expire."</string>
+    <string name="profile_package_expiry">" remaining until your credits expire."</string>
     <string name="view_gym_visit_limits">View gym visit limits</string>
     <string name="gym_visit_limits_no_lines">gym visit limits</string>
     <string name="select_plan">Select Plan</string>
@@ -315,7 +316,7 @@
     <string name="date_of_birth">Date of birth</string>
     <string name="mobile_no">Mobile No</string>
     <string name="choose_your_focus">Choose your interest</string>
-    <string name="you_have_registered_using_facebook">You have registered using facebook</string>
+    <string name="you_have_registered_using_facebook">You have registered using social media</string>
     <string name="create_password">Create Password</string>
     <string name="are_you_sure">Are you sure ?</string>
     <string name="see_all_reviews">See all reviews</string>
@@ -395,7 +396,7 @@
     <string name="classs">Class</string>
     <string name="classs_one">class</string>
     <string name="p5m_credits">credits</string>
-    <string name="p5m_credits_value">%s credits</string>
+    <string name="p5m_credits_value">%1s credits</string>
     <string name="inludes_p5m_credits">Includes</string>
 
     <string name="payment_pending">Payment pending</string>
@@ -706,22 +707,24 @@ Would you like to view your balance? </string>
     <!-- Legal digits for channel names -->
     <string name="includes_credits">%s credits</string>
     <string name="credit_value">How many credits do I need to join a class?</string>
-    <string name="credits_remaining">You have %d/%d credits remaining</string>
+    <string name="credits_remaining">You have  %1$s / %2$s credits remaining</string>
     <string name="buy_more_credits"><u>Buy more credits</u></string>
     <string name="join_fail_limit_exhaust">You  have exceeded the number of times you can visit this gym with your plan. You can add more credits to your account in order to join this class.</string>
-    <string name="join_fail_limit_exhaust_booking_with_friend">You  have exceeded the number of times you can visit this gym with your plan. You can add more credits to your account in order to join this class, for your guest?</string>
-    <string name="join_fail_limit_exhaust_booking_with_friend_two_ready">You  have exceeded the number of times you can visit this gym with your plan. You can add more credits to your account in order to join this class, for yourself and your guest?</string>
+    <string name="join_fail_limit_exhaust_booking_with_friend">You  have exceeded the number of times you can visit this gym with yout plan. You can add more credits to your account in order to join this class.</string>
+    <string name="join_fail_limit_exhaust_booking_with_friend_two_ready">Your don\'t have enough credits to join this class. Would you like to add more credits to join this class?</string>
     <string name="add_credits">Add credits</string>
     <string name="add_more_credits"><u>Add more credits</u></string>
     <string name="join_fail_date_expire">Your plan ends before the date of this class . Would you like to add extra credits to your account in order to secure a spot in this class? </string>
     <string name="insufficient_credits">You don\'t have enough credits to join this class. Would you like to add more credits to join this class?</string>
     <string name="class_offer_promo">Free credit offer applied</string>
 
-    <string name="book_class_limits">book %d - %d classes</string>
+    <string name="book_class_limits">Book %s - %s classes</string>
     <string name="free_class">Free</string>
     <string name="class_credits"><b>%s credits</b></string>
-    <string name="updated_credit_balance" tools:ignore="ExtraTranslation">Updated credit balance</string>
-    <string name="credit_balance" tools:ignore="ExtraTranslation">Credit balance</string>
+    <string name="updated_credit_balance">Updated credit balance</string>
+    <string name="credit_balance" >Number of credits</string>
+    <string name="_5_credits">5 Credits</string>
+    <string name="_10_credits">10 Credits</string>
 
 
 </resources>

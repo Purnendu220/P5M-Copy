@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/transparent"
             android:maxLines="1"
-            android:text="@string/buy_classes"
+            android:text="@string/add_credits"
             android:textAllCaps="true"
             android:textColor="@color/white"
             android:textSize="@dimen/text_medium" />
