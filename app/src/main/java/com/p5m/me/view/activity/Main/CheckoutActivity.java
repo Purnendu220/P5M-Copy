@@ -308,6 +308,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         handler = new Handler();
         checkUserCredits();
         setData();
+
         scrollView.smoothScrollTo(0, 0);
         textViewPay.setOnClickListener(this);
         buttonPromoCode.setOnClickListener(this);
