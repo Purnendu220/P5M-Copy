@@ -8,7 +8,6 @@ public class Package implements java.io.Serializable {
     private int duration;
     private String validityPeriod;
     private float cost;
-    private float credits;
     private long modifiedAt;
     private int noOfClass;
     private String name;
@@ -16,6 +15,7 @@ public class Package implements java.io.Serializable {
     private String gymName;
     private int id;
     private String packageType;
+    private int credits;
 
     private boolean status;
     private PromoCode promoResponseDto;
@@ -138,11 +138,11 @@ public class Package implements java.io.Serializable {
         isBookingWithFriend = bookingWithFriend;
     }
 
-    public float getCredits() {
+    public int getCredits() {
         return credits;
     }
 
-    public void setCredits(float credits) {
+    public void setCredits(int credits) {
         this.credits = credits;
     }
 }

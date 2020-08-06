@@ -14,7 +14,6 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -131,6 +130,42 @@
                         android:textSize="@dimen/text_title"
                         android:textStyle="bold" />
                 </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="16dp"
+                    android:orientation="horizontal"
+                    android:id="@+id/layoutClassCredits"
+                    >
+
+                    <ImageView
+                        android:id="@+id/imageViewClassCredits"
+                        style="@style/ClassIconSmall"
+                        android:src="@drawable/ic_credits"
+                        android:padding="@dimen/margin_4"
+                        />
+
+                    <TextView
+                        android:id="@+id/textViewClassCredits"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="@dimen/text_icon_gap"
+                        android:layout_marginTop="@dimen/text_drawable_adjustment"
+                        android:layout_toEndOf="@+id/imageViewClassCredits"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left"
+                        android:letterSpacing="@dimen/text_medium_letter_spacing"
+                        android:lineSpacingExtra="@dimen/line_spacing_extra"
+                        android:text="@string/p5m_credits_value"
+                        android:textColor="@color/theme_dark_text"
+                        android:textSize="@dimen/text_medium"
+                        android:textStyle="normal" />
+                </RelativeLayout>
+
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -531,7 +566,8 @@
             android:layout_marginBottom="@dimen/view_separator_size"
             android:background="@color/theme_bg"
             android:elevation="@dimen/view_separator_elevation"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -670,7 +706,21 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:orientation="vertical">
-
+                <TextView
+                    android:id="@+id/textViewOnlineInfoTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:fontFamily="sans-serif"
+                    android:gravity="left"
+                    android:letterSpacing="@dimen/text_medium_letter_spacing"
+                    android:lineSpacingExtra="@dimen/line_spacing_extra"
+                    android:paddingTop="12dp"
+                    android:textColor="@color/theme_medium_dark_text"
+                    android:textSize="@dimen/text_medium"
+                    android:text="How it work"
+                    android:textStyle="bold" />
                 <TextView
                     android:id="@+id/textViewOnlineInfo"
                     android:layout_width="match_parent"
@@ -681,7 +731,7 @@
                     android:gravity="left"
                     android:letterSpacing="@dimen/text_medium_letter_spacing"
                     android:lineSpacingExtra="@dimen/line_spacing_extra"
-                    android:paddingTop="12dp"
+                    android:paddingTop="@dimen/margin_5"
                     android:paddingBottom="12dp"
                     android:textColor="@color/theme_medium_dark_text"
                     android:textSize="@dimen/text_medium"

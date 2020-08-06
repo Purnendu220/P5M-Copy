@@ -14,6 +14,7 @@ import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
+import com.p5m.me.helper.Helper;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
@@ -89,11 +90,15 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
             }
 
             if (userPackageInfo.havePackages) {
-                if (user.isBuyMembership()) {
-                    textViewRecharge.setVisibility(View.VISIBLE);
-                } else {
-                    textViewRecharge.setVisibility(View.GONE);
+                if(userPackageInfo.haveGeneralPackage&&userPackageInfo.userPackageGeneral!=null){
+                    if(userPackageInfo.userPackageGeneral.getBalance()<= Helper.getBaseCreditValue()){
+                        textViewRecharge.setVisibility(View.VISIBLE);
+                    }else{
+                        textViewRecharge.setVisibility(View.GONE);
+
+                    }
                 }
+
 
                if (user.isBuyMembership()) {
                     if (userPackageInfo.haveDropInPackage) {
@@ -115,9 +120,9 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                 if (userPackageInfo.haveGeneralPackage && !userPackageInfo.haveDropInPackage) {
                     textViewValidity.setVisibility(View.VISIBLE);
 
-                    String message = userPackageInfo.userPackageGeneral.getBalanceClass() != 1 ? context.getString(R.string.classes) : context.getString(R.string.one_class);
+                  //  String message = userPackageInfo.userPackageGeneral.getBalance() != 1 ? context.getString(R.string.classes) : context.getString(R.string.one_class);
 
-                    LanguageUtils.setText(textViewPackage, userPackageInfo.userPackageGeneral.getBalanceClass(), message + " " + context.getString(R.string.remaining));
+                    LanguageUtils.setText(textViewPackage, userPackageInfo.userPackageGeneral.getBalance(), context.getString(R.string.p5m_credits) + " " + context.getString(R.string.remaining));
 
                     int daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageGeneral.getExpiryDate());
                     if (daysLeftFromPackageExpiryDate >= 0) {
@@ -138,11 +143,10 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                     if (user.isBuyMembership()) {
 
                         //////////////////
-                        String one = numberConverter(userPackageInfo.userPackageReady.get(0).getBalanceClass());
-                        String message = userPackageInfo.userPackageReady.get(0).getBalanceClass() != 1 ? context.getString(R.string.classes) : context.getString(R.string.one_class);
+                        String one = numberConverter(userPackageInfo.userPackageReady.get(0).getBalance());
 
 
-                        textViewPackage.setText(Html.fromHtml("<b>" + one + "</b>" + " " + message+" "+context.getString(R.string.class_for) + " "
+                        textViewPackage.setText(Html.fromHtml("<b>" + one + "</b>" + " " + context.getString(R.string.p5m_credits)+" "+context.getString(R.string.class_for) + " "
                                 + userPackageInfo.userPackageReady.get(0).getGymName()));
 
 
@@ -161,10 +165,9 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                         }
                     } else {
 
-                        String message = userPackageInfo.userPackageGeneral.getBalanceClass() != 1 ? context.getString(R.string.classes) : context.getString(R.string.one_class);
 
-                        textViewPackage.setText(Html.fromHtml("<b>" + numberConverter(userPackageInfo.userPackageGeneral.getBalanceClass()) +
-                                "</b> " + message + " " + context.getString(R.string.remaining)));
+                        textViewPackage.setText(Html.fromHtml("<b>" + numberConverter(userPackageInfo.userPackageGeneral.getBalance()) +
+                                "</b> " + context.getString(R.string.p5m_credits) + " " + context.getString(R.string.remaining)));
 
                         daysLeftFromPackageExpiryDate = DateUtils.getDaysLeftFromPackageExpiryDate(userPackageInfo.userPackageGeneral.getExpiryDate());
                         if (daysLeftFromPackageExpiryDate >= 0) {
@@ -191,9 +194,9 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
 
                 } else if (!userPackageInfo.haveGeneralPackage && userPackageInfo.haveDropInPackage) {
                     textViewValidity.setVisibility(View.VISIBLE);
-                    int balanceClasses = userPackageInfo.userPackageReady.get(0).getBalanceClass() != 0 ? userPackageInfo.userPackageReady.get(0).getBalanceClass() : 1;
+                    int balanceClasses = userPackageInfo.userPackageReady.get(0).getBalance() != 0 ? userPackageInfo.userPackageReady.get(0).getBalance() : 1;
 //                    String message=userPackageInfo.userPackageReady.get(0).getBalanceClass()>1?"classes ":"class";
-                    String message = AppConstants.pluralES(context.getString(R.string.one_class), userPackageInfo.userPackageReady.get(0).getBalanceClass());
+                    String message = AppConstants.pluralES(context.getString(R.string.one_class), userPackageInfo.userPackageReady.get(0).getBalance());
 
 
                     textViewPackage.setText(Html.fromHtml("<b>" + numberConverter(balanceClasses) + "</b> " + message + " " + context.getString(R.string.for_key) + " " + userPackageInfo.userPackageReady.get(0).getGymName()));
@@ -223,7 +226,7 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                 textViewExtendPackage.setVisibility(View.GONE);
 
                 /************************NO PACKAGE******************************/
-                textViewPackage.setText(Html.fromHtml("<b>" + numberConverter(0) + "</b> " + context.getString(R.string.classes).toLowerCase()));
+                textViewPackage.setText(Html.fromHtml("<b>" + numberConverter(0) + "</b> " + context.getString(R.string.p5m_credits).toLowerCase()));
                 textViewRecharge.setVisibility(View.VISIBLE);
                 textViewMore.setVisibility(View.GONE);
                 textViewValidity.setVisibility(View.GONE);

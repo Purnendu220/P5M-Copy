@@ -4,6 +4,7 @@ package com.p5m.me.restapi;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -58,16 +59,20 @@ public class RestServiceFactory {
                     String language= getLocalLanguage();
                     LogUtils.debug("Token " + auth);
 
+                    HttpUrl url = chain.request().url().newBuilder()
+                            .addQueryParameter(AppConstants.ApiParamKey.DEBUG, BuildConfig.DEBUG+"")
+                            .build();
+
+
                     Request request = chain.request().newBuilder()
                             .addHeader(AppConstants.ApiParamKey.MYU_AUTH_TOKEN, auth)
-                            .addHeader(AppConstants.ApiParamKey.USER_AGENT, AppConstants.ApiParamValue.USER_AGENT_ANDROID)
                             .addHeader(AppConstants.ApiParamKey.DEVICE_TYPE, AppConstants.ApiParamKey.DEVICE_TYPE_VALUE)
 
                             .addHeader(AppConstants.ApiParamKey.APP_VERSION, BuildConfig.VERSION_NAME_API)
                             .addHeader(AppConstants.ApiParamKey.APP_Language, language)
                             .addHeader(AppConstants.ApiParamKey.APP_STORE_ID, String.valueOf(TempStorage.getCountryId()))
+                            .url(url)
                             .build();
-                    LogUtils.debug("Store-Id"+String.valueOf(TempStorage.getCountryId()));
                     return chain.proceed(request);
                 }
             });

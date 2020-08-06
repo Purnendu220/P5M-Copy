@@ -44,11 +44,16 @@
         tools:replace="android:supportsRtl">
         <activity android:name=".view.activity.Main.VideoPlayerActivity"
             android:configChanges="orientation|screenSize"></activity>
-        <activity android:name=".view.activity.Main.PaymentOptionActivity" />
-        <activity android:name=".view.activity.Main.ExpandCityActivity" />
-        <activity android:name=".view.activity.Main.LocationSelectionActivity" />
-        <activity android:name=".view.activity.Main.GetStartedActivity" />
-        <activity android:name=".view.activity.Main.GymTrainerListActivity" />
+        <activity android:name=".view.activity.Main.PaymentOptionActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.activity.Main.ExpandCityActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.activity.Main.LocationSelectionActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.activity.Main.GetStartedActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.activity.Main.GymTrainerListActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".view.activity.Main.MembershipInfoActivity"
             android:label="@string/membership_info"

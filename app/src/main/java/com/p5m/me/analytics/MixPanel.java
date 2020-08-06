@@ -763,7 +763,7 @@ public class MixPanel {
                 List<UserPackage> packageList = user.getUserPackageDetailDtoList();
                 for (int i = 0; i < packageList.size(); i++) {
                     UserPackage userPackage = packageList.get(0);
-                    if (userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL) && userPackage.getBalanceClass() > 0) {
+                    if (userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL) && userPackage.getBalance() > 0) {
                         packageUsedForJoinClass = userPackage.getPackageName();
                     }
                     if (userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN) && classModel.getGymBranchDetail().getGymId() == userPackage.getGymId()) {
