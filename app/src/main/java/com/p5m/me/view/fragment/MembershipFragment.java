@@ -38,7 +38,6 @@ import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
-import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LanguageUtils;
@@ -421,7 +420,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                 final Package aPackage = (Package) model;
                 if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS) {
                     if (mFriendsData != null && aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
-                        CheckoutActivity.openActivity(context, aPackage, classModel, 2, mFriendsData, aPackage.getNoOfClass());
+                        CheckoutActivity.openActivity(context, aPackage, classModel, 2, mFriendsData, aPackage.getNoOfClass(),aPackage.getCredits());
                         return;
                     }
                     if (mFriendsData != null && aPackage.getGymVisitLimit() == 1) {
@@ -437,7 +436,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
                     } else {
 
-                        CheckoutActivity.openActivity(context, aPackage, classModel, 1, mFriendsData, aPackage.getNoOfClass());
+                        CheckoutActivity.openActivity(context, aPackage, classModel, 1, mFriendsData, aPackage.getNoOfClass(), aPackage.getCredits());
                         return;
                     }
 

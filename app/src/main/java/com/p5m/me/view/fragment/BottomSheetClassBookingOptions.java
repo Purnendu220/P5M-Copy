@@ -186,7 +186,7 @@ public class BottomSheetClassBookingOptions extends BottomSheetDialogFragment im
                 break;
             case R.id.bookWithDropInPackage:
                 if (bookWithFriendData != null) {
-                    CheckoutActivity.openActivity(getContext(), aPackage, classModel, 2, bookWithFriendData, aPackage.getNoOfClass());
+                    CheckoutActivity.openActivity(getContext(), aPackage, classModel, 2, bookWithFriendData, aPackage.getNoOfClass(), aPackage.getCredits());
 
                 } else {
                     CheckoutActivity.openActivity(getContext(), aPackage, classModel, 1, aPackage.getNoOfClass());
