@@ -1,11 +1,8 @@
 package com.p5m.me.view.activity.Main;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -14,13 +11,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
+
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.facebook.AccessToken;
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.p5m.me.FAQAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.p5m.me.R;
 import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.data.main.StoreApiModel;
@@ -33,12 +31,10 @@ import com.p5m.me.helper.Helper;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
-import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
-import com.p5m.me.view.custom.CustomFeedbackFormDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -179,16 +175,25 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     private void checkForGoogleUser() {
         try {
-            if (MyPreferences.getInstance().isLoginWithGoogle()) {
+//            if (MyPreferences.getInstance().isLoginWithGoogle()) {
                 GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestIdToken(activity.getString(R.string.default_web_client_id))
                         .requestEmail()
                         .requestProfile()
                         .build();
                 // Build a GoogleSignInClient with the options specified by gso.
-                GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(activity, gso);
-                mGoogleSignInClient.signOut();
-            }
+                GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(context, gso);
+//                mGoogleSignInClient.signOut();
+//                MyPreferences.getInstance().setLoginWithGoogle(false);
+//            }
+
+            mGoogleSignInClient.signOut()
+                    .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                        }
+                    });
+
         } catch (Exception e) {
             e.printStackTrace();
         }

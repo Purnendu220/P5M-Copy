@@ -307,6 +307,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         handler = new Handler();
         checkUserCredits();
         setData();
+
         scrollView.smoothScrollTo(0, 0);
         textViewPay.setOnClickListener(this);
         buttonPromoCode.setOnClickListener(this);
@@ -417,7 +418,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     validityUnit.setText(getString(R.string.a_week) + message);
                 else
                     validityUnit.setText(String.format(numberConverter(selectedPacakageFromList.getDuration()) + " " + getString(R.string.weeks) + message));
-                    textViewPackageValidityExtend.setText(getString(R.string.valid_for) + " " + userPackage.getPackageName() + " " + context.getString(R.string.package_name));
+                textViewPackageValidityExtend.setText(getString(R.string.valid_for) + " " + userPackage.getPackageName() + " " + context.getString(R.string.package_name));
 
                 Helper.setPackageImage(imageViewPackageImage, AppConstants.Values.SPECIAL_CLASS_ID);
                 setPrice();
@@ -456,7 +457,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
     @OnClick(R.id.imageViewBack)
     public void imageViewBack(View view) {
-       dialogBackPress();
+        dialogBackPress();
     }
 
     @Override
@@ -618,7 +619,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     textViewPackageExtendNoOfDays.setVisibility(View.GONE);
                     textViewPlus.setVisibility(View.GONE);
                     if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL))
-                        textViewPackageClasses.setText(numberConverter(aPackage.getCredits()) + " " + getString(R.string.p5m_credits)  + " " + context.getString(R.string.at_any_gym));
+                        textViewPackageClasses.setText(numberConverter(aPackage.getCredits()) + " " + getString(R.string.p5m_credits) + " " + context.getString(R.string.at_any_gym));
 
                     textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
                     textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
@@ -658,7 +659,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
             layoutPromoCode.setVisibility(View.VISIBLE);
             int totalCredits = aPackage.getCredits() + promoCode.getExtraCredits();
 //            textViewPackageClasses.setText(numberConverter(totalClasses) + " " + AppConstants.pluralES(getString(R.string.one_class), aPackage.getNoOfClass()) + " " + context.getString(R.string.at_any_gym));
-            textViewPackageClasses.setText(Html.fromHtml("<font color='#42A1ED'>" + numberConverter(totalCredits) + " " + getString(R.string.p5m_credits)  + "</font>" + " " + context.getString(R.string.at_any_gym)));
+            textViewPackageClasses.setText(Html.fromHtml("<font color='#42A1ED'>" + numberConverter(totalCredits) + " " + getString(R.string.p5m_credits) + "</font>" + " " + context.getString(R.string.at_any_gym)));
             textViewPromoCodePrice.setVisibility(View.GONE);
             textViewPromoCodeText.setText(getResources().getString(R.string.class_offer_promo));
             buttonPromoCode.setText(context.getString(R.string.remove_promo_code));
@@ -848,9 +849,9 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                     List<BookWithFriendData> data = new ArrayList<>();
                     data.add(friendsDetail);
 
-                        paymentUrlRequest = new PaymentUrlRequest(TempStorage.getUser().getId(),
-                                aPackage.getId(), classModel.getClassSessionId(),
-                                classModel.getGymBranchDetail().getGymId(), data, paymentOptionId);
+                    paymentUrlRequest = new PaymentUrlRequest(TempStorage.getUser().getId(),
+                            aPackage.getId(), classModel.getClassSessionId(),
+                            classModel.getGymBranchDetail().getGymId(), data, paymentOptionId);
 
 
                 } else {
@@ -960,7 +961,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         if (requestCode == AppConstants.ResultCode.PAYMENT_SUCCESS && resultCode == RESULT_OK) {
 
             refId = data.getStringExtra(AppConstants.DataKey.REFERENCE_ID);
-            userHavePackage = data.getBooleanExtra(AppConstants.DataKey.USER_HAVE_PACKAGE,false);
+            userHavePackage = data.getBooleanExtra(AppConstants.DataKey.USER_HAVE_PACKAGE, false);
             openDialog = true;
             if (refId != null && refId.length() > 0) {
                 redirectOnResult1();

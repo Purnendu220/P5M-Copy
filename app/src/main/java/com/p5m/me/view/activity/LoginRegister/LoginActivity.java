@@ -3,10 +3,12 @@ package com.p5m.me.view.activity.LoginRegister;
 import android.app.Person;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -145,6 +147,7 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
 
         ButterKnife.bind(activity);
 
+        customizeGoogleButton();
         navigatedFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
 
         if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_CONTINUE_USER) {
@@ -153,7 +156,6 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
         }
 
         setEditWatcher();
-
         layoutContainer.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -164,6 +166,24 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
 
         SetupFBLogin();
         setUpGoogleSignIn();
+
+    }
+
+    private void customizeGoogleButton() {
+
+            // Find the TextView that is inside of the SignInButton and set its text
+            for (int i = 0; i < signInButton.getChildCount(); i++) {
+                View v = signInButton.getChildAt(i);
+
+                if (v instanceof TextView) {
+                    TextView tv = (TextView) v;
+                    tv.setText("Enter with google");
+                    tv.setAllCaps(true);
+                    tv.setGravity(Gravity.CENTER);
+                    tv.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
+                    return;
+                }
+            }
 
     }
 

@@ -2,6 +2,7 @@ package com.p5m.me.view.activity.LoginRegister;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
@@ -11,6 +12,7 @@ import android.text.Spannable;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -149,7 +151,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
     private CallbackManager callbackManager;
     private FaceBookUser faceBookUser;
     private long loginTime;
-    private static RegistrationRequest registrationRequest = new RegistrationRequest();
+    private static RegistrationRequest registrationRequest ;
     private static int countryId;
     private static int navigationFrom;
     private static final int RC_SIGN_IN = 1;
@@ -162,11 +164,11 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
         setContentView(R.layout.activity_sign_up_options);
 
         ButterKnife.bind(activity);
-
+        customizeGoogleButton();
         String spanText = activity.getString(R.string.terms_of_service);
         String terms = activity.getString(R.string.terms_service);
         String policy = activity.getString(R.string.privacy_policy);
-
+        registrationRequest =new RegistrationRequest();
         Spannable span = Spannable.Factory.getInstance().newSpannable(spanText);
         buttonNext.setOnClickListener(this);
         span.setSpan(new MyClickSpan(context) {
@@ -257,17 +259,17 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
             String first_name = "";
             String last_name = "";
             String gender = "";
-            String email = "";
+            String gemail = "";
             String id = "";
 
             try {
                 id = account.getId();
                 first_name = account.getGivenName();
                 last_name = account.getFamilyName();
-                email = account.getEmail();
+                gemail = account.getEmail();
 
                 registrationRequest = new RegistrationRequest(id, first_name, last_name, TempStorage.getCountryId(), AppConstants.ApiParamValue.LOGINWITHGOOGLE);
-                registrationRequest.setEmail(email);
+                registrationRequest.setEmail(gemail);
                 if (id != null && !TextUtils.isEmpty(id))
                     networkCommunicator.validateEmail(id, SignUpOptions.this, false);
                 else {
@@ -591,7 +593,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
         }
 
         setGender(gender);
-        networkCommunicator.validateEmail(email, this, false);
+        networkCommunicator.validateEmail(this.email, this, false);
     }
 
     @Override
@@ -730,5 +732,22 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
 
     }
 
+    private void customizeGoogleButton() {
 
+        // Find the TextView that is inside of the SignInButton and set its text
+        for (int i = 0; i < signInButton.getChildCount(); i++) {
+            View v = signInButton.getChildAt(i);
+
+            if (v instanceof TextView) {
+                TextView tv = (TextView) v;
+                tv.setText("Enter with google");
+                tv.setAllCaps(true);
+                tv.setCompoundDrawablePadding(10);
+                tv.setGravity(Gravity.CENTER);
+                tv.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
+                return;
+            }
+        }
+
+    }
 }
