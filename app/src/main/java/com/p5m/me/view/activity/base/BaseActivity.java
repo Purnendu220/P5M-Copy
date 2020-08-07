@@ -75,6 +75,7 @@ public class BaseActivity extends AppCompatActivity {
         if (booleanExtra) {
             PushDetailModel pushDetailModel = (PushDetailModel) getIntent().getSerializableExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK);
             MixPanel.trackPushNotificationClick(pushDetailModel);
+            FirebaseAnalysic.trackPushNotificationClick(pushDetailModel);
         }
     }
 
