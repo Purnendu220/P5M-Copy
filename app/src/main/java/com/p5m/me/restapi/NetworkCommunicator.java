@@ -74,7 +74,6 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CommonUtillity;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
-
 import java.io.File;
 import java.util.List;
 
@@ -114,7 +113,7 @@ public class NetworkCommunicator {
         public static final int FORGOT_PASSWORD = 96;
         public static final int LOGIN_FB = 97;
         public static final int VALIDATE_EMAIL = 98;
-        public static final int REGISTER = 99;
+       public static final int REGISTER = 99;
         public static final int LOGIN = 100;
         public static final int ALL_CITY = 101;
         public static final int ALL_CLASS_ACTIVITY = 102;
@@ -183,6 +182,7 @@ public class NetworkCommunicator {
         public static final int GET_USER_COUNT_IN_CHANNEL = 177;
         public static final int GET_YOUTUBE_PLAYLIST = 178;
         public static final int ATTEND_CLASS_API = 179;
+        public static final int SEARCH_EMAIL = 180;
 
 
     }
@@ -305,7 +305,29 @@ public class NetworkCommunicator {
         });
         return call;
     }
+// Use for sign up registration
+    public Call searchEmail(String email, final RequestListener requestListener, boolean useCache) {
+        final int requestCode = RequestCode.SEARCH_EMAIL;
+        Call<ResponseModel> call = apiService.searchEmail(AppConstants.ApiParamValue.EMAIL, email);
 
+        LogUtils.debug("NetworkCommunicator hitting validateEmail");
+
+        call.enqueue(new RestCallBack<ResponseModel>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel> call, String message) {
+                LogUtils.networkError("NetworkCommunicator validateEmail onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> restResponse, ResponseModel response) {
+                LogUtils.networkSuccess("NetworkCommunicator validateEmail onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+// Use for google sign up
     public Call validateEmail(String email, final RequestListener requestListener, boolean useCache) {
         final int requestCode = RequestCode.VALIDATE_EMAIL;
         Call<ResponseModel<List<String>>> call = apiService.validateEmail( email);

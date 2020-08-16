@@ -187,6 +187,18 @@ public class FirebaseAnalysic {
         }
     }
 
+    public static void trackNotificationVisit(String origin) {
+        try {
+            Bundle props = new Bundle();
+            props.putString("Seen", origin);
+
+            mFirebaseAnalytics.logEvent( "Notification_View",props);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
     public static void setup(Activity activity) {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(activity);
 

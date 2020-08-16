@@ -124,7 +124,7 @@ android {
             buildConfigField "String", "SENDER_ID", '\"109210713388\"'
             buildConfigField "String", "BASE_URL", '\"http://uat.profive.co\"'
             buildConfigField "String", "BASE_URL_HTTPS", '\"http://uat.profive.co\"'
-            buildConfigField "String", "BASE_URL_MIDL", '\"/profive-midl/\"'
+            buildConfigField "String", "BASE_URL_MIDL", '\"/p5m/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://uat.profive.co\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
             buildConfigField "String", "AGORA_APP_ID", '\"37b3c68b87694725b992c9518ede593c\"'
@@ -154,7 +154,8 @@ android {
             buildConfigField "String", "AGORA_APP_CUSTOMER_ID", '\"418489ad97644a3e87695a6798a11aea\"'
             buildConfigField "String", "YOUTUBE_API_KEY", '\"AIzaSyDqCAlD7vilwhBhp49T1PU4SpH5Ap2KGfA\"'
 
-            manifestPlaceholders = [hostName: "qa.profive.co", hostName_www: "www.qa.profive.co", appName: "P5M", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
+//            manifestPlaceholders = [hostName: "qa.profive.co", hostName_www: "www.qa.profive.co", appName: "P5M", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
+            manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "81e25498c1638dbcb2017cc88dba175c5d44a1a6"]
 
         }
         liveTest {
