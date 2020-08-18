@@ -204,7 +204,7 @@
                     android:background="@color/theme_bg"
                     android:elevation="@dimen/view_separator_elevation_edit_setting"
                     android:orientation="vertical"
-                    android:visibility="gone"
+                    android:visibility="visible"
 
                     >
                     <LinearLayout

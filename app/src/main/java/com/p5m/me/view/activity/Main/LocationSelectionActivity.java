@@ -138,6 +138,7 @@ LocationSelectionActivity extends BaseActivity implements AdapterView.OnItemSele
     }
 
     private void handleGenderScreen() {
+
         textViewHeader.setText(getString(R.string.gender_string));
         buttonNext.setText(getString(R.string.register));
         layoutGender.setVisibility(View.VISIBLE);
@@ -145,6 +146,7 @@ LocationSelectionActivity extends BaseActivity implements AdapterView.OnItemSele
         spinnerCity.setVisibility(View.GONE);
         view.setVisibility(View.GONE);
         isRegisterClick = true;
+
     }
 
     private void handleLocationView() {
@@ -233,7 +235,7 @@ LocationSelectionActivity extends BaseActivity implements AdapterView.OnItemSele
                 if (position >= 0 && position < model.size()) {
                     TempStorage.setCountryId(model.get(position).getCountryId());
 //                    ToastUtils.show(context, getString(R.string.select_city));
-                } else if(other){
+                } else if (other) {
                     TempStorage.setCountryId(-1);
                     textInputLayoutCity.setVisibility(View.VISIBLE);
                     if (!isError()) {
@@ -282,6 +284,7 @@ LocationSelectionActivity extends BaseActivity implements AdapterView.OnItemSele
 
                 break;
             case R.id.textViewLogin:
+                TempStorage.setCountryId(0);
                 LoginActivity.open(context);
                 finish();
                 break;
@@ -402,24 +405,32 @@ LocationSelectionActivity extends BaseActivity implements AdapterView.OnItemSele
     }
 
     private void selectFemale() {
-//        buttonMale.setBackgroundResource(R.drawable.button_white);
-        buttonMale.setBackground(getResources().getDrawable(R.drawable.button_white));
+        try {
+            buttonMale.setBackground(getResources().getDrawable(R.drawable.button_white));
 
-        buttonMale.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
-//        buttonFemale.setBackgroundResource(R.drawable.button_blue);
-        buttonFemale.setBackground(getResources().getDrawable(R.drawable.button_blue));
-        buttonFemale.setTextColor(ContextCompat.getColor(context, R.color.white));
-        gender = AppConstants.ApiParamValue.GENDER_FEMALE;
-        registrationRequest.setGender(gender);
+            buttonMale.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
+            buttonFemale.setBackground(getResources().getDrawable(R.drawable.button_blue));
+            buttonFemale.setTextColor(ContextCompat.getColor(context, R.color.white));
+            gender = AppConstants.ApiParamValue.GENDER_FEMALE;
+            registrationRequest.setGender(gender);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+
     }
 
     private void selectMale() {
-        buttonMale.setBackgroundResource(R.drawable.button_blue);
-        buttonMale.setTextColor(ContextCompat.getColor(context, R.color.white));
-        buttonFemale.setBackgroundResource(R.drawable.button_white);
-        buttonFemale.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
-        gender = AppConstants.ApiParamValue.GENDER_MALE;
-        registrationRequest.setGender(gender);
+        try {
+            buttonMale.setBackgroundResource(R.drawable.button_blue);
+            buttonMale.setTextColor(ContextCompat.getColor(context, R.color.white));
+            buttonFemale.setBackgroundResource(R.drawable.button_white);
+            buttonFemale.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
+            gender = AppConstants.ApiParamValue.GENDER_MALE;
+            registrationRequest.setGender(gender);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override

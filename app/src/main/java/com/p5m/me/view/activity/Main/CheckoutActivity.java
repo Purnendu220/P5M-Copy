@@ -992,22 +992,22 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
             case PACKAGE:
 
                 PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,
-                        refId, aPackage, null, checkoutFor, null, null, mNumberOfPackagesToBuy, couponCode, userHavePackage);
+                        refId, aPackage, null, checkoutFor, null, null, mNumberOfPackagesToBuy, friendsDetail, couponCode, userHavePackage);
 
                 break;
             case CLASS_PURCHASE_WITH_PACKAGE:
                 PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,
-                        refId, aPackage, classModel, checkoutFor, null, null, mNumberOfPackagesToBuy, couponCode, userHavePackage);
+                        refId, aPackage, classModel, checkoutFor, null, null, mNumberOfPackagesToBuy,friendsDetail, couponCode, userHavePackage);
 
                 break;
             case SPECIAL_CLASS:
                 PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,
-                        refId, null, classModel, checkoutFor, null, selectedPacakageFromList, mNumberOfPackagesToBuy, couponCode, userHavePackage);
+                        refId, null, classModel, checkoutFor, null, selectedPacakageFromList, mNumberOfPackagesToBuy, friendsDetail, couponCode, userHavePackage);
 
                 break;
             case EXTENSION:
                 PaymentConfirmationActivity.openActivity(context, navigatinFrom,
-                        refId, null, null, checkoutFor, userPackage, selectedPacakageFromList, mNumberOfPackagesToBuy, couponCode, userHavePackage);
+                        refId, null, null, checkoutFor, userPackage, selectedPacakageFromList, mNumberOfPackagesToBuy, friendsDetail, couponCode, userHavePackage);
 
                 break;
         }

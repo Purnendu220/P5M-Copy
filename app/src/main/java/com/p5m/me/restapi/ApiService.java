@@ -102,10 +102,16 @@ public interface ApiService {
     Call<ResponseModel> logout(@Body LogoutRequest logoutRequest);
 
     @Headers("Content-type: application/json")
-    @GET(AppConstants.Url.VALIDATE_EMAIL)
+    @GET(AppConstants.Url.SEARCH_EMAIL)
 //    Call<ResponseModel> validateEmail(@Query(AppConstants.ApiParamKey.TYPE) String type,
 //                                      @Query(AppConstants.ApiParamKey.VALUE) String value);
- Call<ResponseModel<List<String>>> validateEmail(@Query(AppConstants.ApiParamKey.EMAIL) String type);
+    Call<ResponseModel<List<String>>> validateEmail(@Query(AppConstants.ApiParamKey.EMAIL) String type);
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.VALIDATE_EMAIL)
+    Call<ResponseModel> searchEmail(@Query(AppConstants.ApiParamKey.TYPE) String type,
+                                      @Query(AppConstants.ApiParamKey.VALUE) String value);
+//    Call<ResponseModel<String>> searchEmail(@Query(AppConstants.ApiParamKey.EMAIL) String type);
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.ALL_CITY)
@@ -434,26 +440,25 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.GET_CHANNEL_TOKEN)
     Call<ResponseModel<TokenResponse>> getChannelToken(@Query(AppConstants.ApiParamKey.USER_ID) int userId,
-                                                       @Query(AppConstants.ApiParamKey.CLASS_SESSION_ID) int classSessionId );
-    @Headers("Content-type: application/json")
-    @GET(AppConstants.Url.GET_CHANNEL_USER_STATUS_IN_CHANNEL + "/{" + AppConstants.ApiParamKey.APP_ID + "}"+ "/{" + AppConstants.ApiParamKey.U_ID + "}"+ "/{" + AppConstants.ApiParamKey.CHANNEL_NAME + "}")
-    Call<ResponseModel<AgoraUserStatus>> getUserStatusInChannel(@Path(AppConstants.ApiParamKey.APP_ID) String appId, @Path(AppConstants.ApiParamKey.U_ID) String uid, @Path(AppConstants.ApiParamKey.CHANNEL_NAME) String channelName );
+                                                       @Query(AppConstants.ApiParamKey.CLASS_SESSION_ID) int classSessionId);
 
     @Headers("Content-type: application/json")
-    @GET(AppConstants.Url.GET_CHANNEL_USER_COUNT + "/{" + AppConstants.ApiParamKey.APP_ID + "}"+ "/{" + AppConstants.ApiParamKey.CHANNEL_NAME + "}")
-    Call<ResponseModel<AgoraUserCount>> getUserCountInChannel(@Path(AppConstants.ApiParamKey.APP_ID) String appId, @Path(AppConstants.ApiParamKey.CHANNEL_NAME) String channelName );
+    @GET(AppConstants.Url.GET_CHANNEL_USER_STATUS_IN_CHANNEL + "/{" + AppConstants.ApiParamKey.APP_ID + "}" + "/{" + AppConstants.ApiParamKey.U_ID + "}" + "/{" + AppConstants.ApiParamKey.CHANNEL_NAME + "}")
+    Call<ResponseModel<AgoraUserStatus>> getUserStatusInChannel(@Path(AppConstants.ApiParamKey.APP_ID) String appId, @Path(AppConstants.ApiParamKey.U_ID) String uid, @Path(AppConstants.ApiParamKey.CHANNEL_NAME) String channelName);
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.GET_CHANNEL_USER_COUNT + "/{" + AppConstants.ApiParamKey.APP_ID + "}" + "/{" + AppConstants.ApiParamKey.CHANNEL_NAME + "}")
+    Call<ResponseModel<AgoraUserCount>> getUserCountInChannel(@Path(AppConstants.ApiParamKey.APP_ID) String appId, @Path(AppConstants.ApiParamKey.CHANNEL_NAME) String channelName);
 
     @Headers("Content-type: application/json")
     @GET(AppConstants.Url.GET_YOUTUBE_PLAYLIST)
-    Call<YoutubeResponse>  getYouTubePlayList(@Query(AppConstants.ApiParamKey.PART) String part, @Query(AppConstants.ApiParamKey.PLAYLIST_ID) String playListId,
-                                              @Query(AppConstants.ApiParamKey.API_KEY) String apiKey, @Query(AppConstants.ApiParamKey.MAX_RESULT) int maxResult,
-                                              @Query(AppConstants.ApiParamKey.PAGE_TOKEN) String pageToken);
+    Call<YoutubeResponse> getYouTubePlayList(@Query(AppConstants.ApiParamKey.PART) String part, @Query(AppConstants.ApiParamKey.PLAYLIST_ID) String playListId,
+                                             @Query(AppConstants.ApiParamKey.API_KEY) String apiKey, @Query(AppConstants.ApiParamKey.MAX_RESULT) int maxResult,
+                                             @Query(AppConstants.ApiParamKey.PAGE_TOKEN) String pageToken);
 
     @Headers("Content-type: application/json")
     @POST(AppConstants.Url.ATTEND_CLASS)
     Call<ResponseModel<Object>> attendClass(@Query(AppConstants.ApiParamKey.CLASS_SESSION_ID) int classSessionId, @Query(AppConstants.ApiParamKey.USER_ID) int userId);
-
-
 
 
 }

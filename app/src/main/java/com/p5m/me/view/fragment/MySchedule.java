@@ -24,6 +24,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.p5m.me.R;
 import com.p5m.me.adapters.ScheduleAdapter;
+import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.eventbus.Events;
@@ -239,6 +240,7 @@ public class MySchedule extends BaseFragment implements ViewPagerFragmentSelecti
             case R.id.imageViewNotification:
                 NotificationActivity.openActivity(context);
                 MixPanel.trackNotificationVisit(AppConstants.Tracker.FROM_MY_SCHEDULE);
+                FirebaseAnalysic.trackNotificationVisit(AppConstants.Tracker.FROM_MY_SCHEDULE);
                 break;
             case R.id.imageViewSearch:
                 SearchActivity.openActivity(context, activity, view, AppConstants.AppNavigation.NAVIGATION_FROM_SCHEDULE);

@@ -176,13 +176,13 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     private void checkForGoogleUser() {
         try {
 //            if (MyPreferences.getInstance().isLoginWithGoogle()) {
-                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken(activity.getString(R.string.default_web_client_id))
-                        .requestEmail()
-                        .requestProfile()
-                        .build();
-                // Build a GoogleSignInClient with the options specified by gso.
-                GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(context, gso);
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(activity.getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .requestProfile()
+                    .build();
+            // Build a GoogleSignInClient with the options specified by gso.
+            GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(context, gso);
 //                mGoogleSignInClient.signOut();
 //                MyPreferences.getInstance().setLoginWithGoogle(false);
 //            }
@@ -301,9 +301,14 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 user.setCurrencyCode(model.getCurrencyCode());
                 user.setStoreName(model.getName());
                 IntercomEvents.updateStoreId();
-                EventBroadcastHelper.sendUserUpdate(context, user);
+//                EventBroadcastHelper.sendUserUpdate(context, user);
                 EventBroadcastHelper.changeCountry();
+                networkCommunicator.getMyUser(this, false);
+                break;
+            case NetworkCommunicator.RequestCode.ME_USER:
                 HomeActivity.open(context);
+                break;
+//
         }
     }
 
@@ -321,6 +326,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case NetworkCommunicator.RequestCode.GET_STORE_DATA:
                 ToastUtils.show(context, errorMessage);
                 break;
+
         }
     }
 

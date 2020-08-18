@@ -151,7 +151,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
     private CallbackManager callbackManager;
     private FaceBookUser faceBookUser;
     private long loginTime;
-    private static RegistrationRequest registrationRequest ;
+    private static RegistrationRequest registrationRequest;
     private static int countryId;
     private static int navigationFrom;
     private static final int RC_SIGN_IN = 1;
@@ -168,7 +168,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
         String spanText = activity.getString(R.string.terms_of_service);
         String terms = activity.getString(R.string.terms_service);
         String policy = activity.getString(R.string.privacy_policy);
-        registrationRequest =new RegistrationRequest();
+        registrationRequest = new RegistrationRequest();
         Spannable span = Spannable.Factory.getInstance().newSpannable(spanText);
         buttonNext.setOnClickListener(this);
         span.setSpan(new MyClickSpan(context) {
@@ -409,13 +409,11 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                         if (faceBookUser != null) {
                             TempStorage.setDefaultPage(AppConstants.Tab.TAB_FIND_CLASS);
                             networkCommunicator.loginFb(new LoginRequest(faceBookUser.getId(), faceBookUser.getName(), faceBookUser.getLastName(), faceBookUser.getEmail(), faceBookUser.getGender(), AppConstants.ApiParamValue.LOGINWITHFACEBOOK), SignUpOptions.this, false);
-                        }
-                        else if (mGoogleSignInAccount != null) {
+                        } else if (mGoogleSignInAccount != null) {
                             TempStorage.setDefaultPage(AppConstants.Tab.TAB_FIND_CLASS);
                             networkCommunicator.loginFb(new LoginRequest(mGoogleSignInAccount.getId(), mGoogleSignInAccount.getGivenName(), mGoogleSignInAccount.getFamilyName(), mGoogleSignInAccount.getEmail(), AppConstants.ApiParamValue.LOGINWITHGOOGLE), SignUpOptions.this, false);
-                        }
-                        else
-                            ToastUtils.show(context,getString(R.string.already_account_error));
+                        } else
+                            ToastUtils.show(context, getString(R.string.already_account_error));
                     } else {
                         TempStorage.setDefaultPage(AppConstants.Tab.TAB_EXPLORE_PAGE);
                         if (faceBookUser != null) {
@@ -427,10 +425,6 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                             registrationRequest.setEmail(mGoogleSignInAccount.getEmail());
                             registrationRequest.setStoreId(TempStorage.getCountryId());
                             LocationSelectionActivity.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_GOOGLE_LOGIN);
-                        } else {
-                            registrationRequest.setEmail(this.email);
-                            networkCommunicator.register(registrationRequest, SignUpOptions.this, false);
-
                         }
                     }
 
@@ -439,6 +433,13 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
 //                        textInputLayoutEmail.setError(errorMessage);
 
                 }
+                break;
+            case NetworkCommunicator.RequestCode.SEARCH_EMAIL:
+//                 else {
+                registrationRequest.setEmail(this.email);
+                networkCommunicator.register(registrationRequest, SignUpOptions.this, false);
+
+//            }
                 break;
             case NetworkCommunicator.RequestCode.REGISTER:
                 if (response != null) {
@@ -492,6 +493,10 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                     textInputLayoutEmail.setError(errorMessage);*/
                 ToastUtils.show(context, errorMessage);
                 break;
+            case NetworkCommunicator.RequestCode.SEARCH_EMAIL:
+                ToastUtils.show(context, errorMessage);
+                break;
+
             case NetworkCommunicator.RequestCode.REGISTER:
                 ToastUtils.showFailureResponse(context, errorMessage);
                 break;
@@ -593,7 +598,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
         }
 
         setGender(gender);
-        networkCommunicator.validateEmail(this.email, this, false);
+        networkCommunicator.searchEmail(this.email, this, false);
     }
 
     @Override
@@ -630,6 +635,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
 
     @OnClick(R.id.textViewLogin)
     public void textViewLogin(View view) {
+        TempStorage.setCountryId(0);
         LoginActivity.open(context);
         finish();
     }
@@ -748,6 +754,12 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
                 return;
             }
         }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
 
     }
 }
