@@ -365,7 +365,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
 //                    AppConstants.plural(context.getString(R.string.seat), model.getAvailableSeat()));
             LanguageUtils.setText(textViewAvailable, model.getAvailableSeat(), context.getString(R.string.available_seats) + " ");
 
-            textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
+            textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime())+" ("+AppConstants.Currency.ARABIC_STANDARD_TIME+")");
             textViewGender.setText(Helper.getClassGenderText(model.getClassType()));
             if (model.isVideoClass()) {
                 String channelName = CommonUtillity.getChannelName(model.getPlatform());

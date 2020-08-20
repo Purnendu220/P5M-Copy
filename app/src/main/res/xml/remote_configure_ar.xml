@@ -310,7 +310,7 @@
             "online", "physical_button_ar": "at gym"}]
         </value>
     </entry>
- <entry>
+    <entry>
         <key>how_it_works</key>
         <value>{"en":"", "ar":""}
         </value>
@@ -318,7 +318,16 @@
 
     <entry>
         <key>credit_values_model</key>
-        <value>{"en_values":{ "title":"How many credits required to book a class ?","at_gym_title":"Any class at gym", "at_gym_credit":" - 10 credits", "onlline_title":"Any online class", "online_credit":" - 5 credits", "special_title":"PT classes range from", "special_credit":" 20 to 50 credits","cancel_text":"Cancel","ok_text":"Proceed" }, "ar_values":{ "title":"How many credits required to book a class ?","at_gym_title":"Any class at gym", "at_gym_credit":" - 10 P5M Credits", "onlline_title":"Any online class", "online_credit":" - 5 P5M Credits", "special_title":"PT classes range from", "special_credit":" 20 to 50 P5M Credits","cancel_text":"Cancel","ok_text":"Proceed"}}</value>
+        <value>{"en_values":{ "title":"How many credits required to book a class
+            ?","at_gym_title":"Any class at gym", "at_gym_credit":" - 10 credits",
+            "onlline_title":"Any online class", "online_credit":" - 5 credits", "special_title":"PT
+            classes range from", "special_credit":" 20 to 50
+            credits","cancel_text":"Cancel","ok_text":"Proceed" }, "ar_values":{ "title":"How many
+            credits required to book a class ?","at_gym_title":"Any class at gym", "at_gym_credit":"
+            - 10 P5M Credits", "onlline_title":"Any online class", "online_credit":" - 5 P5M
+            Credits", "special_title":"PT classes range from", "special_credit":" 20 to 50 P5M
+            Credits","cancel_text":"Cancel","ok_text":"Proceed"}}
+        </value>
     </entry>
 
     <entry>
@@ -329,8 +338,12 @@
         <key>virtual_class_value</key>
         <value>5</value>
     </entry>
- <entry>
+    <entry>
         <key>plan_class_text</key>
-        <value> </value>
+        <value></value>
+    </entry>
+    <entry>
+        <key>conversion_text</key>
+        <value>The payment will be done in Kuwait Dinar. Rate of conversion: 1KD = $3.3</value>
     </entry>
 </defaultsMap>

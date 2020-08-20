@@ -2,11 +2,14 @@ package com.p5m.me.adapters;
 
 import android.content.Context;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.p5m.me.R;
@@ -15,22 +18,33 @@ import com.p5m.me.adapters.viewholder.LoaderViewHolder;
 import com.p5m.me.adapters.viewholder.MemberShipHeaderViewHolder;
 import com.p5m.me.adapters.viewholder.MemberShipViewHolder;
 import com.p5m.me.data.HeaderSticky;
+import com.p5m.me.data.LanguageModel;
 import com.p5m.me.data.ListLoader;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.UserPackage;
+import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigure;
+import com.p5m.me.storage.TempStorage;
+import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.JsonUtils;
+import com.p5m.me.utils.LanguageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.view.Gravity.*;
+
 public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int VIEW_TYPE_UNKNOWN = -1;
     private static final int VIEW_TYPE_MEMBERSHIP_HEADER = 1;
+    private static final int VIEW_TYPE_USD_INFO = 3;
     private static final int VIEW_TYPE_MEMBERSHIP = 2;
-    private static final int VIEW_TYPE_LOADER = 3;
+    private static final int VIEW_TYPE_LOADER = 4;
 
     private final AdapterCallbacks adapterCallbacks;
     private final int dp;
+    private String usdInfo;
 
     private List<Object> list;
     private Context context;
@@ -44,6 +58,7 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private boolean showLoader;
     private ListLoader listLoader;
+    private TextView textView;
     private ClassModel classModel;
 
     public MemberShipAdapter(Context context, int navigatedFrom, boolean showLoader, AdapterCallbacks adapterCallbacks) {
@@ -56,7 +71,6 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.navigatedFrom = navigatedFrom;
         this.showLoader = showLoader;
         listLoader = new ListLoader();
-
         headerSticky1 = new HeaderSticky("");
         headerSticky2 = new HeaderSticky("");
 
@@ -98,9 +112,9 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public void clearAll() {
         setHeaderText("", "");
+        this.usdInfo="";
         offeredPackages.clear();
         ownedPackages.clear();
-
         list.clear();
     }
 
@@ -109,15 +123,26 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         headerSticky2.setTitle(text2);
     }
 
+    public void setUsdInfo(String usdInfo) {
+        if (!usdInfo.isEmpty())
+            this.usdInfo = usdInfo;
+        else
+            this.usdInfo = "";
+
+        if (!usdInfo.isEmpty()) {
+            list.add(usdInfo);
+        }
+
+    }
+
     public void notifyDataSetChanges() {
         list.clear();
-
 
         if (!headerSticky1.getTitle().isEmpty()) {
             list.add(headerSticky1);
         }
 
-        if(!ownedPackages.isEmpty()){
+        if (!ownedPackages.isEmpty()) {
             list.addAll(ownedPackages);
 
         }
@@ -127,7 +152,7 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         list.add(headerSticky2);
-
+        list.add(usdInfo);
         notifyDataSetChanged();
     }
 
@@ -152,6 +177,8 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             itemViewType = VIEW_TYPE_MEMBERSHIP;
         } else if (item instanceof HeaderSticky) {
             itemViewType = VIEW_TYPE_MEMBERSHIP_HEADER;
+        } else if (item instanceof String) {
+            itemViewType = VIEW_TYPE_USD_INFO;
         } else if (item instanceof ListLoader) {
             itemViewType = VIEW_TYPE_LOADER;
         }
@@ -164,19 +191,26 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (viewType == VIEW_TYPE_MEMBERSHIP) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_membership, parent, false);
             return new MemberShipViewHolder(view, navigatedFrom);
-        }
-        /*else if (viewType == VIEW_TYPE_MEMBERSHIP_HEADER) {
+        } /*else if (viewType == VIEW_TYPE_MEMBERSHIP_HEADER) {
 
             TextView textView = new TextView(context);
-            textView.setPadding(dp * 16, dp * 20, dp * 16, dp * 20);
+            textView.setPadding(dp * 10, dp * 10, dp * 10, dp * 10);
             textView.setLineSpacing(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 6.0f, context.getResources().getDisplayMetrics()), 1.0f);
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-            textView.setGravity(Gravity.CENTER);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            textView.setGravity(LEFT);
             textView.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
-
             return new MemberShipHeaderViewHolder(textView, textView);
-        } */
-        else if (viewType == VIEW_TYPE_LOADER) {
+        } */ else if (viewType == VIEW_TYPE_USD_INFO) {
+
+            textView = new TextView(context);
+            textView.setPadding(dp * 10, dp * 10, dp * 10, dp * 10);
+            textView.setLineSpacing(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 6.0f, context.getResources().getDisplayMetrics()), 1.0f);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            textView.setGravity(LEFT);
+            textView.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
+            textView.setText(usdInfo);
+            return new MemberShipHeaderViewHolder(textView, textView);
+        } else if (viewType == VIEW_TYPE_LOADER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_list_progress, parent, false);
             return new LoaderViewHolder(view);
         }
@@ -190,9 +224,12 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             ((MemberShipViewHolder) holder).bind(classModel, getItem(position), adapterCallbacks, position);
 
         } else if (holder instanceof MemberShipHeaderViewHolder) {
+            ((MemberShipHeaderViewHolder) holder).bind(usdInfo, getItem(position), adapterCallbacks, position);
+
+        }  /*else if (holder instanceof MemberShipHeaderViewHolder) {
             ((MemberShipHeaderViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
 
-        } else if (holder instanceof LoaderViewHolder) {
+        }*/ else if (holder instanceof LoaderViewHolder) {
             ((LoaderViewHolder) holder).bind(listLoader, adapterCallbacks);
         }
     }

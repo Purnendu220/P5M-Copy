@@ -723,6 +723,17 @@
                     android:text="@string/apply_promo_code"
                     android:textColor="@color/colorAccent"
                     android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/textViewOtherCountryInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_16"
+                    android:layout_marginRight="@dimen/margin_16"
+                    android:layout_marginTop="@dimen/margin_5"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:text="@string/info_for_other_country"
+                    android:textColor="@color/theme_dark_text"
+                    android:textSize="@dimen/text_medium" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"

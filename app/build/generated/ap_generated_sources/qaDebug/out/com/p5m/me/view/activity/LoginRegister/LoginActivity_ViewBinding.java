@@ -21,7 +21,7 @@ public class LoginActivity_ViewBinding implements Unbinder {
 
   private View view7f0a0415;
 
-  private View view7f0a046e;
+  private View view7f0a046f;
 
   private View view7f0a0080;
 
@@ -46,7 +46,7 @@ public class LoginActivity_ViewBinding implements Unbinder {
     });
     view = Utils.findRequiredView(source, R.id.textViewSignUp, "field 'textViewSignUp' and method 'textViewSignUp'");
     target.textViewSignUp = Utils.castView(view, R.id.textViewSignUp, "field 'textViewSignUp'", TextView.class);
-    view7f0a046e = view;
+    view7f0a046f = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -93,8 +93,8 @@ public class LoginActivity_ViewBinding implements Unbinder {
 
     view7f0a0415.setOnClickListener(null);
     view7f0a0415 = null;
-    view7f0a046e.setOnClickListener(null);
-    view7f0a046e = null;
+    view7f0a046f.setOnClickListener(null);
+    view7f0a046f = null;
     view7f0a0080.setOnClickListener(null);
     view7f0a0080 = null;
   }

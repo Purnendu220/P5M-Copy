@@ -11,6 +11,7 @@ import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.ExploreGymModel;
 import com.p5m.me.data.ExploreRatedClassModel;
+import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
 import com.p5m.me.utils.LanguageUtils;
@@ -53,7 +54,7 @@ public class ExploreRatingViewHolder extends RecyclerView.ViewHolder {
             final ExploreRatedClassModel model = (ExploreRatedClassModel) data;
             itemView.setVisibility(View.VISIBLE);
             textViewClassName.setText(model.getTitle());
-            textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
+            textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime())+" • "+ AppConstants.Currency.ARABIC_STANDARD_TIME);
             if (model.getGymBranchDetail() != null) {
                 textViewLocation.setText(model.getGymBranchDetail().getGymName());
             }

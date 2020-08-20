@@ -30,7 +30,10 @@ import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
+import com.p5m.me.data.CreditValueLanguageModel;
+import com.p5m.me.data.CreditValueModel;
 import com.p5m.me.data.Join5MinModel;
+import com.p5m.me.data.LanguageModel;
 import com.p5m.me.data.PromoCode;
 import com.p5m.me.data.Testimonials;
 import com.p5m.me.data.ValidityPackageList;
@@ -45,6 +48,7 @@ import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.fxn.utility.Constants;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigure;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -52,6 +56,7 @@ import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.DialogUtils;
+import com.p5m.me.utils.JsonUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
@@ -291,6 +296,9 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     @BindView(R.id.scrollview)
     ScrollView scrollView;
 
+    @BindView(R.id.textViewOtherCountryInfo)
+    TextView textViewOtherCountryInfo;
+
 
     private PromoCode promoCode;
     private MaterialDialog materialDialog;
@@ -322,6 +330,19 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         setTestimonialAdapter(RemoteConfigConst.TESTIMONIALS_RIYADH_VALUE);
 //        else
         setTestimonialAdapter(RemoteConfigConst.TESTIMONIALS_VALUE);
+        if (TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.USD_CURRENCY)) {
+            textViewOtherCountryInfo.setVisibility(View.VISIBLE);
+            String str = RemoteConfigure.getFirebaseRemoteConfig(mContext).getRemoteConfigValue(RemoteConfigConst.CONVERSTION_TEXT);
+            LanguageModel languageModel = JsonUtils.fromJson(str, LanguageModel.class);
+            if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")){
+                textViewOtherCountryInfo.setText(languageModel.getAr());
+            }else{
+                textViewOtherCountryInfo.setText(languageModel.getEn());
+
+            }
+        }
+
+
 
     }
 
@@ -996,7 +1017,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 break;
             case CLASS_PURCHASE_WITH_PACKAGE:
                 PaymentConfirmationActivity.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS,
-                        refId, aPackage, classModel, checkoutFor, null, null, mNumberOfPackagesToBuy,friendsDetail, couponCode, userHavePackage);
+                        refId, aPackage, classModel, checkoutFor, null, null, mNumberOfPackagesToBuy, friendsDetail, couponCode, userHavePackage);
 
                 break;
             case SPECIAL_CLASS:

@@ -171,7 +171,7 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
 
             textViewInfo.setText(model.getShortDesc());
 
-            textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
+            textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime())+" ("+AppConstants.Currency.ARABIC_STANDARD_TIME+")");
             textViewGender.setText(Helper.getClassGenderText(model.getClassType()));
             if (model.getRating() != 0.0F && model.getRating() > 0) {
                 linearLayoutClassRating.setVisibility(View.VISIBLE);

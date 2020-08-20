@@ -326,7 +326,7 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
                 relativeLayoutFitnessLevel.setVisibility(View.GONE);
             }
 
-            textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
+            textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime())+" • "+AppConstants.Currency.ARABIC_STANDARD_TIME);
 
             buttonJoin.setOnClickListener(new View.OnClickListener() {
                 @Override

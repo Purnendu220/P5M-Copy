@@ -8,7 +8,7 @@ public final class BuildConfig {
   public static final String APPLICATION_ID = "com.p5m.me";
   public static final String BUILD_TYPE = "debug";
   public static final String FLAVOR = "qa";
-  public static final int VERSION_CODE = 76;
+  public static final int VERSION_CODE = 78;
   public static final String VERSION_NAME = "1.9.04";
   // Fields from product flavor: qa
   public static final String AGORA_APP_CUSTOMER_CERTIFICATE = "30d9c2ed76a34e27ab05ae85682ae4fc";

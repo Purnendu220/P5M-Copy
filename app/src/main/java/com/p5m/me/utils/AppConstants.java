@@ -40,6 +40,8 @@ public class AppConstants {
         public static final String SAUDI_CURRENCY_SHORT ="SR";
 
         public static final String KUWAIT_CURRENCY = "KWD";
+        public static final String USD_CURRENCY = "USD";
+        public static final String ARABIC_STANDARD_TIME = "AST";
     }
 
     public static class Tab {

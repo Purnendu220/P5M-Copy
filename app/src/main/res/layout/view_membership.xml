@@ -20,6 +20,7 @@
         <include layout="@layout/layout_offered_pakages"
             android:visibility="visible"></include>
 
+
     </LinearLayout>
 
 
