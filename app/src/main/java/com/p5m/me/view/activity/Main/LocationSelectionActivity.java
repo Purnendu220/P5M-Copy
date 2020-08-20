@@ -4,14 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.p5m.me.R;
@@ -44,7 +48,8 @@ import butterknife.ButterKnife;
 
 import static com.p5m.me.analytics.IntercomEvents.successfulLoginIntercom;
 
-public class LocationSelectionActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener, NetworkCommunicator.RequestListener {
+public class
+LocationSelectionActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener, NetworkCommunicator.RequestListener {
 
 
     private int position = -1;
@@ -54,8 +59,11 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
     private int countryId = 0;
     private InterestedCityRequestModel interestedCityRequestModel;
     private long loginTime;
+    private String gender;
+    private boolean isRegisterClick = false;
 
     public static void open(Context context) {
+        LocationSelectionActivity.navigateFrom = 0;
         context.startActivity(new Intent(context, LocationSelectionActivity.class));
     }
 
@@ -64,14 +72,21 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
         context.startActivity(new Intent(context, LocationSelectionActivity.class));
     }
 
-    public static void open(Context context, RegistrationRequest registrationRequest, int navigationFromFacebookLogin) {
-        LocationSelectionActivity.navigateFrom = navigationFromFacebookLogin;
+    public static void open(Context context, RegistrationRequest registrationRequest, int navigationFrom) {
+        LocationSelectionActivity.navigateFrom = navigationFrom;
         LocationSelectionActivity.registrationRequest = registrationRequest;
         context.startActivity(new Intent(context, LocationSelectionActivity.class));
     }
 
+
     @BindView(R.id.spinnerCity)
     public Spinner spinnerCity;
+
+    @BindView(R.id.buttonMale)
+    public Button buttonMale;
+    @BindView(R.id.buttonFemale)
+    public Button buttonFemale;
+
 
     @BindView(R.id.buttonNext)
     public Button buttonNext;
@@ -84,6 +99,14 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
 
     @BindView(R.id.textViewLogin)
     public TextView textViewLogin;
+
+    @BindView(R.id.textViewHeader)
+    public TextView textViewHeader;
+    @BindView(R.id.layoutGender)
+    public LinearLayout layoutGender;
+    @BindView(R.id.view)
+    public View view;
+
     Boolean isSelectCountry = false;
     private String item;
     public static RegistrationRequest registrationRequest;
@@ -98,9 +121,12 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
         categories = new ArrayList<String>();
         buttonNext.setOnClickListener(this);
         textViewLogin.setOnClickListener(this);
-        textInputLayoutCity.setVisibility(View.GONE);
-        buttonNext.setEnabled(true);
-        buttonNext.setText(context.getResources().getString(R.string.next));
+        buttonFemale.setOnClickListener(this);
+        buttonMale.setOnClickListener(this);
+        if (TempStorage.getCountryId() != 0)
+            handleGenderScreen();
+        else
+            handleLocationView();
         Helper.setupErrorWatcher(textViewCountryName, textInputLayoutCity);
         if (TempStorage.getCountries() == null)
             callApi();
@@ -109,6 +135,29 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
             setSpinnerView();
         }
 
+    }
+
+    private void handleGenderScreen() {
+
+        textViewHeader.setText(getString(R.string.gender_string));
+        buttonNext.setText(getString(R.string.register));
+        layoutGender.setVisibility(View.VISIBLE);
+        textInputLayoutCity.setVisibility(View.GONE);
+        spinnerCity.setVisibility(View.GONE);
+        view.setVisibility(View.GONE);
+        isRegisterClick = true;
+
+    }
+
+    private void handleLocationView() {
+        textInputLayoutCity.setVisibility(View.GONE);
+        buttonNext.setEnabled(true);
+        buttonNext.setText(context.getResources().getString(R.string.next));
+        view.setVisibility(View.VISIBLE);
+        textViewHeader.setText(getString(R.string.location_search_for));
+        buttonNext.setText(getString(R.string.next));
+        layoutGender.setVisibility(View.GONE);
+        spinnerCity.setVisibility(View.VISIBLE);
     }
 
     private void callApi() {
@@ -183,15 +232,41 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonNext:
-                if (position < 0) {
+                if (position >= 0 && position < model.size()) {
+                    TempStorage.setCountryId(model.get(position).getCountryId());
+//                    ToastUtils.show(context, getString(R.string.select_city));
+                } else if (other) {
+                    TempStorage.setCountryId(-1);
+                    textInputLayoutCity.setVisibility(View.VISIBLE);
+                    if (!isError()) {
+                        callInterestedCityApi();
+                        buttonNext.setEnabled(false);
+                        buttonNext.setText(context.getResources().getString(R.string.please_wait));
+                    }
+                }
+                if (TempStorage.getCountryId() == 0) {
                     ToastUtils.show(context, getString(R.string.select_city));
+                } else if (isRegisterClick) {
+                    if (TextUtils.isEmpty(gender)) {
+                        ToastUtils.show(context, getString(R.string.gender_required));
+                    } else if (navigateFrom == AppConstants.AppNavigation.NAVIGATION_FROM_GOOGLE_LOGIN
+                            && registrationRequest != null && !other) {
+                        loginTime = System.currentTimeMillis() - 5 * 1000;
+                        registrationRequest.setGender(gender);
+                        networkCommunicator.loginFb(new LoginRequest(registrationRequest.getGoogleId(), registrationRequest.getFirstName(), registrationRequest.getLastName(), registrationRequest.getEmail(), gender, AppConstants.ApiParamValue.LOGINWITHGOOGLE), LocationSelectionActivity.this, false);
+                    }
                 } else if (navigateFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FACEBOOK_LOGIN
                         && registrationRequest != null && !other) {
                     loginTime = System.currentTimeMillis() - 5 * 1000;
 
-                    networkCommunicator.loginFb(new LoginRequest(registrationRequest.getFacebookId(), registrationRequest.getFirstName(), registrationRequest.getLastName(), registrationRequest.getEmail(), registrationRequest.getGender()), LocationSelectionActivity.this, false);
+                    networkCommunicator.loginFb(new LoginRequest(registrationRequest.getFacebookId(), registrationRequest.getFirstName(), registrationRequest.getLastName(), registrationRequest.getEmail(), registrationRequest.getGender(), AppConstants.ApiParamValue.LOGINWITHFACEBOOK), LocationSelectionActivity.this, false);
 
-                } else if (isSelectCountry && model != null) {
+                } else if (navigateFrom == AppConstants.AppNavigation.NAVIGATION_FROM_GOOGLE_LOGIN
+                        && registrationRequest != null && !other) {
+                    handleGenderScreen();
+//                    SignUpOptions.open(this, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_GOOGLE_LOGIN);
+
+                } else if (model != null) {
                     if (!other) {
                         textInputLayoutCity.setVisibility(View.GONE);
                         countryId = model.get(position).getId();
@@ -203,21 +278,21 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
                             TempStorage.setCountryName(model.get(position).getName());
                             SignUpOptions.open(context, countryId);
                         }
-                    } else {
-                        textInputLayoutCity.setVisibility(View.VISIBLE);
-                        if (!isError()) {
-                            callInterestedCityApi();
-                            buttonNext.setEnabled(false);
-                            buttonNext.setText(context.getResources().getString(R.string.please_wait));
-                        }
                     }
 
                 }
 
                 break;
             case R.id.textViewLogin:
+                TempStorage.setCountryId(0);
                 LoginActivity.open(context);
                 finish();
+                break;
+            case R.id.buttonFemale:
+                selectFemale();
+                break;
+            case R.id.buttonMale:
+                selectMale();
                 break;
         }
     }
@@ -241,6 +316,7 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
     public void onApiSuccess(Object response, int requestCode) {
         switch (requestCode) {
             case NetworkCommunicator.RequestCode.GET_STORE_DATA:
+
                 model = ((ResponseModel<List<StoreApiModel>>) response).data;
                 setSpinnerView();
                 break;
@@ -254,6 +330,7 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
                     FirebaseAnalysic.trackRegister(AppConstants.Tracker.EMAIL, TempStorage.getUser());
                     IntercomEvents.successfulLoginIntercom(user.getFirstName() + " " + user.getLastName(), user.getEmail());
                     GetStartedActivity.open(context);
+                    finish();
                 }
                 break;
             case NetworkCommunicator.RequestCode.LOGIN_FB:
@@ -271,7 +348,7 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
                     if (countryId != 0)
                         networkCommunicator.updateStoreId(countryId, this, false);
                     else
-                        HomeActivity.open(context);
+                        GetStartedActivity.open(context);
 
                     finish();
                 }
@@ -315,12 +392,50 @@ public class LocationSelectionActivity extends BaseActivity implements AdapterVi
                 break;
 
             case NetworkCommunicator.RequestCode.LOGIN_FB:
+                if (navigateFrom == AppConstants.AppNavigation.NAVIGATION_FROM_FACEBOOK_LOGIN)
+                    SignUpOptions.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_FB_LOGIN);
+                else
+                    SignUpOptions.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_GOOGLE_LOGIN);
 
-                SignUpOptions.open(context, registrationRequest, AppConstants.AppNavigation.NAVIGATION_FROM_FB_LOGIN);
-
+                break;
+            case NetworkCommunicator.RequestCode.REGISTER:
+                ToastUtils.show(context, errorMessage);
                 break;
         }
     }
 
+    private void selectFemale() {
+        try {
+            buttonMale.setBackground(getResources().getDrawable(R.drawable.button_white));
 
+            buttonMale.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
+            buttonFemale.setBackground(getResources().getDrawable(R.drawable.button_blue));
+            buttonFemale.setTextColor(ContextCompat.getColor(context, R.color.white));
+            gender = AppConstants.ApiParamValue.GENDER_FEMALE;
+            registrationRequest.setGender(gender);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+
+    }
+
+    private void selectMale() {
+        try {
+            buttonMale.setBackgroundResource(R.drawable.button_blue);
+            buttonMale.setTextColor(ContextCompat.getColor(context, R.color.white));
+            buttonFemale.setBackgroundResource(R.drawable.button_white);
+            buttonFemale.setTextColor(ContextCompat.getColor(context, R.color.theme_dark_text));
+            gender = AppConstants.ApiParamValue.GENDER_MALE;
+            registrationRequest.setGender(gender);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        TempStorage.setCountryId(0);
+        super.onBackPressed();
+    }
 }

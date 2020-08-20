@@ -247,7 +247,7 @@
                         android:fontFamily="sans-serif"
                         android:gravity="left"
                         android:letterSpacing="@dimen/text_medium_letter_spacing"
-                        android:text="@string/no_of_class"
+                        android:text="@string/credit_balance"
                         android:textColor="@color/theme_medium_light_text"
                         android:textSize="@dimen/text_large"
                         android:textStyle="normal" />

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.UserPackageDetail;
+import com.p5m.me.utils.LanguageUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,7 +44,8 @@ public class UserPackageDetailViewHolder extends RecyclerView.ViewHolder {
             itemView.setVisibility(View.VISIBLE);
             UserPackageDetail model = (UserPackageDetail) data;
             textGymNames.setText(model.getGymBranchResponseDto().getGymName());
-            textGymVisits.setText(String.format(context.getResources().getString(R.string.visit_times),model.getNumberofGymVisit()));
+            if(model.getNumberofGymVisit()!=null)
+            textGymVisits.setText(String.format(context.getResources().getString(R.string.visit_times), model.getNumberofGymVisit()));
         } else {
             itemView.setVisibility(View.GONE);
         }

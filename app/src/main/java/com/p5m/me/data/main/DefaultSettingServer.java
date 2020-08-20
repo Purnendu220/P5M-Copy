@@ -14,6 +14,7 @@ public class DefaultSettingServer implements java.io.Serializable {
     private String popularClassesText;
     private float refundAllowedbeforeForSpecial;
     private String cancel_5_minPolicy;
+    private List<PriceModelMaster> priceModelMaster;
 
     public String getSpecialClassCancellationPolicy() {
         return this.specialClassCancellationPolicy;
@@ -65,5 +66,21 @@ public class DefaultSettingServer implements java.io.Serializable {
 
     public void setRefundAllowedbeforeForSpecial(float refundAllowedbeforeForSpecial) {
         this.refundAllowedbeforeForSpecial = refundAllowedbeforeForSpecial;
+    }
+
+    public String getCancel_5_minPolicy() {
+        return cancel_5_minPolicy;
+    }
+
+    public void setCancel_5_minPolicy(String cancel_5_minPolicy) {
+        this.cancel_5_minPolicy = cancel_5_minPolicy;
+    }
+
+    public List<PriceModelMaster> getPriceModelMaster() {
+        return priceModelMaster;
+    }
+
+    public void setPriceModelMaster(List<PriceModelMaster> priceModelMaster) {
+        this.priceModelMaster = priceModelMaster;
     }
 }

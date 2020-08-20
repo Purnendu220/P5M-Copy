@@ -126,6 +126,9 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
     @BindView(R.id.textViewOnlineInfo)
     public TextView textViewOnlineInfo;
 
+    @BindView(R.id.textViewOnlineInfoTitle)
+    public TextView textViewOnlineInfoTitle;
+
     @BindView(R.id.relativeLayoutFitnessLevel)
     public RelativeLayout relativeLayoutFitnessLevel;
 
@@ -142,6 +145,12 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
     RelativeLayout relativeLayoutVideoClass;
     @BindView(R.id.layoutSeats)
     RelativeLayout layoutSeats;
+
+    @BindView(R.id.textViewClassCredits)
+    TextView textViewClassCredits;
+
+    @BindView(R.id.layoutClassCredits)
+    RelativeLayout layoutClassCredits;
 
     @BindView(R.id.layoutChannelName)
     public RelativeLayout layoutChannelName;
@@ -186,7 +195,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
                 latlng = new LatLng(model.getGymBranchDetail().getLatitude(), model.getGymBranchDetail().getLongitude());
             }
             if (Helper.isSpecialClass(model)) {
-                textViewSpecialClass.setVisibility(View.VISIBLE);
+                textViewSpecialClass.setVisibility(View.GONE);
                 textViewSpecialClass.setText(Helper.getSpecialClassText(model));
 
             } else {
@@ -200,18 +209,30 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
             } else {
                 layoutDesc.setVisibility(View.GONE);
             }
+            if(Helper.getClassPrice(model)>0){
+                layoutClassCredits.setVisibility(View.VISIBLE);
+                textViewClassCredits.setText(Helper.getClassCreditValue(context,model));
+            }else{
+                layoutClassCredits.setVisibility(View.GONE);
+
+            }
+
             if (model.isVideoClass() && !HOW_IT_WORKS_VALUE.isEmpty()) {
                 Gson g = new Gson();
                 RemoteConfigDataModel p = g.fromJson(HOW_IT_WORKS_VALUE, new TypeToken<RemoteConfigDataModel>() {
                 }.getType());
-                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en") && !p.getEn().isEmpty()) {
-
-                    layoutOnlineClassProcess.setVisibility(View.VISIBLE);
-                    textViewOnlineInfo.setText(p.getEn());
-                }else {
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar") && !p.getAr().isEmpty()) {
+                    textViewOnlineInfoTitle.setVisibility(View.VISIBLE);
                     layoutOnlineClassProcess.setVisibility(View.VISIBLE);
                     textViewOnlineInfo.setText(p.getAr());
+                    textViewOnlineInfoTitle.setText(p.getTitle_ar());
                 }
+                else {
+                textViewOnlineInfoTitle.setVisibility(View.VISIBLE);
+                layoutOnlineClassProcess.setVisibility(View.VISIBLE);
+                textViewOnlineInfo.setText(p.getEn());
+                textViewOnlineInfoTitle.setText(p.getTitle_en());
+            }
             } else {
                 layoutOnlineClassProcess.setVisibility(View.GONE);
             }

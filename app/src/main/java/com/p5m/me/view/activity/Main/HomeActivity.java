@@ -97,6 +97,17 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         context.startActivity(intent);
 
     }
+    public static void show(Context context, int tabPosition, int navigationFrom,boolean addCredits) {
+        Intent intent = new Intent(context, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra(AppConstants.DataKey.HOME_TAB_POSITION, tabPosition);
+        intent.putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom);
+        intent.putExtra(AppConstants.DataKey.ADD_EXTRA_CREDITS, addCredits);
+
+        context.startActivity(intent);
+
+    }
 
     public static void show(Context context, int tabPosition, int navigationFrom, ClassModel classModel) {
         Intent intent = new Intent(context, HomeActivity.class);
@@ -199,7 +210,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     private int NUMBER_OF_PACKAGES_TO_BUY = -1;
     private BookWithFriendData BOOK_WITH_FRIEND_DATA;
     private ClassModel CLASS_OBJECT;
-
+    private boolean ADD_EXTRA_CREDITS;
 
     private Handler handler;
     public CustomRateAlertDialog mCustomMatchDialog;
@@ -322,6 +333,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
                 -1);
         NUMBER_OF_PACKAGES_TO_BUY = intent.getIntExtra(AppConstants.DataKey.NUMBER_OF_PACKAGES_TO_BUY,
                 1);
+        ADD_EXTRA_CREDITS = intent.getBooleanExtra(AppConstants.DataKey.ADD_EXTRA_CREDITS,false);
         CLASS_OBJECT = (ClassModel) intent.getSerializableExtra(AppConstants.DataKey.CLASS_OBJECT);
         BOOK_WITH_FRIEND_DATA = (BookWithFriendData) intent.getSerializableExtra(AppConstants.DataKey.BOOK_WITH_FRIEND_DATA);
 
@@ -676,7 +688,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
                 MyPreferences.getInstance().saveMembershipIcon(false);
                 setMembershipIcon();
                 MembershipFragment fragment = ((MembershipFragment) homeAdapter.getFragments().get(position));
-                fragment.refreshFragment(NAVIGATED_FROM_INT, CLASS_OBJECT, BOOK_WITH_FRIEND_DATA, NUMBER_OF_PACKAGES_TO_BUY);
+                fragment.refreshFragment(NAVIGATED_FROM_INT, CLASS_OBJECT, BOOK_WITH_FRIEND_DATA, NUMBER_OF_PACKAGES_TO_BUY,ADD_EXTRA_CREDITS);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -689,7 +701,10 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
                 CLASS_OBJECT = null;
                 BOOK_WITH_FRIEND_DATA = null;
                 NUMBER_OF_PACKAGES_TO_BUY = 1;
+                ADD_EXTRA_CREDITS = false;
                 fragment.refreshFragmentBackGroung(NAVIGATED_FROM_INT, CLASS_OBJECT, BOOK_WITH_FRIEND_DATA, NUMBER_OF_PACKAGES_TO_BUY);
+                    fragment.fragmentPaused();
+
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -697,8 +712,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         } else if (position == TAB_MY_MEMBERSHIP && currentTab == position && NAVIGATED_FROM_INT == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS) {
             try {
                 MembershipFragment fragment = ((MembershipFragment) homeAdapter.getFragments().get(TAB_MY_MEMBERSHIP));
-                fragment.refreshFragment(NAVIGATED_FROM_INT, CLASS_OBJECT, BOOK_WITH_FRIEND_DATA, NUMBER_OF_PACKAGES_TO_BUY);
-
+                fragment.refreshFragment(NAVIGATED_FROM_INT, CLASS_OBJECT, BOOK_WITH_FRIEND_DATA, NUMBER_OF_PACKAGES_TO_BUY,ADD_EXTRA_CREDITS);
             } catch (Exception e) {
                 e.printStackTrace();
             }

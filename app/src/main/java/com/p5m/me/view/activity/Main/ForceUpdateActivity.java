@@ -15,6 +15,8 @@ import com.p5m.me.view.activity.base.BaseActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 public class ForceUpdateActivity extends BaseActivity {
 
     private static String title;
@@ -23,7 +25,10 @@ public class ForceUpdateActivity extends BaseActivity {
     public static void openActivity(Context context, String title, String message) {
         ForceUpdateActivity.title = title;
         ForceUpdateActivity.message = message;
-        context.startActivity(new Intent(context, ForceUpdateActivity.class));
+
+        Intent i = new Intent(context,ForceUpdateActivity.class);
+        i.addFlags(FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
     }
 
     @BindView(R.id.textViewTitle)

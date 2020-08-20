@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.webkit.URLUtil;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -117,8 +119,19 @@ public class OpenAppUtils {
 
 
     public static void openBrowser(Context context,String url){
-        Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(url));
-        context.startActivity(intent);
+//        Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(url));
+//        context.startActivity(intent);
+        try {
+            if (!URLUtil.isValidUrl(url)) {
+                Toast.makeText(context, " This is not a valid link", Toast.LENGTH_LONG).show();
+            } else {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                context.startActivity(intent);
+            }
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(context, " You don't have any browser to open web page", Toast.LENGTH_LONG).show();
+        }
     }
     public static boolean isSkypeClientInstalled(Context myContext) {
         PackageManager myPackageMgr = myContext.getPackageManager();

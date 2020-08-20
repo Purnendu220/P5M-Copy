@@ -320,7 +320,7 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
             case R.id.textViewMore:
             case R.id.textViewRecharge:
                 // MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE);
-                HomeActivity.show(context, AppConstants.Tab.TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE);
+                HomeActivity.show(context, AppConstants.Tab.TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE,true);
                 break;
             case R.id.imageView:
                 if (!myProfileAdapter.getUser().getProfileImage().isEmpty()) {

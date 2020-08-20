@@ -34,9 +34,9 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.material.appbar.AppBarLayout;
 import com.p5m.me.R;
 import com.p5m.me.analytics.IntercomEvents;
+import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.Join5MinModel;
 import com.p5m.me.data.PaymentConfirmationResponse;
-import com.p5m.me.data.PromoCode;
 import com.p5m.me.data.ValidityPackageList;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
@@ -62,16 +62,12 @@ import com.p5m.me.view.custom.CustomAlertDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.intercom.android.sdk.Intercom;
-import io.intercom.android.sdk.UserAttributes;
-import io.intercom.android.sdk.identity.Registration;
 
 import static com.p5m.me.fxn.utility.Constants.CheckoutFor.EXTENSION;
 import static com.p5m.me.fxn.utility.Constants.CheckoutFor.PENDING_TRANSACTION;
@@ -84,6 +80,8 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
     private static UserPackage userPackage = null;
     private static ValidityPackageList selectedPacakageFromList;
     private static int mNumberOfClassesToBuy = 1;
+    private static int mNumberOfClasses = 1;
+    private static BookWithFriendData friendDetail;
     private PaymentConfirmationResponse paymentResponse;
     private Runnable nextScreenRunnable;
     private Handler handler;
@@ -92,12 +90,13 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
     private int calendar_id = -1;
     public static String couponCode = "";
     private User user;
+    private static boolean userAlreadyHavePackage;
 
     public static void openActivity(Context context, int navigationFrom, String refId,
                                     Package aPackage, ClassModel classModel,
                                     Constants.CheckoutFor checkoutFor,
                                     UserPackage userPackage,
-                                    ValidityPackageList selectedPacakageFromList, int mNumberOfClassesToBuy, String couponCode) {
+                                        ValidityPackageList selectedPacakageFromList, int mNumberOfClassesToBuy, BookWithFriendData friendDetail, String couponCode, boolean userAlreadyHavePackage) {
         Intent intent = new Intent(context, PaymentConfirmationActivity.class)
 
                 .putExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, navigationFrom);
@@ -113,7 +112,9 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         PaymentConfirmationActivity.userPackage = userPackage;
         PaymentConfirmationActivity.selectedPacakageFromList = selectedPacakageFromList;
         PaymentConfirmationActivity.mNumberOfClassesToBuy = mNumberOfClassesToBuy;
+        PaymentConfirmationActivity.friendDetail = friendDetail;
         PaymentConfirmationActivity.couponCode = couponCode;
+        PaymentConfirmationActivity.userAlreadyHavePackage = userAlreadyHavePackage;
         context.startActivity(intent);
     }
 
@@ -234,7 +235,12 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
         mTextViewWalletAmount = v.findViewById(R.id.textViewWalletAmount);
         mLayoutUserWallet = v.findViewById(R.id.layoutUserWallet);
         mLayoutUserWallet.setVisibility(View.GONE);
+        if(friendDetail==null){
+            mNumberOfClasses=1;
 
+        }
+        else
+            mNumberOfClasses =2;
         ((TextView) v.findViewById(R.id.textViewTitle)).setText(context.getResources().getText(R.string.payment_confirmation));
         ((TextView) v.findViewById(R.id.textViewTitle)).setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
         activity.getSupportActionBar().setCustomView(v, new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
@@ -498,14 +504,13 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                     mLayoutUserWallet.setVisibility(View.VISIBLE);
                     mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(), 2) + " " + TempStorage.getUser().getCurrencyCode());
                 } else {*/
-                    mLayoutUserWallet.setVisibility(View.GONE);
+                mLayoutUserWallet.setVisibility(View.GONE);
 
 //                }
-                IntercomEvents.updateIntercomWallet(mWalletCredit,user);
+                IntercomEvents.updateIntercomWallet(mWalletCredit, user);
                 break;
         }
     }
-
 
 
     private void setData(PaymentStatus paymentStatus) {
@@ -517,7 +522,7 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                 if (!CalendarHelper.haveCalendarReadWritePermissions(this)) {
                     CalendarHelper.requestCalendarReadWritePermission(this);
                 } else {
-                    if (classModel!=null && CalendarHelper.haveCalendarReadWritePermissions(this))
+                    if (classModel != null && CalendarHelper.haveCalendarReadWritePermissions(this))
                         CalendarHelper.scheduleCalenderEvent(this, classModel);
 
                 }
@@ -684,12 +689,21 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
                     if (paymentResponse.getClassDetailDto() != null)
                         textViewValidity.setText(DateUtils.getPackageClassDate(paymentResponse.getClassDetailDto().getClassDate()) + "\n" + DateUtils.getClassTime(paymentResponse.getClassDetailDto().getFromTime(), paymentResponse.getClassDetailDto().getToTime()));
                 } else {
-                    if (!TextUtils.isEmpty(paymentResponse.getExpiryDate())) {
-                        textViewValidity.setText(DateUtils.getClassDate(paymentResponse.getExpiryDate()));
-                    } else
-                        textViewValidity.setText(R.string.n_a);
+                    if (userAlreadyHavePackage && !TextUtils.isEmpty(paymentResponse.getPaymentExpiryDate())) {
+                        textViewValidity.setText(DateUtils.getClassDate(paymentResponse.getPaymentExpiryDate()));
+                    } else {
+                        if (!TextUtils.isEmpty(paymentResponse.getExpiryDate())) {
+                            textViewValidity.setText(DateUtils.getClassDate(paymentResponse.getExpiryDate()));
+                        } else
+                            textViewValidity.setText(R.string.n_a);
+                    }
+
 
                 }
+                if (userAlreadyHavePackage) {
+                    textViewClass.setText(R.string.updated_credit_balance);
+                }
+
                 break;
             case SPECIAL_CLASS:
                 textViewSubTitle.setText(context.getString(R.string.booking_details));
@@ -702,14 +716,30 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
             case EXTENSION:
                 if (userPackage != null) {
                     textViewPackageName.setText(userPackage.getPackageName());
-                    textViewClassName.setText(LanguageUtils.numberConverter(userPackage.getBalanceClass()) + " " + AppConstants.pluralES(context.getString(R.string.classs), userPackage.getBalanceClass()));
+                    textViewClassName.setText(LanguageUtils.numberConverter(userPackage.getBalance()) + " " + context.getString(R.string.p5m_credits));
                 }
                 setExtendedText();
+                if (userAlreadyHavePackage) {
+                    textViewClass.setText(R.string.updated_credit_balance);
+                }
+
                 break;
 
         }
-        if (paymentResponse.getNumberOfClasses() != 0)
-            textViewClassName.setText(LanguageUtils.numberConverter(paymentResponse.getNumberOfClasses()) + " " + AppConstants.pluralES(context.getString(R.string.classs), paymentResponse.getNumberOfClasses()));
+        if (userAlreadyHavePackage && paymentResponse.getPaymentTotalCredit() > 0) {
+            if (classModel == null) {
+                classModel = new ClassModel();
+            }
+            textViewClassName.setText(LanguageUtils.numberConverter(paymentResponse.getPaymentTotalCredit() - classModel.getCredit()) + " " + context.getString(R.string.p5m_credits));
+
+        } else if (!userAlreadyHavePackage && paymentResponse.getTotalCredit() != 0) {
+            if (classModel == null) {
+                classModel = new ClassModel();
+            }
+            textViewClassName.setText(LanguageUtils.numberConverter(paymentResponse.getTotalCredit() - (classModel.getCredit()*mNumberOfClasses
+            )) + " " + context.getString(R.string.p5m_credits));
+        } else if (paymentResponse.getTotalCredit() != 0)
+            textViewClassName.setText(LanguageUtils.numberConverter(paymentResponse.getTotalCredit()) + " " + context.getString(R.string.p5m_credits));
 
     }
 

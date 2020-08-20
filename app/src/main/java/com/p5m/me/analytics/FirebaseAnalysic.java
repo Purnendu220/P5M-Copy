@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.p5m.me.data.PushDetailModel;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.helper.Helper;
@@ -167,7 +168,36 @@ public class FirebaseAnalysic {
             LogUtils.exception(e);
         }
     }
+    public static void trackPushNotificationClick(PushDetailModel pushDetailModel) {
+        try {
+            if (pushDetailModel != null) {
+                Bundle props = new Bundle();
+                if (!pushDetailModel.getType().isEmpty())
+                    props.putString("Type", pushDetailModel.getType());
+                if (!pushDetailModel.getMessage().isEmpty())
+                    props.putString("Message", pushDetailModel.getMessage());
+                props.putString("Source", pushDetailModel.getSource());
+                if (!pushDetailModel.getUrl().isEmpty())
+                    props.putString("Url", pushDetailModel.getUrl());
+                mFirebaseAnalytics.logEvent( "Push_Click",props);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
 
+    public static void trackNotificationVisit(String origin) {
+        try {
+            Bundle props = new Bundle();
+            props.putString("Seen", origin);
+
+            mFirebaseAnalytics.logEvent( "Notification_View",props);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
 
     public static void setup(Activity activity) {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(activity);

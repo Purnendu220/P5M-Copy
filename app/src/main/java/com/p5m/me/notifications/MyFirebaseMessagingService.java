@@ -508,8 +508,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void handleNotification(Intent navigationIntent, String title, String message) {
-        navigationIntent.putExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, true);
         navigationIntent.putExtra(AppConstants.DataKey.DATA_FROM_NOTIFICATION_STACK, pushDetailModel);
+        navigationIntent.putExtra(AppConstants.DataKey.IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN, true);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addNextIntentWithParentStack(navigationIntent);
 
@@ -522,7 +522,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            String CHANNEL_ID = "p5m_channel_" + System.currentTimeMillis(); // The id of the channel.
+            String CHANNEL_ID = "p5m_" +
+                    "channel_" + System.currentTimeMillis(); // The id of the channel.
             CharSequence name = "p5m"; // The user-visible name of the channel.
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);

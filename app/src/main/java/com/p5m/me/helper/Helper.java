@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -32,22 +33,30 @@ import com.p5m.me.MyApp;
 import com.p5m.me.R;
 import com.p5m.me.agorartc.stats.VideoStatusData;
 import com.p5m.me.data.BookButtonModel;
+import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.RemoteConfigDataModel;
+import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.GymBranchDetail;
 import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.data.main.MediaModel;
+import com.p5m.me.data.main.Package;
+import com.p5m.me.data.main.PriceModelMaster;
 import com.p5m.me.data.main.TrainerDetailModel;
 import com.p5m.me.data.main.TrainerModel;
+import com.p5m.me.data.main.User;
 import com.p5m.me.fxn.utility.Constants;
 import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.remote_config.RemoteConfigSetUp;
+import com.p5m.me.remote_config.RemoteConfigure;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.KeyboardUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.LoginRegister.ContinueUser;
 import com.p5m.me.view.activity.LoginRegister.InfoScreen;
 import com.p5m.me.view.activity.Main.LocationActivity;
@@ -62,6 +71,8 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import io.agora.rtc.internal.LastmileProbeConfig;
 
 /**
  * Created by Varun John on 4/20/2018.
@@ -205,22 +216,28 @@ public class Helper {
         } else {
             String BOOK_FIND_CLASS_VALUE = RemoteConfigConst.BOOK_FIND_CLASS_VALUE;
             if (BOOK_FIND_CLASS_VALUE != null && !BOOK_FIND_CLASS_VALUE.isEmpty()) {
-                Gson g = new Gson();
-                BookButtonModel p = g.fromJson(BOOK_FIND_CLASS_VALUE, new TypeToken<BookButtonModel>() {
-                }.getType());
-                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en")) {
-                    if (model.isVideoClass())
-                        buttonJoin.setText(p.getOnline_button_en());
-                    else
-                        buttonJoin.setText(p.getPhysical_button_en());
-                } else {
-                    if (model.isVideoClass())
-                        buttonJoin.setText(p.getOnline_button_ar());
-                    else
-                        buttonJoin.setText(p.getPhysical_button_ar());
-                }
+                try{
+                    Gson g = new Gson();
+                    BookButtonModel p = g.fromJson(BOOK_FIND_CLASS_VALUE, new TypeToken<BookButtonModel>() {
+                    }.getType());
+                    if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en")) {
+                        if (model.isVideoClass())
+                            buttonJoin.setText(p.getOnline_button_en());
+                        else
+                            buttonJoin.setText(p.getPhysical_button_en());
+                    } else {
+                        if (model.isVideoClass())
+                            buttonJoin.setText(p.getOnline_button_ar());
+                        else
+                            buttonJoin.setText(p.getPhysical_button_ar());
+                    }
 
-                RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+                    RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
 
 
             }
@@ -254,22 +271,27 @@ public class Helper {
         } else {
             String BOOK_OTHER_VALUE = RemoteConfigConst.BOOK_OTHER_VALUE;
             if (BOOK_OTHER_VALUE != null && !BOOK_OTHER_VALUE.isEmpty()) {
-                Gson g = new Gson();
-                BookButtonModel p = g.fromJson(BOOK_OTHER_VALUE, new TypeToken<BookButtonModel>() {
-                }.getType());
-                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en")) {
-                    if (model.isVideoClass())
-                        buttonJoin.setText(p.getOnline_button_en());
-                    else
-                        buttonJoin.setText(p.getPhysical_button_en());
-                } else {
-                    if (model.isVideoClass())
-                        buttonJoin.setText(p.getOnline_button_ar());
-                    else
-                        buttonJoin.setText(p.getPhysical_button_ar());
-                }
+                try{
+                    Gson g = new Gson();
+                    BookButtonModel p = g.fromJson(BOOK_OTHER_VALUE, new TypeToken<BookButtonModel>() {
+                    }.getType());
+                    if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en")) {
+                        if (model.isVideoClass())
+                            buttonJoin.setText(p.getOnline_button_en());
+                        else
+                            buttonJoin.setText(p.getPhysical_button_en());
+                    } else {
+                        if (model.isVideoClass())
+                            buttonJoin.setText(p.getOnline_button_ar());
+                        else
+                            buttonJoin.setText(p.getPhysical_button_ar());
+                    }
 
-                RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+                    RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+
+                }
+                catch (Exception e){
+                    e.printStackTrace();}
 
 
             }
@@ -567,6 +589,40 @@ public class Helper {
         return json;
     }
 
+    public static boolean isPlanExpiring(ClassModel classModel, Package model){
+       int numberOfDays;
+        if (classModel != null) {
+            numberOfDays = model.getDuration();
+            switch (model.getValidityPeriod()) {
+                case "DAYS":
+                    numberOfDays *= 1;
+                    break;
+                case "WEEKS":
+                    numberOfDays *= 7;
+                    break;
+                case "MONTHS":
+                    numberOfDays *= 30;
+                    break;
+                case "YEARS":
+                    numberOfDays *= 365;
+                    break;
+            }
+
+            if (numberOfDays > 0 && DateUtils.getDaysLeftFromPackageExpiryDate(classModel.getClassDate()) > numberOfDays) {
+                return true;
+
+
+            } else {
+                return false;
+
+
+            }
+        } else {
+      return false;
+        }
+
+    }
+
 
     public static boolean isSpecialClass(ClassModel model) {
         return model != null && model.getPriceModel() != null
@@ -579,6 +635,19 @@ public class Helper {
     public static boolean isFreeClass(ClassModel model) {
         return model != null && model.getPriceModel() != null && model.getPriceModel().equals("FOC");
     }
+    public static int getClassPrice(ClassModel model) {
+       return model!=null?model.getCredit():0;
+    }
+
+    public static String getClassCreditValue(Context context,ClassModel model){
+        if(model!=null&&model.getCredit()>0){
+            return String.format(context.getString(R.string.p5m_credits_value),LanguageUtils.numberConverter(model.getCredit()));
+
+        }
+        else {
+             return context.getString(R.string.free_class);
+        }
+    }
 
     public static boolean isFemalesAllowed(ClassModel classModel) {
         return classModel.getClassType().equals(AppConstants.ApiParamValue.GENDER_BOTH) || classModel.getClassType().equals(AppConstants.ApiParamValue.GENDER_FEMALE);
@@ -586,6 +655,31 @@ public class Helper {
 
     public static boolean isMalesAllowed(ClassModel classModel) {
         return classModel.getClassType().equals(AppConstants.ApiParamValue.GENDER_BOTH) || classModel.getClassType().equals(AppConstants.ApiParamValue.GENDER_MALE);
+    }
+
+    public static boolean isUserAllowedForClass(Context context,ClassModel classModel) {
+        if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
+                && !Helper.isMalesAllowed(classModel)) {
+            ToastUtils.show(context, context.getString(R.string.gender_females_only_error));
+            return false;
+        } else if (TempStorage.getUser().getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
+                && !Helper.isFemalesAllowed(classModel)) {
+            ToastUtils.show(context, context.getString(R.string.gender_males_only_error));
+            return false;
+        }
+    return true;
+    }
+    public static boolean isFriendAllowedForClass(Context context,ClassModel classModel ,BookWithFriendData friend) {
+        if (friend.getGender().equals(AppConstants.ApiParamValue.GENDER_MALE)
+                && !Helper.isMalesAllowed(classModel)) {
+            ToastUtils.show(context, context.getString(R.string.gender_females_only_error));
+            return false;
+        } else if (friend.getGender().equals(AppConstants.ApiParamValue.GENDER_FEMALE)
+                && !Helper.isFemalesAllowed(classModel)) {
+            ToastUtils.show(context, context.getString(R.string.gender_males_only_error));
+            return false;
+        }
+        return true;
     }
 
     public static String getClassGenderText(String classType) {
@@ -812,5 +906,74 @@ public class Helper {
         }
         return checkIfFirstOrThird;
     }
+public static PriceModelMaster  getPriceModelForCredit(List<PriceModelMaster> masterList,String classMode){
+    PriceModelMaster master=null;
+    for (PriceModelMaster model:masterList)
+    {
+        if(model.getClassMode().equalsIgnoreCase(classMode)){
+         master = model;
+        }
+    }
+    return master;
+    }
 
+    public static int requiredCreditForClass(User user, ClassModel classModel,int userCount) {
+        UserPackageInfo userPackageInfo = new UserPackageInfo(user);
+        if(userPackageInfo.haveGeneralPackage){
+            int userCredit = userPackageInfo.userPackageGeneral.getBalance();
+            if(userCredit<classModel.getCredit()*userCount){
+                return classModel.getCredit()*userCount;
+            }
+            else{
+                return 0;
+            }
+        }
+
+      return classModel.getCredit()*userCount;
+    }
+
+    public static int getBaseCreditValue() {
+        if(TempStorage.getDefault()!=null&&TempStorage.getDefault().getPriceModelMaster()!=null){
+            for (PriceModelMaster master:TempStorage.getDefault().getPriceModelMaster()) {
+                if(master.getClassMode().equalsIgnoreCase(AppConstants.ClassModes.PHYSICAL)){
+                        return master.getCredits();
+                    }
+            }
+        }
+
+
+        return AppConstants.physicalCreditValue;
+    }
+
+    public static boolean isCurrentPlanExpiring(ClassModel classModel, User user) {
+        if(classModel!=null){
+            UserPackageInfo userPackageInfo = new UserPackageInfo(user);
+         if(userPackageInfo.haveGeneralPackage){
+             if (DateUtils.canJoinClass(classModel.getClassDate(), userPackageInfo.userPackageGeneral.getExpiryDate()) < 0) {
+                 return true;
+             }
+             else {
+                 return false;
+
+             }
+
+         }
+        }
+        return false;
+    }
+
+    public static LastmileProbeConfig getLastMileProbeConfigTest(){
+        // Configure a LastmileProbeConfig instance.
+        LastmileProbeConfig config = new LastmileProbeConfig(){};
+// Probe the uplink network quality.
+        config.probeUplink =  true;
+// Probe the downlink network quality.
+        config.probeDownlink = true;
+// The expected uplink bitrate (bps). The value range is [100000, 5000000].
+        config.expectedUplinkBitrate = 2500000;
+// The expected downlink bitrate (bps). The value range is [100000, 5000000].
+        config.expectedDownlinkBitrate = 2500000;
+// Start the last-mile network test before joining the channel.
+      return config;
+    }
 }

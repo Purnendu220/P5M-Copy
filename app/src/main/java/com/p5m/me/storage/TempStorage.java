@@ -32,7 +32,7 @@ public class TempStorage {
     private static List<StoreApiModel> countries;
     private static List<City> cities;
     private static User user;
-    private static int countryId;
+    private static int countryId = 0;
     private static String countryName;
     private static String currency;
 

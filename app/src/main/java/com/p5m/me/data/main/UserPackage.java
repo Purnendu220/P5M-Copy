@@ -5,15 +5,14 @@ public class UserPackage implements java.io.Serializable {
 
     private String expiryDate;
     private int gymId;
-    private int balanceClass;
-    private float credits;
     private String gymName;
     private int packageId;
     private String packageName;
     private String packageType;
-    private int totalNumberOfClass;
     private long id;
     private Integer totalRemainingWeeks;
+    private int totalCredit;
+    private int balance;
 
     public String getExpiryDate() {
         return this.expiryDate == null ? "" : expiryDate;
@@ -31,13 +30,7 @@ public class UserPackage implements java.io.Serializable {
         this.gymId = gymId;
     }
 
-    public int getBalanceClass() {
-        return this.balanceClass;
-    }
 
-    public void setBalanceClass(int balanceClass) {
-        this.balanceClass = balanceClass;
-    }
 
     public String getGymName() {
         return this.gymName == null ? "" : gymName;
@@ -71,13 +64,7 @@ public class UserPackage implements java.io.Serializable {
         this.packageType = packageType;
     }
 
-    public int getTotalNumberOfClass() {
-        return this.totalNumberOfClass;
-    }
 
-    public void setTotalNumberOfClass(int totalNumberOfClass) {
-        this.totalNumberOfClass = totalNumberOfClass;
-    }
 
     public long getId() {
         return id;
@@ -95,11 +82,19 @@ public class UserPackage implements java.io.Serializable {
         this.totalRemainingWeeks = totalRemainingWeeks;
     }
 
-    public float getCredits() {
-        return credits;
+    public int getTotalCredit() {
+        return totalCredit;
     }
 
-    public void setCredits(float credits) {
-        this.credits = credits;
+    public void setTotalCredit(int totalCredit) {
+        this.totalCredit = totalCredit;
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
     }
 }

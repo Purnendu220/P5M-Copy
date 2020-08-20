@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@color/float_transparent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/float_transparent"
+        >
+        <LinearLayout
+            android:id="@+id/linearlayoutTopPart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="left"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:gravity="left"
+                android:text="@string/credit_value"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_extra_large"
+                android:fontFamily="sans-serif-medium" />
+
+
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="@dimen/margin_10"
+              android:layout_marginLeft="@dimen/margin_10"
+              android:layout_marginRight="@dimen/margin_10"
+              android:layout_marginBottom="@dimen/margin_5"
+              android:orientation="horizontal"
+              >
+              <TextView
+                  android:id="@+id/textViewAtGymClasses"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="@dimen/margin_10"
+                  android:layout_marginLeft="@dimen/margin_10"
+                  android:text="@string/all_atgym_class_range"
+                  android:textColor="@color/black"
+                  android:textSize="@dimen/text_medium"
+                  android:fontFamily="sans-serif"
+                  />
+              <TextView
+                  android:id="@+id/textViewAtGymClassesCredit"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="@dimen/margin_10"
+                  android:text="@string/_5_credits"
+                  android:textColor="@color/black"
+                  android:textSize="@dimen/text_medium"
+                  android:fontFamily="sans-serif"
+
+                  />
+
+
+          </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_marginRight="@dimen/margin_10"
+                android:layout_marginBottom="@dimen/margin_5"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:id="@+id/textViewOnlineClasses"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:text="@string/all_online_class_range"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_medium"
+                    android:fontFamily="sans-serif"
+                    />
+                <TextView
+                    android:id="@+id/textViewOnlineClassesCredit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:text="@string/_10_credits"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_medium"
+                    android:fontFamily="sans-serif"
+
+                    />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_marginRight="@dimen/margin_10"
+                android:layout_marginBottom="@dimen/margin_5"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:id="@+id/textViewSpecialClasses"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:text="@string/pt_class_range"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_medium"
+                    android:fontFamily="sans-serif"
+                    />
+                <TextView
+                    android:id="@+id/textViewSpecialClassesCredit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:text=" 20 to 50 credits"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_medium"
+                    android:fontFamily="sans-serif"
+                    />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linearLayoutButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linearlayoutTopPart"
+            android:background="@color/white"
+            android:visibility="visible"
+
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_margin="@dimen/margin_15"
+                >
+                <TextView
+                    android:id="@+id/textViewCancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height_normal"
+                    android:background="@drawable/theme_bottom_text_button_light_grey"
+                    android:clickable="true"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:letterSpacing="@dimen/button_letter_spacing"
+                    android:text="@string/cancel"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/text_small"
+                    android:textColor="@color/rating_blank"
+                    android:layout_weight="1"
+                    android:layout_marginRight="@dimen/margin_10"
+
+
+                    />
+                <TextView
+                    android:id="@+id/textViewOk"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height_normal"
+                    android:background="@drawable/join_rect"
+                    android:clickable="true"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:letterSpacing="@dimen/button_letter_spacing"
+                    android:text="@string/purchase"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/text_small"
+                    android:textColor="@color/white"
+                    android:layout_weight="1"
+
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

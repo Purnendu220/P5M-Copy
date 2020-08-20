@@ -763,7 +763,7 @@ public class MixPanel {
                 List<UserPackage> packageList = user.getUserPackageDetailDtoList();
                 for (int i = 0; i < packageList.size(); i++) {
                     UserPackage userPackage = packageList.get(0);
-                    if (userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL) && userPackage.getBalanceClass() > 0) {
+                    if (userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL) && userPackage.getBalance() > 0) {
                         packageUsedForJoinClass = userPackage.getPackageName();
                     }
                     if (userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN) && classModel.getGymBranchDetail().getGymId() == userPackage.getGymId()) {
@@ -869,6 +869,7 @@ public class MixPanel {
             props.put("Location", user.getLocation());
             props.put("Nationality", user.getNationality());
             props.put("FacebookId", user.getFacebookId());
+            props.put("GoogleId", user.getGoogleId());
             props.put("Category List", MixPanel.getCategoryList(user.getClassCategoryList()));
             props.put("Number of Transactions", user.getNumberOfTransactions() + "");
             props.put("General Package", userPackageInfo.haveGeneralPackage ?

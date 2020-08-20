@@ -46,6 +46,9 @@ android {
             signingConfig signingConfigs.release
         }
     }
+    viewBinding {
+        enabled = true
+    }
     dexOptions {
         jumboMode true
     }
@@ -121,7 +124,7 @@ android {
             buildConfigField "String", "SENDER_ID", '\"109210713388\"'
             buildConfigField "String", "BASE_URL", '\"http://uat.profive.co\"'
             buildConfigField "String", "BASE_URL_HTTPS", '\"http://uat.profive.co\"'
-            buildConfigField "String", "BASE_URL_MIDL", '\"/profive-midl/\"'
+            buildConfigField "String", "BASE_URL_MIDL", '\"/p5m/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://uat.profive.co\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
             buildConfigField "String", "AGORA_APP_ID", '\"37b3c68b87694725b992c9518ede593c\"'
@@ -143,7 +146,7 @@ android {
             buildConfigField "String", "BASE_URL", '\"https://qa.profive.co\"'
             buildConfigField "String", "BASE_URL_HTTPS", '\"https://qa.profive.co\"'
             buildConfigField "boolean", "FIREBASE_IS_PRODUCTION", "false"
-            buildConfigField "String", "BASE_URL_MIDL", '\"/profive-midl/\"'
+            buildConfigField "String", "BASE_URL_MIDL", '\"/p5m/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://qa.profive.co\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
             buildConfigField "String", "AGORA_APP_ID", '\"37b3c68b87694725b992c9518ede593c\"'
@@ -151,7 +154,8 @@ android {
             buildConfigField "String", "AGORA_APP_CUSTOMER_ID", '\"418489ad97644a3e87695a6798a11aea\"'
             buildConfigField "String", "YOUTUBE_API_KEY", '\"AIzaSyDqCAlD7vilwhBhp49T1PU4SpH5Ap2KGfA\"'
 
-            manifestPlaceholders = [hostName: "qa.profive.co", hostName_www: "www.qa.profive.co", appName: "P5M", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
+//            manifestPlaceholders = [hostName: "qa.profive.co", hostName_www: "www.qa.profive.co", appName: "P5M", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
+            manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "81e25498c1638dbcb2017cc88dba175c5d44a1a6"]
 
         }
         liveTest {
@@ -180,7 +184,7 @@ android {
         live {
             def id = 'com.p5m.me'
             applicationId id
-            buildConfigField "boolean", "IS_DEBUG", "false"
+            buildConfigField "boolean", "IS_DEBUG", "true"
             buildConfigField "boolean", "IS_PRODUCTION", "true"
             buildConfigField "boolean", "IS_CRASH_REPORT", "true"
             buildConfigField "String", "MIXPANEL_KEY", '\"b42c082f0a59ef518fc63392802a8724\"'
@@ -188,7 +192,7 @@ android {
             buildConfigField "String", "BASE_URL", '\"https://p5m.me\"'
             buildConfigField "String", "BASE_URL_HTTPS", '\"https://p5m.me\"'
             buildConfigField "boolean", "FIREBASE_IS_PRODUCTION", "true"
-            buildConfigField "String", "BASE_URL_MIDL", '\"/profive-midl/\"'
+            buildConfigField "String", "BASE_URL_MIDL", '\"/p5m/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"https://www.p5m.me\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"https://www.p5m.me\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
@@ -247,14 +251,16 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
     implementation 'com.robertlevonyan.components:Picker:1.1.1'
     //    implementation 'com.google.android:flexbox:0.3.2'
+    implementation 'com.google.android.gms:play-services-auth:18.0.0'
+
     implementation 'com.google.android:flexbox:2.0.1'
     implementation 'com.google.firebase:firebase-core:17.0.0'
     implementation 'com.google.firebase:firebase-messaging:19.0.0'
     implementation 'com.google.firebase:firebase-config:18.0.0'
     implementation 'com.google.firebase:firebase-inappmessaging-display:19.0.1'
-    implementation 'com.google.android.gms:play-services-location:16.0.0'
-    implementation 'com.google.android.gms:play-services-maps:16.1.0'
-    implementation 'com.google.android.gms:play-services-places:16.1.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-places:17.0.0'
     implementation 'id.zelory:compressor:1.0.4'
     implementation 'com.facebook.fresco:fresco:1.2.0'
     implementation 'com.bogdwellers:pinchtozoom:0.1'
@@ -274,9 +280,10 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     // Intercom Integration
     implementation 'io.intercom.android:intercom-sdk:5.+'
-    implementation 'io.agora.rtc:full-sdk:3.0.0'
+    implementation 'io.agora.rtc:full-sdk:3.0.1.1'
     implementation 'com.devbrackets.android:exomedia:4.3.0'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
+    implementation 'com.google.android.gms:play-services-plus:17.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

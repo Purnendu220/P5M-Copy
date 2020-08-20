@@ -1,11 +1,8 @@
 package com.p5m.me.view.activity.Main;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -14,8 +11,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
+
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.p5m.me.FAQAdapter;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.p5m.me.R;
 import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.data.main.StoreApiModel;
@@ -32,7 +35,6 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
-import com.p5m.me.view.custom.CustomFeedbackFormDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -161,12 +163,39 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case R.id.layoutLogout:
                 imageViewLogout.setVisibility(View.GONE);
                 progressBarLogout.setVisibility(View.VISIBLE);
+                checkForGoogleUser();
                 networkCommunicator.logout(new LogoutRequest(TempStorage.getUser().getId()), this, false);
                 break;
             case R.id.layoutChangeCountry:
                 if (categories != null && countryModel != null)
                     openCountryChangeDialog();
                 break;
+        }
+    }
+
+    private void checkForGoogleUser() {
+        try {
+//            if (MyPreferences.getInstance().isLoginWithGoogle()) {
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(activity.getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .requestProfile()
+                    .build();
+            // Build a GoogleSignInClient with the options specified by gso.
+            GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(context, gso);
+//                mGoogleSignInClient.signOut();
+//                MyPreferences.getInstance().setLoginWithGoogle(false);
+//            }
+
+            mGoogleSignInClient.signOut()
+                    .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                        }
+                    });
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -272,9 +301,14 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 user.setCurrencyCode(model.getCurrencyCode());
                 user.setStoreName(model.getName());
                 IntercomEvents.updateStoreId();
-                EventBroadcastHelper.sendUserUpdate(context, user);
+//                EventBroadcastHelper.sendUserUpdate(context, user);
                 EventBroadcastHelper.changeCountry();
+                networkCommunicator.getMyUser(this, false);
+                break;
+            case NetworkCommunicator.RequestCode.ME_USER:
                 HomeActivity.open(context);
+                break;
+//
         }
     }
 
@@ -292,6 +326,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case NetworkCommunicator.RequestCode.GET_STORE_DATA:
                 ToastUtils.show(context, errorMessage);
                 break;
+
         }
     }
 
