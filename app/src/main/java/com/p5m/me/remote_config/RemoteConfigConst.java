@@ -80,6 +80,7 @@ public class RemoteConfigConst {
     public static String CREDIT_VALUE_MODEL = "credit_values_model";
     public static String PHYSICAL_CLASS_VALUE = "physical_class_value";
     public static String VIRTUAL_CLASS_VALUE = "virtual_class_value";
+    public static String CONVERSTION_TEXT = "conversion_text";
 
 
 
@@ -156,6 +157,7 @@ public class RemoteConfigConst {
     public static final int BOOK_OTHERS_KEY = 990;
     public static final int HOW_IT_WORKS_KEY = 991;
     public static final int PLAN_CLASS_KEY = 992;
+    public static final int CONVERSTION_TEXT_KEY = 993;
 
 
     /* ------VALUES---------*/
@@ -227,6 +229,7 @@ public class RemoteConfigConst {
     public static String BOOK_OTHER_VALUE = "";
     public static String HOW_IT_WORKS_VALUE = "";
     public static String PLAN_CLASS_VALUES = "";
+    public static String CONVERSTION_TEXT_VALUE = "";
 
 
 

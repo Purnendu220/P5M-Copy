@@ -41,6 +41,7 @@ import static com.p5m.me.remote_config.RemoteConfigConst.BOOK_WITH_FRIEND_COLOR_
 import static com.p5m.me.remote_config.RemoteConfigConst.BUY_CLASS_COLOR_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.BUY_CLASS_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.CLASS_CARD_TEXT_KEY;
+import static com.p5m.me.remote_config.RemoteConfigConst.CONVERSTION_TEXT_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.DROP_IN_COST_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.FAQ_KEY;
 import static com.p5m.me.remote_config.RemoteConfigConst.FULL_BUTTON_COLOR_KEY;
@@ -376,6 +377,9 @@ public class RemoteConfigSetUp {
                     break;
              case PLAN_CLASS_KEY:
                     RemoteConfigConst.PLAN_CLASS_VALUES = keyValue;
+                    break;
+              case CONVERSTION_TEXT_KEY:
+                    RemoteConfigConst.CONVERSTION_TEXT_VALUE = keyValue;
                     break;
             }
         }

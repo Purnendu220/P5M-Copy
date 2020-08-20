@@ -194,7 +194,8 @@ public class DateUtils {
     public static String getClassTime(String from, String till) {
         try {
             return " " + classTimeFormat.format(classTime.parse(from)).replace(".", "").toUpperCase() + " - " +
-                    classTimeFormat.format(classTime.parse(till)).replace(".", "").toUpperCase();
+                    classTimeFormat.format(classTime.parse(till)).replace(".", "").toUpperCase()
+                    ;
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);

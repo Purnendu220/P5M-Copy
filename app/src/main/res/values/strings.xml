@@ -725,6 +725,7 @@ Would you like to view your balance? </string>
     <string name="credit_balance" >Number of credits</string>
     <string name="_5_credits">5 Credits</string>
     <string name="_10_credits">10 Credits</string>
+    <string name="info_for_other_country">The payment will be done in Kuwait Dinar. Rate of conversion: 1KD = $3.3</string>
 
 
 </resources>

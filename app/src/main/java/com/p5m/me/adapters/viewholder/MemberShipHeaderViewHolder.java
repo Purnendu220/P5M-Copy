@@ -20,17 +20,23 @@ public class MemberShipHeaderViewHolder extends RecyclerView.ViewHolder {
         this.textView = textView;
     }
 
-    public void bind(Object data, AdapterCallbacks adapterCallbacks, int position) {
-        if (data != null && data instanceof HeaderSticky) {
-            itemView.setVisibility(View.VISIBLE);
-            HeaderSticky text = (HeaderSticky) data;
+    public void bind(String usdInfo, Object data, AdapterCallbacks adapterCallbacks, int position) {
+        if (usdInfo != null) {
+            String text = (String) data;
+            textView.setText(text);
+            if (!text.isEmpty()) {
+                itemView.setVisibility(View.VISIBLE);
+            } else {
+                itemView.setVisibility(View.GONE);
+            }
+           /* HeaderSticky text = (HeaderSticky) data;
 
             if (!text.getTitle().isEmpty()) {
                 textView.setText(text.getTitle());
                 itemView.setVisibility(View.GONE);
             } else {
                 itemView.setVisibility(View.GONE);
-            }
+            }*/
         } else {
             itemView.setVisibility(View.GONE);
 

@@ -251,13 +251,14 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
     implementation 'com.robertlevonyan.components:Picker:1.1.1'
     //    implementation 'com.google.android:flexbox:0.3.2'
-    implementation 'com.google.android.gms:play-services-auth:18.0.0'
+    implementation 'com.google.android.gms:play-services-auth:18.1.0'
 
     implementation 'com.google.android:flexbox:2.0.1'
-    implementation 'com.google.firebase:firebase-core:17.0.0'
-    implementation 'com.google.firebase:firebase-messaging:19.0.0'
-    implementation 'com.google.firebase:firebase-config:18.0.0'
-    implementation 'com.google.firebase:firebase-inappmessaging-display:19.0.1'
+    implementation 'com.google.firebase:firebase-core:17.5.0'
+    implementation 'com.google.firebase:firebase-messaging:20.2.4'
+    implementation 'com.google.firebase:firebase-config:19.2.0'
+    implementation 'com.google.firebase:firebase-inappmessaging-display:19.1.0'
+    implementation 'com.google.firebase:firebase-analytics:17.5.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.android.gms:play-services-places:17.0.0'
@@ -265,21 +266,22 @@ dependencies {
     implementation 'com.facebook.fresco:fresco:1.2.0'
     implementation 'com.bogdwellers:pinchtozoom:0.1'
     /////////////////////////////////FABRIC//////////////////////////////////////////
-    implementation('com.crashlytics.sdk.android:crashlytics:2.9.2@aar') {
+    implementation('com.crashlytics.sdk.android:crashlytics:2.10.1@aar') {
         transitive = true
     }
-    implementation 'com.mixpanel.android:mixpanel-android:5.4.0'
-    implementation 'com.google.android.gms:play-services-gcm:15.0.1'
+    implementation 'com.mixpanel.android:mixpanel-android:5.4.1'
+    implementation 'com.google.android.gms:play-services-gcm:17.0.0'
     implementation 'io.fotoapparat.fotoapparat:library:2.3.1'
     implementation 'me.zhanghai.android.materialratingbar:library:1.4.0'
     implementation 'com.github.DanielMartinus:Stepper-Touch:0.6'
-    implementation 'com.google.firebase:firebase-dynamic-links:16.1.8'
+    implementation 'com.google.firebase:firebase-dynamic-links:19.1.0'
     implementation 'com.mixpanel.android:mixpanel-android:5.4.1'
     //    implementation 'com.google.android.gms:play-services-gcm:15.0.1'
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:design:28.0.0'
     // Intercom Integration
     implementation 'io.intercom.android:intercom-sdk:5.+'
+
     implementation 'io.agora.rtc:full-sdk:3.0.1.1'
     implementation 'com.devbrackets.android:exomedia:4.3.0'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')

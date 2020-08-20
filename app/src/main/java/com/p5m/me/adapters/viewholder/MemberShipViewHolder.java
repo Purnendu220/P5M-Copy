@@ -169,6 +169,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
             // Package owned..
             if (data instanceof UserPackage) {
                 UserPackage model = (UserPackage) data;
+
                 if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
                     textViewExtendPackage.setVisibility(View.VISIBLE);
                     if (model != null && model.getTotalRemainingWeeks() != null && model.getTotalRemainingWeeks() < 1) {
@@ -228,17 +229,17 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                         List<RemoteConfigPlanText> p
                                 = g.fromJson(PLAN_CLASS_VALUES, new TypeToken<List<RemoteConfigPlanText>>() {
                         }.getType());
-                        for(int i =0;i<p.size();i++)
-                        if(model.getId() == Integer.parseInt(p.get(i).getId())) {
-                            if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar") && !p.get(i).getAr().isEmpty()) {
-                                txtPackageOffredClassesLimits.setText(p.get(i).getAr());
-                                txtPackageOffredClassesLimits.setVisibility(View.VISIBLE);
+                        for (int i = 0; i < p.size(); i++)
+                            if (model.getId() == Integer.parseInt(p.get(i).getId())) {
+                                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar") && !p.get(i).getAr().isEmpty()) {
+                                    txtPackageOffredClassesLimits.setText(p.get(i).getAr());
+                                    txtPackageOffredClassesLimits.setVisibility(View.VISIBLE);
 
-                            } else {
-                                txtPackageOffredClassesLimits.setText(p.get(i).getEn());
-                                txtPackageOffredClassesLimits.setVisibility(View.VISIBLE);
+                                } else {
+                                    txtPackageOffredClassesLimits.setText(p.get(i).getEn());
+                                    txtPackageOffredClassesLimits.setVisibility(View.VISIBLE);
+                                }
                             }
-                        }
 
                     } else
                         setMaxAvailableClasses(model.getCredits());
