@@ -128,11 +128,6 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             this.usdInfo = usdInfo;
         else
             this.usdInfo = "";
-
-        if (!usdInfo.isEmpty()) {
-            list.add(usdInfo);
-        }
-
     }
 
     public void notifyDataSetChanges() {
@@ -152,7 +147,9 @@ public class MemberShipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         list.add(headerSticky2);
-        list.add(usdInfo);
+        if (!usdInfo.isEmpty()) {
+            list.add(usdInfo);
+        }
         notifyDataSetChanged();
     }
 

@@ -28,7 +28,6 @@ public class MemberShipViewHolder_ViewBinding implements Unbinder {
     target.packageTitle = Utils.findRequiredViewAsType(source, R.id.packageTitle, "field 'packageTitle'", TextView.class);
     target.packageUsage = Utils.findRequiredViewAsType(source, R.id.packageUsage, "field 'packageUsage'", TextView.class);
     target.textViewSoFarYouVisited = Utils.findRequiredViewAsType(source, R.id.textViewSoFarYouVisited, "field 'textViewSoFarYouVisited'", TextView.class);
-    target.textViewOtherCountryInfo = Utils.findRequiredViewAsType(source, R.id.textViewOtherCountryInfo, "field 'textViewOtherCountryInfo'", TextView.class);
     target.layoutSoFarYouVisited = Utils.findRequiredViewAsType(source, R.id.layoutSoFarYouVisited, "field 'layoutSoFarYouVisited'", LinearLayout.class);
     target.recyclerSoFarYouVisited = Utils.findRequiredViewAsType(source, R.id.recyclerSoFarYouVisited, "field 'recyclerSoFarYouVisited'", RecyclerView.class);
     target.textViewActiveDropIn = Utils.findRequiredViewAsType(source, R.id.textViewActiveDropIn, "field 'textViewActiveDropIn'", TextView.class);
@@ -62,7 +61,6 @@ public class MemberShipViewHolder_ViewBinding implements Unbinder {
     target.packageTitle = null;
     target.packageUsage = null;
     target.textViewSoFarYouVisited = null;
-    target.textViewOtherCountryInfo = null;
     target.layoutSoFarYouVisited = null;
     target.recyclerSoFarYouVisited = null;
     target.textViewActiveDropIn = null;

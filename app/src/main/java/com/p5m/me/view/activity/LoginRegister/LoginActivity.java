@@ -177,7 +177,7 @@ public class LoginActivity extends BaseActivity implements NetworkCommunicator.R
 
                 if (v instanceof TextView) {
                     TextView tv = (TextView) v;
-                    tv.setText("Enter with google");
+                    tv.setText(context.getString(R.string.enter_with_google));
                     tv.setAllCaps(true);
                     tv.setGravity(Gravity.CENTER);
                     tv.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
