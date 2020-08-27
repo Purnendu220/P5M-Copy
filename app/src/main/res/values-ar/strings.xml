@@ -566,6 +566,7 @@
     <string name="reference_id">الرقم المرجعي</string>
 
     <string name="amount_kd">المبلغ (دينار كويتي)</string>
+    <string name="amount_usd">المبلغ (USD)</string>
 
     <string name="date">التاريخ</string>
 
@@ -615,6 +616,7 @@
     <string name="contact_us">تواصل معنا</string>
 
     <string name="privacy_policy">سياسة الخصوصية</string>
+    <string name="privacypolicy">سياسة الخصوصية</string>
 
 
     -
@@ -1085,5 +1087,6 @@
     <string name="_10_credits">10 Credits</string>
     <string name="classes_remaining">credits remaining</string>
     <string name="info_for_other_country">The payment will be done in Kuwait Dinar. Rate of conversion: 1KD = $3.25</string>
+    <string name="enter_with_google">أدخل مع جوجل</string>
 
 </resources>

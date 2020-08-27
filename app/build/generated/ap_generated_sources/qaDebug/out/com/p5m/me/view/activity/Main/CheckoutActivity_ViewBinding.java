@@ -71,6 +71,7 @@ public class CheckoutActivity_ViewBinding implements Unbinder {
     target.mTextViewWalletAmount = Utils.findRequiredViewAsType(source, R.id.textViewWalletAmount, "field 'mTextViewWalletAmount'", TextView.class);
     target.recyclerView = Utils.findRequiredViewAsType(source, R.id.recyclerView, "field 'recyclerView'", RecyclerView.class);
     target.scrollView = Utils.findRequiredViewAsType(source, R.id.scrollview, "field 'scrollView'", ScrollView.class);
+    target.textViewOtherCountryInfo = Utils.findRequiredViewAsType(source, R.id.textViewOtherCountryInfo, "field 'textViewOtherCountryInfo'", TextView.class);
     view = Utils.findRequiredView(source, R.id.imageViewBack, "method 'imageViewBack'");
     view7f0a017f = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
@@ -126,6 +127,7 @@ public class CheckoutActivity_ViewBinding implements Unbinder {
     target.mTextViewWalletAmount = null;
     target.recyclerView = null;
     target.scrollView = null;
+    target.textViewOtherCountryInfo = null;
 
     view7f0a017f.setOnClickListener(null);
     view7f0a017f = null;

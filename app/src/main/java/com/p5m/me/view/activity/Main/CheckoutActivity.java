@@ -342,6 +342,8 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
             }
         }
+        else
+            textViewOtherCountryInfo.setVisibility(View.GONE);
 
 
 

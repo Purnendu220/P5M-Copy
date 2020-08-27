@@ -252,6 +252,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
     public void refreshFragment(int navigatedFrom, ClassModel classModel, BookWithFriendData mFriendsData, int mNumberOfPackagesToBuy, boolean addCredits) {
         if (!swipeRefreshLayout.isRefreshing()) {
+
             if (this.navigatedFrom != navigatedFrom || this.classModel != classModel || this.mFriendsData != mFriendsData || this.mNumberOfPackagesToBuy != mNumberOfPackagesToBuy || this.isBuyMoreCredits != addCredits) {
                 this.navigatedFrom = navigatedFrom;
                 this.classModel = classModel;
@@ -261,7 +262,6 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                 refreshFromEvent();
             } else {
                 memberShipAdapter.setClassModel(null);
-                memberShipAdapter.setUsdInfo(getUsdValue());
                 memberShipAdapter.notifyDataSetChanges();
             }
         }
@@ -325,10 +325,9 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         isBuyMoreCredits = false;
         userPackageInfo = new UserPackageInfo(user);
         swipeRefreshLayout.setRefreshing(false);
-        memberShipAdapter.setUsdInfo(getUsdValue());
+
         if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS) {
             memberShipAdapter.setClassModel(classModel);
-            memberShipAdapter.setUsdInfo(getUsdValue());
             // show general, ready, and owned packages
             if (userPackageInfo.havePackages) {
                 if (userPackageInfo.haveGeneralPackage && !user.isBuyMembership()) {
@@ -568,8 +567,6 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                             memberShipAdapter.clearAllOwnedPackages();
                         }
                         memberShipAdapter.addAllOfferedPackages(packagesWithVisitLimit);
-                        memberShipAdapter.setUsdInfo(getUsdValue());
-
 
                     } else {
                         if (packages != null && packages.size() > 0) {

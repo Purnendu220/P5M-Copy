@@ -20,7 +20,7 @@ import java.lang.Override;
 public class SignUpOptions_ViewBinding implements Unbinder {
   private SignUpOptions target;
 
-  private View view7f0a042c;
+  private View view7f0a042d;
 
   private View view7f0a0080;
 
@@ -40,7 +40,7 @@ public class SignUpOptions_ViewBinding implements Unbinder {
     target.layoutProgress = Utils.findRequiredView(source, R.id.layoutProgress, "field 'layoutProgress'");
     view = Utils.findRequiredView(source, R.id.textViewLogin, "field 'textViewLogin' and method 'textViewLogin'");
     target.textViewLogin = Utils.castView(view, R.id.textViewLogin, "field 'textViewLogin'", TextView.class);
-    view7f0a042c = view;
+    view7f0a042d = view;
     view.setOnClickListener(new DebouncingOnClickListener() {
       @Override
       public void doClick(View p0) {
@@ -100,8 +100,8 @@ public class SignUpOptions_ViewBinding implements Unbinder {
     target.buttonNext = null;
     target.layoutSignUpOption = null;
 
-    view7f0a042c.setOnClickListener(null);
-    view7f0a042c = null;
+    view7f0a042d.setOnClickListener(null);
+    view7f0a042d = null;
     view7f0a0080.setOnClickListener(null);
     view7f0a0080 = null;
   }
