@@ -19,9 +19,19 @@
         android:textColor="@color/gray_class"
 
         />
+    <TextView
+        android:id="@+id/textVisitDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Daratma"
+        android:textSize="@dimen/text_medium"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/gray_class"
+        android:layout_centerHorizontal="true"
 
+        />
       <TextView
-          android:id="@+id/textGymVisits"
+          android:id="@+id/textGymCredits"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/visit_times"

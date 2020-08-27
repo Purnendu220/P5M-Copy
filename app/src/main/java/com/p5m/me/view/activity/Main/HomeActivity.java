@@ -25,6 +25,7 @@ import com.p5m.me.adapters.HomeAdapter;
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
 import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.IntercomEvents;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.UnratedClassData;
 import com.p5m.me.data.main.BookingCancellationResponse;
@@ -414,6 +415,10 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+        if(position == AppConstants.Tab.TAB_EXPLORE_PAGE){
+            MixPanel.trackExploreVisit();
+
         }
         handleTabChangeForMembership(position);
         currentTab = position;

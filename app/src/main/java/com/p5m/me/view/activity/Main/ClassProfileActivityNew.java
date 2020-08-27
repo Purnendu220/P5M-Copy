@@ -305,7 +305,6 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
 //            }
 //        }
 
-        MixPanel.trackClassDetails(navigationFrom);
         onTrackingNotification();
         networkCommunicator.getMyUser(this, false);
     }
@@ -756,6 +755,7 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
                     }
 
                 }
+                MixPanel.trackClassDetailsVisit(navigationFrom,classModel);
 
                 break;
             case NetworkCommunicator.RequestCode.CLASS_RATING_LIST:

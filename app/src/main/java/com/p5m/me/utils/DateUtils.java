@@ -258,6 +258,21 @@ public class DateUtils {
         return "";
     }
 
+    public static String getClassVisitDate(long time) {
+        if (time < 1000000000000L) {
+            // if timestamp given in seconds, convert to millis
+            time *= 1000;
+        }
+
+        try {
+            return eventDateTime.format(new Date(time)).toUpperCase();
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+        return "";
+    }
+
     public static String getRatingDate(long time) {
         try {
             return classRatingDate.format(new Date(time));

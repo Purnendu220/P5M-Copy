@@ -225,8 +225,8 @@ public class RemoteConfigConst {
     public static String SHOW_SELECTION_OPTIONS_VALUE = "true";
     public static String ON_BOARDING_DATA_VALUE = "";
     public static String CHANNEL_LIST = "";
-    public static String BOOK_FIND_CLASS_VALUE = "";
-    public static String BOOK_OTHER_VALUE = "";
+    public static String BOOK_FIND_CLASS_VALUE = "[{\"online_button_en\": \"online\", \"physical_button_en\": \"In-Class\", \"online_button_ar\": \"online\", \"physical_button_ar\": \"In-Class\"}]";
+    public static String BOOK_OTHER_VALUE = "[{\"online_button_en\": \"online\", \"physical_button_en\": \"In-Class\", \"online_button_ar\": \"online\", \"physical_button_ar\": \"In-Class\"}]";
     public static String HOW_IT_WORKS_VALUE = "";
     public static String PLAN_CLASS_VALUES = "";
     public static String CONVERSTION_TEXT_VALUE = "";

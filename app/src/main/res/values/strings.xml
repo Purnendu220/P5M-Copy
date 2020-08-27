@@ -539,7 +539,7 @@ Would you like to view your balance? </string>
     <string name="drop_in_unlimited">You have 1 active drop-in for %s</string>
     <string name="_two_drop_in_text">You have 2 active drop-ins for %s, expires on %s</string>
     <string name="_two_drop_in_unlimited">You have 2 active drop-ins for %s</string>
-    <string name="visit_times">%s times</string>
+    <string name="visit_times">%s credits</string>
     <string name="why_p5m">Why a P5M membership?\nBecause get more and pay less</string>
     <string name="variety_of_activity_details">With the P5M membership you can visit a swimming class today, crossfit tomorrow and yoga on the weekend. Each class at a different gym.</string>
     <string name="variety_of_activities">Variety of activities</string>

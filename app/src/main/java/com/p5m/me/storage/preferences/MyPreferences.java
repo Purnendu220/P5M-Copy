@@ -281,6 +281,9 @@ public class MyPreferences {
     public List<ClassesFilter> getFilters() {
         List<ClassesFilter> classesFilters = new ArrayList<>();
         try {
+            if(PreferencesManager.getString(AppConstants.Pref.FILTERS)==null||PreferencesManager.getString(AppConstants.Pref.FILTERS).isEmpty()){
+                return classesFilters;
+            }
 
             JSONArray jsonArray = new JSONArray(PreferencesManager.getString(AppConstants.Pref.FILTERS));
 
