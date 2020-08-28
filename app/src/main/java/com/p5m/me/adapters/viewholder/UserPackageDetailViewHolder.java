@@ -48,9 +48,8 @@ public class UserPackageDetailViewHolder extends RecyclerView.ViewHolder {
         if (data != null && data instanceof UserPackageDetail) {
             itemView.setVisibility(View.VISIBLE);
             UserPackageDetail model = (UserPackageDetail) data;
-            textGymNames.setText(model.getGymName());
+            textGymNames.setText(model.getGymName() +" on " +DateUtils.getClassVisitDate(model.getClassJoinDate()));
             textVisitDate.setText(DateUtils.getClassVisitDate(model.getClassJoinDate()));
-            if(model.getCredit()>0)
             textGymVisits.setText(String.format(context.getResources().getString(R.string.visit_times), model.getCredit()+""));
         } else {
             itemView.setVisibility(View.GONE);

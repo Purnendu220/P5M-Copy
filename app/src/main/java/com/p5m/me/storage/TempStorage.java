@@ -9,6 +9,7 @@ import com.p5m.me.data.main.BookingCancellationResponse;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.DefaultSettingServer;
+import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.data.main.StoreApiModel;
 import com.p5m.me.data.main.StoreModel;
 import com.p5m.me.data.main.User;
@@ -28,6 +29,8 @@ public class TempStorage {
     public static String version;
     private static String authToken;
     private static List<ClassActivity> activities;
+    private static List<GymDataModel> gymList;
+
 
     private static List<StoreApiModel> countries;
     private static List<City> cities;
@@ -60,11 +63,21 @@ public class TempStorage {
         return activities;
     }
 
+    public static List<GymDataModel> getGymList() {
+        if (gymList == null) {
+            gymList = MyPreferences.getInstance().getGymList();
+        }
+        return gymList;
+    }
+
     public static void setActivities(List<ClassActivity> activities) {
         TempStorage.activities = activities;
         MyPreferences.getInstance().saveActivities(activities);
     }
-
+    public static void setGymList(List<GymDataModel> gymList) {
+        TempStorage.gymList = gymList;
+        MyPreferences.getInstance().saveGymList(gymList);
+    }
     public static List<StoreApiModel> getCountries() {
         if (countries == null) {
             countries = MyPreferences.getInstance().getCountries();

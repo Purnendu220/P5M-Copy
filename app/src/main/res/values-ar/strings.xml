@@ -479,7 +479,7 @@
 
     <string name="valid_intil">(حتى %1s)</string>
 
-    <string name="extend_message">أضف المزيد من الوقت إلى خطتك الحالية. لا تزال حدود زيارة النوادي سارية ، ولن يتم إعادة ضبطها بهذه الإضافة.</string>
+    <string name="extend_message"> ، ولن يتم إعادة ضبطها بهذه الإضافة.</string>
 
     <string name="extend_term">لن يتم إعادة ضبط حدود زيارة النادي بعملية الشراء هذه. لقد قمت للتو بتمديد عضويتك (%1d أسبوع). لديك (%1d) أسبوع متبقي.</string>
 
@@ -922,7 +922,7 @@
     </string>
     <string name="workout_any_gym"> تدرب في أي نادي رياضي تريد ، في أي وقتتريد ،و ادفع أقل.</string>
     <string name="frequently_asked_question">أسئلة متكررة:</string>
-    <string name="so_far_you_visited">So far you visited</string>
+    <string name="so_far_you_visited">So far you have used</string>
     <string name="more_variety">More variety</string>
     <string name="third_feature">Third Feature</string>
     <string name="pay_for_bundle">Pay for the bundle of classes...etc</string>

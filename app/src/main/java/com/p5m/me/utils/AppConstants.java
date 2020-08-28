@@ -153,6 +153,8 @@ public class AppConstants {
         public static final String FACEBOOK_LOGIN = "fb_pref_login";
         public static final String CITIES = "pref_cities";
         public static final String ACTIVITIES = "pref_activities";
+        public static final String GYMLIST = "pref_gym_list";
+
         public static final String FILTERS = "pref_filters";
         public static final String USER = "pref_user";
         public static final String DEFAULT_SETTING_SERVER = "pref_default_setting_server";
@@ -212,6 +214,8 @@ public class AppConstants {
         public static final String HOME_TABS_INNER_TAB_POSITION = "home_tabs_inner_tab_position";
         public static final String HOME_TABS_PROFILE_INNER_TAB_POSITION = "home_tabs_profile_inner_tab_position";
         public static final String HOME_TABS_SCHEDULE_INNER_TAB_POSITION = "home_tabs_schedule_inner_tab_position";
+        public static final String HOME_FILTER_TYPE = "filter_type";
+        public static final String FILTER_ID = "filter_id";
 
         public static final String PACKAGE_NAME_STRING = "package_name";
         public static final String IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN = "is_from_notification_stack_builder_boolean";

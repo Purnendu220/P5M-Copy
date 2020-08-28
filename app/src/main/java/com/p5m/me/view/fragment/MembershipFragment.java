@@ -190,7 +190,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         onRefresh();
 
 
-//        MixPanel.trackMembershipVisit(navigatedFrom);
+//
         //  onTrackingNotification();
         FirebaseAnalysic.trackMembershipVisit(navigatedFrom);
         if (RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE != null && !RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE.isEmpty()) {
@@ -269,10 +269,8 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 //           MembershipInfoActivity.openActivity(context);
 //            TempStorage.setOpenMembershipInfo(MEMBERSHIP_INFO_STATE_DONE);
         }
-        MixPanel.trackMembershipVisit(this.navigatedFrom);
         //  onTrackingNotification();
-        FirebaseAnalysic.trackMembershipVisit(this.navigatedFrom);
-        IntercomEvents.trackMembershipVisit(this.navigatedFrom);
+
         setUserWalletDetail();
     }
 
@@ -402,6 +400,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                 textGymVisitLimits.setVisibility(View.GONE);
 
             } else {
+                swipeRefreshLayout.setEnabled(false);
                 textGymVisitLimits.setVisibility(View.GONE);
             }
             if (buyMoreCredits != null && buyMoreCredits.length > 0 && buyMoreCredits[0]) {

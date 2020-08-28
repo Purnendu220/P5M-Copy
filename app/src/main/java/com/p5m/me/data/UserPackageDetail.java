@@ -5,7 +5,7 @@ import com.p5m.me.data.main.GymBranchDetail;
 public class UserPackageDetail {
 
     String gymName;
-    long classJoinDate;
+    long classDate;
     int credit;
 
     String numberofGymVisit;
@@ -36,11 +36,11 @@ public class UserPackageDetail {
     }
 
     public long getClassJoinDate() {
-        return classJoinDate;
+        return classDate;
     }
 
     public void setClassJoinDate(long classJoinDate) {
-        this.classJoinDate = classJoinDate;
+        this.classDate = classJoinDate;
     }
 
     public int getCredit() {
