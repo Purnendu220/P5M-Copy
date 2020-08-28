@@ -274,7 +274,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         setToolBar();
 
         getDynamicLink();
-        MixPanel.trackClassDetails(navigationFrom);
         onTrackingNotification();
         if (RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE != null && !RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE.isEmpty()) {
             showChoosePackageOption = Boolean.valueOf(RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE);
@@ -652,6 +651,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     classModel.setNumberOfRating(ratingData.getCount());
                     classProfileAdapter.setClass(classModel);
                     classProfileAdapter.notifyDataSetChanged();
+                    MixPanel.trackClassDetailsVisit(navigationFrom,classModel);
                 }
 
                 break;

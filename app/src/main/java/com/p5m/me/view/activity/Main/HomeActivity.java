@@ -25,6 +25,7 @@ import com.p5m.me.adapters.HomeAdapter;
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
 import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.IntercomEvents;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.UnratedClassData;
 import com.p5m.me.data.main.BookingCancellationResponse;
@@ -74,6 +75,7 @@ import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_HAVE_PACK
 import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_NO_PACKAGE;
 import static com.p5m.me.utils.AppConstants.Tab.TAB_FIND_CLASS;
 import static com.p5m.me.utils.AppConstants.Tab.TAB_MY_MEMBERSHIP;
+import static com.p5m.me.utils.AppConstants.Tab.TAB_MY_PROFILE;
 
 
 public class HomeActivity extends BaseActivity implements BottomTapLayout.TabListener, ViewPager.OnPageChangeListener, View.OnClickListener, NetworkCommunicator.RequestListener, TabChange {
@@ -152,6 +154,18 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         return intent;
     }
 
+    public static Intent createIntent(Context context, int tabPosition, int innerTabPosition,String type,String id) {
+        Intent intent = new Intent(context, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra(AppConstants.DataKey.HOME_TAB_POSITION, tabPosition);
+        intent.putExtra(AppConstants.DataKey.HOME_TABS_SCHEDULE_INNER_TAB_POSITION, innerTabPosition);
+        intent.putExtra(AppConstants.DataKey.HOME_FILTER_TYPE, type);
+        intent.putExtra(AppConstants.DataKey.FILTER_ID, id);
+
+        return intent;
+    }
+
     public static Intent createIntent(Context context, int tabPosition, int innerTabPosition, int profileTabPosition) {
         Intent intent = new Intent(context, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
@@ -215,6 +229,7 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
     private Handler handler;
     public CustomRateAlertDialog mCustomMatchDialog;
     private static User.WalletDto mWalletCredit;
+    private String filterType,filterId;
 
 
     @Override
@@ -244,6 +259,10 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
                     1);
             CLASS_OBJECT = (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_OBJECT);
             BOOK_WITH_FRIEND_DATA = (BookWithFriendData) getIntent().getSerializableExtra(AppConstants.DataKey.BOOK_WITH_FRIEND_DATA);
+            filterType = getIntent().getStringExtra(AppConstants.DataKey.HOME_FILTER_TYPE);
+            filterId = getIntent().getStringExtra(AppConstants.DataKey.FILTER_ID);
+
+
 
             LogUtils.debug("VarunSCHEDULE getIntent " + SCHEDULE_TAB_POSITION);
 
@@ -409,12 +428,30 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
         }
 
         if (position == AppConstants.Tab.TAB_SCHEDULE) {
+            MixPanel.trackScheduleVisit();
             try {
                 ((MySchedule) homeAdapter.getFragments().get(position)).selectTab(SCHEDULE_TAB_POSITION);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        if(position == TAB_FIND_CLASS){
+            MixPanel.trackFindClassVisit();
+
+        }
+        if(position == TAB_MY_PROFILE){
+            MixPanel.trackProfileVisit();
+
+        }
+        if(position == AppConstants.Tab.TAB_EXPLORE_PAGE){
+            MixPanel.trackExploreVisit();
+
+        }if(position == TAB_MY_MEMBERSHIP){
+            MixPanel.trackMembershipVisit(NAVIGATED_FROM_INT);
+            FirebaseAnalysic.trackMembershipVisit(this.NAVIGATED_FROM_INT);
+            IntercomEvents.trackMembershipVisit(this.NAVIGATED_FROM_INT);
+        }
+
         handleTabChangeForMembership(position);
         currentTab = position;
     }

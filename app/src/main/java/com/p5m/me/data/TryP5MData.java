@@ -8,9 +8,17 @@ public class TryP5MData {
      * buttonTitleAr : null
      */
 
+
+
     private String message;
     private String buttonTitle;
     private String buttonTitleAr;
+
+    public TryP5MData(String message, String buttonTitle, String buttonTitleAr) {
+        this.message = message;
+        this.buttonTitle = buttonTitle;
+        this.buttonTitleAr = buttonTitleAr;
+    }
 
     public String getMessage() {
         return message;

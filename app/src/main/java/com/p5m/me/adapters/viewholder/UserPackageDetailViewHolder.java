@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.UserPackageDetail;
+import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LanguageUtils;
 
 import butterknife.BindView;
@@ -24,8 +25,12 @@ public class UserPackageDetailViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.textGymNames)
     public TextView textGymNames;
-    @BindView(R.id.textGymVisits)
+    @BindView(R.id.textGymCredits)
     public TextView textGymVisits;
+
+    @BindView(R.id.textVisitDate)
+    public TextView textVisitDate;
+
     private final Context context;
 
     public UserPackageDetailViewHolder(View itemView) {
@@ -43,9 +48,9 @@ public class UserPackageDetailViewHolder extends RecyclerView.ViewHolder {
         if (data != null && data instanceof UserPackageDetail) {
             itemView.setVisibility(View.VISIBLE);
             UserPackageDetail model = (UserPackageDetail) data;
-            textGymNames.setText(model.getGymBranchResponseDto().getGymName());
-            if(model.getNumberofGymVisit()!=null)
-            textGymVisits.setText(String.format(context.getResources().getString(R.string.visit_times), model.getNumberofGymVisit()));
+            textGymNames.setText(model.getGymName() +" on " +DateUtils.getClassVisitDate(model.getClassJoinDate()));
+            textVisitDate.setText(DateUtils.getClassVisitDate(model.getClassJoinDate()));
+            textGymVisits.setText(String.format(context.getResources().getString(R.string.visit_times), model.getCredit()+""));
         } else {
             itemView.setVisibility(View.GONE);
         }

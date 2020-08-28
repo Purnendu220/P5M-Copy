@@ -18,6 +18,7 @@ import androidx.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.google.android.libraries.places.api.Places;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.p5m.me.agorartc.rtc.AgoraEventHandler;
@@ -102,6 +103,7 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         PackageManager packageManager = getPackageManager();
         String packageName = getPackageName();
         FirebaseApp.initializeApp(context);
+       // Places.initialize(getApplicationContext(), BuildConfig.PLACES_API_KEY);
 
         Intercom.initialize(this, "android_sdk-0220c78a68a8a904e507a85bebd4eed53e4b7602", "qp091xcl");
         try {

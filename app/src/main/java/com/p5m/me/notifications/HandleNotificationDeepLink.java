@@ -4,10 +4,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.p5m.me.R;
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
 import com.p5m.me.agorartc.activities.MainActivity;
+import com.p5m.me.data.City;
+import com.p5m.me.data.CityLocality;
+import com.p5m.me.data.ClassesFilter;
+import com.p5m.me.data.Filter;
+import com.p5m.me.data.PriceModel;
+import com.p5m.me.data.main.ClassActivity;
+import com.p5m.me.data.main.GymDataModel;
+import com.p5m.me.data.main.StoreApiModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
+import com.p5m.me.helper.Helper;
+import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigure;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.ToastUtils;
@@ -23,13 +36,29 @@ import com.p5m.me.view.activity.Main.TrainerProfileActivity;
 import com.p5m.me.view.activity.Main.Trainers;
 import com.p5m.me.view.activity.Main.TransactionHistoryActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.p5m.me.utils.AppConstants.Tab.TAB_MY_MEMBERSHIP;
 
 public class HandleNotificationDeepLink {
     public static Intent handleNotificationDeeplinking(Context context, String url) {
         Intent navigationIntent;
          try {
-                if (url.contains("/classes/") || url.contains("/share/classes/")) {
+
+
+             if(url.contains("/classes?type")){
+                 String[] stringlist = url.split("\\?");
+                 String[] paramList = stringlist[1].split("&");
+                 String type = paramList[0].split("=")[1];
+                 String id = paramList[1].split("=")[1];
+                 applyFilter(type,id,context);
+                 navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
+
+
+             }
+
+            else if (url.contains("/classes/") || url.contains("/share/classes/")) {
                     String classId = null;
                     String[] stringlist = url.split("/classes/");
                     if (stringlist != null && stringlist.length > 1) {
@@ -189,5 +218,165 @@ public class HandleNotificationDeepLink {
 
     }
 
+    private static void applyFilter(String type,String id,Context context){
+         List<ClassActivity> activities;
+         List<GymDataModel> gymList;
+         List<City> cities;
+         List<Filter.FitnessLevel> fitnessLevelList;
+         List<PriceModel> priceModelList = null;
+         List<ClassesFilter> classesFilters = new ArrayList<>();
+
+        switch (type){
+            case "activity":
+                try{
+                    activities =   TempStorage.getActivities();
+                    ClassActivity selected = null;
+                    for (ClassActivity activty:activities) {
+                        if(activty.getId()==Integer.parseInt(id)){
+                            selected = activty;
+                        }
+                    }
+                    if(selected!=null){
+                        ClassesFilter classesFilter = new ClassesFilter(selected.getId() + "", true, "ClassActivity", selected.getName(), R.drawable.filter_activity, ClassesFilter.TYPE_ITEM);
+                        classesFilter.setObject(selected);
+                        classesFilters.add(classesFilter);
+
+                        TempStorage.setFilterList(classesFilters);
+                        EventBroadcastHelper.sendNewFilterSet();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+
+
+                break;
+            case "locality":
+                cities = TempStorage.getCities();
+                CityLocality selectedlocality=null;
+                try{
+                    for (City city:cities) {
+                        for (CityLocality locality:city.getLocality()) {
+                            if(locality.getId()==Integer.parseInt(id)){
+                                selectedlocality = locality;
+                            }
+                        }
+                    }
+
+                    if(selectedlocality!=null){
+                        ClassesFilter filter = new ClassesFilter<CityLocality>(selectedlocality.getId() + "", true, "CityLocality", selectedlocality.getName(), 0, ClassesFilter.TYPE_ITEM);
+                        filter.setObject(selectedlocality);
+                        classesFilters.add(filter);
+
+                        TempStorage.setFilterList(classesFilters);
+                        EventBroadcastHelper.sendNewFilterSet();
+                    }
+
+
+
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                break;
+            case "gym":
+                gymList = TempStorage.getGymList();
+                GymDataModel selectedGym=null;
+                for (GymDataModel model:gymList) {
+                    if(model.getId()==Integer.parseInt(id)){
+                        selectedGym=model;
+                    }
+                }
+                if(selectedGym!=null){
+                    ClassesFilter classesFilter = new ClassesFilter(selectedGym.getId() + "", true, "Gym", selectedGym.getStudioName(), 0, ClassesFilter.TYPE_ITEM);
+                    classesFilter.setObject(selectedGym);
+                    classesFilters.add(classesFilter);
+                    TempStorage.setFilterList(classesFilters);
+                    EventBroadcastHelper.sendNewFilterSet();
+                }
+
+
+                break;
+            case "priceModel":
+                PriceModel selected = null;
+
+                try {
+                    priceModelList = new Gson().fromJson(RemoteConfigure.getFirebaseRemoteConfig(context).getRemoteConfigValue(RemoteConfigConst.PRICE_MODEL), new TypeToken<List<PriceModel>>() {
+                    }.getType());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if(priceModelList!=null&&!priceModelList.isEmpty()){
+                    for (PriceModel model:priceModelList) {
+                        if(id.equalsIgnoreCase(model.getValue())){
+                            selected = model;
+                        }
+                    }
+                    if(selected!=null){
+                    ClassesFilter   filter = new ClassesFilter("", true, "PriceModel", selected.getName(), R.drawable.multiple_users_grey_fill, ClassesFilter.TYPE_ITEM);
+                    filter.setObject(selected);
+                        classesFilters.add(filter);
+                        TempStorage.setFilterList(classesFilters);
+                        EventBroadcastHelper.sendNewFilterSet();
+                    }
+                }
+                break;
+            case "time":
+                ClassesFilter filter=null;
+                if(id.equalsIgnoreCase("MORNING")){
+                     filter = new ClassesFilter<Filter.Time>("", true, "Time",context.getString(R.string.morning), 0, ClassesFilter.TYPE_ITEM);
+                      filter.setObject(new Filter.Time("MORNING", context.getString(R.string.morning)));
+                }
+                if(id.equalsIgnoreCase("AFTERNOON")){
+                    filter = new ClassesFilter<Filter.Time>("", true, "Time",context.getString(R.string.after_Noon), 0, ClassesFilter.TYPE_ITEM);
+                    filter.setObject(new Filter.Time("AFTERNOON", context.getString(R.string.after_Noon)));
+
+                }
+                if(id.equalsIgnoreCase("EVENING")){
+                    filter = new ClassesFilter<Filter.Time>("", true, "Time",context.getString(R.string.evening), 0, ClassesFilter.TYPE_ITEM);
+                    filter.setObject(new Filter.Time("EVENING", context.getString(R.string.evening)));
+
+                }
+                if(filter!=null){
+                    classesFilters.add(filter);
+                    TempStorage.setFilterList(classesFilters);
+                    EventBroadcastHelper.sendNewFilterSet();
+                }
+                break;
+            case "level":
+                try{
+                    Filter.FitnessLevel selectedLevel = null;
+                    fitnessLevelList = new Gson().fromJson(Helper.getFitnessLevelFromAsset(context), new TypeToken<List<Filter.FitnessLevel>>() {
+                        }.getType());
+
+
+                    if(fitnessLevelList!=null&&!fitnessLevelList.isEmpty()){
+                        for (Filter.FitnessLevel model:fitnessLevelList) {
+                            if(model.getLevel().equalsIgnoreCase(id)){
+                                selectedLevel = model;
+                            }
+                        }
+
+                    }
+                    if(selectedLevel!=null){
+                        ClassesFilter classesFilter = new ClassesFilter(selectedLevel.getId() + "", true, "FitnessLevel", selectedLevel.getName(), 0, ClassesFilter.TYPE_ITEM);
+                        classesFilter.setObject(selectedLevel);
+                        classesFilters.add(classesFilter);
+                        TempStorage.setFilterList(classesFilters);
+                        EventBroadcastHelper.sendNewFilterSet();
+                    }
+
+
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                break;
+        }
+
+
+    }
 
 }
