@@ -75,7 +75,6 @@ import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.BookForAFriendPopup;
 import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.fragment.BottomSheetClassBookingOptions;
-import com.p5m.me.view.fragment.MembershipFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -275,7 +274,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         setToolBar();
 
         getDynamicLink();
-        MixPanel.trackClassDetails(navigationFrom);
         onTrackingNotification();
         if (RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE != null && !RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE.isEmpty()) {
             showChoosePackageOption = Boolean.valueOf(RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE);
@@ -653,6 +651,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     classModel.setNumberOfRating(ratingData.getCount());
                     classProfileAdapter.setClass(classModel);
                     classProfileAdapter.notifyDataSetChanged();
+                    MixPanel.trackClassDetailsVisit(navigationFrom,classModel);
                 }
 
                 break;
@@ -680,7 +679,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                         }
                         if (packages.size() == 1) {
                             Package aPackage = packages.get(0);
-                            CheckoutActivity.openActivity(context, aPackage, classModel, 2, mBookWithFriendData, aPackage.getNoOfClass());
+                            CheckoutActivity.openActivity(context, aPackage, classModel, 2, mBookWithFriendData, aPackage.getNoOfClass(), aPackage.getCredits());
                             return;
 
                         } else {

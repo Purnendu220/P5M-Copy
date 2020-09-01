@@ -81,6 +81,7 @@ import static com.p5m.me.utils.LanguageUtils.numberConverter;
 public class CheckoutActivity extends BaseActivity implements View.OnClickListener, NetworkCommunicator.RequestListener, CustomAlertDialog.OnAlertButtonAction, AdapterCallbacks {
 
     private static int mNumberOfClasses = 1;
+    private static float mCredit;
     private Handler handler;
     private Runnable nextScreenRunnable;
     private String refId;
@@ -124,7 +125,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
 
     ///////////////////
-    public static void openActivity(Context context, Package aPackage, ClassModel classModel, int mNumberOfPackagesToBuy, BookWithFriendData friendsDetail, int mNumberOfClasses) {
+    public static void openActivity(Context context, Package aPackage, ClassModel classModel, int mNumberOfPackagesToBuy, BookWithFriendData friendsDetail, int mNumberOfClasses, float credits) {
         CheckoutActivity.aPackage = aPackage;
         CheckoutActivity.classModel = classModel;
         CheckoutActivity.selectedPacakageFromList = null;
@@ -132,7 +133,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         CheckoutActivity.mNumberOfPackagesToBuy = mNumberOfPackagesToBuy;
         CheckoutActivity.mNumberOfClasses = mNumberOfClasses;
         CheckoutActivity.friendsDetail = friendsDetail;
-
+        CheckoutActivity.mCredit = credits;
         openActivity(context);
     }
 

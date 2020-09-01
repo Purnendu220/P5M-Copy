@@ -1,14 +1,10 @@
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
 
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
-}
+apply plugin: 'com.google.firebase.crashlytics'
 
 allprojects {
     repositories {
         maven { url "https://jitpack.io" }
-        maven { url 'https://maven.fabric.io/public' }
     }
 }
 android {
@@ -46,9 +42,11 @@ android {
             signingConfig signingConfigs.release
         }
     }
-    viewBinding {
-        enabled = true
+    buildFeatures{
+        viewBinding true
+
     }
+
     dexOptions {
         jumboMode true
     }
@@ -87,8 +85,9 @@ android {
             buildConfigField "String", "AGORA_APP_CUSTOMER_CERTIFICATE", '\"30d9c2ed76a34e27ab05ae85682ae4fc\"'
             buildConfigField "String", "AGORA_APP_CUSTOMER_ID", '\"418489ad97644a3e87695a6798a11aea\"'
             buildConfigField "String", "YOUTUBE_API_KEY", '\"AIzaSyDqCAlD7vilwhBhp49T1PU4SpH5Ap2KGfA\"'
+            buildConfigField "String", "PLACES_API_KEY", '\"AIzaSyCw5dMt6VDJPNvjeFQ8-QLuKVxC2xMVQ3k\"'
 
-            manifestPlaceholders = [hostName: "staging.p5m.me", hostName_www: "www.staging.p5m.me", appName: "P5M LOCAL", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
+            manifestPlaceholders = [hostName: "staging.p5m.me", hostName_www: "www.staging.p5m.me", appName: "P5M LOCAL", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec",placeskey: "AIzaSyCw5dMt6VDJPNvjeFQ8-QLuKVxC2xMVQ3k"]
 
         }
         internationlization {
@@ -109,8 +108,9 @@ android {
             buildConfigField "String", "AGORA_APP_CUSTOMER_CERTIFICATE", '\"30d9c2ed76a34e27ab05ae85682ae4fc\"'
             buildConfigField "String", "AGORA_APP_CUSTOMER_ID", '\"418489ad97644a3e87695a6798a11aea\"'
             buildConfigField "String", "YOUTUBE_API_KEY", '\"AIzaSyDqCAlD7vilwhBhp49T1PU4SpH5Ap2KGfA\"'
+            buildConfigField "String", "PLACES_API_KEY", '\"AIzaSyCw5dMt6VDJPNvjeFQ8-QLuKVxC2xMVQ3k\"'
 
-            manifestPlaceholders = [hostName: "staging.p5m.me", hostName_www: "www.staging.p5m.me", appName: "P5M LOCAL", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
+            manifestPlaceholders = [hostName: "staging.p5m.me", hostName_www: "www.staging.p5m.me", appName: "P5M LOCAL", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec",placeskey: "AIzaSyCw5dMt6VDJPNvjeFQ8-QLuKVxC2xMVQ3k"]
 
         }
         dev {
@@ -131,8 +131,9 @@ android {
             buildConfigField "String", "AGORA_APP_CUSTOMER_CERTIFICATE", '\"30d9c2ed76a34e27ab05ae85682ae4fc\"'
             buildConfigField "String", "AGORA_APP_CUSTOMER_ID", '\"418489ad97644a3e87695a6798a11aea\"'
             buildConfigField "String", "YOUTUBE_API_KEY", '\"AIzaSyDqCAlD7vilwhBhp49T1PU4SpH5Ap2KGfA\"'
+            buildConfigField "String", "PLACES_API_KEY", '\"AIzaSyCw5dMt6VDJPNvjeFQ8-QLuKVxC2xMVQ3k\"'
 
-            manifestPlaceholders = [hostName: "uat.profive.co", hostName_www: "www.uat.profive.co", appName: "P5M", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
+            manifestPlaceholders = [hostName: "uat.profive.co", hostName_www: "www.uat.profive.co", appName: "P5M", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec",placeskey: "AIzaSyCw5dMt6VDJPNvjeFQ8-QLuKVxC2xMVQ3k"]
 
         }
         qa {
@@ -153,9 +154,10 @@ android {
             buildConfigField "String", "AGORA_APP_CUSTOMER_CERTIFICATE", '\"30d9c2ed76a34e27ab05ae85682ae4fc\"'
             buildConfigField "String", "AGORA_APP_CUSTOMER_ID", '\"418489ad97644a3e87695a6798a11aea\"'
             buildConfigField "String", "YOUTUBE_API_KEY", '\"AIzaSyDqCAlD7vilwhBhp49T1PU4SpH5Ap2KGfA\"'
+            buildConfigField "String", "PLACES_API_KEY", '\"AIzaSyCw5dMt6VDJPNvjeFQ8-QLuKVxC2xMVQ3k\"'
 
 //            manifestPlaceholders = [hostName: "qa.profive.co", hostName_www: "www.qa.profive.co", appName: "P5M", fabricKey: "64b073c33ed8ec448a3c377b841074a1d15b65ec"]
-            manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "81e25498c1638dbcb2017cc88dba175c5d44a1a6"]
+            manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "81e25498c1638dbcb2017cc88dba175c5d44a1a6",placeskey: "AIzaSyCw5dMt6VDJPNvjeFQ8-QLuKVxC2xMVQ3k"]
 
         }
         liveTest {
@@ -177,8 +179,9 @@ android {
             buildConfigField "String", "AGORA_APP_CUSTOMER_CERTIFICATE", '\"30d9c2ed76a34e27ab05ae85682ae4fc\"'
             buildConfigField "String", "AGORA_APP_CUSTOMER_ID", '\"418489ad97644a3e87695a6798a11aea\"'
             buildConfigField "String", "YOUTUBE_API_KEY", '\"AIzaSyDqCAlD7vilwhBhp49T1PU4SpH5Ap2KGfA\"'
+            buildConfigField "String", "PLACES_API_KEY", '\"AIzaSyCw5dMt6VDJPNvjeFQ8-QLuKVxC2xMVQ3k\"'
 
-            manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "81e25498c1638dbcb2017cc88dba175c5d44a1a6"]
+            manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "81e25498c1638dbcb2017cc88dba175c5d44a1a6",placeskey: "AIzaSyCw5dMt6VDJPNvjeFQ8-QLuKVxC2xMVQ3k"]
         }
 
         live {
@@ -200,12 +203,15 @@ android {
             buildConfigField "String", "AGORA_APP_CUSTOMER_CERTIFICATE", '\"30d9c2ed76a34e27ab05ae85682ae4fc\"'
             buildConfigField "String", "AGORA_APP_CUSTOMER_ID", '\"418489ad97644a3e87695a6798a11aea\"'
             buildConfigField "String", "YOUTUBE_API_KEY", '\"AIzaSyDqCAlD7vilwhBhp49T1PU4SpH5Ap2KGfA\"'
+            buildConfigField "String", "PLACES_API_KEY", '\"AIzaSyCw5dMt6VDJPNvjeFQ8-QLuKVxC2xMVQ3k\"'
 
 
 
 
 
-            manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "81e25498c1638dbcb2017cc88dba175c5d44a1a6"]
+
+
+            manifestPlaceholders = [hostName: "p5m.me", hostName_www: "www.p5m.me", appName: "P5M", fabricKey: "81e25498c1638dbcb2017cc88dba175c5d44a1a6",placeskey: "AIzaSyCw5dMt6VDJPNvjeFQ8-QLuKVxC2xMVQ3k"]
         }
 
     }
@@ -259,16 +265,16 @@ dependencies {
     implementation 'com.google.firebase:firebase-config:19.2.0'
     implementation 'com.google.firebase:firebase-inappmessaging-display:19.1.0'
     implementation 'com.google.firebase:firebase-analytics:17.5.0'
+    implementation 'com.google.firebase:firebase-crashlytics:17.2.1'
+
     implementation 'com.google.android.gms:play-services-location:17.0.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
-    implementation 'com.google.android.gms:play-services-places:17.0.0'
+    implementation 'com.google.android.libraries.places:places:1.1.0'
     implementation 'id.zelory:compressor:1.0.4'
     implementation 'com.facebook.fresco:fresco:1.2.0'
     implementation 'com.bogdwellers:pinchtozoom:0.1'
     /////////////////////////////////FABRIC//////////////////////////////////////////
-    implementation('com.crashlytics.sdk.android:crashlytics:2.10.1@aar') {
-        transitive = true
-    }
+
     implementation 'com.mixpanel.android:mixpanel-android:5.4.1'
     implementation 'com.google.android.gms:play-services-gcm:17.0.0'
     implementation 'io.fotoapparat.fotoapparat:library:2.3.1'
@@ -290,4 +296,3 @@ dependencies {
 
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'jacoco'
-com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true

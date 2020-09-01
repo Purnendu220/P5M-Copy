@@ -123,9 +123,17 @@ public class StillConfusedViewHolder extends RecyclerView.ViewHolder {
     }
 
     private String convertorToModelClassList(ExploreDataList exploreDataList) {
-        return gson.toJson(
-                exploreDataList.getexploreDataList(),
-                new TypeToken<List<LinkedTreeMap>>() {
-                }.getType());
+        try{
+            return gson.toJson(
+                    exploreDataList.getexploreDataList(),
+                    new TypeToken<List<LinkedTreeMap>>() {
+                    }.getType());
+        }catch (Exception e){
+            return gson.toJson(
+                    exploreDataList.getexploreDataList(),
+                    new TypeToken<List<TryP5MData>>() {
+                    }.getType());
+        }
+
     }
 }

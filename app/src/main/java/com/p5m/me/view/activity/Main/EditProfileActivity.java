@@ -1,6 +1,7 @@
 package com.p5m.me.view.activity.Main;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -29,8 +30,14 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
+
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.p5m.me.BuildConfig;
 import com.p5m.me.R;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.MediaResponse;
@@ -57,6 +64,7 @@ import com.robertlevonyan.components.picker.PickerDialog;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -130,6 +138,8 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     private UserInfoUpdate userInfoUpdate;
 
     public Runnable runnableEmailValidation, runnablePhoneValidation;
+    private AutocompleteSupportFragment mPlaceDestination;
+    private PlacesClient mPlacesClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -379,19 +389,22 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.textViewLocation:
 
-                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-
-                try {
-                    startActivityForResult(builder.build(activity), AppConstants.ResultCode.CHOOSE_LOCATION);
-                } catch (GooglePlayServicesRepairableException e) {
-                    e.printStackTrace();
-                    LogUtils.exception(e);
-                    ToastUtils.show(context, "Please update your google play services");
-                } catch (GooglePlayServicesNotAvailableException e) {
-                    e.printStackTrace();
-                    LogUtils.exception(e);
-                    ToastUtils.show(context, "Google play services is not available");
+                if (!Places.isInitialized()) {
+                    Places.initialize(getApplicationContext(), "AIzaSyC36Oyf3q-4pO0HC7ZCydtu6OFFgUFxens");
                 }
+                mPlaceDestination = (AutocompleteSupportFragment)
+                        getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+                if (mPlaceDestination != null)
+                    mPlaceDestination.setPlaceFields(Arrays.asList(com.google.android.libraries.places.api.model.Place.Field.ID, com.google.android.libraries.places.api.model.Place.Field.NAME));
+
+                mPlacesClient = Places.createClient(this);
+                List<com.google.android.libraries.places.api.model.Place.Field> fields = Arrays.asList(com.google.android.libraries.places.api.model.Place.Field.ID, com.google.android.libraries.places.api.model.Place.Field.NAME, com.google.android.libraries.places.api.model.Place.Field.LAT_LNG, com.google.android.libraries.places.api.model.Place.Field.ADDRESS, com.google.android.libraries.places.api.model.Place.Field.PHONE_NUMBER);
+
+                Intent intent = new Autocomplete.IntentBuilder(
+                        AutocompleteActivityMode.FULLSCREEN, fields)
+                        .build((Activity) mContext);
+                startActivityForResult(intent, AppConstants.ResultCode.CHOOSE_LOCATION);
+
                 break;
         }
     }
@@ -503,10 +516,10 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
 
         } else if (requestCode == AppConstants.ResultCode.CHOOSE_LOCATION && resultCode == RESULT_OK) {
 
-            Place place = PlacePicker.getPlace(context, data);
+            Place place = Autocomplete.getPlaceFromIntent(data);
 
             if (place != null) {
-                setLocation(place.getAddress().toString());
+                setLocation(place.getAddress());
             }
         }
     }

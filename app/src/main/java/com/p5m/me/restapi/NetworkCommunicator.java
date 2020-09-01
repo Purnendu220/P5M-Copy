@@ -431,6 +431,9 @@ public class NetworkCommunicator {
             public void onResponse(Call<ResponseModel<List<GymDataModel>>> call, Response<ResponseModel<List<GymDataModel>>> restResponse, ResponseModel<List<GymDataModel>> response) {
                 LogUtils.networkSuccess("NetworkCommunicator getGymList onResponse data " + response);
                 requestListener.onApiSuccess(response, requestCode);
+                TempStorage.setGymList(response.data);
+
+
             }
         });
         return call;

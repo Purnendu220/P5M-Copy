@@ -279,7 +279,7 @@
     <string name="share_message_gym">Hey. Want to workout with me? Let’s join %1s\'s classes together.\n</string>
     <string name="share_message_trainer">Hey. Want to workout with me? Let’s join %1s‘s classes together.\n</string>
     <string name="valid_intil">(until %1s)</string>
-    <string name="extend_message">Add more time to your current plan. Any gym visit limits still apply, and will not be reset with this extension.</string>
+    <string name="extend_message">Add more time to your current plan.</string>
     <string name="extend_term">The gym visit limits will not re-set with this one-time purchase. You have just extended your membership (%1d week(s)). You have (%1d) week(s) remaining. Make sure if you need more time to extend your membership before your classes expire.</string>
     <string name="extend">"<u>Extend</u>"</string>
     <string name="extention_policy">Membership extension policy</string>
@@ -534,12 +534,12 @@ Would you like to view your balance? </string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
 
-    <string name="so_far_you_visited">So far you visited</string>
+    <string name="so_far_you_visited">So far you have used</string>
     <string name="drop_in_text">You have 1 active drop-in at %s, expire on %s</string>
     <string name="drop_in_unlimited">You have 1 active drop-in for %s</string>
     <string name="_two_drop_in_text">You have 2 active drop-ins for %s, expires on %s</string>
     <string name="_two_drop_in_unlimited">You have 2 active drop-ins for %s</string>
-    <string name="visit_times">%s times</string>
+    <string name="visit_times">%s credits</string>
     <string name="why_p5m">Why a P5M membership?\nBecause get more and pay less</string>
     <string name="variety_of_activity_details">With the P5M membership you can visit a swimming class today, crossfit tomorrow and yoga on the weekend. Each class at a different gym.</string>
     <string name="variety_of_activities">Variety of activities</string>
@@ -729,6 +729,8 @@ Would you like to view your balance? </string>
     <string name="_10_credits">10 Credits</string>
     <string name="info_for_other_country">The payment will be done in Kuwait Dinar. Rate of conversion: 1KD = $3.3</string>
     <string name="enter_with_google">ENTER WITH GOOGLE</string>
+    <string name="online">Online</string>
+    <string name="at_gym">At-Gym</string>
 
 
 </resources>

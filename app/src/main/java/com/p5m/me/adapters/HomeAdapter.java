@@ -5,6 +5,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
+import com.p5m.me.analytics.FirebaseAnalysic;
+import com.p5m.me.analytics.IntercomEvents;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.utils.AppConstants;
@@ -73,6 +76,7 @@ public class HomeAdapter extends FragmentStatePagerAdapter {
         } else if (position == AppConstants.Tab.TAB_EXPLORE_PAGE) {
 
             frag = FragmentExplore.createExploreFragment();
+
         } else if (position == AppConstants.Tab.TAB_SCHEDULE) {
             frag = MySchedule.createScheduleFragment(myScheduleTabPosition);
         } else if (position == AppConstants.Tab.TAB_MY_PROFILE) {
@@ -86,6 +90,7 @@ public class HomeAdapter extends FragmentStatePagerAdapter {
                 frag = MembershipFragment.newInstance(NAVIGATED_FROM_INT);
 
             }
+
         }
 
 

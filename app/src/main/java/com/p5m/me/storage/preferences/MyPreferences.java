@@ -15,6 +15,7 @@ import com.p5m.me.data.main.BookingCancellationResponse;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.DefaultSettingServer;
+import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.data.main.StoreApiModel;
 import com.p5m.me.data.main.User;
 import com.p5m.me.restapi.ResponseModel;
@@ -226,10 +227,27 @@ public class MyPreferences {
         return new ArrayList<>();
     }
 
-
+    public List<GymDataModel> getGymList() {
+        try {
+            return gson.fromJson(PreferencesManager.getString(AppConstants.Pref.GYMLIST), new TypeToken<List<GymDataModel>>() {
+            }.getType());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
     public void saveActivities(List<ClassActivity> activities) {
         try {
             PreferencesManager.putString(AppConstants.Pref.ACTIVITIES, gson.toJson(activities));
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
+    public void saveGymList(List<GymDataModel> gymList) {
+        try {
+            PreferencesManager.putString(AppConstants.Pref.GYMLIST, gson.toJson(gymList));
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
@@ -281,6 +299,9 @@ public class MyPreferences {
     public List<ClassesFilter> getFilters() {
         List<ClassesFilter> classesFilters = new ArrayList<>();
         try {
+            if(PreferencesManager.getString(AppConstants.Pref.FILTERS)==null||PreferencesManager.getString(AppConstants.Pref.FILTERS).isEmpty()){
+                return classesFilters;
+            }
 
             JSONArray jsonArray = new JSONArray(PreferencesManager.getString(AppConstants.Pref.FILTERS));
 

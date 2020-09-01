@@ -64,7 +64,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -306,7 +305,6 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
 //            }
 //        }
 
-        MixPanel.trackClassDetails(navigationFrom);
         onTrackingNotification();
         networkCommunicator.getMyUser(this, false);
     }
@@ -757,6 +755,7 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
                     }
 
                 }
+                MixPanel.trackClassDetailsVisit(navigationFrom,classModel);
 
                 break;
             case NetworkCommunicator.RequestCode.CLASS_RATING_LIST:
@@ -787,7 +786,7 @@ public class ClassProfileActivityNew extends BaseActivity implements AdapterCall
                         }
                         if (packages.size() == 1 || !user.isBuyMembership()) {
                             Package aPackage = packages.get(0);
-                            CheckoutActivity.openActivity(context, aPackage, classModel, 2, mBookWithFriendData, aPackage.getNoOfClass());
+                            CheckoutActivity.openActivity(context, aPackage, classModel, 2, mBookWithFriendData, aPackage.getNoOfClass(), aPackage.getCredits());
                             return;
 
                         } else {

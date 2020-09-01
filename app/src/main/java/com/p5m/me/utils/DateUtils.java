@@ -38,6 +38,8 @@ public class DateUtils {
     private static SimpleDateFormat packageDateFormat = new SimpleDateFormat("d MMM yyyy", Locale.getDefault());
     private static SimpleDateFormat notificationDate = new SimpleDateFormat("h:mm a, MMM d", Locale.getDefault());
     private static SimpleDateFormat classRatingDate = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+    private static SimpleDateFormat classVisitDate = new SimpleDateFormat("dd-MMM", Locale.getDefault());
+
     private static SimpleDateFormat classTime24Format = new SimpleDateFormat("HH:mm", Locale.getDefault());
     private static SimpleDateFormat classTime12Format = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
     private static SimpleDateFormat ExtendedDateFormat = new SimpleDateFormat("d MMM ", Locale.getDefault());
@@ -251,6 +253,21 @@ public class DateUtils {
 
         try {
             return notificationDate.format(new Date(time)).replace(".", "").toUpperCase();
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+        return "";
+    }
+
+    public static String getClassVisitDate(long time) {
+        if (time < 1000000000000L) {
+            // if timestamp given in seconds, convert to millis
+            time *= 1000;
+        }
+
+        try {
+            return classVisitDate.format(new Date(time));
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);
