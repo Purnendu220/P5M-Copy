@@ -593,7 +593,6 @@ public class HomeActivity extends BaseActivity implements BottomTapLayout.TabLis
                 HomeActivity.show(context, TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
 
             }
-            break;
         }
 
     }

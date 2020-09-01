@@ -113,9 +113,7 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" /> <!-- //////////////////////////////////////////////////////////// -->
         <!-- /////////////////////// FABRIC /////////////////////// -->
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="${fabricKey}" /> <!-- //////////////////////////////////////////////////////////// -->
+       <!-- //////////////////////////////////////////////////////////// -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@mipmap/app_icon_small" />
