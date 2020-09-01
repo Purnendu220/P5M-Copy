@@ -240,6 +240,12 @@ public class Helper {
                 }
 
 
+            }else{
+                    if (model.isVideoClass())
+                        buttonJoin.setText(context.getString(R.string.online));
+                    else
+                        buttonJoin.setText(context.getString(R.string.at_gym));
+
             }
         }
 

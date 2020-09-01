@@ -1088,5 +1088,7 @@
     <string name="classes_remaining">credits remaining</string>
     <string name="info_for_other_country">The payment will be done in Kuwait Dinar. Rate of conversion: 1KD = $3.25</string>
     <string name="enter_with_google">أدخل مع جوجل</string>
+    <string name="online">Online</string>
+    <string name="at_gym">At-Gym</string>
 
 </resources>

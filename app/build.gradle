@@ -1,14 +1,10 @@
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
 
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
-}
+apply plugin: 'com.google.firebase.crashlytics'
 
 allprojects {
     repositories {
         maven { url "https://jitpack.io" }
-        maven { url 'https://maven.fabric.io/public' }
     }
 }
 android {
@@ -46,9 +42,11 @@ android {
             signingConfig signingConfigs.release
         }
     }
-    viewBinding {
-        enabled = true
+    buildFeatures{
+        viewBinding true
+
     }
+
     dexOptions {
         jumboMode true
     }
@@ -267,6 +265,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-config:19.2.0'
     implementation 'com.google.firebase:firebase-inappmessaging-display:19.1.0'
     implementation 'com.google.firebase:firebase-analytics:17.5.0'
+    implementation 'com.google.firebase:firebase-crashlytics:17.2.1'
+
     implementation 'com.google.android.gms:play-services-location:17.0.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.android.libraries.places:places:1.1.0'
@@ -274,9 +274,7 @@ dependencies {
     implementation 'com.facebook.fresco:fresco:1.2.0'
     implementation 'com.bogdwellers:pinchtozoom:0.1'
     /////////////////////////////////FABRIC//////////////////////////////////////////
-    implementation('com.crashlytics.sdk.android:crashlytics:2.10.1@aar') {
-        transitive = true
-    }
+
     implementation 'com.mixpanel.android:mixpanel-android:5.4.1'
     implementation 'com.google.android.gms:play-services-gcm:17.0.0'
     implementation 'io.fotoapparat.fotoapparat:library:2.3.1'
@@ -298,4 +296,3 @@ dependencies {
 
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'jacoco'
-com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true
