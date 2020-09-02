@@ -356,6 +356,7 @@ public class Helper {
             RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOK_IN_CLASS_COLOR_VALUE, context.getResources().getColor(R.color.colorAccent));
 
             view.setEnabled(true);
+
             view1.setVisibility(View.VISIBLE);
 //            view1.setText(context.getString(R.string.reserve_class_with_friend));
 
@@ -363,7 +364,12 @@ public class Helper {
             // RemoteConfigSetUp.setBackgroundColor(view1, RemoteConfigConst.BOOK_WITH_FRIEND_COLOR_VALUE, context.getResources().getColor(R.color.colorAccent));
             view1.setText(RemoteConfigConst.BOOK_WITH_FRIEND_VALUE);
             view1.setEnabled(true);
+            if (Helper.isSpecialClass(model)) {
+                if (Helper.isFreeClass(model)) {
+                    view1.setVisibility(View.GONE);
+                }
 
+            }
         }
     }
 
