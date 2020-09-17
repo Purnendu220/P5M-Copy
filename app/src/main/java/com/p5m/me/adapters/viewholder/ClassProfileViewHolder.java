@@ -30,6 +30,7 @@ import com.p5m.me.data.RemoteConfigDataModel;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CommonUtillity;
 import com.p5m.me.utils.DateUtils;
@@ -365,7 +366,14 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
 //                    AppConstants.plural(context.getString(R.string.seat), model.getAvailableSeat()));
             LanguageUtils.setText(textViewAvailable, model.getAvailableSeat(), context.getString(R.string.available_seats) + " ");
 
-            textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime())+" ("+AppConstants.Currency.ARABIC_STANDARD_TIME+")");
+            if(TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.USD_CURRENCY)){
+                textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime())+" ("+AppConstants.Currency.ARABIC_STANDARD_TIME+")");
+
+            }else{
+                textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
+
+            }
+
             textViewGender.setText(Helper.getClassGenderText(model.getClassType()));
             if (model.isVideoClass()) {
                 String channelName = CommonUtillity.getChannelName(model.getPlatform());

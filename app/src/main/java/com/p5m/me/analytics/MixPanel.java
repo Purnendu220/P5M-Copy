@@ -362,7 +362,7 @@ public class MixPanel {
             props.put("booking_time", DateUtils.getCurrentDateandTime());
             float hourDiff = DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime());
             props.put("diffHrs", DateUtils.getHourDiff(hourDiff));
-            props.put("userGender", user.getGender());
+            props.put("gender", user.getGender());
             props.put("ActivityPrefered", classModel.getClassCategory());
             props.put("locality_preferred", classModel.getGymBranchDetail() == null ? "" : classModel.getGymBranchDetail().getLocalityName());
 

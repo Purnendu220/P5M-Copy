@@ -670,7 +670,8 @@
 
     <string name="cancel_class_both">الغاء حجز الاثنين</string>
 
-    <string name="by_making_this_booking_2_classes_will_be_deducted_from_your_balance_book_with_a_friend">مع إجراء هذا الحجز ، سيتم خصم كلاسين من رصيدك</string>
+    <string name="by_making_this_booking_2_classes_will_be_deducted_from_your_balance_book_with_a_friend">بإجراء هذا الحجز ، سيتم خصم أرصدة فئة مزدوجة من رصيدك.
+</string>
 
     <string name="package_details">تفاصيل الاشتراكك</string>
 

@@ -207,6 +207,8 @@ public class AppConstants {
         public static final String NATIONALITY_OBJECT = "nationality_object";
         public static final String TRAINER_OBJECT = "trainer_object";
         public static final String PAYMENT_URL_OBJECT = "payment_url_object";
+        public static final String URL_OBJECT_TO_LOAD = "url_object_to_load";
+
         public static final String GYM_OBJECT = "gym_object";
         public static final String GYM_ID_INT = "gym_id_int";
         public static final String TRAINER_ID_INT = "trainer_id_int";

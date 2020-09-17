@@ -214,7 +214,8 @@ public class Helper {
             }
 
         } else {
-            String BOOK_FIND_CLASS_VALUE = RemoteConfigConst.BOOK_FIND_CLASS_VALUE;
+            ;
+            String BOOK_FIND_CLASS_VALUE = RemoteConfigure.getFirebaseRemoteConfig(context).getRemoteConfigValue(RemoteConfigConst.BOOK_FIND_CLASS);
             if (BOOK_FIND_CLASS_VALUE != null && !BOOK_FIND_CLASS_VALUE.isEmpty()) {
                 try{
                     Gson g = new Gson();
@@ -275,7 +276,9 @@ public class Helper {
             }
 
         } else {
-            String BOOK_OTHER_VALUE = RemoteConfigConst.BOOK_OTHER_VALUE;
+
+
+            String BOOK_OTHER_VALUE = RemoteConfigure.getFirebaseRemoteConfig(context).getRemoteConfigValue(RemoteConfigConst.BOOK_OTHERS);;
             if (BOOK_OTHER_VALUE != null && !BOOK_OTHER_VALUE.isEmpty()) {
                 try{
                     Gson g = new Gson();

@@ -35,6 +35,7 @@ import com.p5m.me.view.activity.Main.SettingNotification;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
 import com.p5m.me.view.activity.Main.Trainers;
 import com.p5m.me.view.activity.Main.TransactionHistoryActivity;
+import com.p5m.me.view.activity.Main.WebViewActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -203,7 +204,7 @@ public class HandleNotificationDeepLink {
                 }
                 else {
 
-                    navigationIntent = HomeActivity.createIntent(context, AppConstants.Tab.TAB_FIND_CLASS, 0);
+                    navigationIntent = WebViewActivity.createIntent(context, url);
 
                 }
 

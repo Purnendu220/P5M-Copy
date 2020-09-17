@@ -280,7 +280,7 @@
     <string name="share_message_trainer">Hey. Want to workout with me? Let’s join %1s‘s classes together.\n</string>
     <string name="valid_intil">(until %1s)</string>
     <string name="extend_message">Add more time to your current plan.</string>
-    <string name="extend_term">The gym visit limits will not re-set with this one-time purchase. You have just extended your membership (%1d week(s)). You have (%1d) week(s) remaining. Make sure if you need more time to extend your membership before your classes expire.</string>
+    <string name="extend_term">You are about to extend your membership by %1d week(s). Make sure to extend your membership before your credits expire if you need more time. You can further extend your membership by %1d week(s).</string>
     <string name="extend">"<u>Extend</u>"</string>
     <string name="extention_policy">Membership extension policy</string>
     <string name="yourfriendsname">Friend\'s Name</string>
@@ -379,11 +379,11 @@
     <string name="needs_your_gender">P5M needs your Gender</string>
     <string name="sure_unjoin_both">Are you sure you want to cancel both bookings ?</string>
     <string name="sure_unjoin_friend">Are you sure you want to cancel your friend\'s booking ?</string>
-      <string name="cancel_class_self">Unjoin My Class</string>
+    <string name="cancel_class_self">Unjoin My Class</string>
     <string name="cancel_class_friend">Cancel Friend\'s booking</string>
     <string name="cancel_class_both">Cancel Both bookings</string>
     <string name="limit_for_this_gym" translatable="false">visit limit for this gym.So you need to buy different package to book with friend.</string>
-    <string name="by_making_this_booking_2_classes_will_be_deducted_from_your_balance_book_with_a_friend">By making this booking, 2 classes will be deducted from your balance.</string>
+    <string name="by_making_this_booking_2_classes_will_be_deducted_from_your_balance_book_with_a_friend">By making this booking, double class credits will be debited from your balance.</string>
     <string name="package_details">Package details</string>
     <string name="packages">Package</string>
     <string name="validity">Validity</string>
@@ -724,7 +724,7 @@ Would you like to view your balance? </string>
     <string name="free_class">Free</string>
     <string name="class_credits"><b>%s credits</b></string>
     <string name="updated_credit_balance">Updated credit balance</string>
-    <string name="credit_balance" >Number of credits</string>
+    <string name="credit_balance">Number of credits</string>
     <string name="_5_credits">5 Credits</string>
     <string name="_10_credits">10 Credits</string>
     <string name="info_for_other_country">The payment will be done in Kuwait Dinar. Rate of conversion: 1KD = $3.3</string>
