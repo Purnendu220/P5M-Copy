@@ -83,6 +83,7 @@ public class RemoteConfigConst {
     public static String CONVERSTION_TEXT = "conversion_text";
     public static String PRICE_MODEL = "price_model";
     public static String CREDIT_INFO = "credits_info";
+    public static String SPECIAL_INFO = "special_info";
 
 
 

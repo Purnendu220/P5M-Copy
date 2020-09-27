@@ -348,6 +348,9 @@
         <key>credits_info</key>
         <value><![CDATA[{"title":"P5M CREDITS", "title_ar":"P5M CREDITS", "sub": "Can be used for online, offline, personal training, workshops & more. Credits vary for each gym/activity",  "sub_ar": "Can be used for online, offline, personal training, workshops & more. Credits vary for each gym/activity", "detail": [{"en":"At-Gym classes range from 10-20 credits", "ar":"At-Gym classes range from 10-20 credits"},{"en":"Online classes range from 5-12 credits", "ar": "Online classes range from 5-12 credits"},{"en":"PT and Workshops range from 20 to 100 credits", "ar":"PT and Workshops range from 20 to 100 credits"}]}]]></value>
     </entry>
-
+    <entry>
+        <key>special_info</key>
+        <value><![CDATA[ {"specialClassId":[{"title":"Class","id":1}], "specialTrainer":[{"title":"Trainer","id":1}], "specialGym":[{"title":"Gym","id":1}] }]]></value>
+    </entry>
 
 </defaultsMap>

@@ -36,6 +36,8 @@ import com.p5m.me.data.BookButtonModel;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.QuestionAnswerModel;
 import com.p5m.me.data.RemoteConfigDataModel;
+import com.p5m.me.data.SpecialModel;
+import com.p5m.me.data.SpecialProgramModel;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
@@ -307,6 +309,18 @@ public class Helper {
             }
         }
 
+    }
+    public static boolean isSpecialProgram(Context context, ClassModel model, SpecialProgramModel specialProgramModel){
+       boolean isSpecialProgram = false;
+        if(specialProgramModel!=null&&specialProgramModel.getSpecialClassId()!=null){
+            for (SpecialModel specialModel:specialProgramModel.getSpecialClassId()) {
+                if(specialModel.getId()==model.getClassId()){
+                    isSpecialProgram = true;
+                }
+            }
+        }
+
+       return isSpecialProgram;
     }
 
 

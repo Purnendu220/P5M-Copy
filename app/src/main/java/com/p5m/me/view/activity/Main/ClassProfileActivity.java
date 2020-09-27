@@ -33,6 +33,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.ClassProfileAdapter;
@@ -40,10 +42,12 @@ import com.p5m.me.agorartc.activities.MainActivity;
 import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.analytics.MixPanel;
+import com.p5m.me.data.BookButtonModel;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.Join5MinModel;
 import com.p5m.me.data.QuestionAnswerModel;
+import com.p5m.me.data.SpecialProgramModel;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.ClassModel;
@@ -60,6 +64,7 @@ import com.p5m.me.helper.ClassListListenerHelper;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.remote_config.RemoteConfigSetUp;
+import com.p5m.me.remote_config.RemoteConfigure;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -175,7 +180,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     private LinearLayout mLayoutUserWallet;
     private static User.WalletDto mWalletCredit;
     private boolean showChoosePackageOption = true;
-
+    private SpecialProgramModel specialProgramModel;
 
     @Override
     public void onDestroy() {
@@ -282,6 +287,15 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         }
         imgCloseWarning.setOnClickListener(this);
         textPurchase.setOnClickListener(this);
+        String SPECIAL_INFO_VALUE = RemoteConfigure.getFirebaseRemoteConfig(context).getRemoteConfigValue(RemoteConfigConst.SPECIAL_INFO);
+
+        try{
+            Gson g = new Gson();
+            specialProgramModel = g.fromJson(SPECIAL_INFO_VALUE, new TypeToken<SpecialProgramModel>() {
+            }.getType());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 
