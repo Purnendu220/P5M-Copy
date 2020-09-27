@@ -367,13 +367,21 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
           CreditsInfoModel   creditInfoModel = new Gson().fromJson(RemoteConfigure.getFirebaseRemoteConfig(context).getRemoteConfigValue(RemoteConfigConst.CREDIT_INFO), new com.google.gson.reflect.TypeToken<CreditsInfoModel>() {
           }.getType());
 
+          if(LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")){
+              textViewTitle.setText(creditInfoModel.getTitleAr());
+              textViewSubTitle.setText(creditInfoModel.getSubAr());
+              textViewAtGym.setText(creditInfoModel.getDetail().get(0).getAr());
+              textViewOnline.setText(creditInfoModel.getDetail().get(1).getAr());
+              textViewPT.setText(creditInfoModel.getDetail().get(2).getAr());
+          }else{
+              textViewTitle.setText(creditInfoModel.getTitle());
+              textViewSubTitle.setText(creditInfoModel.getSub());
+              textViewAtGym.setText(creditInfoModel.getDetail().get(0).getEn());
+              textViewOnline.setText(creditInfoModel.getDetail().get(1).getEn());
+              textViewPT.setText(creditInfoModel.getDetail().get(2).getEn());
+          }
 
 
-          textViewTitle.setText(creditInfoModel.getTitle());
-          textViewSubTitle.setText(creditInfoModel.getSub());
-          textViewAtGym.setText(creditInfoModel.getDetail().get(0).getEn());
-          textViewOnline.setText(creditInfoModel.getDetail().get(1).getEn());
-          textViewPT.setText(creditInfoModel.getDetail().get(2).getEn());
 
 
 
