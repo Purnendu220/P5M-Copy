@@ -16,10 +16,8 @@ import android.provider.Settings;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
-import com.crashlytics.android.Crashlytics;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
 import com.p5m.me.agorartc.rtc.AgoraEventHandler;
 import com.p5m.me.agorartc.rtc.EngineConfig;
 import com.p5m.me.agorartc.rtc.EventHandler;
@@ -41,7 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.agora.rtc.RtcEngine;
-import io.fabric.sdk.android.Fabric;
 import io.intercom.android.sdk.Intercom;
 
 @SuppressLint("NewApi")
@@ -91,7 +88,6 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         Fresco.initialize(this);
 
         if (USE_CRASH_ANALYTICS) {
-            Fabric.with(this, new Crashlytics());
         }
 
         registerActivityLifecycleCallbacks(this);
@@ -102,6 +98,7 @@ public class MyApp extends MultiDexApplication implements NetworkChangeReceiver.
         PackageManager packageManager = getPackageManager();
         String packageName = getPackageName();
         FirebaseApp.initializeApp(context);
+       // Places.initialize(getApplicationContext(), BuildConfig.PLACES_API_KEY);
 
         Intercom.initialize(this, "android_sdk-0220c78a68a8a904e507a85bebd4eed53e4b7602", "qp091xcl");
         try {

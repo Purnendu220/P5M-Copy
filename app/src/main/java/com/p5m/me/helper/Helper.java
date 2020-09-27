@@ -34,6 +34,7 @@ import com.p5m.me.R;
 import com.p5m.me.agorartc.stats.VideoStatusData;
 import com.p5m.me.data.BookButtonModel;
 import com.p5m.me.data.BookWithFriendData;
+import com.p5m.me.data.QuestionAnswerModel;
 import com.p5m.me.data.RemoteConfigDataModel;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassActivity;
@@ -214,7 +215,8 @@ public class Helper {
             }
 
         } else {
-            String BOOK_FIND_CLASS_VALUE = RemoteConfigConst.BOOK_FIND_CLASS_VALUE;
+            ;
+            String BOOK_FIND_CLASS_VALUE = RemoteConfigure.getFirebaseRemoteConfig(context).getRemoteConfigValue(RemoteConfigConst.BOOK_FIND_CLASS);
             if (BOOK_FIND_CLASS_VALUE != null && !BOOK_FIND_CLASS_VALUE.isEmpty()) {
                 try{
                     Gson g = new Gson();
@@ -239,6 +241,12 @@ public class Helper {
                     e.printStackTrace();
                 }
 
+
+            }else{
+                    if (model.isVideoClass())
+                        buttonJoin.setText(context.getString(R.string.online));
+                    else
+                        buttonJoin.setText(context.getString(R.string.at_gym));
 
             }
         }
@@ -269,7 +277,9 @@ public class Helper {
             }
 
         } else {
-            String BOOK_OTHER_VALUE = RemoteConfigConst.BOOK_OTHER_VALUE;
+
+
+            String BOOK_OTHER_VALUE = RemoteConfigure.getFirebaseRemoteConfig(context).getRemoteConfigValue(RemoteConfigConst.BOOK_OTHERS);;
             if (BOOK_OTHER_VALUE != null && !BOOK_OTHER_VALUE.isEmpty()) {
                 try{
                     Gson g = new Gson();
@@ -350,6 +360,7 @@ public class Helper {
             RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOK_IN_CLASS_COLOR_VALUE, context.getResources().getColor(R.color.colorAccent));
 
             view.setEnabled(true);
+
             view1.setVisibility(View.VISIBLE);
 //            view1.setText(context.getString(R.string.reserve_class_with_friend));
 
@@ -357,7 +368,12 @@ public class Helper {
             // RemoteConfigSetUp.setBackgroundColor(view1, RemoteConfigConst.BOOK_WITH_FRIEND_COLOR_VALUE, context.getResources().getColor(R.color.colorAccent));
             view1.setText(RemoteConfigConst.BOOK_WITH_FRIEND_VALUE);
             view1.setEnabled(true);
+            if (Helper.isSpecialClass(model)) {
+                if (Helper.isFreeClass(model)) {
+                    view1.setVisibility(View.GONE);
+                }
 
+            }
         }
     }
 
@@ -975,5 +991,21 @@ public static PriceModelMaster  getPriceModelForCredit(List<PriceModelMaster> ma
         config.expectedDownlinkBitrate = 2500000;
 // Start the last-mile network test before joining the channel.
       return config;
+    }
+
+    public static List<QuestionAnswerModel> isCovidSafetySubmitted(List<QuestionAnswerModel> list){
+       List<QuestionAnswerModel> localList = new ArrayList<>();
+        if(list!=null&&list.size()>0){
+            for (QuestionAnswerModel model:list) {
+                if(model.getAnswer()!=null&&!model.getAnswer().isEmpty()&&model.getAnswer().length()>0){
+                    localList.add(model);
+                }
+            }
+
+        }
+
+
+        return localList;
+
     }
 }

@@ -26,6 +26,7 @@ import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
+import com.p5m.me.data.LanguageModel;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
@@ -35,11 +36,13 @@ import com.p5m.me.eventbus.Events;
 import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigure;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DialogUtils;
+import com.p5m.me.utils.JsonUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.view.activity.Main.CheckoutActivity;
@@ -98,9 +101,9 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
     private User user;
     private int mNumberOfPackagesToBuy;
     private static User.WalletDto mWalletCredit;
-    private boolean isTabSelected=false;
-    private boolean showChoosePackageOption=true;
-    private boolean isBuyMoreCredits =false;
+    private boolean isTabSelected = false;
+    private boolean showChoosePackageOption = true;
+    private boolean isBuyMoreCredits = false;
 
 
     public MembershipFragment() {
@@ -187,10 +190,10 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         onRefresh();
 
 
-//        MixPanel.trackMembershipVisit(navigatedFrom);
+//
         //  onTrackingNotification();
         FirebaseAnalysic.trackMembershipVisit(navigatedFrom);
-        if(RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE!=null && !RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE.isEmpty()){
+        if (RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE != null && !RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE.isEmpty()) {
             showChoosePackageOption = Boolean.valueOf(RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE);
         }
 
@@ -247,16 +250,17 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
     }
 
-    public void refreshFragment(int navigatedFrom, ClassModel classModel, BookWithFriendData mFriendsData, int mNumberOfPackagesToBuy,boolean addCredits) {
+    public void refreshFragment(int navigatedFrom, ClassModel classModel, BookWithFriendData mFriendsData, int mNumberOfPackagesToBuy, boolean addCredits) {
         if (!swipeRefreshLayout.isRefreshing()) {
-            if (this.navigatedFrom != navigatedFrom || this.classModel != classModel || this.mFriendsData != mFriendsData || this.mNumberOfPackagesToBuy != mNumberOfPackagesToBuy|| this.isBuyMoreCredits != addCredits) {
+
+            if (this.navigatedFrom != navigatedFrom || this.classModel != classModel || this.mFriendsData != mFriendsData || this.mNumberOfPackagesToBuy != mNumberOfPackagesToBuy || this.isBuyMoreCredits != addCredits) {
                 this.navigatedFrom = navigatedFrom;
                 this.classModel = classModel;
                 this.mFriendsData = mFriendsData;
                 this.mNumberOfPackagesToBuy = mNumberOfPackagesToBuy;
                 this.isBuyMoreCredits = addCredits;
                 refreshFromEvent();
-            }else{
+            } else {
                 memberShipAdapter.setClassModel(null);
                 memberShipAdapter.notifyDataSetChanges();
             }
@@ -265,10 +269,8 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 //           MembershipInfoActivity.openActivity(context);
 //            TempStorage.setOpenMembershipInfo(MEMBERSHIP_INFO_STATE_DONE);
         }
-        MixPanel.trackMembershipVisit(this.navigatedFrom);
         //  onTrackingNotification();
-        FirebaseAnalysic.trackMembershipVisit(this.navigatedFrom);
-        IntercomEvents.trackMembershipVisit(this.navigatedFrom);
+
         setUserWalletDetail();
     }
 
@@ -280,7 +282,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                 this.mFriendsData = mFriendsData;
                 this.mNumberOfPackagesToBuy = mNumberOfPackagesToBuy;
                 refreshFromEvent();
-            }else{
+            } else {
                 memberShipAdapter.setClassModel(null);
                 memberShipAdapter.notifyDataSetChanges();
 
@@ -308,35 +310,33 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         //onRefresh();
     }
 
-    public void fragmentPaused(){
-        if(isBuyMoreCredits){
-            LogUtils.networkError("************"+isBuyMoreCredits+" ********* fragmentPaused");
+    public void fragmentPaused() {
+        if (isBuyMoreCredits) {
+            LogUtils.networkError("************" + isBuyMoreCredits + " ********* fragmentPaused");
             memberShipAdapter.clearAll();
             checkPackages();
         }
 
     }
 
-    private void checkPackages(boolean ... buyMoreCredits) {
+    private void checkPackages(boolean... buyMoreCredits) {
         isBuyMoreCredits = false;
         userPackageInfo = new UserPackageInfo(user);
-
         swipeRefreshLayout.setRefreshing(false);
 
         if (navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_RESERVE_CLASS) {
             memberShipAdapter.setClassModel(classModel);
-
             // show general, ready, and owned packages
             if (userPackageInfo.havePackages) {
                 if (userPackageInfo.haveGeneralPackage && !user.isBuyMembership()) {
                     // User have General package and may be also have dropins..
-                    if(classModel==null)
-                    memberShipAdapter.addOwnedPackages(userPackageInfo.userPackageGeneral);
+                    if (classModel == null)
+                        memberShipAdapter.addOwnedPackages(userPackageInfo.userPackageGeneral);
 
                     memberShipAdapter.setHeaderText(context.getString(R.string.membership_only_drop_in_package_heading_1),
                             context.getString(R.string.membership_only_drop_in_package_heading_2));
                 } else if (userPackageInfo.haveGeneralPackage && user.isBuyMembership()) {
-                    if(classModel==null)
+                    if (classModel == null)
                         memberShipAdapter.addOwnedPackages(userPackageInfo.userPackageGeneral);
 
                     memberShipAdapter.setHeaderText(context.getString(R.string.membership_no_package_heading_1),
@@ -374,9 +374,10 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
             memberShipAdapter.setClassModel(null);
 
             if (userPackageInfo.havePackages) {
-                if(userPackageInfo.haveGeneralPackage){
+                if (userPackageInfo.haveGeneralPackage) {
                     memberShipAdapter.clearAllOwnedPackages();
-                    if(buyMoreCredits==null||buyMoreCredits.length<1 || !buyMoreCredits[0] ){
+
+                    if (buyMoreCredits == null || buyMoreCredits.length < 1 || !buyMoreCredits[0]) {
                         memberShipAdapter.addOwnedPackages(userPackageInfo.userPackageGeneral);
 
                     }
@@ -396,15 +397,18 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                     memberShipAdapter.setHeaderText(context.getString(R.string.membership_drop_in_package_heading_1),
                             context.getString(R.string.membership_general_package_heading_1));
                 }
-                textGymVisitLimits.setVisibility(View.GONE);
+                textGymVisitLimits.setVisibility(View.VISIBLE);
 
             } else {
+                swipeRefreshLayout.setEnabled(false);
                 textGymVisitLimits.setVisibility(View.GONE);
             }
-            if(buyMoreCredits!=null&&buyMoreCredits.length>0&&buyMoreCredits[0]){
+            if (buyMoreCredits != null && buyMoreCredits.length > 0 && buyMoreCredits[0]) {
                 swipeRefreshLayout.setRefreshing(true);
                 networkCommunicator.getPackages(user.getId(), this, false);
                 isBuyMoreCredits = buyMoreCredits[0];
+                textGymVisitLimits.setVisibility(View.VISIBLE);
+
             }
             memberShipAdapter.notifyDataSetChanges();
 
@@ -490,7 +494,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                             message = String.format(context.getResources().getString(R.string.weeks_value), String.valueOf(LanguageUtils.numberConverter(classModel.getDuration())));
 
                     }
-                    DialogUtils.showBasic(context, String.format(getString(R.string.clas_exceed), message),"", getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
+                    DialogUtils.showBasic(context, String.format(getString(R.string.clas_exceed), message), "", getString(R.string.ok), new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             dialog.dismiss();
@@ -500,88 +504,85 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
             }
             break;
             case R.id.txtPackageOffredClassesLimits:
-                if (model instanceof Package) {
-                    Package pkg = (Package) model;
-                    AlertP5MCreditInfo alert = new AlertP5MCreditInfo(context,pkg,MembershipFragment.this);
-                    alert.show();
-
-
-
-                }
+//                if (model instanceof Package) {
+//                    Package pkg = (Package) model;
+//                    AlertP5MCreditInfo alert = new AlertP5MCreditInfo(context, pkg, MembershipFragment.this);
+//                    alert.show();
+//
+//
+//                }
                 break;
             case R.id.textViewBuyMoreCredits:
                 checkPackages(true);
                 break;
 
         }
-        }
+    }
 
-        @Override
-        public void onAdapterItemLongClick (RecyclerView.ViewHolder viewHolder, View view, Object
-        model,int position){
-        }
+    @Override
+    public void onAdapterItemLongClick(RecyclerView.ViewHolder viewHolder, View view, Object
+            model, int position) {
+    }
 
-        @Override
-        public void onShowLastItem () {
-        }
+    @Override
+    public void onShowLastItem() {
+    }
 
-        @Override
-        public void onApiSuccess (Object response,int requestCode){
+    @Override
+    public void onApiSuccess(Object response, int requestCode) {
 
-            switch (requestCode) {
-                case NetworkCommunicator.RequestCode.PACKAGES_LIMIT:
-                case NetworkCommunicator.RequestCode.PACKAGES_FOR_USER:
+        switch (requestCode) {
+            case NetworkCommunicator.RequestCode.PACKAGES_LIMIT:
+            case NetworkCommunicator.RequestCode.PACKAGES_FOR_USER:
 
-                    swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setRefreshing(false);
 
-                    List<Package> packagesTemp = ((ResponseModel<List<Package>>) response).data;
-                    if (packagesTemp != null && !packagesTemp.isEmpty()) {
-                        List<Package> packages = new ArrayList<>(packagesTemp.size());
+                List<Package> packagesTemp = ((ResponseModel<List<Package>>) response).data;
+                if (packagesTemp != null && !packagesTemp.isEmpty()) {
+                    List<Package> packages = new ArrayList<>(packagesTemp.size());
 
-                        for (Package aPackage : packagesTemp) {
-                            if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)&&!Helper.isPlanExpiring(classModel,aPackage)) {
-                                if (user.isBuyMembership()||classModel!=null||isBuyMoreCredits) {
-                                    if(classModel==null||(classModel!=null&& Helper.requiredCreditForClass(user,classModel,mFriendsData==null?1:2)<=aPackage.getCredits()))
+                    for (Package aPackage : packagesTemp) {
+                        if (aPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL) && !Helper.isPlanExpiring(classModel, aPackage)) {
+                            if (user.isBuyMembership() || classModel != null || isBuyMoreCredits) {
+                                if (classModel == null || (classModel != null && Helper.requiredCreditForClass(user, classModel, mFriendsData == null ? 1 : 2) <= aPackage.getCredits()))
                                     packages.add(aPackage);
-                                }
                             }
                         }
-                        if (mFriendsData != null) {
-                            List<Package> packagesWithVisitLimit = new ArrayList<>();
-                            for (Package aPackage : packages) {
-                                aPackage.setBookingWithFriend(true);
-                                if(classModel!=null&&classModel.getPriceModel().equalsIgnoreCase(AppConstants.PriceModels.CHARGABLE)){
-                                    if (aPackage.getGymVisitLimit() != 1) {
-                                        packagesWithVisitLimit.add(aPackage);
-                                    }
-                                }else{
+                    }
+                    if (mFriendsData != null) {
+                        List<Package> packagesWithVisitLimit = new ArrayList<>();
+                        for (Package aPackage : packages) {
+                            aPackage.setBookingWithFriend(true);
+                            if (classModel != null && classModel.getPriceModel().equalsIgnoreCase(AppConstants.PriceModels.CHARGABLE)) {
+                                if (aPackage.getGymVisitLimit() != 1) {
                                     packagesWithVisitLimit.add(aPackage);
-
                                 }
-
-
+                            } else {
+                                packagesWithVisitLimit.add(aPackage);
 
                             }
-                            if(packagesWithVisitLimit!=null&&packagesWithVisitLimit.size()>0){
-                                memberShipAdapter.clearAllOwnedPackages();
-                            }
-                            memberShipAdapter.addAllOfferedPackages(packagesWithVisitLimit);
 
 
                         }
-                        else {
-                            if(packages!=null&&packages.size()>0){
-                                memberShipAdapter.clearAllOwnedPackages();
-                                memberShipAdapter.clearAll();
-                            }
-                            memberShipAdapter.addAllOfferedPackages(packages);
-
+                        if (packagesWithVisitLimit != null && packagesWithVisitLimit.size() > 0) {
+                            memberShipAdapter.clearAllOwnedPackages();
                         }
+                        memberShipAdapter.addAllOfferedPackages(packagesWithVisitLimit);
 
+                    } else {
+                        if (packages != null && packages.size() > 0) {
+                            memberShipAdapter.clearAllOwnedPackages();
+                            memberShipAdapter.clearAll();
+                        }
+                        memberShipAdapter.addAllOfferedPackages(packages);
 
                     }
-                    memberShipAdapter.notifyDataSetChanges();
-                    break;
+
+
+                }
+                memberShipAdapter.setUsdInfo(getUsdValue());
+                memberShipAdapter.notifyDataSetChanges();
+                break;
 
 //            case NetworkCommunicator.RequestCode.BUY_PACKAGE:
 //
@@ -591,26 +592,25 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 //                memberShipAdapter.notifyDataSetChanges();
 //                break;
 
-                case NetworkCommunicator.RequestCode.ME_USER:
-                    setUserWalletDetail();
-                    if(isBuyMoreCredits){
-                        checkPackages(isBuyMoreCredits);
-                    }else{
-                        checkPackages();
+            case NetworkCommunicator.RequestCode.ME_USER:
+                setUserWalletDetail();
+                if (isBuyMoreCredits) {
+                    checkPackages(isBuyMoreCredits);
+                } else {
+                    checkPackages();
 
-                    }
+                }
 
 
-
-                    break;
-            }
+                break;
         }
+    }
 
 
-        @Override
-        public void onApiFailure (String errorMessage,int requestCode){
+    @Override
+    public void onApiFailure(String errorMessage, int requestCode) {
 
-            swipeRefreshLayout.setRefreshing(false);
+        swipeRefreshLayout.setRefreshing(false);
 
 //        switch (requestCode) {
 //            case NetworkCommunicator.RequestCode.BUY_PACKAGE:
@@ -619,28 +619,28 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 //
 //                break;
 //        }
-        }
+    }
 
-        private void setUserWalletDetail(){
-            user = TempStorage.getUser();
-            mWalletCredit = user.getWalletDto();
-            if (mWalletCredit != null && mWalletCredit.getBalance() > 0) {
-                mLayoutUserWallet.setVisibility(View.VISIBLE);
-                mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(), 2) + " " + TempStorage.getUser().getCurrencyCode());
-            } else {
-                mLayoutUserWallet.setVisibility(View.GONE);
-
-            }
-        }
-
-        @Override
-        public void onRefresh () {
-
-            memberShipAdapter.clearAll();
-            memberShipAdapter.notifyDataSetChanges();
-            networkCommunicator.getMyUser(this, false);
+    private void setUserWalletDetail() {
+        user = TempStorage.getUser();
+        mWalletCredit = user.getWalletDto();
+        if (mWalletCredit != null && mWalletCredit.getBalance() > 0) {
+            mLayoutUserWallet.setVisibility(View.VISIBLE);
+            mTextViewWalletAmount.setText(LanguageUtils.numberConverter(mWalletCredit.getBalance(), 2) + " " + TempStorage.getUser().getCurrencyCode());
+        } else {
+            mLayoutUserWallet.setVisibility(View.GONE);
 
         }
+    }
+
+    @Override
+    public void onRefresh() {
+
+        memberShipAdapter.clearAll();
+        memberShipAdapter.notifyDataSetChanges();
+        networkCommunicator.getMyUser(this, false);
+
+    }
 
 //    @Override
 //    public void onBackPressed() {
@@ -655,40 +655,44 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 //        }
 //    }
 
-        @Override
-        public void onClick (View view){
-            switch (view.getId()) {
-                case R.id.layoutUserWallet:
-                    showWalletAlert();
-                    break;
-                case R.id.textGymVisitLimits:
-                    PackageLimitsActivity.openActivity(context, "");
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.layoutUserWallet:
+                showWalletAlert();
+                break;
+            case R.id.textGymVisitLimits:
 
-                    break;
-                case R.id.imageViewInfo:
-                    MembershipInfoActivity.openActivity(context);
+                    AlertP5MCreditInfo alert = new AlertP5MCreditInfo(context, null, MembershipFragment.this);
+                    alert.show();
 
-                    break;
-            }
 
+
+                break;
+            case R.id.imageViewInfo:
+                MembershipInfoActivity.openActivity(context);
+
+                break;
         }
 
-        private void showWalletAlert () {
-            CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.wallet_alert_title), context.getString(R.string.wallet_alert), 1, "", context.getResources().getString(R.string.ok), CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO, null, true, this);
-            try {
-                mCustomAlertDialog.show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    }
 
+    private void showWalletAlert() {
+        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.wallet_alert_title), context.getString(R.string.wallet_alert), 1, "", context.getResources().getString(R.string.ok), CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO, null, true, this);
+        try {
+            mCustomAlertDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        @Override
-        public void onOkClick ( int requestCode, Object data){
-        switch (requestCode){
+    }
+
+    @Override
+    public void onOkClick(int requestCode, Object data) {
+        switch (requestCode) {
             case AppConstants.AlertRequestCodes.ALERT_REQUEST_PURCHASE:
-                if(data!=null&&data instanceof  Package){
-                    Package modelPkg =(Package)data;
+                if (data != null && data instanceof Package) {
+                    Package modelPkg = (Package) data;
                     CheckoutActivity.openActivity(context, modelPkg);
                     MixPanel.trackPackagePreferred(modelPkg.getName());
 
@@ -696,19 +700,33 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                 break;
         }
 
-        }
+    }
 
-        @Override
-        public void onCancelClick ( int requestCode, Object data){
-            switch (requestCode){
-                case AppConstants.AlertRequestCodes.ALERT_REQUEST_PURCHASE_CANCEL:
-                    break;
+    @Override
+    public void onCancelClick(int requestCode, Object data) {
+        switch (requestCode) {
+            case AppConstants.AlertRequestCodes.ALERT_REQUEST_PURCHASE_CANCEL:
+                break;
+        }
+    }
+
+    @Override
+    public void onTabSelection(int position) {
+
+    }
+
+    private String getUsdValue() {
+        if (TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.USD_CURRENCY)
+        ) {
+            String str = RemoteConfigure.getFirebaseRemoteConfig(context).getRemoteConfigValue(RemoteConfigConst.CONVERSTION_TEXT);
+            LanguageModel languageModel = JsonUtils.fromJson(str, LanguageModel.class);
+            if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")) {
+                return languageModel.getAr();
+            } else {
+                return languageModel.getEn();
             }
-        }
 
-        @Override
-        public void onTabSelection ( int position){
-
-        }
+        } else return "";
+    }
 
 }

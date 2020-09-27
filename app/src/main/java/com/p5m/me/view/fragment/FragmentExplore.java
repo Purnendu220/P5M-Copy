@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -29,6 +30,7 @@ import com.p5m.me.data.ExploreRatedClassModel;
 import com.p5m.me.data.ExploreTrainerModel;
 import com.p5m.me.data.Item;
 import com.p5m.me.data.PriceModel;
+import com.p5m.me.data.TryP5MData;
 import com.p5m.me.data.WorkoutModel;
 import com.p5m.me.data.YoutubeResponse;
 import com.p5m.me.data.main.GymModel;
@@ -50,6 +52,7 @@ import com.p5m.me.view.activity.Main.ClassProfileActivity;
 import com.p5m.me.view.activity.Main.Gym;
 import com.p5m.me.view.activity.Main.GymProfileActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
+import com.p5m.me.view.activity.Main.MembershipInfoActivity;
 import com.p5m.me.view.activity.Main.TrainerProfileActivity;
 import com.p5m.me.view.activity.Main.Trainers;
 import com.p5m.me.view.activity.Main.VideoPlayerActivity;
@@ -100,6 +103,9 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
     public AppBarLayout appBarLayout;
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
+
+    @BindView(R.id.processingProgressBar)
+    public ProgressBar processingProgressBar;
 
     private ExplorePageAdapter explorePageAdapter;
     private List<ClassesFilter> classesFilters;
@@ -155,7 +161,12 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
     }
 
     private void callApi() {
-        networkCommunicator.getYoutubePlayList(platlistId,api_key,null,this);
+        swipeRefreshLayout.setRefreshing(true);
+        if(explorePageAdapter==null||explorePageAdapter.getItemCount()==0){
+            processingProgressBar.setVisibility(View.GONE);
+        }
+
+        //networkCommunicator.getYoutubePlayList(platlistId,api_key,null,this);
         networkCommunicator.getExploreData(this, false);
 
     }
@@ -324,9 +335,17 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
                 recyclerView.smoothScrollToPosition(position);
                 break;
             case R.id.buttonContactUs:
-                mixPannelSection = TEXT_WITH_BUTTONS_2;
-                mixPannelValue = AppConstants.MixPanelValue.INTERCOM;
-                Intercom.client().displayMessenger();
+                if(model!=null&&model instanceof  ExploreDataModel){
+                    ExploreDataModel data = (ExploreDataModel) model;
+                    if(data.getWidgetType().equalsIgnoreCase("TEXT_WITH_BUTTON_SAFETY")){
+                        MembershipInfoActivity.openActivity(context);
+                    }else{
+                    mixPannelSection = TEXT_WITH_BUTTONS_2;
+                    mixPannelValue = AppConstants.MixPanelValue.INTERCOM;
+                    Intercom.client().displayMessenger();
+                    }
+                }
+
                 break;
             case R.id.textViewTrainerName:
                 if (model != null && model instanceof GymModel) {
@@ -377,13 +396,14 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
 
     @Override
     public void onApiSuccess(Object response, int requestCode) {
-        swipeRefreshLayout.setRefreshing(false);
-
         switch (requestCode) {
 
             case NetworkCommunicator.RequestCode.GET_EXPLORE_DATA:
+                processingProgressBar.setVisibility(View.GONE);
+                swipeRefreshLayout.setRefreshing(false);
                 List<ExploreDataModel> exploreModels = ((ResponseModel<List<ExploreDataModel>>) response).data;
                 if (!exploreModels.isEmpty()) {
+                  //  exploreModels.add(setSaftyObject(exploreModels.size()));
                     youTubeModelIndex = -1;
                     Collections.sort(exploreModels);
                     explorePageAdapter.clearAll();
@@ -417,7 +437,8 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
                 case NetworkCommunicator.RequestCode.GET_YOUTUBE_PLAYLIST:
                 case NetworkCommunicator.RequestCode.GET_EXPLORE_DATA:
                 ToastUtils.show(context,errorMessage);
-                break;
+                processingProgressBar.setVisibility(View.GONE);
+                    break;
         }
 
     }
@@ -454,6 +475,21 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
             e.printStackTrace();
         }
 
+
+    }
+
+    private ExploreDataModel setSaftyObject(int order){
+        List<Object> list = new ArrayList<>();
+        list.add(new TryP5MData("","View Safety measures ",""));
+        ExploreDataModel.HeaderBean header= new ExploreDataModel.HeaderBean("Safety First","What safety measures am I going to take when I go to the gym, to protect myself?","","");
+        ExploreDataModel model = new ExploreDataModel();
+        model.setWidgetType("TEXT_WITH_BUTTON_SAFETY");
+        model.setOrder(order);
+        model.setShowDivider(true);
+        model.setViewType("CONFUSED_BUTTONS");
+        model.setData(list);
+        model.setHeader(header);
+        return model;
 
     }
 

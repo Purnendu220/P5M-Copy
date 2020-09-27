@@ -8,6 +8,7 @@ import com.p5m.me.data.MediaResponse;
 import com.p5m.me.data.PackageLimitModel;
 import com.p5m.me.data.PaymentConfirmationResponse;
 import com.p5m.me.data.PromoCode;
+import com.p5m.me.data.QuestionAnswerModel;
 import com.p5m.me.data.RatingParamModel;
 import com.p5m.me.data.RatingResponseModel;
 import com.p5m.me.data.UnratedClassData;
@@ -459,6 +460,11 @@ public interface ApiService {
     @Headers("Content-type: application/json")
     @POST(AppConstants.Url.ATTEND_CLASS)
     Call<ResponseModel<Object>> attendClass(@Query(AppConstants.ApiParamKey.CLASS_SESSION_ID) int classSessionId, @Query(AppConstants.ApiParamKey.USER_ID) int userId);
+
+
+    @Headers("Content-type: application/json")
+    @GET(AppConstants.Url.COVID_QUES_ANS)
+    Call<ResponseModel<List<QuestionAnswerModel>>> getGymCovidSafety(@Query(AppConstants.ApiParamKey.GYM_ID) int gymId);
 
 
 }

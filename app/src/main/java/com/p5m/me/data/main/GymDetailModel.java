@@ -1,5 +1,7 @@
 package com.p5m.me.data.main;
 
+import com.p5m.me.data.QuestionAnswerModel;
+
 import java.util.List;
 
 public class GymDetailModel implements java.io.Serializable {
@@ -34,6 +36,8 @@ public class GymDetailModel implements java.io.Serializable {
     private List<GymBranchDetail> gymBranchResponseList;
     private List<MediaModel> mediaResponseDtoList;
     private List<ClassActivity> classCategoryList;
+    private List<QuestionAnswerModel> covidSafetyList;
+
 
     public String getProfileImageThumbnail() {
         return profileImageThumbnail == null ? "" : profileImageThumbnail;
@@ -265,5 +269,13 @@ public class GymDetailModel implements java.io.Serializable {
 
     public void setClassCategoryList(List<ClassActivity> classCategoryList) {
         this.classCategoryList = classCategoryList;
+    }
+
+    public List<QuestionAnswerModel> getCovidSafetyList() {
+        return covidSafetyList;
+    }
+
+    public void setCovidSafetyList(List<QuestionAnswerModel> covidSafetyList) {
+        this.covidSafetyList = covidSafetyList;
     }
 }

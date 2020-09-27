@@ -708,7 +708,14 @@ public class PaymentConfirmationActivity extends BaseActivity implements Network
             case SPECIAL_CLASS:
                 textViewSubTitle.setText(context.getString(R.string.booking_details));
                 textViewPackageTitle.setText(R.string.class_name);
-                textViewValidity.setText(DateUtils.getPackageClassDate(classModel.getClassDate()) + "\n" + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()));
+
+                if(TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.USD_CURRENCY)){
+                    textViewValidity.setText(DateUtils.getPackageClassDate(classModel.getClassDate()) + "\n" + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime())+" • "+ AppConstants.Currency.ARABIC_STANDARD_TIME);
+
+                }else{
+                    textViewValidity.setText(DateUtils.getPackageClassDate(classModel.getClassDate()) + "\n" + DateUtils.getClassTime(classModel.getFromTime(), classModel.getToTime()));
+
+                }
 
                 if (paymentResponse.getClassDetailDto() != null)
                     textViewPackageName.setText(paymentResponse.getClassDetailDto().getTitle());

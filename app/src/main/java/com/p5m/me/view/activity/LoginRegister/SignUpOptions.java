@@ -746,7 +746,7 @@ public class SignUpOptions extends BaseActivity implements NetworkCommunicator.R
 
             if (v instanceof TextView) {
                 TextView tv = (TextView) v;
-                tv.setText("Enter with google");
+                tv.setText(context.getString(R.string.enter_with_google));
                 tv.setAllCaps(true);
                 tv.setCompoundDrawablePadding(10);
                 tv.setGravity(Gravity.CENTER);

@@ -13,6 +13,7 @@ import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CommonUtillity;
 import com.p5m.me.utils.DateUtils;
@@ -170,8 +171,14 @@ public class ClassViewHolder extends RecyclerView.ViewHolder {
             Helper.setJoinButton(context, buttonJoin, model);
 
             textViewInfo.setText(model.getShortDesc());
+            if(TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.USD_CURRENCY)){
+                textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime())+" ("+AppConstants.Currency.ARABIC_STANDARD_TIME+")");
 
-            textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
+            }else{
+                textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
+
+            }
+
             textViewGender.setText(Helper.getClassGenderText(model.getClassType()));
             if (model.getRating() != 0.0F && model.getRating() > 0) {
                 linearLayoutClassRating.setVisibility(View.VISIBLE);

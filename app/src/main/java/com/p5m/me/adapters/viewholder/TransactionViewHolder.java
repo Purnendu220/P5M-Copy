@@ -8,11 +8,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
+import com.p5m.me.data.LanguageModel;
 import com.p5m.me.data.main.Transaction;
 import com.p5m.me.fxn.utility.Constants;
+import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigure;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
+import com.p5m.me.utils.JsonUtils;
 import com.p5m.me.utils.LanguageUtils;
 
 import java.util.Locale;
@@ -58,6 +62,8 @@ public class TransactionViewHolder extends RecyclerView.ViewHolder {
             if (TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.SAUDI_CURRENCY) ||
                     TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.SAUDI_CURRENCY_SHORT)) {
                 textViewAmount.setText(context.getString(R.string.amount_sar));
+            } else if (TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.USD_CURRENCY)) {
+                textViewAmount.setText(context.getString(R.string.amount_usd));
             } else {
                 textViewAmount.setText(context.getString(R.string.amount_kd));
             }
@@ -75,7 +81,6 @@ public class TransactionViewHolder extends RecyclerView.ViewHolder {
             textViewPackagePrice.setText(LanguageUtils.numberConverter(model.getAmount(), 2) + "");
             textViewPackageDate.setText(DateUtils.getTransactionDate(model.getDate()));
             textViewPackageStatus.setText(model.getStatus().toUpperCase());
-
         } else {
             itemView.setVisibility(View.GONE);
         }

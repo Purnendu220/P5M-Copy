@@ -80,6 +80,10 @@ public class RemoteConfigConst {
     public static String CREDIT_VALUE_MODEL = "credit_values_model";
     public static String PHYSICAL_CLASS_VALUE = "physical_class_value";
     public static String VIRTUAL_CLASS_VALUE = "virtual_class_value";
+    public static String CONVERSTION_TEXT = "conversion_text";
+    public static String PRICE_MODEL = "price_model";
+    public static String CREDIT_INFO = "credits_info";
+
 
 
 
@@ -156,6 +160,7 @@ public class RemoteConfigConst {
     public static final int BOOK_OTHERS_KEY = 990;
     public static final int HOW_IT_WORKS_KEY = 991;
     public static final int PLAN_CLASS_KEY = 992;
+    public static final int CONVERSTION_TEXT_KEY = 993;
 
 
     /* ------VALUES---------*/
@@ -223,10 +228,11 @@ public class RemoteConfigConst {
     public static String SHOW_SELECTION_OPTIONS_VALUE = "true";
     public static String ON_BOARDING_DATA_VALUE = "";
     public static String CHANNEL_LIST = "";
-    public static String BOOK_FIND_CLASS_VALUE = "";
-    public static String BOOK_OTHER_VALUE = "";
+    public static String BOOK_FIND_CLASS_VALUE = "[{\"online_button_en\": \"online\", \"physical_button_en\": \"At-Gym\", \"online_button_ar\": \"online\", \"physical_button_ar\": \"At-Gym\"}]";
+    public static String BOOK_OTHER_VALUE = "[{\"online_button_en\": \"online\", \"physical_button_en\": \"At-Gym\", \"online_button_ar\": \"online\", \"physical_button_ar\": \"At-Gym\"}]";
     public static String HOW_IT_WORKS_VALUE = "";
     public static String PLAN_CLASS_VALUES = "";
+    public static String CONVERSTION_TEXT_VALUE = "";
 
 
 

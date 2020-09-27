@@ -12,16 +12,31 @@
         android:id="@+id/textGymNames"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Daratma"
+        android:text="Daratma GFHFGHD  FGJDHJ F JFGD  G  FDJ  DFG JGDJ G  GFJJD  G"
         android:textSize="@dimen/text_medium"
         android:textStyle="bold"
         android:fontFamily="sans-serif"
         android:textColor="@color/gray_class"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/textGymCredits"
+
 
         />
+    <TextView
+        android:id="@+id/textVisitDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Daratma"
+        android:textSize="@dimen/text_medium"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/gray_class"
+        android:layout_centerHorizontal="true"
+        android:textAllCaps="false"
+        android:visibility="gone"
 
+        />
       <TextView
-          android:id="@+id/textGymVisits"
+          android:id="@+id/textGymCredits"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/visit_times"

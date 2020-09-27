@@ -45,7 +45,7 @@
                 android:layout_margin="2dp"
                 android:background="@drawable/rounded_wallet_bg"
                 android:gravity="center_vertical"
-                android:padding="5dp" >
+                android:padding="5dp">
 
                 <ImageView
                     android:id="@+id/imageViewWalletIcon"
@@ -79,6 +79,7 @@
             android:src="@drawable/info_membership"
             android:tint="@color/white"
             android:visibility="visible" />
+
         <ImageView
             android:id="@+id/imageViewShare"
             style="@style/ToolBarIcon"
@@ -106,16 +107,18 @@
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="0dp"
                 android:clipToPadding="false"
-                android:paddingBottom="@dimen/margin_110"
                 android:scrollbars="none" />
 
             <LinearLayout
+                android:id="@+id/layoutGymVisitLimits"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:background="@android:color/transparent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="visible">
 
                 <TextView
                     android:id="@+id/textGymVisitLimits"
@@ -129,13 +132,13 @@
                     android:paddingTop="@dimen/margin_5"
                     android:paddingRight="@dimen/margin_20"
                     android:paddingBottom="@dimen/margin_5"
-                    android:text="@string/view_gym_visit_limits"
+                    android:text="@string/learn_more_about_credits"
                     android:textColor="@color/theme_book"
                     android:textSize="@dimen/text_medium"
+                    android:visibility="visible"
                     app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:visibility="gone"
 
                     />
 

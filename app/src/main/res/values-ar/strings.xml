@@ -272,6 +272,7 @@
     <string name="profile_package_expiry">" remaining until your credits expire."</string>
 
     <string name="view_gym_visit_limits">الاطلاع على حدود زيارة النوادي</string>
+    <string name="learn_more_about_credits">Learn more about our credits</string>
 
     <string name="gym_visit_limits_no_lines">حدود زيارة النوادي</string>
 
@@ -479,7 +480,7 @@
 
     <string name="valid_intil">(حتى %1s)</string>
 
-    <string name="extend_message">أضف المزيد من الوقت إلى خطتك الحالية. لا تزال حدود زيارة النوادي سارية ، ولن يتم إعادة ضبطها بهذه الإضافة.</string>
+    <string name="extend_message"> ، ولن يتم إعادة ضبطها بهذه الإضافة.</string>
 
     <string name="extend_term">لن يتم إعادة ضبط حدود زيارة النادي بعملية الشراء هذه. لقد قمت للتو بتمديد عضويتك (%1d أسبوع). لديك (%1d) أسبوع متبقي.</string>
 
@@ -566,6 +567,7 @@
     <string name="reference_id">الرقم المرجعي</string>
 
     <string name="amount_kd">المبلغ (دينار كويتي)</string>
+    <string name="amount_usd">المبلغ (USD)</string>
 
     <string name="date">التاريخ</string>
 
@@ -615,6 +617,7 @@
     <string name="contact_us">تواصل معنا</string>
 
     <string name="privacy_policy">سياسة الخصوصية</string>
+    <string name="privacypolicy">سياسة الخصوصية</string>
 
 
     -
@@ -668,7 +671,8 @@
 
     <string name="cancel_class_both">الغاء حجز الاثنين</string>
 
-    <string name="by_making_this_booking_2_classes_will_be_deducted_from_your_balance_book_with_a_friend">مع إجراء هذا الحجز ، سيتم خصم كلاسين من رصيدك</string>
+    <string name="by_making_this_booking_2_classes_will_be_deducted_from_your_balance_book_with_a_friend">بإجراء هذا الحجز ، سيتم خصم أرصدة فئة مزدوجة من رصيدك.
+</string>
 
     <string name="package_details">تفاصيل الاشتراكك</string>
 
@@ -897,7 +901,7 @@
     <string name="drop_in_unlimited">لديك كلاس واحد لـ %s</string>
     <string name="_two_drop_in_unlimited">لديك كلاسين لـ %s</string>
     <string name="_two_drop_in_text">لديك كلاسين لـ %s، وتنتهي في %s</string>
-    <string name="visit_times">%s الوقت</string>
+    <string name="visit_times">%s نقاط</string>
     <string name="why_p5m">لماذا اشتراك P5M؟\nأنك ستحصل على المزيد و تدفع أقل.</string>
     <string name="variety_of_activity_details">مع اشتراك P5M يمكنك التسجيل في كلاس سباحة اليوم ، وغداً كلاس كروسفت و اليوغا في عطلة نهاية الأسبوع. كل كلاس في نادي رياضي مختلف.</string>
     <string name="variety_of_activities">مجموعة متنوعة من الأنشطة الرياضية </string>
@@ -920,7 +924,7 @@
     </string>
     <string name="workout_any_gym"> تدرب في أي نادي رياضي تريد ، في أي وقتتريد ،و ادفع أقل.</string>
     <string name="frequently_asked_question">أسئلة متكررة:</string>
-    <string name="so_far_you_visited">So far you visited</string>
+    <string name="so_far_you_visited">So far you have used</string>
     <string name="more_variety">More variety</string>
     <string name="third_feature">Third Feature</string>
     <string name="pay_for_bundle">Pay for the bundle of classes...etc</string>
@@ -1084,5 +1088,13 @@
     <string name="_5_credits">5 Credits</string>
     <string name="_10_credits">10 Credits</string>
     <string name="classes_remaining">credits remaining</string>
+    <string name="info_for_other_country">The payment will be done in Kuwait Dinar. Rate of conversion: 1KD = $3.25</string>
+    <string name="enter_with_google">أدخل مع جوجل</string>
+    <string name="online">Online</string>
+    <string name="at_gym">At-Gym</string>
+    <string name="safty_message_without_underline">ما الإرشادات بشأن فيروس كورونا التي تتخذها نادي  %1$s</string>
+    <string name="safty_message">ما الإرشادات بشأن فيروس كورونا التي تتخذها نادي %1$s</string>
+
+    <string name="question_safety"><b>%s</b> %s</string>
 
 </resources>

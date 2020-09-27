@@ -13,6 +13,83 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layoutImage"
+            android:id="@+id/saftyLayout"
+
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/msgLayout"
+                android:background="@color/white"
+                android:padding="@dimen/margin_10"
+
+                >
+                <ImageView
+                    android:layout_width="@dimen/margin_15"
+                    android:layout_height="@dimen/margin_15"
+                    android:src="@drawable/safety_icon"
+                    android:id="@+id/img_safty_icon"
+                    android:layout_centerVertical="true"
+                    android:tint="@color/colorAccent"
+                    ></ImageView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/safty_message"
+                    android:id="@+id/text_safety_msg"
+                    android:layout_toRightOf="@+id/img_safty_icon"
+                    android:layout_marginLeft="@dimen/margin_5"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/colorAccent"
+                    android:layout_toLeftOf="@+id/img_safety_arrow"
+
+
+                    ></TextView>
+                <ImageView
+                    android:layout_width="@dimen/margin_15"
+                    android:layout_height="@dimen/margin_15"
+                    android:src="@drawable/ic_arrow_down"
+                    android:id="@+id/img_safety_arrow"
+                    android:layout_centerVertical="true"
+                    android:tint="@color/white"
+                    android:layout_alignParentRight="true"
+                    android:visibility="gone"
+                    >
+
+                </ImageView>
+
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@+id/msgLayout"
+                android:id="@+id/expandLayout"
+                android:visibility="gone"
+
+                >
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/safetyAnsRecyclerView"
+                    >
+
+                </androidx.recyclerview.widget.RecyclerView>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/margin_5"
+                    android:background="@color/theme_bg"></View>
+
+            </LinearLayout>
+
+
+
+        </RelativeLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -13,6 +13,7 @@ import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CommonUtillity;
 import com.p5m.me.utils.DateUtils;
@@ -325,8 +326,13 @@ public class ClassMiniDetailViewHolder extends RecyclerView.ViewHolder {
             } else {
                 relativeLayoutFitnessLevel.setVisibility(View.GONE);
             }
+            if(TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.USD_CURRENCY)){
+                textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime())+" ("+AppConstants.Currency.ARABIC_STANDARD_TIME+")");
 
-            textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
+            }else{
+                textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
+
+            }
 
             buttonJoin.setOnClickListener(new View.OnClickListener() {
                 @Override

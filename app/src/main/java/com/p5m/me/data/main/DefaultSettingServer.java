@@ -8,13 +8,16 @@ public class DefaultSettingServer implements java.io.Serializable {
     private static final long serialVersionUID = 6871393648272342621L;
 
     private String specialClassCancellationPolicy;
-    private float refundAllowedbefore;
     private String cancellationPolicy;
     private List<ValidityPackageList> validityPackageList = null;
     private String popularClassesText;
-    private float refundAllowedbeforeForSpecial;
     private String cancel_5_minPolicy;
     private List<PriceModelMaster> priceModelMaster;
+    private float refundAllowedbeforeForPhysical;
+    private float refundAllowedbefore;
+    private float refundAllowedbeforeForSpecial;
+    private String physicalCancellationPolicy;
+
 
     public String getSpecialClassCancellationPolicy() {
         return this.specialClassCancellationPolicy;
@@ -82,5 +85,21 @@ public class DefaultSettingServer implements java.io.Serializable {
 
     public void setPriceModelMaster(List<PriceModelMaster> priceModelMaster) {
         this.priceModelMaster = priceModelMaster;
+    }
+
+    public float getRefundAllowedbeforeForPhysical() {
+        return refundAllowedbeforeForPhysical;
+    }
+
+    public void setRefundAllowedbeforeForPhysical(float refundAllowedbeforeForPhysical) {
+        this.refundAllowedbeforeForPhysical = refundAllowedbeforeForPhysical;
+    }
+
+    public String getPhysicalCancellationPolicy() {
+        return physicalCancellationPolicy;
+    }
+
+    public void setPhysicalCancellationPolicy(String physicalCancellationPolicy) {
+        this.physicalCancellationPolicy = physicalCancellationPolicy;
     }
 }

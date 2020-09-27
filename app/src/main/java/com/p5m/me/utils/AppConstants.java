@@ -40,6 +40,8 @@ public class AppConstants {
         public static final String SAUDI_CURRENCY_SHORT ="SR";
 
         public static final String KUWAIT_CURRENCY = "KWD";
+        public static final String USD_CURRENCY = "USD";
+        public static final String ARABIC_STANDARD_TIME = "AST";
     }
 
     public static class Tab {
@@ -151,6 +153,8 @@ public class AppConstants {
         public static final String FACEBOOK_LOGIN = "fb_pref_login";
         public static final String CITIES = "pref_cities";
         public static final String ACTIVITIES = "pref_activities";
+        public static final String GYMLIST = "pref_gym_list";
+
         public static final String FILTERS = "pref_filters";
         public static final String USER = "pref_user";
         public static final String DEFAULT_SETTING_SERVER = "pref_default_setting_server";
@@ -203,6 +207,8 @@ public class AppConstants {
         public static final String NATIONALITY_OBJECT = "nationality_object";
         public static final String TRAINER_OBJECT = "trainer_object";
         public static final String PAYMENT_URL_OBJECT = "payment_url_object";
+        public static final String URL_OBJECT_TO_LOAD = "url_object_to_load";
+
         public static final String GYM_OBJECT = "gym_object";
         public static final String GYM_ID_INT = "gym_id_int";
         public static final String TRAINER_ID_INT = "trainer_id_int";
@@ -210,6 +216,8 @@ public class AppConstants {
         public static final String HOME_TABS_INNER_TAB_POSITION = "home_tabs_inner_tab_position";
         public static final String HOME_TABS_PROFILE_INNER_TAB_POSITION = "home_tabs_profile_inner_tab_position";
         public static final String HOME_TABS_SCHEDULE_INNER_TAB_POSITION = "home_tabs_schedule_inner_tab_position";
+        public static final String HOME_FILTER_TYPE = "filter_type";
+        public static final String FILTER_ID = "filter_id";
 
         public static final String PACKAGE_NAME_STRING = "package_name";
         public static final String IS_FROM_NOTIFICATION_STACK_BUILDER_BOOLEAN = "is_from_notification_stack_builder_boolean";
@@ -263,7 +271,7 @@ public class AppConstants {
 
         public static final String USER = "api/v1/user/find";
         public static final String CLASS_DETAILS = "api/v1/class";
-        public static final String USER_PACKAGE_DETAIL = "api/v1/user/packageDetail";
+        public static final String USER_PACKAGE_DETAIL = "api/v2/user/packageDetail";
 
 
         public static final String CLASS_LIST = "api/v1/class/getClassList";
@@ -310,6 +318,7 @@ public class AppConstants {
         public static final String CLASS_RATING_PATCH = "api/v1/rating/{id}";
         public static final String CLASS_UNRATED = "api/v1/rating/unRateClasses";
         public static final String DELETE_MEDIA = "api/v1/media/{id}";
+        public static final String COVID_QUES_ANS = "api/v1/covidquestion/gymquestionanswer";
 
 
         public static final String GET_PAYMENT_DETAIL = "api/v1/payment/package-purchase/{id}";

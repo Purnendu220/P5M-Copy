@@ -2,6 +2,7 @@ package com.p5m.me.adapters.viewholder;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Paint;
 import android.text.Html;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -11,6 +12,7 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -26,10 +28,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
+import com.p5m.me.adapters.CovidSaftyAdapter;
+import com.p5m.me.adapters.NationalityAdapter;
 import com.p5m.me.data.RemoteConfigDataModel;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CommonUtillity;
 import com.p5m.me.utils.DateUtils;
@@ -157,6 +162,23 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
 
     @BindView(R.id.textViewChannelNAme)
     public TextView textViewChannelNAme;
+
+    @BindView(R.id.saftyLayout)
+    RelativeLayout saftyLayout;
+    @BindView(R.id.text_safety_msg)
+    TextView textSafetyMsg;
+
+    @BindView(R.id.safetyAnsRecyclerView)
+    RecyclerView safetyAnsRecyclerView;
+
+    @BindView(R.id.msgLayout)
+    RelativeLayout msgLayout;
+
+    @BindView(R.id.img_safety_arrow)
+    ImageView imgSafetyArrow;
+
+    @BindView(R.id.expandLayout)
+    LinearLayout expandLayout;
 
     private final Context context;
     private int shownInScreen;
@@ -360,12 +382,20 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
             textViewClassName.setText(model.getTitle());
             textViewClassCategory.setText(model.getClassCategory());
             textViewClassDate.setText(DateUtils.getClassDate(model.getClassDate()));
+            setUpCovidSafty(model,adapterCallbacks);
 //            textViewAvailable.setText( NumberFormat.getNumberInstance(Constants.LANGUAGE).format(model.getAvailableSeat()) + " " + context.getString(R.string.available_seats) + " ");
 //                    +
 //                    AppConstants.plural(context.getString(R.string.seat), model.getAvailableSeat()));
             LanguageUtils.setText(textViewAvailable, model.getAvailableSeat(), context.getString(R.string.available_seats) + " ");
 
-            textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
+            if(TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.USD_CURRENCY)){
+                textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime())+" ("+AppConstants.Currency.ARABIC_STANDARD_TIME+")");
+
+            }else{
+                textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
+
+            }
+
             textViewGender.setText(Helper.getClassGenderText(model.getClassType()));
             if (model.isVideoClass()) {
                 String channelName = CommonUtillity.getChannelName(model.getPlatform());
@@ -476,5 +506,43 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
             mapView.onResume();
             mapView.getMapAsync(this);
         }
+    }
+
+    public void setUpCovidSafty(ClassModel model,AdapterCallbacks adapterCallbacks){
+        if(model.getCovidSafetyList()!=null&&model.getCovidSafetyList().size()>0&&!model.isVideoClass())
+        {
+            saftyLayout.setVisibility(View.VISIBLE);
+
+            textSafetyMsg.setText(Html.fromHtml(String.format(context.getString(R.string.safty_message),  model.getGymBranchDetail().getGymName() )));
+            textSafetyMsg.setPaintFlags(textSafetyMsg.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+            safetyAnsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+            safetyAnsRecyclerView.setHasFixedSize(false);
+
+            CovidSaftyAdapter covidSaftyAdapter = new CovidSaftyAdapter(context, adapterCallbacks);
+            safetyAnsRecyclerView.setAdapter(covidSaftyAdapter);
+
+            covidSaftyAdapter.addAll(model.getCovidSafetyList());
+            covidSaftyAdapter.notifyDataSetChanged();
+            msgLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                  if(expandLayout.getVisibility()==View.GONE||expandLayout.getVisibility()==View.INVISIBLE){
+                      expandLayout.setVisibility(View.VISIBLE);
+                      imgSafetyArrow.setImageResource(R.drawable.ic_arrow_up);
+                  }  else{
+                      expandLayout.setVisibility(View.GONE);
+                      imgSafetyArrow.setImageResource(R.drawable.ic_arrow_down);
+
+                  }
+
+                }
+            });
+        }
+        else{
+            saftyLayout.setVisibility(View.GONE);
+        }
+
+
     }
 }

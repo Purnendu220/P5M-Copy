@@ -344,10 +344,28 @@ public class MixPanel {
         }
     }
 
-    public static void trackClassDetails(int navigationFrom) {
+
+
+    public static void trackClassDetailsVisit(int navigationFrom,ClassModel classModel) {
         try {
+            User user = TempStorage.getUser();
             String origin = trackOrigin(navigationFrom);
             JSONObject props = new JSONObject();
+            props.put("className", classModel.getTitle());
+            props.put("classTiming", DateUtils.getDayTiming(classModel.getClassDate() + " " + classModel.getFromTime()));
+            props.put("origin", origin);
+            props.put("trainerName", classModel.getTrainerDetail() == null ? "No Trainer" : classModel.getTrainerDetail().getFirstName());
+            props.put("gymName", classModel.getGymBranchDetail() == null ? "No Gym" : classModel.getGymBranchDetail().getGymName());
+            props.put("Classgender", Helper.getClassGenderTextForTracker(classModel.getClassType()));
+            props.put("start_time", DateUtils.getHours(classModel.getFromTime()));
+            props.put("start_time", DateUtils.getHours(classModel.getFromTime()));
+            props.put("booking_time", DateUtils.getCurrentDateandTime());
+            float hourDiff = DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime());
+            props.put("diffHrs", DateUtils.getHourDiff(hourDiff));
+            props.put("gender", user.getGender());
+            props.put("ActivityPrefered", classModel.getClassCategory());
+            props.put("locality_preferred", classModel.getGymBranchDetail() == null ? "" : classModel.getGymBranchDetail().getLocalityName());
+
             props.put("view", "Viewed");
             props.put("origin", origin);
 
@@ -935,6 +953,67 @@ public class MixPanel {
             props.put("values", mixPannelValue);
 
             trackEvent(props, "Explore");
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+    public static void trackExploreVisit() {
+        try {
+            JSONObject props = new JSONObject();
+
+            trackEvent(props, "Explore");
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+    public static void trackScheduleVisit() {
+        try {
+            JSONObject props = new JSONObject();
+
+            trackEvent(props, "Schedule");
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+    public static void trackProfileVisit() {
+        try {
+            JSONObject props = new JSONObject();
+
+            trackEvent(props, "Profile");
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
+    public static void trackLearnAboutCredits() {
+        try {
+            JSONObject props = new JSONObject();
+
+            trackEvent(props, "LearnAboutCredits");
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+    public static void trackMembershipInfoVisit() {
+        try {
+            JSONObject props = new JSONObject();
+
+            trackEvent(props, "MembershipInfoVisit");
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+    public static void trackFindClassVisit() {
+        try {
+            JSONObject props = new JSONObject();
+
+            trackEvent(props, "OpenFindClass");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);

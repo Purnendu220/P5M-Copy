@@ -47,9 +47,9 @@ public class RestServiceFactory {
                 //logging.setLevel(HttpLoggingInterceptor.Level.HEADERS);
                 httpClient.addInterceptor(logging);
             }
-
-            httpClient.readTimeout(30, TimeUnit.SECONDS);
-            httpClient.connectTimeout(30, TimeUnit.SECONDS);
+            httpClient.connectTimeout(1, TimeUnit.MINUTES);
+            httpClient.readTimeout(2, TimeUnit.MINUTES);
+            httpClient.connectTimeout(2, TimeUnit.MINUTES);
 
             httpClient.addInterceptor(new Interceptor() {
                 @Override

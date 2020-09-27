@@ -218,5 +218,8 @@ public class Splash extends BaseActivity implements NetworkCommunicator.RequestL
     }
     private void callApi() {
         networkCommunicator.getStoreData(this, false);
+        networkCommunicator.getCities(this, false);
+        networkCommunicator.getActivities(this, false);
+        networkCommunicator.getGymsList(this, false);
     }
 }

@@ -40,6 +40,8 @@ import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.GymDataModel;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.helper.Helper;
+import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigure;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -414,7 +416,8 @@ public class FilterActivity extends BaseActivity implements NetworkCommunicator.
 
         }
         try {
-            priceModelList = new Gson().fromJson(Helper.getPriceModelFromAsset(context), new TypeToken<List<PriceModel>>() {
+
+            priceModelList = new Gson().fromJson(RemoteConfigure.getFirebaseRemoteConfig(context).getRemoteConfigValue(RemoteConfigConst.PRICE_MODEL), new TypeToken<List<PriceModel>>() {
             }.getType());
         } catch (Exception e) {
             e.printStackTrace();

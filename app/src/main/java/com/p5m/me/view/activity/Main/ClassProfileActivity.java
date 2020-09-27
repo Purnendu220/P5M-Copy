@@ -43,6 +43,7 @@ import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.Join5MinModel;
+import com.p5m.me.data.QuestionAnswerModel;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.ClassModel;
@@ -94,6 +95,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
     private String message;
     private int errorMsg;
+    private List<QuestionAnswerModel> covidSaftyData;
 
     public static void open(Context context, ClassModel classModel, int navigationFrom) {
         context.startActivity(new Intent(context, ClassProfileActivity.class)
@@ -274,7 +276,6 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         setToolBar();
 
         getDynamicLink();
-        MixPanel.trackClassDetails(navigationFrom);
         onTrackingNotification();
         if (RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE != null && !RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE.isEmpty()) {
             showChoosePackageOption = Boolean.valueOf(RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE);
@@ -634,8 +635,11 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
                 if (classModel != null) {
                     getCountRating();
+                    getGymCovidSafty();
                     classProfileAdapter.setClass(classModel);
                     classProfileAdapter.notifyDataSetChanged();
+                    MixPanel.trackClassDetailsVisit(navigationFrom,classModel);
+
                 }
 //                layoutButton.setVisibility(View.VISIBLE);
                 if (Helper.isSpecialClass(classModel)) {
@@ -655,7 +659,16 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                 }
 
                 break;
+            case NetworkCommunicator.RequestCode.GET_GYM_COVID_SAFTY:
+                covidSaftyData = ((ResponseModel<List<QuestionAnswerModel>>) response).data;
+                List<QuestionAnswerModel> saftyData = Helper.isCovidSafetySubmitted(covidSaftyData);
+                if (classModel != null && saftyData!=null&&saftyData.size()>0) {
+                    classModel.setCovidSafetyList(saftyData);
+                    classProfileAdapter.setClass(classModel);
+                    classProfileAdapter.notifyDataSetChanged();
+                }
 
+                break;
             case NetworkCommunicator.RequestCode.PACKAGES_FOR_USER:
                 List<Package> packagesTemp = ((ResponseModel<List<Package>>) response).data;
                 if (packagesTemp != null && !packagesTemp.isEmpty()) {
@@ -955,6 +968,10 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
     private void getCountRating() {
         networkCommunicator.getClassRatingList(classModel.getClassId(), page, PAGE_LIMIT_MAIN_CLASS_LIST, this, false);
+
+    }
+    private void getGymCovidSafty() {
+        networkCommunicator.getGymCovidSafty(classModel.getGymBranchDetail().getGymId(), this);
 
     }
 

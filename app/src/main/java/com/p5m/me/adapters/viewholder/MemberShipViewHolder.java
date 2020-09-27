@@ -107,8 +107,8 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 //    @BindView(R.id.txtPackageName)
 //    TextView txtPackageName;
 //
-//    @BindView(R.id.txtIsPackagePopular)
-//    TextView txtIsPackagePopular;
+    @BindView(R.id.txtIsPackagePopular)
+    TextView txtIsPackagePopular;
     @BindView(R.id.txtPackageOffer)
     TextView txtPackageOffer;
 
@@ -165,10 +165,11 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
             itemView.setVisibility(View.VISIBLE);
             textViewExtendPackage.setVisibility(View.GONE);
-            txtPackageOffredClassesLimits.setPaintFlags(txtPackageOffredClassesLimits.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+           // txtPackageOffredClassesLimits.setPaintFlags(txtPackageOffredClassesLimits.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             // Package owned..
             if (data instanceof UserPackage) {
                 UserPackage model = (UserPackage) data;
+
                 if (model.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)) {
                     textViewExtendPackage.setVisibility(View.VISIBLE);
                     if (model != null && model.getTotalRemainingWeeks() != null && model.getTotalRemainingWeeks() < 1) {
@@ -225,20 +226,18 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     }
                     if (!PLAN_CLASS_VALUES.isEmpty()) {
                         Gson g = new Gson();
-                        List<RemoteConfigPlanText> p
-                                = g.fromJson(PLAN_CLASS_VALUES, new TypeToken<List<RemoteConfigPlanText>>() {
-                        }.getType());
-                        for(int i =0;i<p.size();i++)
-                        if(model.getId() == Integer.parseInt(p.get(i).getId())) {
-                            if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar") && !p.get(i).getAr().isEmpty()) {
-                                txtPackageOffredClassesLimits.setText(p.get(i).getAr());
-                                txtPackageOffredClassesLimits.setVisibility(View.VISIBLE);
+                        List<RemoteConfigPlanText> p = g.fromJson(PLAN_CLASS_VALUES, new TypeToken<List<RemoteConfigPlanText>>() {}.getType());
+                        for (int i = 0; i < p.size(); i++)
+                            if (model.getId() == Integer.parseInt(p.get(i).getId())) {
+                                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar") && !p.get(i).getAr().isEmpty()) {
+                                    txtPackageOffredClassesLimits.setText(p.get(i).getAr());
+                                    txtPackageOffredClassesLimits.setVisibility(View.VISIBLE);
 
-                            } else {
-                                txtPackageOffredClassesLimits.setText(p.get(i).getEn());
-                                txtPackageOffredClassesLimits.setVisibility(View.VISIBLE);
+                                } else {
+                                    txtPackageOffredClassesLimits.setText(p.get(i).getEn());
+                                    txtPackageOffredClassesLimits.setVisibility(View.VISIBLE);
+                                }
                             }
-                        }
 
                     } else
                         setMaxAvailableClasses(model.getCredits());
@@ -450,40 +449,40 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void setPackageTags(int packageId) {
-//        txtIsPackagePopular.setVisibility(View.GONE);
-//        try {
-//            String packageTags = RemoteConfigConst.PACKAGE_TAGS_VALUE;
-//            if (packageTags != null && !packageTags.isEmpty()) {
-//                Gson g = new Gson();
-//                List<PackageTags> p = g.fromJson(packageTags, new TypeToken<List<PackageTags>>() {
-//                }.getType());
-//                listPackageTags = p;
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        if (listPackageTags != null && listPackageTags.size() > 0) {
-//            for (PackageTags p : listPackageTags) {
-//                if (p.getId() == packageId) {
-//                    if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en")
-//                            && !p.getTag_en().isEmpty()) {
-//                        txtIsPackagePopular.setText(p.getTag_en());
-//                        txtIsPackagePopular.setVisibility(View.VISIBLE);
-//
-//                    } else if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")
-//                            && !p.getTag_ar().isEmpty()) {
-//                        txtIsPackagePopular.setText(p.getTag_ar());
-//                        txtIsPackagePopular.setVisibility(View.VISIBLE);
-//
-//                    }
-//
-//
-//                }
-//
-//            }
-//
-//        }
+        txtIsPackagePopular.setVisibility(View.GONE);
+        try {
+            String packageTags = RemoteConfigConst.PACKAGE_TAGS_VALUE;
+            if (packageTags != null && !packageTags.isEmpty()) {
+                Gson g = new Gson();
+                List<PackageTags> p = g.fromJson(packageTags, new TypeToken<List<PackageTags>>() {
+                }.getType());
+                listPackageTags = p;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (listPackageTags != null && listPackageTags.size() > 0) {
+            for (PackageTags p : listPackageTags) {
+                if (p.getId() == packageId) {
+                    if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en")
+                            && !p.getTag_en().isEmpty()) {
+                        txtIsPackagePopular.setText(p.getTag_en());
+                        txtIsPackagePopular.setVisibility(View.VISIBLE);
+
+                    } else if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")
+                            && !p.getTag_ar().isEmpty()) {
+                        txtIsPackagePopular.setText(p.getTag_ar());
+                        txtIsPackagePopular.setVisibility(View.VISIBLE);
+
+                    }
+
+
+                }
+
+            }
+
+        }
 
     }
 

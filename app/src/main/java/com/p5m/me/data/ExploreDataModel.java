@@ -22,6 +22,8 @@ public class ExploreDataModel implements Comparable {
     private boolean isMoreActivityShow;
     private int order;
 
+
+
     public String getWidgetType() {
         return widgetType;
     }
@@ -107,6 +109,13 @@ public class ExploreDataModel implements Comparable {
         private String subTitle;
         private String titleAr;
         private String subTitleAr;
+
+        public HeaderBean(String title, String subTitle, String titleAr, String subTitleAr) {
+            this.title = title;
+            this.subTitle = subTitle;
+            this.titleAr = titleAr;
+            this.subTitleAr = subTitleAr;
+        }
 
         public String getTitle() {
             return title;

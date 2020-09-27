@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.main.ScheduleClassModel;
+import com.p5m.me.storage.TempStorage;
+import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 
 import butterknife.BindView;
@@ -50,7 +52,14 @@ public class ShowScheduleViewHolder extends RecyclerView.ViewHolder {
             else
                 textViewClassName.setVisibility(View.GONE);
 
-            textViewClassTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
+
+            if(TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.USD_CURRENCY)){
+                textViewClassTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime())+" ("+AppConstants.Currency.ARABIC_STANDARD_TIME+")");
+
+            }else{
+                textViewClassTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
+
+            }
             layoutScheduler.setOnClickListener(v -> {
                 adapterCallbacks.onAdapterItemClick(ShowScheduleViewHolder.this, layoutScheduler, model, position);
             });

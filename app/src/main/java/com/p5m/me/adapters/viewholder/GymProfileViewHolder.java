@@ -1,12 +1,14 @@
 package com.p5m.me.adapters.viewholder;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.text.Html;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,13 +16,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
+import com.p5m.me.adapters.CovidSaftyAdapter;
 import com.p5m.me.adapters.ImageListAdapter;
+import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.GymBranchDetail;
 import com.p5m.me.data.main.GymDetailModel;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.ImageUtils;
 import com.p5m.me.utils.LanguageUtils;
+import com.p5m.me.view.custom.AlertP5MCreditInfo;
+import com.p5m.me.view.custom.SafetyByGymPopup;
+import com.p5m.me.view.fragment.MembershipFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -82,6 +89,22 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.textViewTotalLocations)
     public TextView textViewTotalLocations;
 
+    @BindView(R.id.saftyLayout)
+    RelativeLayout saftyLayout;
+    @BindView(R.id.text_safety_msg)
+    TextView textSafetyMsg;
+
+    @BindView(R.id.safetyAnsRecyclerView)
+    RecyclerView safetyAnsRecyclerView;
+
+    @BindView(R.id.msgLayout)
+    RelativeLayout msgLayout;
+
+    @BindView(R.id.img_safety_arrow)
+    ImageView imgSafetyArrow;
+
+    @BindView(R.id.expandLayout)
+    LinearLayout expandLayout;
 
     private final int dp;
     private Context context;
@@ -115,7 +138,7 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
 
                 textViewLocation.setText(gymBranchDetail.getBranchName());
                 textViewLocationSub.setText(gymBranchDetail.getAddress());
-
+                setUpCovidSafty(model,adapterCallbacks);
 //                if (!gymBranchDetail.getPhoneNumber().isEmpty()) {
 //                    layoutLocationPhone.setVisibility(View.VISIBLE);
 //                    textViewLocationPhone.setText(gymBranchDetail.getPhoneNumber());
@@ -252,4 +275,37 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
             itemView.setVisibility(View.GONE);
         }
     }
+
+    public void setUpCovidSafty(GymDetailModel model,AdapterCallbacks adapterCallbacks){
+        if(model.getCovidSafetyList()!=null&&model.getCovidSafetyList().size()>0)
+        {
+            saftyLayout.setVisibility(View.VISIBLE);
+
+            textSafetyMsg.setText(Html.fromHtml(String.format(context.getString(R.string.safty_message),  model.getStudioName() )));
+            textSafetyMsg.setPaintFlags(textSafetyMsg.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+            safetyAnsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+            safetyAnsRecyclerView.setHasFixedSize(false);
+
+            CovidSaftyAdapter covidSaftyAdapter = new CovidSaftyAdapter(context, adapterCallbacks);
+            safetyAnsRecyclerView.setAdapter(covidSaftyAdapter);
+
+            covidSaftyAdapter.addAll(model.getCovidSafetyList());
+            covidSaftyAdapter.notifyDataSetChanged();
+            msgLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SafetyByGymPopup alert = new SafetyByGymPopup(context, model, adapterCallbacks);
+                    alert.show();
+
+                }
+            });
+        }
+        else{
+            saftyLayout.setVisibility(View.GONE);
+        }
+
+
+    }
+
 }
