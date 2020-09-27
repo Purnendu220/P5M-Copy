@@ -167,7 +167,9 @@
                                     android:textAllCaps="true"
                                     android:textColor="@color/white"
                                     android:textSize="13sp"
-                                    android:visibility="visible" />
+                                    android:visibility="visible"
+                                    android:text="@string/book"
+                                    />
 
                                 <Button
                                     android:id="@+id/buttonClassRating"

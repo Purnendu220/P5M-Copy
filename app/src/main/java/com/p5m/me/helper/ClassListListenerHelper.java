@@ -504,10 +504,18 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
 
             } else {
-                cancelTime = defaultSettingServer.getRefundAllowedbefore();
+                if(model.isVideoClass()){
+                    cancelTime = defaultSettingServer.getRefundAllowedbefore();
+                    serverMessageNormalClass = defaultSettingServer.getCancellationPolicy();
+
+
+                }else{
+                    cancelTime = defaultSettingServer.getRefundAllowedbeforeForPhysical();
+                    serverMessageNormalClass = defaultSettingServer.getPhysicalCancellationPolicy();
+
+                }
 
             }
-            serverMessageNormalClass = defaultSettingServer.getCancellationPolicy();
             serverMessageSpecialClass = defaultSettingServer.getSpecialClassCancellationPolicy();
 
         }
@@ -623,11 +631,20 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
 
 
             } else {
-                cancelTime = defaultSettingServer.getRefundAllowedbefore();
+                if(model.isVideoClass()){
+                    cancelTime = defaultSettingServer.getRefundAllowedbefore();
+                    serverMessageNormalClass = defaultSettingServer.getCancellationPolicy();
+
+
+                }else{
+                    cancelTime = defaultSettingServer.getRefundAllowedbeforeForPhysical();
+                    serverMessageNormalClass = defaultSettingServer.getPhysicalCancellationPolicy();
+
+                }
+
 
             }
 
-            serverMessageNormalClass = defaultSettingServer.getCancellationPolicy();
             serverMessageSpecialClass = defaultSettingServer.getSpecialClassCancellationPolicy();
 
         }

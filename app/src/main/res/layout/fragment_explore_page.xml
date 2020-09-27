@@ -38,12 +38,12 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:focusable="true"
-            android:orientation="vertical"
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            >
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
@@ -52,8 +52,21 @@
                 android:background="@color/white"
                 android:clipToPadding="false"
                 android:scrollbars="none" />
+            <ProgressBar
+                android:id="@+id/processingProgressBar"
+                android:layout_width="@dimen/margin_80"
+                android:layout_height="@dimen/margin_80"
+                style="?android:attr/progressBarStyleLarge"
+                android:elevation="@dimen/margin_10"
+                android:indeterminateDrawable="@drawable/prograssbar_circular"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                 />
 
-        </LinearLayout>
+        </RelativeLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

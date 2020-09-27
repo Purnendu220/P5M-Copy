@@ -1,8 +1,10 @@
 package com.p5m.me.data.main;
 
 import com.p5m.me.data.ClassRatingListData;
+import com.p5m.me.data.QuestionAnswerModel;
 
 import java.util.Date;
+import java.util.List;
 
 public class ClassModel implements java.io.Serializable {
     private static final long serialVersionUID = -7121053493736355823L;
@@ -57,6 +59,8 @@ public class ClassModel implements java.io.Serializable {
     private String platform;
     private String link;
     private int credit;
+
+    private List<QuestionAnswerModel> covidSafetyList;
 
     public ClassModel() {
 
@@ -393,5 +397,13 @@ public class ClassModel implements java.io.Serializable {
 
     public void setCredit(int credit) {
         this.credit = credit;
+    }
+
+    public List<QuestionAnswerModel> getCovidSafetyList() {
+        return covidSafetyList;
+    }
+
+    public void setCovidSafetyList(List<QuestionAnswerModel> covidSafetyList) {
+        this.covidSafetyList = covidSafetyList;
     }
 }

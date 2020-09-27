@@ -11,6 +11,7 @@ import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.data.main.ClassModel;
 
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
@@ -60,7 +61,13 @@ public class RecommendedClassViewHolder extends RecyclerView.ViewHolder {
             itemView.setVisibility(View.VISIBLE);
             final ClassModel model = (ClassModel) item;
             textViewClassName.setText(model.getTitle());
-            textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime())+" • "+ AppConstants.Currency.ARABIC_STANDARD_TIME);
+            if(TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.USD_CURRENCY)){
+                textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime())+" ("+AppConstants.Currency.ARABIC_STANDARD_TIME+")");
+
+            }else{
+                textViewTime.setText(DateUtils.getClassTime(model.getFromTime(), model.getToTime()));
+
+            }
             if (model.getClassMedia() != null) {
                 ImageUtils.setImage(context,
                         model.getClassMedia().getMediaUrl(),

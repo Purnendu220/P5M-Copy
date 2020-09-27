@@ -15,6 +15,7 @@ import com.p5m.me.utils.LanguageUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.p5m.me.utils.LanguageUtils.numberConverter;
 
 
 /**
@@ -50,7 +51,7 @@ public class UserPackageDetailViewHolder extends RecyclerView.ViewHolder {
             UserPackageDetail model = (UserPackageDetail) data;
             textGymNames.setText(model.getGymName() +" on " +DateUtils.getClassVisitDate(model.getClassJoinDate()));
             textVisitDate.setText(DateUtils.getClassVisitDate(model.getClassJoinDate()));
-            textGymVisits.setText(String.format(context.getResources().getString(R.string.visit_times), model.getCredit()+""));
+            textGymVisits.setText(String.format(context.getResources().getString(R.string.visit_times), numberConverter(model.getCredit())+""));
         } else {
             itemView.setVisibility(View.GONE);
         }

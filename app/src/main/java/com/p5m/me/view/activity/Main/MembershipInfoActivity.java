@@ -24,13 +24,17 @@ import com.google.gson.Gson;
 import com.p5m.me.FAQAdapter;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
+import com.p5m.me.analytics.MixPanel;
+import com.p5m.me.data.CreditsInfoModel;
 import com.p5m.me.data.FAQ;
+import com.p5m.me.data.PriceModel;
 import com.p5m.me.data.RemoteConfigValueModel;
 import com.p5m.me.data.Testimonials;
 import com.p5m.me.data.main.User;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.notifications.HandleNotificationDeepLink;
 import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigure;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LanguageUtils;
@@ -114,6 +118,28 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
     @BindView(R.id.buyClasses)
     public TextView buyClasses;
 
+    @BindView(R.id.textViewTitle)
+    public TextView textViewTitle;
+
+    @BindView(R.id.textViewSubTitle)
+    public TextView textViewSubTitle;
+
+    @BindView(R.id.textViewAtGym)
+    public TextView textViewAtGym;
+
+    @BindView(R.id.textViewOnline)
+    public TextView textViewOnline;
+
+    @BindView(R.id.textViewPT)
+    public TextView textViewPT;
+
+
+
+
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +153,7 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
         setFAQAdapter();
         setValues();
         handleBuyClassesButton();
+        MixPanel.trackMembershipInfoVisit();
     }
 
     private void setValues() {
@@ -151,7 +178,7 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
         textViewTrainDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_THREE_DETAIL_VALUE, getString(R.string.workout_any_gym)));
         textViewDiscount.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_FOUR_VALUE, getString(R.string.get_discount)));
         textViewDiscountDetail.setText(getValueFromConfig(RemoteConfigConst.SECTION_TWO_SUB_FOUR_DETAIL_VALUE, getString(R.string.go_to_different_gym)));
-
+        setUpCreditInfo();
     }
 
     private String getValueFromConfig(String remoteConfigValue, String defaultValue) {
@@ -333,6 +360,27 @@ public class MembershipInfoActivity extends BaseActivity implements View.OnClick
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
+
+  private void setUpCreditInfo(){
+      try {
+
+          CreditsInfoModel   creditInfoModel = new Gson().fromJson(RemoteConfigure.getFirebaseRemoteConfig(context).getRemoteConfigValue(RemoteConfigConst.CREDIT_INFO), new com.google.gson.reflect.TypeToken<CreditsInfoModel>() {
+          }.getType());
+
+
+
+          textViewTitle.setText(creditInfoModel.getTitle());
+          textViewSubTitle.setText(creditInfoModel.getSub());
+          textViewAtGym.setText(creditInfoModel.getDetail().get(0).getEn());
+          textViewOnline.setText(creditInfoModel.getDetail().get(1).getEn());
+          textViewPT.setText(creditInfoModel.getDetail().get(2).getEn());
+
+
+
+      } catch (Exception e) {
+          e.printStackTrace();
+      }
+  }
 
     private void handleBuyClassesButton() {
         try {

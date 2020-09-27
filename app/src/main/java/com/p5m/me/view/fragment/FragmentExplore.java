@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -103,6 +104,9 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
 
+    @BindView(R.id.processingProgressBar)
+    public ProgressBar processingProgressBar;
+
     private ExplorePageAdapter explorePageAdapter;
     private List<ClassesFilter> classesFilters;
     private String mixPannelSection;
@@ -157,7 +161,12 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
     }
 
     private void callApi() {
-        networkCommunicator.getYoutubePlayList(platlistId,api_key,null,this);
+        swipeRefreshLayout.setRefreshing(true);
+        if(explorePageAdapter==null||explorePageAdapter.getItemCount()==0){
+            processingProgressBar.setVisibility(View.GONE);
+        }
+
+        //networkCommunicator.getYoutubePlayList(platlistId,api_key,null,this);
         networkCommunicator.getExploreData(this, false);
 
     }
@@ -387,11 +396,11 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
 
     @Override
     public void onApiSuccess(Object response, int requestCode) {
-        swipeRefreshLayout.setRefreshing(false);
-
         switch (requestCode) {
 
             case NetworkCommunicator.RequestCode.GET_EXPLORE_DATA:
+                processingProgressBar.setVisibility(View.GONE);
+                swipeRefreshLayout.setRefreshing(false);
                 List<ExploreDataModel> exploreModels = ((ResponseModel<List<ExploreDataModel>>) response).data;
                 if (!exploreModels.isEmpty()) {
                   //  exploreModels.add(setSaftyObject(exploreModels.size()));
@@ -428,7 +437,8 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
                 case NetworkCommunicator.RequestCode.GET_YOUTUBE_PLAYLIST:
                 case NetworkCommunicator.RequestCode.GET_EXPLORE_DATA:
                 ToastUtils.show(context,errorMessage);
-                break;
+                processingProgressBar.setVisibility(View.GONE);
+                    break;
         }
 
     }

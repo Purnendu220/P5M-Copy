@@ -362,7 +362,7 @@ public class MixPanel {
             props.put("booking_time", DateUtils.getCurrentDateandTime());
             float hourDiff = DateUtils.hoursLeft(classModel.getClassDate() + " " + classModel.getFromTime());
             props.put("diffHrs", DateUtils.getHourDiff(hourDiff));
-            props.put("userGender", user.getGender());
+            props.put("gender", user.getGender());
             props.put("ActivityPrefered", classModel.getClassCategory());
             props.put("locality_preferred", classModel.getGymBranchDetail() == null ? "" : classModel.getGymBranchDetail().getLocalityName());
 
@@ -983,6 +983,27 @@ public class MixPanel {
             JSONObject props = new JSONObject();
 
             trackEvent(props, "Profile");
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+
+    public static void trackLearnAboutCredits() {
+        try {
+            JSONObject props = new JSONObject();
+
+            trackEvent(props, "LearnAboutCredits");
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+    public static void trackMembershipInfoVisit() {
+        try {
+            JSONObject props = new JSONObject();
+
+            trackEvent(props, "MembershipInfoVisit");
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.exception(e);

@@ -14,6 +14,7 @@ import com.p5m.me.data.MediaResponse;
 import com.p5m.me.data.PackageLimitModel;
 import com.p5m.me.data.PaymentConfirmationResponse;
 import com.p5m.me.data.PromoCode;
+import com.p5m.me.data.QuestionAnswerModel;
 import com.p5m.me.data.RatingParamModel;
 import com.p5m.me.data.RatingResponseModel;
 import com.p5m.me.data.UnratedClassData;
@@ -183,6 +184,7 @@ public class NetworkCommunicator {
         public static final int GET_YOUTUBE_PLAYLIST = 178;
         public static final int ATTEND_CLASS_API = 179;
         public static final int SEARCH_EMAIL = 180;
+        public static final int GET_GYM_COVID_SAFTY = 181;
 
 
     }
@@ -1983,6 +1985,30 @@ public class NetworkCommunicator {
             }
         });
         return call;
+    }
+
+    public Call getGymCovidSafty(int gymId ,final RequestListener requestListener) {
+        final int requestCode = RequestCode.GET_GYM_COVID_SAFTY;
+        Call<ResponseModel<List<QuestionAnswerModel>>> call = apiService.getGymCovidSafety(gymId);
+        LogUtils.debug("NetworkCommunicator hitting Store Data");
+
+        call.enqueue(new RestCallBack<ResponseModel<List<QuestionAnswerModel>>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<List<QuestionAnswerModel>>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator Token onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<List<QuestionAnswerModel>>> call, Response<ResponseModel<List<QuestionAnswerModel>>> restResponse, ResponseModel<List<QuestionAnswerModel>> response) {
+                LogUtils.networkSuccess("NetworkCommunicator Token onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+
+        return call;
+
     }
 }
 
