@@ -988,6 +988,27 @@ public class MixPanel {
             LogUtils.exception(e);
         }
     }
+
+    public static void trackLearnAboutCredits() {
+        try {
+            JSONObject props = new JSONObject();
+
+            trackEvent(props, "LearnAboutCredits");
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
+    public static void trackMembershipInfoVisit() {
+        try {
+            JSONObject props = new JSONObject();
+
+            trackEvent(props, "MembershipInfoVisit");
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+    }
     public static void trackFindClassVisit() {
         try {
             JSONObject props = new JSONObject();

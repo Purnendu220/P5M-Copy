@@ -318,6 +318,7 @@ public class AppConstants {
         public static final String CLASS_RATING_PATCH = "api/v1/rating/{id}";
         public static final String CLASS_UNRATED = "api/v1/rating/unRateClasses";
         public static final String DELETE_MEDIA = "api/v1/media/{id}";
+        public static final String COVID_QUES_ANS = "api/v1/covidquestion/gymquestionanswer";
 
 
         public static final String GET_PAYMENT_DETAIL = "api/v1/payment/package-purchase/{id}";

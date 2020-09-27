@@ -82,6 +82,8 @@ public class RemoteConfigConst {
     public static String VIRTUAL_CLASS_VALUE = "virtual_class_value";
     public static String CONVERSTION_TEXT = "conversion_text";
     public static String PRICE_MODEL = "price_model";
+    public static String CREDIT_INFO = "credits_info";
+
 
 
 

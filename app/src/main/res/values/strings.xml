@@ -160,6 +160,9 @@
     <string name="sign_up">"<b><u>Sign Up</u></b>"</string>
     <string name="profile_package_expiry">" remaining until your credits expire."</string>
     <string name="view_gym_visit_limits">View gym visit limits</string>
+    <string name="learn_more_about_credits">Learn more about our credits</string>
+
+
     <string name="gym_visit_limits_no_lines">gym visit limits</string>
     <string name="select_plan">Select Plan</string>
     <string name="membership_no_package_heading_1">Pick a plan that suits your fitness needs. The ‘Get Set’ and ‘Pro’ options will allow you to visit all the gyms available on P5M. Be sure to check each gym visit limits to find the plan that works best for you.</string>
@@ -731,6 +734,10 @@ Would you like to view your balance? </string>
     <string name="enter_with_google">ENTER WITH GOOGLE</string>
     <string name="online">Online</string>
     <string name="at_gym">At-Gym</string>
+    <string name="safty_message"><u>What covid-19 safety guidelines is %1$s taking?</u> </string>
+    <string name="safty_message_without_underline">What covid-19 safety guidelines is %1$s taking?</string>
+
+    <string name="question_safety"><b>%1$s</b> %2$s</string>
 
 
 </resources>

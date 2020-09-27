@@ -397,7 +397,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                     memberShipAdapter.setHeaderText(context.getString(R.string.membership_drop_in_package_heading_1),
                             context.getString(R.string.membership_general_package_heading_1));
                 }
-                textGymVisitLimits.setVisibility(View.GONE);
+                textGymVisitLimits.setVisibility(View.VISIBLE);
 
             } else {
                 swipeRefreshLayout.setEnabled(false);
@@ -407,6 +407,8 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                 swipeRefreshLayout.setRefreshing(true);
                 networkCommunicator.getPackages(user.getId(), this, false);
                 isBuyMoreCredits = buyMoreCredits[0];
+                textGymVisitLimits.setVisibility(View.VISIBLE);
+
             }
             memberShipAdapter.notifyDataSetChanges();
 
@@ -502,13 +504,13 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
             }
             break;
             case R.id.txtPackageOffredClassesLimits:
-                if (model instanceof Package) {
-                    Package pkg = (Package) model;
-                    AlertP5MCreditInfo alert = new AlertP5MCreditInfo(context, pkg, MembershipFragment.this);
-                    alert.show();
-
-
-                }
+//                if (model instanceof Package) {
+//                    Package pkg = (Package) model;
+//                    AlertP5MCreditInfo alert = new AlertP5MCreditInfo(context, pkg, MembershipFragment.this);
+//                    alert.show();
+//
+//
+//                }
                 break;
             case R.id.textViewBuyMoreCredits:
                 checkPackages(true);
@@ -660,7 +662,11 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                 showWalletAlert();
                 break;
             case R.id.textGymVisitLimits:
-                PackageLimitsActivity.openActivity(context, "");
+
+                    AlertP5MCreditInfo alert = new AlertP5MCreditInfo(context, null, MembershipFragment.this);
+                    alert.show();
+
+
 
                 break;
             case R.id.imageViewInfo:

@@ -118,7 +118,7 @@
                 android:layout_gravity="bottom"
                 android:background="@android:color/transparent"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <TextView
                     android:id="@+id/textGymVisitLimits"
@@ -132,10 +132,10 @@
                     android:paddingTop="@dimen/margin_5"
                     android:paddingRight="@dimen/margin_20"
                     android:paddingBottom="@dimen/margin_5"
-                    android:text="@string/view_gym_visit_limits"
+                    android:text="@string/learn_more_about_credits"
                     android:textColor="@color/theme_book"
                     android:textSize="@dimen/text_medium"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

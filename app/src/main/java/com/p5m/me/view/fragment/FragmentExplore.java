@@ -166,7 +166,7 @@ public class FragmentExplore extends BaseFragment implements ViewPagerFragmentSe
             processingProgressBar.setVisibility(View.GONE);
         }
 
-        networkCommunicator.getYoutubePlayList(platlistId,api_key,null,this);
+        //networkCommunicator.getYoutubePlayList(platlistId,api_key,null,this);
         networkCommunicator.getExploreData(this, false);
 
     }

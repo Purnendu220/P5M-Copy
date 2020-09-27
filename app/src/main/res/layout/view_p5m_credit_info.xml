@@ -167,6 +167,7 @@
                     android:textColor="@color/rating_blank"
                     android:layout_weight="1"
                     android:layout_marginRight="@dimen/margin_10"
+                    android:visibility="gone"
 
 
                     />
@@ -179,7 +180,7 @@
                     android:fontFamily="sans-serif"
                     android:gravity="center"
                     android:letterSpacing="@dimen/button_letter_spacing"
-                    android:text="@string/purchase"
+                    android:text="@string/ok"
                     android:textAllCaps="true"
                     android:textSize="@dimen/text_small"
                     android:textColor="@color/white"

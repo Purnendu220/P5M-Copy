@@ -272,6 +272,7 @@
     <string name="profile_package_expiry">" remaining until your credits expire."</string>
 
     <string name="view_gym_visit_limits">الاطلاع على حدود زيارة النوادي</string>
+    <string name="learn_more_about_credits">Learn more about our credits</string>
 
     <string name="gym_visit_limits_no_lines">حدود زيارة النوادي</string>
 
@@ -1091,5 +1092,9 @@
     <string name="enter_with_google">أدخل مع جوجل</string>
     <string name="online">Online</string>
     <string name="at_gym">At-Gym</string>
+    <string name="safty_message_without_underline">ما الإرشادات بشأن فيروس كورونا التي تتخذها نادي  %1$s</string>
+    <string name="safty_message">ما الإرشادات بشأن فيروس كورونا التي تتخذها نادي %1$s</string>
+
+    <string name="question_safety"><b>%s</b> %s</string>
 
 </resources>

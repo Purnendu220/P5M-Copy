@@ -347,4 +347,9 @@
         <key>conversion_text</key>
         <value>The payment will be done in Kuwait Dinar. Rate of conversion: 1KD = $3.3</value>
     </entry>
+
+    <entry>
+        <key>credits_info</key>
+        <value><![CDATA[{"title":"P5M CREDITS", "title_ar":"P5M CREDITS", "sub": "Can be used for online, offline, personal training, workshops & more. Credits vary for each gym/activity",  "sub_ar": "Can be used for online, offline, personal training, workshops & more. Credits vary for each gym/activity", "detail": [{"en":"At-Gym classes range from 10-20 credits", "ar":"At-Gym classes range from 10-20 credits"},{"en":"Online classes range from 5-12 credits", "ar": "Online classes range from 5-12 credits"},{"en":"PT and Workshops range from 20 to 100 credits", "ar":"PT and Workshops range from 20 to 100 credits"}]}]]></value>
+    </entry>
 </defaultsMap>

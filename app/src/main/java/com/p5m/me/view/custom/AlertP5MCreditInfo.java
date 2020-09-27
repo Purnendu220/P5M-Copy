@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 
 import com.p5m.me.R;
+import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.CreditValueLanguageModel;
 import com.p5m.me.data.CreditValueModel;
 import com.p5m.me.data.main.Package;
@@ -37,6 +38,7 @@ public class AlertP5MCreditInfo extends Dialog implements View.OnClickListener {
         init();
     }
     private void init() {
+        MixPanel.trackLearnAboutCredits();
         dataBinding = ViewP5mCreditInfoBinding.inflate(getLayoutInflater());
         setContentView(dataBinding.getRoot());
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -87,7 +89,7 @@ public class AlertP5MCreditInfo extends Dialog implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.textViewOk: {
                 dismiss();
-                alertButtonListener.onOkClick(AppConstants.AlertRequestCodes.ALERT_REQUEST_PURCHASE,model);
+               // alertButtonListener.onOkClick(AppConstants.AlertRequestCodes.ALERT_REQUEST_PURCHASE,model);
             }
             break;
             case R.id.textViewCancel: {

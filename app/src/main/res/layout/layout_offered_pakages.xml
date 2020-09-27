@@ -28,6 +28,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
 
                 <TextView
                     android:id="@+id/txtPackageOffredCredits"
@@ -45,6 +50,21 @@
 
 
                     />
+                <TextView
+                    android:id="@+id/txtIsPackagePopular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/margin_50"
+                    android:background="@drawable/rouded_corner_text"
+                    android:gravity="center_vertical"
+                    android:paddingStart="@dimen/margin_5"
+                    android:paddingEnd="@dimen/margin_5"
+                    android:text="SUMMER BODY"
+                    android:textColor="@color/theme_book"
+                    android:textSize="@dimen/text_small"
+                    android:visibility="gone" />
+            </LinearLayout>
 
                 <TextView
                     android:id="@+id/txtPackageOffredClassesLimits"
@@ -56,7 +76,7 @@
                     android:text="@string/book_class_limits"
                     android:visibility="visible"
                     android:layout_marginLeft="@dimen/margin_10"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/black"
 
                     android:textSize="@dimen/text_medium" />
 
