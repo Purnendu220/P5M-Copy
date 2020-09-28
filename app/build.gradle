@@ -292,6 +292,8 @@ dependencies {
     implementation 'com.devbrackets.android:exomedia:4.3.0'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
     implementation 'com.google.android.gms:play-services-plus:17.0.0'
+    implementation 'org.apmem.tools:layouts:1.10@aar'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

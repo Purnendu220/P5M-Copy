@@ -11,6 +11,7 @@ package com.p5m.me.adapters.viewholder;
         import com.p5m.me.adapters.AdapterCallbacks;
         import com.p5m.me.data.Nationality;
         import com.p5m.me.data.QuestionAnswerModel;
+        import com.p5m.me.utils.LanguageUtils;
 
         import butterknife.BindView;
         import butterknife.ButterKnife;
@@ -41,7 +42,13 @@ public class CovidSaftyViewHolder extends RecyclerView.ViewHolder {
             itemView.setVisibility(View.VISIBLE);
 
             QuestionAnswerModel model = (QuestionAnswerModel) data;
-            questionTxt.setText(Html.fromHtml(String.format(context.getString(R.string.question_safety),"<b>"+model.getQuestion()+"</b>",model.getAnswer())));
+            if(LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")){
+                questionTxt.setText(Html.fromHtml(String.format(context.getString(R.string.question_safety),model.getAnswer(),"<b>"+model.getQuestion()+"</b>")));
+
+            }else{
+                questionTxt.setText(Html.fromHtml(String.format(context.getString(R.string.question_safety),"<b>"+model.getQuestion()+"</b>",model.getAnswer())));
+
+            }
             answerTxt.setText(model.getAnswer());
 
 

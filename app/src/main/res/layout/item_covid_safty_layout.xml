@@ -5,13 +5,19 @@
     android:padding="@dimen/margin_2"
     android:orientation="horizontal"
     >
-
+    <org.apmem.tools.layouts.FlowLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/question_safety"
         android:id="@+id/questionTxt"
         android:textColor="@color/black"
+        android:textDirection="anyRtl"
+        android:textAlignment="viewStart"
         >
 
     </TextView>
@@ -28,4 +34,6 @@
         >
 
     </TextView>
+    </org.apmem.tools.layouts.FlowLayout>
+
 </LinearLayout>
