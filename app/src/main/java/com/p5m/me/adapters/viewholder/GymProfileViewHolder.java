@@ -287,7 +287,7 @@ public class GymProfileViewHolder extends RecyclerView.ViewHolder {
             safetyAnsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
             safetyAnsRecyclerView.setHasFixedSize(false);
 
-            CovidSaftyAdapter covidSaftyAdapter = new CovidSaftyAdapter(context, adapterCallbacks);
+            CovidSaftyAdapter covidSaftyAdapter = new CovidSaftyAdapter(context, adapterCallbacks,true);
             safetyAnsRecyclerView.setAdapter(covidSaftyAdapter);
 
             covidSaftyAdapter.addAll(model.getCovidSafetyList());

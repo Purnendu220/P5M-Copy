@@ -3,6 +3,7 @@ package com.p5m.me.adapters.viewholder;
         import android.content.Context;
         import android.text.Html;
         import android.view.View;
+        import android.widget.LinearLayout;
         import android.widget.TextView;
 
         import androidx.recyclerview.widget.RecyclerView;
@@ -11,6 +12,7 @@ package com.p5m.me.adapters.viewholder;
         import com.p5m.me.adapters.AdapterCallbacks;
         import com.p5m.me.data.Nationality;
         import com.p5m.me.data.QuestionAnswerModel;
+        import com.p5m.me.utils.LanguageUtils;
 
         import butterknife.BindView;
         import butterknife.ButterKnife;
@@ -22,6 +24,9 @@ public class CovidSaftyViewHolder extends RecyclerView.ViewHolder {
     public TextView questionTxt;
     @BindView(R.id.answerTxt)
     public TextView answerTxt;
+
+    @BindView(R.id.parent)
+    public LinearLayout parent;
 
     private final Context context;
 
@@ -35,13 +40,23 @@ public class CovidSaftyViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void bind(final Object data, final AdapterCallbacks adapterCallbacks, final int position) {
+    public void bind(final Object data,boolean showBackGround, final AdapterCallbacks adapterCallbacks, final int position) {
 
         if (data != null && data instanceof QuestionAnswerModel) {
             itemView.setVisibility(View.VISIBLE);
 
+            if(showBackGround){
+                parent.setBackgroundColor(context.getResources().getColor(R.color.white));
+            }
+
             QuestionAnswerModel model = (QuestionAnswerModel) data;
-            questionTxt.setText(Html.fromHtml(String.format(context.getString(R.string.question_safety),"<b>"+model.getQuestion()+"</b>",model.getAnswer())));
+            if(LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")){
+                questionTxt.setText(Html.fromHtml(String.format(context.getString(R.string.question_safety),model.getAnswer(),"<b>"+model.getQuestion()+"</b>")));
+
+            }else{
+                questionTxt.setText(Html.fromHtml(String.format(context.getString(R.string.question_safety),"<b>"+model.getQuestion()+"</b>",model.getAnswer())));
+
+            }
             answerTxt.setText(model.getAnswer());
 
 

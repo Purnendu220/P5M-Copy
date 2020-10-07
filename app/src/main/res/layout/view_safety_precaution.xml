@@ -37,7 +37,6 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/safetyAnsRecyclerView"
                 android:layout_marginTop="@dimen/margin_10"
-                android:layout_marginLeft="@dimen/margin_10"
                 android:layout_marginRight="@dimen/margin_10"
                 android:layout_marginBottom="@dimen/margin_5"
                 >

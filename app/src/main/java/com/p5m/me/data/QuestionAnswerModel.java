@@ -3,8 +3,10 @@ package com.p5m.me.data;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 
-public class QuestionAnswerModel {
+
+public class QuestionAnswerModel implements Serializable {
 
     @SerializedName("answer")
     private String mAnswer;

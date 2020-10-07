@@ -60,7 +60,7 @@ public class SafetyByGymPopup extends Dialog implements View.OnClickListener {
             dataBinding.safetyAnsRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
             dataBinding.safetyAnsRecyclerView.setHasFixedSize(false);
 
-            CovidSaftyAdapter covidSaftyAdapter = new CovidSaftyAdapter(mContext, adapterCallbacks);
+            CovidSaftyAdapter covidSaftyAdapter = new CovidSaftyAdapter(mContext, adapterCallbacks,true);
             dataBinding.safetyAnsRecyclerView.setAdapter(covidSaftyAdapter);
 
             covidSaftyAdapter.addAll(model.getCovidSafetyList());

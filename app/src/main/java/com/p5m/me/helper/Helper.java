@@ -36,6 +36,8 @@ import com.p5m.me.data.BookButtonModel;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.QuestionAnswerModel;
 import com.p5m.me.data.RemoteConfigDataModel;
+import com.p5m.me.data.SpecialModel;
+import com.p5m.me.data.SpecialProgramModel;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
@@ -191,6 +193,7 @@ public class Helper {
     }
 
     public static void setJoinButton(Context context, Button buttonJoin, ClassModel model) {
+        String BOOK_FIND_CLASS_VALUE = RemoteConfigure.getFirebaseRemoteConfig(context).getRemoteConfigValue(RemoteConfigConst.BOOK_FIND_CLASS);
 
         if (model.isUserJoinStatus()) {
 
@@ -213,10 +216,13 @@ public class Helper {
                 buttonJoin.setText(RemoteConfigConst.WAITLIST_VALUE);
                 RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
             }
+            if(isSpecialProgram(context,model,null)){
+                setJoinButtonTitle(context,BOOK_FIND_CLASS_VALUE,model,buttonJoin);
+
+            }
 
         } else {
             ;
-            String BOOK_FIND_CLASS_VALUE = RemoteConfigure.getFirebaseRemoteConfig(context).getRemoteConfigValue(RemoteConfigConst.BOOK_FIND_CLASS);
             if (BOOK_FIND_CLASS_VALUE != null && !BOOK_FIND_CLASS_VALUE.isEmpty()) {
                 try{
                     Gson g = new Gson();
@@ -253,6 +259,7 @@ public class Helper {
 
     }
   public static void setJoinButtonOther(Context context, Button buttonJoin, ClassModel model) {
+      String BOOK_OTHER_VALUE = RemoteConfigure.getFirebaseRemoteConfig(context).getRemoteConfigValue(RemoteConfigConst.BOOK_OTHERS);;
 
         if (model.isUserJoinStatus()) {
 
@@ -275,38 +282,68 @@ public class Helper {
                 buttonJoin.setText(RemoteConfigConst.WAITLIST_VALUE);
                 RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
             }
+            if(isSpecialProgram(context,model,null)){
+                setJoinButtonTitle(context,BOOK_OTHER_VALUE,model,buttonJoin);
+
+            }
 
         } else {
 
+            setJoinButtonTitle(context,BOOK_OTHER_VALUE,model,buttonJoin);
 
-            String BOOK_OTHER_VALUE = RemoteConfigure.getFirebaseRemoteConfig(context).getRemoteConfigValue(RemoteConfigConst.BOOK_OTHERS);;
-            if (BOOK_OTHER_VALUE != null && !BOOK_OTHER_VALUE.isEmpty()) {
-                try{
-                    Gson g = new Gson();
-                    BookButtonModel p = g.fromJson(BOOK_OTHER_VALUE, new TypeToken<BookButtonModel>() {
-                    }.getType());
-                    if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en")) {
-                        if (model.isVideoClass())
-                            buttonJoin.setText(p.getOnline_button_en());
-                        else
-                            buttonJoin.setText(p.getPhysical_button_en());
-                    } else {
-                        if (model.isVideoClass())
-                            buttonJoin.setText(p.getOnline_button_ar());
-                        else
-                            buttonJoin.setText(p.getPhysical_button_ar());
-                    }
+        }
 
-                    RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+    }
 
+    public static void setJoinButtonTitle(Context context,String remoteConfigVal,ClassModel model,Button buttonJoin){
+        if (remoteConfigVal != null && !remoteConfigVal.isEmpty()) {
+            try{
+                Gson g = new Gson();
+                BookButtonModel p = g.fromJson(remoteConfigVal, new TypeToken<BookButtonModel>() {
+                }.getType());
+                if (LanguageUtils.getLocalLanguage().equalsIgnoreCase("en")) {
+                    if (model.isVideoClass())
+                        buttonJoin.setText(p.getOnline_button_en());
+                    else
+                        buttonJoin.setText(p.getPhysical_button_en());
+                } else {
+                    if (model.isVideoClass())
+                        buttonJoin.setText(p.getOnline_button_ar());
+                    else
+                        buttonJoin.setText(p.getPhysical_button_ar());
                 }
-                catch (Exception e){
-                    e.printStackTrace();}
+
+                RemoteConfigSetUp.setBackgroundColor(buttonJoin, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
+
+            }
+            catch (Exception e){
+                e.printStackTrace();}
 
 
+        }
+    }
+    public static boolean isSpecialProgram(Context mContext,ClassModel model, SpecialProgramModel specialProgramModel){
+        if(specialProgramModel==null){
+            String SPECIAL_INFO_VALUE = RemoteConfigure.getFirebaseRemoteConfig(mContext).getRemoteConfigValue(RemoteConfigConst.SPECIAL_INFO);
+
+            try{
+                Gson g = new Gson();
+                specialProgramModel = g.fromJson(SPECIAL_INFO_VALUE, new TypeToken<SpecialProgramModel>() {
+                }.getType());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+       boolean isSpecialProgram = false;
+        if(specialProgramModel!=null&&model!=null&&specialProgramModel.getSpecialClassId()!=null){
+            for (int specialClassId:specialProgramModel.getSpecialClassId()) {
+                if(specialClassId==model.getClassId()){
+                    isSpecialProgram = true;
+                }
             }
         }
 
+       return isSpecialProgram;
     }
 
 
@@ -329,8 +366,6 @@ public class Helper {
             view1.setVisibility(View.GONE);
 
         } else if (model.getAvailableSeat() == 0) {
-//            view.setText(context.getString(R.string.full));
-
             if (model.getWishType() != null) {
                 if (model.getWishType().equalsIgnoreCase(AppConstants.ApiParamKey.WAITLIST)) {
                     view.setText(RemoteConfigConst.WAITLISTED_VALUE);
@@ -345,7 +380,11 @@ public class Helper {
                 RemoteConfigSetUp.setBackgroundColor(view, RemoteConfigConst.BOOK_COLOR_VALUE, context.getResources().getColor(R.color.theme_book));
 
             }
+            if(isSpecialProgram(context,model,null)){
+                view.setText(RemoteConfigConst.BOOK_IN_CLASS_VALUE);
+                RemoteConfigSetUp.setBackgroundColor(view, "", context.getResources().getColor(R.color.colorAccent));
 
+            }
             view1.setVisibility(View.GONE);
         } else if (model.getAvailableSeat() < 2) {
             view1.setVisibility(View.GONE);
@@ -374,6 +413,9 @@ public class Helper {
                 }
 
             }
+        }
+        if(isSpecialProgram(context,model,null)){
+            view1.setVisibility(View.GONE);
         }
     }
 

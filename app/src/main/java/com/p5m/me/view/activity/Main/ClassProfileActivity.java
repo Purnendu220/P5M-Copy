@@ -33,6 +33,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.ClassProfileAdapter;
@@ -40,10 +42,12 @@ import com.p5m.me.agorartc.activities.MainActivity;
 import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.analytics.MixPanel;
+import com.p5m.me.data.BookButtonModel;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.Join5MinModel;
 import com.p5m.me.data.QuestionAnswerModel;
+import com.p5m.me.data.SpecialProgramModel;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.ClassModel;
@@ -60,6 +64,7 @@ import com.p5m.me.helper.ClassListListenerHelper;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.remote_config.RemoteConfigSetUp;
+import com.p5m.me.remote_config.RemoteConfigure;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -73,9 +78,13 @@ import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.OpenAppUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
+import com.p5m.me.view.custom.AlertP5MCreditInfo;
 import com.p5m.me.view.custom.BookForAFriendPopup;
 import com.p5m.me.view.custom.CustomAlertDialog;
+import com.p5m.me.view.custom.OnAlertButtonAction;
+import com.p5m.me.view.custom.SpecialProgramPopup;
 import com.p5m.me.view.fragment.BottomSheetClassBookingOptions;
+import com.p5m.me.view.fragment.MembershipFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -91,7 +100,7 @@ import butterknife.OnClick;
 
 import static com.p5m.me.utils.AppConstants.Limit.PAGE_LIMIT_MAIN_CLASS_LIST;
 
-public class ClassProfileActivity extends BaseActivity implements AdapterCallbacks, View.OnClickListener, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener, CustomAlertDialog.OnAlertButtonAction {
+public class ClassProfileActivity extends BaseActivity implements AdapterCallbacks, View.OnClickListener, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener, OnAlertButtonAction {
 
     private String message;
     private int errorMsg;
@@ -175,7 +184,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     private LinearLayout mLayoutUserWallet;
     private static User.WalletDto mWalletCredit;
     private boolean showChoosePackageOption = true;
-
+    private SpecialProgramModel specialProgramModel;
 
     @Override
     public void onDestroy() {
@@ -282,6 +291,16 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         }
         imgCloseWarning.setOnClickListener(this);
         textPurchase.setOnClickListener(this);
+        String SPECIAL_INFO_VALUE = RemoteConfigure.getFirebaseRemoteConfig(context).getRemoteConfigValue(RemoteConfigConst.SPECIAL_INFO);
+
+        try{
+            Gson g = new Gson();
+            specialProgramModel = g.fromJson(SPECIAL_INFO_VALUE, new TypeToken<SpecialProgramModel>() {
+            }.getType());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -328,6 +347,15 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         mBookWithFriendData = null;
         if(!Helper.isUserAllowedForClass(context,classModel)){
             return;
+        }
+        if(Helper.isSpecialProgram(context,classModel,specialProgramModel)){
+            if (classModel.getAvailableSeat() == 0){
+                openSpecialProgramModel(1);
+            }else{
+                openSpecialProgramModel(0);
+
+            }
+return;
         }
         textViewBook.setEnabled(false);
         textViewBook.setText(context.getResources().getString(R.string.please_wait));
@@ -428,6 +456,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
 
     private void joinClass() {
+
         textViewBook.setText(context.getResources().getString(R.string.please_wait));
         textViewBook.setEnabled(false);
         networkCommunicator.joinClass(new JoinClassRequest(TempStorage.getUser().getId(), classModel.getClassSessionId()), this, false);
@@ -558,16 +587,16 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         }
     }
 
-    private void showWalletAlert() {
-        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.p5m_credits), context.getString(R.string.p5m_credit_alert), 1, "", context.getResources().getString(R.string.ok), CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO, null, true, this);
-        try {
-            mCustomAlertDialog.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-    }
+//    private void showWalletAlert() {
+//        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.p5m_credits), context.getString(R.string.p5m_credit_alert), 1, "", context.getResources().getString(R.string.ok), CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO, null, true, this);
+//        try {
+//            mCustomAlertDialog.show();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//    }
 
     @Override
     public void onApiSuccess(Object response, int requestCode) {
@@ -639,6 +668,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     classProfileAdapter.setClass(classModel);
                     classProfileAdapter.notifyDataSetChanged();
                     MixPanel.trackClassDetailsVisit(navigationFrom,classModel);
+
 
                 }
 //                layoutButton.setVisibility(View.VISIBLE);
@@ -957,6 +987,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         if (classModel != null)
             Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
+
     }
 
 
@@ -995,15 +1026,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     }
 
 
-    @Override
-    public void onOkClick(int requestCode, Object data) {
 
-    }
-
-    @Override
-    public void onCancelClick(int requestCode, Object data) {
-
-    }
     private void addToWishList() {
         networkCommunicator.addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
             @Override
@@ -1130,6 +1153,28 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
             }
         });
+
+    }
+
+    private void openSpecialProgramModel(int type){
+        SpecialProgramPopup alert = new SpecialProgramPopup(context, classModel,type, (OnAlertButtonAction) this);
+        alert.show();
+
+
+    }
+    @Override
+    public void onOkClick(int requestCode, Object data) {
+
+    }
+
+    @Override
+    public void onCancelClick(int requestCode, Object data) {
+        switch (requestCode){
+            case AppConstants.AlertRequestCodes.ALERT_REQUEST_NO_PLAN:
+            case AppConstants.AlertRequestCodes.ALERT_REQUEST_HAVE_PLAN:
+                joinClass();
+                break;
+        }
 
     }
 }

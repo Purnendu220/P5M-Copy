@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:id="@+id/parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/margin_2"
     android:orientation="horizontal"
+    android:background="@color/semi_transparent_blue"
+
     >
 
     <TextView
@@ -12,6 +15,10 @@
         android:text="@string/question_safety"
         android:id="@+id/questionTxt"
         android:textColor="@color/black"
+        android:textDirection="anyRtl"
+        android:textAlignment="viewStart"
+        android:layout_marginLeft="@dimen/margin_10"
+
         >
 
     </TextView>
@@ -28,4 +35,5 @@
         >
 
     </TextView>
+
 </LinearLayout>
