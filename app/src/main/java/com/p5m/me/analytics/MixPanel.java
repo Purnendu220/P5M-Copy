@@ -22,6 +22,7 @@ import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.storage.TempStorage;
+import com.p5m.me.storage.preferences.MyPreferences;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.LogUtils;
@@ -64,23 +65,48 @@ public class MixPanel {
         if (isSetupDone) {
             return;
         }
+        if(MyPreferences.getInstance().isLogin()){
+            mixPanel = MixpanelAPI.getInstance(context, MIX_PANEL_TOKEN, false);
+            try {
+                mixPanel.identify(String.valueOf(TempStorage.getUser().getId()));
+                mixPanel.getPeople().identify(String.valueOf(TempStorage.getUser().getId()));
 
-        mixPanel = MixpanelAPI.getInstance(context, MIX_PANEL_TOKEN, false);
+                JSONObject props = new JSONObject();
+                props.put("Source", "Android");
+                props.put("Location", TempStorage.getCountryName());
+                mixPanel.registerSuperProperties(props);
+                isSetupDone = true;
+                LogUtils.debug("MixPanel setup done");
+            } catch (Exception e) {
+                isSetupDone = false;
+                e.printStackTrace();
+                LogUtils.exception(e);
+                LogUtils.debug("MixPanel setup error");
+            }
+        }else{
+            mixPanel = MixpanelAPI.getInstance(context, MIX_PANEL_TOKEN, false);
 
-        try {
-            mixPanel.identify(String.valueOf(TempStorage.getUser().getId()));
-            JSONObject props = new JSONObject();
-            props.put("Source", "Android");
-            props.put("Location", TempStorage.getCountryName());
-            mixPanel.registerSuperProperties(props);
-            isSetupDone = true;
-            LogUtils.debug("MixPanel setup done");
-        } catch (Exception e) {
-            isSetupDone = false;
-            e.printStackTrace();
-            LogUtils.exception(e);
-            LogUtils.debug("MixPanel setup error");
         }
+
+    }
+
+    public static void optInTracking(){
+        if(mixPanel!=null){
+            mixPanel.optInTracking();
+            mixPanel.identify(String.valueOf(TempStorage.getUser().getId()));
+            mixPanel.getPeople().identify(String.valueOf(TempStorage.getUser().getId()));
+            try{
+                JSONObject props = new JSONObject();
+                props.put("Source", "Android");
+                props.put("Location", TempStorage.getCountryName());
+                mixPanel.registerSuperProperties(props);
+                isSetupDone = true;
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }
+
     }
 
     private static void trackEvent(JSONObject props, String eventName) {
@@ -96,9 +122,11 @@ public class MixPanel {
 
 
     public static void login(Context context) {
+        mixPanel.alias(String.valueOf(TempStorage.getUser().getId()),null);
     }
 
     public static void logout() {
+        mixPanel.reset();
     }
 
     public static void flush() {
@@ -139,6 +167,7 @@ public class MixPanel {
     }
 
     public static void trackRegister(String origin, User user) {
+        optInTracking();
         try {
             JSONObject props = new JSONObject();
             props.put("origin", origin);
@@ -152,6 +181,8 @@ public class MixPanel {
     }
 
     public static void trackLogin(String origin, User user) {
+        optInTracking();
+
         try {
             JSONObject props = new JSONObject();
             props.put("origin", origin);
@@ -1020,3 +1051,4 @@ public class MixPanel {
         }
     }
 }
+

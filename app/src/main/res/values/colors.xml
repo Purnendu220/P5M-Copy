@@ -14,6 +14,9 @@
     <color name="login_active">#FFFFFF</color>
     <color name="login_active_highlighted">#EEEEEE</color>
     <color name="black">#000000</color>
+    <color name="semi_transparent_blue">#E1EDFC</color>
+
+
     <color name="grey">#999999</color>
     <color name="grey_bg">#f1f0f6</color>
     <color name="dark_grey">#9aa4a6</color>

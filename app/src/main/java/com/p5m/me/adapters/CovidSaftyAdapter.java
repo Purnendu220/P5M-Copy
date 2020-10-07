@@ -32,13 +32,15 @@ public class CovidSaftyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private boolean showLoader;
     private ListLoader listLoader;
+    private boolean showBackGround;
 
-    public CovidSaftyAdapter(Context context, AdapterCallbacks adapterCallbacks) {
+    public CovidSaftyAdapter(Context context, AdapterCallbacks adapterCallbacks,boolean showBackGround) {
         this.adapterCallbacks = adapterCallbacks;
         this.context = context;
         list = new ArrayList<>();
         this.showLoader = false;
         listLoader = new ListLoader();
+        this.showBackGround = showBackGround;
     }
 
     public void add(QuestionAnswerModel model) {
@@ -79,7 +81,7 @@ public class CovidSaftyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof CovidSaftyViewHolder) {
-            ((CovidSaftyViewHolder) holder).bind(getItem(position), adapterCallbacks, position);
+            ((CovidSaftyViewHolder) holder).bind(getItem(position),showBackGround, adapterCallbacks, position);
         } else if (holder instanceof LoaderViewHolder) {
             ((LoaderViewHolder) holder).bind(listLoader, adapterCallbacks);
         }

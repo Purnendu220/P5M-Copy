@@ -208,6 +208,7 @@ public class AppConstants {
         public static final String TRAINER_OBJECT = "trainer_object";
         public static final String PAYMENT_URL_OBJECT = "payment_url_object";
         public static final String URL_OBJECT_TO_LOAD = "url_object_to_load";
+        public static final String IS_FROM_SPECIAL_PROGRAM = "is_from_special_program";
 
         public static final String GYM_OBJECT = "gym_object";
         public static final String GYM_ID_INT = "gym_id_int";
@@ -506,6 +507,8 @@ public class AppConstants {
         public static final int NAVIGATION_FROM_FACEBOOK_SIGNUP = 68;
         public static final int NAVIGATION_FROM_FACEBOOK_LOGIN = 69;
         public static final int NAVIGATION_FROM_GOOGLE_LOGIN = 70;
+        public static final int NAVIGATION_FROM_SPECIAL_PROGRAM = 71;
+
     }
 
     public class Limit {
@@ -628,6 +631,10 @@ public class AppConstants {
     public interface AlertRequestCodes {
         int ALERT_REQUEST_PURCHASE = 1;
         int ALERT_REQUEST_PURCHASE_CANCEL = 2;
+        int ALERT_REQUEST_NO_PLAN = 3;
+        int ALERT_REQUEST_HAVE_PLAN = 4;
+
+
 
 
     }

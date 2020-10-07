@@ -132,7 +132,7 @@ public class ClassListListenerHelper implements AdapterCallbacks, NetworkCommuni
                             ToastUtils.show(context, context.getString(R.string.gender_males_only_error));
                             return;
                         }
-                        if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus() == false) {
+                        if (classModel.getAvailableSeat() == 0 && classModel.isUserJoinStatus() == false&&!Helper.isSpecialProgram(context,classModel,null)) {
                             NetworkCommunicator.getInstance(context).addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
                                 @Override
                                 public void onApiSuccess(Object response, int requestCode) {
