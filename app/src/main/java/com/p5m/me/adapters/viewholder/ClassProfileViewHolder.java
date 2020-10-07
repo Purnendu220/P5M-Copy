@@ -519,7 +519,7 @@ public class ClassProfileViewHolder extends RecyclerView.ViewHolder implements
             safetyAnsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
             safetyAnsRecyclerView.setHasFixedSize(false);
 
-            CovidSaftyAdapter covidSaftyAdapter = new CovidSaftyAdapter(context, adapterCallbacks);
+            CovidSaftyAdapter covidSaftyAdapter = new CovidSaftyAdapter(context, adapterCallbacks,false);
             safetyAnsRecyclerView.setAdapter(covidSaftyAdapter);
 
             covidSaftyAdapter.addAll(model.getCovidSafetyList());

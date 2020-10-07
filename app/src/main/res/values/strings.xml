@@ -45,6 +45,7 @@
     <string name="yes">YES</string>
     <string name="no">NO</string>
     <string name="remove_wishlist_consent">Do you really want to remove <b>%s</b> from wishlist?</string>
+
     <string name="full_name">Full Name</string>
 
     <string name="welcome_back">Welcome back!</string>
@@ -343,6 +344,8 @@
     <string name="need_location">Need Location</string>
     <string name="this_package_has">This package has</string>
     <string name="to_complete_the_payment_you_should_stay_on_this_page">To complete the payment you should stay on this page</string>
+    <string name="to_join_the_program_you_should_stay_on_this_page">To join the program you should stay on this page</string>
+
     <string name="stay_on_this_page">Stay on this page</string>
     <string name="leave_this_page">Leave this page</string>
     <string name="no_more_gyms">No more gyms</string>

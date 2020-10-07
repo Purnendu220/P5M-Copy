@@ -3,6 +3,7 @@ package com.p5m.me.adapters.viewholder;
         import android.content.Context;
         import android.text.Html;
         import android.view.View;
+        import android.widget.LinearLayout;
         import android.widget.TextView;
 
         import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +25,9 @@ public class CovidSaftyViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.answerTxt)
     public TextView answerTxt;
 
+    @BindView(R.id.parent)
+    public LinearLayout parent;
+
     private final Context context;
 
     public CovidSaftyViewHolder(View itemView) {
@@ -36,10 +40,14 @@ public class CovidSaftyViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void bind(final Object data, final AdapterCallbacks adapterCallbacks, final int position) {
+    public void bind(final Object data,boolean showBackGround, final AdapterCallbacks adapterCallbacks, final int position) {
 
         if (data != null && data instanceof QuestionAnswerModel) {
             itemView.setVisibility(View.VISIBLE);
+
+            if(showBackGround){
+                parent.setBackgroundColor(context.getResources().getColor(R.color.white));
+            }
 
             QuestionAnswerModel model = (QuestionAnswerModel) data;
             if(LanguageUtils.getLocalLanguage().equalsIgnoreCase("ar")){

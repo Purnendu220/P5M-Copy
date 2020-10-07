@@ -78,9 +78,13 @@ import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.OpenAppUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
+import com.p5m.me.view.custom.AlertP5MCreditInfo;
 import com.p5m.me.view.custom.BookForAFriendPopup;
 import com.p5m.me.view.custom.CustomAlertDialog;
+import com.p5m.me.view.custom.OnAlertButtonAction;
+import com.p5m.me.view.custom.SpecialProgramPopup;
 import com.p5m.me.view.fragment.BottomSheetClassBookingOptions;
+import com.p5m.me.view.fragment.MembershipFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -96,7 +100,7 @@ import butterknife.OnClick;
 
 import static com.p5m.me.utils.AppConstants.Limit.PAGE_LIMIT_MAIN_CLASS_LIST;
 
-public class ClassProfileActivity extends BaseActivity implements AdapterCallbacks, View.OnClickListener, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener, CustomAlertDialog.OnAlertButtonAction {
+public class ClassProfileActivity extends BaseActivity implements AdapterCallbacks, View.OnClickListener, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener, OnAlertButtonAction {
 
     private String message;
     private int errorMsg;
@@ -297,6 +301,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
             e.printStackTrace();
         }
 
+
     }
 
     private void getDynamicLink() {
@@ -342,6 +347,15 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         mBookWithFriendData = null;
         if(!Helper.isUserAllowedForClass(context,classModel)){
             return;
+        }
+        if(Helper.isSpecialProgram(context,classModel,specialProgramModel)){
+            if (classModel.getAvailableSeat() == 0){
+                openSpecialProgramModel(1);
+            }else{
+                openSpecialProgramModel(0);
+
+            }
+return;
         }
         textViewBook.setEnabled(false);
         textViewBook.setText(context.getResources().getString(R.string.please_wait));
@@ -442,6 +456,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
 
     private void joinClass() {
+
         textViewBook.setText(context.getResources().getString(R.string.please_wait));
         textViewBook.setEnabled(false);
         networkCommunicator.joinClass(new JoinClassRequest(TempStorage.getUser().getId(), classModel.getClassSessionId()), this, false);
@@ -572,16 +587,16 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         }
     }
 
-    private void showWalletAlert() {
-        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.p5m_credits), context.getString(R.string.p5m_credit_alert), 1, "", context.getResources().getString(R.string.ok), CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO, null, true, this);
-        try {
-            mCustomAlertDialog.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-    }
+//    private void showWalletAlert() {
+//        CustomAlertDialog mCustomAlertDialog = new CustomAlertDialog(context, context.getString(R.string.p5m_credits), context.getString(R.string.p5m_credit_alert), 1, "", context.getResources().getString(R.string.ok), CustomAlertDialog.AlertRequestCodes.ALERT_REQUEST_WALLET_INFO, null, true, this);
+//        try {
+//            mCustomAlertDialog.show();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//    }
 
     @Override
     public void onApiSuccess(Object response, int requestCode) {
@@ -653,6 +668,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
                     classProfileAdapter.setClass(classModel);
                     classProfileAdapter.notifyDataSetChanged();
                     MixPanel.trackClassDetailsVisit(navigationFrom,classModel);
+
 
                 }
 //                layoutButton.setVisibility(View.VISIBLE);
@@ -971,6 +987,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
         if (classModel != null)
             Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
 
+
     }
 
 
@@ -1009,15 +1026,7 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
     }
 
 
-    @Override
-    public void onOkClick(int requestCode, Object data) {
 
-    }
-
-    @Override
-    public void onCancelClick(int requestCode, Object data) {
-
-    }
     private void addToWishList() {
         networkCommunicator.addToWishList(classModel, classModel.getClassSessionId(), new NetworkCommunicator.RequestListener() {
             @Override
@@ -1144,6 +1153,28 @@ public class ClassProfileActivity extends BaseActivity implements AdapterCallbac
 
             }
         });
+
+    }
+
+    private void openSpecialProgramModel(int type){
+        SpecialProgramPopup alert = new SpecialProgramPopup(context, classModel,type, (OnAlertButtonAction) this);
+        alert.show();
+
+
+    }
+    @Override
+    public void onOkClick(int requestCode, Object data) {
+
+    }
+
+    @Override
+    public void onCancelClick(int requestCode, Object data) {
+        switch (requestCode){
+            case AppConstants.AlertRequestCodes.ALERT_REQUEST_NO_PLAN:
+            case AppConstants.AlertRequestCodes.ALERT_REQUEST_HAVE_PLAN:
+                joinClass();
+                break;
+        }
 
     }
 }

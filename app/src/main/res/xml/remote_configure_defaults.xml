@@ -352,5 +352,9 @@
         <key>special_info</key>
         <value><![CDATA[ {"specialClassId":[{"title":"Class","id":1}], "specialTrainer":[{"title":"Trainer","id":1}], "specialGym":[{"title":"Gym","id":1}] }]]></value>
     </entry>
+    <entry>
+        <key>special_program_popup</key>
+        <value><![CDATA[{"en_values":{"title":"Join Hana Program","messageNoPlan":"Join hana program from P5M Plan or buy Hana Program to book all classes of program","messageClassFull":"Join hana program from P5M Plan or buy Hana Program to book all classes of program","buttonOneNoPlan":"Buy P5M plan","buttonTwoNoPlan":"Buy Program","buttonOneClassFull":"Check Another Day","buttonTwoClassFull":"Buy Program "},"ar_values":{"title":"Join Hana Program","messageNoPlan":"Join hana program from P5M Plan or buy Hana Program to book all classes of program","messageClassFull":"Join hana program from P5M Plan or buy Hana Program to book all classes of program","buttonOneNoPlan":"Buy P5M plan","buttonTwoNoPlan":"Buy Program ","buttonOneClassFull":"Check Another Day","buttonTwoClassFull":"Buy Program"}}]]></value>
+    </entry>
 
 </defaultsMap>

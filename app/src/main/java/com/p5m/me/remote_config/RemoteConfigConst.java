@@ -84,6 +84,7 @@ public class RemoteConfigConst {
     public static String PRICE_MODEL = "price_model";
     public static String CREDIT_INFO = "credits_info";
     public static String SPECIAL_INFO = "special_info";
+    public static String SPECIAL_PROGRAM_POPUP = "special_program_popup";
 
 
 

@@ -84,7 +84,7 @@ public class MixPanel {
                 LogUtils.debug("MixPanel setup error");
             }
         }else{
-            mixPanel = MixpanelAPI.getInstance(context, MIX_PANEL_TOKEN, true);
+            mixPanel = MixpanelAPI.getInstance(context, MIX_PANEL_TOKEN, false);
 
         }
 
@@ -122,9 +122,11 @@ public class MixPanel {
 
 
     public static void login(Context context) {
+        mixPanel.alias(String.valueOf(TempStorage.getUser().getId()),null);
     }
 
     public static void logout() {
+        mixPanel.reset();
     }
 
     public static void flush() {

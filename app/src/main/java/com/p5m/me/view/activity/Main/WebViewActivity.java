@@ -48,10 +48,15 @@ package com.p5m.me.view.activity.Main;
 
 public class WebViewActivity extends BaseActivity implements NetworkCommunicator.RequestListener {
 
-    public static void open(Activity activity, String urlToLoad) {
+    public static void open(Context activity, String urlToLoad) {
 
         activity.startActivity(new Intent(activity, WebViewActivity.class)
                 .putExtra(AppConstants.DataKey.URL_OBJECT_TO_LOAD, urlToLoad));
+    }
+    public static void open(Context activity, String urlToLoad,boolean isFromSpecialProgram ) {
+
+        activity.startActivity(new Intent(activity, WebViewActivity.class)
+                .putExtra(AppConstants.DataKey.URL_OBJECT_TO_LOAD, urlToLoad).putExtra(AppConstants.DataKey.IS_FROM_SPECIAL_PROGRAM,isFromSpecialProgram));
     }
     public static Intent createIntent(Context activity, String urlToLoad) {
         Intent intent = new Intent(activity, WebViewActivity.class);
@@ -69,7 +74,11 @@ public class WebViewActivity extends BaseActivity implements NetworkCommunicator
     @BindView(R.id.layoutHide)
     View layoutHide;
 
+    @BindView(R.id.text_back)
+    TextView text_back;
+
     String urlToLoad;
+    boolean isFromSpecialProgram;
 
 
 
@@ -83,6 +92,19 @@ public class WebViewActivity extends BaseActivity implements NetworkCommunicator
         ButterKnife.bind(activity);
 
         openPage(getIntent());
+        text_back.setOnClickListener(v -> DialogUtils.showBasicMessage(context, getString(R.string.are_you_sure), getString(R.string.to_join_the_program_you_should_stay_on_this_page),
+                getString(R.string.stay_on_this_page), new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                }, getString(R.string.leave_this_page), new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+finish();
+                    }
+                }));
 
     }
 
@@ -96,6 +118,7 @@ public class WebViewActivity extends BaseActivity implements NetworkCommunicator
     private void openPage(Intent intent) {
 
         urlToLoad = getIntent().getStringExtra(AppConstants.DataKey.URL_OBJECT_TO_LOAD);
+        isFromSpecialProgram = getIntent().getBooleanExtra(AppConstants.DataKey.IS_FROM_SPECIAL_PROGRAM,false);
 
         if (urlToLoad == null) {
             finish();
@@ -107,6 +130,8 @@ public class WebViewActivity extends BaseActivity implements NetworkCommunicator
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setSupportZoom(true);
         webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setAppCacheEnabled(false);
+        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // chromium, enable hardware acceleration
@@ -217,8 +242,24 @@ public class WebViewActivity extends BaseActivity implements NetworkCommunicator
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-   finish();
+        if(isFromSpecialProgram){
+            DialogUtils.showBasicMessage(context, getString(R.string.are_you_sure), getString(R.string.to_join_the_program_you_should_stay_on_this_page),
+                    getString(R.string.stay_on_this_page), new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            dialog.dismiss();
+                        }
+                    }, getString(R.string.leave_this_page), new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    });
+        }else{
+            finish();
+
+        }
     }
 
     @Override

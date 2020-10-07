@@ -8,34 +8,34 @@ import java.util.List;
 
 public class SpecialProgramModel {
 
-    @SerializedName("specialClassId")
-    private List<SpecialModel> mSpecialClassId;
-    @SerializedName("specialGym")
-    private List<SpecialModel> mSpecialGym;
-    @SerializedName("specialTrainer")
-    private List<SpecialModel> mSpecialTrainer;
+    @SerializedName("classId")
+    private int[] mSpecialClassId;
+    @SerializedName("gymId")
+    private int[] mSpecialGym;
+    @SerializedName("trainerId")
+    private int[] mSpecialTrainer;
 
-    public List<SpecialModel> getSpecialClassId() {
+    public int[] getSpecialClassId() {
         return mSpecialClassId;
     }
 
-    public void setSpecialClassId(List<SpecialModel> specialClassId) {
+    public void setSpecialClassId(int[] specialClassId) {
         mSpecialClassId = specialClassId;
     }
 
-    public List<SpecialModel> getSpecialGym() {
+    public int[] getSpecialGym() {
         return mSpecialGym;
     }
 
-    public void setSpecialGym(List<SpecialModel> specialGym) {
+    public void setSpecialGym(int[] specialGym) {
         mSpecialGym = specialGym;
     }
 
-    public List<SpecialModel> getSpecialTrainer() {
+    public int[] getSpecialTrainer() {
         return mSpecialTrainer;
     }
 
-    public void setSpecialTrainer(List<SpecialModel> specialTrainer) {
+    public void setSpecialTrainer(int[] specialTrainer) {
         mSpecialTrainer = specialTrainer;
     }
 

@@ -51,14 +51,16 @@
 
         </FrameLayout>
         <TextView
-            android:id="@+id/text_timer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="07:00"
+            android:id="@+id/text_back"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:textColor="@color/black"
             android:layout_marginLeft="@dimen/margin_10"
             android:layout_marginTop="@dimen/margin_10"
             android:visibility="gone"
+            android:drawableLeft="@drawable/back"
+            android:drawableTint="@color/black"
+
             />
     </RelativeLayout>
 
