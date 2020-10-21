@@ -170,7 +170,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String classDate = jsonObject.optString(AppConstants.Notification.CLASS_DATE);
         String fromTime = jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME);
         String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
-        ClassModel model = new ClassModel(title, classDate, fromTime, toTime, dataID);
+        boolean videoClass = jsonObject.optBoolean(AppConstants.Notification.VIDEO_CLASS, false);
+        ClassModel model = new ClassModel(title, classDate, fromTime, toTime, dataID,videoClass);
         if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
             CalendarHelper.scheduleCalenderEvent(this, model);
         }
@@ -181,7 +182,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String classDate = jsonObject.optString(AppConstants.Notification.CLASS_DATE);
         String fromTime = jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME);
         String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
-        ClassModel model = new ClassModel(title, classDate, fromTime, toTime, dataID);
+        boolean videoClass = jsonObject.optBoolean(AppConstants.Notification.VIDEO_CLASS, false);
+
+        ClassModel model = new ClassModel(title, classDate, fromTime, toTime, dataID,videoClass);
         if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
             CalendarHelper.deleteEvent(model.getClassSessionId(), context);
 
@@ -194,7 +197,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String classDate = jsonObject.optString(AppConstants.Notification.CLASS_DATE);
         String fromTime = jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME);
         String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
-        ClassModel classModel = new ClassModel(title, classDate, fromTime, toTime, dataID);
+        boolean videoClass = jsonObject.optBoolean(AppConstants.Notification.VIDEO_CLASS, false);
+
+        ClassModel classModel = new ClassModel(title, classDate, fromTime, toTime, dataID,videoClass);
         if (CalendarHelper.haveCalendarReadWritePermissions(this)) {
             CalendarHelper.updateEvent(this, classModel);
 
@@ -581,7 +586,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String classDate = jsonObject.optString(AppConstants.Notification.CLASS_DATE);
         String fromTime = jsonObject.optString(AppConstants.Notification.CLASS_FROM_TIME);
         String toTime = jsonObject.optString(AppConstants.Notification.CLASS_TO_TIME);
-        ClassModel model = new ClassModel(title, classDate, fromTime, toTime, dataID);
+        boolean videoClass = jsonObject.optBoolean(AppConstants.Notification.VIDEO_CLASS, false);
+
+        ClassModel model = new ClassModel(title, classDate, fromTime, toTime, dataID,videoClass);
         TempStorage.setSavedClasses(model, context);
     }
 

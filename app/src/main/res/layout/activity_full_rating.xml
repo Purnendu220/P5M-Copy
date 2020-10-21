@@ -134,6 +134,26 @@
             app:flexWrap="wrap" />
 
         <TextView
+            android:id="@+id/textViewWhatCovidMeasures"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_20"
+            android:text="@string/covidMeasuresQuestion"
+            android:textColor="@color/black"
+            android:textSize="@dimen/margin_20" />
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/flexBoxLayoutOptionsCovid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:layout_marginRight="@dimen/margin_20"
+            android:padding="4dp"
+            app:alignContent="flex_start"
+            app:alignItems="flex_start"
+            app:flexWrap="wrap" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_20"

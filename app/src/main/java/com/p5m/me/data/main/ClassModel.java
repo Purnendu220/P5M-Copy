@@ -82,7 +82,7 @@ public class ClassModel implements java.io.Serializable {
         this.fitnessLevel = fitnessLevel;
     }
 
-    public ClassModel(String title, String classDate, String fromTime, String toTime, long dataID) {
+    public ClassModel(String title, String classDate, String fromTime, String toTime, long dataID,boolean videoClass) {
         this.title=title;
         this.classDate=classDate;
         this.fromTime=fromTime;

@@ -14,6 +14,7 @@ public class ClassRatingRequest implements Serializable {
     private int isPublish;
     private String remark;
     private int status;
+    private String saftyRemark;
 
 
 
@@ -87,5 +88,13 @@ public class ClassRatingRequest implements Serializable {
 
     public void setIsPublish(int isPublish) {
         this.isPublish = isPublish;
+    }
+
+    public String getSaftyRemark() {
+        return saftyRemark;
+    }
+
+    public void setSaftyRemark(String saftyRemark) {
+        this.saftyRemark = saftyRemark;
     }
 }

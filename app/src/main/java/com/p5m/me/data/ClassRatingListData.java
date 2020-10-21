@@ -15,6 +15,7 @@ public class ClassRatingListData implements Serializable {
     private UserDetail userDetail;
     private List<MediaModel> mediaList;
     private String remark;
+    private String saftyRemark;
 
     public String getRemark() {
         return remark;
@@ -70,6 +71,14 @@ public class ClassRatingListData implements Serializable {
 
     public void setMediaList(List<MediaModel> mediaList) {
         this.mediaList = mediaList;
+    }
+
+    public String getSaftyRemark() {
+        return saftyRemark;
+    }
+
+    public void setSaftyRemark(String saftyRemark) {
+        this.saftyRemark = saftyRemark;
     }
 }
 

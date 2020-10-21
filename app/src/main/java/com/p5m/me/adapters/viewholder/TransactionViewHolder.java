@@ -59,14 +59,10 @@ public class TransactionViewHolder extends RecyclerView.ViewHolder {
 
         if (data != null && data instanceof Transaction) {
             itemView.setVisibility(View.VISIBLE);
-            if (TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.SAUDI_CURRENCY) ||
-                    TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.SAUDI_CURRENCY_SHORT)) {
-                textViewAmount.setText(context.getString(R.string.amount_sar));
-            } else if (TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.USD_CURRENCY)) {
-                textViewAmount.setText(context.getString(R.string.amount_usd));
-            } else {
-                textViewAmount.setText(context.getString(R.string.amount_kd));
-            }
+
+            textViewAmount.setText(String.format(context.getString(R.string.amount_transaction_history),TempStorage.getUser().getCurrencyCode()));
+
+
             Transaction model = (Transaction) data;
 
             String refId = String.valueOf(LanguageUtils.numberConverter(Double.parseDouble(model.getReferenceId())));
