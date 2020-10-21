@@ -41,6 +41,7 @@ import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.data.RatingFeedbackAreaResList;
 import com.p5m.me.data.RatingParamModel;
 import com.p5m.me.data.RatingResponseModel;
+import com.p5m.me.data.SafetyRemarkOptions;
 import com.p5m.me.data.UnratedClassData;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.MediaModel;
@@ -50,6 +51,8 @@ import com.p5m.me.data.request.RatingFeedbackAreaList;
 import com.p5m.me.data.request.SelectedFileData;
 import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.fxn.pix.Pix;
+import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigure;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
@@ -57,6 +60,7 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.CommonUtillity;
 import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.ImageUtility;
+import com.p5m.me.utils.JsonUtils;
 import com.p5m.me.utils.KeyboardUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.RefrenceWrapper;
@@ -134,7 +138,14 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
     @BindView(R.id.parentLayout)
     public RelativeLayout parentLayout;
 
+    @BindView(R.id.textViewWhatCovidMeasures)
+     public TextView textViewWhatCovidMeasures;
 
+    @BindView(R.id.flexBoxLayoutOptionsCovid)
+    FlexboxLayout flexBoxLayoutOptionsCovid;
+
+  List<String> options ;
+  String selectedOption;
     ArrayList<SelectedFileData> fileList = new ArrayList<>();
     int ratingValue;
     private ClassModel model;
@@ -157,6 +168,16 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
         navigatinFrom = getIntent().getIntExtra(AppConstants.DataKey.NAVIGATED_FROM_INT, -1);
         model = (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_MODEL);
         flexBoxLayoutOptions.setFlexDirection(FlexDirection.ROW);
+        flexBoxLayoutOptionsCovid.setFlexDirection(FlexDirection.ROW);
+        try{
+            String safetyRemValueStr = RemoteConfigure.getFirebaseRemoteConfig(mContext).getRemoteConfigValue(RemoteConfigConst.SAFTEY_REMARK_OPTIONS);
+            options = JsonUtils.fromJson(safetyRemValueStr, SafetyRemarkOptions.class).getOptions();
+
+        }catch (Exception e){
+            textViewWhatCovidMeasures.setVisibility(View.GONE);
+            flexBoxLayoutOptionsCovid.setVisibility(View.GONE);
+        }
+
         setListeners();
         if (model != null) {
             CharSequence text = String.format(mContext.getString(R.string.how_was_your_class_v_two), model.getTitle());
@@ -177,10 +198,14 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
             ratingId = model.getRatingResDto().getId();
             ratingValue = model.getRatingResDto().getRating().intValue();
             setStarRating(ratingValue);
-            if (TempStorage.getRatingParams() != null && TempStorage.getRatingParams().size() > 0) {
+            if (TempStorage.getRatingParams(model.isVideoClass()) != null && TempStorage.getRatingParams(model.isVideoClass()).size() > 0) {
                 createRatingParamList();
             } else {
                 networkCommunicator.getRatingParameters(this, true);
+            }
+
+            if(model.getRatingResDto().getSaftyRemark()!=null){
+                selectedOption = model.getRatingResDto().getSaftyRemark();
             }
             if (model.getRatingResDto().getMediaList() != null && model.getRatingResDto().getMediaList().size() > 0) {
                 fileList.addAll(createSelectedFileDataList(model.getRatingResDto().getMediaList()));
@@ -192,19 +217,30 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
             }
 
 
+
         } else {
             if (ratingValue > -1) {
                 setStarRating(ratingValue);
             }
             if (refrenceWrapper.getCustomRateAlertDialog() != null)
                 refrenceWrapper.getCustomRateAlertDialog().dismiss();
-            if (TempStorage.getRatingParams() != null && TempStorage.getRatingParams().size() > 0) {
+            if (TempStorage.getRatingParams(model.isVideoClass()) != null && TempStorage.getRatingParams(model.isVideoClass()).size() > 0) {
                 createRatingParamList();
             } else {
                 networkCommunicator.getRatingParameters(this, true);
             }
         }
+        addSafetyMeasuresQuestion();
+
         onTrackingNotification();
+
+        if(model.isVideoClass()){
+            textViewWhatCovidMeasures.setVisibility(View.GONE);
+            flexBoxLayoutOptionsCovid.setVisibility(View.GONE);
+        }else{
+            textViewWhatCovidMeasures.setVisibility(View.VISIBLE);
+            flexBoxLayoutOptionsCovid.setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -429,7 +465,7 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
     private void createRatingParamList() {
         if (model.getRatingResDto() != null && model.getRatingResDto().getRatingFeedbackAreaResList() != null && model.getRatingResDto().getRatingFeedbackAreaResList().size() > 0) {
             List<RatingParamModel> ratingParamModels = new ArrayList<>();
-            for (RatingParamModel param : TempStorage.getRatingParams()) {
+            for (RatingParamModel param : TempStorage.getRatingParams(model.isVideoClass())) {
                 for (RatingFeedbackAreaResList ratingFeedbackAreaResList : model.getRatingResDto().getRatingFeedbackAreaResList()) {
                     if (param.getId() == ratingFeedbackAreaResList.getParameterId()) {
                         param.setSelected(true);
@@ -440,9 +476,49 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
             addRatingParams(ratingParamModels);
 
         } else {
-            addRatingParams(TempStorage.getRatingParams());
+            addRatingParams(TempStorage.getRatingParams(model.isVideoClass()));
 
         }
+    }
+
+    private void addSafetyMeasuresQuestion(){
+        if(options==null&&options.size()==0){
+            textViewWhatCovidMeasures.setVisibility(View.GONE);
+            flexBoxLayoutOptionsCovid.setVisibility(View.GONE);
+            return;
+        }
+        flexBoxLayoutOptionsCovid.removeAllViews();
+
+        for (String str:options) {
+            final View view = LayoutInflater.from(context).inflate(R.layout.layout_rating_param_item, flexBoxLayoutOptionsCovid, false);
+            final Button textView = view.findViewById(R.id.buttonParam);
+            textView.setText(str);
+            if(selectedOption!=null&&selectedOption.equalsIgnoreCase(str)){
+                textView.setTextColor(mContext.getResources().getColor(R.color.white));
+                textView.setBackgroundResource(R.drawable.bg_rounded_selected);
+                selectedOption = str;
+            }
+            flexBoxLayoutOptionsCovid.addView(view);
+
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+               if(selectedOption==null||!selectedOption.equalsIgnoreCase(str)){
+                   textView.setTextColor(mContext.getResources().getColor(R.color.white));
+                   textView.setBackgroundResource(R.drawable.bg_rounded_selected);
+                   selectedOption = str;
+               }else{
+                   textView.setTextColor(mContext.getResources().getColor(R.color.black));
+                   textView.setBackgroundResource(R.drawable.bg_rounded_unselected);
+                   selectedOption = null;
+               }
+
+                 addSafetyMeasuresQuestion();
+                }
+            });
+        }
+
+
     }
 
     private void addRatingParams(final List<RatingParamModel> ratingParamModelList) {
@@ -557,8 +633,14 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
 //        if(fileList!=null&&fileList.size()>0){
 //            request.setmIsImage(fileList.size());
 //        }
+        if(selectedOption!=null){
+            request.setSaftyRemark(selectedOption);
+        }
         if (editTextComment.getText().toString() != null && editTextComment.getText().toString().trim().length() > 0) {
             request.setRemark(editTextComment.getText().toString());
+        }
+        if(selectedOption!=null){
+            request.setSaftyRemark(selectedOption);
         }
         if (selectedRatingParam != null && selectedRatingParam.size() > 0) {
             List<RatingFeedbackAreaList> ratingFeedbackAreaList = new ArrayList<>();
@@ -603,6 +685,12 @@ public class FullRatingActivity extends BaseActivity implements View.OnClickList
         request.setmObjectTypeId(5);
         request.setmObjectDataId(model.getClassSessionId());
         request.setmUserId(TempStorage.getUser().getId());
+        if(selectedOption!=null){
+            request.setSaftyRemark(selectedOption);
+        }
+        if (editTextComment.getText().toString() != null && editTextComment.getText().toString().trim().length() > 0) {
+            request.setRemark(editTextComment.getText().toString());
+        }
 //        if(fileList!=null&&fileList.size()>0){
 //            request.setmIsImage(fileList.size());
 //        }

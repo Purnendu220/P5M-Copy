@@ -568,6 +568,7 @@
 
     <string name="amount_kd">المبلغ (دينار كويتي)</string>
     <string name="amount_usd">المبلغ (USD)</string>
+    <string name="amount_transaction_history">المبلغ (%s)</string>
 
     <string name="date">التاريخ</string>
 
@@ -1098,5 +1099,6 @@
     <string name="safty_message">ما الإرشادات بشأن فيروس كورونا التي تتخذها نادي %1$s</string>
 
     <string name="question_safety"><b>%s</b> %s</string>
+    <string name="covidMeasuresQuestion">"Share your feedback on the gym's safety measures regarding Covid-19? "</string>
 
 </resources>

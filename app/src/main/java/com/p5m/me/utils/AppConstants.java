@@ -457,6 +457,9 @@ public class AppConstants {
         public static final String CLASS_TO_TIME = "toTime";
         public static final String CLASS_DATE = "classDate";
         public static final String CLASS_TITLE = "classTitle";
+        public static final String VIDEO_CLASS = "videoClass";
+
+
 
 
 

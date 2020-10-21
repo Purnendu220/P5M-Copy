@@ -106,8 +106,15 @@ public class TempStorage {
         MyPreferences.getInstance().saveRatingParams(ratingParamList);
     }
 
-    public static List<RatingParamModel> getRatingParams() {
-        return MyPreferences.getInstance().getRatingParams();
+    public static List<RatingParamModel> getRatingParams(boolean isVideoClass) {
+        List<RatingParamModel> tempList = new ArrayList<>();
+        for (RatingParamModel model:MyPreferences.getInstance().getRatingParams()) {
+              if((isVideoClass&&model.isParameterForVirtual())||(!isVideoClass&&model.isParameterForPhysical())){
+                  tempList.add(model);
+              }
+        }
+
+        return tempList;
     }
 
     public static DefaultSettingServer getDefault() {

@@ -357,4 +357,9 @@
         <value><![CDATA[{"en_values":{"title":"Join Hana Program","messageNoPlan":"Join hana program from P5M Plan or buy Hana Program to book all classes of program","messageClassFull":"Join hana program from P5M Plan or buy Hana Program to book all classes of program","buttonOneNoPlan":"Buy P5M plan","buttonTwoNoPlan":"Buy Program","buttonOneClassFull":"Check Another Day","buttonTwoClassFull":"Buy Program "},"ar_values":{"title":"Join Hana Program","messageNoPlan":"Join hana program from P5M Plan or buy Hana Program to book all classes of program","messageClassFull":"Join hana program from P5M Plan or buy Hana Program to book all classes of program","buttonOneNoPlan":"Buy P5M plan","buttonTwoNoPlan":"Buy Program ","buttonOneClassFull":"Check Another Day","buttonTwoClassFull":"Buy Program"}}]]></value>
     </entry>
 
+    <entry>
+        <key>safety_remark_options</key>
+        <value>{"options":["Great, I feel safe","Good","Needs improvement"]}</value>
+    </entry>
+
 </defaultsMap>
