@@ -1100,5 +1100,13 @@
 
     <string name="question_safety"><b>%s</b> %s</string>
     <string name="covidMeasuresQuestion">"Share your feedback on the gym's safety measures regarding Covid-19? "</string>
+    <string name="subscribe_and_save_10">Subscribe and save 10%</string>
+    <string name="one_time">One Time</string>
+    <string name="subscribe_offer_applied">Subscribe offer applied</string>
+    <string name="renews_automatically_after_s_weeks_or_when_credits_are_finished">Renews automatically after %s weeks or when credits are finished</string>
+    <string name="update_subscription">Update Subscription</string>
+    <string name="cancel_subscription">Cancel Subscription</string>
+    <string name="edit_plan">Edit plan</string>
+    <string name="renew_subscription">Renew Subscription</string>
 
 </resources>

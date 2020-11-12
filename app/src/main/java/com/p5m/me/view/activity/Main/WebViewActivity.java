@@ -8,6 +8,7 @@ package com.p5m.me.view.activity.Main;
         import android.os.Bundle;
         import android.os.CountDownTimer;
         import android.view.View;
+        import android.webkit.JavascriptInterface;
         import android.webkit.RenderProcessGoneDetail;
         import android.webkit.WebChromeClient;
         import android.webkit.WebResourceError;
@@ -18,6 +19,7 @@ package com.p5m.me.view.activity.Main;
         import android.webkit.WebViewClient;
         import android.widget.ProgressBar;
         import android.widget.TextView;
+        import android.widget.Toast;
 
         import androidx.annotation.NonNull;
 
@@ -36,7 +38,9 @@ package com.p5m.me.view.activity.Main;
         import com.p5m.me.utils.AppConstants;
         import com.p5m.me.utils.DateUtils;
         import com.p5m.me.utils.DialogUtils;
+        import com.p5m.me.utils.JsonUtils;
         import com.p5m.me.utils.LogUtils;
+        import com.p5m.me.utils.ToastUtils;
         import com.p5m.me.view.activity.base.BaseActivity;
 
 
@@ -53,11 +57,26 @@ public class WebViewActivity extends BaseActivity implements NetworkCommunicator
         activity.startActivity(new Intent(activity, WebViewActivity.class)
                 .putExtra(AppConstants.DataKey.URL_OBJECT_TO_LOAD, urlToLoad));
     }
-    public static void open(Context activity, String urlToLoad,boolean isFromSpecialProgram ) {
+    public static void open(Activity activity, String urlToLoad,String packageName,String couponCode,ClassModel classModel,boolean isFromSpecialProgram ) {
 
-        activity.startActivity(new Intent(activity, WebViewActivity.class)
-                .putExtra(AppConstants.DataKey.URL_OBJECT_TO_LOAD, urlToLoad).putExtra(AppConstants.DataKey.IS_FROM_SPECIAL_PROGRAM,isFromSpecialProgram));
+        activity.startActivityForResult(new Intent(activity, WebViewActivity.class)
+                .putExtra(AppConstants.DataKey.URL_OBJECT_TO_LOAD, urlToLoad).putExtra(AppConstants.DataKey.IS_FROM_SPECIAL_PROGRAM,isFromSpecialProgram).putExtra(AppConstants.DataKey.PACKAGE_NAME_STRING,packageName).putExtra(AppConstants.DataKey.PROMO_CODE_STRING,couponCode).putExtra(AppConstants.DataKey.CLASS_MODEL,classModel),AppConstants.ResultCode.SUBSCRIPTION_SUCCESS);
     }
+    public static void open(Activity activity, String urlToLoad,boolean isFromSpecialProgram ) {
+        activity.startActivityForResult(new Intent(activity, WebViewActivity.class)
+                .putExtra(AppConstants.DataKey.URL_OBJECT_TO_LOAD, urlToLoad).putExtra(AppConstants.DataKey.IS_FROM_CHECKOUT,isFromSpecialProgram),AppConstants.ResultCode.SUBSCRIPTION_SUCCESS);
+
+
+
+    }
+    public static void open(Context activity, String urlToLoad,boolean isFromSpecialProgram ) {
+        activity.startActivity(new Intent(activity, WebViewActivity.class)
+                .putExtra(AppConstants.DataKey.URL_OBJECT_TO_LOAD, urlToLoad).putExtra(AppConstants.DataKey.IS_FROM_CHECKOUT,isFromSpecialProgram));
+
+
+
+    }
+
     public static Intent createIntent(Context activity, String urlToLoad) {
         Intent intent = new Intent(activity, WebViewActivity.class);
 
@@ -77,8 +96,9 @@ public class WebViewActivity extends BaseActivity implements NetworkCommunicator
     @BindView(R.id.text_back)
     TextView text_back;
 
-    String urlToLoad;
-    boolean isFromSpecialProgram;
+    String urlToLoad,packageName,coupanCode;
+    boolean isFromSpecialProgram,isFromCheckout,userHavePackage;
+    ClassModel classModel;
 
 
 
@@ -90,7 +110,10 @@ public class WebViewActivity extends BaseActivity implements NetworkCommunicator
         setContentView(R.layout.activity_web_view);
 
         ButterKnife.bind(activity);
-
+        UserPackageInfo userPackageInfo = new UserPackageInfo(TempStorage.getUser());
+        if(userPackageInfo.haveGeneralPackage&&userPackageInfo.userPackageGeneral!=null){
+            userHavePackage = true;
+        }
         openPage(getIntent());
         text_back.setOnClickListener(v -> DialogUtils.showBasicMessage(context, getString(R.string.are_you_sure), getString(R.string.to_join_the_program_you_should_stay_on_this_page),
                 getString(R.string.stay_on_this_page), new MaterialDialog.SingleButtonCallback() {
@@ -119,7 +142,10 @@ finish();
 
         urlToLoad = getIntent().getStringExtra(AppConstants.DataKey.URL_OBJECT_TO_LOAD);
         isFromSpecialProgram = getIntent().getBooleanExtra(AppConstants.DataKey.IS_FROM_SPECIAL_PROGRAM,false);
-
+        isFromCheckout = getIntent().getBooleanExtra(AppConstants.DataKey.IS_FROM_CHECKOUT,false);
+        coupanCode = getIntent().getStringExtra(AppConstants.DataKey.PROMO_CODE_STRING);
+        packageName = getIntent().getStringExtra(AppConstants.DataKey.PACKAGE_NAME_STRING);
+        classModel = (ClassModel) getIntent().getSerializableExtra(AppConstants.DataKey.CLASS_MODEL);
         if (urlToLoad == null) {
             finish();
             return;
@@ -130,8 +156,8 @@ finish();
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setSupportZoom(true);
         webView.getSettings().setUseWideViewPort(true);
-        webView.getSettings().setAppCacheEnabled(false);
-        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webView.getSettings().setAppCacheEnabled(true);
+        webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // chromium, enable hardware acceleration
@@ -150,6 +176,12 @@ finish();
                 LogUtils.networkError("progress: "+progress);
             }
         });
+        webView.addJavascriptInterface(new WebAppInterface(0), "onExitWithoutPayment");
+        webView.addJavascriptInterface(new WebAppInterface(2), "onPaymentSuccess");
+        webView.addJavascriptInterface(new WebAppInterface(1), "onPaymentFail");
+
+
+
 
         webView.loadUrl(urlToLoad);
         webView.setWebViewClient(new MyWebViewClient());
@@ -184,6 +216,60 @@ finish();
         overridePendingTransition(0, 0);
 
     }
+    public class WebAppInterface {
+         int type;
+        WebAppInterface(int type) {
+            this.type = type;
+        }
+
+        @JavascriptInterface
+        public void postMessage(String message) {
+            LogUtils.debug(message);
+            switch (type){
+                case 0: //Exit Without Payment
+                case 1://Payment Fail
+
+                    ToastUtils.show(mContext,message);
+                    finish();
+                    break;
+                    case 2://Payment Success
+                     PaymentUrl paymentUrlResponse  =   JsonUtils.fromJson(message,PaymentUrl.class);
+                     if(paymentUrlResponse.getCompleted()){
+                         Toast.makeText(mContext, "Subscription  successful", Toast.LENGTH_SHORT).show();
+
+                         paymentSuccessful(paymentUrlResponse);
+                     }
+                     else{
+                         Toast.makeText(mContext, "Subscription  failed", Toast.LENGTH_SHORT).show();
+                         finish();
+
+                     }
+
+                    break;
+
+            }
+
+        }
+    }
+
+    private void paymentSuccessful(PaymentUrl paymentUrlResponse) {
+        MixPanel.trackMembershipPurchase(coupanCode, packageName);
+        FirebaseAnalysic.trackMembershipPurchase(coupanCode, packageName);
+        if (classModel != null) {
+            MixPanel.trackJoinClass(AppConstants.Tracker.PURCHASE_PLAN, classModel);
+            FirebaseAnalysic.trackJoinClass(AppConstants.Tracker.PURCHASE_PLAN, classModel);
+        }
+        overridePendingTransition(0, 0);
+        Intent returnIntent = getIntent();
+        returnIntent.putExtra(REFERENCE_ID, paymentUrlResponse.getReferenceID());
+        returnIntent.putExtra(USER_HAVE_PACKAGE,userHavePackage);
+        setResult(RESULT_OK, returnIntent);
+        finish();
+        overridePendingTransition(0, 0);
+
+
+    }
+
 
     class MyWebViewClient extends WebViewClient {
 
@@ -256,7 +342,24 @@ finish();
                             finish();
                         }
                     });
-        }else{
+        }
+       else if(isFromCheckout){
+            DialogUtils.showBasicMessage(context, getString(R.string.are_you_sure), getString(R.string.to_complete_the_payment_you_should_stay_on_this_page),
+                    getString(R.string.stay_on_this_page), new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            dialog.dismiss();
+                        }
+                    }, getString(R.string.leave_this_page), new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    });
+        }
+
+        else{
             finish();
 
         }

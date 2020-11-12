@@ -25,6 +25,7 @@ import com.p5m.me.data.PackageTags;
 import com.p5m.me.data.RemoteConfigDataModel;
 import com.p5m.me.data.RemoteConfigPlanText;
 import com.p5m.me.data.UserPackageDetail;
+import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
 import com.p5m.me.data.main.UserPackage;
@@ -100,6 +101,10 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.textViewExtendPackage)
     TextView textViewExtendPackage;
 
+    @BindView(R.id.textViewUpdateSubscription)
+    TextView textViewUpdateSubscription;
+
+
 
     /* User Existig Pakages DROP IN Layout Declaration*/
 
@@ -162,6 +167,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
     public void bind(ClassModel classModel, final Object data, final AdapterCallbacks adapterCallbacks, final int position) {
 
         if (data != null && (data instanceof UserPackage || data instanceof Package)) {
+            UserPackageInfo userPackageInfo = new UserPackageInfo(TempStorage.getUser());
 
             itemView.setVisibility(View.VISIBLE);
             textViewExtendPackage.setVisibility(View.GONE);
@@ -203,8 +209,22 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                             adapterCallbacks.onAdapterItemClick(MemberShipViewHolder.this, textViewBuyMoreCredits, model, position);
                         }
                     });
-                    setPackageTags(model.getPackageId()
-                    );
+                    textViewUpdateSubscription.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            adapterCallbacks.onAdapterItemClick(MemberShipViewHolder.this, textViewUpdateSubscription, data, position);
+
+                        }
+                    });
+                    setPackageTags(model.getPackageId());
+                    if(userPackageInfo.haveActiveSubscription){
+                        textViewUpdateSubscription.setVisibility(View.VISIBLE);
+                        textViewBuyMoreCredits.setVisibility(View.GONE);
+                    }else{
+                        textViewUpdateSubscription.setVisibility(View.GONE);
+
+                    }
+
                 }
                 setUpUserPackageDetail(model.getId(), context, adapterCallbacks, recyclerSoFarYouVisited);
             } else
@@ -275,6 +295,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                             }
                         }
                     });
+
                     txtPackageOffredClassesLimits.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

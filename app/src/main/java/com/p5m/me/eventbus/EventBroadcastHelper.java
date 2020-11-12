@@ -120,6 +120,10 @@ public class EventBroadcastHelper {
         GlobalBus.getBus().post(new Events.PackagePurchased());
     }
 
+    public static void sendSubscriptionUpdated(String action) {
+        GlobalBus.getBus().post(new Events.SubscriptionUpdated(action));
+    }
+
     public static void sendClassJoin(Context context, ClassModel classModel, int changeAvailableSeatsFor) {
         if(changeAvailableSeatsFor == AppConstants.Values.CHANGE_AVAILABLE_SEATS_FOR_MY_CLASS ) {
             if (classModel.isUserJoinStatus()) {

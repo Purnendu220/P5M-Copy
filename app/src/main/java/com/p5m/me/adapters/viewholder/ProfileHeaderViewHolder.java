@@ -20,6 +20,7 @@ import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.DateUtils;
 import com.p5m.me.utils.ImageUtils;
 import com.p5m.me.utils.LanguageUtils;
+import com.p5m.me.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,6 +54,10 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.textViewWalletBalance)
     public TextView textViewWalletBalance;
+
+    @BindView(R.id.textViewUpdateSubscription)
+    public TextView textViewUpdateSubscription;
+
 
     private final Context context;
     public UserPackage userpackageToExtend;
@@ -221,9 +226,19 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                         textViewMore.setText(Html.fromHtml("<b><u>" + more + "</u></b> "));
                     }
                 }
+
+                if(userPackageInfo.haveActiveSubscription){
+                    textViewRecharge.setVisibility(View.GONE);
+                    textViewUpdateSubscription.setVisibility(View.VISIBLE);
+                }else{
+                    textViewUpdateSubscription.setVisibility(View.GONE);
+
+                }
+
                 /************************************************************************/
             } else {
                 textViewExtendPackage.setVisibility(View.GONE);
+                textViewUpdateSubscription.setVisibility(View.GONE);
 
                 /************************NO PACKAGE******************************/
                 textViewPackage.setText(Html.fromHtml("<b>" + numberConverter(0) + "</b> " + context.getString(R.string.p5m_credits).toLowerCase()));
@@ -251,6 +266,15 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                     adapterCallbacks.onAdapterItemClick(ProfileHeaderViewHolder.this, textViewExtendPackage, userpackageToExtend, position);
                 }
             });
+
+            textViewUpdateSubscription.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    adapterCallbacks.onAdapterItemClick(ProfileHeaderViewHolder.this, textViewUpdateSubscription, userpackageToExtend, position);
+
+                }
+            });
+
             linearLayoutUserWallet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

@@ -13,6 +13,8 @@ public class UserPackage implements java.io.Serializable {
     private Integer totalRemainingWeeks;
     private int totalCredit;
     private int balance;
+    private boolean subscriped;
+    private String subscriptionStatus;
 
     public String getExpiryDate() {
         return this.expiryDate == null ? "" : expiryDate;
@@ -96,5 +98,21 @@ public class UserPackage implements java.io.Serializable {
 
     public void setBalance(int balance) {
         this.balance = balance;
+    }
+
+    public boolean isSubscriped() {
+        return subscriped;
+    }
+
+    public void setSubscriped(boolean subscriped) {
+        this.subscriped = subscriped;
+    }
+
+    public String getSubscriptionStatus() {
+        return subscriptionStatus;
+    }
+
+    public void setSubscriptionStatus(String subscriptionStatus) {
+        this.subscriptionStatus = subscriptionStatus;
     }
 }

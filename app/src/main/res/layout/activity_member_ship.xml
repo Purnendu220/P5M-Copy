@@ -7,7 +7,7 @@
     android:background="@color/theme_bg"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".view.activity.Main.MemberShip">
+    tools:context=".view.activity.Main.HomeActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -88,6 +88,28 @@
             android:src="@drawable/share"
             android:tint="@color/white"
             android:visibility="gone" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_10"
+        android:orientation="vertical"
+        android:background="@color/colorAccent"
+        android:id="@+id/subscriptionOfferLayout"
+        android:visibility="gone"
+
+        >
+        <TextView
+            android:id="@+id/subscriptionOfferText"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/learn_more_about_credits"
+            android:textColor="@color/white"
+
+            ></TextView>
+
 
     </LinearLayout>
 

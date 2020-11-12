@@ -9,4 +9,6 @@ public class UserPropertyConst {
     public static final String HAVE_READY_PACKAGE = "YES"; //Value of Ready Package
     public static final String NUMBER_OF_TRANSACTIONS = "NUMBER_OF_TRANSACTIONS";
     public static final String No_READY_PACKAGE = "NO";
+    public static final String ACTIVE_SUBSCRIPTION = "ACTIVE_PACKAGE"; // For GET_SET and PRO
+
 }

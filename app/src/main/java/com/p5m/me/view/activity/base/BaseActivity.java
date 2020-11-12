@@ -3,16 +3,22 @@ package com.p5m.me.view.activity.base;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.p5m.me.analytics.FirebaseAnalysic;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.PushDetailModel;
+import com.p5m.me.data.SubscriptionConfigModal;
+import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.remote_config.RemoteConfigSetUp;
+import com.p5m.me.remote_config.RemoteConfigure;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.utils.AppConstants;
 import com.p5m.me.utils.LogUtils;
@@ -34,6 +40,7 @@ public class BaseActivity extends AppCompatActivity {
     public NetworkCommunicator networkCommunicator;
     public RefrenceWrapper refrenceWrapper;
     private FirebaseInAppMessaging mInAppMessaging;
+    public SubscriptionConfigModal mSubscriptionConfigModal;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,10 +71,20 @@ public class BaseActivity extends AppCompatActivity {
                 getSupportActionBar().hide();
             }
         }
-
+        initSubscriptionConfig();
 
     }
+    private void initSubscriptionConfig(){
+        String SUBSCRIPTION_CONFIG = RemoteConfigure.getFirebaseRemoteConfig(mContext).getRemoteConfigValue(RemoteConfigConst.SUBSCRIPTION_CONFIG_VALUE);
+        try{
+            Gson g = new Gson();
+            mSubscriptionConfigModal = g.fromJson(SUBSCRIPTION_CONFIG, new TypeToken<SubscriptionConfigModal>() {
+            }.getType());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
+    }
 
 
     public void onTrackingNotification() {

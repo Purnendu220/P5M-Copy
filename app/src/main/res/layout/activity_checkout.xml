@@ -111,6 +111,50 @@
                 android:textSize="@dimen/text_large" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/subscriptionOfferLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layout"
+            android:background="@color/grey_bg"
+            android:orientation="horizontal"
+            android:padding="@dimen/margin_10"
+            android:visibility="visible"
+
+            >
+
+            <TextView
+                android:id="@+id/subscriptionOfferTextOneTime"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/one_time"
+                android:textColor="@color/colorAccent">
+
+            </TextView>
+
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/subscriptionSwitch"
+                style="@style/BrandedSwitch.control"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_20"
+                android:layout_marginEnd="@dimen/margin_20"
+                android:textOff="OFF"
+                android:textOn="ON" />
+
+            <TextView
+                android:id="@+id/subscriptionOfferText"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/subscribe_and_save_10"
+                android:textColor="@color/colorAccent">
+
+            </TextView>
+
+        </LinearLayout>
 
 
         <ScrollView
@@ -118,7 +162,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/layoutBottom"
-            android:layout_below="@id/layout"
+            android:layout_below="@id/subscriptionOfferLayout"
 
             android:layout_weight="1"
             android:scrollbars="none">
@@ -618,6 +662,92 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/subscribeOfferLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/view_padding_edit_profile">
+
+                        <TextView
+                            android:id="@+id/subscribeOfferText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/view_padding_edit_profile"
+                            android:layout_weight="1"
+                            android:fontFamily="sans-serif"
+                            android:gravity="left"
+                            android:letterSpacing="@dimen/text_medium_letter_spacing"
+                            android:text="@string/subscribe_offer_applied"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/text_large"
+                            android:textStyle="normal" />
+
+                        <TextView
+                            android:id="@+id/subscribeOfferAmountText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:gravity="left"
+                            android:letterSpacing="@dimen/text_medium_letter_spacing"
+                            android:text="- 2 KWD"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/text_large"
+                            android:textStyle="bold"
+                            android:visibility="visible" />
+                    </LinearLayout>
+
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="@dimen/view_padding_setting"
+                        android:layout_marginRight="@dimen/view_padding_setting"
+                        android:background="@color/separator" />
+                    <TextView
+                        android:id="@+id/subscribeOfferMessageText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left"
+                        android:letterSpacing="@dimen/text_medium_letter_spacing"
+                        android:text="@string/renews_automatically_after_s_weeks_or_when_credits_are_finished"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_medium"
+                        android:visibility="visible"
+                        android:layout_marginStart="@dimen/view_padding_edit_profile"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:layout_marginEnd="@dimen/margin_10"
+                        />
+
+                    <TextView
+                        android:id="@+id/subscribeOfferMessageTextOptional"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left"
+                        android:letterSpacing="@dimen/text_medium_letter_spacing"
+                        android:text="@string/renews_automatically_after_s_weeks_or_when_credits_are_finished"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_medium"
+                        android:visibility="gone"
+                        android:layout_marginStart="@dimen/view_padding_edit_profile"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:layout_marginEnd="@dimen/margin_10"
+                        />
+
+                </LinearLayout>
+
+
+                <LinearLayout
                     android:id="@+id/layoutWalletCredit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -723,13 +853,14 @@
                     android:text="@string/apply_promo_code"
                     android:textColor="@color/colorAccent"
                     android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/textViewOtherCountryInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_16"
-                    android:layout_marginRight="@dimen/margin_16"
                     android:layout_marginTop="@dimen/margin_5"
+                    android:layout_marginRight="@dimen/margin_16"
                     android:layout_marginBottom="@dimen/margin_10"
                     android:text="@string/info_for_other_country"
                     android:textColor="@color/theme_dark_text"
@@ -747,9 +878,9 @@
                     android:id="@+id/layout_logo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_above="@id/layoutBottom"
                     android:gravity="center"
-                    android:paddingTop="@dimen/margin_5"
-                    android:layout_above="@id/layoutBottom">
+                    android:paddingTop="@dimen/margin_5">
 
                     <ImageView
                         android:id="@+id/image_logo"
@@ -764,11 +895,11 @@
                         android:layout_toRightOf="@id/image_logo"
                         android:gravity="center_vertical"
                         android:paddingTop="@dimen/margin_7"
-                        android:textAllCaps="true"
-                        android:textStyle="bold"
                         android:text="@string/_100_purchase_protection"
+                        android:textAllCaps="true"
                         android:textColor="@color/theme_dark_text"
-                        android:textSize="@dimen/text_extra_small" />
+                        android:textSize="@dimen/text_extra_small"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/textBooking"

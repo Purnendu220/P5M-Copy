@@ -157,7 +157,25 @@
                             android:text="@string/add_credits"
                             android:textColor="@color/theme_accent_text"
                             android:textSize="@dimen/text_medium"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:visibility="gone"
+                            />
+
+                        <TextView
+                            android:id="@+id/textViewUpdateSubscription"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/margin_5"
+                            android:layout_toRightOf="@id/message_container"
+                            android:fontFamily="sans-serif"
+                            android:letterSpacing="@dimen/text_medium_letter_spacing"
+                            android:lineSpacingExtra="@dimen/line_spacing_extra"
+                            android:text="@string/edit_plan"
+
+                            android:textColor="@color/theme_accent_text"
+                            android:textSize="@dimen/text_medium"
+                            android:textStyle="bold"
+                            android:visibility="visible" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -209,6 +227,9 @@
                             android:textSize="@dimen/text_medium"
                             android:textStyle="bold"
                             android:visibility="gone" />
+
+
+
 
 
                     </RelativeLayout>

@@ -209,6 +209,7 @@ public class AppConstants {
         public static final String PAYMENT_URL_OBJECT = "payment_url_object";
         public static final String URL_OBJECT_TO_LOAD = "url_object_to_load";
         public static final String IS_FROM_SPECIAL_PROGRAM = "is_from_special_program";
+        public static final String IS_FROM_CHECKOUT = "is_from_checkout_page";
 
         public static final String GYM_OBJECT = "gym_object";
         public static final String GYM_ID_INT = "gym_id_int";
@@ -240,6 +241,8 @@ public class AppConstants {
         public static final String USER_HAVE_PACKAGE = "User_Have_Package";
         public static final String PAYMENT_OPTION_ID = "payment_option_id";
         public static final String USER_ID ="user_id" ;
+        public static final String PROMO_CODE_STRING = "promo_code";
+        public static final String UPDATE_SUBSCRIPTION = "update_subscription";
     }
 
     public class Url {
@@ -320,6 +323,9 @@ public class AppConstants {
         public static final String CLASS_UNRATED = "api/v1/rating/unRateClasses";
         public static final String DELETE_MEDIA = "api/v1/media/{id}";
         public static final String COVID_QUES_ANS = "api/v1/covidquestion/gymquestionanswer";
+        public static final String CANCEL_SUBSCRIPTION = "api/v1/payment/subscription/cancel";
+        public static final String UPDATE_SUBSCRIPTION = "api/v1/payment/subscription/edit";
+
 
 
         public static final String GET_PAYMENT_DETAIL = "api/v1/payment/package-purchase/{id}";
@@ -533,6 +539,7 @@ public class AppConstants {
         public static final int CHOOSE_LOCATION = 1003;
         public static final int IMAGE_PICKER = 1003;
         public static final int PAYMENT_OPTIONS = 1004;
+        public static final int SUBSCRIPTION_SUCCESS = 1005;
 
 
 
@@ -639,6 +646,16 @@ public class AppConstants {
 
 
 
+
+    }
+    public interface SubscriptionStatus {
+        String  ACTIVE = "ACTIVE";
+        String CANCELLED = "CANCELLED";
+    }
+    public interface SubscriptionAction {
+        String  RENEW = "RENEW";
+        String UPGRADE = "UPGRADE";
+        String EXTEND = "EXTEND";
 
     }
     public interface PriceModels {

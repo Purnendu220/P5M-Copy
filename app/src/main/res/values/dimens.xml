@@ -129,7 +129,7 @@
     <dimen name="dp_80">80dp</dimen>
     <dimen name="dp_160">160dp</dimen>
 
-    <dimen name="membership_img_width" >164dp</dimen>
+    <dimen name="membership_img_width">164dp</dimen>
 
     <dimen name="membership_img_height">158dp</dimen>
     <dimen name="membership_icon">60dp</dimen>
@@ -213,5 +213,7 @@
     <dimen name="role_block_content_margin_right">32dp</dimen>
     <dimen name="role_block_hint_margin_top">6dp</dimen>
     <dimen name="text20size">20sp</dimen>
+    <dimen name="list_item_spacing">16dp</dimen>
+    <dimen name="list_item_spacing_half">8dp</dimen>
 
 </resources>

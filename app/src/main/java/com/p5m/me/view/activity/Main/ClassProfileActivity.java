@@ -48,6 +48,7 @@ import com.p5m.me.data.ClassRatingUserData;
 import com.p5m.me.data.Join5MinModel;
 import com.p5m.me.data.QuestionAnswerModel;
 import com.p5m.me.data.SpecialProgramModel;
+import com.p5m.me.data.UpdateSubscriptionRequest;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.main.ClassModel;
@@ -83,8 +84,6 @@ import com.p5m.me.view.custom.BookForAFriendPopup;
 import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.custom.OnAlertButtonAction;
 import com.p5m.me.view.custom.SpecialProgramPopup;
-import com.p5m.me.view.fragment.BottomSheetClassBookingOptions;
-import com.p5m.me.view.fragment.MembershipFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -369,7 +368,13 @@ return;
             int creditRequiredForClass =  Helper.requiredCreditForClass(TempStorage.getUser(),classModel,1);
              UserPackageInfo userPackageInfo = new UserPackageInfo(TempStorage.getUser());
              if(userPackageInfo.haveGeneralPackage&&creditRequiredForClass>userPackageInfo.userPackageGeneral.getBalance()){
-              showAlertForAddCredit(mContext.getString(R.string.insufficient_credits),mContext.getString(R.string.add_credits),1);
+                 if(mSubscriptionConfigModal!=null&&userPackageInfo.haveActiveSubscription){
+                     showAlertForRenew(mContext.getString(R.string.insufficient_credits),mSubscriptionConfigModal.getRenewSubscriptionConfirmationTitle(),userPackageInfo.userPackageGeneral.getId());
+
+                 }else{
+                     showAlertForAddCredit(mContext.getString(R.string.insufficient_credits),mContext.getString(R.string.add_credits),1);
+
+                 }
                  textViewBook.setEnabled(true);
                  textViewBook.setText(RemoteConfigConst.BOOK_IN_CLASS_VALUE);
 
@@ -426,11 +431,18 @@ return;
                 int creditRequiredForClass =  Helper.requiredCreditForClass(TempStorage.getUser(),classModel,2);
                 UserPackageInfo userPackageInfo = new UserPackageInfo(TempStorage.getUser());
                 if(userPackageInfo.haveGeneralPackage&&creditRequiredForClass>userPackageInfo.userPackageGeneral.getBalance()){
-                    showAlertForAddCredit(mContext.getString(R.string.insufficient_credits),mContext.getString(R.string.add_credits),1);
+                    if(mSubscriptionConfigModal!=null&&userPackageInfo.haveActiveSubscription){
+                        showAlertForRenew(mContext.getString(R.string.insufficient_credits),mSubscriptionConfigModal.getRenewSubscriptionConfirmation(),userPackageInfo.userPackageGeneral.getId());
+
+                    }else{
+                        showAlertForAddCredit(mContext.getString(R.string.insufficient_credits),mContext.getString(R.string.add_credits),1);
+
+                    }
                     textViewBook.setEnabled(true);
                     textViewBook.setText(RemoteConfigConst.BOOK_IN_CLASS_VALUE);
                     return;
                 }
+
                 joinClassWithFriend(data);
                 Helper.setJoinStatusProfile(context, textViewBook, textViewBookWithFriend, classModel);
             }
@@ -456,7 +468,6 @@ return;
 
 
     private void joinClass() {
-
         textViewBook.setText(context.getResources().getString(R.string.please_wait));
         textViewBook.setEnabled(false);
         networkCommunicator.joinClass(new JoinClassRequest(TempStorage.getUser().getId(), classModel.getClassSessionId()), this, false);
@@ -765,6 +776,11 @@ return;
 
                     }
                 }
+
+                break;
+            case NetworkCommunicator.RequestCode.UPDATE_SUBSCRIPTION:
+                    ToastUtils.show(mContext,"Subscription renewed successfully now you can book your class");
+                    networkCommunicator.getMyUser(this,false);
 
                 break;
 
@@ -1145,6 +1161,7 @@ return;
     }
 
     private void showAlertForAddCredit(String message,String action,int readyPackageSize){
+
         DialogUtils.showBasic(context, message, action, new MaterialDialog.SingleButtonCallback() {
             @Override
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -1155,7 +1172,17 @@ return;
         });
 
     }
+    private void showAlertForRenew(String message,String action,long paymentId){
 
+        DialogUtils.showBasic(context, message, action, new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                dialog.dismiss();
+               networkCommunicator.updateSubscription(new UpdateSubscriptionRequest(AppConstants.SubscriptionAction.RENEW,paymentId),ClassProfileActivity.this);
+            }
+        });
+
+    }
     private void openSpecialProgramModel(int type){
         SpecialProgramPopup alert = new SpecialProgramPopup(context, classModel,type, (OnAlertButtonAction) this);
         alert.show();

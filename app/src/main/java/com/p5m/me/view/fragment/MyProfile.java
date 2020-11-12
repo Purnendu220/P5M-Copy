@@ -4,6 +4,7 @@ package com.p5m.me.view.fragment;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
@@ -19,13 +20,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.brandongogetap.stickyheaders.StickyLayoutManager;
 import com.brandongogetap.stickyheaders.exposed.StickyHeaderListener;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.MyProfileAdapter;
 import com.p5m.me.adapters.viewholder.ProfileHeaderTabViewHolder;
+import com.p5m.me.data.SubscriptionConfigModal;
+import com.p5m.me.data.UpdateSubscriptionRequest;
+import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.TrainerModel;
 import com.p5m.me.data.main.UserPackage;
@@ -34,12 +42,16 @@ import com.p5m.me.eventbus.GlobalBus;
 import com.p5m.me.helper.ClassListListenerHelper;
 import com.p5m.me.helper.Helper;
 import com.p5m.me.helper.TrainerListListenerHelper;
+import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigure;
 import com.p5m.me.restapi.NetworkCommunicator;
 import com.p5m.me.restapi.ResponseModel;
 import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
+import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.RefrenceWrapper;
+import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.EditProfileActivity;
 import com.p5m.me.view.activity.Main.HomeActivity;
 import com.p5m.me.view.activity.Main.SettingActivity;
@@ -57,7 +69,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MyProfile extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks<Object>, MyRecyclerView.LoaderCallbacks, NetworkCommunicator.RequestListener, PopupMenu.OnMenuItemClickListener, SwipeRefreshLayout.OnRefreshListener, CustomAlertDialog.OnAlertButtonAction {
+public class MyProfile extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks<Object>, MyRecyclerView.LoaderCallbacks, NetworkCommunicator.RequestListener, PopupMenu.OnMenuItemClickListener, SwipeRefreshLayout.OnRefreshListener, CustomAlertDialog.OnAlertButtonAction, OnClickBottomSheet {
     public static Fragment createMyProfileFragment(int position) {
         Fragment tabFragment = new MyProfile();
         Bundle bundle = new Bundle();
@@ -80,6 +92,8 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
     private MyProfileAdapter myProfileAdapter;
     private int page = 0;
     private int tabPosition = ProfileHeaderTabViewHolder.TAB_1;
+    private SubscriptionConfigModal mSubscriptionConfigModal;
+    private UserPackageInfo userPackageInfo;
 
     public MyProfile() {
     }
@@ -171,7 +185,7 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
         tabPosition = getArguments().getInt(AppConstants.DataKey.TAB_POSITION_INT);
 
         swipeRefreshLayout.setOnRefreshListener(this);
-
+        userPackageInfo = new UserPackageInfo(TempStorage.getUser());
         myProfileAdapter = new MyProfileAdapter(context, new TrainerListListenerHelper(context, activity, AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FAV_TRAINERS, this),
                 new ClassListListenerHelper(context, activity, AppConstants.AppNavigation.SHOWN_IN_MY_PROFILE_FINISHED, this), this);
         StickyLayoutManager layoutManager = new StickyLayoutManager(context, myProfileAdapter);
@@ -207,7 +221,20 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
         }
 
         setToolBar();
+        initSubscriptionConfig();
 
+
+    }
+
+    private void initSubscriptionConfig(){
+        String SUBSCRIPTION_CONFIG = RemoteConfigure.getFirebaseRemoteConfig(context).getRemoteConfigValue(RemoteConfigConst.SUBSCRIPTION_CONFIG_VALUE);
+        try{
+            Gson g = new Gson();
+            mSubscriptionConfigModal = g.fromJson(SUBSCRIPTION_CONFIG, new TypeToken<SubscriptionConfigModal>() {
+            }.getType());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 
@@ -320,7 +347,7 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
             case R.id.textViewMore:
             case R.id.textViewRecharge:
                 // MemberShip.openActivity(context, AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE);
-                HomeActivity.show(context, AppConstants.Tab.TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE,true);
+                HomeActivity.show(context, AppConstants.Tab.TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE,true,false);
                 break;
             case R.id.imageView:
                 if (!myProfileAdapter.getUser().getProfileImage().isEmpty()) {
@@ -342,6 +369,10 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
             case R.id.linearLayoutUserWallet:
                 showWalletAlert();
                 break;
+            case R.id.textViewUpdateSubscription:{
+                EditSubscriptionBottomSheet.newInstance(context,this).show(getFragmentManager(),"hffhgjh");
+            }
+            break;
 
 
         }
@@ -390,12 +421,30 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
                 }
 
                 break;
+            case NetworkCommunicator.RequestCode.CANCEL_SUBSCRIPTION:
+                ToastUtils.show(getActivity(),mSubscriptionConfigModal.getCancelSubscriptionSuccess());
+                networkCommunicator.getMyUser(this,false);
+
+                break;
+            case NetworkCommunicator.RequestCode.UPDATE_SUBSCRIPTION:
+                ToastUtils.show(getActivity(),mSubscriptionConfigModal.getRenewSubscriptionSuccess());
+                networkCommunicator.getMyUser(this,false);
+
+                break;
         }
     }
 
     @Override
     public void onApiFailure(String errorMessage, int requestCode) {
         swipeRefreshLayout.setRefreshing(false);
+        switch (requestCode) {
+            case NetworkCommunicator.RequestCode.CANCEL_SUBSCRIPTION:
+            case NetworkCommunicator.RequestCode.UPDATE_SUBSCRIPTION:
+                ToastUtils.showFailureResponse(context, errorMessage);
+
+                break;
+
+        }
     }
 
     private void checkListData() {
@@ -445,6 +494,55 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
 
     @Override
     public void onCancelClick(int requestCode, Object data) {
+
+    }
+
+    @Override
+    public void onClickBottomSheet(View view, Object object) {
+        switch (view.getId()){
+            case R.id.cancelSubscription:
+                cancelSubscription();
+                break;
+            case R.id.updateSubscription:
+                HomeActivity.show(context, AppConstants.Tab.TAB_MY_MEMBERSHIP, AppConstants.AppNavigation.NAVIGATION_FROM_MY_PROFILE,true,true);
+                break;
+            case R.id.renewSubscription:
+                renewSubscription(new UpdateSubscriptionRequest(AppConstants.SubscriptionAction.RENEW,userPackageInfo.userPackageGeneral.getId()));
+
+                break;
+        }
+    }
+    private void renewSubscription(UpdateSubscriptionRequest request){
+        DialogUtils.showBasicMessage(getActivity(), mSubscriptionConfigModal.getRenewSubscriptionConfirmationTitle(), mSubscriptionConfigModal.getRenewSubscriptionConfirmation(),
+                getString(R.string.yes), new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                        networkCommunicator.updateSubscription(request,MyProfile.this);
+                    }
+                }, getString(R.string.no), new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                });
+
+    }
+
+    private void cancelSubscription(){
+        DialogUtils.showBasicMessage(getActivity(), mSubscriptionConfigModal.getCancelSubscriptionConfirmationTitle(), mSubscriptionConfigModal.getCancelSubscriptionConfirmation(),
+                getString(R.string.yes), new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                        networkCommunicator.cancelSubscription(MyProfile.this);
+                    }
+                }, getString(R.string.no), new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                });
 
     }
 }

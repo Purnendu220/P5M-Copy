@@ -19,6 +19,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.MemberShipAdapter;
@@ -27,6 +29,8 @@ import com.p5m.me.analytics.IntercomEvents;
 import com.p5m.me.analytics.MixPanel;
 import com.p5m.me.data.BookWithFriendData;
 import com.p5m.me.data.LanguageModel;
+import com.p5m.me.data.SubscriptionConfigModal;
+import com.p5m.me.data.UpdateSubscriptionRequest;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
@@ -45,6 +49,7 @@ import com.p5m.me.utils.DialogUtils;
 import com.p5m.me.utils.JsonUtils;
 import com.p5m.me.utils.LanguageUtils;
 import com.p5m.me.utils.LogUtils;
+import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.Main.CheckoutActivity;
 import com.p5m.me.view.activity.Main.MembershipInfoActivity;
 import com.p5m.me.view.activity.Main.PackageLimitsActivity;
@@ -66,7 +71,7 @@ import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_NO_PACKAG
 
 
 public class MembershipFragment extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks, NetworkCommunicator.RequestListener,
-        SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, CustomAlertDialog.OnAlertButtonAction, OnAlertButtonAction {
+        SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, CustomAlertDialog.OnAlertButtonAction, OnAlertButtonAction,OnClickBottomSheet {
 
     @BindView(R.id.recyclerView)
     public RecyclerView recyclerView;
@@ -87,6 +92,13 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
     public TextView mTextViewWalletAmount;
     @BindView(R.id.layoutUserWallet)
     public LinearLayout mLayoutUserWallet;
+
+    @BindView(R.id.subscriptionOfferLayout)
+    public LinearLayout subscriptionOfferLayout;
+    @BindView(R.id.subscriptionOfferText)
+    public TextView subscriptionOfferText;
+
+
     private int navigatedFrom;
     private ClassModel classModel;
     private MemberShipAdapter memberShipAdapter;
@@ -104,6 +116,10 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
     private boolean isTabSelected = false;
     private boolean showChoosePackageOption = true;
     private boolean isBuyMoreCredits = false;
+    private SubscriptionConfigModal mSubscriptionConfigModal;
+    private boolean upgradeSubscription = false;
+
+
 
 
     public MembershipFragment() {
@@ -169,7 +185,6 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
         swipeRefreshLayout.setOnRefreshListener(this);
         textGymVisitLimits.setOnClickListener(this);
         imageViewInfo.setOnClickListener(this);
-        //FirebaseDynamicLinnk.getDynamicLink(this,getArguments());
         navigatedFrom = getArguments().getInt(AppConstants.DataKey.NAVIGATED_FROM_INT, AppConstants.AppNavigation.NAVIGATION_FROM_FIND_CLASS);
         classModel = (ClassModel) getArguments().getSerializable(AppConstants.DataKey.CLASS_OBJECT);
         mFriendsData = (BookWithFriendData) getArguments().getSerializable(AppConstants.DataKey.BOOK_WITH_FRIEND_DATA);
@@ -186,12 +201,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
             e.printStackTrace();
             LogUtils.exception(e);
         }
-
         onRefresh();
-
-
-//
-        //  onTrackingNotification();
         FirebaseAnalysic.trackMembershipVisit(navigatedFrom);
         if (RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE != null && !RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE.isEmpty()) {
             showChoosePackageOption = Boolean.valueOf(RemoteConfigConst.SHOW_SELECTION_OPTIONS_VALUE);
@@ -243,22 +253,29 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
             refreshFromEvent();
         }
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void subscriptionUpdated(Events.SubscriptionUpdated subscriptionUpdated) {
+        this.isBuyMoreCredits = false;
 
+        refreshFromEvent();
+
+    }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getUser(Events.UserUpdate userUpdate) {
 
 
     }
 
-    public void refreshFragment(int navigatedFrom, ClassModel classModel, BookWithFriendData mFriendsData, int mNumberOfPackagesToBuy, boolean addCredits) {
+    public void refreshFragment(int navigatedFrom, ClassModel classModel, BookWithFriendData mFriendsData, int mNumberOfPackagesToBuy, boolean addCredits,boolean updateSubsciption) {
         if (!swipeRefreshLayout.isRefreshing()) {
 
-            if (this.navigatedFrom != navigatedFrom || this.classModel != classModel || this.mFriendsData != mFriendsData || this.mNumberOfPackagesToBuy != mNumberOfPackagesToBuy || this.isBuyMoreCredits != addCredits) {
+            if (this.navigatedFrom != navigatedFrom || this.classModel != classModel || this.mFriendsData != mFriendsData || this.mNumberOfPackagesToBuy != mNumberOfPackagesToBuy || this.isBuyMoreCredits != addCredits||this.upgradeSubscription!=updateSubsciption) {
                 this.navigatedFrom = navigatedFrom;
                 this.classModel = classModel;
                 this.mFriendsData = mFriendsData;
                 this.mNumberOfPackagesToBuy = mNumberOfPackagesToBuy;
                 this.isBuyMoreCredits = addCredits;
+                this.upgradeSubscription = updateSubsciption;
                 refreshFromEvent();
             } else {
                 memberShipAdapter.setClassModel(null);
@@ -413,6 +430,8 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
             memberShipAdapter.notifyDataSetChanges();
 
         }
+
+
     }
 
     @Override
@@ -453,7 +472,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                         navigatedFrom == AppConstants.AppNavigation.NAVIGATION_FROM_DEEPLINK_ACTIVITY ||
                         navigatedFrom == -1
                 ) {
-                    CheckoutActivity.openActivity(context, aPackage);
+                    CheckoutActivity.openActivity(context, aPackage,upgradeSubscription);
 
                     MixPanel.trackPackagePreferred(aPackage.getName());
                 }
@@ -474,7 +493,10 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
             }
             break;
-
+            case R.id.textViewUpdateSubscription:{
+                EditSubscriptionBottomSheet.newInstance(context,this).show(getFragmentManager(),"hffhgjh");
+            }
+           break;
             case R.id.imageViewNotApplicableInfo: {
                 if (model instanceof Package) {
                     Package classModel = (Package) model;
@@ -582,6 +604,14 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                 }
                 memberShipAdapter.setUsdInfo(getUsdValue());
                 memberShipAdapter.notifyDataSetChanges();
+                if (user.isBuyMembership() || classModel != null || isBuyMoreCredits) {
+                    subscriptionOfferLayout.setVisibility(View.VISIBLE);
+                    
+
+                }else{
+                    subscriptionOfferLayout.setVisibility(View.GONE);
+                }
+
                 break;
 
 //            case NetworkCommunicator.RequestCode.BUY_PACKAGE:
@@ -594,6 +624,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
             case NetworkCommunicator.RequestCode.ME_USER:
                 setUserWalletDetail();
+
                 if (isBuyMoreCredits) {
                     checkPackages(isBuyMoreCredits);
                 } else {
@@ -601,6 +632,16 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
                 }
 
+
+                break;
+            case NetworkCommunicator.RequestCode.CANCEL_SUBSCRIPTION:
+                ToastUtils.show(getActivity(),mSubscriptionConfigModal.getCancelSubscriptionSuccess());
+                networkCommunicator.getMyUser(this,false);
+
+                break;
+            case NetworkCommunicator.RequestCode.UPDATE_SUBSCRIPTION:
+                ToastUtils.show(getActivity(),mSubscriptionConfigModal.getRenewSubscriptionSuccess());
+                networkCommunicator.getMyUser(this,false);
 
                 break;
         }
@@ -612,13 +653,14 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
         swipeRefreshLayout.setRefreshing(false);
 
-//        switch (requestCode) {
-//            case NetworkCommunicator.RequestCode.BUY_PACKAGE:
-//                ToastUtils.showFailureResponse(context, errorMessage);
-//                memberShipAdapter.notifyDataSetChanges();
-//
-//                break;
-//        }
+        switch (requestCode) {
+            case NetworkCommunicator.RequestCode.CANCEL_SUBSCRIPTION:
+            case NetworkCommunicator.RequestCode.UPDATE_SUBSCRIPTION:
+                ToastUtils.showFailureResponse(context, errorMessage);
+
+                break;
+
+        }
     }
 
     private void setUserWalletDetail() {
@@ -631,6 +673,36 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
             mLayoutUserWallet.setVisibility(View.GONE);
 
         }
+        initSubscriptionConfig();
+
+        if(!user.isBuyMembership()){
+            subscriptionOfferLayout.setVisibility(View.GONE);
+        }
+    }
+
+    private void initSubscriptionConfig(){
+        String SUBSCRIPTION_CONFIG = RemoteConfigure.getFirebaseRemoteConfig(context).getRemoteConfigValue(RemoteConfigConst.SUBSCRIPTION_CONFIG_VALUE);
+        try{
+            Gson g = new Gson();
+            mSubscriptionConfigModal = g.fromJson(SUBSCRIPTION_CONFIG, new TypeToken<SubscriptionConfigModal>() {
+            }.getType());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        if (TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.SAUDI_CURRENCY)) {
+            subscriptionOfferLayout.setVisibility(View.GONE);
+        }else{
+            if(mSubscriptionConfigModal!=null&&mSubscriptionConfigModal.ismShowSubscription()&&mSubscriptionConfigModal.getSubscribeBannerText()!=null&&mSubscriptionConfigModal.getSubscribeBannerText().length()>0){
+                subscriptionOfferText.setText(mSubscriptionConfigModal.getSubscribeBannerText());
+                subscriptionOfferLayout.setVisibility(View.VISIBLE);
+
+            }else{
+                subscriptionOfferLayout.setVisibility(View.GONE);
+
+            }
+
+        }
+
     }
 
     @Override
@@ -693,7 +765,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
             case AppConstants.AlertRequestCodes.ALERT_REQUEST_PURCHASE:
                 if (data != null && data instanceof Package) {
                     Package modelPkg = (Package) data;
-                    CheckoutActivity.openActivity(context, modelPkg);
+                    CheckoutActivity.openActivity(context, modelPkg,false);
                     MixPanel.trackPackagePreferred(modelPkg.getName());
 
                 }
@@ -728,5 +800,58 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
 
         } else return "";
     }
+
+    @Override
+    public void onClickBottomSheet(View view, Object object) {
+        switch (view.getId()){
+            case R.id.cancelSubscription:
+                cancelSubscription();
+                break;
+            case R.id.updateSubscription:
+                upgradeSubscription = true;
+                checkPackages(true);
+
+                break;
+
+            case R.id.renewSubscription:
+                renewSubscription(new UpdateSubscriptionRequest(AppConstants.SubscriptionAction.RENEW,userPackageInfo.userPackageGeneral.getId()));
+                break;
+        }
+    }
+
+    private void renewSubscription(UpdateSubscriptionRequest request){
+        DialogUtils.showBasicMessage(getActivity(), mSubscriptionConfigModal.getRenewSubscriptionConfirmationTitle(), mSubscriptionConfigModal.getRenewSubscriptionConfirmation(),
+                getString(R.string.yes), new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                        networkCommunicator.updateSubscription(request,MembershipFragment.this);
+                    }
+                }, getString(R.string.no), new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                });
+
+    }
+
+    private void cancelSubscription(){
+        DialogUtils.showBasicMessage(getActivity(), mSubscriptionConfigModal.getCancelSubscriptionConfirmationTitle(), mSubscriptionConfigModal.getCancelSubscriptionConfirmation(),
+                getString(R.string.yes), new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                        networkCommunicator.cancelSubscription(MembershipFragment.this);
+                    }
+                }, getString(R.string.no), new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                });
+
+    }
+
 
 }

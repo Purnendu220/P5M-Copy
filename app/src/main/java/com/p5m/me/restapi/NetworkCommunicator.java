@@ -18,6 +18,7 @@ import com.p5m.me.data.QuestionAnswerModel;
 import com.p5m.me.data.RatingParamModel;
 import com.p5m.me.data.RatingResponseModel;
 import com.p5m.me.data.UnratedClassData;
+import com.p5m.me.data.UpdateSubscriptionRequest;
 import com.p5m.me.data.UserPackageDetail;
 import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.YoutubeResponse;
@@ -185,6 +186,9 @@ public class NetworkCommunicator {
         public static final int ATTEND_CLASS_API = 179;
         public static final int SEARCH_EMAIL = 180;
         public static final int GET_GYM_COVID_SAFTY = 181;
+        public static final int CANCEL_SUBSCRIPTION = 182;
+        public static final int UPDATE_SUBSCRIPTION = 183;
+
 
 
     }
@@ -951,6 +955,8 @@ public class NetworkCommunicator {
                     String userMainPackage = UserPropertyConst.NO_PACKAGE;
                     String userReadyPackage = UserPropertyConst.No_READY_PACKAGE;
                     String userReadyGym = "";
+                    String userSubscription = "";
+
                     if (response.data.getUserPackageDetailDtoList() != null
                             && !response.data.getUserPackageDetailDtoList().isEmpty()) {
 
@@ -958,6 +964,7 @@ public class NetworkCommunicator {
                             if (userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_GENERAL)
                                     && userPackage.getBalance() != 0) {
                                 userMainPackage = userPackage.getPackageName().toUpperCase();
+                                userSubscription = userPackage.getSubscriptionStatus()!=null?userPackage.getSubscriptionStatus():"";
 
                             } else if (userPackage.getPackageType().equals(AppConstants.ApiParamValue.PACKAGE_TYPE_DROP_IN)) {
                                 userReadyPackage = UserPropertyConst.HAVE_READY_PACKAGE;
@@ -969,6 +976,12 @@ public class NetworkCommunicator {
                             }
                         }
                     }
+                    if(userSubscription!=null&&userSubscription.length()>0){
+                        setUserProperty(context, UserPropertyConst.ACTIVE_SUBSCRIPTION, userSubscription);
+                    }
+
+
+
                     setUserProperty(context, UserPropertyConst.ACTIVE_PACKAGE, userMainPackage);
                     setUserProperty(context, UserPropertyConst.READY_PACKAGE, userReadyPackage);
                     UserAttributes userAttributes = new UserAttributes.Builder()
@@ -2009,6 +2022,48 @@ public class NetworkCommunicator {
 
         return call;
 
+    }
+
+    public Call cancelSubscription(final RequestListener requestListener) {
+        final int requestCode = RequestCode.CANCEL_SUBSCRIPTION;
+        Call<ResponseModel<Object>> call = apiService.cancelSubscription(TempStorage.getUser().getId());
+        LogUtils.debug("NetworkCommunicator hitting getNotifications");
+
+        call.enqueue(new RestCallBack<ResponseModel<Object>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<Object>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getNotifications onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<Object>> call, Response<ResponseModel<Object>> restResponse, ResponseModel<Object> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getNotifications onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
+    }
+
+    public Call updateSubscription(UpdateSubscriptionRequest request,final RequestListener requestListener) {
+        final int requestCode = RequestCode.UPDATE_SUBSCRIPTION;
+        Call<ResponseModel<Object>> call = apiService.updateSubscription(TempStorage.getUser().getId(),request);
+        LogUtils.debug("NetworkCommunicator hitting getNotifications");
+
+        call.enqueue(new RestCallBack<ResponseModel<Object>>(context) {
+            @Override
+            public void onFailure(Call<ResponseModel<Object>> call, String message) {
+                LogUtils.networkError("NetworkCommunicator getNotifications onFailure " + message);
+                requestListener.onApiFailure(message, requestCode);
+            }
+
+            @Override
+            public void onResponse(Call<ResponseModel<Object>> call, Response<ResponseModel<Object>> restResponse, ResponseModel<Object> response) {
+                LogUtils.networkSuccess("NetworkCommunicator getNotifications onResponse data " + response);
+                requestListener.onApiSuccess(response, requestCode);
+            }
+        });
+        return call;
     }
 }
 

@@ -52,7 +52,13 @@ public class Events {
 
     public static class PackagePurchased {
     }
+    public static class SubscriptionUpdated {
+        public String subscriptionUpdate;
+        public SubscriptionUpdated(String subscriptionUpdate) {
+            this.subscriptionUpdate = subscriptionUpdate;
+        }
 
+    }
     public static class NewFilter {
     }
 

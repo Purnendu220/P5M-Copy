@@ -86,6 +86,7 @@ public class RemoteConfigConst {
     public static String SPECIAL_INFO = "special_info";
     public static String SPECIAL_PROGRAM_POPUP = "special_program_popup";
     public static String SAFTEY_REMARK_OPTIONS = "safety_remark_options";
+    public static String SUBSCRIPTION_CONFIG_VALUE = "subscription_config_values";
 
 
 

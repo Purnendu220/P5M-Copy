@@ -19,6 +19,7 @@ public class UserPackageInfo {
     public boolean haveDropInPackage = false;
     public int dropInPackageCount = 0;
     public int generalPackageCount = 0;
+    public boolean haveActiveSubscription = false;
 
     public UserPackage userPackageGeneral = null;
     public List<UserPackage> userPackageReady = null;
@@ -34,6 +35,9 @@ public class UserPackageInfo {
                     userPackageGeneral = userPackage;
                     generalPackageCount++;
                     havePackages = true;
+                    if(userPackage.isSubscriped()&&userPackage.getSubscriptionStatus()!=null&&userPackage.getSubscriptionStatus().equalsIgnoreCase(AppConstants.SubscriptionStatus.ACTIVE)){
+                        haveActiveSubscription = true;
+                    }
                 }
             }
         } else {

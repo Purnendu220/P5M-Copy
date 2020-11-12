@@ -67,10 +67,14 @@ import com.p5m.me.view.custom.GalleryActivity;
 
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -1049,5 +1053,28 @@ public static PriceModelMaster  getPriceModelForCredit(List<PriceModelMaster> ma
 
         return localList;
 
+    }
+
+    public static String appendToUrl(String url, HashMap<String, String> parameters) throws URISyntaxException
+    {
+        URI uri = new URI(url);
+        String query = uri.getQuery();
+
+        StringBuilder builder = new StringBuilder();
+
+        if (query != null)
+            builder.append(query);
+
+        for (Map.Entry<String, String> entry: parameters.entrySet())
+        {
+            String keyValueParam = entry.getKey() + "=" + entry.getValue();
+            if (!builder.toString().isEmpty())
+                builder.append("&");
+
+            builder.append(keyValueParam);
+        }
+
+        URI newUri = new URI(uri.getScheme(), uri.getAuthority(), uri.getPath(), builder.toString(), uri.getFragment());
+        return newUri.toString();
     }
 }

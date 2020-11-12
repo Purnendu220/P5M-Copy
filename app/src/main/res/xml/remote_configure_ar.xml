@@ -364,4 +364,40 @@
         <key>safety_remark_options</key>
         <value>{"options":["Great, I feel safe","Good","Needs improvement"]}</value>
     </entry>
+    <entry>
+        <key>subscription_config_values</key>
+        <value>{
+            "show_subscription": true,
+            "oneTimeText": "One Time",
+            "subscribeText": "Subscribe and save 10 %",
+            "subscriptionOfferValue": 10,
+            "subscriptionOfferType": "PERCENTAGE",
+            "subscribeApplied": "Subscribe offer applied",
+            "subscribeRenewText": "Renews automatically after %s or when credits or classes are finished",
+            "subscriptionUpdateText": "This plan will be assigned to you when your current plan expires",
+            "subscriptionDescText": "",
+
+            "subscribeRenewTextDesc": "You can renew subscription if you run out of credit.",
+            "subscribeBannerText": "Subscribe a package and get 10 % off",
+            "editSubscriptionTitle": "Edit Plan",
+            "cancelSubscriptionOption": "Cancel Subscription",
+            "cancelSubscriptionOptionDesc": "Current package will not be auto renewed at end of plan",
+            "updateSubscriptionOption": "Update Subscription",
+            "updateSubscriptionOptionDesc": "Select a package which is suitable for you",
+            "renewSubscriptionOption": "Renew Subscription",
+            "renewSubscriptionOptionDesc": "You will charged and subscribed package will assigned to you.",
+            "cancelSubscriptionConfirmation": "Do you really want to cancel subscription?",
+            "cancelSubscriptionConfirmationTitle": "Are you Sure?",
+            "renewSubscriptionConfirmationTitle": "Renew Subscription",
+            "renewSubscriptionConfirmation": "Do you really want to renew subscription?",
+            "updateSubscriptionConfirmationTitle": "Update Subscription",
+            "updateSubscriptionConfirmation": "Do you really want to update subscription?",
+            "extendSubscriptionConfirmationTitle": "Extend Plan",
+            "extendSubscriptionConfirmation": "Do you really want to extend your package?",
+            "renewSubscriptionSuccess":"Subscription renewed successfully",
+            "updateSubscriptionSuccess":"Subscription updated successfully",
+            "cancelSubscriptionSuccess":"Subscription canceled successfully"
+            }
+        </value>
+    </entry>
 </defaultsMap>
