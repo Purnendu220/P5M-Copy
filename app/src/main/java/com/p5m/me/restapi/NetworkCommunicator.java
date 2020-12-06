@@ -19,6 +19,7 @@ import com.p5m.me.data.RatingParamModel;
 import com.p5m.me.data.RatingResponseModel;
 import com.p5m.me.data.UnratedClassData;
 import com.p5m.me.data.UpdateSubscriptionRequest;
+import com.p5m.me.data.UpdateSubscriptionResponse;
 import com.p5m.me.data.UserPackageDetail;
 import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.YoutubeResponse;
@@ -2047,20 +2048,20 @@ public class NetworkCommunicator {
 
     public Call updateSubscription(UpdateSubscriptionRequest request,final RequestListener requestListener) {
         final int requestCode = RequestCode.UPDATE_SUBSCRIPTION;
-        Call<ResponseModel<Object>> call = apiService.updateSubscription(TempStorage.getUser().getId(),request);
+        Call<ResponseModel<UpdateSubscriptionResponse>> call = apiService.updateSubscription(TempStorage.getUser().getId(),request);
         LogUtils.debug("NetworkCommunicator hitting getNotifications");
 
-        call.enqueue(new RestCallBack<ResponseModel<Object>>(context) {
+        call.enqueue(new RestCallBack<ResponseModel<UpdateSubscriptionResponse>>(context) {
             @Override
-            public void onFailure(Call<ResponseModel<Object>> call, String message) {
+            public void onFailure(Call<ResponseModel<UpdateSubscriptionResponse>> call, String message) {
                 LogUtils.networkError("NetworkCommunicator getNotifications onFailure " + message);
                 requestListener.onApiFailure(message, requestCode);
             }
 
             @Override
-            public void onResponse(Call<ResponseModel<Object>> call, Response<ResponseModel<Object>> restResponse, ResponseModel<Object> response) {
+            public void onResponse(Call<ResponseModel<UpdateSubscriptionResponse>> call, Response<ResponseModel<UpdateSubscriptionResponse>> restResponse, ResponseModel<UpdateSubscriptionResponse> response) {
                 LogUtils.networkSuccess("NetworkCommunicator getNotifications onResponse data " + response);
-                requestListener.onApiSuccess(response, requestCode);
+                requestListener.onApiSuccess(response.data, requestCode);
             }
         });
         return call;

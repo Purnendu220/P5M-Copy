@@ -1,5 +1,6 @@
 package com.p5m.me.analytics;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -89,6 +90,11 @@ public class MixPanel {
         }
 
     }
+    public static void showInApp(Activity activity){
+        if(mixPanel!=null){
+            mixPanel.getPeople().showNotificationIfAvailable(activity);
+        }
+    }
 
     public static void optInTracking(){
         if(mixPanel!=null){
@@ -145,7 +151,7 @@ public class MixPanel {
             if (MyApp.USE_MIX_PANEL) {
                 mixPanel.getPeople().identify(id);
                 mixPanel.getPeople().set(props);
-                mixPanel.getPeople().initPushHandling(MixPanel.PROJECT_ID);
+               // mixPanel.getPeople().initPushHandling(MixPanel.PROJECT_ID);
             }
         } catch (Exception e) {
             e.printStackTrace();

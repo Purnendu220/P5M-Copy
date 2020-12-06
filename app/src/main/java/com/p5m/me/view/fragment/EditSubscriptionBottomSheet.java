@@ -109,7 +109,7 @@ public class EditSubscriptionBottomSheet extends BottomSheetDialogFragment imple
         renewSubscription.setOnClickListener(this);
         UserPackageInfo userPackageInfo = new UserPackageInfo(TempStorage.getUser());
         if(userPackageInfo.haveGeneralPackage&&userPackageInfo.userPackageGeneral!=null){
-            if(userPackageInfo.userPackageGeneral.getBalance()<10){
+            if(userPackageInfo.userPackageGeneral.getBalance()<=10){
                 addCredits = true;
 
             }else{

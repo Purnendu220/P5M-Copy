@@ -24,6 +24,7 @@ import com.p5m.me.adapters.UserPackageDetailAdapter;
 import com.p5m.me.data.PackageTags;
 import com.p5m.me.data.RemoteConfigDataModel;
 import com.p5m.me.data.RemoteConfigPlanText;
+import com.p5m.me.data.SubscriptionConfigModal;
 import com.p5m.me.data.UserPackageDetail;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassModel;
@@ -104,6 +105,12 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.textViewUpdateSubscription)
     TextView textViewUpdateSubscription;
 
+    @BindView(R.id.subscriptionRenewLayout)
+    LinearLayout subscriptionRenewLayout;
+
+    @BindView(R.id.packageRenewMsgTxt)
+    TextView packageRenewMsgTxt;
+
 
 
     /* User Existig Pakages DROP IN Layout Declaration*/
@@ -146,7 +153,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.textViewSpecialOffer)
     TextView textViewSpecialOffer;
-
+    SubscriptionConfigModal mSubscriptionConfigModal;
 
     private int numberOfDays;
 
@@ -168,6 +175,7 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
 
         if (data != null && (data instanceof UserPackage || data instanceof Package)) {
             UserPackageInfo userPackageInfo = new UserPackageInfo(TempStorage.getUser());
+            mSubscriptionConfigModal = Helper.getSubscriptionConfig(context);
 
             itemView.setVisibility(View.VISIBLE);
             textViewExtendPackage.setVisibility(View.GONE);
@@ -218,9 +226,25 @@ public class MemberShipViewHolder extends RecyclerView.ViewHolder {
                     });
                     setPackageTags(model.getPackageId());
                     if(userPackageInfo.haveActiveSubscription){
+                        subscriptionRenewLayout.setVisibility(View.VISIBLE);
                         textViewUpdateSubscription.setVisibility(View.VISIBLE);
+                        textViewUpdateSubscription.setPaintFlags(textViewUpdateSubscription.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
                         textViewBuyMoreCredits.setVisibility(View.GONE);
+                        if(mSubscriptionConfigModal!=null){
+                            if(mSubscriptionConfigModal.getSubscribeRenewText()!=null&&mSubscriptionConfigModal.getSubscribeRenewText().length()>0)
+                            {
+                                String msg = String.format(mSubscriptionConfigModal.getSubscribeRenewText(), DateUtils.getPackageClassDate(model.getExpiryDate()));
+                                packageRenewMsgTxt.setText(msg);
+                            }
+                          if(mSubscriptionConfigModal.getEditSubscriptionTitle()!=null){
+                              textViewUpdateSubscription.setText(mSubscriptionConfigModal.getEditSubscriptionTitle());
+                          }
+
+                        }
+
                     }else{
+                        subscriptionRenewLayout.setVisibility(View.GONE);
                         textViewUpdateSubscription.setVisibility(View.GONE);
 
                     }

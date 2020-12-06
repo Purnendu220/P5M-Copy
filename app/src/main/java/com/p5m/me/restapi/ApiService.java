@@ -13,6 +13,7 @@ import com.p5m.me.data.RatingParamModel;
 import com.p5m.me.data.RatingResponseModel;
 import com.p5m.me.data.UnratedClassData;
 import com.p5m.me.data.UpdateSubscriptionRequest;
+import com.p5m.me.data.UpdateSubscriptionResponse;
 import com.p5m.me.data.UserPackageDetail;
 import com.p5m.me.data.WishListResponse;
 import com.p5m.me.data.YoutubeResponse;
@@ -473,7 +474,7 @@ public interface ApiService {
 
     @Headers("Content-type: application/json")
     @PUT(AppConstants.Url.UPDATE_SUBSCRIPTION)
-    Call<ResponseModel<Object>> updateSubscription(@Query(AppConstants.ApiParamKey.USER_ID) long mediaId,@Body UpdateSubscriptionRequest updateSubscriptionRequest);
+    Call<ResponseModel<UpdateSubscriptionResponse>> updateSubscription(@Query(AppConstants.ApiParamKey.USER_ID) long mediaId, @Body UpdateSubscriptionRequest updateSubscriptionRequest);
 
 
 }

@@ -56,7 +56,9 @@ import com.p5m.me.view.activity.Main.PackageLimitsActivity;
 import com.p5m.me.view.custom.AlertP5MCreditInfo;
 import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.custom.OnAlertButtonAction;
+import com.p5m.me.view.custom.OnSubscriptionUpdate;
 import com.p5m.me.view.custom.PackageExtensionAlertDialog;
+import com.p5m.me.view.custom.ProcessingDialog;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -70,8 +72,8 @@ import butterknife.ButterKnife;
 import static com.p5m.me.utils.AppConstants.Pref.MEMBERSHIP_INFO_STATE_NO_PACKAGE;
 
 
-public class MembershipFragment extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks, NetworkCommunicator.RequestListener,
-        SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, CustomAlertDialog.OnAlertButtonAction, OnAlertButtonAction,OnClickBottomSheet {
+public class  MembershipFragment extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks, NetworkCommunicator.RequestListener,
+        SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, CustomAlertDialog.OnAlertButtonAction, OnAlertButtonAction, OnClickBottomSheet, OnSubscriptionUpdate {
 
     @BindView(R.id.recyclerView)
     public RecyclerView recyclerView;
@@ -639,11 +641,7 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                 networkCommunicator.getMyUser(this,false);
 
                 break;
-            case NetworkCommunicator.RequestCode.UPDATE_SUBSCRIPTION:
-                ToastUtils.show(getActivity(),mSubscriptionConfigModal.getRenewSubscriptionSuccess());
-                networkCommunicator.getMyUser(this,false);
 
-                break;
         }
     }
 
@@ -825,7 +823,9 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         dialog.dismiss();
-                        networkCommunicator.updateSubscription(request,MembershipFragment.this);
+                        ProcessingDialog process = new ProcessingDialog(context,request,MembershipFragment.this);
+                        process.show();
+                       // networkCommunicator.updateSubscription(request,MembershipFragment.this);
                     }
                 }, getString(R.string.no), new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -854,4 +854,12 @@ public class MembershipFragment extends BaseFragment implements ViewPagerFragmen
     }
 
 
+    @Override
+    public void onUpdateSuccess(UpdateSubscriptionRequest request, ProcessingDialog.PaymentStatus status) {
+         Helper.onSubscriptionUpdate(context,request,status);
+    }
+    @Override
+    public void onFinishButtonClick(int type) {
+
+    }
 }

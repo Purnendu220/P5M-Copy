@@ -59,7 +59,9 @@ import com.p5m.me.view.activity.Main.VideoPlayerActivity;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.activity.custom.MyRecyclerView;
 import com.p5m.me.view.custom.CustomAlertDialog;
+import com.p5m.me.view.custom.OnSubscriptionUpdate;
 import com.p5m.me.view.custom.PackageExtensionAlertDialog;
+import com.p5m.me.view.custom.ProcessingDialog;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -69,7 +71,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MyProfile extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks<Object>, MyRecyclerView.LoaderCallbacks, NetworkCommunicator.RequestListener, PopupMenu.OnMenuItemClickListener, SwipeRefreshLayout.OnRefreshListener, CustomAlertDialog.OnAlertButtonAction, OnClickBottomSheet {
+public class MyProfile extends BaseFragment implements ViewPagerFragmentSelection, AdapterCallbacks<Object>, MyRecyclerView.LoaderCallbacks, NetworkCommunicator.RequestListener, PopupMenu.OnMenuItemClickListener, SwipeRefreshLayout.OnRefreshListener, CustomAlertDialog.OnAlertButtonAction, OnClickBottomSheet, OnSubscriptionUpdate {
     public static Fragment createMyProfileFragment(int position) {
         Fragment tabFragment = new MyProfile();
         Bundle bundle = new Bundle();
@@ -169,6 +171,12 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void subscriptionUpdated(Events.SubscriptionUpdated subscriptionUpdated) {
+
+        getUser();
+
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -240,9 +248,14 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
 
     @Override
     public void onRefresh() {
-        networkCommunicator.getMyUser(this, false);
+        getUser();
         networkCommunicator.getFavTrainerList(AppConstants.ApiParamValue.FOLLOW_TYPE_FOLLOWED, TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_INNER_TRAINER_LIST, this, false);
         networkCommunicator.getFinishedClassList(TempStorage.getUser().getId(), page, AppConstants.Limit.PAGE_LIMIT_UNLIMITED, this, false);
+
+    }
+
+    private void getUser(){
+        networkCommunicator.getMyUser(this, false);
 
     }
 
@@ -426,11 +439,7 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
                 networkCommunicator.getMyUser(this,false);
 
                 break;
-            case NetworkCommunicator.RequestCode.UPDATE_SUBSCRIPTION:
-                ToastUtils.show(getActivity(),mSubscriptionConfigModal.getRenewSubscriptionSuccess());
-                networkCommunicator.getMyUser(this,false);
 
-                break;
         }
     }
 
@@ -518,7 +527,9 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         dialog.dismiss();
-                        networkCommunicator.updateSubscription(request,MyProfile.this);
+                        ProcessingDialog process = new ProcessingDialog(context,request,MyProfile.this);
+                        process.show();
+                        //networkCommunicator.updateSubscription(request,MyProfile.this);
                     }
                 }, getString(R.string.no), new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -543,6 +554,15 @@ public class MyProfile extends BaseFragment implements ViewPagerFragmentSelectio
                         dialog.dismiss();
                     }
                 });
+
+    }
+
+    @Override
+    public void onUpdateSuccess(UpdateSubscriptionRequest request, ProcessingDialog.PaymentStatus status) {
+         Helper.onSubscriptionUpdate(context,request,status);
+    }
+    @Override
+    public void onFinishButtonClick(int type) {
 
     }
 }

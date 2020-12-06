@@ -235,8 +235,6 @@ finish();
                     case 2://Payment Success
                      PaymentUrl paymentUrlResponse  =   JsonUtils.fromJson(message,PaymentUrl.class);
                      if(paymentUrlResponse.getCompleted()){
-                         Toast.makeText(mContext, "Subscription  successful", Toast.LENGTH_SHORT).show();
-
                          paymentSuccessful(paymentUrlResponse);
                      }
                      else{
@@ -344,19 +342,7 @@ finish();
                     });
         }
        else if(isFromCheckout){
-            DialogUtils.showBasicMessage(context, getString(R.string.are_you_sure), getString(R.string.to_complete_the_payment_you_should_stay_on_this_page),
-                    getString(R.string.stay_on_this_page), new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            dialog.dismiss();
-                        }
-                    }, getString(R.string.leave_this_page), new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            dialog.dismiss();
-                            finish();
-                        }
-                    });
+           finish();
         }
 
         else{

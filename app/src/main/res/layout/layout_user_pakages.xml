@@ -65,22 +65,7 @@
               android:layout_marginLeft="@dimen/margin_5"
               android:visibility="gone"
               />
-          <TextView
-              android:id="@+id/textViewUpdateSubscription"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_toRightOf="@id/packageValidForOwn"
-              android:fontFamily="sans-serif"
-              android:letterSpacing="@dimen/text_medium_letter_spacing"
-              android:lineSpacingExtra="@dimen/line_spacing_extra"
-              android:text="@string/edit_plan"
-              android:layout_marginTop="@dimen/margin_10"
-              android:textColor="@color/theme_accent_text"
-              android:textSize="@dimen/text_medium"
-              android:textStyle="bold"
-              android:layout_marginLeft="@dimen/margin_5"
-              android:visibility="visible"
-              />
+
 
       </LinearLayout>
       <RelativeLayout
@@ -118,6 +103,46 @@
 
       </RelativeLayout>
 
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:id="@+id/subscriptionRenewLayout"
+          android:orientation="horizontal"
+          android:weightSum="1"
+          >
+          <TextView
+              android:id="@+id/packageRenewMsgTxt"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:text="Renews automatically after %s or when credits or classes are finished  "
+              android:textSize="@dimen/text_medium"
+              android:textColor="@color/grey"
+              android:layout_marginTop="@dimen/margin_20"
+              android:letterSpacing="@dimen/text_medium_letter_spacing"
+              android:lineSpacingExtra="@dimen/line_spacing_extra_title"
+              android:layout_weight="0.7"
+              />
+
+          <TextView
+              android:id="@+id/textViewUpdateSubscription"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_toRightOf="@id/packageRenewMsgTxt"
+              android:fontFamily="sans-serif"
+              android:letterSpacing="@dimen/text_medium_letter_spacing"
+              android:lineSpacingExtra="@dimen/line_spacing_extra"
+              android:text="@string/extend"
+              android:textColor="@color/theme_accent_text"
+              android:textSize="@dimen/text_medium"
+              android:textStyle="bold"
+              android:visibility="visible"
+              android:layout_weight="0.2"
+              android:layout_gravity="center_vertical"
+              />
+
+
+
+      </LinearLayout>
 
 <LinearLayout
     android:layout_width="match_parent"

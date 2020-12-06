@@ -84,6 +84,16 @@ public class SubscriptionConfigModal {
     @SerializedName("subscriptionDescText")
     private String subscriptionDescText;
 
+    @SerializedName("packageExtendMessageSuccess")
+    private String packageExtendMessageSuccess;
+
+    @SerializedName("default_enable")
+    private boolean default_enable;
+
+    @SerializedName("payButtonText")
+    private String payButtonText;
+
+
 
 
 
@@ -313,5 +323,29 @@ public class SubscriptionConfigModal {
 
     public void setSubscriptionDescText(String subscriptionDescText) {
         this.subscriptionDescText = subscriptionDescText;
+    }
+
+    public String getPackageExtendMessageSuccess() {
+        return packageExtendMessageSuccess;
+    }
+
+    public void setPackageExtendMessageSuccess(String packageExtendMessageSuccess) {
+        this.packageExtendMessageSuccess = packageExtendMessageSuccess;
+    }
+
+    public boolean isDefault_enable() {
+        return default_enable;
+    }
+
+    public void setDefault_enable(boolean default_enable) {
+        this.default_enable = default_enable;
+    }
+
+    public String getPayButtonText() {
+        return payButtonText;
+    }
+
+    public void setPayButtonText(String payButtonText) {
+        this.payButtonText = payButtonText;
     }
 }

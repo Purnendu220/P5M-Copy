@@ -38,6 +38,8 @@ import com.p5m.me.data.QuestionAnswerModel;
 import com.p5m.me.data.RemoteConfigDataModel;
 import com.p5m.me.data.SpecialModel;
 import com.p5m.me.data.SpecialProgramModel;
+import com.p5m.me.data.SubscriptionConfigModal;
+import com.p5m.me.data.UpdateSubscriptionRequest;
 import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.main.ClassActivity;
 import com.p5m.me.data.main.ClassModel;
@@ -49,6 +51,7 @@ import com.p5m.me.data.main.PriceModelMaster;
 import com.p5m.me.data.main.TrainerDetailModel;
 import com.p5m.me.data.main.TrainerModel;
 import com.p5m.me.data.main.User;
+import com.p5m.me.eventbus.EventBroadcastHelper;
 import com.p5m.me.fxn.utility.Constants;
 import com.p5m.me.remote_config.RemoteConfigConst;
 import com.p5m.me.remote_config.RemoteConfigSetUp;
@@ -64,6 +67,7 @@ import com.p5m.me.view.activity.LoginRegister.ContinueUser;
 import com.p5m.me.view.activity.LoginRegister.InfoScreen;
 import com.p5m.me.view.activity.Main.LocationActivity;
 import com.p5m.me.view.custom.GalleryActivity;
+import com.p5m.me.view.custom.ProcessingDialog;
 
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -1076,5 +1080,48 @@ public static PriceModelMaster  getPriceModelForCredit(List<PriceModelMaster> ma
 
         URI newUri = new URI(uri.getScheme(), uri.getAuthority(), uri.getPath(), builder.toString(), uri.getFragment());
         return newUri.toString();
+    }
+    public static SubscriptionConfigModal getSubscriptionConfig(Context mContext){
+        SubscriptionConfigModal mSubscriptionConfigModal;
+
+        try{
+            String SUBSCRIPTION_CONFIG = RemoteConfigure.getFirebaseRemoteConfig(mContext).getRemoteConfigValue(RemoteConfigConst.SUBSCRIPTION_CONFIG_VALUE);
+            Gson g = new Gson();
+            mSubscriptionConfigModal = g.fromJson(SUBSCRIPTION_CONFIG, new TypeToken<SubscriptionConfigModal>() {
+            }.getType());
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+            mSubscriptionConfigModal = null;
+
+        }
+        return mSubscriptionConfigModal;
+    }
+
+    public static void onSubscriptionUpdate(Context mContext, UpdateSubscriptionRequest request, ProcessingDialog.PaymentStatus status){
+        SubscriptionConfigModal mSubscriptionConfigModal = getSubscriptionConfig(mContext);
+        switch (request.getAction()){
+            case AppConstants.SubscriptionAction.UPGRADE:
+                if(status== ProcessingDialog.PaymentStatus.SUCCESS){
+                    ToastUtils.show(mContext,mSubscriptionConfigModal.getUpdateSubscriptionSuccess());
+                    EventBroadcastHelper.sendSubscriptionUpdated(AppConstants.SubscriptionAction.UPGRADE);
+                }
+                break;
+            case AppConstants.SubscriptionAction.RENEW:
+                if(status== ProcessingDialog.PaymentStatus.SUCCESS){
+                    ToastUtils.show(mContext,mSubscriptionConfigModal.getRenewSubscriptionSuccess());
+                    EventBroadcastHelper.sendSubscriptionUpdated(AppConstants.SubscriptionAction.RENEW);
+                }
+                break;
+
+            case AppConstants.SubscriptionAction.EXTEND:
+                if(status== ProcessingDialog.PaymentStatus.SUCCESS){
+                    ToastUtils.show(mContext,"Your package extended successfully.");
+                    EventBroadcastHelper.sendSubscriptionUpdated(AppConstants.SubscriptionAction.EXTEND);
+                }
+                break;
+        }
+
     }
 }

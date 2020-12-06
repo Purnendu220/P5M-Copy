@@ -74,17 +74,16 @@
             android:name="com.mixpanel.android.MPConfig.EnableDebugLogging"
             android:value="true" />
 
-        <receiver
-            android:name="com.mixpanel.android.mpmetrics.GCMReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND">
+
+        <service
+            android:name="com.mixpanel.android.mpmetrics.MixpanelFCMMessagingService"
+            android:enabled="true"
+            android:exported="false">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-
-                <category android:name="com.p5m.me" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
-        </receiver>
-
+        </service>
+        <activity android:name="com.mixpanel.android.takeoverinapp.TakeoverInAppActivity" />
         <activity
             android:name=".view.activity.Main.DeepLinkActivity"
             android:label="${appName}"

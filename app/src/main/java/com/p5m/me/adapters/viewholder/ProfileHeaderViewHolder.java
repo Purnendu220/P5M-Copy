@@ -1,6 +1,7 @@
 package com.p5m.me.adapters.viewholder;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
@@ -230,6 +231,9 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
                 if(userPackageInfo.haveActiveSubscription){
                     textViewRecharge.setVisibility(View.GONE);
                     textViewUpdateSubscription.setVisibility(View.VISIBLE);
+                    textViewUpdateSubscription.setPaintFlags(textViewUpdateSubscription.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+
                 }else{
                     textViewUpdateSubscription.setVisibility(View.GONE);
 

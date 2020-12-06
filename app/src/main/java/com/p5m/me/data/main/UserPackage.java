@@ -1,5 +1,7 @@
 package com.p5m.me.data.main;
 
+import com.p5m.me.data.SubscriptionConfigModal;
+
 public class UserPackage implements java.io.Serializable {
     private static final long serialVersionUID = -3233518942033233177L;
 

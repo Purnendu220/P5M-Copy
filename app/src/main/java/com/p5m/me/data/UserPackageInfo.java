@@ -1,10 +1,17 @@
 package com.p5m.me.data;
 
+import android.view.View;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.p5m.me.data.main.User;
 import com.p5m.me.data.main.UserPackage;
+import com.p5m.me.remote_config.RemoteConfigConst;
+import com.p5m.me.remote_config.RemoteConfigure;
+import com.p5m.me.storage.TempStorage;
 import com.p5m.me.utils.AppConstants;
 
 /**
@@ -24,6 +31,7 @@ public class UserPackageInfo {
     public UserPackage userPackageGeneral = null;
     public List<UserPackage> userPackageReady = null;
 
+
     public UserPackageInfo(User user) {
 
         if (user.getUserPackageDetailDtoList() != null && !user.getUserPackageDetailDtoList().isEmpty()) {
@@ -35,7 +43,7 @@ public class UserPackageInfo {
                     userPackageGeneral = userPackage;
                     generalPackageCount++;
                     havePackages = true;
-                    if(userPackage.isSubscriped()&&userPackage.getSubscriptionStatus()!=null&&userPackage.getSubscriptionStatus().equalsIgnoreCase(AppConstants.SubscriptionStatus.ACTIVE)){
+                    if(userPackage.isSubscriped()&&userPackage.getSubscriptionStatus()!=null&&(userPackage.getSubscriptionStatus().equalsIgnoreCase(AppConstants.SubscriptionStatus.ACTIVE)||userPackage.getSubscriptionStatus().equalsIgnoreCase(AppConstants.SubscriptionStatus.UPGRADE))){
                         haveActiveSubscription = true;
                     }
                 }
@@ -45,4 +53,6 @@ public class UserPackageInfo {
         }
 
     }
+
+
 }

@@ -126,6 +126,7 @@ android {
             buildConfigField "String", "BASE_URL_HTTPS", '\"http://uat.profive.co\"'
             buildConfigField "String", "BASE_URL_MIDL", '\"/p5m/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://uat.profive.co\"'
+            buildConfigField "String", "SUBSCRIPTION_PAYMENT_URL", '\"http://qapayment.profive.co/modules/payment\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
             buildConfigField "String", "AGORA_APP_ID", '\"37b3c68b87694725b992c9518ede593c\"'
             buildConfigField "String", "AGORA_APP_CUSTOMER_CERTIFICATE", '\"30d9c2ed76a34e27ab05ae85682ae4fc\"'
@@ -149,6 +150,7 @@ android {
             buildConfigField "boolean", "FIREBASE_IS_PRODUCTION", "false"
             buildConfigField "String", "BASE_URL_MIDL", '\"/p5m/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"http://qa.profive.co\"'
+            buildConfigField "String", "SUBSCRIPTION_PAYMENT_URL", '\"http://qapayment.profive.co/modules/payment\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
             buildConfigField "String", "AGORA_APP_ID", '\"37b3c68b87694725b992c9518ede593c\"'
             buildConfigField "String", "AGORA_APP_CUSTOMER_CERTIFICATE", '\"30d9c2ed76a34e27ab05ae85682ae4fc\"'
@@ -174,6 +176,7 @@ android {
             buildConfigField "String", "BASE_URL_MIDL", '\"/profive-midl/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"https://www.p5m.me\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"https://www.p5m.me\"'
+            buildConfigField "String", "SUBSCRIPTION_PAYMENT_URL", '\"http://qapayment.profive.co/modules/payment\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
             buildConfigField "String", "AGORA_APP_ID", '\"37b3c68b87694725b992c9518ede593c\"'
             buildConfigField "String", "AGORA_APP_CUSTOMER_CERTIFICATE", '\"30d9c2ed76a34e27ab05ae85682ae4fc\"'
@@ -198,6 +201,7 @@ android {
             buildConfigField "String", "BASE_URL_MIDL", '\"/p5m/\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"https://www.p5m.me\"'
             buildConfigField "String", "BASE_URL_SHARE", '\"https://www.p5m.me\"'
+            buildConfigField "String", "SUBSCRIPTION_PAYMENT_URL", '\"http://qapayment.profive.co/modules/payment\"'
             buildConfigField "String", "VERSION_NAME_API", versionNameApi
             buildConfigField "String", "AGORA_APP_ID", '\"065bcb1063964d0f836d63f5779b0030\"'
             buildConfigField "String", "AGORA_APP_CUSTOMER_CERTIFICATE", '\"30d9c2ed76a34e27ab05ae85682ae4fc\"'
@@ -275,13 +279,12 @@ dependencies {
     implementation 'com.bogdwellers:pinchtozoom:0.1'
     /////////////////////////////////FABRIC//////////////////////////////////////////
 
-    implementation 'com.mixpanel.android:mixpanel-android:5.4.1'
+    implementation 'com.mixpanel.android:mixpanel-android:5.6.0'
     implementation 'com.google.android.gms:play-services-gcm:17.0.0'
     implementation 'io.fotoapparat.fotoapparat:library:2.3.1'
     implementation 'me.zhanghai.android.materialratingbar:library:1.4.0'
     implementation 'com.github.DanielMartinus:Stepper-Touch:0.6'
     implementation 'com.google.firebase:firebase-dynamic-links:19.1.0'
-    implementation 'com.mixpanel.android:mixpanel-android:5.4.1'
     //    implementation 'com.google.android.gms:play-services-gcm:15.0.1'
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:design:28.0.0'

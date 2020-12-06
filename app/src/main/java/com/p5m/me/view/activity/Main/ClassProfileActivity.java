@@ -83,7 +83,10 @@ import com.p5m.me.view.custom.AlertP5MCreditInfo;
 import com.p5m.me.view.custom.BookForAFriendPopup;
 import com.p5m.me.view.custom.CustomAlertDialog;
 import com.p5m.me.view.custom.OnAlertButtonAction;
+import com.p5m.me.view.custom.OnSubscriptionUpdate;
+import com.p5m.me.view.custom.ProcessingDialog;
 import com.p5m.me.view.custom.SpecialProgramPopup;
+import com.p5m.me.view.fragment.MyProfile;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -99,7 +102,7 @@ import butterknife.OnClick;
 
 import static com.p5m.me.utils.AppConstants.Limit.PAGE_LIMIT_MAIN_CLASS_LIST;
 
-public class ClassProfileActivity extends BaseActivity implements AdapterCallbacks, View.OnClickListener, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener, OnAlertButtonAction {
+public class ClassProfileActivity extends BaseActivity implements AdapterCallbacks, View.OnClickListener, NetworkCommunicator.RequestListener, SwipeRefreshLayout.OnRefreshListener, OnAlertButtonAction, OnSubscriptionUpdate {
 
     private String message;
     private int errorMsg;
@@ -432,7 +435,7 @@ return;
                 UserPackageInfo userPackageInfo = new UserPackageInfo(TempStorage.getUser());
                 if(userPackageInfo.haveGeneralPackage&&creditRequiredForClass>userPackageInfo.userPackageGeneral.getBalance()){
                     if(mSubscriptionConfigModal!=null&&userPackageInfo.haveActiveSubscription){
-                        showAlertForRenew(mContext.getString(R.string.insufficient_credits),mSubscriptionConfigModal.getRenewSubscriptionConfirmation(),userPackageInfo.userPackageGeneral.getId());
+                        showAlertForRenew(mContext.getString(R.string.insufficient_credits),mSubscriptionConfigModal.getRenewSubscriptionConfirmationTitle(),userPackageInfo.userPackageGeneral.getId());
 
                     }else{
                         showAlertForAddCredit(mContext.getString(R.string.insufficient_credits),mContext.getString(R.string.add_credits),1);
@@ -1178,7 +1181,9 @@ return;
             @Override
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                 dialog.dismiss();
-               networkCommunicator.updateSubscription(new UpdateSubscriptionRequest(AppConstants.SubscriptionAction.RENEW,paymentId),ClassProfileActivity.this);
+                ProcessingDialog process = new ProcessingDialog(context,new UpdateSubscriptionRequest(AppConstants.SubscriptionAction.RENEW,paymentId), ClassProfileActivity.this);
+                process.show();
+             //  networkCommunicator.updateSubscription(new UpdateSubscriptionRequest(AppConstants.SubscriptionAction.RENEW,paymentId),ClassProfileActivity.this);
             }
         });
 
@@ -1203,5 +1208,20 @@ return;
                 break;
         }
 
+    }
+
+    @Override
+    public void onUpdateSuccess(UpdateSubscriptionRequest request, ProcessingDialog.PaymentStatus status) {
+        Helper.onSubscriptionUpdate(context,request,status);
+
+    }
+    @Override
+    public void onFinishButtonClick(int type) {
+        if(isBookWithFriendInProgress){
+            bookWithAFriend(mBookWithFriendData);
+
+        }else{
+            textViewBook();
+        }
     }
 }

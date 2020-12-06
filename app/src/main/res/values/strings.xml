@@ -756,6 +756,7 @@ Would you like to view your balance? </string>
     <string name="cancel_subscription">Cancel Subscription</string>
     <string name="edit_plan">Edit plan</string>
     <string name="renew_subscription">Renew Subscription</string>
+    <string name="processing_payment">Processing your request ...</string>
 
 
 </resources>

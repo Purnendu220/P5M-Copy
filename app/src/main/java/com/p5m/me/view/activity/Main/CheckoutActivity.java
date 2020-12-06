@@ -27,6 +27,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.p5m.me.BuildConfig;
 import com.p5m.me.R;
 import com.p5m.me.adapters.AdapterCallbacks;
 import com.p5m.me.adapters.TestimonialsAdapter;
@@ -43,6 +44,7 @@ import com.p5m.me.data.PromoCode;
 import com.p5m.me.data.SubscriptionConfigModal;
 import com.p5m.me.data.Testimonials;
 import com.p5m.me.data.UpdateSubscriptionRequest;
+import com.p5m.me.data.UserPackageInfo;
 import com.p5m.me.data.ValidityPackageList;
 import com.p5m.me.data.main.ClassModel;
 import com.p5m.me.data.main.Package;
@@ -69,6 +71,8 @@ import com.p5m.me.utils.LogUtils;
 import com.p5m.me.utils.ToastUtils;
 import com.p5m.me.view.activity.base.BaseActivity;
 import com.p5m.me.view.custom.CustomAlertDialog;
+import com.p5m.me.view.custom.OnSubscriptionUpdate;
+import com.p5m.me.view.custom.ProcessingDialog;
 import com.p5m.me.view.fragment.MembershipFragment;
 
 import org.w3c.dom.Text;
@@ -90,7 +94,7 @@ import static com.p5m.me.fxn.utility.Constants.CheckoutFor.SPECIAL_CLASS;
 import static com.p5m.me.utils.LanguageUtils.numberConverter;
 
 
-public class CheckoutActivity extends BaseActivity implements View.OnClickListener, NetworkCommunicator.RequestListener, CustomAlertDialog.OnAlertButtonAction, AdapterCallbacks, CompoundButton.OnCheckedChangeListener {
+public class CheckoutActivity extends BaseActivity implements View.OnClickListener, NetworkCommunicator.RequestListener, CustomAlertDialog.OnAlertButtonAction, AdapterCallbacks, CompoundButton.OnCheckedChangeListener, OnSubscriptionUpdate {
 
     private static int mNumberOfClasses = 1;
     private static float mCredit;
@@ -105,7 +109,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
     private boolean openDialog = true;
     private boolean userHavePackage;
     private SubscriptionConfigModal mSubscriptionConfigModal;
-
+    UserPackageInfo packageInfo;
     /*
             if user is purchasing a package
             */
@@ -346,7 +350,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
 
 
-    private PromoCode promoCode,mPromoCodeTemp;
+    private PromoCode promoCode,mPromoCodeTemp,subscriptionPromo;
     private MaterialDialog materialDialog;
     private User user;
 
@@ -403,7 +407,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
             mSubscriptionConfigModal = g.fromJson(SUBSCRIPTION_CONFIG, new TypeToken<SubscriptionConfigModal>() {
            }.getType());
 
-       if (TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.SAUDI_CURRENCY)) {
+       if (!(TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.KUWAIT_CURRENCY)||TempStorage.getUser().getCurrencyCode().equalsIgnoreCase(AppConstants.Currency.KUWAIT_CURRENCY_SORT))) {
             subscriptionOfferLayout.setVisibility(View.GONE);
         }else{
             if(mSubscriptionConfigModal!=null&&mSubscriptionConfigModal.ismShowSubscription()){
@@ -414,7 +418,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 if(updateSubscription){
                     subscribeOfferMessageText.setText(mSubscriptionConfigModal.getSubscriptionUpdateText());
                 }else{
-                    String text  = String.format(mSubscriptionConfigModal.getSubscribeRenewText(),aPackage.getDuration()+" "+aPackage.getValidityPeriod());
+                    String text  = String.format(mSubscriptionConfigModal.getSubscribeRenewText(),aPackage.getDuration()+" "+aPackage.getValidityPeriod().toLowerCase());
                     subscribeOfferMessageText.setText(text);
                 }
                 if(mSubscriptionConfigModal.getSubscriptionDescText()!=null&&mSubscriptionConfigModal.getSubscriptionDescText().length()>0){
@@ -427,17 +431,19 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 }
 
                 subscriptionOfferLayout.setVisibility(View.VISIBLE);
+                if(mSubscriptionConfigModal.isDefault_enable()){
+                    subscriptionSwitch.setChecked(true);
+                    subscriptionSwitch(true);
 
+                }
             }else{
                 subscriptionOfferLayout.setVisibility(View.GONE);
 
             }
 
         }
-
-
-
-        if(user.getUserPackageDetailDtoList()!=null&&user.getUserPackageDetailDtoList().size()>0&&user.getUserPackageDetailDtoList().get(0).getSubscriptionStatus()!=null&&user.getUserPackageDetailDtoList().get(0).getSubscriptionStatus().equalsIgnoreCase(AppConstants.SubscriptionStatus.ACTIVE)){
+            packageInfo = new UserPackageInfo(user);
+          if(packageInfo.haveGeneralPackage&&packageInfo.haveActiveSubscription){
             subscriptionSwitch.setChecked(true);
             subscriptionSwitch(true);
 
@@ -445,6 +451,9 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         if(updateSubscription){
             subscriptionSwitch.setEnabled(false);
         }
+
+
+
         switch (checkoutFor){
             case SPECIAL_CLASS:
             case EXTENSION:
@@ -464,6 +473,8 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
     private void checkUserCredits() {
         user = TempStorage.getUser();
+        packageInfo = new UserPackageInfo(user);
+
         mWalletCredit = user.getWalletDto();
 //        if(mWalletCredit!=null&&mWalletCredit.getBalance()>0){
 //            mLayoutUserWallet.setVisibility(View.VISIBLE);
@@ -478,6 +489,8 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
         switch (checkoutFor) {
             case PACKAGE:
             case CLASS_PURCHASE_WITH_PACKAGE:
+                subscriptionPromo  = aPackage.getPromoSubscriptionDto();
+
                 layoutSpecialClassDetails.setVisibility(View.GONE);
                 layoutNormalClassDetails.setVisibility(View.VISIBLE);
                 layoutPromoCode.setVisibility(View.GONE);
@@ -629,7 +642,7 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 }
                 break;
             case R.id.textViewPay:
-                if(checkoutFor==EXTENSION&&userPackage.isSubscriped()&&userPackage.getSubscriptionStatus().equalsIgnoreCase(AppConstants.SubscriptionStatus.ACTIVE)){
+                if(checkoutFor==EXTENSION&&packageInfo.haveGeneralPackage&&packageInfo.haveActiveSubscription){
                     extendSubscriptionPlan(new UpdateSubscriptionRequest(AppConstants.SubscriptionAction.EXTEND,selectedPacakageFromList.getId()));
                     return;
                 }
@@ -650,23 +663,23 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                         List<BookWithFriendData> data = new ArrayList<>();
                         data.add(friendsDetail);
                         if(classModel!=null){
-                            map.put("classSessionId",classModel.getClassSessionId()+"");
-                            map.put("friendData",JsonUtils.toJson(data));
+                            map.put("sessionId",classModel.getClassSessionId()+"");
+                            map.put("userList",JsonUtils.toJson(data));
 
                         }
 
 
                     } else {
                         if(classModel!=null){
-                            map.put("classSessionId",classModel.getClassSessionId()+"");
+                            map.put("sessionId",classModel.getClassSessionId()+"");
                         }
                     }
-                    if(promoCode!=null){
-                        map.put("promoId","");
+                    if(subscriptionPromo!=null){
+                        map.put("promoId",subscriptionPromo.getId()+"");
 
                     }
 
-                    String url = "http://qapayment.profive.co/modules/payment";
+                    String url = BuildConfig.SUBSCRIPTION_PAYMENT_URL;
                     try {
                         String packageName = aPackage == null ? AppConstants.Tracker.SPECIAL : aPackage.getName();
                         String couponCode = promoCode == null ? AppConstants.Tracker.NO_COUPON : promoCode.code;
@@ -709,7 +722,30 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
                 break;
         }
     }
+    private void setNumberOfDaysPromo(PromoCode promoCode) {
+        roundFigureOfDays(promoCode.getExtraNumberOfDays());
+        textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()).toUpperCase());
+        textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
+        finalCost = aPackage.getCost();
+        if (promoCode.getExtraNumberOfDays() != 0) {
+            subscribeOfferAmountText.setVisibility(View.GONE);
+            buttonPromoCode.setVisibility(View.GONE);
 
+        } else {
+            layoutPromoCode.setVisibility(View.VISIBLE);
+        }
+        try {
+            if (materialDialog != null) {
+                materialDialog.dismiss();
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+
+
+    }
     private void setNumberOfDaysPromo() {
         roundFigureOfDays(promoCode.getExtraNumberOfDays());
         textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()).toUpperCase());
@@ -839,6 +875,35 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
     }
 
+    private void setNumberOfCreditsPromo(PromoCode promoCode) {
+        textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
+        textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
+        finalCost = aPackage.getCost();
+        if (promoCode.getExtraCredits() != 0) {
+            textViewPackageClasses.setVisibility(View.VISIBLE);
+            layoutPromoCode.setVisibility(View.VISIBLE);
+            int totalCredits = aPackage.getCredits() + promoCode.getExtraCredits();
+//            textViewPackageClasses.setText(numberConverter(totalClasses) + " " + AppConstants.pluralES(getString(R.string.one_class), aPackage.getNoOfClass()) + " " + context.getString(R.string.at_any_gym));
+            textViewPackageClasses.setText(Html.fromHtml("<font color='#42A1ED'>" + numberConverter(totalCredits) + " " + getString(R.string.p5m_credits) + "</font>" + " " + context.getString(R.string.at_any_gym)));
+            textViewPromoCodePrice.setVisibility(View.GONE);
+            textViewPromoCodeText.setText(getResources().getString(R.string.class_offer_promo));
+            buttonPromoCode.setText(context.getString(R.string.remove_promo_code));
+        } else {
+            layoutPromoCode.setVisibility(View.GONE);
+        }
+        try {
+            if (materialDialog != null) {
+                materialDialog.dismiss();
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.exception(e);
+        }
+
+
+    }
+
     private void setNumberOfCreditsPromo() {
         textViewTotal.setText(LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
         textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(aPackage.getCost(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
@@ -943,28 +1008,49 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
     }
 
-    private void applySubscription(){
-        double costAfterSubscriptionApply = 0;
-        double appliedSubscriptionCost = 0;
+    private void applySubscription() {
+        if(subscriptionSwitch.isChecked()&&aPackage.getPromoSubscriptionDto()!=null){
 
-        if(subscriptionSwitch.isChecked()&&subscribeOfferValue>0){
+            PromoCode promo = aPackage.getPromoSubscriptionDto();
+        if (promo != null) {
             subscribeOfferLayout.setVisibility(View.VISIBLE);
-            double subscriptionOfferValue = (aPackage.getCost()*subscribeOfferValue)/100;
-            costAfterSubscriptionApply = aPackage.getCost() - subscriptionOfferValue;
-            appliedSubscriptionCost = subscriptionOfferValue;
-            textViewTotal.setText(LanguageUtils.numberConverter(costAfterSubscriptionApply, 2) + " " + (TempStorage.getUser().getCurrencyCode()));
-            textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(costAfterSubscriptionApply, 2) + " " + (TempStorage.getUser().getCurrencyCode()));
-            finalCost = costAfterSubscriptionApply;
-            if (appliedSubscriptionCost > 0) {
-                subscribeOfferAmountText.setText("- " + (LanguageUtils.numberConverter(appliedSubscriptionCost, 2)) + " " + (TempStorage.getUser().getCurrencyCode()));
-                buttonPromoCode.setVisibility(View.GONE);
+            layoutPromoCode.setVisibility(View.GONE);
 
-
+            if (promo.getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFDAYS)) {
+                setNumberOfDaysPromo(promo);
+            } else if (promo.getDiscountType().equalsIgnoreCase(AppConstants.ApiParamKey.NUMBEROFCREDIT)) {
+                setNumberOfCreditsPromo(promo);
             } else {
-                subscribeOfferLayout.setVisibility(View.GONE);
+                textViewTotal.setText(LanguageUtils.numberConverter(promo.getPriceAfterDiscount(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
+                textViewPay.setText(getString(R.string.pay) + " " + LanguageUtils.numberConverter(promo.getPriceAfterDiscount(), 2) + " " + (TempStorage.getUser().getCurrencyCode()));
+                finalCost = promo.getPriceAfterDiscount();
+
+                if (promo.getDiscount() != 0) {
+                    double discountedPrice = promo.getPrice() - promo.getPriceAfterDiscount();
+                    subscribeOfferAmountText.setVisibility(View.VISIBLE);
+                    subscribeOfferAmountText.setText("- " + (LanguageUtils.numberConverter(discountedPrice, 2)) + " " + (TempStorage.getUser().getCurrencyCode()));
+                    buttonPromoCode.setVisibility(View.GONE);
+                } else {
+                    layoutPromoCode.setVisibility(View.VISIBLE);
+                }
+                try {
+                    if (materialDialog != null) {
+                        materialDialog.dismiss();
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    LogUtils.exception(e);
+                }
 
             }
-        }else{
+        }
+            if(mSubscriptionConfigModal!=null&&mSubscriptionConfigModal.getPayButtonText()!=null&&mSubscriptionConfigModal.getPayButtonText().trim().length()>0){
+                textViewPay.setText(mSubscriptionConfigModal.getPayButtonText());
+
+            }
+    }
+else{
             if(subscriptionOfferLayout.getVisibility() == View.VISIBLE){
                 buttonPromoCode.setVisibility(View.VISIBLE);
 
@@ -972,6 +1058,8 @@ public class CheckoutActivity extends BaseActivity implements View.OnClickListen
 
             subscribeOfferLayout.setVisibility(View.GONE);
         }
+
+
 
     }
 
@@ -1464,7 +1552,9 @@ private void subscriptionSwitch(boolean isChecked){
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         dialog.dismiss();
-                        networkCommunicator.updateSubscription(request, CheckoutActivity.this);
+                        ProcessingDialog process = new ProcessingDialog(context,request,CheckoutActivity.this);
+                        process.show();
+                       // networkCommunicator.updateSubscription(request, CheckoutActivity.this);
                     }
                 }, getString(R.string.no), new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -1479,7 +1569,9 @@ private void subscriptionSwitch(boolean isChecked){
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         dialog.dismiss();
-                        networkCommunicator.updateSubscription(request, CheckoutActivity.this);
+                        ProcessingDialog process = new ProcessingDialog(context,request,CheckoutActivity.this);
+                        process.show();
+                       // networkCommunicator.updateSubscription(request, CheckoutActivity.this);
                     }
                 }, getString(R.string.no), new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -1487,5 +1579,19 @@ private void subscriptionSwitch(boolean isChecked){
                         dialog.dismiss();
                     }
                 });
+    }
+
+
+    @Override
+    public void onUpdateSuccess(UpdateSubscriptionRequest request, ProcessingDialog.PaymentStatus status) {
+        Helper.onSubscriptionUpdate(mContext,request,status);
+    }
+
+    @Override
+    public void onFinishButtonClick(int type) {
+        EventBroadcastHelper.sendSubscriptionUpdated(AppConstants.SubscriptionAction.UPGRADE);
+        finish();
+
+
     }
 }

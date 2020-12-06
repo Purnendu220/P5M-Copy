@@ -19,6 +19,7 @@ public class Package implements java.io.Serializable {
 
     private boolean status;
     private PromoCode promoResponseDto;
+    private PromoCode promoSubscriptionDto;
     private int gymVisitLimit;
     private boolean isBookingWithFriend;
 
@@ -144,5 +145,13 @@ public class Package implements java.io.Serializable {
 
     public void setCredits(int credits) {
         this.credits = credits;
+    }
+
+    public PromoCode getPromoSubscriptionDto() {
+        return promoSubscriptionDto;
+    }
+
+    public void setPromoSubscriptionDto(PromoCode promoSubscriptionDto) {
+        this.promoSubscriptionDto = promoSubscriptionDto;
     }
 }
